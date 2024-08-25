@@ -1,4 +1,4 @@
-package com.example.fcislol_mobile
+package com.example.mobile
 
 import io.flutter.embedding.android.FlutterActivity
 
