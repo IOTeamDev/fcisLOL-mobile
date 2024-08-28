@@ -8,7 +8,7 @@ class Cache {
   }
 
   static Future<bool> writeData({required String key, required value}) async {
-    if (sharedpref == null) await initialize();
+            if (sharedpref == null) await initialize();
 
     try {
       if (value is String) return await sharedpref!.setString(key, value);
@@ -22,14 +22,14 @@ class Cache {
   }
 
   static dynamic readData({required String key}) async {
-    if (sharedpref == null) await initialize();
+            if (sharedpref == null) await initialize();
 
-    return sharedpref!.get(key);
+    return  sharedpref!.get(key);
   }
 
-  static Future<bool> removeValue({required String key}) async {
-    if (sharedpref == null) await initialize();
+  static Future<bool> removeValue({required String key}) async{
+        if (sharedpref == null) await initialize();
 
-    return sharedpref!.remove(key);
+  return  sharedpref!.remove(key);
   }
 }

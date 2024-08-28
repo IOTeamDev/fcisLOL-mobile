@@ -1,6 +1,9 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:lol/Constants/Componants.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:lol/app_contant/modules/profile.dart';
+import 'package:lol/constants/componants.dart';
 import 'package:lol/main.dart';
 
 class Home extends StatelessWidget {
@@ -23,10 +26,8 @@ class Home extends StatelessWidget {
               leading: const Icon(Icons.person),
               title: const Text("Profile"),
               onTap: () {
-                if (!isLogin!)
-                  DialgoAwesome
-                  
-            (
+                if (!isLogin!)  
+                  dialgoAwesome(
                       context: context,
                       title: 'Please SignIn First',
                       type: DialogType.info,
@@ -34,9 +35,10 @@ class Home extends StatelessWidget {
                       btnOkText: "Sign In",
                       btnCancelOnPress: () {},
                       btnOkOnPress: () {});
+
                 if (!isLogin!) print("object");
 
-                if (isLogin!) Navigat(context, const Profile());
+                if (isLogin!) navigat(context, const profile ());
               },
             ),
             ListTile(
@@ -100,7 +102,7 @@ class Home extends StatelessWidget {
                 aspectRatio: 16 / 9,
                 autoPlayCurve: Curves.fastOutSlowIn,
                 enableInfiniteScroll: true,
-                autoPlayInterval: Duration(seconds: 10),
+                autoPlayInterval: const Duration(seconds: 10),
                 autoPlayAnimationDuration: const Duration(milliseconds: 800),
                 viewportFraction: 0.8,
               ),

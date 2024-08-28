@@ -1,26 +1,31 @@
-import 'package:flutter/material.dart';
-import 'package:lol/shared_prefrence/shared_prefrence.dart';
 
-screenHeight(context) => MediaQuery.of(context).size.height;
-screenWidth(context) => MediaQuery.of(context).size.width;
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:flutter/material.dart';
+import 'package:lol/Constants/color.dart';
+
+import '../shared_prefrence/shared_prefrence.dart';
+
+ScreenHeight(context) => MediaQuery.of(context).size.height;
+ScreenWidth(context) => MediaQuery.of(context).size.width;
 Widget defaultForm(
     {String? label,
     bool enabled = true,
-    bool wantMargin = true,
+    bool WantMargin = true,
     bool isDark = false,
     onChanged,
     IconData? dtaPrefIcon,
-    suffFunc,
+    suff_func,
     Icon? dtaSufIcon,
     controller,
     String? Function(String?)? validateor,
     onFieldSubmitted,
-    bool obscure = false,
+    bool Obscure = false,
     type}) {
   return Container(
     // width: 400,
     height: 45,
-    margin: EdgeInsets.symmetric(vertical: wantMargin ? 5 : 0),
+
+    margin: EdgeInsets.symmetric(vertical: WantMargin ? 5 : 0),
 
     child: TextFormField(
       // textAlign: TextAlign.center,
@@ -32,7 +37,7 @@ Widget defaultForm(
       // readOnly: readOnly,
 
       ///عدل كسم الانواع دي
-      obscureText: obscure,
+      obscureText: Obscure,
       onFieldSubmitted: onFieldSubmitted,
       validator: validateor,
       controller: controller,
@@ -50,7 +55,7 @@ Widget defaultForm(
             ? null
             : IconButton(
                 icon: dtaSufIcon,
-                onPressed: suffFunc,
+                onPressed: suff_func,
               ),
         prefixIcon: dtaPrefIcon == null
             ? null
@@ -64,57 +69,55 @@ Widget defaultForm(
 }
 
 Widget defaultButton(
-    {required buttonFunc,
+    {required ButtonFunc,
     required isText,
-    String? title,
-    buttonIcon,
-    required double buttonWidth}) {
-  return buttonWidth == 0
+    String? Title,
+    ButtonIcon,
+    required double ButtonWidth}) {
+  return ButtonWidth == 0
       ? MaterialButton(
           minWidth: 0,
-          onPressed: buttonFunc,
+          onPressed: ButtonFunc,
           child: isText == null
               ? null
               : isText
-                  ? title == null
+                  ? Title == null
                       ? null
                       : Text(
-                          title,
+                          Title,
                           style: const TextStyle(color: Colors.white),
                         )
-                  : buttonIcon,
+                  : ButtonIcon,
         )
       : Container(
           decoration: BoxDecoration(
-              color: const Color(0xff191C3B),
-              borderRadius: BorderRadius.circular(0)),
+              color: const Color(0xff191C3B), borderRadius: BorderRadius.circular(0)),
           height: 50,
-          width: buttonWidth,
+          width: ButtonWidth,
           child: MaterialButton(
-            onPressed: buttonFunc,
+            onPressed: ButtonFunc,
             child: isText == null
                 ? null
                 : isText
-                    ? title == null
+                    ? Title == null
                         ? null
                         : Text(
-                            title,
+                            Title,
                             style: const TextStyle(color: Colors.white),
                           )
-                    : buttonIcon,
+                    : ButtonIcon,
           ),
         );
 }
 
-navigatReplace(context, targetPage) {
+navigatReplace(context, TargetPage) {
   Navigator.of(context).pushReplacement(MaterialPageRoute(
-    builder: (context) => targetPage,
+    builder: (context) => TargetPage,
   ));
 }
-
-navigat(context, targetPage) {
+navigat(context, TargetPage) {
   Navigator.of(context).push(MaterialPageRoute(
-    builder: (context) => targetPage,
+    builder: (context) => TargetPage,
   ));
 }
 
@@ -129,25 +132,25 @@ Widget defaultTextButton(
   );
 }
 
-snake({required titleWidget, required context, required enumColor}) {
+Snake({required titleWidget, required context, required EnumColor}) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    backgroundColor: snakeColor(enumColor),
+    backgroundColor: snakeColor(EnumColor),
     duration: const Duration(seconds: 1),
     content: titleWidget,
   ));
 }
 
-enum Messages { success, sarning, error }
+enum Messages { Success, Warning, Error }
 
-Color snakeColor(Messages enumColor) {
-  switch (enumColor) {
-    case Messages.success:
+Color snakeColor(Messages EnumColor) {
+  switch (EnumColor) {
+    case Messages.Success:
       return Colors.green;
 
-    case Messages.sarning:
+    case Messages.Warning:
       return Colors.yellow;
 
-    case Messages.error:
+    case Messages.Error:
       return Colors.red;
 
     default:
@@ -155,7 +158,7 @@ Color snakeColor(Messages enumColor) {
   }
 }
 
-void signOut({required String key}) {
+void SignOut({required String key}) {
   Cache.removeValue(key: key);
 }
 
@@ -165,4 +168,32 @@ Widget halfDivider(context) {
     // width: ScreenWidth(context),
     color: Colors.grey,
   );
+}
+
+Future<AwesomeDialog>  dialgoAwesome({
+  
+  context,
+   required String title,
+   VoidCallback? btnCancelOnPress,
+   VoidCallback ?btnOkOnPress,
+   required DialogType type,
+   btnCancelColor,
+   btnOkColor,
+   String?btnOkText,
+   String?    btnCancelText
+,
+
+}) async{
+  return await AwesomeDialog(
+    context: context,
+    dialogType: type,
+    animType: AnimType.rightSlide,
+    title: title,
+    btnCancelColor:btnCancelColor,
+    btnOkColor:btnOkColor ,
+    btnOkText:btnOkText ,
+    btnCancelText:btnCancelText ,
+    btnCancelOnPress: btnCancelOnPress,
+    btnOkOnPress: btnOkOnPress
+  ).show();
 }

@@ -114,7 +114,7 @@ class LoginScreen extends StatelessWidget {
                           ),
                           // const SizedBox(height: 5,),
                           defaultForm(
-                              suffFunc: () {
+                              suff_func: () {
                                 cubit.togglePassword();
                               },
                               dtaSufIcon: Icon(
@@ -122,12 +122,12 @@ class LoginScreen extends StatelessWidget {
                                 color:
                                     cubit.hiddenPassword ? null : Colors.blue,
                               ),
-                              wantMargin: false,
+                              WantMargin: false,
                               validateor: (value) {
                                 return null;
                               },
                               controller: passwordController,
-                              obscure: cubit.hiddenPassword),
+                              Obscure: cubit.hiddenPassword),
                         ],
                       ),
                       const SizedBox(
@@ -137,10 +137,10 @@ class LoginScreen extends StatelessWidget {
                         height: 50,
                       ),
                       defaultButton(
-                          buttonFunc: () {},
+                          ButtonFunc: () {},
                           isText: true,
-                          buttonWidth: 400,
-                          title: "Log in"),
+                          ButtonWidth: 400,
+                          Title: "Log in"),
                       const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

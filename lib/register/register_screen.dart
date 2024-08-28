@@ -144,7 +144,7 @@ class Registerscreen extends StatelessWidget {
                               return null;
                             },
                             controller: passwordController,
-                            obscure: true),
+                            Obscure: true),
                       ],
                     ),
                     const SizedBox(
@@ -174,17 +174,17 @@ class Registerscreen extends StatelessWidget {
                               }
                             },
                             controller: confirimPassword,
-                            obscure: true),
+                            Obscure: true),
                       ],
                     ),
                     const SizedBox(
                       height: 15,
                     ),
                     defaultButton(
-                        buttonFunc: () {},
-                        buttonWidth: 300,
+                        ButtonFunc: () {},
+                        ButtonWidth: 300,
                         isText: true,
-                        title: "REGISTER"),
+                        Title: "REGISTER"),
                     const SizedBox(
                       height: 30,
                     ),

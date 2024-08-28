@@ -22,6 +22,8 @@ dependencies:
   flutter_fortune_wheel: ^1.3.1
   bloc: ^8.1.4
   flutter_bloc: ^8.1.6
+  carousel_slider: ^5.0.0
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_test:
@@ -33,14 +35,23 @@ flutter:
   uses-material-design: true
 
   assets:
-    - images/1.png
+    - images/1.PNG
     - images/Checklist.png
-    - images/2.png
-    - images/3.png
-    - images/4.png
-    - images/5.png
+    - images/2.PNG
+    - images/3.PNG
+    - images/4.PNG
+    - images/5.PNG
     - images/google.png
     - images/Microsoft_Logo_512px.png
     - images/google1.png
     - images/Subway-cuate.png
     - images/Grades-pana.png
+    - images/clockworkorange_tall.jpg
+    - images/clock.jpeg
+    - images/120604_r22256_g2048.webp
+    - images/shutterstock_5885876aa.webp
+    - images/images.jfif
+    - images/english.png
+    - images/psychology.png
+    - images/physics.png
+    - images/electronics.png
