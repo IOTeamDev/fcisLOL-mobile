@@ -1,43 +1,59 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:lol/constants/componants.dart';
+import 'package:lol/Constants/Componants.dart';
 import 'package:lol/main.dart';
-
-bool leftMargin = true;
-
-List subjectNamesList = [
-  "Physics",
-  "Electronics",
-  "English",
-  "Psychology",
-  "Physics",
-  "Electronics",
-  "English",
-  "Psychology"
-];
 
 class Home extends StatelessWidget {
   const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
-    double width = screenWidth(context);
-    //   double height = ScreenHeight(context);
-    return Scaffold(
-      backgroundColor: Colors.grey[400],
+    double width = MediaQuery.of(context).size.width;
+
+  return Scaffold(
+      // backgroundColor: Colors.grey[400],
       drawer: Drawer(
         //We Will Put In It Things
-
         width: width / 2.5,
         backgroundColor: const Color(0xff27363D),
+
+        child: ListView(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text("Profile"),
+              onTap: () {
+                if (!isLogin!)
+                  DialgoAwesome
+                  
+            (
+                      context: context,
+                      title: 'Please SignIn First',
+                      type: DialogType.info,
+                      btnCancelText: "Maybe later",
+                      btnOkText: "Sign In",
+                      btnCancelOnPress: () {},
+                      btnOkOnPress: () {});
+                if (!isLogin!) print("object");
+
+                if (isLogin!) Navigat(context, const Profile());
+              },
+            ),
+            ListTile(
+              onTap: () {},
+              leading: const Icon(Icons.document_scanner),
+              title: const Text("About App"),
+            )
+          ],
+        ),
       ),
       appBar: AppBar(
         title: const InkWell(
             child:
                 Row()), //The Logo With Name And Make it Always Navigate to the Home
-        iconTheme: const IconThemeData(color: Colors.white),
-        backgroundColor: const Color(0xff27363D),
+        // iconTheme: const IconThemeData(color: Colors.white),
+        // backgroundColor: Colors.blueGrey,
         actions: [
-          // if ( !isLogin!)
           if (!isLogin!)
             Container(
               decoration: BoxDecoration(
@@ -51,45 +67,139 @@ class Home extends StatelessWidget {
                 ),
               ),
             ),
+
+          IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.dark_mode,
+                color: Colors.black,
+              )) //State management toggle between the icons
         ],
       ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, mainAxisSpacing: 22, crossAxisSpacing: 22),
-          itemBuilder: (context, index) =>
-              subjectItem(subjectName: subjectNamesList[index]),
-          itemCount: subjectNamesList.length,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CarouselSlider(
+              items: Carsor.map((image) {
+                return Container(
+                  margin: const EdgeInsets.all(6.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    image: DecorationImage(
+                      image: AssetImage(image),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                );
+              }).toList(),
+              options: CarouselOptions(
+                height: 200.0,
+                autoPlay: true,
+                enlargeCenterPage: true,
+                aspectRatio: 16 / 9,
+                autoPlayCurve: Curves.fastOutSlowIn,
+                enableInfiniteScroll: true,
+                autoPlayInterval: Duration(seconds: 10),
+                autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                viewportFraction: 0.8,
+              ),
+            ),
+            const SizedBox(height: 20),
+            
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: SubjectNamesList.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 16.0,
+                  crossAxisSpacing: 16.0,
+                  childAspectRatio: 3 / 2,
+                ),
+                itemBuilder: (context, index) {
+                  return SubjectItemBuild( SubjectNamesList[index]);
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
 
-Widget subjectItem({required String subjectName}) {
-  return InkWell(
-    onTap: () {
-      print("object");
-    },
-    child: Container(
-      width: 150,
-      height: 100,
-      margin: const EdgeInsets.symmetric(horizontal: 7),
-
-      // margin: left_margin?EdgeInsets.only(left: 5):EdgeInsets.only(right: 5),
-      // left_margin = !left_margin;//Will Be Solved With State Management
-
-      decoration: BoxDecoration(
-        color: const Color(0xff98857C),
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Center(
-        child: Text(
-          subjectName,
-          style: const TextStyle(color: Colors.white, fontSize: 18),
+Widget SubjectItemBuild  (SubjectName){
+    return GestureDetector(
+      onTap: () {
+        print("$SubjectName clicked");
+      },
+      child: Card(
+        elevation: 8.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Stack(
+          alignment: Alignment.bottomLeft,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('images/${SubjectName.toLowerCase()}.png'), // Replace with your actual image assets
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.black.withOpacity(0.6),
+                    Colors.transparent,
+                  ],
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Text(
+                SubjectName,
+                style: GoogleFonts.montserrat(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
-    ),
-  );
-}
+    );
+  }
+
+
+List SubjectNamesList = [
+  "Physics",
+  "Electronics",
+  "English",
+  "Psychology",
+    "Physics",
+  "Electronics",
+  "English",
+  "Psychology",
+  
+];
+
+List Carsor = [
+  "images/clock.jpeg",
+  "images/clockworkorange_tall.jpg",
+  "images/images.jfif",
+  "images/shutterstock_5885876aa.webp",
+  "images/120604_r22256_g2048.webp",
+];

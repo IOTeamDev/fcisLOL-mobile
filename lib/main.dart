@@ -14,7 +14,6 @@ void main() async {
   Bloc.observer = MyBlocObserver();
   isLogin = await Cache.readData(key: "Token") ?? false;
   selectedLevel = Cache.readData(key: "Level");
-
   runApp(const FCISLOL());
 }
 
