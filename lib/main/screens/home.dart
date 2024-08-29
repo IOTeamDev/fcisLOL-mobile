@@ -2,7 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lol/screens/main/profile.dart';
+import 'package:lol/main/screens/profile.dart';
 import 'package:lol/constants/componants.dart';
 import 'package:lol/main.dart';
 

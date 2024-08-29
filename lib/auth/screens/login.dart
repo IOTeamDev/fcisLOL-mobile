@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/constants/componants.dart';
 import 'package:lol/constants/color.dart';
-import 'package:lol/blocs/login/login_cubit.dart';
-import 'package:lol/blocs/login/login_cubit_states.dart';
-import 'package:lol/screens/auth/register.dart';
+import 'package:lol/auth/bloc/login_cubit.dart';
+import 'package:lol/auth/bloc/login_cubit_states.dart';
+import 'package:lol/auth/screens/register.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});

@@ -1,6 +1,6 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:lol/screens/main/home.dart';
+import 'package:lol/main/screens/home.dart';
 import 'package:lol/constants/componants.dart';
 import 'package:lol/utilities/shared_prefrence.dart';
 

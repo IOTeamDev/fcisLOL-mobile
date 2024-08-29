@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lol/screens/auth/choosing_year.dart';
+import 'package:lol/main/screens/choosing_year.dart';
 import 'package:lol/constants/componants.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lol/constants/componants.dart';
-import 'package:lol/screens/auth/login.dart';
+import 'package:lol/auth/screens/login.dart';
 
 class Registerscreen extends StatelessWidget {
   const Registerscreen({super.key});
