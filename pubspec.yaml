@@ -35,12 +35,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - images/1.PNG
     - images/Checklist.png
-    - images/2.PNG
-    - images/3.PNG
-    - images/4.PNG
-    - images/5.PNG
     - images/google.png
     - images/Microsoft_Logo_512px.png
     - images/google1.png

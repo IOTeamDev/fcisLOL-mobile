@@ -2,7 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lol/app_contant/modules/profile.dart';
+import 'package:lol/screens/main/profile.dart';
 import 'package:lol/constants/componants.dart';
 import 'package:lol/main.dart';
 
@@ -13,7 +13,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
 
-  return Scaffold(
+    return Scaffold(
       // backgroundColor: Colors.grey[400],
       drawer: Drawer(
         //We Will Put In It Things
@@ -26,7 +26,7 @@ class Home extends StatelessWidget {
               leading: const Icon(Icons.person),
               title: const Text("Profile"),
               onTap: () {
-                if (!isLogin!)  
+                if (!isLogin!) {
                   dialgoAwesome(
                       context: context,
                       title: 'Please SignIn First',
@@ -35,10 +35,11 @@ class Home extends StatelessWidget {
                       btnOkText: "Sign In",
                       btnCancelOnPress: () {},
                       btnOkOnPress: () {});
+                }
 
                 if (!isLogin!) print("object");
 
-                if (isLogin!) navigat(context, const profile ());
+                if (isLogin!) navigat(context, const Profile());
               },
             ),
             ListTile(
@@ -83,7 +84,7 @@ class Home extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CarouselSlider(
-              items: Carsor.map((image) {
+              items: carsor.map((image) {
                 return Container(
                   margin: const EdgeInsets.all(6.0),
                   decoration: BoxDecoration(
@@ -108,14 +109,13 @@ class Home extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            
             const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: GridView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: SubjectNamesList.length,
+                itemCount: subjectNamesList.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisSpacing: 16.0,
@@ -123,7 +123,7 @@ class Home extends StatelessWidget {
                   childAspectRatio: 3 / 2,
                 ),
                 itemBuilder: (context, index) {
-                  return SubjectItemBuild( SubjectNamesList[index]);
+                  return subjectItemBuild(subjectNamesList[index]);
                 },
               ),
             ),
@@ -134,71 +134,70 @@ class Home extends StatelessWidget {
   }
 }
 
-Widget SubjectItemBuild  (SubjectName){
-    return GestureDetector(
-      onTap: () {
-        print("$SubjectName clicked");
-      },
-      child: Card(
-        elevation: 8.0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16.0),
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: Stack(
-          alignment: Alignment.bottomLeft,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('images/${SubjectName.toLowerCase()}.png'), // Replace with your actual image assets
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.black.withOpacity(0.6),
-                    Colors.transparent,
-                  ],
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Text(
-                SubjectName,
-                style: GoogleFonts.montserrat(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ],
-        ),
+Widget subjectItemBuild(subjectName) {
+  return GestureDetector(
+    onTap: () {
+      print("$subjectName clicked");
+    },
+    child: Card(
+      elevation: 8.0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.0),
       ),
-    );
-  }
+      clipBehavior: Clip.antiAlias,
+      child: Stack(
+        alignment: Alignment.bottomLeft,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                    'images/${subjectName.toLowerCase()}.png'), // Replace with your actual image assets
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.black.withOpacity(0.6),
+                  Colors.transparent,
+                ],
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Text(
+              subjectName,
+              style: GoogleFonts.montserrat(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
 
-
-List SubjectNamesList = [
+List subjectNamesList = [
   "Physics",
   "Electronics",
   "English",
   "Psychology",
-    "Physics",
+  "Physics",
   "Electronics",
   "English",
   "Psychology",
-  
 ];
 
-List Carsor = [
+List carsor = [
   "images/clock.jpeg",
   "images/clockworkorange_tall.jpg",
   "images/images.jfif",

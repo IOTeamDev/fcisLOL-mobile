@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lol/constants/componants.dart';
-import 'package:lol/login/login_screen.dart';
+import 'package:lol/screens/auth/login.dart';
 
 class Registerscreen extends StatelessWidget {
   const Registerscreen({super.key});
@@ -144,7 +144,7 @@ class Registerscreen extends StatelessWidget {
                               return null;
                             },
                             controller: passwordController,
-                            Obscure: true),
+                            obscure: true),
                       ],
                     ),
                     const SizedBox(
@@ -174,17 +174,17 @@ class Registerscreen extends StatelessWidget {
                               }
                             },
                             controller: confirimPassword,
-                            Obscure: true),
+                            obscure: true),
                       ],
                     ),
                     const SizedBox(
                       height: 15,
                     ),
                     defaultButton(
-                        ButtonFunc: () {},
-                        ButtonWidth: 300,
+                        buttonFunc: () {},
+                        buttonWidth: 300,
                         isText: true,
-                        Title: "REGISTER"),
+                        title: "REGISTER"),
                     const SizedBox(
                       height: 30,
                     ),

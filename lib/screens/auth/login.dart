@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/constants/componants.dart';
 import 'package:lol/constants/color.dart';
-import 'package:lol/login/cubit/login_cubit.dart';
-import 'package:lol/login/cubit/login_cubit_states.dart';
-import 'package:lol/register/register_screen.dart';
+import 'package:lol/blocs/login/login_cubit.dart';
+import 'package:lol/blocs/login/login_cubit_states.dart';
+import 'package:lol/screens/auth/register.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -114,7 +114,7 @@ class LoginScreen extends StatelessWidget {
                           ),
                           // const SizedBox(height: 5,),
                           defaultForm(
-                              suff_func: () {
+                              suffFunc: () {
                                 cubit.togglePassword();
                               },
                               dtaSufIcon: Icon(
@@ -122,12 +122,12 @@ class LoginScreen extends StatelessWidget {
                                 color:
                                     cubit.hiddenPassword ? null : Colors.blue,
                               ),
-                              WantMargin: false,
+                              wantMargin: false,
                               validateor: (value) {
                                 return null;
                               },
                               controller: passwordController,
-                              Obscure: cubit.hiddenPassword),
+                              obscure: cubit.hiddenPassword),
                         ],
                       ),
                       const SizedBox(
@@ -137,10 +137,10 @@ class LoginScreen extends StatelessWidget {
                         height: 50,
                       ),
                       defaultButton(
-                          ButtonFunc: () {},
+                          buttonFunc: () {},
                           isText: true,
-                          ButtonWidth: 400,
-                          Title: "Log in"),
+                          buttonWidth: 400,
+                          title: "Log in"),
                       const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

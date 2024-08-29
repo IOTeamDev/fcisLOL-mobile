@@ -1,8 +1,8 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:lol/app_contant/modules/home.dart';
+import 'package:lol/screens/main/home.dart';
 import 'package:lol/constants/componants.dart';
-import 'package:lol/shared_prefrence/shared_prefrence.dart';
+import 'package:lol/utilities/shared_prefrence.dart';
 
 class ChoosingYear extends StatelessWidget {
   const ChoosingYear({super.key});

@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lol/login/cubit/login_cubit_states.dart';
+import 'package:lol/blocs/login/login_cubit_states.dart';
 
 //uid null?
 class LoginCubit extends Cubit<LoginStates> {
