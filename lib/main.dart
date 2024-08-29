@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/auth/screens/login.dart';
-import 'package:lol/main/screens/home.dart';
 import 'package:lol/utilities/observer.dart';
 import 'package:lol/utilities/shared_prefrence.dart';
 
