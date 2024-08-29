@@ -34,7 +34,6 @@ Widget defaultForm(
       keyboardType: type,
       // readOnly: readOnly,
 
-      ///عدل كسم الانواع دي
       obscureText: obscure,
       onFieldSubmitted: onFieldSubmitted,
       validator: validateor,
