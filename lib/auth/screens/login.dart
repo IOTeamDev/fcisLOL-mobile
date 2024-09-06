@@ -5,6 +5,9 @@ import 'package:lol/constants/color.dart';
 import 'package:lol/auth/bloc/login_cubit.dart';
 import 'package:lol/auth/bloc/login_cubit_states.dart';
 import 'package:lol/auth/screens/register.dart';
+import 'package:lol/constants/constants.dart';
+import 'package:lol/main/screens/home.dart';
+import 'package:lol/utilities/shared_prefrence.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -17,9 +20,28 @@ class LoginScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => LoginCubit(),
       child: BlocConsumer<LoginCubit, LoginStates>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is LoginSuccess) {
+            token=state.token;
+            Cache.writeData(key: "token", value: state.token);
+            snack(
+                context: context,
+                enumColor: Messages.success,
+                titleWidget:
+                    const Text("Successfully signed in. Welcome back!"));
+
+            navigatReplace(context, const Home());
+          }
+          if (state is LoginFailed){
+            snack(
+                context: context,
+                enumColor: Messages.error,
+                titleWidget:
+                    const Text("Invalid email or password. Please try again"));
+        }
+        },
         builder: (context, state) {
-          var cubit = LoginCubit.get(context);
+          var loginCubit = LoginCubit.get(context);
 
           return Scaffold(
             appBar: AppBar(),
@@ -115,19 +137,20 @@ class LoginScreen extends StatelessWidget {
                           // const SizedBox(height: 5,),
                           defaultForm(
                               suffFunc: () {
-                                cubit.togglePassword();
+                                loginCubit.togglePassword();
                               },
                               dtaSufIcon: Icon(
                                 Icons.remove_red_eye,
-                                color:
-                                    cubit.hiddenPassword ? null : Colors.blue,
+                                color: loginCubit.hiddenPassword
+                                    ? null
+                                    : Colors.blue,
                               ),
                               wantMargin: false,
                               validateor: (value) {
                                 return null;
                               },
                               controller: passwordController,
-                              obscure: cubit.hiddenPassword),
+                              obscure: loginCubit.hiddenPassword),
                         ],
                       ),
                       const SizedBox(
@@ -136,11 +159,20 @@ class LoginScreen extends StatelessWidget {
                       const SizedBox(
                         height: 50,
                       ),
-                      defaultButton(
-                          buttonFunc: () {},
-                          isText: true,
-                          buttonWidth: 400,
-                          title: "Log in"),
+                      state is LoginLoading
+                          ? const Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : defaultButton(
+                              buttonFunc: () {
+                                if (formKey.currentState!.validate())
+                                  loginCubit.login(
+                                      email: emailController.text,
+                                      password: passwordController.text);
+                              },
+                              isText: true,
+                              buttonWidth: 400,
+                              title: "Log in"),
                       const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

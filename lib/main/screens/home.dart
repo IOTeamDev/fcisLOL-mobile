@@ -2,6 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lol/constants/constants.dart';
 import 'package:lol/main/screens/profile.dart';
 import 'package:lol/constants/componants.dart';
 import 'package:lol/main.dart';
@@ -26,20 +27,20 @@ class Home extends StatelessWidget {
               leading: const Icon(Icons.person),
               title: const Text("Profile"),
               onTap: () {
-                if (!isLogin!) {
-                  dialgoAwesome(
-                      context: context,
-                      title: 'Please SignIn First',
-                      type: DialogType.info,
-                      btnCancelText: "Maybe later",
-                      btnOkText: "Sign In",
-                      btnCancelOnPress: () {},
-                      btnOkOnPress: () {});
-                }
+                // if (!isLogin!) {
+                //   dialgoAwesome(
+                //       context: context,
+                //       title: 'Please SignIn First',
+                //       type: DialogType.info,
+                //       btnCancelText: "Maybe later",
+                //       btnOkText: "Sign In",
+                //       btnCancelOnPress: () {},
+                //       btnOkOnPress: () {});
+                // }
 
-                if (!isLogin!) print("object");
+                // if (!isLogin!) print("object");
 
-                if (isLogin!) navigat(context, const Profile());
+                // if (isLogin!) navigat(context, const Profile());
               },
             ),
             ListTile(
@@ -57,7 +58,7 @@ class Home extends StatelessWidget {
         // iconTheme: const IconThemeData(color: Colors.white),
         // backgroundColor: Colors.blueGrey,
         actions: [
-          if (!isLogin!)
+          if (token==null)
             Container(
               decoration: BoxDecoration(
                   color: const Color(0xff631313),

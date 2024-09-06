@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lol/main/screens/choosing_year.dart';
 import 'package:lol/constants/componants.dart';
+import 'package:lol/utilities/shared_prefrence.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnBoarding extends StatefulWidget {
@@ -72,6 +73,7 @@ class _OnBoardingState extends State<OnBoarding> {
                       ),
                       onPressed: () {
                         if (isLastPage) {
+                          Cache.writeData(key: "FinishedOnBoard", value: true);
                           navigatReplace(context, const ChoosingYear());
                         } else {
                           pageViewController.nextPage(

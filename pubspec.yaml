@@ -24,6 +24,8 @@ dependencies:
   flutter_bloc: ^8.1.6
   carousel_slider: ^5.0.0
   google_fonts: ^6.2.1
+  dio: ^5.7.0
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:
@@ -58,6 +60,7 @@ flutter:
     - images/17886.jpg
     - images/20.jpg
     - images/2147813594.jpg
+    - images/default-avatar-profile-icon-social-600nw-1677509740.png
     - images/343.jpg
     - images/2149084942.jpg
     - images/young-handsome-man-with-beard-wearing-casual-sweater-glasses-blue-background-happy-face_998240-1237.jpg

@@ -1,5 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:lol/auth/bloc/login_cubit_states.dart';
+import 'package:lol/auth/model/login_model.dart';
+import 'package:lol/utilities/dio.dart';
 
 //uid null?
 class LoginCubit extends Cubit<LoginStates> {
@@ -10,16 +15,76 @@ class LoginCubit extends Cubit<LoginStates> {
   togglePassword() {
     hiddenPassword = !hiddenPassword;
 
-    emit(togglePassword());
+    emit(TogglePassword());
+  }
+
+  // RegisterModel?
+  //     registerModel; //maybe delete in the future if it seems that we don't need it
+
+  LoginModel? modelLogin;
+  void register({
+    required String name,
+    required String email,
+    required String phone,
+    required String photo,
+    required String password,
+    required String semester,
+  }) {
+    emit(RegisterLoading());
+    DioHelp.postData(path: "users", data: {
+      "name": name,
+      "email": email,
+      "password": password,
+      "phone": phone,
+      "photo": photo,
+      "semester": semester,
+    }).then(
+      (value) {
+        modelLogin = LoginModel.fromJson(value.data);
+        // print(registerModel!.email);
+        emit(RegisterSuccess());
+      },
+    ).catchError((erro) => emit(RegisterFailed()));
   }
 
   void login({required email, required password}) async {
-    emit(Loading());
+    emit(LoginLoading());
+    DioHelp.postData(path: "login", data: {
+      "email": email,
+      "password": password,
+    }).then(
+      (value) {
+        modelLogin = LoginModel.fromJson(value.data);
+        print(modelLogin!.user.name);
+        emit(LoginSuccess(token: modelLogin!.token));
+      },
+    ).catchError((error) {
+      emit(LoginFailed());
+    });
   }
 
-  void getData() {
-    emit(Loading());
+  var picker = ImagePicker();
+  File? profileImage;
+
+  pickProfileImage(bool isCamera) async{
+    var tempImage =await picker.pickImage(
+        source: isCamera ? ImageSource.camera : ImageSource.gallery); 
+
+    if (tempImage != null) {profileImage = File(tempImage.path);
+    
+    emit(PickImageSuccess());
+    
+    }
+    else
+
+    emit(PickImageFailed());
+
   }
+
+void uploadProfileImage(){}
+
+
+  void getData() {}
 
   // void UpdateData({
   //   required String name,

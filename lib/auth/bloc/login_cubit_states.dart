@@ -4,15 +4,31 @@ class Initial extends LoginStates {}
 
 class TogglePassword extends LoginStates {}
 
-class Loading extends LoginStates {}
+class LoginLoading extends LoginStates {}
 
 class LoginSuccess extends LoginStates {
-  // var Model;
+  final String token;
+
+  LoginSuccess({required this.token});
 }
 
 class LoginFailed extends LoginStates {}
 
-class RegisterFailed extends LoginStates {
-  final String error;
-  RegisterFailed(this.error);
+
+class RegisterLoading extends LoginStates {}
+
+class RegisterSuccess extends LoginStates {
+  // final String token;
+
+  // RegisterSuccess({required this.token});
 }
+
+
+
+
+class RegisterFailed extends LoginStates {}
+
+class PickImageSuccess extends LoginStates{}
+
+class PickImageFailed extends LoginStates{}
+
