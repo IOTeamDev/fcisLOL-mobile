@@ -22,7 +22,8 @@ main() async {
 
   token = await Cache.readData(key: "token");
   selectedLevel = await Cache.readData(key: "Level") ?? 0;
-  bool isOnBoardFinished = await Cache.readData(key: "FinishedOnBoard") ?? false;
+  bool isOnBoardFinished =
+      await Cache.readData(key: "FinishedOnBoard") ?? false;
 
   final Widget startPage;
   if (!isOnBoardFinished) {
@@ -36,17 +37,19 @@ main() async {
   }
 
   runApp(
-     App(startPage: startPage,),
+    App(
+      startPage: startPage,
+    ),
   );
 }
 
 class App extends StatelessWidget {
   final Widget startPage;
-   const App({super.key, required this.startPage});
+  const App({super.key, required this.startPage});
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
-      home: Registerscreen(),
+    return const MaterialApp(
+      home: OnBoarding(),
       debugShowCheckedModeBanner: false,
     );
   }

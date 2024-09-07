@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/auth/bloc/login_cubit.dart';
 import 'package:lol/auth/bloc/login_cubit_states.dart';
 import 'package:lol/auth/screens/register.dart';
-import 'package:lol/constants/componants.dart';
 
 class SelectImage extends StatelessWidget {
 // final name
@@ -43,13 +42,11 @@ class SelectImage extends StatelessWidget {
                         bottom: 0,
                         child: GestureDetector(
                           onTap: () {
-// dialgoAwesome(title: title, type: type)
-
                             showDialog(
                               context: context,
                               builder: (context) {
                                 return AlertDialog(
-                                  title: Text("Select the image source"),
+                                  title: const Text("Select the image source"),
                                   actionsAlignment:
                                       MainAxisAlignment.spaceAround,
                                   actions: [

@@ -1,7 +1,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:lol/main/screens/home.dart';
-import 'package:lol/constants/componants.dart';
+import 'package:lol/utilities/navigation.dart';
 import 'package:lol/utilities/shared_prefrence.dart';
 
 class ChoosingYear extends StatelessWidget {
@@ -12,7 +12,7 @@ class ChoosingYear extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.blueGrey,
       appBar: AppBar(
-        title: const Text("FCIS ZONDA"),
+        title: const Text("FCIS LOL"),
         centerTitle: true,
         backgroundColor: Colors.blueGrey,
       ),

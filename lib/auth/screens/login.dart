@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lol/constants/componants.dart';
-import 'package:lol/constants/color.dart';
+import 'package:lol/components/default_button.dart';
+import 'package:lol/components/default_text_button.dart';
+import 'package:lol/components/default_text_field.dart';
+import 'package:lol/components/snack.dart';
+import 'package:lol/constants/colors.dart';
 import 'package:lol/auth/bloc/login_cubit.dart';
 import 'package:lol/auth/bloc/login_cubit_states.dart';
 import 'package:lol/auth/screens/register.dart';
 import 'package:lol/constants/constants.dart';
 import 'package:lol/main/screens/home.dart';
+import 'package:lol/utilities/navigation.dart';
 import 'package:lol/utilities/shared_prefrence.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -22,7 +26,7 @@ class LoginScreen extends StatelessWidget {
       child: BlocConsumer<LoginCubit, LoginStates>(
         listener: (context, state) {
           if (state is LoginSuccess) {
-            token=state.token;
+            token = state.token;
             Cache.writeData(key: "token", value: state.token);
             snack(
                 context: context,
@@ -32,13 +36,13 @@ class LoginScreen extends StatelessWidget {
 
             navigatReplace(context, const Home());
           }
-          if (state is LoginFailed){
+          if (state is LoginFailed) {
             snack(
                 context: context,
                 enumColor: Messages.error,
                 titleWidget:
                     const Text("Invalid email or password. Please try again"));
-        }
+          }
         },
         builder: (context, state) {
           var loginCubit = LoginCubit.get(context);
@@ -66,7 +70,7 @@ class LoginScreen extends StatelessWidget {
                             width: 20,
                           ),
                           const Text(
-                            "ZONDA",
+                            "FCIS LOL",
                             style: TextStyle(
                                 fontSize: 20,
                                 letterSpacing: 2,
@@ -84,7 +88,8 @@ class LoginScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const Text("Continue Your Success Journey with Zonda !"),
+                      const Text(
+                          "Continue Your Success Journey with FCISLOL !"),
                       const SizedBox(
                         height: 30,
                       ),
@@ -101,7 +106,7 @@ class LoginScreen extends StatelessWidget {
                           const SizedBox(
                             height: 5,
                           ),
-                          defaultForm(
+                          defaultTextField(
                               validateor: (value) {
                                 if (value!.isEmpty) {
                                   return "Field cannot be empty";
@@ -135,7 +140,7 @@ class LoginScreen extends StatelessWidget {
                             ],
                           ),
                           // const SizedBox(height: 5,),
-                          defaultForm(
+                          defaultTextField(
                               suffFunc: () {
                                 loginCubit.togglePassword();
                               },
@@ -165,12 +170,12 @@ class LoginScreen extends StatelessWidget {
                             )
                           : defaultButton(
                               buttonFunc: () {
-                                if (formKey.currentState!.validate())
+                                if (formKey.currentState!.validate()) {
                                   loginCubit.login(
                                       email: emailController.text,
                                       password: passwordController.text);
+                                }
                               },
-                              isText: true,
                               buttonWidth: 400,
                               title: "Log in"),
                       const SizedBox(height: 20),
@@ -179,9 +184,14 @@ class LoginScreen extends StatelessWidget {
                         children: [
                           const Text("Not a member yet ?"),
                           defaultTextButton(
-                            onPressed: () =>
-                                navigatReplace(context, const Registerscreen()),
-                            text: "Sign up",
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const Registerscreen()));
+                            },
+                            text: "Register",
                           )
                         ],
                       )
