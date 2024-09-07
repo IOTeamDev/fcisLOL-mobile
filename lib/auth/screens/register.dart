@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:lol/Constants/Componants.dart';
-import 'package:lol/Constants/color.dart';
+import 'package:lol/components/default_button.dart';
+import 'package:lol/components/default_text_button.dart';
+import 'package:lol/components/default_text_field.dart';
+import 'package:lol/components/snack.dart';
+import 'package:lol/constants/colors.dart';
 import 'package:lol/auth/bloc/login_cubit.dart';
 import 'package:lol/auth/bloc/login_cubit_states.dart';
 import 'package:lol/auth/screens/login.dart';
 import 'package:lol/auth/screens/select_image.dart';
 import 'package:lol/constants/constants.dart';
 import 'package:lol/main/screens/home.dart';
+import 'package:lol/utilities/navigation.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class UserInfo {
@@ -31,9 +35,6 @@ class Registerscreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final RegExp emailRegExp = RegExp(
       r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-    );
-    final RegExp phoneRegExp = RegExp(
-      r'^\+?(\d{1,4})?[-.\s]?(\(?\d{1,4}\)?)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$',
     );
     var nameController = TextEditingController();
     var emailController = TextEditingController();
@@ -89,42 +90,6 @@ class Registerscreen extends StatelessWidget {
                           const SizedBox(
                             height: 20,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                  child: LoginMethodContainer(
-                                      title: "Google",
-                                      image: "images/google1.png")),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                  child: LoginMethodContainer(
-                                      title: "Microsoft",
-                                      image:
-                                          "images/Microsoft_Logo_512px.png")),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Expanded(child: Divider()),
-
-                              Text(
-                                "   or  ",
-                                style: TextStyle(fontSize: 17),
-                              ),
-                              Expanded(child: Divider()),
-                              // Expanded(child: HalfDivider(context)),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
                           Column(
                             children: [
                               const Align(
@@ -139,7 +104,7 @@ class Registerscreen extends StatelessWidget {
                               const SizedBox(
                                 height: 5,
                               ),
-                              defaultForm(
+                              defaultTextField(
                                   validateor: (value) {
                                     if (value!.isEmpty) {
                                       return "Field cannot be empty";
@@ -167,7 +132,7 @@ class Registerscreen extends StatelessWidget {
                               const SizedBox(
                                 height: 5,
                               ),
-                              defaultForm(
+                              defaultTextField(
                                   validateor: (value) {
                                     if (value!.isEmpty) {
                                       return "Field cannot be empty";
@@ -179,36 +144,6 @@ class Registerscreen extends StatelessWidget {
                                     }
                                   },
                                   controller: emailController),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Row(
-                                children: [
-                                  const Text(
-                                    "Phone number",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  const Spacer(),
-                                  Text(
-                                    "Optional",
-                                    style: TextStyle(color: Colors.grey[700]),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              defaultForm(
-
-                                  // label: "Phone",
-                                  controller: phoneController),
                             ],
                           ),
                           const SizedBox(
@@ -228,7 +163,7 @@ class Registerscreen extends StatelessWidget {
                               const SizedBox(
                                 height: 5,
                               ),
-                              defaultForm(
+                              defaultTextField(
                                   validateor: (Value) {
                                     return null;
                                   },
@@ -253,7 +188,7 @@ class Registerscreen extends StatelessWidget {
                               const SizedBox(
                                 height: 5,
                               ),
-                              defaultForm(
+                              defaultTextField(
                                   validateor: (Value) {
                                     if (Value!.isEmpty) {
                                       return "Field cannot be empty";
@@ -278,12 +213,16 @@ class Registerscreen extends StatelessWidget {
                               : defaultButton(
                                   buttonFunc: () {
                                     // if (formKey.currentState!.validate()) {
-                                      UserInfo userInfo = UserInfo(
-                                          name: nameController.text,
-                                          email: emailController.text,
-                                          password: passwordController.text,
-                                          phone: phoneController.text);
-                                      navigat(context, SelectImage(userInfo: userInfo,));
+                                    UserInfo userInfo = UserInfo(
+                                        name: nameController.text,
+                                        email: emailController.text,
+                                        password: passwordController.text,
+                                        phone: phoneController.text);
+                                    navigate(
+                                        context,
+                                        SelectImage(
+                                          userInfo: userInfo,
+                                        ));
                                     // }
                                     // LoginCubit.get(context).register(
                                     //     name: nameController.text,
@@ -295,7 +234,6 @@ class Registerscreen extends StatelessWidget {
                                     //     semester: "Four");
                                   },
                                   buttonWidth: 300,
-                                  isText: true,
                                   title: "NEXT"),
                           const SizedBox(
                             height: 5,
