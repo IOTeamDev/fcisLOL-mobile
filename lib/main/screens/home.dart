@@ -7,6 +7,8 @@ import 'package:lol/constants/constants.dart';
 import 'package:lol/main/screens/profile.dart';
 import 'package:lol/main.dart';
 
+import '../../auth/screens/login.dart';
+
 class Home extends StatelessWidget {
   const Home({super.key});
 

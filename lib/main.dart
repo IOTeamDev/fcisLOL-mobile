@@ -1,16 +1,19 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lol/auth/screens/login.dart';
-import 'package:lol/auth/screens/onboarding.dart';
-import 'package:lol/auth/screens/register.dart';
-import 'package:lol/auth/screens/select_image.dart';
-import 'package:lol/constants/constants.dart';
-import 'package:lol/main/screens/choosing_year.dart';
-import 'package:lol/main/screens/home.dart';
-import 'package:lol/main/screens/profile.dart';
-import 'package:lol/utilities/dio.dart';
-import 'package:lol/utilities/observer.dart';
 import 'package:lol/utilities/shared_prefrence.dart';
+
+import 'auth/screens/login.dart';
+import 'auth/screens/onboarding.dart';
+import 'auth/screens/register.dart';
+import 'auth/screens/select_image.dart';
+import 'constants/constants.dart';
+import 'main/screens/choosing_year.dart';
+import 'main/screens/choosing_year.dart'; 
+import 'main/screens/profile.dart';
+import 'utilities/dio.dart';
+import 'utilities/observer.dart';
+import 'package:flutter/material.dart';
+import 'constants/constants.dart';
+import 'main/screens/home.dart';
 
 late int selectedLevel;
 main() async {
@@ -22,8 +25,7 @@ main() async {
 
   token = await Cache.readData(key: "token");
   selectedLevel = await Cache.readData(key: "Level") ?? 0;
-  bool isOnBoardFinished =
-      await Cache.readData(key: "FinishedOnBoard") ?? false;
+  bool isOnBoardFinished =await Cache.readData(key: "FinishedOnBoard") ?? false;
 
   final Widget startPage;
   if (!isOnBoardFinished) {
@@ -37,9 +39,7 @@ main() async {
   }
 
   runApp(
-    App(
-      startPage: startPage,
-    ),
+    App(startPage: startPage,),
   );
 }
 
@@ -49,7 +49,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: OnBoarding(),
+      home: Home(),
       debugShowCheckedModeBanner: false,
     );
   }
