@@ -7,17 +7,17 @@ class AddAnouncment extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Container(
-        child: Column(
-          children: [
-            TextButton(
-                
-                onPressed: () {
-
-
-                  
-                },
-                child: Text("data"))
+      body: Container
+      (
+        child: Column
+        (
+          children:
+          [
+            TextButton
+            (
+                onPressed: () {},
+                child: Text("data"),
+            )
           ],
         ),
       ),
