@@ -70,7 +70,7 @@ class LoginScreen extends StatelessWidget {
                             width: 20,
                           ),
                           const Text(
-                            "FCIS LOL",
+                            "Zonda",
                             style: TextStyle(
                                 fontSize: 20,
                                 letterSpacing: 2,

@@ -12,7 +12,7 @@ class ChoosingYear extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.blueGrey,
       appBar: AppBar(
-        title: const Text("FCIS LOL"),
+        title: const Text("Zonda"),
         centerTitle: true,
         backgroundColor: Colors.blueGrey,
       ),
