@@ -70,7 +70,7 @@ class LoginScreen extends StatelessWidget {
                             width: 20,
                           ),
                           const Text(
-                            "FCIS LOL",
+                            "temp",
                             style: TextStyle(
                                 fontSize: 20,
                                 letterSpacing: 2,
@@ -89,7 +89,7 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                       const Text(
-                          "Continue Your Success Journey with FCISLOL !"),
+                          "Continue Your Success Journey with temp !"),
                       const SizedBox(
                         height: 30,
                       ),
