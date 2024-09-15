@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/auth/bloc/login_cubit.dart';
 import 'package:lol/auth/bloc/login_cubit_states.dart';
 import 'package:lol/auth/screens/register.dart';
+import 'package:lol/components/snack.dart';
 
 class SelectImage extends StatelessWidget {
 // final name
@@ -15,7 +16,16 @@ class SelectImage extends StatelessWidget {
     return BlocProvider(
       create: (context) => LoginCubit(),
       child: BlocConsumer<LoginCubit, LoginStates>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is RegisterSuccess) {
+            // token=state.token;
+            // Cache.writeData(key: "token", value: state.token);
+            snack(
+                context: context,
+                enumColor: Messages.success,
+                titleWidget: const Text("Successfully signed up !"));
+          }
+        },
         builder: (context, state) {
           var loginCubit = LoginCubit.get(context);
 
