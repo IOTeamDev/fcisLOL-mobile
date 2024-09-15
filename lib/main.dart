@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lol/admin/screens/admin_panal.dart';
 import 'package:lol/utilities/shared_prefrence.dart';
 
 import 'auth/screens/login.dart';
@@ -48,8 +49,8 @@ class App extends StatelessWidget {
   const App({super.key, required this.startPage});
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: ChoosingYear(),
+    return MaterialApp(
+      home: AdminPanal(),
       debugShowCheckedModeBanner: false,
     );
   }

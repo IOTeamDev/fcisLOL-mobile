@@ -9,15 +9,7 @@ import 'package:lol/utilities/dio.dart';
 //uid null?
 class AdminCubit extends Cubit<AdminCubitStates> {
   AdminCubit() : super(InitialAdminState());
+
   static AdminCubit get(context) => BlocProvider.of(context);
 
-  addAnouncment({
-required 
-
-
-
-
-  }) {
-    DioHelp.postData(path: "anounc", data: {});
-  }
 }

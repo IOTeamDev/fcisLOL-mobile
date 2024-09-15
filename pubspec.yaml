@@ -38,30 +38,5 @@ flutter:
   uses-material-design: true
 
   assets:
-    - images/Checklist.png
-    - images/google.png
-    - images/Microsoft_Logo_512px.png
-    - images/google1.png
-    - images/Subway-cuate.png
-    - images/Grades-pana.png
-    - images/clockworkorange_tall.jpg
-    - images/clock.jpeg
-    - images/120604_r22256_g2048.webp
-    - images/shutterstock_5885876aa.webp
-    - images/images.jfif
-    - images/english.png
-    - images/psychology.png
-    - images/physics.png
-    - images/electronics.png
-    - images/15.jpg
-    - images/16.jpg
-    - images/17.jpg
-    - images/18.jpg
-    - images/19.jpg
-    - images/17886.jpg
-    - images/20.jpg
-    - images/2147813594.jpg
-    - images/default-avatar-profile-icon-social-600nw-1677509740.png
-    - images/343.jpg
-    - images/2149084942.jpg
-    - images/young-handsome-man-with-beard-wearing-casual-sweater-glasses-blue-background-happy-face_998240-1237.jpg
+    - images/
+    - images/admin/
