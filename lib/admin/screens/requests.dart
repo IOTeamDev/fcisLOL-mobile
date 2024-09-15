@@ -180,7 +180,7 @@ class Requests extends StatelessWidget {
     int min = 1;
     int max = 9;
     int randomNum = min + random.nextInt(max - min + 1);
-    
+
     return Container(
       decoration: BoxDecoration(color: HexColor('${colorText[randomNum].toString()}').withOpacity(0.45), borderRadius: BorderRadius.circular(20)),
       margin: const EdgeInsetsDirectional.symmetric(horizontal: 10),
