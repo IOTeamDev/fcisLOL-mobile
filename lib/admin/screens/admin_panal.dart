@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:lol/admin/screens/add_anouncment.dart';
 import 'package:lol/admin/screens/requests.dart';
@@ -83,16 +85,32 @@ class AdminPanal extends StatelessWidget {
               ),
             ),
           ),
+          BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+            child: Container(
+              color: Colors.black.withOpacity(0), // Transparent layer for blur
+            ),
+          ),
           Container
           (
+            margin: EdgeInsetsDirectional.only(top: 50),
             width: double.infinity,
             child: Column
             (
               children:
               [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Row(
+                    children:
+                    [
+                      MaterialButton(onPressed: (){Navigator.pop(context);}, child: Icon(Icons.arrow_back, color: Colors.white, size: 30,), padding: EdgeInsets.zero,),
+                    ],
+                  ),
+                ),
                 //Text With Drawer Button
                 Padding(
-                  padding: const EdgeInsetsDirectional.symmetric( vertical: 70),
+                  padding: const EdgeInsetsDirectional.only( bottom: 50),
                   child: Row(
                     children: [
                       Padding(
@@ -106,9 +124,9 @@ class AdminPanal extends StatelessWidget {
                         {
                           scaffoldKey.currentState!.openDrawer();
                         },
-                        child: Icon(Icons.menu, color: Colors.white,),
+                        child: Icon(Icons.menu, color: Colors.white, size: 40,),
                         style: ElevatedButton.styleFrom(
-                          padding: EdgeInsetsDirectional.symmetric(horizontal: 20),
+                          padding: EdgeInsetsDirectional.symmetric(horizontal: 5, vertical: 5),
                           backgroundColor: Colors.pinkAccent,
                           shape:RoundedRectangleBorder
                           (
@@ -173,7 +191,7 @@ class AdminPanal extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           ElevatedButton(
-                            onPressed: () {navigate(context, const Requests());},
+                            onPressed: () {navigate(context, Requests());},
                             style: ElevatedButton.styleFrom(
                               padding: EdgeInsets.zero, // Remove default padding
                               shape: RoundedRectangleBorder(
@@ -209,7 +227,7 @@ class AdminPanal extends StatelessWidget {
                 Container(
                   width: double.infinity,
                     height: 300,
-                    child: Image(image: AssetImage('images/admin/img.png'), fit: BoxFit.cover, )),
+                    child: Image(image: AssetImage('images/admin/background_admin.png'), fit: BoxFit.fitWidth, )),
               ],
             ),
           ),
