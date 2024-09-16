@@ -59,9 +59,11 @@ class _AddAnouncmentState extends State<AddAnouncment> {
                   GestureDetector(
                     onTap: ()
                     {
+                      setState(() {
                         isExpanded = true; // Toggle the expansion
-                        _height = 370 ;
-                      Future.delayed(Duration(milliseconds: 300), (){setState(() {
+                        _height = 400 ;
+                      });
+                      Future.delayed(Duration(milliseconds: 200), (){setState(() {
                         showContent = true;
                       });});
                     },
@@ -76,124 +78,129 @@ class _AddAnouncmentState extends State<AddAnouncment> {
                         padding: const EdgeInsetsDirectional.symmetric(horizontal: 10.0, vertical: 10),
                         child: Form(
                           key: formKey,
-                          child: Column(
-                            children:
-                           [
-                             //Title Text Input
-                             TextFormField
-                             (
-                               controller: titleController,
-                               validator: (value){
-                                 if( value == null || value.isEmpty )
-                                 {
-                                   return 'This field must not be Empty';
-                                 }
-                                 return null;
-                               },
-                               decoration: InputDecoration
+                          child: AnimatedOpacity(
+                            opacity: isExpanded? 1.0: 0,
+                            duration: Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                            child: Column(
+                              children:
+                             [
+                               //Title Text Input
+                               TextFormField
                                (
-                                 hintText: 'Title',
-                                 hintStyle: TextStyle(fontSize: 20, color: Colors.grey[400]),
-                                 border: InputBorder.none,
-                               ),
-                               style: TextStyle(color: Colors.white),
-                             ),
-                             divider(),
-                             SizedBox(height: 10,),
-                             //Link Input text Field
-                             TextFormField
-                             (
-                               controller: descriptionController,
-                               minLines: 5,
-                               maxLines: 5,
-                               decoration: InputDecoration
-                               (
-                                 hintText: 'Description',
-                                 hintStyle: TextStyle(fontSize: 20, color: Colors.grey[400]),
-                                 border: InputBorder.none,
-                               ),
-                               style: TextStyle(color: Colors.white),
-                               validator: (value){
-                                 if( value == null || value.isEmpty )
-                                 {
-                                   return 'This field must not be Empty';
-                                 }
-                                 return null;
-                               },
-                             ),
-                             const SizedBox(height: 10,),
-                             divider(),
-                             const SizedBox(height: 10,),
-                             //Link Input text Field
-                             TextFormField
-                             (
-                               controller: dateController,
-                               keyboardType: TextInputType.datetime,
-                               onTap: () => showDatePicker(
-                                 context: context,
-                                 initialDate: DateTime.now(),
-                                 firstDate: DateTime.now(),
-                                 lastDate: DateTime.parse('2030-12-31'),
-                               ).then((value)
-                               {
-                                 if (value != null)
-                                 {
-                                   //print(DateFormat.YEAR_MONTH_DAY);
-                                   dateController.text = DateFormat.yMMMd().format(value);
-                                 }
-                               }
-                               ),
-                               validator: (value)
-                               {
-                                 if (value == null || value.isEmpty)
-                                 {
-                                   return 'Date must not be EMPTY!!';
-                                 }
-                                 return null;
-                               },
-                               decoration: InputDecoration
-                               (
-                                 suffixIcon: Icon(Icons.date_range, color: Colors.grey,),
-                                 hintText: 'Due Date',
-                                 hintStyle: TextStyle(fontSize: 20, color: Colors.grey[400]),
-                                 border: InputBorder.none,
-                               ),
-                               style: TextStyle(color: Colors.white),
-                             ),
-                             divider(),
-                             Spacer(),
-                             //Cancel and Submit buttons
-                             Padding(
-                               padding: const EdgeInsetsDirectional.symmetric( horizontal: 10.0),
-                               child: Row(
-                                 children: [
-                                   ElevatedButton(onPressed: ()
+                                 controller: titleController,
+                                 validator: (value){
+                                   if( value == null || value.isEmpty )
                                    {
-                                     setState(()
-                                     {
-                                       titleController.text = '';
-                                       dateController.text = '';
-                                       descriptionController.text = '';
-                                        isExpanded = false; // Toggle the expansion
-                                        _height = 80;
-                                        showContent = false;
-                                      });
-                                   },
-                                   child: Text('Canel'), style: ElevatedButton.styleFrom(padding: EdgeInsetsDirectional.symmetric(horizontal: 35),  backgroundColor: HexColor('D9D9D9').withOpacity(0.2), foregroundColor: Colors.white, textStyle: TextStyle(fontSize: 15),),),
-                                   Spacer(),
-                                   ElevatedButton(onPressed: (){
-                                     if(formKey.currentState!.validate())
-                                     {
-                                         print('nigga');
-                                     }
-                                   }, child: Text('Submit'), style: ElevatedButton.styleFrom(padding: EdgeInsetsDirectional.symmetric(horizontal: 40), backgroundColor: HexColor('B8A8F9'), foregroundColor: Colors.white, textStyle: TextStyle(fontSize: 15),)),
-                                 ],
+                                     return 'This field must not be Empty';
+                                   }
+                                   return null;
+                                 },
+                                 decoration: InputDecoration
+                                 (
+                                   hintText: 'Title',
+                                   hintStyle: TextStyle(fontSize: 20, color: Colors.grey[400]),
+                                   border: InputBorder.none,
+                                 ),
+                                 style: TextStyle(color: Colors.white),
                                ),
-                             )
-                           ],
+                               divider(),
+                               SizedBox(height: 10,),
+                               //Link Input text Field
+                               TextFormField
+                               (
+                                 controller: descriptionController,
+                                 minLines: 5,
+                                 maxLines: 5,
+                                 decoration: InputDecoration
+                                 (
+                                   hintText: 'Description',
+                                   hintStyle: TextStyle(fontSize: 20, color: Colors.grey[400]),
+                                   border: InputBorder.none,
+                                 ),
+                                 style: TextStyle(color: Colors.white),
+                                 validator: (value){
+                                   if( value == null || value.isEmpty )
+                                   {
+                                     return 'This field must not be Empty';
+                                   }
+                                   return null;
+                                 },
+                               ),
+                               const SizedBox(height: 10,),
+                               divider(),
+                               const SizedBox(height: 10,),
+                               //Link Input text Field
+                               TextFormField
+                               (
+                                 controller: dateController,
+                                 keyboardType: TextInputType.datetime,
+                                 onTap: () => showDatePicker(
+                                   context: context,
+                                   initialDate: DateTime.now(),
+                                   firstDate: DateTime.now(),
+                                   lastDate: DateTime.parse('2027-12-31'),
+                                 ).then((value)
+                                 {
+                                   if (value != null)
+                                   {
+                                     //print(DateFormat.YEAR_MONTH_DAY);
+                                     dateController.text = DateFormat.yMMMd().format(value);
+                                   }
+                                 }
+                                 ),
+                                 validator: (value)
+                                 {
+                                   if (value == null || value.isEmpty)
+                                   {
+                                     return 'Date must not be EMPTY!!';
+                                   }
+                                   return null;
+                                 },
+                                 decoration: InputDecoration
+                                 (
+                                   suffixIcon: Icon(Icons.date_range, color: Colors.grey,),
+                                   hintText: 'Due Date',
+                                   hintStyle: TextStyle(fontSize: 20, color: Colors.grey[400]),
+                                   border: InputBorder.none,
+                                 ),
+                                 style: TextStyle(color: Colors.white),
+                               ),
+                               divider(),
+                               Spacer(),
+                               //Cancel and Submit buttons
+                               Padding(
+                                 padding: const EdgeInsetsDirectional.symmetric( horizontal: 10.0),
+                                 child: Row(
+                                   children: [
+                                     ElevatedButton(onPressed: ()
+                                     {
+                                       setState(()
+                                       {
+                                         titleController.text = '';
+                                         dateController.text = '';
+                                         descriptionController.text = '';
+                                          isExpanded = false; // Toggle the expansion
+                                          _height = 80;
+                                          showContent = false;
+                                        });
+                                     },
+                                     child: Text('Canel'), style: ElevatedButton.styleFrom(padding: EdgeInsetsDirectional.symmetric(horizontal: 35),  backgroundColor: HexColor('D9D9D9').withOpacity(0.2), foregroundColor: Colors.white, textStyle: TextStyle(fontSize: 15),),),
+                                     Spacer(),
+                                     ElevatedButton(onPressed: (){
+                                       if(formKey.currentState!.validate())
+                                       {
+                                           print('nigga');
+                                       }
+                                     }, child: Text('Submit'), style: ElevatedButton.styleFrom(padding: EdgeInsetsDirectional.symmetric(horizontal: 40), backgroundColor: HexColor('B8A8F9'), foregroundColor: Colors.white, textStyle: TextStyle(fontSize: 15),)),
+                                   ],
+                                 ),
+                               )
+                             ],
+                            ),
                           ),
                         ),
-                      ) : Padding(
+                      ) : !isExpanded? Padding(
                         padding: EdgeInsetsDirectional.symmetric(vertical: 10, horizontal: 15),
                         child: Row(
                           children: [
@@ -202,7 +209,7 @@ class _AddAnouncmentState extends State<AddAnouncment> {
                             Icon(Icons.add, color: Colors.white, size: 40,),
                           ],
                         ),
-                      ),
+                      ):null,
                     ),
                   ),
                   ListView.separated(
