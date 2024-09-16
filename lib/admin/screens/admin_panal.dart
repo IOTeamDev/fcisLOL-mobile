@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:lol/admin/screens/add_anouncment.dart';
+import 'package:lol/admin/screens/Announcements/add_announcement.dart';
 import 'package:lol/admin/screens/requests.dart';
 import 'package:lol/constants/constants.dart';
 import 'package:lol/main.dart';
@@ -111,7 +111,7 @@ class AdminPanal extends StatelessWidget {
                   ),
                 ),
                 //Text With Drawer Button
-                adminTopTitleWithDrawerButton(scaffoldKey, 'Admin', 40),
+                adminTopTitleWithDrawerButton(scaffoldKey: scaffoldKey, title: 'Admin', hasDrawer: true),
                 //Buttons
                 Container
                 (

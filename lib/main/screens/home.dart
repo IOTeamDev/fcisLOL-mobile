@@ -7,8 +7,6 @@ import 'package:lol/constants/constants.dart';
 import 'package:lol/main/screens/profile.dart';
 import 'package:lol/main.dart';
 
-import '../../auth/screens/login.dart';
-
 class Home extends StatelessWidget {
   const Home({super.key});
 
@@ -20,7 +18,7 @@ class Home extends StatelessWidget {
       // backgroundColor: Colors.grey[400],
       drawer: Drawer(
         //We Will Put In It Things
-        width: width / 2.5,
+        width: width / 1.5,
         backgroundColor: const Color(0xff27363D),
 
         child: ListView(

@@ -1,19 +1,16 @@
   import 'package:flutter_bloc/flutter_bloc.dart';
   import 'package:lol/admin/screens/admin_panal.dart';
   import 'package:lol/utilities/shared_prefrence.dart';
-
   import 'auth/screens/login.dart';
   import 'auth/screens/onboarding.dart';
   import 'auth/screens/register.dart';
   import 'auth/screens/select_image.dart';
   import 'constants/constants.dart';
   import 'main/screens/choosing_year.dart';
-  import 'main/screens/choosing_year.dart'; 
   import 'main/screens/profile.dart';
   import 'utilities/dio.dart';
   import 'utilities/observer.dart';
   import 'package:flutter/material.dart';
-  import 'constants/constants.dart';
   import 'main/screens/home.dart';
 
   late int selectedLevel;

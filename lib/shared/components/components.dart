@@ -1,10 +1,11 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 import '../../constants/constants.dart';
 
-Widget adminTopTitleWithDrawerButton(scaffoldKey, String title, double size)
+Widget adminTopTitleWithDrawerButton({scaffoldKey, required String title, double size = 40, required bool hasDrawer})
 {
   return  Padding(
     padding: const EdgeInsetsDirectional.only(bottom: 15.0),
@@ -12,9 +13,10 @@ Widget adminTopTitleWithDrawerButton(scaffoldKey, String title, double size)
       children: [
         Padding(
           padding: EdgeInsetsDirectional.symmetric(horizontal: 20.0),
-          child: Text('$title', style: TextStyle(color: Colors.white, fontSize: size),),
+          child: Text('$title', style: TextStyle(color: Colors.white, fontSize: size),textAlign: TextAlign.start,),
         ),
         const Spacer(),
+        if(hasDrawer)
         ElevatedButton(
           onPressed: ()
           {
@@ -35,7 +37,7 @@ Widget adminTopTitleWithDrawerButton(scaffoldKey, String title, double size)
               ),
             ),
           ),
-        )
+        ),
       ],
     ),
   );
@@ -80,14 +82,15 @@ Widget backgroundEffects()
         top: -30,
         left: -100,
         child: Container(
-          width: 300,
-          height: 300,
+          width: 400,
+          height: 400,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             gradient: RadialGradient(
               colors: [
-                Colors.deepPurpleAccent.withOpacity(0.7),
-                Colors.black.withOpacity(0.2),
+                HexColor('9F53B9').withOpacity(0.45),
+                HexColor('AB29E8').withOpacity(0.15),
+                Colors.black.withOpacity(0.05)
               ],
               radius: 0.85,
               center: Alignment(-0.3, -0.3),

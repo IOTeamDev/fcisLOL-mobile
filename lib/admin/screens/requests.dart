@@ -53,7 +53,7 @@ class Requests extends StatelessWidget {
                   ),
                 ),
                 //Text With Drawer Button
-               adminTopTitleWithDrawerButton(scaffoldKey, 'Requests', 40),
+               adminTopTitleWithDrawerButton(scaffoldKey: scaffoldKey, title: 'Requests', size: 40, hasDrawer: true),
                 Expanded(
                   child: ListView.separated
                   (
