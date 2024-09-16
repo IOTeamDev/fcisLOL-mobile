@@ -4,6 +4,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:lol/admin/screens/announcements/announcement_detail.dart';
 import 'package:lol/constants/constants.dart';
+import 'package:lol/main/screens/webview_screen.dart';
 import 'package:lol/utilities/navigation.dart';
 
 import '../../../shared/components/components.dart';
@@ -228,10 +229,11 @@ class _AddAnouncmentState extends State<AddAnouncment> {
     );
   }
 
+
   Widget announcementBuilder(context)
   {
     return GestureDetector(
-      onTap: () => navigate(context, AnnouncementDetail('Nigga', 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjUsImlhdCI6MTcyNjQ5MjkxNSwiZXhwIjoxNzU3NTk2OTE1fQ.BeJ5fUKn50WDF8N4BU3ifWFFsLJG3e4FeSpkBAh3PNc\n \n Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjUsImlhdCI6MTcyNjQ5MjkxNSwiZXhwIjoxNzU3NTk2OTE1fQ.BeJ5fUKn50WDF8N4BU3ifWFFsLJG3e4FeSpkBAh3PNc', '1/2/3300',)),
+      onTap: () => navigate(context, WebviewScreen('https://drive.google.com/drive/folders/1-HzPYP39KPRuZ1XyKLR3iYkfcEpY2Rh8?usp=drive_link')),
       child: Container
       (
         margin: EdgeInsetsDirectional.symmetric(horizontal: 10),
