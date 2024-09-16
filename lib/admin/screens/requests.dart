@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:lol/shared/components/components.dart';
 import '../../constants/constants.dart';
 
 class Requests extends StatelessWidget {
@@ -20,93 +21,23 @@ class Requests extends StatelessWidget {
     '7d29fb',
     'ff5938',
     '00664e',
-
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold
     (
-      drawer: Drawer(
-        width: screenWidth(context) / 1.5,
-        backgroundColor: Colors.cyan,
-
-        child: ListView(
-
-          padding: EdgeInsets.zero,
-          children:
-          [
-            SizedBox(height: 70,),
-            ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Home'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Profile'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
-      ),
+      key: scaffoldKey,
+      drawer: drawerBuilder(context),
       backgroundColor: Colors.black,
       body: Stack
       (
         children:
         [
-          Positioned(
-            top: -30,
-            left: -100,
-            child: Container(
-              width: 300,
-              height: 300,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: RadialGradient(
-                  colors: [
-                    Colors.deepPurpleAccent.withOpacity(0.7),
-                    Colors.black.withOpacity(0.2),
-                  ],
-                  radius: 0.85,
-                  center: Alignment(-0.3, -0.3),
-                ),
-              ),
-            ),
-          ),
-          //Bottom Right circle
-          Positioned(
-            bottom: -150,
-            right: -100,
-            child: Container(
-              width: 400,
-              height: 400,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: RadialGradient(
-                  colors: [
-                    Colors.purpleAccent.withOpacity(0.6),
-                    Colors.black.withOpacity(0.2),
-                  ],
-                  radius: 0.75,
-                  center: const Alignment(0.2, 0.2),
-                ),
-              ),
-            ),
-          ),
-          BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-            child: Container(
-              color: Colors.black.withOpacity(0), // Transparent layer for blur
-            ),
-          ),
+         backgroundEffects(),
           Container
           (
-            margin: EdgeInsetsDirectional.only(top: 50),
+            margin: const EdgeInsetsDirectional.only(top: 50),
             width: double.infinity,
             child: Column
             (
@@ -122,40 +53,7 @@ class Requests extends StatelessWidget {
                   ),
                 ),
                 //Text With Drawer Button
-                Padding(
-                  padding: const EdgeInsetsDirectional.only(bottom: 15.0),
-                  child: Row(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsetsDirectional.symmetric(horizontal: 20.0),
-                        child: Text('Requests', style: TextStyle(color: Colors.white, fontSize: 40),),
-                      ),
-                      const Spacer(),
-                      ElevatedButton
-                        (
-                        onPressed: ()
-                        {
-                          scaffoldKey.currentState!.openDrawer();
-                        },
-                        child: Icon(Icons.menu, color: Colors.white, size: 40,),
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsetsDirectional.symmetric(horizontal: 5, vertical: 5),
-                          backgroundColor: Colors.pinkAccent,
-                          shape:RoundedRectangleBorder
-                            (
-                            borderRadius: BorderRadius.only
-                              (
-                              topLeft: Radius.circular(50), // Create semi-circle effect
-                              topRight: Radius.circular(0), // Create semi-circle effect
-                              bottomLeft: Radius.circular(50),
-                              bottomRight: Radius.circular(0),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+               adminTopTitleWithDrawerButton(scaffoldKey, 'Requests', 40),
                 Expanded(
                   child: ListView.separated
                   (
@@ -177,7 +75,7 @@ class Requests extends StatelessWidget {
   {
     var random = Random();
 
-    int min = 1;
+    int min = 0;
     int max = 9;
     int randomNum = min + random.nextInt(max - min + 1);
 

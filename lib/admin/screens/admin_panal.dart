@@ -5,6 +5,7 @@ import 'package:lol/admin/screens/add_anouncment.dart';
 import 'package:lol/admin/screens/requests.dart';
 import 'package:lol/constants/constants.dart';
 import 'package:lol/main.dart';
+import 'package:lol/shared/components/components.dart';
 import 'package:lol/utilities/navigation.dart';
 
 class AdminPanal extends StatelessWidget {
@@ -99,6 +100,7 @@ class AdminPanal extends StatelessWidget {
             (
               children:
               [
+                //Back Button
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Row(
@@ -109,40 +111,7 @@ class AdminPanal extends StatelessWidget {
                   ),
                 ),
                 //Text With Drawer Button
-                Padding(
-                  padding: const EdgeInsetsDirectional.only( bottom: 50),
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsetsDirectional.symmetric(horizontal: 30.0),
-                        child: Text('Admin', style: TextStyle(color: Colors.white, fontSize: 40),),
-                      ),
-                      Spacer(),
-                      ElevatedButton
-                      (
-                        onPressed: ()
-                        {
-                          scaffoldKey.currentState!.openDrawer();
-                        },
-                        child: Icon(Icons.menu, color: Colors.white, size: 40,),
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsetsDirectional.symmetric(horizontal: 5, vertical: 5),
-                          backgroundColor: Colors.pinkAccent,
-                          shape:RoundedRectangleBorder
-                          (
-                            borderRadius: BorderRadius.only
-                            (
-                              topLeft: Radius.circular(50), // Create semi-circle effect
-                              topRight: Radius.circular(0), // Create semi-circle effect
-                              bottomLeft: Radius.circular(50),
-                              bottomRight: Radius.circular(0),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                adminTopTitleWithDrawerButton(scaffoldKey, 'Admin', 40),
                 //Buttons
                 Container
                 (
@@ -157,7 +126,7 @@ class AdminPanal extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           ElevatedButton(
-                            onPressed: () {navigate(context, const AddAnouncment());},
+                            onPressed: () {navigate(context, AddAnouncment());},
                             style: ElevatedButton.styleFrom(
                               padding: EdgeInsets.zero, // Remove default padding
                               shape: RoundedRectangleBorder(
