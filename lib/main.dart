@@ -48,6 +48,8 @@ import 'package:lol/admin/bloc/admin_cubit_states.dart';
     const App({super.key, required this.startPage});
     @override
     Widget build(BuildContext context) {
+
+
       return MultiBlocProvider(
         providers: [
           BlocProvider(create: (BuildContext context) => AdminCubit()..getAnnouncements())

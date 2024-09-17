@@ -25,7 +25,7 @@ class DioHelp {
     //async and await
 
     dio!.options.headers = {'lang': lang, 'Authorization': token??"",'Content-Type': "application/json"};
-    return await dio!.get(path, queryParameters:query??null );
+    return await dio!.get(path, queryParameters:query );
   }
   static Future<Response> putData({
     query,
