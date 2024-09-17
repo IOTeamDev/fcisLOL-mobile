@@ -1,4 +1,6 @@
   import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lol/admin/bloc/admin_cubit.dart';
+import 'package:lol/admin/bloc/admin_cubit_states.dart';
   import 'package:lol/admin/screens/admin_panal.dart';
   import 'package:lol/utilities/shared_prefrence.dart';
   import 'auth/screens/login.dart';
@@ -46,9 +48,18 @@
     const App({super.key, required this.startPage});
     @override
     Widget build(BuildContext context) {
-      return MaterialApp(
-        home: AdminPanal(),
-        debugShowCheckedModeBanner: false,
+      return MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (BuildContext context) => AdminCubit()..getAnnouncements())
+        ],
+        child: BlocConsumer<AdminCubit, AdminCubitStates>(
+          builder:(context, state) => MaterialApp(
+            home: AdminPanal(),
+            debugShowCheckedModeBanner: false,
+          ),
+          listener: (context, state){},
+        ),
       );
+      
     }
   }

@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 import '../../constants/constants.dart';
 
 Widget adminTopTitleWithDrawerButton({scaffoldKey, required String title, double size = 40, required bool hasDrawer})
@@ -131,4 +131,43 @@ Widget backgroundEffects()
 Widget divider()
 {
   return  Container(height: 2, width: double.infinity, color: Colors.grey,);
+}
+
+void showToastMessage({
+  @required String? message,
+  Color textColor = Colors.white,
+  @required ToastStates? states,
+  double fontSize = 16,
+  gravity = ToastGravity.BOTTOM,
+  int lengthForIOSAndWeb = 5,
+  toastLength = Toast.LENGTH_LONG,
+}) =>   Fluttertoast.showToast
+  (
+  msg: message!,
+  toastLength: toastLength,
+  gravity: gravity,
+  timeInSecForIosWeb: lengthForIOSAndWeb,
+  backgroundColor: chooseToastColor(states!),
+  textColor: textColor,
+  fontSize: fontSize,
+);
+
+enum ToastStates{SUCCESS, ERROR, WARNING}
+
+Color chooseToastColor(ToastStates states)
+{
+  Color? color;
+  switch(states)
+  {
+    case ToastStates.SUCCESS:
+      color = Colors.green[600];
+      break;
+    case ToastStates.WARNING:
+      color = Colors.amber[600];
+      break;
+    case ToastStates.ERROR:
+      color = Colors.red[600];
+      break;
+  }
+  return color!;
 }

@@ -24,17 +24,17 @@ class AdminPanal extends StatelessWidget {
           padding: EdgeInsets.zero,
           children:
           [
-            SizedBox(height: 70,),
+            const SizedBox(height: 70,),
             ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Home'),
+              leading: const Icon(Icons.home),
+              title: const Text('Home'),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Profile'),
+              leading: const Icon(Icons.settings),
+              title: const Text('Profile'),
               onTap: () {
                 Navigator.pop(context);
               },
@@ -61,7 +61,7 @@ class AdminPanal extends StatelessWidget {
                     Colors.black.withOpacity(0.2),
                   ],
                   radius: 0.85,
-                  center: Alignment(-0.3, -0.3),
+                  center: const Alignment(-0.3, -0.3),
                 ),
               ),
             ),
@@ -81,7 +81,7 @@ class AdminPanal extends StatelessWidget {
                     Colors.black.withOpacity(0.2),
                   ],
                   radius: 0.75,
-                  center: Alignment(0.2, 0.2),
+                  center: const Alignment(0.2, 0.2),
                 ),
               ),
             ),
@@ -94,7 +94,7 @@ class AdminPanal extends StatelessWidget {
           ),
           Container
           (
-            margin: EdgeInsetsDirectional.only(top: 50),
+            margin: const EdgeInsetsDirectional.only(top: 50),
             width: double.infinity,
             child: Column
             (
@@ -106,7 +106,7 @@ class AdminPanal extends StatelessWidget {
                   child: Row(
                     children:
                     [
-                      MaterialButton(onPressed: (){Navigator.pop(context);}, child: Icon(Icons.arrow_back, color: Colors.white, size: 30,), padding: EdgeInsets.zero,),
+                      MaterialButton(onPressed: (){Navigator.pop(context);}, child: const Icon(Icons.arrow_back, color: Colors.white, size: 30,), padding: EdgeInsets.zero,),
                     ],
                   ),
                 ),
@@ -116,7 +116,7 @@ class AdminPanal extends StatelessWidget {
                 Container
                 (
                   width: double.infinity,
-                  margin: EdgeInsetsDirectional.symmetric(horizontal: 30),
+                  margin: const EdgeInsetsDirectional.symmetric(horizontal: 30),
                   height: 260,
                   child: Column
                   (
@@ -155,7 +155,7 @@ class AdminPanal extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -192,11 +192,11 @@ class AdminPanal extends StatelessWidget {
                     ],
                   ),
                 ),
-                Spacer(),
-                Container(
+                const Spacer(),
+                 Container(
                   width: double.infinity,
                     height: 300,
-                    child: Image(image: AssetImage('images/admin/background_admin.png'), fit: BoxFit.fitWidth, )),
+                    child: const Image(image: AssetImage('images/admin/background_admin.png'), fit: BoxFit.fitWidth, )),
               ],
             ),
           ),

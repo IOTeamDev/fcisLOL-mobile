@@ -7,7 +7,8 @@ class AnnouncementDetail extends StatelessWidget {
 
   final String title;
   final String description;
-  final String date;
+  final dynamic date;
+
 
   AnnouncementDetail(this.title,  this.description,  this.date);
 
@@ -43,7 +44,7 @@ class AnnouncementDetail extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       //pfp and name
-                      Row(
+                      const Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           CircleAvatar(backgroundImage: NetworkImage('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStCJpmc7wNF8Ti2Tuh_hcIRZUGOc23KBTx2A&s'), radius: 20,),
@@ -51,20 +52,20 @@ class AnnouncementDetail extends StatelessWidget {
                           Text('Name Very Long', style: TextStyle(fontSize: 14, color: Colors.white),),
                         ],
                       ),
-                      SizedBox(height: 20,),
-                      Text('$title',style: TextStyle(color: Colors.white, fontSize: 21, fontWeight: FontWeight.bold),),
-                      SizedBox(height: 20,),
+                      const SizedBox(height: 20,),
+                      Text('$title',style: const TextStyle(color: Colors.white, fontSize: 21, fontWeight: FontWeight.bold),),
+                      const SizedBox(height: 20,),
                       Container(
-                        padding: EdgeInsets.all(15),
+                        padding: const EdgeInsets.all(15),
                         width: double.infinity,
                         decoration: BoxDecoration(color: HexColor('D9D9D9').withOpacity(0.2), borderRadius: BorderRadius.circular(20)),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('$description', style: TextStyle(color: Colors.white, ),),
+                            Text('$description', style: const TextStyle(color: Colors.white, ),),
                             Padding(
                               padding: const EdgeInsetsDirectional.symmetric(vertical: 25.0),
-                              child: Text('DeadLine: $date', style: TextStyle(color: Colors.white, ),),
+                              child: Text('DeadLine: $date', style: const TextStyle(color: Colors.white, ),),
                             ),
                             if(true)
                               Padding(
@@ -72,9 +73,9 @@ class AnnouncementDetail extends StatelessWidget {
                                 child: Row
                                   (
                                   children: [
-                                    ElevatedButton(onPressed: (){}, child: Text('Remove', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),), style: ElevatedButton.styleFrom(backgroundColor: Colors.red.withOpacity(0.76), foregroundColor: Colors.white, padding: EdgeInsetsDirectional.symmetric(horizontal: 30)),),
-                                    Spacer(),
-                                    ElevatedButton(onPressed: (){}, child: Text('Edit', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),), style: ElevatedButton.styleFrom(backgroundColor: Colors.white.withOpacity(0.35), foregroundColor: Colors.white, padding: EdgeInsetsDirectional.symmetric(horizontal: 40)),),
+                                    ElevatedButton(onPressed: (){}, child: const Text('Remove', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),), style: ElevatedButton.styleFrom(backgroundColor: Colors.red.withOpacity(0.76), foregroundColor: Colors.white, padding: EdgeInsetsDirectional.symmetric(horizontal: 30)),),
+                                    const Spacer(),
+                                    ElevatedButton(onPressed: (){}, child: const  Text('Edit', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),), style: ElevatedButton.styleFrom(backgroundColor: Colors.white.withOpacity(0.35), foregroundColor: Colors.white, padding: EdgeInsetsDirectional.symmetric(horizontal: 40)),),
                                   ],
                                 ),
                               ),

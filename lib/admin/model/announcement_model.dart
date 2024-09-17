@@ -2,7 +2,7 @@ class AnnouncementModel {
   late int id;
   late String title;
   late String content;
-  late String thumbnail;
+  late dynamic dueDate;
   late String type;
   late String semester;
 
@@ -11,7 +11,7 @@ class AnnouncementModel {
     id = json['id'];
     title = json['title'];
     content = json['content'];
-    thumbnail = json['thumbnail'];
+    dueDate = json['due_date'];
     type = json['type'];
     semester = json['semester'];
   }
