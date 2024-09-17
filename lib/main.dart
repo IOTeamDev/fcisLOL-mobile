@@ -50,7 +50,7 @@
     @override
     Widget build(BuildContext context) {
       return MaterialApp(
-        home: AdminPanal(),
+        home: Home(),
         debugShowCheckedModeBanner: false,
       );
     }
