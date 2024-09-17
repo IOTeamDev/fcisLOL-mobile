@@ -4,9 +4,14 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/shared/components/components.dart';
-import '../../constants/constants.dart';
+import '../../../constants/constants.dart';
 
 class Requests extends StatelessWidget {
+
+  // String title;
+  // String description;
+  // String link;
+  // String type;
 
   var scaffoldKey = GlobalKey<ScaffoldState>();
   List<String> backgroundColor =

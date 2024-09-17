@@ -68,7 +68,6 @@ class DioHelp {
       'lang': lang,
       if (token != null) 'Authorization': token,
     };
-    print(path);
     return await dio!.delete(path,queryParameters: query);  // ID as query parameter
   }
 

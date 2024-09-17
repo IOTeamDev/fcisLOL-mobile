@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:lol/admin/screens/Announcements/add_announcement.dart';
-import 'package:lol/admin/screens/requests.dart';
+import 'package:lol/admin/screens/requests/requests.dart';
 import 'package:lol/constants/constants.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:lol/utilities/navigation.dart';

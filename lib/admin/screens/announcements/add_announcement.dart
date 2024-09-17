@@ -296,7 +296,7 @@ class _AddAnouncmentState extends State<AddAnouncment> {
                           (
                             shrinkWrap: true,
                             physics: const BouncingScrollPhysics(),
-                            itemBuilder: (context, index) => cubit.announcements!.isNotEmpty? announcementBuilder(context, cubit.announcements![index].title, index):Center(child: Text('You have no annoucncements yet!!!'),),
+                            itemBuilder: (context, index) => announcementBuilder(context, cubit.announcements![index].title, index, AdminCubit()),
                             separatorBuilder: (context, index) =>  const SizedBox(height: 10,),
                             itemCount: cubit.announcements!.length,
                           ),
@@ -315,12 +315,13 @@ class _AddAnouncmentState extends State<AddAnouncment> {
   }
 
 
-  Widget announcementBuilder(context,title, ID)
+  Widget announcementBuilder(context,title, ID, cubit)
   {
     int id = ID;
-    return GestureDetector(
+    if(cubit.announcements.isNotEmpty) {
+      return GestureDetector(
         onTap: () {
-          navigate(context, AnnouncementDetail(AdminCubit.get(context).announcements![id].title, AdminCubit.get(context).announcements![id].content, AdminCubit.get(context).announcements![id].dueDate));
+          navigate(context, AnnouncementDetail(AdminCubit.get(context).announcements![id].title, AdminCubit.get(context).announcements![id].content, AdminCubit.get(context).announcements![id].dueDate, id));
         },
         child: Container
         (
@@ -337,7 +338,7 @@ class _AddAnouncmentState extends State<AddAnouncment> {
               Spacer(),
               MaterialButton(
                 onPressed: () {
-                  // Add action for X button
+                  //edit button
                 },
                 shape: const CircleBorder(), // X icon
                 minWidth: 0, // Reduce min width to make it smaller
@@ -358,5 +359,7 @@ class _AddAnouncmentState extends State<AddAnouncment> {
           ),
         ),
       );
+    }
+    return const Text('You have no announcements yet!!!', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white),);
   }
 }
