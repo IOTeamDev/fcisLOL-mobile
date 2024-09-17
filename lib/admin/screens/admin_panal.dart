@@ -1,15 +1,15 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:lol/admin/screens/add_anouncment.dart';
+import 'package:lol/admin/screens/Announcements/add_announcement.dart';
 import 'package:lol/admin/screens/requests.dart';
 import 'package:lol/constants/constants.dart';
-import 'package:lol/main.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:lol/utilities/navigation.dart';
 
 class AdminPanal extends StatelessWidget {
   var scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,19 +20,17 @@ class AdminPanal extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            SizedBox(
-              height: 70,
-            ),
+            const SizedBox(height: 70),
             ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Home'),
+              leading: const Icon(Icons.home),
+              title: const Text('Home'),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Profile'),
+              leading: const Icon(Icons.settings),
+              title: const Text('Profile'),
               onTap: () {
                 Navigator.pop(context);
               },
@@ -41,9 +39,8 @@ class AdminPanal extends StatelessWidget {
         ),
       ),
       backgroundColor: Colors.black,
-      //appBar: AppBar(elevation: 20, shadowColor: Colors.black, backgroundColor: Colors.black, title: Text('Admin', style: TextStyle(color: Colors.white),),),
       body: Stack(children: [
-        //Top Left Circle
+        // Top Left Circle
         Positioned(
           top: -30,
           left: -100,
@@ -58,12 +55,12 @@ class AdminPanal extends StatelessWidget {
                   Colors.black.withOpacity(0.2),
                 ],
                 radius: 0.85,
-                center: Alignment(-0.3, -0.3),
+                center: const Alignment(-0.3, -0.3),
               ),
             ),
           ),
         ),
-        //Bottom Right circle
+        // Bottom Right Circle
         Positioned(
           bottom: -150,
           right: -100,
@@ -78,7 +75,7 @@ class AdminPanal extends StatelessWidget {
                   Colors.black.withOpacity(0.2),
                 ],
                 radius: 0.75,
-                center: Alignment(0.2, 0.2),
+                center: const Alignment(0.2, 0.2),
               ),
             ),
           ),
@@ -86,15 +83,15 @@ class AdminPanal extends StatelessWidget {
         BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
           child: Container(
-            color: Colors.black.withOpacity(0), // Transparent layer for blur
+            color: Colors.black.withOpacity(0),
           ),
         ),
         Container(
-          margin: EdgeInsetsDirectional.only(top: 50),
+          margin: const EdgeInsetsDirectional.only(top: 50),
           width: double.infinity,
           child: Column(
             children: [
-              //Back Button
+              // Back Button
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: Row(
@@ -103,7 +100,7 @@ class AdminPanal extends StatelessWidget {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: Icon(
+                      child: const Icon(
                         Icons.arrow_back,
                         color: Colors.white,
                         size: 30,
@@ -113,12 +110,13 @@ class AdminPanal extends StatelessWidget {
                   ],
                 ),
               ),
-              //Text With Drawer Button
-              adminTopTitleWithDrawerButton(scaffoldKey, 'Admin', 40),
-              //Buttons
+              // Text With Drawer Button
+              adminTopTitleWithDrawerButton(
+                  scaffoldKey: scaffoldKey, title: 'Admin', hasDrawer: true),
+              // Buttons
               Container(
                 width: double.infinity,
-                margin: EdgeInsetsDirectional.symmetric(horizontal: 30),
+                margin: const EdgeInsetsDirectional.symmetric(horizontal: 30),
                 height: 260,
                 child: Column(
                   children: [
@@ -134,8 +132,7 @@ class AdminPanal extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            minimumSize: const Size(
-                                250, 125), // Set width and height of the button
+                            minimumSize: const Size(250, 125),
                           ),
                           child: Ink(
                             decoration: BoxDecoration(
@@ -146,22 +143,20 @@ class AdminPanal extends StatelessWidget {
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Container(
-                              width:
-                                  250, // Ensure the width matches the button size
-                              height:
-                                  125, // Ensure the height matches the button size
-                              alignment: Alignment.center, // Center the text
+                              width: 250,
+                              height: 125,
+                              alignment: Alignment.center,
                               child: const Text(
                                 'Announcements',
-                                style: TextStyle(
-                                    fontSize: 30, color: Colors.white),
+                                style:
+                                    TextStyle(fontSize: 30, color: Colors.white),
                               ),
                             ),
                           ),
                         ),
                       ],
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -174,8 +169,7 @@ class AdminPanal extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            minimumSize: const Size(
-                                250, 125), // Set width and height of the button
+                            minimumSize: const Size(250, 125),
                           ),
                           child: Ink(
                             decoration: BoxDecoration(
@@ -186,15 +180,13 @@ class AdminPanal extends StatelessWidget {
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Container(
-                              width:
-                                  250, // Ensure the width matches the button size
-                              height:
-                                  125, // Ensure the height matches the button size
-                              alignment: Alignment.center, // Center the text
+                              width: 250,
+                              height: 125,
+                              alignment: Alignment.center,
                               child: const Text(
                                 'Requests',
-                                style: TextStyle(
-                                    fontSize: 30, color: Colors.white),
+                                style:
+                                    TextStyle(fontSize: 30, color: Colors.white),
                               ),
                             ),
                           ),
@@ -204,14 +196,15 @@ class AdminPanal extends StatelessWidget {
                   ],
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               Container(
-                  width: double.infinity,
-                  height: 300,
-                  child: Image(
-                    image: AssetImage('images/admin/background_admin.png'),
-                    fit: BoxFit.fitWidth,
-                  )),
+                width: double.infinity,
+                height: 300,
+                child: const Image(
+                  image: AssetImage('images/admin/background_admin.png'),
+                  fit: BoxFit.fitWidth,
+                ),
+              ),
             ],
           ),
         ),

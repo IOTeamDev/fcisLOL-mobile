@@ -10,8 +10,6 @@ import 'package:lol/main/screens/profile.dart';
 import 'package:lol/main.dart';
 import 'package:lol/utilities/navigation.dart';
 
-import '../../auth/screens/login.dart';
-
 class Home extends StatelessWidget {
   const Home({super.key});
 
@@ -76,6 +74,8 @@ class Home extends StatelessWidget {
       drawer: Drawer(
         width: width / 2.5,
         backgroundColor: const Color(0xff0F4C75),
+
+
         child: ListView(
           children: [
             ListTile(
