@@ -23,7 +23,7 @@ import 'package:lol/admin/bloc/admin_cubit_states.dart';
     // bool admin = await Cache.readData(key: "Admin") ?? false;
     Bloc.observer = MyBlocObserver();
 
-    token = await Cache.readData(key: "token");
+    //TOKEN = await Cache.readData(key: "token");
     selectedLevel = await Cache.readData(key: "Level") ?? 0;
     bool isOnBoardFinished =await Cache.readData(key: "FinishedOnBoard") ?? false;
 
@@ -31,7 +31,7 @@ import 'package:lol/admin/bloc/admin_cubit_states.dart';
     if (!isOnBoardFinished) {
       startPage = const OnBoarding();
     } else {
-      if (selectedLevel == 0 && token == null) {
+      if (selectedLevel == 0 && TOKEN == null) {
         startPage = const ChoosingYear();
       } else {
         startPage = const Home();

@@ -39,7 +39,7 @@ class Home extends StatelessWidget {
       appBar: AppBar(
         title: const InkWell(child: Row()),
         actions: [
-          if (token == null)
+          if (TOKEN == null)
             Container(
               decoration: BoxDecoration(
                   color: const Color(0xff631313),

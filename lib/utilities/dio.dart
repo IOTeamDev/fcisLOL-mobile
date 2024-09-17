@@ -58,5 +58,18 @@ class DioHelp {
     
   }
 
+  static Future<Response> deleteData({
+    required String path,
+    required Map<String, dynamic> query,  // Keep this as query params
+    lang = 'en',
+    String? token,
+  }) async {
+    dio!.options.headers = {
+      'lang': lang,
+      if (token != null) 'Authorization': token,
+    };
+    print(path);
+    return await dio!.delete(path,queryParameters: query);  // ID as query parameter
+  }
 
 }

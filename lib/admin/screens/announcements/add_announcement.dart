@@ -29,8 +29,8 @@ class _AddAnouncmentState extends State<AddAnouncment> {
   var titleController = TextEditingController();
   var dateController = TextEditingController();
   var descriptionController = TextEditingController();
-  String? _selectedItem;
-  List<String> _items = ['Assignment', 'Quiz', 'Other'];
+  String? selectedItem;
+  final List<String> _items = ['Assignment', 'Quiz', 'Other'];
 
 
   @override
@@ -50,6 +50,15 @@ class _AddAnouncmentState extends State<AddAnouncment> {
           else if( state is AdminSaveAnnouncementsErrorState)
           {
             showToastMessage(message: 'An Error Occurred: ${state.error}', states: ToastStates.ERROR);
+          }
+          
+          if(state is AdminDeleteAnnouncementSuccessState)
+          {
+            showToastMessage(message: 'Announcement Deleted', states: ToastStates.WARNING);
+          }
+          if(state is AdminDeleteAnnouncementErrorState)
+          {
+            showToastMessage(message: 'Error Occurred: ${state.error}', states: ToastStates.ERROR);
           }
         },
         builder:(context, state)
@@ -205,7 +214,7 @@ class _AddAnouncmentState extends State<AddAnouncment> {
                                            hint: Text('Type', style: TextStyle(color: Colors.white),),
                                            style: TextStyle(color: Colors.white),
                                             dropdownColor: Colors.black,
-                                           value: _selectedItem,
+                                           value: selectedItem,
                                            items: _items.map((String item) {
                                              return DropdownMenuItem<String>(
                                                value: item,
@@ -214,7 +223,7 @@ class _AddAnouncmentState extends State<AddAnouncment> {
                                            }).toList(),
                                            onChanged: (String? newValue) {
                                              setState(() {
-                                               _selectedItem = newValue;
+                                               selectedItem = newValue;
                                              });
                                            },
                                          ),
@@ -245,9 +254,9 @@ class _AddAnouncmentState extends State<AddAnouncment> {
                                             const Spacer(),
                                             ElevatedButton(
                                               onPressed: (){
-                                                if(formKey.currentState!.validate() && _selectedItem != null)
+                                                if(formKey.currentState!.validate() && selectedItem != null)
                                                 {
-                                                  cubit.addAnnouncement(title: titleController.text, dueDate: dateController.text, type: _selectedItem, description: descriptionController.text,);
+                                                  cubit.addAnnouncement(title: titleController.text, dueDate: dateController.text, type: selectedItem, description: descriptionController.text,);
                                                 }
                                                 setState(() {
                                                   isExpanded = false;
@@ -255,7 +264,7 @@ class _AddAnouncmentState extends State<AddAnouncment> {
                                                   descriptionController.text = '';
                                                   dateController.text = '';
                                                   showContent = false;
-                                                  _selectedItem = null;
+                                                  selectedItem = null;
                                                   _height = 80;
                                                 });
                                               },
@@ -306,9 +315,9 @@ class _AddAnouncmentState extends State<AddAnouncment> {
   }
 
 
-  Widget announcementBuilder(context,title, index)
+  Widget announcementBuilder(context,title, ID)
   {
-    int id = index;
+    int id = ID;
     return GestureDetector(
         onTap: () {
           navigate(context, AnnouncementDetail(AdminCubit.get(context).announcements![id].title, AdminCubit.get(context).announcements![id].content, AdminCubit.get(context).announcements![id].dueDate));
@@ -337,7 +346,8 @@ class _AddAnouncmentState extends State<AddAnouncment> {
               ),
               MaterialButton(
                 onPressed: () {
-                  // Add action for X button
+                  print(AdminCubit.get(context).announcements![id].id.toString());
+                  AdminCubit.get(context).deleteAnnouncement(AdminCubit.get(context).announcements![id].id);
                 },
                 shape: const CircleBorder(), // X icon
                 minWidth: 0, // Reduce min width to make it smaller

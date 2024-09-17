@@ -9,6 +9,8 @@ import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/network/endpoints.dart';
 import 'package:lol/utilities/dio.dart';
 
+import '../../constants/constants.dart';
+
 //uid null?
 class AdminCubit extends Cubit<AdminCubitStates> {
   AdminCubit() : super(InitialAdminState());
@@ -46,6 +48,31 @@ class AdminCubit extends Cubit<AdminCubitStates> {
         announcements!.add(AnnouncementModel.fromJson(element));
       });
       emit(AdminGetAnnouncementSuccessState(announcements!));
+    });
+  }
+
+  void updateAnnouncement(String id, {String? title, String? content, dynamic dueDate, String? type, String? semester})
+  {
+    DioHelp.putData
+    (
+      path: ANNOUNCEMENTS, 
+      data: {'title':title, 'content':content, 'due_date':dueDate, 'type':type, 'semester':semester}, 
+      token: TOKEN,
+      query: {'id':id}
+    ).then((value){});
+  }
+
+  void deleteAnnouncement(int id)
+  {
+    emit(AdminDeleteAnnouncementLoadingState());
+    DioHelp.deleteData
+    (
+      path: ANNOUNCEMENTS,
+      token: TOKEN,
+      query: {'id':id}
+    ).then((value){
+      emit(AdminDeleteAnnouncementSuccessState());
+      getAnnouncements();
     });
   }
 

@@ -26,7 +26,7 @@ class LoginScreen extends StatelessWidget {
       child: BlocConsumer<LoginCubit, LoginStates>(
         listener: (context, state) {
           if (state is LoginSuccess) {
-            token = state.token;
+            TOKEN = state.token;
             Cache.writeData(key: "token", value: state.token);
             snack(
                 context: context,
