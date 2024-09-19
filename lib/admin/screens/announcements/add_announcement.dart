@@ -369,26 +369,30 @@ class _AddAnouncmentState extends State<AddAnouncment> {
                         ),
                         ConditionalBuilder(
                           condition:
-                              state is! AdminGetAnnouncementLoadingState &&
-                                  cubit.announcements != null,
+                              state is! AdminGetAnnouncementLoadingState && cubit.announcements != null && cubit.announcements!.isNotEmpty,
                           builder: (context) => ListView.separated(
                             shrinkWrap: true,
                             physics: const BouncingScrollPhysics(),
                             itemBuilder: (context, index) =>
-                                announcementBuilder(
-                                    context,
-                                    cubit.announcements![index].title,
-                                    index,
-                                    AdminCubit()),
-                            separatorBuilder: (context, index) =>
-                                const SizedBox(
-                              height: 10,
-                            ),
+                                announcementBuilder(context, cubit.announcements![index].title, index, ),
+                            separatorBuilder: (context, index) => const SizedBox(height: 10,),
                             itemCount: cubit.announcements!.length,
                           ),
-                          fallback: (context) =>
-                              const Center(child: CircularProgressIndicator()),
-                        )
+                          fallback: (context) {
+                            if (state is AdminGetAnnouncementLoadingState) {
+                              return const Center(child: CircularProgressIndicator());
+                            }
+                            else {
+                              return const Center(
+                                child: Text(
+                                  'You have no announcements yet!!!',
+                                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white),
+                                  textAlign: TextAlign.center,
+                                ),
+                              );
+                            }
+                          },
+                        ),
                       ],
                     ),
                   ),
@@ -401,75 +405,84 @@ class _AddAnouncmentState extends State<AddAnouncment> {
     );
   }
 
-  Widget announcementBuilder(context, title, ID, cubit) {
+  Widget announcementBuilder(context, title, ID,) {
     int id = ID;
-    if (cubit.announcements.isNotEmpty) {
-      return GestureDetector(
-        onTap: () {
-          navigate(
-              context,
-              AnnouncementDetail(
-                  AdminCubit.get(context).announcements![id].title,
-                  AdminCubit.get(context).announcements![id].content,
-                  AdminCubit.get(context).announcements![id].dueDate,
-                  id));
-        },
-        child: Container(
-          margin: const EdgeInsetsDirectional.symmetric(horizontal: 10),
-          padding: const EdgeInsetsDirectional.symmetric(horizontal: 10),
-          height: 80,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: HexColor('B8A8F9')),
-          child: Row(
-            children: [
-              ConstrainedBox(
-                constraints:
-                    BoxConstraints(maxWidth: screenWidth(context) - 140),
-                child: Text(
-                  '$title',
-                  style: const TextStyle(fontSize: 20, color: Colors.white),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              Spacer(),
-              MaterialButton(
-                onPressed: () {
-                  //edit button
-                },
-                shape: const CircleBorder(), // X icon
-                minWidth: 0, // Reduce min width to make it smaller
-                padding: const EdgeInsets.all(5), // Circular button
-                child: const Icon(
-                  Icons.edit,
-                  color: Colors.green,
-                ), // Padding for icon
-              ),
-              MaterialButton(
-                onPressed: () {
-                  print(
-                      AdminCubit.get(context).announcements![id].id.toString());
-                  AdminCubit.get(context).deleteAnnouncement(
-                      AdminCubit.get(context).announcements![id].id);
-                },
-                shape: const CircleBorder(), // X icon
-                minWidth: 0, // Reduce min width to make it smaller
-                padding: const EdgeInsets.all(5), // Circular button
-                child: const Icon(
-                  Icons.delete_sharp,
-                  color: Colors.red,
-                ), // Padding for icon
-              ),
-            ],
+    return GestureDetector(
+      onTap: () {
+        navigate(
+          context,
+          AnnouncementDetail(
+            AdminCubit
+                .get(context)
+                .announcements![id].title,
+            AdminCubit
+                .get(context)
+                .announcements![id].content,
+            AdminCubit
+                .get(context)
+                .announcements![id].dueDate,
+            id,
+            onDelete: () {
+              AdminCubit.get(context).getAnnouncements();
+            },
           ),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsetsDirectional.symmetric(horizontal: 10),
+        padding: const EdgeInsetsDirectional.symmetric(horizontal: 10),
+        height: 80,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: HexColor('B8A8F9')
         ),
-      );
-    }
-    return const Text(
-      'You have no announcements yet!!!',
-      style: TextStyle(
-          fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white),
+        child: Row(
+          children: [
+            ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: screenWidth(context) - 140),
+              child: Text(
+                '$title',
+                style: const TextStyle(fontSize: 20, color: Colors.white),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            const Spacer(),
+            MaterialButton(
+              onPressed: () {
+                //edit button
+              },
+              shape: const CircleBorder(),
+              // X icon
+              minWidth: 0,
+              // Reduce min width to make it smaller
+              padding: const EdgeInsets.all(5),
+              // Circular button
+              child: const Icon(
+                Icons.edit,
+                color: Colors.green,
+              ), // Padding for icon
+            ),
+            MaterialButton(
+              onPressed: () {
+                AdminCubit.get(context).deleteAnnouncement(AdminCubit
+                    .get(context)
+                    .announcements![id].id);
+              },
+              shape: const CircleBorder(),
+              // X icon
+              minWidth: 0,
+              // Reduce min width to make it smaller
+              padding: const EdgeInsets.all(5),
+              // Circular button
+              child: const Icon(
+                Icons.delete_sharp,
+                color: Colors.red,
+              ), // Padding for icon
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
