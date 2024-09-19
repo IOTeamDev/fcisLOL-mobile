@@ -63,23 +63,23 @@ class LoginCubit extends Cubit<LoginStates> {
     });
   }
 
-  var picker = ImagePicker();
-  File? profileImage;
+  // var picker = ImagePicker();
+  // File? profileImage;
 
-  pickProfileImage(bool isCamera) async{
-    var tempImage =await picker.pickImage(
-        source: isCamera ? ImageSource.camera : ImageSource.gallery); 
+  // pickProfileImage(bool isCamera) async{
+  //   var tempImage =await picker.pickImage(
+  //       source: isCamera ? ImageSource.camera : ImageSource.gallery); 
 
-    if (tempImage != null) {profileImage = File(tempImage.path);
+  //   if (tempImage != null) {profileImage = File(tempImage.path);
     
-    emit(PickImageSuccess());
+  //   emit(PickImageSuccess());
     
-    }
-    else
+  //   }
+  //   else
 
-    emit(PickImageFailed());
+  //   emit(PickImageFailed());
 
-  }
+  // }
 
 void uploadProfileImage(){}
 

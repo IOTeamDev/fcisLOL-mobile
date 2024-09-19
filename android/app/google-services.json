@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "173089782568",
+    "project_id": "fcis-da7f4",
+    "storage_bucket": "fcis-da7f4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:173089782568:android:e00582ee84d4add9a36e1d",
+        "android_client_info": {
+          "package_name": "com.example.mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDedD9YOtikZZ5-fJhO0WIK-miXSpnofns"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

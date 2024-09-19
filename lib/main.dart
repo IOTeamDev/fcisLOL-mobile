@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/admin/bloc/admin_cubit.dart';
 import 'package:lol/admin/bloc/admin_cubit_states.dart';
@@ -21,6 +22,7 @@ main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Cache.initialize();
   await DioHelp.initial();
+  await Firebase.initializeApp();
   // bool admin = await Cache.readData(key: "Admin") ?? false;
   Bloc.observer = MyBlocObserver();
 
@@ -59,7 +61,7 @@ class App extends StatelessWidget {
       ],
       child: BlocConsumer<AdminCubit, AdminCubitStates>(
         builder: (context, state) => MaterialApp(
-          home: AdminPanal(),
+          home: Registerscreen(),
           debugShowCheckedModeBanner: false,
         ),
         listener: (context, state) {},

@@ -4,6 +4,8 @@ import 'package:lol/auth/bloc/login_cubit.dart';
 import 'package:lol/auth/bloc/login_cubit_states.dart';
 import 'package:lol/auth/screens/register.dart';
 import 'package:lol/components/snack.dart';
+import 'package:lol/main/bloc/main_cubit.dart';
+import 'package:lol/main/bloc/main_cubit_states.dart';
 
 class SelectImage extends StatelessWidget {
 // final name
@@ -13,9 +15,16 @@ class SelectImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print(userInfo.name + "dfskjfldsjkdlfjkljfkl");
-    return BlocProvider(
-      create: (context) => LoginCubit(),
-      child: BlocConsumer<LoginCubit, LoginStates>(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => LoginCubit(),
+        ),
+        BlocProvider(
+          create: (context) => MainCubit(),
+        ),
+      ],
+      child: BlocConsumer<MainCubit, MainCubitStates>(
         listener: (context, state) {
           if (state is RegisterSuccess) {
             // token=state.token;
@@ -28,6 +37,7 @@ class SelectImage extends StatelessWidget {
         },
         builder: (context, state) {
           var loginCubit = LoginCubit.get(context);
+          var mainCubit = MainCubit.get(context);
 
           return Scaffold(
             appBar: AppBar(title: const Text("Select Profile Image")),
@@ -42,8 +52,8 @@ class SelectImage extends StatelessWidget {
                     children: [
                       CircleAvatar(
                         radius: 60,
-                        backgroundImage: loginCubit.profileImage != null
-                            ? FileImage(loginCubit.profileImage!)
+                        backgroundImage: mainCubit.userImageFile != null
+                            ? FileImage(mainCubit.userImageFile!)
                             : AssetImage(
                                 'images/default-avatar-profile-icon-social-600nw-1677509740.png'),
                       ),
@@ -61,14 +71,16 @@ class SelectImage extends StatelessWidget {
                                       MainAxisAlignment.spaceAround,
                                   actions: [
                                     OptionWidget(
-                                        optionFunction: () {
-                                          loginCubit.pickProfileImage(true);
+                                        optionFunction: () async{
+                                        mainCubit.getUserImage(
+                                              fromGallery: false);
                                           Navigator.pop(context);
                                         },
                                         optionTitle: "Camera"),
                                     OptionWidget(
-                                        optionFunction: () {
-                                          loginCubit.pickProfileImage(false);
+                                        optionFunction: ()async {
+                                          mainCubit.getUserImage(
+                                              fromGallery: true);
                                           Navigator.pop(context);
                                         },
                                         optionTitle: "Gallery"),
@@ -115,11 +127,14 @@ class SelectImage extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
+
+
                         loginCubit.register(
                             name: userInfo.name,
                             email: userInfo.email,
                             phone: userInfo.phone,
-                            photo: userInfo.phone,
+                            photo: mainCubit.userImagePath ??
+                                "https://i.pinimg.com/736x/0d/64/98/0d64989794b1a4c9d89bff571d3d5842.jpg",
                             password: userInfo.password,
                             semester: "Two");
                       },
