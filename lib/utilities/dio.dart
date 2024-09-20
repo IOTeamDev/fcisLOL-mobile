@@ -28,18 +28,18 @@ class DioHelp {
     return await dio!.get(path, queryParameters:query );
   }
   static Future<Response> putData({
-    query,
-    required path,
+    required Map<String, dynamic> query,
+    required String path,
     lang = 'en',
-    token,
-    required data
+    String? token,
+    required Map<String, dynamic> data
 
   }) async {
     // if (dio == null) await initial();
     //async and await
 
-    dio!.options.headers = {'lang': lang, 'Authorization': token??"",'Content-Type': "application/json"};
-    return await dio!.put(path, queryParameters:query??null ,data: data);
+    dio!.options.headers = {'lang': lang, 'Authorization': token??"",'Content-Type': 'application/json'};
+    return await dio!.put(path, queryParameters:query ,data: data);
   }
 
   static Future<Response> postData({
@@ -68,7 +68,7 @@ class DioHelp {
       'lang': lang,
       if (token != null) 'Authorization': token,
     };
-    return await dio!.delete(path,queryParameters: query);  // ID as query parameter
+    return await dio!.delete(path,queryParameters: query,);  // ID as query parameter
   }
 
 }

@@ -28,8 +28,7 @@ main() async {
 
   //TOKEN = await Cache.readData(key: "token");
   selectedLevel = await Cache.readData(key: "Level") ?? 0;
-  bool isOnBoardFinished =
-      await Cache.readData(key: "FinishedOnBoard") ?? false;
+  bool isOnBoardFinished = await Cache.readData(key: "FinishedOnBoard") ?? false;
 
   final Widget startPage;
   if (!isOnBoardFinished) {

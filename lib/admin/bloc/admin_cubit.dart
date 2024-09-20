@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/date_time_patterns.dart';
 import 'package:lol/admin/bloc/admin_cubit_states.dart';
 import 'package:lol/admin/model/announcement_model.dart';
 import 'package:lol/admin/screens/Announcements/add_announcement.dart';
@@ -26,7 +27,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     DioHelp.postData(
       path: ANNOUNCEMENTS,
       data: {'title':title, 'content':description??'', 'due_date':dueDate, 'type':type, 'semester': 'Three'},
-      token: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE3MjY1NTQ5MTgsImV4cCI6MTc1NzY1ODkxOH0.eXlnrHovOw5G-GbQb48rN0qIHsW06ly1w4Ot3favDcY'
+      token: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE3MjY3ODYyOTUsImV4cCI6MTc1Nzg5MDI5NX0.IlnTrdxQH_Zlu9AUf3TMi5HfOrjPv-Pu3-peDlZOnlM'
     ).then((value)
     {
       announcementModel = AnnouncementModel.fromJson(value.data);
@@ -51,15 +52,31 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     });
   }
 
-  void updateAnnouncement(String id, {String? title, String? content, dynamic dueDate, String? type, String? semester})
+  void updateAnnouncement(final String id, {String? title, String? content, dynamic dueDate, String? type})
   {
+    emit(AdminUpdateAnnouncementLoadingState());
     DioHelp.putData
     (
       path: ANNOUNCEMENTS, 
-      data: {'title':title, 'content':content, 'due_date':dueDate, 'type':type, 'semester':semester}, 
-      token: TOKEN,
-      query: {'id':id}
-    ).then((value){});
+      data: {'title':title, 'content':content, 'due_date':dueDate, 'type':type, 'semester':'Four'},
+      token: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE3MjY3ODYyOTUsImV4cCI6MTc1Nzg5MDI5NX0.IlnTrdxQH_Zlu9AUf3TMi5HfOrjPv-Pu3-peDlZOnlM',
+      query: {'id':int.parse(id)}
+    ).then((value){
+      print(value.data);
+      // Assuming the response returns the updated announcement
+      AnnouncementModel updatedAnnouncement = AnnouncementModel.fromJson(value.data);
+
+      // Update the local announcements list
+      if (announcements != null) {
+        int index = announcements!.indexWhere((ann) => ann.id.toString() == id);
+        if (index != -1) {
+          announcements![index] = updatedAnnouncement;
+        }
+      }
+      emit(AdminUpdateAnnouncementSuccessState());
+    }).catchError((error){
+      emit(AdminUpdateAnnouncementErrorState(error.toString()));
+    });
   }
 
   void deleteAnnouncement(int id)

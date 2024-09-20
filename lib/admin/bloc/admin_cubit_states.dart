@@ -41,3 +41,12 @@ class AdminDeleteAnnouncementErrorState extends AdminCubitStates{
 
   AdminDeleteAnnouncementErrorState(this.error);
 }
+
+class AdminUpdateAnnouncementLoadingState extends AdminCubitStates{}
+
+class AdminUpdateAnnouncementSuccessState extends AdminCubitStates{}
+
+class AdminUpdateAnnouncementErrorState extends AdminCubitStates{
+  final String error;
+  AdminUpdateAnnouncementErrorState(this.error);
+}
