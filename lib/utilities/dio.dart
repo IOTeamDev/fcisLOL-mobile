@@ -43,7 +43,7 @@ class DioHelp {
   }
 
   static Future<Response> postData({
-    required path,
+    required String path,
     required data,
     lang = 'en',
     token,

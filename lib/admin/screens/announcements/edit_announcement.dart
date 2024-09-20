@@ -84,24 +84,7 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                   child: Column(
                     children: [
                       // Back Button
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Row(
-                          children: [
-                            MaterialButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Icon(
-                                Icons.arrow_back,
-                                color: Colors.white,
-                                size: 30,
-                              ),
-                              padding: EdgeInsets.zero,
-                            ),
-                          ],
-                        ),
-                      ),
+                      backButton(context),
                       adminTopTitleWithDrawerButton(
                           title: 'Edit Announcement',
                           size: 32,

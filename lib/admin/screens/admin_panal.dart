@@ -40,76 +40,14 @@ class AdminPanal extends StatelessWidget {
       ),
       backgroundColor: Colors.black,
       body: Stack(children: [
-        // Top Left Circle
-        Positioned(
-          top: -30,
-          left: -100,
-          child: Container(
-            width: 300,
-            height: 300,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: RadialGradient(
-                colors: [
-                  Colors.deepPurpleAccent.withOpacity(0.7),
-                  Colors.black.withOpacity(0.2),
-                ],
-                radius: 0.85,
-                center: const Alignment(-0.3, -0.3),
-              ),
-            ),
-          ),
-        ),
-        // Bottom Right Circle
-        Positioned(
-          bottom: -150,
-          right: -100,
-          child: Container(
-            width: 400,
-            height: 400,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: RadialGradient(
-                colors: [
-                  Colors.purpleAccent.withOpacity(0.6),
-                  Colors.black.withOpacity(0.2),
-                ],
-                radius: 0.75,
-                center: const Alignment(0.2, 0.2),
-              ),
-            ),
-          ),
-        ),
-        BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-          child: Container(
-            color: Colors.black.withOpacity(0),
-          ),
-        ),
+        backgroundEffects(),
         Container(
           margin: const EdgeInsetsDirectional.only(top: 50),
           width: double.infinity,
           child: Column(
             children: [
               // Back Button
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: Row(
-                  children: [
-                    MaterialButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Icon(
-                        Icons.arrow_back,
-                        color: Colors.white,
-                        size: 30,
-                      ),
-                      padding: EdgeInsets.zero,
-                    ),
-                  ],
-                ),
-              ),
+             backButton(context),
               // Text With Drawer Button
               adminTopTitleWithDrawerButton(
                   scaffoldKey: scaffoldKey, title: 'Admin', hasDrawer: true),
