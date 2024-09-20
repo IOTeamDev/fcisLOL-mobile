@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/date_time_patterns.dart';
 import 'package:lol/admin/bloc/admin_cubit_states.dart';
 import 'package:lol/admin/model/announcement_model.dart';
+import 'package:lol/admin/model/requests_model.dart';
 import 'package:lol/admin/screens/Announcements/add_announcement.dart';
 import 'package:lol/auth/bloc/login_cubit_states.dart';
 import 'package:lol/auth/model/login_model.dart';
@@ -85,11 +86,27 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     DioHelp.deleteData
     (
       path: ANNOUNCEMENTS,
-      token: TOKEN,
+      token: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE3MjY3ODYyOTUsImV4cCI6MTc1Nzg5MDI5NX0.IlnTrdxQH_Zlu9AUf3TMi5HfOrjPv-Pu3-peDlZOnlM',
       query: {'id':id}
     ).then((value){
       emit(AdminDeleteAnnouncementSuccessState());
       getAnnouncements();
+    });
+  }
+
+  List<RequestsModel>? requests;
+  void getRequests()
+  {
+    emit(AdminGetRequestsLoadingState());
+    DioHelp.getData(path: MATERIAL, query: {'semester':'One', 'accepted':false}).then((value){
+      requests = [];
+      value.data.forEach((element){
+        requests!.add(RequestsModel.fromJson(element));
+        print(value.data);
+        print(requests![0].id);
+      });
+
+      emit(AdminGetRequestsSuccessState(requests!));
     });
   }
 

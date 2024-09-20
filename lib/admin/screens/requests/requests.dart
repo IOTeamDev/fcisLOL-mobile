@@ -1,8 +1,12 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:lol/admin/bloc/admin_cubit.dart';
+import 'package:lol/admin/bloc/admin_cubit_states.dart';
 import 'package:lol/shared/components/components.dart';
 import '../../../constants/constants.dart';
 
@@ -30,53 +34,77 @@ class Requests extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold
-    (
-      key: scaffoldKey,
-      drawer: drawerBuilder(context),
-      backgroundColor: Colors.black,
-      body: Stack
-      (
-        children:
-        [
-         backgroundEffects(),
-          Container
+    return BlocConsumer<AdminCubit, AdminCubitStates>(
+      listener: (context, state){},
+      builder:(context, state) {
+        var cubit = AdminCubit.get(context);
+        return Scaffold
+        (
+          key: scaffoldKey,
+          drawer: drawerBuilder(context),
+          backgroundColor: Colors.black,
+          body: Stack
           (
-            margin: const EdgeInsetsDirectional.only(top: 50),
-            width: double.infinity,
-            child: Column
-            (
-              children:
-              [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Row(
-                    children:
-                    [
-                      MaterialButton(onPressed: (){Navigator.pop(context);}, child: Icon(Icons.arrow_back, color: Colors.white, size: 30,), padding: EdgeInsets.zero,),
-                    ],
-                  ),
+            children:
+            [
+              backgroundEffects(),
+              Container
+              (
+                margin: const EdgeInsetsDirectional.only(top: 50),
+                width: double.infinity,
+                child: Column
+                (
+                  children:
+                  [
+                    //backButton
+                   backButton(context),
+                    //Text With Drawer Button
+                    adminTopTitleWithDrawerButton(title: 'Requests', size: 40, hasDrawer: false),
+                    Expanded(
+                      child: ConditionalBuilder(
+                        condition: state is !AdminGetRequestsLoadingState && cubit.requests != null &&  cubit.requests!.isNotEmpty,
+                        builder: (context) => ListView.separated
+                          (
+                            physics: const BouncingScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              //return Text('${cubit.requests![index].author?.authorName}', style: TextStyle(fontSize: 30, color: Colors.white),);
+                              return requestedMaterialBuilder(
+                                backgroundColor,
+                                index,
+                                title:'material Title',
+                                type: cubit.requests![index].type,
+                                pfp: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStCJpmc7wNF8Ti2Tuh_hcIRZUGOc23KBTx2A&s',
+                                authorName: cubit.requests![index].author?.name,
+                                link: cubit.requests![index].link,
+                                subjectName: 'Subject Name',
+                                description: 'Lecture Or Chapter'
+                              );
+                            },
+                            separatorBuilder: (context, index) =>
+                            const Padding(padding: EdgeInsetsDirectional.all(5)),
+                            itemCount: cubit.requests!.length
+                        ),
+                        fallback: (context)
+                        {
+                          if(state is AdminGetRequestsLoadingState)
+                            {
+                              return const Center(child: CircularProgressIndicator());
+                            }
+                          return Center(child: Text('You have no requests yet!!!!!', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40,),textAlign: TextAlign.center,),);
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-                //Text With Drawer Button
-               adminTopTitleWithDrawerButton(scaffoldKey: scaffoldKey, title: 'Requests', size: 40, hasDrawer: true),
-                Expanded(
-                  child: ListView.separated
-                  (
-                    physics: const BouncingScrollPhysics(),
-                    itemBuilder: (context, index) => requestedMaterialBuilder(backgroundColor),
-                    separatorBuilder: (context, index) => const Padding(padding: EdgeInsetsDirectional.all(5)),
-                    itemCount: 10
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
-  Widget requestedMaterialBuilder(List<String> colorText)
+  Widget requestedMaterialBuilder(List<String> colorText, index, {title, link, type, authorName, pfp, subjectName, description})
   {
     var random = Random();
 
@@ -85,10 +113,10 @@ class Requests extends StatelessWidget {
     int randomNum = min + random.nextInt(max - min + 1);
 
     return Container(
-      decoration: BoxDecoration(color: HexColor('${colorText[randomNum].toString()}').withOpacity(0.45), borderRadius: BorderRadius.circular(20)),
+      decoration: BoxDecoration(color: HexColor(colorText[randomNum]).withOpacity(0.45), borderRadius: BorderRadius.circular(20)),
       margin: const EdgeInsetsDirectional.symmetric(horizontal: 10),
       padding: const EdgeInsetsDirectional.symmetric(horizontal: 10),
-      height: 180,
+      height: 150,
       child: Column
       (
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,25 +128,25 @@ class Requests extends StatelessWidget {
             child: Row(
               children:
               [
-                CircleAvatar(backgroundImage: NetworkImage('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStCJpmc7wNF8Ti2Tuh_hcIRZUGOc23KBTx2A&s'), radius: 20,),
+                CircleAvatar(backgroundImage: NetworkImage(pfp), radius: 20,),
                 SizedBox(width: 10,),
-                Text('Name', style: TextStyle(fontSize: 18, color: Colors.grey[300]),),
+                Text(authorName.toString(), style: TextStyle(fontSize: 18, color: Colors.grey[300]),),
                 Spacer(),
                 ConstrainedBox
                 (
                   constraints: BoxConstraints(maxWidth: 100,),
-                  child: Text('Subject Name', style: TextStyle(color: Colors.grey[300]),maxLines: 1, overflow: TextOverflow.ellipsis, textWidthBasis: TextWidthBasis.longestLine,),
+                  child: Text(subjectName, style: TextStyle(color: Colors.grey[300]),maxLines: 1, overflow: TextOverflow.ellipsis, textWidthBasis: TextWidthBasis.longestLine,),
                 ),
               ],
             ),
           ),
           Padding(
             padding: const EdgeInsetsDirectional.only(start: 10.0, end: 10, top: 5, bottom: 5),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
               children: [
-                Text('Chapter Or lecture', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),),
-                Text('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', style: TextStyle(fontSize: 14, color: Colors.grey[300]), maxLines: 2, overflow: TextOverflow.ellipsis,),
+                Text(description, style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),),
+                Spacer(),
+                Text(type, style: TextStyle(color: Colors.white),),
               ],
             ),
           ),
@@ -134,7 +162,7 @@ class Requests extends StatelessWidget {
                       maxWidth: constraints.maxWidth - 140, // Subtract extra pixels from the remaining width
                     ),
                     child: Text(
-                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                      link,
                       style: TextStyle(color: Colors.white),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,

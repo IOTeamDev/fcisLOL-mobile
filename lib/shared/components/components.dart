@@ -131,6 +131,24 @@ Widget backgroundEffects()
   );
 }
 
+Widget backButton(context, {double bottomPadding = 8})
+{
+  return  Padding(
+    padding: EdgeInsets.only(bottom: bottomPadding),
+    child: Row(
+      children:
+      [
+        MaterialButton(onPressed: () {
+          Navigator.pop(context);
+        },
+          child: Icon(
+            Icons.arrow_back, color: Colors.white, size: 30,),
+          padding: EdgeInsets.zero,),
+      ],
+    ),
+  );
+}
+
 Widget divider()
 {
   return  Container(height: 2, width: double.infinity, color: Colors.grey,);
