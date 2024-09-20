@@ -3,7 +3,10 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:linkify/linkify.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../constants/constants.dart';
+import '../../main/screens/webview_screen.dart';
 
 Widget adminTopTitleWithDrawerButton({scaffoldKey, required String title, double size = 40, required bool hasDrawer})
 {
@@ -170,4 +173,39 @@ Color chooseToastColor(ToastStates states)
       break;
   }
   return color!;
+}
+
+String getYouTubeThumbnail(String videoUrl) {
+  final Uri uri = Uri.parse(videoUrl);
+  String videoId = "";
+
+  if (uri.host.contains('youtu.be')) {
+    videoId = uri.pathSegments.first;
+  } else if (uri.queryParameters.containsKey('v')) {
+    videoId = uri.queryParameters['v']!;
+  }
+
+  return 'https://img.youtube.com/vi/$videoId/hqdefault.jpg';
+}
+
+Future<void> onOpen(BuildContext context, LinkableElement link) async {
+  final url = link.url;
+
+  // Check if the link is a Facebook link
+  if (url.contains('facebook.com')) {
+    // Open Facebook links directly using `url_launcher`
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
+    } else {
+      throw 'Could not launch $url';
+    }
+  } else {
+    // For other links, open them using WebView
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => WebviewScreen(url),
+      ),
+    );
+  }
 }

@@ -85,7 +85,7 @@ class AnnouncementDetail extends StatelessWidget {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Linkify(
-                                          onOpen: (link) => _onOpen(context, link),
+                                          onOpen: (link) => onOpen(context, link),
                                           text: description,
                                           style: const TextStyle(color: Colors.white,),
                                           linkStyle: const TextStyle(color: Colors.blue),
@@ -115,27 +115,5 @@ class AnnouncementDetail extends StatelessWidget {
           );
       },
     );
-  }
-
-  Future<void> _onOpen(BuildContext context, LinkableElement link) async {
-    final url = link.url;
-
-    // Check if the link is a Facebook link
-    if (url.contains('facebook.com')) {
-      // Open Facebook links directly using `url_launcher`
-      if (await canLaunchUrl(Uri.parse(url))) {
-        await launchUrl(Uri.parse(url));
-      } else {
-        throw 'Could not launch $url';
-      }
-    } else {
-      // For other links, open them using WebView
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => WebviewScreen(url),
-        ),
-      );
-    }
   }
 }
