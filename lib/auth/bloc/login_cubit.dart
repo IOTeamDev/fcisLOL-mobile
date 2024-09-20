@@ -42,7 +42,7 @@ class LoginCubit extends Cubit<LoginStates> {
       (value) {
         modelLogin = LoginModel.fromJson(value.data);
         // print(modelLogin!.token);
-        emit(RegisterSuccess());
+        emit(RegisterSuccess(token: modelLogin!.token));
       },
     ).catchError((erro) => emit(RegisterFailed()));
   }
@@ -55,7 +55,7 @@ class LoginCubit extends Cubit<LoginStates> {
     }).then(
       (value) {
         modelLogin = LoginModel.fromJson(value.data);
-        print(modelLogin!.token);
+        // print(modelLogin!.token);
         emit(LoginSuccess(token: modelLogin!.token));
       },
     ).catchError((error) {

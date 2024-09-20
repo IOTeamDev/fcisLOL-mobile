@@ -4,6 +4,8 @@ import 'package:lol/main/screens/home.dart';
 import 'package:lol/utilities/navigation.dart';
 import 'package:lol/utilities/shared_prefrence.dart';
 
+late String semester;
+
 class ChoosingYear extends StatelessWidget {
   const ChoosingYear({super.key});
 
@@ -99,6 +101,21 @@ class YearState extends State<Year> {
                       btnOkText: "Confirm",
                       btnCancelOnPress: () {},
                       btnOkOnPress: () {
+                        switch (widget.title) {
+                          case "Level 1":
+                            semester = "One";
+                            break;
+                              case "Level 2":
+                            semester = "Three";
+                            break;
+                              case "Level 3":
+                            semester = "Five";
+                            break;
+                              case "Level 4":
+                            semester = "Seven";
+                            break;
+                            
+                        }
                         Cache.writeData(key: widget.title, value: 1);
                         navigatReplace(context, const Home());
                       },
@@ -116,6 +133,23 @@ class YearState extends State<Year> {
                           'You About To Assign In ${widget.title} Semster 2 ',
                       btnCancelOnPress: () {},
                       btnOkOnPress: () {
+
+                          switch (widget.title) {
+                          case "Level 1":
+                            semester = "Two";
+                            break;
+                              case "Level 2":
+                            semester = "Four";
+                            break;
+                              case "Level 3":
+                            semester = "Six";
+                            break;
+                              case "Level 4":
+                            semester = "Eight";
+                            break;
+                            
+                        }
+                      
                         Cache.writeData(key: widget.title, value: 2);
                         navigatReplace(context, const Home());
                       },

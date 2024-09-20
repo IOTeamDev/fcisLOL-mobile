@@ -13,3 +13,9 @@ class UploadImageSuccess extends MainCubitStates {}
 class UploadImageFailure extends MainCubitStates {}
 
 class UploadImageLoading extends MainCubitStates {}
+
+class GetProfileLoading extends MainCubitStates{}
+
+class GetProfileSuccess extends MainCubitStates{}
+
+class GetProfileFailure extends MainCubitStates{}

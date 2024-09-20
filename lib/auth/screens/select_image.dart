@@ -134,7 +134,7 @@ class SelectImage extends StatelessWidget {
                             email: userInfo.email,
                             phone: userInfo.phone,
                             photo: mainCubit.userImagePath ??
-                                "https://i.pinimg.com/736x/0d/64/98/0d64989794b1a4c9d89bff571d3d5842.jpg",
+                                "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg",
                             password: userInfo.password,
                             semester: "Two");
                       },

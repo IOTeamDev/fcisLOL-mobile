@@ -10,6 +10,7 @@ import 'package:lol/auth/bloc/login_cubit_states.dart';
 import 'package:lol/auth/screens/register.dart';
 import 'package:lol/constants/constants.dart';
 import 'package:lol/main/screens/home.dart';
+import 'package:lol/main/screens/profile.dart';
 import 'package:lol/utilities/navigation.dart';
 import 'package:lol/utilities/shared_prefrence.dart';
 
@@ -28,13 +29,14 @@ class LoginScreen extends StatelessWidget {
           if (state is LoginSuccess) {
             TOKEN = state.token;
             Cache.writeData(key: "token", value: state.token);
+            print(state.token+"Token");
             snack(
                 context: context,
                 enumColor: Messages.success,
                 titleWidget:
                     const Text("Successfully signed in. Welcome back!"));
 
-            navigatReplace(context, const Home());
+            navigatReplace(context, const Profile());
           }
           if (state is LoginFailed) {
             snack(
@@ -88,8 +90,7 @@ class LoginScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const Text(
-                          "Continue Your Success Journey with temp !"),
+                      const Text("Continue Your Success Journey with temp !"),
                       const SizedBox(
                         height: 30,
                       ),

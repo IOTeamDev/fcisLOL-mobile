@@ -18,9 +18,9 @@ class LoginFailed extends LoginStates {}
 class RegisterLoading extends LoginStates {}
 
 class RegisterSuccess extends LoginStates {
-  // final String token;
+  final String token;
 
-  // RegisterSuccess({required this.token});
+  RegisterSuccess({required this.token});
 }
 
 

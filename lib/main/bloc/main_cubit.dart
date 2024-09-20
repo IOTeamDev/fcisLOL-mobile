@@ -5,7 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lol/auth/bloc/login_cubit_states.dart';
 import 'package:lol/auth/model/login_model.dart';
+import 'package:lol/constants/constants.dart';
 import 'package:lol/main/bloc/main_cubit_states.dart';
+import 'package:lol/main/model/profile_model.dart';
 import 'package:lol/utilities/dio.dart';
 
 //uid null?
@@ -26,7 +28,6 @@ class MainCubit extends Cubit<MainCubitStates> {
       userImageFile = File(tempPostImage.path);
       emit(GetUserImageSuccess());
       userImagePath = await UploadPImage(image: userImageFile!);
-      
     } else {
       emit(GetUserImageFailure());
     }
@@ -49,4 +50,29 @@ class MainCubit extends Cubit<MainCubitStates> {
       // // TODO
     }
   }
+
+  ProfileModel? profileModel;
+  getProfileInfo() {
+    emit(GetProfileLoading());
+    profileModel = null;
+
+    DioHelp.getData(
+            path: "me",
+            token:TOKEN
+                
+                )
+        .then(
+      (value) {
+        profileModel = ProfileModel.fromJson(value.data);
+        emit(GetProfileSuccess());
+      },
+    ).catchError((onError) {
+      print(onError);
+      emit(GetProfileFailure());
+    });
+  }
+
+// deleteImage(){//Used
+
+// }
 }

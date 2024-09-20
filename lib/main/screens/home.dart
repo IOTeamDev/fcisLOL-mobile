@@ -6,6 +6,8 @@ import 'package:lol/auth/screens/login.dart';
 import 'package:lol/constants/constants.dart';
 import 'package:lol/main/screens/profile.dart';
 import 'package:lol/main.dart';
+import 'package:lol/utilities/navigation.dart';
+import 'package:lol/utilities/shared_prefrence.dart';
 
 import '../../auth/screens/login.dart';
 
@@ -20,35 +22,28 @@ class Home extends StatelessWidget {
       key: _scaffoldKey,
       backgroundColor: Color(0xff1B262C),
       appBar: AppBar(
-        leading:
-           IconButton(
-                onPressed: () {
-                          _scaffoldKey.currentState!.openDrawer(); // Use key to open the drawer
-            
-                },
-                icon: Icon(
-                  Icons.menu,
-                  color: Colors.white,
-                )),
-        
-        
+        leading: IconButton(
+            onPressed: () {
+              _scaffoldKey.currentState!
+                  .openDrawer(); // Use key to open the drawer
+            },
+            icon: Icon(
+              Icons.menu,
+              color: Colors.white,
+            )),
         backgroundColor: Color(0xff0F4C75),
         title: const InkWell(child: Row()),
         actions: [
           if (TOKEN == null)
             Container(
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  
-                  colors: [
-Color(0xff4fd1c5),
-Color(0xff38b2ac),
-
-
-
-                ]),
+                  gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Color(0xff4fd1c5),
+                        Color(0xff38b2ac),
+                      ]),
                   color: const Color(0xFF00ADB5),
                   borderRadius: BorderRadius.circular(10)),
               child: MaterialButton(
@@ -76,7 +71,7 @@ Color(0xff38b2ac),
       drawer: Drawer(
         // We Will Put In It Things
         width: width / 2.5,
-        backgroundColor: const Color(0xff0F4C75),
+        // backgroundColor: const Color(0xff0F4C75),
 
         child: ListView(
           children: [
@@ -89,12 +84,20 @@ Color(0xff38b2ac),
               onTap: () {},
               leading: const Icon(Icons.document_scanner),
               title: const Text("About App"),
+            ),
+            ListTile(
+              onTap: () {
+                Cache.removeValue(key: "token");
+                navigatReplace(context, LoginScreen());
+              },
+              leading: const Icon(Icons.exit_to_app),
+              title: const Text("Log Out"),
             )
           ],
         ),
       ),
       body: Container(
-         decoration: BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -108,11 +111,12 @@ Color(0xff38b2ac),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height:20),
+              SizedBox(height: 20),
               CarouselSlider(
                 items: carsor.map((carsor) {
                   return InkWell(
-                      child: Stack(alignment: Alignment.bottomCenter, children: [
+                      child:
+                          Stack(alignment: Alignment.bottomCenter, children: [
                     Container(
                       clipBehavior: Clip.antiAlias,
                       // margin: const EdgeInsets.all(6.0),
@@ -125,32 +129,37 @@ Color(0xff38b2ac),
                         //   ),
                         //   fit: BoxFit.cover,
                         // ),
-        
                       ),
-                        child:Image.asset(carsor.image!,width: 400,fit: BoxFit.cover,),
+                      child: Image.asset(
+                        carsor.image!,
+                        width: 400,
+                        fit: BoxFit.cover,
+                      ),
                     ),
-        Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.black.withOpacity(0.2),
-                    Colors.transparent,
-                  ],
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                ),
-              ),
-            ),
-        
                     Container(
-                      // padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.black.withOpacity(0.2),
+                            Colors.transparent,
+                          ],
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
+                        ),
+                      ),
+                    ),
+                    Container(
+                        // padding: EdgeInsets.all(5),
                         // width: 400,
                         decoration: BoxDecoration(
-                            color: Color.fromARGB(51, 65, 180, 197).withOpacity(0.6).withAlpha(150),
+                            color: Color.fromARGB(51, 65, 180, 197)
+                                .withOpacity(0.6)
+                                .withAlpha(150),
                             borderRadius: BorderRadius.circular(3)),
                         child: Text(
                           carsor.text!,
-                          style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500),
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w500),
                           textAlign: TextAlign.center,
                         ))
                   ]));
@@ -170,23 +179,22 @@ Color(0xff38b2ac),
               const SizedBox(height: 20),
               const SizedBox(height: 10),
               Container(
-                
                 padding: const EdgeInsets.all(16.0),
-                child:GridView.builder(
+                child: GridView.builder(
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // Two items per row
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            childAspectRatio: 3 / 2, // Control the height and width ratio
-          ),
-          itemCount: subjectNamesList.length,
-          itemBuilder: (context, index) {
-            return subjectItemBuild( subjectNamesList[index]);
-          },
-        ),
-        
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2, // Two items per row
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    childAspectRatio:
+                        3 / 2, // Control the height and width ratio
+                  ),
+                  itemCount: subjectNamesList.length,
+                  itemBuilder: (context, index) {
+                    return subjectItemBuild(subjectNamesList[index]);
+                  },
+                ),
               ),
             ],
           ),
@@ -202,7 +210,7 @@ Widget subjectItemBuild(subjectName) {
       print("$subjectName clicked");
     },
     child: Card(
-      elevation: 12.0,  // More elevation for depth
+      elevation: 12.0, // More elevation for depth
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.0),
       ),
@@ -213,8 +221,10 @@ Widget subjectItemBuild(subjectName) {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                colorFilter: ColorFilter.mode(Color(0xfff39c12), BlendMode.dstIn),
-                image: AssetImage('images/${subjectName.toLowerCase()}.png' ?? "images/physics.png"),
+                colorFilter:
+                    ColorFilter.mode(Color(0xfff39c12), BlendMode.dstIn),
+                image: AssetImage('images/${subjectName.toLowerCase()}.png' ??
+                    "images/physics.png"),
                 fit: BoxFit.cover,
               ),
             ),
@@ -237,7 +247,7 @@ Widget subjectItemBuild(subjectName) {
               subjectName,
               style: GoogleFonts.montserrat(
                 color: Colors.white,
-                fontSize: 18, 
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),

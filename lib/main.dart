@@ -26,9 +26,11 @@ main() async {
   // bool admin = await Cache.readData(key: "Admin") ?? false;
   Bloc.observer = MyBlocObserver();
 
-  //TOKEN = await Cache.readData(key: "token");
+  TOKEN = await Cache.readData(key: "token");
+  print(TOKEN);
   selectedLevel = await Cache.readData(key: "Level") ?? 0;
-  bool isOnBoardFinished = await Cache.readData(key: "FinishedOnBoard") ?? false;
+  bool isOnBoardFinished =
+      await Cache.readData(key: "FinishedOnBoard") ?? false;
 
   final Widget startPage;
   if (!isOnBoardFinished) {
@@ -60,7 +62,7 @@ class App extends StatelessWidget {
       ],
       child: BlocConsumer<AdminCubit, AdminCubitStates>(
         builder: (context, state) => MaterialApp(
-          home: AdminPanal(),
+          home: ChoosingYear(),
           debugShowCheckedModeBanner: false,
         ),
         listener: (context, state) {},

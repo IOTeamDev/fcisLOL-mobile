@@ -13,6 +13,7 @@ import 'package:lol/auth/screens/select_image.dart';
 import 'package:lol/constants/constants.dart';
 import 'package:lol/main/screens/home.dart';
 import 'package:lol/utilities/navigation.dart';
+import 'package:lol/utilities/shared_prefrence.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class UserInfo {
@@ -49,7 +50,9 @@ class Registerscreen extends StatelessWidget {
         listener: (context, state) {
           if (state is RegisterSuccess) {
             // token=state.token;
-            // Cache.writeData(key: "token", value: state.token);
+            TOKEN=state.token;
+            Cache.writeData(key: "token", value: state.token);
+            print(state.token);
             snack(
                 context: context,
                 enumColor: Messages.success,
@@ -89,6 +92,42 @@ class Registerscreen extends StatelessWidget {
                               "Welcome! Please fill in the details to get started"),
                           const SizedBox(
                             height: 20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                  child: LoginMethodContainer(
+                                      title: "Google",
+                                      image: "images/google1.png")),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                  child: LoginMethodContainer(
+                                      title: "Microsoft",
+                                      image:
+                                          "images/Microsoft_Logo_512px.png")),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          const Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Expanded(child: Divider()),
+
+                              Text(
+                                "   or  ",
+                                style: TextStyle(fontSize: 17),
+                              ),
+                              Expanded(child: Divider()),
+                              // Expanded(child: HalfDivider(context)),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 5,
                           ),
                           Column(
                             children: [
@@ -132,6 +171,7 @@ class Registerscreen extends StatelessWidget {
                               const SizedBox(
                                 height: 5,
                               ),
+
                               defaultTextField(
                                   validateor: (value) {
                                     if (value!.isEmpty) {
@@ -144,6 +184,36 @@ class Registerscreen extends StatelessWidget {
                                     }
                                   },
                                   controller: emailController),
+                            ],
+                          ),
+                            const SizedBox(
+                            height: 5,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Row(
+                                children: [
+                                  const Text(
+                                    "Phone number",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  const Spacer(),
+                                  Text(
+                                    "Optional",
+                                    style: TextStyle(color: Colors.grey[700]),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              defaultTextField(
+
+                                  // label: "Phone",
+                                  controller: phoneController),
                             ],
                           ),
                           const SizedBox(
