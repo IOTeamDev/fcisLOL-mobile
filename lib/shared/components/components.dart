@@ -8,66 +8,74 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../constants/constants.dart';
 import '../../main/screens/webview_screen.dart';
 
-Widget adminTopTitleWithDrawerButton({scaffoldKey, required String title, double size = 40, required bool hasDrawer, double bottomPadding = 15})
-{
-  return  Padding(
+Widget adminTopTitleWithDrawerButton(
+    {scaffoldKey,
+    required String title,
+    double size = 40,
+    required bool hasDrawer,
+    double bottomPadding = 15}) {
+  return Padding(
     padding: EdgeInsetsDirectional.only(bottom: bottomPadding),
     child: Row(
       children: [
         Padding(
-          padding: EdgeInsetsDirectional.symmetric(horizontal: 20.0),
-          child: Text('$title', style: TextStyle(color: Colors.white, fontSize: size),textAlign: TextAlign.start,),
-        ),
-        const Spacer(),
-        if(hasDrawer)
-        ElevatedButton(
-          onPressed: ()
-          {
-            scaffoldKey.currentState!.openDrawer();
-          },
-          child: Icon(Icons.menu, color: Colors.white, size: 40,),
-          style: ElevatedButton.styleFrom(
-            padding: EdgeInsetsDirectional.symmetric(horizontal: 5, vertical: 5),
-            backgroundColor: Colors.pinkAccent,
-            shape:RoundedRectangleBorder
-              (
-              borderRadius: BorderRadius.only
-                (
-                topLeft: Radius.circular(50), // Create semi-circle effect
-                topRight: Radius.circular(0), // Create semi-circle effect
-                bottomLeft: Radius.circular(50),
-                bottomRight: Radius.circular(0),
-              ),
-            ),
+          padding: const EdgeInsetsDirectional.symmetric(horizontal: 20.0),
+          child: Text(
+            title,
+            style: TextStyle(color: Colors.white, fontSize: size),
+            textAlign: TextAlign.start,
           ),
         ),
+        const Spacer(),
+        if (hasDrawer)
+          ElevatedButton(
+            onPressed: () {
+              scaffoldKey.currentState!.openDrawer();
+            },
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsetsDirectional.symmetric(
+                  horizontal: 5, vertical: 5),
+              backgroundColor: Colors.pinkAccent,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(50), // Create semi-circle effect
+                  topRight: Radius.circular(0), // Create semi-circle effect
+                  bottomLeft: Radius.circular(50),
+                  bottomRight: Radius.circular(0),
+                ),
+              ),
+            ),
+            child: Icon(
+              Icons.menu,
+              color: Colors.white,
+              size: 40,
+            ),
+          ),
       ],
     ),
   );
 }
 
-Widget drawerBuilder(context)
-{
+Widget drawerBuilder(context) {
   return Drawer(
     width: screenWidth(context) / 1.5,
     backgroundColor: Colors.cyan,
-
     child: ListView(
-
       padding: EdgeInsets.zero,
-      children:
-      [
-        SizedBox(height: 70,),
+      children: [
+        const SizedBox(
+          height: 70,
+        ),
         ListTile(
-          leading: Icon(Icons.home),
-          title: Text('Option1'),
+          leading: const Icon(Icons.home),
+          title: const Text('Option1'),
           onTap: () {
             Navigator.pop(context);
           },
         ),
         ListTile(
-          leading: Icon(Icons.settings),
-          title: Text('Option2'),
+          leading: const Icon(Icons.settings),
+          title: const Text('Option2'),
           onTap: () {
             Navigator.pop(context);
           },
@@ -77,8 +85,7 @@ Widget drawerBuilder(context)
   );
 }
 
-Widget backgroundEffects()
-{
+Widget backgroundEffects() {
   return Stack(
     children: [
       Positioned(
@@ -96,7 +103,7 @@ Widget backgroundEffects()
                 Colors.black.withOpacity(0.05)
               ],
               radius: 0.85,
-              center: Alignment(-0.3, -0.3),
+              center: const Alignment(-0.3, -0.3),
             ),
           ),
         ),
@@ -131,26 +138,33 @@ Widget backgroundEffects()
   );
 }
 
-Widget backButton(context, {double bottomPadding = 8})
-{
-  return  Padding(
+Widget backButton(context, {double bottomPadding = 8}) {
+  return Padding(
     padding: EdgeInsets.only(bottom: bottomPadding),
     child: Row(
-      children:
-      [
-        MaterialButton(onPressed: () {
-          Navigator.pop(context);
-        },
-          child: Icon(Icons.arrow_back, color: Colors.white, size: 30,),
-          padding: EdgeInsets.zero,),
+      children: [
+        MaterialButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          padding: EdgeInsets.zero,
+          child: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+            size: 30,
+          ),
+        ),
       ],
     ),
   );
 }
 
-Widget divider()
-{
-  return  Container(height: 2, width: double.infinity, color: Colors.grey,);
+Widget divider() {
+  return Container(
+    height: 2,
+    width: double.infinity,
+    color: Colors.grey,
+  );
 }
 
 void showToastMessage({
@@ -161,24 +175,22 @@ void showToastMessage({
   gravity = ToastGravity.BOTTOM,
   int lengthForIOSAndWeb = 5,
   toastLength = Toast.LENGTH_LONG,
-}) =>   Fluttertoast.showToast
-  (
-  msg: message!,
-  toastLength: toastLength,
-  gravity: gravity,
-  timeInSecForIosWeb: lengthForIOSAndWeb,
-  backgroundColor: chooseToastColor(states!),
-  textColor: textColor,
-  fontSize: fontSize,
-);
+}) =>
+    Fluttertoast.showToast(
+      msg: message!,
+      toastLength: toastLength,
+      gravity: gravity,
+      timeInSecForIosWeb: lengthForIOSAndWeb,
+      backgroundColor: chooseToastColor(states!),
+      textColor: textColor,
+      fontSize: fontSize,
+    );
 
-enum ToastStates{SUCCESS, ERROR, WARNING}
+enum ToastStates { SUCCESS, ERROR, WARNING }
 
-Color chooseToastColor(ToastStates states)
-{
+Color chooseToastColor(ToastStates states) {
   Color? color;
-  switch(states)
-  {
+  switch (states) {
     case ToastStates.SUCCESS:
       color = Colors.green[600];
       break;

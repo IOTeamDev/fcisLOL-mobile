@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/constants/colors.dart';
 import 'package:lol/constants/constants.dart';
+import 'package:lol/material/cubit/material_cubit.dart' as material_cubit;
 import 'package:lol/shared/components/components.dart';
 
 class MaterialDetails extends StatefulWidget {
@@ -15,7 +17,7 @@ class _MaterialDetailsState extends State<MaterialDetails>
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   late TabController _tabControllerOfShowingContent;
-  late TabController __tabControllerOfAddingContent;
+  late TabController _tabControllerOfAddingContent;
 
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
@@ -25,93 +27,99 @@ class _MaterialDetailsState extends State<MaterialDetails>
   @override
   void initState() {
     _tabControllerOfShowingContent = TabController(length: 2, vsync: this);
-    __tabControllerOfAddingContent = TabController(length: 2, vsync: this);
+    _tabControllerOfAddingContent = TabController(length: 2, vsync: this);
+    BlocProvider.of<material_cubit.MaterialCubit>(context).getMaterials();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: SizedBox(
-        height: 70,
-        width: 70,
-        child: FloatingActionButton(
-          onPressed: () {
-            _titleController.text = '';
-            _descriptionController.text = '';
-            _linkController.text = '';
-            scaffoldKey.currentState!.showBottomSheet(
-                backgroundColor: const Color.fromRGBO(25, 25, 25, 1),
-                (context) => customBottomSheet());
-          },
-          shape: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(50),
+    return BlocBuilder<material_cubit.MaterialCubit,
+        material_cubit.MaterialState>(
+      builder: (context, state) {
+        return Scaffold(
+          floatingActionButton: SizedBox(
+            height: 70,
+            width: 70,
+            child: FloatingActionButton(
+              onPressed: () {
+                _titleController.text = '';
+                _descriptionController.text = '';
+                _linkController.text = '';
+                scaffoldKey.currentState!.showBottomSheet(
+                    backgroundColor: const Color.fromRGBO(25, 25, 25, 1),
+                    (context) => customBottomSheet());
+              },
+              shape: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(50),
+              ),
+              backgroundColor: additional2,
+              child: Icon(
+                Icons.add,
+                color: a,
+                size: 40,
+              ),
+            ),
           ),
-          backgroundColor: additional2,
-          child: Icon(
-            Icons.add,
-            color: a,
-            size: 40,
-          ),
-        ),
-      ),
-      key: scaffoldKey,
-      drawer: drawerBuilder(context),
-      backgroundColor: Colors.black,
-      body: Stack(
-        children: [
-          backgroundEffects(),
-          Column(
+          key: scaffoldKey,
+          drawer: drawerBuilder(context),
+          backgroundColor: Colors.black,
+          body: Stack(
             children: [
-              const SizedBox(
-                height: 50,
-              ),
-              Container(
-                margin: const EdgeInsets.only(bottom: 8.0),
-                alignment: Alignment.topLeft,
-                child: MaterialButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Icon(
-                      Icons.arrow_back,
-                      color: Colors.white,
-                      size: 30,
-                    )),
-              ),
-              adminTopTitleWithDrawerButton(
-                  scaffoldKey: scaffoldKey,
-                  title: 'Material Name',
-                  size: 32,
-                  hasDrawer: true),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: divider(),
-              ),
-              Container(
-                  margin: const EdgeInsets.symmetric(
-                      horizontal: 16.0, vertical: 8.0),
-                  decoration: BoxDecoration(
-                      color: const Color.fromRGBO(217, 217, 217, 0.25),
-                      borderRadius: BorderRadius.circular(40)),
-                  width: screenWidth(context) / 1.2,
-                  child: customTabBar(
-                      tabController: _tabControllerOfShowingContent,
-                      title1: 'Videos',
-                      title2: 'Documents')),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Divider(
-                  color: Color.fromRGBO(255, 255, 255, 0.25),
-                ),
-              ),
-              Expanded(
-                  child: customTabBarView(
-                      tabController: _tabControllerOfShowingContent))
+              backgroundEffects(),
+              Column(
+                children: [
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 8.0),
+                    alignment: Alignment.topLeft,
+                    child: MaterialButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Icon(
+                          Icons.arrow_back,
+                          color: Colors.white,
+                          size: 30,
+                        )),
+                  ),
+                  adminTopTitleWithDrawerButton(
+                      scaffoldKey: scaffoldKey,
+                      title: 'Material Name',
+                      size: 32,
+                      hasDrawer: true),
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: divider(),
+                  ),
+                  Container(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 8.0),
+                      decoration: BoxDecoration(
+                          color: const Color.fromRGBO(217, 217, 217, 0.25),
+                          borderRadius: BorderRadius.circular(40)),
+                      width: screenWidth(context) / 1.2,
+                      child: customTabBar(
+                          tabController: _tabControllerOfShowingContent,
+                          title1: 'Videos',
+                          title2: 'Documents')),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Divider(
+                      color: Color.fromRGBO(255, 255, 255, 0.25),
+                    ),
+                  ),
+                  Expanded(
+                      child: customTabBarView(
+                          tabController: _tabControllerOfShowingContent))
+                ],
+              )
             ],
-          )
-        ],
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -311,7 +319,7 @@ class _MaterialDetailsState extends State<MaterialDetails>
                         borderRadius: BorderRadius.circular(40)),
                     width: screenWidth(context) / 1.2,
                     child: customTabBar(
-                        tabController: __tabControllerOfAddingContent,
+                        tabController: _tabControllerOfAddingContent,
                         title1: 'Video',
                         title2: 'Document')),
                 Row(

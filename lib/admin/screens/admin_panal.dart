@@ -10,6 +10,8 @@ import 'package:lol/utilities/navigation.dart';
 class AdminPanal extends StatelessWidget {
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
+  AdminPanal({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,9 +49,13 @@ class AdminPanal extends StatelessWidget {
           child: Column(
             children: [
               // Back Button
-             backButton(context),
+              backButton(context),
               // Text With Drawer Button
-              adminTopTitleWithDrawerButton(scaffoldKey: scaffoldKey, title: 'Admin', hasDrawer: true, bottomPadding: 50),
+              adminTopTitleWithDrawerButton(
+                  scaffoldKey: scaffoldKey,
+                  title: 'Admin',
+                  hasDrawer: true,
+                  bottomPadding: 50),
               // Buttons
               Container(
                 width: double.infinity,
@@ -85,8 +91,8 @@ class AdminPanal extends StatelessWidget {
                               alignment: Alignment.center,
                               child: const Text(
                                 'Announcements',
-                                style:
-                                    TextStyle(fontSize: 30, color: Colors.white),
+                                style: TextStyle(
+                                    fontSize: 30, color: Colors.white),
                               ),
                             ),
                           ),
@@ -122,8 +128,8 @@ class AdminPanal extends StatelessWidget {
                               alignment: Alignment.center,
                               child: const Text(
                                 'Requests',
-                                style:
-                                    TextStyle(fontSize: 30, color: Colors.white),
+                                style: TextStyle(
+                                    fontSize: 30, color: Colors.white),
                               ),
                             ),
                           ),
@@ -134,7 +140,7 @@ class AdminPanal extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              Container(
+              SizedBox(
                 width: double.infinity,
                 height: 300,
                 child: const Image(

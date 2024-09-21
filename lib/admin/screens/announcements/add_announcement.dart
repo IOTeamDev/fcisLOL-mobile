@@ -14,6 +14,8 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import '../../../shared/components/components.dart';
 
 class AddAnouncment extends StatefulWidget {
+  const AddAnouncment({super.key});
+
   @override
   State<AddAnouncment> createState() => _AddAnouncmentState();
 }
@@ -71,16 +73,19 @@ class _AddAnouncmentState extends State<AddAnouncment> {
                   child: Column(
                     children: [
                       //back button
-                     backButton(context),
-                      adminTopTitleWithDrawerButton(scaffoldKey: scaffoldKey, title: 'Announcements', size: 32, hasDrawer: false),
+                      backButton(context),
+                      adminTopTitleWithDrawerButton(
+                          scaffoldKey: scaffoldKey,
+                          title: 'Announcements',
+                          size: 32,
+                          hasDrawer: false),
                       GestureDetector(
                         onTap: () {
                           setState(() {
                             isExpanded = true; // Toggle the expansion
                             _height = 400;
                           });
-                          Future.delayed(const Duration(milliseconds: 200),
-                              () {
+                          Future.delayed(const Duration(milliseconds: 200), () {
                             setState(() {
                               showContent = true;
                             });
@@ -96,199 +101,277 @@ class _AddAnouncmentState extends State<AddAnouncment> {
                               borderRadius: BorderRadius.circular(20),
                               color: HexColor('B8A8F9').withOpacity(0.20)),
                           curve: Curves.fastEaseInToSlowEaseOut,
-                          child: isExpanded && showContent ?
-                          Padding(
-                            padding: const EdgeInsetsDirectional.symmetric(horizontal: 10.0, vertical: 10),
-                            child: Form(
-                              key: formKey,
-                              child: AnimatedOpacity(
-                                opacity: isExpanded ? 1.0 : 0,
-                                duration: const Duration(milliseconds: 500),
-                                curve: Curves.easeInOut,
-                                child: Column(
-                                  children: [
-                                  //Title Text Input
-                                    TextFormField(
-                                      controller: titleController,
-                                      validator: (value)
-                                      {
-                                        if (value == null || value.isEmpty) {
-                                          return 'This field must not be Empty';
-                                        }
-                                        return null;
-                                      },
-                                      decoration: InputDecoration(
-                                        hintText: 'Title',
-                                        hintStyle: TextStyle(fontSize: 20, color: Colors.grey[400]),
-                                        border: InputBorder.none,
-                                      ),
-                                        style: TextStyle(color: Colors.white),
-                                    ),
-                                    divider(),
-                                    const SizedBox(height: 10,),
-                                    //Description Input text Field
-                                    TextFormField(
-                                      controller: descriptionController,
-                                      minLines: 5,
-                                      maxLines: 5,
-                                      decoration: InputDecoration(
-                                        hintText: 'Description',
-                                        hintStyle: TextStyle(fontSize: 20, color: Colors.grey[400]),
-                                        border: InputBorder.none,
-                                      ),
-                                      style: const TextStyle(color: Colors.white),
-                                    ),
-                                    const SizedBox(height: 10,),
-                                    divider(),
-                                    const SizedBox(height: 10,),
-                                    Row(
-                                      children: [
-                                        //DatePicker Input text Field
-                                        Expanded(
-                                          child: TextFormField(
-                                            controller: dateController,
-                                            keyboardType: TextInputType.datetime,
-                                            onTap: () => showDatePicker(
-                                              context: context,
-                                              initialDate: DateTime.now(),
-                                              firstDate: DateTime.now(),
-                                              lastDate: DateTime.parse('2027-12-31'),
-                                            ).then((value) {
-                                              if (value != null) {
-                                                //print(DateFormat.YEAR_MONTH_DAY);
-                                                dateController.text = DateFormat.yMMMd().format(value);
-                                              }
-                                            }),
-                                            validator: (value) {
-                                              if (value == null || value.isEmpty) {
-                                                return 'Date must not be EMPTY!!';
-                                              }
-                                              return null;
-                                            },
-                                            decoration: InputDecoration(
-                                              suffixIcon: Icon(
-                                                Icons.date_range,
-                                                color: Colors.grey,
+                          child: isExpanded && showContent
+                              ? Padding(
+                                  padding:
+                                      const EdgeInsetsDirectional.symmetric(
+                                          horizontal: 10.0, vertical: 10),
+                                  child: Form(
+                                    key: formKey,
+                                    child: AnimatedOpacity(
+                                      opacity: isExpanded ? 1.0 : 0,
+                                      duration:
+                                          const Duration(milliseconds: 500),
+                                      curve: Curves.easeInOut,
+                                      child: Column(children: [
+                                        //Title Text Input
+                                        TextFormField(
+                                          controller: titleController,
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty) {
+                                              return 'This field must not be Empty';
+                                            }
+                                            return null;
+                                          },
+                                          decoration: InputDecoration(
+                                            hintText: 'Title',
+                                            hintStyle: TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.grey[400]),
+                                            border: InputBorder.none,
+                                          ),
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                        ),
+                                        divider(),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        //Description Input text Field
+                                        TextFormField(
+                                          controller: descriptionController,
+                                          minLines: 5,
+                                          maxLines: 5,
+                                          decoration: InputDecoration(
+                                            hintText: 'Description',
+                                            hintStyle: TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.grey[400]),
+                                            border: InputBorder.none,
+                                          ),
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        divider(),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          children: [
+                                            //DatePicker Input text Field
+                                            Expanded(
+                                              child: TextFormField(
+                                                controller: dateController,
+                                                keyboardType:
+                                                    TextInputType.datetime,
+                                                onTap: () => showDatePicker(
+                                                  context: context,
+                                                  initialDate: DateTime.now(),
+                                                  firstDate: DateTime.now(),
+                                                  lastDate: DateTime.parse(
+                                                      '2027-12-31'),
+                                                ).then((value) {
+                                                  if (value != null) {
+                                                    //print(DateFormat.YEAR_MONTH_DAY);
+                                                    dateController.text =
+                                                        DateFormat.yMMMd()
+                                                            .format(value);
+                                                  }
+                                                }),
+                                                validator: (value) {
+                                                  if (value == null ||
+                                                      value.isEmpty) {
+                                                    return 'Date must not be EMPTY!!';
+                                                  }
+                                                  return null;
+                                                },
+                                                decoration: InputDecoration(
+                                                  suffixIcon: const Icon(
+                                                    Icons.date_range,
+                                                    color: Colors.grey,
+                                                  ),
+                                                  hintText: 'Due Date',
+                                                  hintStyle: TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.grey[400]),
+                                                  border: InputBorder.none,
+                                                ),
+                                                style: const TextStyle(
+                                                    color: Colors.white),
                                               ),
-                                              hintText: 'Due Date',
-                                              hintStyle: TextStyle(fontSize: 16, color: Colors.grey[400]),
-                                              border: InputBorder.none,
                                             ),
-                                            style: TextStyle(color: Colors.white),
+                                            //Announcement type Drop Down menu
+                                            DropdownButton<String>(
+                                              hint: const Text(
+                                                'Type',
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                              style: const TextStyle(
+                                                  color: Colors.white),
+                                              dropdownColor: Colors.black,
+                                              value: selectedItem,
+                                              items: _items.map((String item) {
+                                                return DropdownMenuItem<String>(
+                                                  value: item,
+                                                  child: Text(
+                                                    item,
+                                                    style: const TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                );
+                                              }).toList(),
+                                              onChanged: (String? newValue) {
+                                                setState(() {
+                                                  selectedItem = newValue;
+                                                });
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                        const Spacer(),
+                                        divider(),
+                                        //Cancel and Submit buttons
+                                        Padding(
+                                          padding: const EdgeInsetsDirectional
+                                              .symmetric(horizontal: 10.0),
+                                          child: Row(
+                                            children: [
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    titleController.text = '';
+                                                    dateController.text = '';
+                                                    descriptionController.text =
+                                                        '';
+                                                    isExpanded =
+                                                        false; // Toggle the expansion
+                                                    _height = 80;
+                                                    showContent = false;
+                                                  });
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                  padding:
+                                                      const EdgeInsetsDirectional
+                                                          .symmetric(
+                                                          horizontal: 35),
+                                                  backgroundColor:
+                                                      HexColor('D9D9D9')
+                                                          .withOpacity(0.2),
+                                                  foregroundColor: Colors.white,
+                                                  textStyle: const TextStyle(
+                                                      fontSize: 15),
+                                                ),
+                                                child: const Text('Cancel'),
+                                              ),
+                                              const Spacer(),
+                                              ElevatedButton(
+                                                  onPressed: () {
+                                                    if (formKey.currentState!
+                                                            .validate() &&
+                                                        selectedItem != null) {
+                                                      cubit.addAnnouncement(
+                                                        title: titleController
+                                                            .text,
+                                                        dueDate:
+                                                            dateController.text,
+                                                        type: selectedItem,
+                                                        description:
+                                                            descriptionController
+                                                                .text,
+                                                      );
+                                                      setState(() {
+                                                        isExpanded = false;
+                                                        titleController.clear();
+                                                        descriptionController
+                                                            .clear();
+                                                        dateController.clear();
+                                                        showContent = false;
+                                                        selectedItem = null;
+                                                        _height = 80;
+                                                      });
+                                                    }
+                                                  },
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    padding:
+                                                        const EdgeInsetsDirectional
+                                                            .symmetric(
+                                                            horizontal: 40),
+                                                    backgroundColor:
+                                                        HexColor('B8A8F9'),
+                                                    foregroundColor:
+                                                        Colors.white,
+                                                    textStyle: const TextStyle(
+                                                        fontSize: 15),
+                                                  ),
+                                                  child: const Text('Submit')),
+                                            ],
                                           ),
                                         ),
-                                        //Announcement type Drop Down menu
-                                        DropdownButton<String>(
-                                          hint: Text('Type', style: TextStyle(color: Colors.white),),
-                                          style: TextStyle(color: Colors.white),
-                                          dropdownColor: Colors.black,
-                                          value: selectedItem,
-                                          items: _items.map((String item) {
-                                            return DropdownMenuItem<String>(
-                                              value: item,
-                                              child: Text(item, style: TextStyle(color: Colors.white),),
-                                            );
-                                          }).toList(),
-                                          onChanged: (String? newValue) {
-                                            setState(() {
-                                              selectedItem = newValue;
-                                            });
-                                          },
-                                        ),
-                                      ],
+                                      ]),
                                     ),
-                                    const Spacer(),
-                                    divider(),
-                                    //Cancel and Submit buttons
-                                    Padding(
-                                      padding: const EdgeInsetsDirectional.symmetric(horizontal: 10.0),
+                                  ))
+                              : !isExpanded
+                                  ? const Padding(
+                                      padding: EdgeInsetsDirectional.symmetric(
+                                          vertical: 10, horizontal: 15),
                                       child: Row(
                                         children: [
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                titleController.text = '';
-                                                dateController.text = '';
-                                                descriptionController.text = '';
-                                                isExpanded = false; // Toggle the expansion
-                                                _height = 80;
-                                                showContent = false;
-                                              });
-                                            },
-                                            child: const Text('Cancel'),
-                                            style: ElevatedButton.styleFrom(padding: const EdgeInsetsDirectional.symmetric(horizontal: 35),
-                                              backgroundColor: HexColor('D9D9D9').withOpacity(0.2),
-                                              foregroundColor:
-                                              Colors.white,
-                                              textStyle: const TextStyle(fontSize: 15),
-                                            ),
+                                          Text(
+                                            'Add New',
+                                            style: TextStyle(
+                                                fontSize: 30,
+                                                color: Colors.white),
                                           ),
-                                          const Spacer(),
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              if(formKey.currentState!.validate() && selectedItem != null) {
-                                                cubit.addAnnouncement(
-                                                  title: titleController.text,
-                                                  dueDate: dateController.text,
-                                                  type: selectedItem,
-                                                  description: descriptionController.text,
-                                                );
-                                              setState(() {
-                                                isExpanded = false;
-                                                titleController.clear();
-                                                descriptionController.clear();
-                                                dateController.clear();
-                                                showContent = false;
-                                                selectedItem = null;
-                                                _height = 80;
-                                              });
-                                              }
-                                            },
-                                            child: const Text('Submit'),
-                                            style: ElevatedButton.styleFrom(
-                                                padding: const EdgeInsetsDirectional.symmetric(horizontal: 40),
-                                                backgroundColor: HexColor('B8A8F9'),
-                                                foregroundColor: Colors.white,
-                                                textStyle: TextStyle(fontSize: 15),
-                                            )
+                                          Spacer(),
+                                          Icon(
+                                            Icons.add,
+                                            color: Colors.white,
+                                            size: 40,
                                           ),
                                         ],
                                       ),
-                                    ),
-                                  ]
-                                ),
-                              ),
-                            )
-                          ) : !isExpanded ? const Padding(
-                            padding: EdgeInsetsDirectional.symmetric(vertical: 10, horizontal: 15),
-                            child: Row(
-                              children: [
-                                Text('Add New', style: TextStyle(fontSize: 30, color: Colors.white),),
-                                Spacer(),
-                                Icon(Icons.add, color: Colors.white, size: 40,),
-                              ],
-                            ),
-                          ) : null,
+                                    )
+                                  : null,
                         ),
                       ),
                       ConditionalBuilder(
-                        condition: state is! AdminGetAnnouncementLoadingState && cubit.announcements != null && cubit.announcements!.isNotEmpty,
+                        condition: state is! AdminGetAnnouncementLoadingState &&
+                            cubit.announcements != null &&
+                            cubit.announcements!.isNotEmpty,
                         builder: (context) => ListView.separated(
                           shrinkWrap: true,
                           physics: const BouncingScrollPhysics(),
-                          itemBuilder: (context, index) => announcementBuilder(cubit.announcements![index].id.toString(),context, cubit.announcements![index].title, index, cubit.announcements![index].content, cubit.announcements![index].dueDate, cubit.announcements![index].type),
-                          separatorBuilder: (context, index) => const SizedBox(height: 10,),
+                          itemBuilder: (context, index) => announcementBuilder(
+                              cubit.announcements![index].id.toString(),
+                              context,
+                              cubit.announcements![index].title,
+                              index,
+                              cubit.announcements![index].content,
+                              cubit.announcements![index].dueDate,
+                              cubit.announcements![index].type),
+                          separatorBuilder: (context, index) => const SizedBox(
+                            height: 10,
+                          ),
                           itemCount: cubit.announcements!.length,
                         ),
                         fallback: (context) {
                           if (state is AdminGetAnnouncementLoadingState) {
-                            return const Center(child: CircularProgressIndicator());
-                          }
-                          else {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          } else {
                             return const Center(
                               child: Text(
                                 'You have no announcements yet!!!',
-                                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white),
+                                style: TextStyle(
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
                                 textAlign: TextAlign.center,
                               ),
                             );
@@ -306,7 +389,8 @@ class _AddAnouncmentState extends State<AddAnouncment> {
     );
   }
 
-  Widget announcementBuilder(String cubitId, context, title, ID, content, date, selectedItem) {
+  Widget announcementBuilder(
+      String cubitId, context, title, ID, content, date, selectedItem) {
     var cubit = AdminCubit.get(context).announcements![ID];
     return GestureDetector(
       onTap: () async {
@@ -316,12 +400,11 @@ class _AddAnouncmentState extends State<AddAnouncment> {
             description: cubit.content,
             date: cubit.dueDate,
             id: ID,
-            selectedType:  cubit.type,
+            selectedType: cubit.type,
           ),
         ));
 
-        if(refresh == 'refresh')
-        {
+        if (refresh == 'refresh') {
           AdminCubit.get(context).getAnnouncements();
         }
       },
@@ -330,9 +413,7 @@ class _AddAnouncmentState extends State<AddAnouncment> {
         padding: const EdgeInsetsDirectional.symmetric(horizontal: 10),
         height: 80,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: HexColor('B8A8F9')
-        ),
+            borderRadius: BorderRadius.circular(20), color: HexColor('B8A8F9')),
         child: Row(
           children: [
             ConstrainedBox(
@@ -349,22 +430,20 @@ class _AddAnouncmentState extends State<AddAnouncment> {
             MaterialButton(
               onPressed: () async {
                 print(cubit.id);
-               String Refresh = await Navigator.of(context).push(MaterialPageRoute(
-                   builder: (context) => EditAnnouncement(
-                     title: cubit.title,
-                     content: cubit.content,
-                     date: cubit.dueDate,
-                     id: ID.toString(),
-                     selectedItem:  cubit.type,
-                   )
-                 ),
+                String Refresh = await Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (context) => EditAnnouncement(
+                            title: cubit.title,
+                            content: cubit.content,
+                            date: cubit.dueDate,
+                            id: ID.toString(),
+                            selectedItem: cubit.type,
+                          )),
+                );
 
-               );
-
-               if(Refresh == 'refresh')
-               {
-                 AdminCubit.get(context).getAnnouncements();
-               }
+                if (Refresh == 'refresh') {
+                  AdminCubit.get(context).getAnnouncements();
+                }
               },
               shape: const CircleBorder(),
               minWidth: 0,

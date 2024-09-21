@@ -29,7 +29,7 @@ class LoginScreen extends StatelessWidget {
           if (state is LoginSuccess) {
             TOKEN = state.token;
             Cache.writeData(key: "token", value: state.token);
-            print(state.token+"Token");
+            print("${state.token}Token");
             snack(
                 context: context,
                 enumColor: Messages.success,
