@@ -49,8 +49,7 @@ class AdminPanal extends StatelessWidget {
               // Back Button
              backButton(context),
               // Text With Drawer Button
-              adminTopTitleWithDrawerButton(
-                  scaffoldKey: scaffoldKey, title: 'Admin', hasDrawer: true),
+              adminTopTitleWithDrawerButton(scaffoldKey: scaffoldKey, title: 'Admin', hasDrawer: true, bottomPadding: 50),
               // Buttons
               Container(
                 width: double.infinity,

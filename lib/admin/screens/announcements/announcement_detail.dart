@@ -44,22 +44,10 @@ class AnnouncementDetail extends StatelessWidget {
                     child: Column(
                       children: [
                         //Back Button
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Row(
-                            children:
-                            [
-                              MaterialButton(onPressed: () {
-                                Navigator.pop(context, 'nigga');
-                              },
-                                child: Icon(Icons.arrow_back, color: Colors.white, size: 30,), padding: EdgeInsets.zero,),
-                            ],
-                          ),
-                        ),
+                        backButton(context),
                         adminTopTitleWithDrawerButton(title: 'Announcement', size: 35, hasDrawer: false),
                         Container(
-                          margin: const EdgeInsetsDirectional.symmetric(
-                              horizontal: 15, vertical: 20),
+                          margin: const EdgeInsetsDirectional.symmetric(horizontal: 15, vertical: 20),
                           padding: const EdgeInsets.all(15),
                           width: double.infinity,
                           height: screenHeight(context) / 1.45,

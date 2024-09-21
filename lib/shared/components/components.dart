@@ -8,10 +8,10 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../constants/constants.dart';
 import '../../main/screens/webview_screen.dart';
 
-Widget adminTopTitleWithDrawerButton({scaffoldKey, required String title, double size = 40, required bool hasDrawer})
+Widget adminTopTitleWithDrawerButton({scaffoldKey, required String title, double size = 40, required bool hasDrawer, double bottomPadding = 15})
 {
   return  Padding(
-    padding: const EdgeInsetsDirectional.only(bottom: 15.0),
+    padding: EdgeInsetsDirectional.only(bottom: bottomPadding),
     child: Row(
       children: [
         Padding(
@@ -141,8 +141,7 @@ Widget backButton(context, {double bottomPadding = 8})
         MaterialButton(onPressed: () {
           Navigator.pop(context);
         },
-          child: Icon(
-            Icons.arrow_back, color: Colors.white, size: 30,),
+          child: Icon(Icons.arrow_back, color: Colors.white, size: 30,),
           padding: EdgeInsets.zero,),
       ],
     ),

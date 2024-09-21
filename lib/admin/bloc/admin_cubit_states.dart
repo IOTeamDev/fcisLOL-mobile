@@ -65,3 +65,23 @@ class AdminGetRequestsErrorState extends AdminCubitStates{
 
   AdminGetRequestsErrorState(this.error);
 }
+
+class AdminDeleteMaterialLoadingState extends AdminCubitStates{}
+
+class AdminDeleteMaterialSuccessState extends AdminCubitStates{}
+
+class AdminDeleteMaterialErrorState extends AdminCubitStates{
+  final String error;
+
+  AdminDeleteMaterialErrorState(this.error);
+}
+
+class AdminAcceptRequestLoadingState extends AdminCubitStates{}
+
+class AdminAcceptRequestSuccessState extends AdminCubitStates{}
+
+class AdminAcceptRequestErrorState extends AdminCubitStates{
+  final String error;
+
+  AdminAcceptRequestErrorState(this.error);
+}
