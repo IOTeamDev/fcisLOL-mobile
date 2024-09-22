@@ -12,7 +12,9 @@ class MaterialCubit extends Cubit<MaterialState> {
   List<material_model.MaterialModel> materials = [];
   void getMaterials() {
     emit(GetMaterialLoading());
-    DioHelp.getData(path: MATERIAL).then((material) {
+    DioHelp.getData(
+        path: MATERIAL,
+        query: {'subject': 'CALC_1', 'accepted': true}).then((material) {
       materials = [];
       material.data.ForEach((e) {
         materials.add(material_model.MaterialModel.fromJson(e));
@@ -29,10 +31,12 @@ class MaterialCubit extends Cubit<MaterialState> {
       required MaterialType type}) {
     emit(SaveMaterialLoading());
     DioHelp.postData(path: MATERIAL, data: {
+      'subject': 'CALC_1',
       'title': title,
       'description': description,
       'link': link,
-      'type': type
+      'type': type,
+      'semester': 'One'
     }); //not finished yet
   }
 }
