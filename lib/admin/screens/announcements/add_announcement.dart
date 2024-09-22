@@ -36,13 +36,9 @@ class _AddAnouncmentState extends State<AddAnouncment> {
     return BlocConsumer<AdminCubit, AdminCubitStates>(
       listener: (context, state) {
         if (state is AdminSaveAnnouncementSuccessState) {
-          showToastMessage(
-              message: 'Announcement Added Successfully',
-              states: ToastStates.SUCCESS);
+          showToastMessage(message: 'Announcement Added Successfully', states: ToastStates.SUCCESS);
         } else if (state is AdminSaveAnnouncementsErrorState) {
-          showToastMessage(
-              message: 'An Error Occurred: ${state.error}',
-              states: ToastStates.ERROR);
+          showToastMessage(message: 'An Error Occurred: ${state.error}', states: ToastStates.ERROR);
         }
 
         if (state is AdminDeleteAnnouncementSuccessState) {

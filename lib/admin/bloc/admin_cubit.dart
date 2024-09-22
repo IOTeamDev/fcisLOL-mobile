@@ -21,7 +21,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
 
 
 
-  AnnouncementModel? announcementModel;
+  //AnnouncementModel? announcementModel;
   void addAnnouncement({required title, description, required dueDate, required type})
   {
     emit(AdminSaveAnnouncementLoadingState());
@@ -31,8 +31,8 @@ class AdminCubit extends Cubit<AdminCubitStates> {
       token: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE3MjY3ODYyOTUsImV4cCI6MTc1Nzg5MDI5NX0.IlnTrdxQH_Zlu9AUf3TMi5HfOrjPv-Pu3-peDlZOnlM'
     ).then((value)
     {
-      announcementModel = AnnouncementModel.fromJson(value.data);
-      emit(AdminSaveAnnouncementSuccessState(announcementModel!));
+      //announcementModel = AnnouncementModel.fromJson(value.data);
+      emit(AdminSaveAnnouncementSuccessState());
       getAnnouncements();
     }).catchError((error)
     {
