@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lol/auth/bloc/login_cubit.dart';
 import 'package:lol/main/screens/choosing_year.dart';
 import 'package:lol/utilities/navigation.dart';
 import 'package:lol/utilities/shared_prefrence.dart';
@@ -74,7 +75,7 @@ class _OnBoardingState extends State<OnBoarding> {
                       onPressed: () {
                         if (isLastPage) {
                           Cache.writeData(key: "FinishedOnBoard", value: true);
-                          navigatReplace(context, const ChoosingYear());
+                          navigatReplace(context,  ChoosingYear(loginCubit:LoginCubit() ,));////
                         } else {
                           pageViewController.nextPage(
                             duration: const Duration(milliseconds: 500),

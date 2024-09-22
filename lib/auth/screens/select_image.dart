@@ -6,6 +6,8 @@ import 'package:lol/auth/screens/register.dart';
 import 'package:lol/components/snack.dart';
 import 'package:lol/main/bloc/main_cubit.dart';
 import 'package:lol/main/bloc/main_cubit_states.dart';
+import 'package:lol/main/screens/choosing_year.dart';
+import 'package:lol/utilities/navigation.dart';
 
 class SelectImage extends StatelessWidget {
 // final name
@@ -26,14 +28,14 @@ class SelectImage extends StatelessWidget {
       ],
       child: BlocConsumer<MainCubit, MainCubitStates>(
         listener: (context, state) {
-          if (state is RegisterSuccess) {
-            // token=state.token;
-            // Cache.writeData(key: "token", value: state.token);
-            snack(
-                context: context,
-                enumColor: Messages.success,
-                titleWidget: const Text("Successfully signed up !"));
-          }
+          // if (state is RegisterSuccess) {
+          //   // token=state.token;
+          //   // Cache.writeData(key: "token", value: state.token);
+          //   snack(
+          //       context: context,
+          //       enumColor: Messages.success,
+          //       titleWidget: const Text("Successfully signed up !"));
+          // }
         },
         builder: (context, state) {
           var loginCubit = LoginCubit.get(context);
@@ -54,8 +56,8 @@ class SelectImage extends StatelessWidget {
                         radius: 60,
                         backgroundImage: mainCubit.userImageFile != null
                             ? FileImage(mainCubit.userImageFile!)
-                            : const AssetImage(
-                                'images/default-avatar-profile-icon-social-600nw-1677509740.png'),
+                            :  AssetImage(
+                                'images/default-avatar-icon-of-social-media-user-vector.jpg'),
                       ),
                       Positioned(
                         right: 0,
@@ -127,14 +129,25 @@ class SelectImage extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        loginCubit.register(
-                            name: userInfo.name,
-                            email: userInfo.email,
-                            phone: userInfo.phone,
-                            photo: mainCubit.userImagePath ??
-                                "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg",
-                            password: userInfo.password,
-                            semester: "Two");
+                        userInfo.photo = mainCubit.userImagePath ??
+                            "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg";
+                        print(userInfo.toString());
+                        navigate(
+                            context,
+                            ChoosingYear(loginCubit: LoginCubit(),
+                              userInfo: userInfo,
+                            ));
+
+                        // loginCubit.register(
+                        //     name: userInfo.name,
+                        //     email: userInfo.email,
+                        //     phone: userInfo.phone,
+                        //     photo: mainCubit.userImagePath ??
+                        //         "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg",
+                        //     password: userInfo.password,
+                        //     semester: "Two"
+
+                        //     );
                       },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),

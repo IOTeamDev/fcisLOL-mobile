@@ -19,3 +19,5 @@ class GetProfileLoading extends MainCubitStates{}
 class GetProfileSuccess extends MainCubitStates{}
 
 class GetProfileFailure extends MainCubitStates{}
+
+class Logout extends MainCubitStates{}

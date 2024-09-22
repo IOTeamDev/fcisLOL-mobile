@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/admin/bloc/admin_cubit.dart';
 import 'package:lol/admin/bloc/admin_cubit_states.dart';
 import 'package:lol/admin/screens/admin_panal.dart';
+import 'package:lol/auth/bloc/login_cubit.dart';
 import 'package:lol/material/cubit/material_cubit.dart';
 import 'package:lol/material/screens/material_details.dart';
 import 'package:lol/utilities/shared_prefrence.dart';
@@ -18,7 +19,6 @@ import 'utilities/observer.dart';
 import 'package:flutter/material.dart';
 import 'main/screens/home.dart';
 
-late int selectedLevel;
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Cache.initialize();
@@ -29,7 +29,9 @@ main() async {
 
   TOKEN = await Cache.readData(key: "token");
   print(TOKEN);
-  selectedLevel = await Cache.readData(key: "Level") ?? 0;
+
+  SelectedSemester = await Cache.readData(key: "semester");
+  print(SelectedSemester.toString() + "semester");
   bool isOnBoardFinished =
       await Cache.readData(key: "FinishedOnBoard") ?? false;
 
@@ -37,8 +39,8 @@ main() async {
   if (!isOnBoardFinished) {
     startPage = const OnBoarding();
   } else {
-    if (selectedLevel == 0 && TOKEN == null) {
-      startPage = const ChoosingYear();
+    if (SelectedSemester == null && TOKEN == null) {
+      startPage = ChoosingYear(loginCubit: LoginCubit(),);//
     } else {
       startPage = const Home();
     }
@@ -65,12 +67,9 @@ class App extends StatelessWidget {
         BlocProvider(
             create: (BuildContext context) => MaterialCubit()..getMaterials())
       ],
-      child: BlocConsumer<AdminCubit, AdminCubitStates>(
-        builder: (context, state) => MaterialApp(
-          home: AdminPanal(),
-          debugShowCheckedModeBanner: false,
-        ),
-        listener: (context, state) {},
+      child: MaterialApp(
+        home: LoginScreen(),
+        debugShowCheckedModeBanner: false,
       ),
     );
   }

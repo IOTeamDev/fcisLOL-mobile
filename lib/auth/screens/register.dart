@@ -21,11 +21,13 @@ class UserInfo {
   late String email;
   late String password;
   late String phone;
+   String? photo;
 
   UserInfo(
       {required this.name,
       required this.email,
       required this.password,
+       this.photo,
       required this.phone});
 }
 
@@ -48,25 +50,25 @@ class Registerscreen extends StatelessWidget {
       create: (context) => LoginCubit(),
       child: BlocConsumer<LoginCubit, LoginStates>(
         listener: (context, state) {
-          if (state is RegisterSuccess) {
-            // token=state.token;
-            TOKEN=state.token;
-            Cache.writeData(key: "token", value: state.token);
-            print(state.token);
-            snack(
-                context: context,
-                enumColor: Messages.success,
-                titleWidget: const Text("Successfully signed up !"));
+          // if (state is RegisterSuccess) {
+          //   // token=state.token;
+          //   TOKEN=state.token;
+          //   Cache.writeData(key: "token", value: state.token);
+          //   print(state.token);
+          //   snack(
+          //       context: context,
+          //       enumColor: Messages.success,
+          //       titleWidget: const Text("Successfully signed up !"));
 
-            navigatReplace(context, const Home());
-          }
-          if (state is LoginFailed) {
-            snack(
-                context: context,
-                enumColor: Messages.error,
-                titleWidget:
-                    const Text("Please try with another email address"));
-          }
+          //   navigatReplace(context, const Home());
+          // }
+          // if (state is RegisterFailed) {
+          //   snack(
+          //       context: context,
+          //       enumColor: Messages.error,
+          //       titleWidget:
+          //           const Text("Please try with another email address"));
+          // }
         },
         builder: (context, state) {
           return Scaffold(
