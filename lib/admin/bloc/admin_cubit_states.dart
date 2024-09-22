@@ -22,9 +22,9 @@ class AdminGetAnnouncementsErrorState extends AdminCubitStates{
 class AdminSaveAnnouncementLoadingState extends AdminCubitStates{}
 
 class AdminSaveAnnouncementSuccessState extends AdminCubitStates{
-  final AnnouncementModel announcementModel;
-
-  AdminSaveAnnouncementSuccessState(this.announcementModel);
+  // final AnnouncementModel announcementModel;
+  //
+  // AdminSaveAnnouncementSuccessState(this.announcementModel);
 }
 
 class AdminSaveAnnouncementsErrorState extends AdminCubitStates{

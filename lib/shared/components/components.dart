@@ -45,7 +45,7 @@ Widget adminTopTitleWithDrawerButton(
                 ),
               ),
             ),
-            child: Icon(
+            child: const Icon(
               Icons.menu,
               color: Colors.white,
               size: 40,
@@ -148,7 +148,7 @@ Widget backButton(context, {double bottomPadding = 8}) {
             Navigator.pop(context);
           },
           padding: EdgeInsets.zero,
-          child: Icon(
+          child: const Icon(
             Icons.arrow_back,
             color: Colors.white,
             size: 30,
