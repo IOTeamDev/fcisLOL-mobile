@@ -175,14 +175,14 @@ class _MaterialDetailsState extends State<MaterialDetails>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Image.network(
-                              materialVidoes[i].link,
+                              materialVidoes[i].link!,
                               height: screenHeight(context) / 5,
                               width: double.infinity,
                               fit: BoxFit.fill,
                             ),
                             Expanded(
                               child: Text(
-                                materialVidoes[i].subject,
+                                materialVidoes[i].subject!,
                                 style: TextStyle(
                                   fontSize: screenWidth(context) / 20,
                                   color: a,
@@ -222,7 +222,7 @@ class _MaterialDetailsState extends State<MaterialDetails>
                               ),
                               const Spacer(),
                               Text(
-                                materialDocuments[i].subject,
+                                materialDocuments[i].subject!,
                                 style: TextStyle(
                                     color: a,
                                     fontSize: screenWidth(context) / 15),
