@@ -7,7 +7,7 @@ class MaterialModel {
   final MaterialType type;
   final String? semester;
   final Author? author;
-  final bool? accepted;
+  final bool accepted;
 
   MaterialModel({
     this.id,
@@ -16,7 +16,7 @@ class MaterialModel {
     required this.type,
     this.semester,
     this.author,
-    this.accepted,
+    this.accepted = false,
   });
 
   factory MaterialModel.fromJson(Map<String, dynamic> json) {

@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:lol/admin/screens/Announcements/add_announcement.dart';
 import 'package:lol/admin/screens/requests/requests.dart';
@@ -68,7 +66,7 @@ class AdminPanal extends StatelessWidget {
                       children: [
                         ElevatedButton(
                           onPressed: () {
-                            navigate(context, AddAnouncment());
+                            navigate(context, const AddAnouncment());
                           },
                           style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.zero, // Remove default padding
@@ -140,10 +138,10 @@ class AdminPanal extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              SizedBox(
+              const SizedBox(
                 width: double.infinity,
                 height: 300,
-                child: const Image(
+                child: Image(
                   image: AssetImage('images/admin/background_admin.png'),
                   fit: BoxFit.fitWidth,
                 ),

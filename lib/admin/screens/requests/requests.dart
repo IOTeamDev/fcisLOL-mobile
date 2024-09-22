@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
@@ -210,7 +209,7 @@ class Requests extends StatelessWidget {
                     shape: const CircleBorder(), // Checkmark icon
                     minWidth: 0, // Reduce min width to make it smaller
                     padding: const EdgeInsets.all(8), // Circular button
-                    child: Icon(
+                    child: const Icon(
                       Icons.check,
                       color: Colors.green,
                     ), // Padding for icon
@@ -224,7 +223,7 @@ class Requests extends StatelessWidget {
                     shape: const CircleBorder(), // X icon
                     minWidth: 0, // Reduce min width to make it smaller
                     padding: const EdgeInsets.all(8), // Circular button
-                    child: Icon(
+                    child: const Icon(
                       Icons.close,
                       color: Colors.red,
                     ), // Padding for icon

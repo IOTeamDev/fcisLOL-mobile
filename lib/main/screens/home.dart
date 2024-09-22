@@ -9,7 +9,6 @@ import 'package:lol/main.dart';
 import 'package:lol/utilities/navigation.dart';
 import 'package:lol/utilities/shared_prefrence.dart';
 
-import '../../auth/screens/login.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
