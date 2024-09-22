@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/constants/colors.dart';
 import 'package:lol/constants/constants.dart';
+import 'package:lol/material/cubit/material_cubit.dart' as material_cubit;
+import 'package:lol/material/model/material_model.dart' as material_model;
 import 'package:lol/shared/components/components.dart';
 
 class MaterialDetails extends StatefulWidget {
@@ -14,8 +17,10 @@ class _MaterialDetailsState extends State<MaterialDetails>
     with TickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
+  bool bottomSheetOpened = false;
+
   late TabController _tabControllerOfShowingContent;
-  late TabController __tabControllerOfAddingContent;
+  late TabController _tabControllerOfAddingContent;
 
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
@@ -25,7 +30,8 @@ class _MaterialDetailsState extends State<MaterialDetails>
   @override
   void initState() {
     _tabControllerOfShowingContent = TabController(length: 2, vsync: this);
-    __tabControllerOfAddingContent = TabController(length: 2, vsync: this);
+    _tabControllerOfAddingContent = TabController(length: 2, vsync: this);
+    BlocProvider.of<material_cubit.MaterialCubit>(context).getMaterials();
     super.initState();
   }
 
@@ -37,22 +43,35 @@ class _MaterialDetailsState extends State<MaterialDetails>
         width: 70,
         child: FloatingActionButton(
           onPressed: () {
-            _titleController.text = '';
-            _descriptionController.text = '';
-            _linkController.text = '';
-            scaffoldKey.currentState!.showBottomSheet(
-                backgroundColor: const Color.fromRGBO(25, 25, 25, 1),
-                (context) => customBottomSheet());
+            if (bottomSheetOpened) {
+              Navigator.of(context).pop();
+            } else {
+              _titleController.text = '';
+              _descriptionController.text = '';
+              _linkController.text = '';
+              scaffoldKey.currentState!.showBottomSheet(
+                  backgroundColor: const Color.fromRGBO(25, 25, 25, 1),
+                  (context) => customBottomSheet());
+            }
+            setState(() {
+              bottomSheetOpened = !bottomSheetOpened;
+            });
           },
           shape: OutlineInputBorder(
             borderRadius: BorderRadius.circular(50),
           ),
           backgroundColor: additional2,
-          child: Icon(
-            Icons.add,
-            color: a,
-            size: 40,
-          ),
+          child: bottomSheetOpened
+              ? Icon(
+                  Icons.close,
+                  color: a,
+                  size: 40,
+                )
+              : Icon(
+                  Icons.add,
+                  color: a,
+                  size: 40,
+                ),
         ),
       ),
       key: scaffoldKey,
@@ -116,88 +135,115 @@ class _MaterialDetailsState extends State<MaterialDetails>
   }
 
   Widget customTabBarView({required TabController tabController}) {
-    return TabBarView(
-      controller: tabController,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ListView.separated(
-            itemCount: 10,
-            separatorBuilder: (context, i) => const SizedBox(
-              height: 30,
+    return BlocBuilder<material_cubit.MaterialCubit,
+        material_cubit.MaterialState>(
+      builder: (context, state) {
+        if (state is material_cubit.GetMaterialLoading) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: a,
             ),
-            itemBuilder: (context, i) {
-              return Container(
-                padding: const EdgeInsets.all(8),
-                width: screenWidth(context),
-                height: screenHeight(context) / 4,
-                decoration: BoxDecoration(
-                    color: const Color.fromRGBO(217, 217, 217, 0.25),
-                    borderRadius: BorderRadius.circular(10)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Image.asset(
-                      'images/electronics.png',
-                      height: screenHeight(context) / 5,
-                      width: double.infinity,
-                      fit: BoxFit.fill,
-                    ),
-                    Expanded(
-                      child: Text(
-                        'Chapter or lecture name',
-                        style: TextStyle(
-                          fontSize: screenWidth(context) / 20,
-                          color: a,
+          );
+        } else if (state is material_cubit.GetMaterialLoaded) {
+          List<material_model.MaterialModel> materialVidoes = [];
+          materialVidoes.addAll(state.materials
+              .where((e) => e.type == material_model.MaterialType.YOUTUBE));
+          List<material_model.MaterialModel> materialDocuments = [];
+          materialDocuments.addAll(state.materials
+              .where((e) => e.type == material_model.MaterialType.DOCUMENT));
+          return TabBarView(
+            controller: tabController,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ListView.separated(
+                  itemCount: materialVidoes.length,
+                  separatorBuilder: (context, i) => const SizedBox(
+                    height: 30,
+                  ),
+                  itemBuilder: (context, i) {
+                    return GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        width: screenWidth(context),
+                        height: screenHeight(context) / 4,
+                        decoration: BoxDecoration(
+                            color: const Color.fromRGBO(217, 217, 217, 0.25),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Image.network(
+                              materialVidoes[i].link,
+                              height: screenHeight(context) / 5,
+                              width: double.infinity,
+                              fit: BoxFit.fill,
+                            ),
+                            Expanded(
+                              child: Text(
+                                materialVidoes[i].subject,
+                                style: TextStyle(
+                                  fontSize: screenWidth(context) / 20,
+                                  color: a,
+                                ),
+                              ),
+                            )
+                          ],
                         ),
                       ),
-                    )
-                  ],
+                    );
+                  },
                 ),
-              );
-            },
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ListView.separated(
-            itemCount: 10,
-            separatorBuilder: (context, i) => const SizedBox(
-              height: 10,
-            ),
-            itemBuilder: (context, i) {
-              return GestureDetector(
-                onTap: () {},
-                child: Container(
-                    padding: const EdgeInsets.all(8),
-                    width: screenWidth(context),
-                    height: screenHeight(context) / 10,
-                    decoration: BoxDecoration(
-                        color: const Color.fromRGBO(217, 217, 217, 0.25),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.folder_outlined,
-                          size: 50,
-                          color: a,
-                        ),
-                        const Spacer(),
-                        Text(
-                          'chapter ${i + 1}',
-                          style: TextStyle(
-                              color: a, fontSize: screenWidth(context) / 15),
-                        ),
-                        const Spacer(
-                          flex: 4,
-                        )
-                      ],
-                    )),
-              );
-            },
-          ),
-        ),
-      ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ListView.separated(
+                  itemCount: materialDocuments.length,
+                  separatorBuilder: (context, i) => const SizedBox(
+                    height: 10,
+                  ),
+                  itemBuilder: (context, i) {
+                    return GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                          padding: const EdgeInsets.all(8),
+                          width: screenWidth(context),
+                          height: screenHeight(context) / 10,
+                          decoration: BoxDecoration(
+                              color: const Color.fromRGBO(217, 217, 217, 0.25),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.folder_outlined,
+                                size: 50,
+                                color: a,
+                              ),
+                              const Spacer(),
+                              Text(
+                                materialDocuments[i].subject,
+                                style: TextStyle(
+                                    color: a,
+                                    fontSize: screenWidth(context) / 15),
+                              ),
+                              const Spacer(
+                                flex: 4,
+                              )
+                            ],
+                          )),
+                    );
+                  },
+                ),
+              ),
+            ],
+          );
+        } else if (state is material_cubit.GetMaterialError) {
+          return Text(state.errorMessage.toString());
+        } else {
+          throw Exception('error');
+        }
+      },
     );
   }
 
@@ -311,7 +357,7 @@ class _MaterialDetailsState extends State<MaterialDetails>
                         borderRadius: BorderRadius.circular(40)),
                     width: screenWidth(context) / 1.2,
                     child: customTabBar(
-                        tabController: __tabControllerOfAddingContent,
+                        tabController: _tabControllerOfAddingContent,
                         title1: 'Video',
                         title2: 'Document')),
                 Row(

@@ -9,7 +9,6 @@ import 'package:lol/main.dart';
 import 'package:lol/utilities/navigation.dart';
 import 'package:lol/utilities/shared_prefrence.dart';
 
-import '../../auth/screens/login.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -17,27 +16,27 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    var _scaffoldKey = GlobalKey<ScaffoldState>();
+    var scaffoldKey = GlobalKey<ScaffoldState>();
     return Scaffold(
-      key: _scaffoldKey,
-      backgroundColor: Color(0xff1B262C),
+      key: scaffoldKey,
+      backgroundColor: const Color(0xff1B262C),
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              _scaffoldKey.currentState!
+              scaffoldKey.currentState!
                   .openDrawer(); // Use key to open the drawer
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.menu,
               color: Colors.white,
             )),
-        backgroundColor: Color(0xff0F4C75),
+        backgroundColor: const Color(0xff0F4C75),
         title: const InkWell(child: Row()),
         actions: [
           if (TOKEN == null)
             Container(
               decoration: BoxDecoration(
-                  gradient: LinearGradient(
+                  gradient: const LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
@@ -53,7 +52,7 @@ class Home extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) => const LoginScreen()));
                 },
-                child: Text(
+                child: const Text(
                   "Login",
                   style: TextStyle(color: Colors.white),
                 ),
@@ -88,7 +87,7 @@ class Home extends StatelessWidget {
             ListTile(
               onTap: () {
                 Cache.removeValue(key: "token");
-                navigatReplace(context, LoginScreen());
+                navigatReplace(context, const LoginScreen());
               },
               leading: const Icon(Icons.exit_to_app),
               title: const Text("Log Out"),
@@ -97,7 +96,7 @@ class Home extends StatelessWidget {
         ),
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -111,7 +110,7 @@ class Home extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               CarouselSlider(
                 items: carsor.map((carsor) {
                   return InkWell(
@@ -152,13 +151,13 @@ class Home extends StatelessWidget {
                         // padding: EdgeInsets.all(5),
                         // width: 400,
                         decoration: BoxDecoration(
-                            color: Color.fromARGB(51, 65, 180, 197)
+                            color: const Color.fromARGB(51, 65, 180, 197)
                                 .withOpacity(0.6)
                                 .withAlpha(150),
                             borderRadius: BorderRadius.circular(3)),
                         child: Text(
                           carsor.text!,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w500),
                           textAlign: TextAlign.center,
                         ))
@@ -181,9 +180,9 @@ class Home extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(16.0),
                 child: GridView.builder(
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2, // Two items per row
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
@@ -222,7 +221,7 @@ Widget subjectItemBuild(subjectName) {
             decoration: BoxDecoration(
               image: DecorationImage(
                 colorFilter:
-                    ColorFilter.mode(Color(0xfff39c12), BlendMode.dstIn),
+                    const ColorFilter.mode(Color(0xfff39c12), BlendMode.dstIn),
                 image: AssetImage('images/${subjectName.toLowerCase()}.png' ??
                     "images/physics.png"),
                 fit: BoxFit.cover,

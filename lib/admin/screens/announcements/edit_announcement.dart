@@ -15,7 +15,8 @@ class EditAnnouncement extends StatefulWidget {
   final String date;
   final String? selectedItem;
 
-  EditAnnouncement({
+  const EditAnnouncement({
+    super.key,
     required this.id,
     required this.title,
     required this.content,
@@ -58,239 +59,255 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
     super.dispose();
   }
 
-
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AdminCubit()..getAnnouncements(),
-      child: BlocConsumer<AdminCubit, AdminCubitStates> (
-        listener: (context, state){
-          if(state is AdminUpdateAnnouncementSuccessState)
-          {
-            showToastMessage(message: 'Material Updated Successfully!!', states: ToastStates.SUCCESS);
+      child: BlocConsumer<AdminCubit, AdminCubitStates>(
+        listener: (context, state) {
+          if (state is AdminUpdateAnnouncementSuccessState) {
+            showToastMessage(
+                message: 'Material Updated Successfully!!',
+                states: ToastStates.SUCCESS);
             Navigator.pop(context, 'refresh');
           }
         },
-        builder:(context, state) {
+        builder: (context, state) {
           return Scaffold(
-          backgroundColor: Colors.black,
-          body: Stack(
-            children: [
-              backgroundEffects(),
-              Container(
-                margin: const EdgeInsetsDirectional.only(top: 50),
-                width: double.infinity,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      // Back Button
-                      backButton(context),
-                      adminTopTitleWithDrawerButton(
-                          title: 'Edit Announcement',
-                          size: 32,
-                          hasDrawer: false),
-                      Container(
-                        margin: const EdgeInsetsDirectional.symmetric(horizontal: 15, vertical: 20),
-                        padding: const EdgeInsets.all(15),
-                        height: screenHeight(context) / 1.45,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(colors: [
-                              HexColor('B8A8F9').withOpacity(0.45),
-                              HexColor('2F2B3E').withOpacity(0.45)
-                            ], begin: Alignment.bottomRight, end: Alignment.topLeft),
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Form(
-                          key: _formKey,
-                          child: Column(
-                            children: [
-                              // Title Text Input
-                              TextFormField(
-                                controller: titleController,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Title must not be empty';
-                                  }
-                                  return null;
-                                },
-                                decoration: InputDecoration(
-                                  hintText: 'Title',
-                                  hintStyle:
-                                  TextStyle(fontSize: 20, color: Colors.grey[400]),
-                                  border: InputBorder.none,
-                                ),
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                              divider(),
-                              const SizedBox(height: 10),
-                              // Description Text Input
-                              TextFormField(
-                                controller: contentController,
-                                minLines: 5,
-                                maxLines: 12,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Description must not be empty';
-                                  }
-                                  return null;
-                                },
-                                decoration: InputDecoration(
-                                  hintText: 'Description',
-                                  hintStyle:
-                                  TextStyle(fontSize: 20, color: Colors.grey[400]),
-                                  border: InputBorder.none,
-                                ),
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                              const SizedBox(height: 10),
-                              divider(),
-                              const SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  // DatePicker Text Field
-                                  Expanded(
-                                    child: TextFormField(
-                                      controller: dateController,
-                                      keyboardType: TextInputType.datetime,
-                                      onTap: () => showDatePicker(
-                                        context: context,
-                                        initialDate: DateTime.now(),
-                                        firstDate: DateTime.now(),
-                                        lastDate: DateTime.parse('2027-12-31'),
-                                      ).then((value) {
-                                        if (value != null) {
-                                          setState(() {
-                                            dateController.text = DateFormat.yMMMd().format(value);
-                                          });
-                                        }
-                                      }),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Date must not be empty';
-                                        }
-                                        return null;
-                                      },
-                                      decoration: InputDecoration(
-                                        suffixIcon: const Icon(
-                                          Icons.date_range,
-                                          color: Colors.grey,
-                                        ),
-                                        hintText: 'Due Date',
-                                        hintStyle: TextStyle(
-                                            fontSize: 16, color: Colors.grey[400]),
-                                        border: InputBorder.none,
-                                      ),
-                                      style: const TextStyle(color: Colors.white),
-                                    ),
+            backgroundColor: Colors.black,
+            body: Stack(
+              children: [
+                backgroundEffects(),
+                Container(
+                  margin: const EdgeInsetsDirectional.only(top: 50),
+                  width: double.infinity,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        // Back Button
+                        backButton(context),
+                        adminTopTitleWithDrawerButton(
+                            title: 'Edit Announcement',
+                            size: 32,
+                            hasDrawer: false),
+                        Container(
+                          margin: const EdgeInsetsDirectional.symmetric(
+                              horizontal: 15, vertical: 20),
+                          padding: const EdgeInsets.all(15),
+                          height: screenHeight(context) / 1.45,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  colors: [
+                                    HexColor('B8A8F9').withOpacity(0.45),
+                                    HexColor('2F2B3E').withOpacity(0.45)
+                                  ],
+                                  begin: Alignment.bottomRight,
+                                  end: Alignment.topLeft),
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                              children: [
+                                // Title Text Input
+                                TextFormField(
+                                  controller: titleController,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Title must not be empty';
+                                    }
+                                    return null;
+                                  },
+                                  decoration: InputDecoration(
+                                    hintText: 'Title',
+                                    hintStyle: TextStyle(
+                                        fontSize: 20, color: Colors.grey[400]),
+                                    border: InputBorder.none,
                                   ),
-                                  // Announcement Type Dropdown
-                                  DropdownButton<String>(
-                                    hint: const Text(
-                                      'Type',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    style: const TextStyle(color: Colors.white),
-                                    dropdownColor: Colors.black,
-                                    value: selectedItem,
-                                    items: _items.map((String item) {
-                                      return DropdownMenuItem<String>(
-                                        value: item,
-                                        child: Text(
-                                          item,
-                                          style:
-                                          const TextStyle(color: Colors.white),
-                                        ),
-                                      );
-                                    }).toList(),
-                                    onChanged: (String? newValue) {
-                                      setState(() {
-                                        selectedItem = newValue;
-                                      });
-                                    },
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                                divider(),
+                                const SizedBox(height: 10),
+                                // Description Text Input
+                                TextFormField(
+                                  controller: contentController,
+                                  minLines: 5,
+                                  maxLines: 12,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Description must not be empty';
+                                    }
+                                    return null;
+                                  },
+                                  decoration: InputDecoration(
+                                    hintText: 'Description',
+                                    hintStyle: TextStyle(
+                                        fontSize: 20, color: Colors.grey[400]),
+                                    border: InputBorder.none,
                                   ),
-                                ],
-                              ),
-                              const Spacer(),
-                              divider(),
-                              // Cancel and Accept Buttons
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                                const SizedBox(height: 10),
+                                divider(),
+                                const SizedBox(height: 10),
+                                Row(
                                   children: [
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.pop(context, 'nigga');
-                                      },
-                                      child: const Text(
-                                        'Cancel',
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      style: ElevatedButton.styleFrom(
-                                        padding: const EdgeInsetsDirectional.symmetric(
-                                            horizontal: 25),
-                                        backgroundColor:
-                                        HexColor('D9D9D9').withOpacity(0.2),
-                                        foregroundColor: Colors.white,
-                                        textStyle: const TextStyle(fontSize: 15),
+                                    // DatePicker Text Field
+                                    Expanded(
+                                      child: TextFormField(
+                                        controller: dateController,
+                                        keyboardType: TextInputType.datetime,
+                                        onTap: () => showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime.now(),
+                                          lastDate:
+                                              DateTime.parse('2027-12-31'),
+                                        ).then((value) {
+                                          if (value != null) {
+                                            setState(() {
+                                              dateController.text =
+                                                  DateFormat.yMMMd()
+                                                      .format(value);
+                                            });
+                                          }
+                                        }),
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Date must not be empty';
+                                          }
+                                          return null;
+                                        },
+                                        decoration: InputDecoration(
+                                          suffixIcon: const Icon(
+                                            Icons.date_range,
+                                            color: Colors.grey,
+                                          ),
+                                          hintText: 'Due Date',
+                                          hintStyle: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.grey[400]),
+                                          border: InputBorder.none,
+                                        ),
+                                        style: const TextStyle(
+                                            color: Colors.white),
                                       ),
                                     ),
-                                    const Spacer(),
-                                    ElevatedButton(
-                                      onPressed: (){
-                                        if (_formKey.currentState!.validate() && selectedItem != null) {
-
-                                          print(id);
-                                          print(titleController.text);
-                                          print(contentController.text);
-                                          print(dateController.text);
-                                          print(selectedItem);
-                                          AdminCubit.get(context).updateAnnouncement(
-                                            AdminCubit.get(context).announcements![int.parse(id)].id.toString(),
-                                            title: titleController.text,
-                                            content: contentController.text,
-                                            dueDate: dateController.text,
-                                            type: selectedItem!,
-                                          );
-                                        } else {
-                                          // Show error if validation fails
-                                          showToastMessage(
-                                            message: 'Please fill all fields correctly.',
-                                            states: ToastStates.ERROR,
-                                          );
-                                        }
-                                      },
-                                      child: const Text(
-                                        'Accept',
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
+                                    // Announcement Type Dropdown
+                                    DropdownButton<String>(
+                                      hint: const Text(
+                                        'Type',
+                                        style: TextStyle(color: Colors.white),
                                       ),
-                                      style: ElevatedButton.styleFrom(
-                                          padding:
-                                          const EdgeInsetsDirectional.symmetric(
-                                              horizontal: 30),
-                                          backgroundColor:
-                                          HexColor('AB29E8').withOpacity(0.5),
-                                          foregroundColor: Colors.white,
-                                          textStyle:
-                                          TextStyle(fontSize: 15)),
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                      dropdownColor: Colors.black,
+                                      value: selectedItem,
+                                      items: _items.map((String item) {
+                                        return DropdownMenuItem<String>(
+                                          value: item,
+                                          child: Text(
+                                            item,
+                                            style: const TextStyle(
+                                                color: Colors.white),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      onChanged: (String? newValue) {
+                                        setState(() {
+                                          selectedItem = newValue;
+                                        });
+                                      },
                                     ),
                                   ],
                                 ),
-                              ),
-                            ],
+                                const Spacer(),
+                                divider(),
+                                // Cancel and Accept Buttons
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: [
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pop(context, 'nigga');
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          padding: const EdgeInsetsDirectional
+                                              .symmetric(horizontal: 25),
+                                          backgroundColor: HexColor('D9D9D9')
+                                              .withOpacity(0.2),
+                                          foregroundColor: Colors.white,
+                                          textStyle:
+                                              const TextStyle(fontSize: 15),
+                                        ),
+                                        child: const Text(
+                                          'Cancel',
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          if (_formKey.currentState!
+                                                  .validate() &&
+                                              selectedItem != null) {
+                                            print(id);
+                                            print(titleController.text);
+                                            print(contentController.text);
+                                            print(dateController.text);
+                                            print(selectedItem);
+                                            AdminCubit.get(context)
+                                                .updateAnnouncement(
+                                              AdminCubit.get(context)
+                                                  .announcements![int.parse(id)]
+                                                  .id
+                                                  .toString(),
+                                              title: titleController.text,
+                                              content: contentController.text,
+                                              dueDate: dateController.text,
+                                              type: selectedItem!,
+                                            );
+                                          } else {
+                                            // Show error if validation fails
+                                            showToastMessage(
+                                              message:
+                                                  'Please fill all fields correctly.',
+                                              states: ToastStates.ERROR,
+                                            );
+                                          }
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                            padding: const EdgeInsetsDirectional
+                                                .symmetric(horizontal: 30),
+                                            backgroundColor: HexColor('AB29E8')
+                                                .withOpacity(0.5),
+                                            foregroundColor: Colors.white,
+                                            textStyle:
+                                                const TextStyle(fontSize: 15)),
+                                        child: const Text(
+                                          'Accept',
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        );
+              ],
+            ),
+          );
         },
       ),
     );

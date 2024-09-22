@@ -14,7 +14,7 @@ class SelectImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(userInfo.name + "dfskjfldsjkdlfjkljfkl");
+    print("${userInfo.name}dfskjfldsjkdlfjkljfkl");
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -54,7 +54,7 @@ class SelectImage extends StatelessWidget {
                         radius: 60,
                         backgroundImage: mainCubit.userImageFile != null
                             ? FileImage(mainCubit.userImageFile!)
-                            : AssetImage(
+                            : const AssetImage(
                                 'images/default-avatar-profile-icon-social-600nw-1677509740.png'),
                       ),
                       Positioned(
@@ -71,14 +71,14 @@ class SelectImage extends StatelessWidget {
                                       MainAxisAlignment.spaceAround,
                                   actions: [
                                     OptionWidget(
-                                        optionFunction: () async{
-                                        mainCubit.getUserImage(
+                                        optionFunction: () async {
+                                          mainCubit.getUserImage(
                                               fromGallery: false);
                                           Navigator.pop(context);
                                         },
                                         optionTitle: "Camera"),
                                     OptionWidget(
-                                        optionFunction: ()async {
+                                        optionFunction: () async {
                                           mainCubit.getUserImage(
                                               fromGallery: true);
                                           Navigator.pop(context);
@@ -127,8 +127,6 @@ class SelectImage extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-
-
                         loginCubit.register(
                             name: userInfo.name,
                             email: userInfo.email,
@@ -164,8 +162,8 @@ Widget OptionWidget({
       child: MaterialButton(
         onPressed: optionFunction,
         child: Text(
-          "$optionTitle",
-          style: TextStyle(color: Colors.white),
+          optionTitle,
+          style: const TextStyle(color: Colors.white),
         ),
       ));
 }

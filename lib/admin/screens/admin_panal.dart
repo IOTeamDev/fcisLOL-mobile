@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:lol/admin/screens/Announcements/add_announcement.dart';
 import 'package:lol/admin/screens/requests/requests.dart';
@@ -9,6 +7,8 @@ import 'package:lol/utilities/navigation.dart';
 
 class AdminPanal extends StatelessWidget {
   var scaffoldKey = GlobalKey<ScaffoldState>();
+
+  AdminPanal({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +47,13 @@ class AdminPanal extends StatelessWidget {
           child: Column(
             children: [
               // Back Button
-             backButton(context),
+              backButton(context),
               // Text With Drawer Button
-              adminTopTitleWithDrawerButton(scaffoldKey: scaffoldKey, title: 'Admin', hasDrawer: true, bottomPadding: 50),
+              adminTopTitleWithDrawerButton(
+                  scaffoldKey: scaffoldKey,
+                  title: 'Admin',
+                  hasDrawer: true,
+                  bottomPadding: 50),
               // Buttons
               Container(
                 width: double.infinity,
@@ -62,7 +66,7 @@ class AdminPanal extends StatelessWidget {
                       children: [
                         ElevatedButton(
                           onPressed: () {
-                            navigate(context, AddAnouncment());
+                            navigate(context, const AddAnouncment());
                           },
                           style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.zero, // Remove default padding
@@ -85,8 +89,8 @@ class AdminPanal extends StatelessWidget {
                               alignment: Alignment.center,
                               child: const Text(
                                 'Announcements',
-                                style:
-                                    TextStyle(fontSize: 30, color: Colors.white),
+                                style: TextStyle(
+                                    fontSize: 30, color: Colors.white),
                               ),
                             ),
                           ),
@@ -122,8 +126,8 @@ class AdminPanal extends StatelessWidget {
                               alignment: Alignment.center,
                               child: const Text(
                                 'Requests',
-                                style:
-                                    TextStyle(fontSize: 30, color: Colors.white),
+                                style: TextStyle(
+                                    fontSize: 30, color: Colors.white),
                               ),
                             ),
                           ),
@@ -134,10 +138,10 @@ class AdminPanal extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              Container(
+              const SizedBox(
                 width: double.infinity,
                 height: 300,
-                child: const Image(
+                child: Image(
                   image: AssetImage('images/admin/background_admin.png'),
                   fit: BoxFit.fitWidth,
                 ),

@@ -45,10 +45,11 @@ class MainCubit extends Cubit<MainCubitStates> {
       final imagePath = await uploadTask.ref.getDownloadURL();
       emit(UploadImageSuccess());
       return imagePath;
-    } on Exception catch (e) {
+    } on Exception {
       emit(UploadImageFailure());
       // // TODO
     }
+    return null;
   }
 
   ProfileModel? profileModel;
@@ -56,12 +57,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     emit(GetProfileLoading());
     profileModel = null;
 
-    DioHelp.getData(
-            path: "me",
-            token:TOKEN
-                
-                )
-        .then(
+    DioHelp.getData(path: "me", token: TOKEN).then(
       (value) {
         profileModel = ProfileModel.fromJson(value.data);
         emit(GetProfileSuccess());
