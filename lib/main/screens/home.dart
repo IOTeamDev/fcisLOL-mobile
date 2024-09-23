@@ -37,8 +37,7 @@ class Home extends StatelessWidget {
           appBar: AppBar(
             leading: IconButton(
                 onPressed: () {
-                  scaffoldKey.currentState!
-                      .openDrawer(); // Use key to open the drawer
+                  scaffoldKey.currentState!.openDrawer(); // Use key to open the drawer
                 },
                 icon: const Icon(
                   Icons.menu,
@@ -77,13 +76,13 @@ class Home extends StatelessWidget {
                   onPressed: () {},
                   icon: const Icon(
                     Icons.light_mode,
-                    color: Colors.black,
+                    color: Colors.white,
                   )) //State management toggle between the icons
             ],
           ),
           drawer: Drawer(
             // We Will Put In It Things
-            width: width / 2.5,
+            width: width / 1.5,
             // backgroundColor: const Color(0xff0F4C75),
 
             child: ListView(

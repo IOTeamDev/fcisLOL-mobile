@@ -6,6 +6,7 @@ import 'package:lol/admin/screens/admin_panal.dart';
 import 'package:lol/material/cubit/material_cubit.dart';
 import 'package:lol/material/screens/material_details.dart';
 import 'package:lol/utilities/shared_prefrence.dart';
+import 'auth/bloc/login_cubit.dart';
 import 'auth/screens/login.dart';
 import 'auth/screens/onboarding.dart';
 import 'auth/screens/register.dart';
@@ -38,7 +39,7 @@ main() async {
     startPage = const OnBoarding();
   } else {
     if (selectedLevel == 0 && TOKEN == null) {
-      startPage = const ChoosingYear();
+      startPage = ChoosingYear(loginCubit: LoginCubit(),);
     } else {
       startPage = const Home();
     }
@@ -63,7 +64,7 @@ class App extends StatelessWidget {
       ],
       child: BlocConsumer<AdminCubit, AdminCubitStates>(
         builder: (context, state) => MaterialApp(
-          home: AdminPanal(),
+          home: LoginScreen(),
           debugShowCheckedModeBanner: false,
         ),
         listener: (context, state) {},
