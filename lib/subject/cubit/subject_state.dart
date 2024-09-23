@@ -23,11 +23,7 @@ final class GetMaterialError extends SubjectState {
 
 final class SaveMaterialLoading extends SubjectState {}
 
-final class SaveMaterialSuccess extends SubjectState {
-  final SubjectModel material;
-
-  SaveMaterialSuccess({required this.material});
-}
+final class SaveMaterialSuccess extends SubjectState {}
 
 final class SaveMaterialError extends SubjectState {
   final String errorMessage;

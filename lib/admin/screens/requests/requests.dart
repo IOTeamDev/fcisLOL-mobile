@@ -81,8 +81,7 @@ class Requests extends StatelessWidget {
                             itemCount: cubit.requests!.length),
                         fallback: (context) {
                           if (state is AdminGetRequestsLoadingState) {
-                            return const Center(
-                                child: CircularProgressIndicator());
+                            return const Center(child: CircularProgressIndicator());
                           }
                           return const Center(
                             child: Text(

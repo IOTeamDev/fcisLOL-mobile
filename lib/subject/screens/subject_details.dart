@@ -1,3 +1,4 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/constants/colors.dart';
@@ -127,71 +128,79 @@ class _MaterialDetailsState extends State<SubjectDetails>
   }
 
   Widget customTabBarView({required TabController tabController}) {
+    var cubit = SubjectCubit.get(context);
     return TabBarView(
       controller: tabController,
       children: [
         BlocBuilder<SubjectCubit, SubjectState>(
           builder: (context, state) {
-            if (state is GetMaterialLoading) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state is GetMaterialLoaded) {
-              List<SubjectModel> videos = [];
-              videos.addAll(state.materials
-                  .where((material) => material.type == 'VIDEO'));
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: GridView.builder(
-                  itemCount: videos.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 1,
-                      mainAxisSpacing: 20,
-                      childAspectRatio: 1.5),
-                  itemBuilder: (context, i) {
-                    return Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                            color: const Color.fromRGBO(217, 217, 217, 0.1),
-                            borderRadius: BorderRadius.circular(15)),
-                        child: gridTileWidget(video: videos[i]));
-                  },
-                ),
-              );
-            } else {
-              return Center(
-                child: Text(
-                  'No Materials Available',
-                  style: TextStyle(color: a),
-                ),
-              );
-            }
+            return ConditionalBuilder
+            (
+              condition: state is! GetMaterialLoading && cubit.documents!.isNotEmpty  && cubit.documents != null,
+              builder: (context) {
+
+                return Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: GridView.builder(
+                        itemCount: cubit.videos!.length,
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 1,
+                            mainAxisSpacing: 20,
+                            childAspectRatio: 1.5),
+                        itemBuilder: (context, i) {
+                          return Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                  color: const Color.fromRGBO(
+                                      217, 217, 217, 0.1),
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: gridTileWidget(video: cubit.videos![i]));
+                        }
+                    )
+                );
+              },
+              fallback: (context) {
+                if(state is GetMaterialLoading) {
+                  return const Center(child: CircularProgressIndicator(),);
+                }
+                  return Center(
+                    child: Text(
+                      'No Materials Available',
+                      style: TextStyle(color: a),
+                    ),
+                  );
+              },
+            );
           },
+
         ),
         BlocBuilder<SubjectCubit, SubjectState>(
           builder: (context, state) {
-            if (state is GetMaterialLoading) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state is GetMaterialLoaded) {
-              List documents = [];
-              documents.addAll(state.materials
-                  .where((material) => material.type == 'DOCUMENT')
-                  .toList());
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ListView.builder(
-                  itemCount: documents.length,
-                  itemBuilder: (context, i) {
-                    return documentsCard(document: documents[i]);
-                  },
-                ),
-              );
-            } else {
-              return Center(
-                child: Text(
-                  'No Materials Available',
-                  style: TextStyle(color: a),
-                ),
-              );
-            }
+            return ConditionalBuilder(
+              condition: state is! GetMaterialLoading && cubit.videos != null && cubit.videos!.isNotEmpty,
+              builder: (context) {
+                  return Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: ListView.builder(
+                      itemCount: cubit.documents!.length,
+                      itemBuilder: (context, i) {
+                        return documentsCard(document: cubit.documents![i]);
+                      },
+                    ),
+                  );
+              },
+              fallback: (context) {
+                if(state is GetMaterialLoading){
+                  return const Center(child: CircularProgressIndicator(),);
+                }
+                return Center(
+                  child: Text(
+                    'No Materials Available',
+                    style: TextStyle(color: a),
+                  ),
+                );
+              },
+            );
           },
         ),
       ],
@@ -202,7 +211,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
     return GridTile(
       footer: Container(
         padding: const EdgeInsets.all(5),
-        color: Colors.black54,
+        color: Colors.black,
         child: Row(
           children: [
             Text(
@@ -217,9 +226,9 @@ class _MaterialDetailsState extends State<SubjectDetails>
           ],
         ),
       ),
-      child: Image.asset(
-        'images/business.png',
-        fit: BoxFit.fill,
+      child: Image.network(
+        getYouTubeThumbnail(video.link!),
+        fit: BoxFit.cover,
       ),
     );
   }
@@ -375,9 +384,11 @@ class _MaterialDetailsState extends State<SubjectDetails>
                       tabController: _tabControllerOfAddingContent,
                       title1: 'Video',
                       title2: 'Document')),
+              //Cancel and submit buttons
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
+                  //Cancel Button
                   MaterialButton(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     minWidth: screenWidth(context) / 3,
@@ -392,6 +403,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                       style: TextStyle(color: additional1, fontSize: 20),
                     ),
                   ),
+                  //Submit Button
                   MaterialButton(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     minWidth: screenWidth(context) / 3,
