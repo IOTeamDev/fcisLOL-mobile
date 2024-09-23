@@ -1,34 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lol/material/model/material_model.dart' as material_model;
+import 'package:lol/material/cubit/material_state.dart';
+import 'package:lol/material/model/material_model.dart';
 import 'package:lol/shared/network/endpoints.dart';
 import 'package:lol/utilities/dio.dart';
+//import 'package:flutter/src/material/material_state.dart';
 
-part 'material_state.dart';
 
-class MaterialCubit extends Cubit<MaterialState> {
+class MaterialCubit extends Cubit<MaterialCubitState> {
   MaterialCubit() : super(Material1Initial());
 
-  List<material_model.MaterialModel> materials = [];
+  List<MaterialModel> materials = [];
   void getMaterials() {
     emit(GetMaterialLoading());
     DioHelp.getData(
-        path: MATERIAL,
-        query: {'subject': 'CALC_1', 'accepted': true}).then((material) {
-      materials = [];
-      material.data.ForEach((e) {
-        materials.add(material_model.MaterialModel.fromJson(e));
-      });
+      path: MATERIAL,
+      query: {'subject': 'CALC_1', 'accepted': true}).then((material) {
+        materials = [];
+        print(material.data);
+        material.data.forEach((e) {
+          materials.add(MaterialModel.fromJson(e));
+        });
     });
     emit(GetMaterialLoaded(materials: materials));
   }
 
-  material_model.MaterialModel? materialModel;
+  MaterialModel? materialModel;
   void addMaterial(
       {required String title,
       required String description,
       required String link,
-      required MaterialType type}) {
+      required String type}) {
     emit(SaveMaterialLoading());
     DioHelp.postData(path: MATERIAL, data: {
       'subject': 'CALC_1',

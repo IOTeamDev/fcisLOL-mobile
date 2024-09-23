@@ -1,35 +1,38 @@
-part of 'material_cubit.dart';
+import 'package:lol/material/cubit/material_cubit.dart';
+import 'package:meta/meta.dart';
+
+import '../model/material_model.dart';
 
 @immutable
-sealed class MaterialState {}
+abstract class MaterialCubitState {}
 
-final class Material1Initial extends MaterialState {}
+class Material1Initial extends MaterialCubitState {}
 
-final class MaterialInitial extends MaterialState {}
+class MaterialInitial extends MaterialCubitState {}
 
-final class GetMaterialLoading extends MaterialState {}
+class GetMaterialLoading extends MaterialCubitState {}
 
-final class GetMaterialLoaded extends MaterialState {
-  final List<material_model.MaterialModel> materials;
+class GetMaterialLoaded extends MaterialCubitState {
+  final List<MaterialModel> materials;
 
   GetMaterialLoaded({required this.materials});
 }
 
-final class GetMaterialError extends MaterialState {
+class GetMaterialError extends MaterialCubitState {
   final String errorMessage;
 
   GetMaterialError({required this.errorMessage});
 }
 
-final class SaveMaterialLoading extends MaterialState {}
+class SaveMaterialLoading extends MaterialCubitState {}
 
-final class SaveMaterialSuccess extends MaterialState {
-  final material_model.MaterialModel material;
+class SaveMaterialSuccess extends MaterialCubitState {
+  final MaterialModel material;
 
   SaveMaterialSuccess({required this.material});
 }
 
-final class SaveMaterialError extends MaterialState {
+class SaveMaterialError extends MaterialCubitState {
   final String errorMessage;
 
   SaveMaterialError({required this.errorMessage});

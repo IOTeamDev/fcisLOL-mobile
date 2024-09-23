@@ -4,20 +4,10 @@ class MaterialModel {
   int? id;
   String? subject;
   String? link;
-  MaterialType? type;
+  String? type;
   String? semester;
-  // Author? author;
+  Author? author;
   bool? accepted;
-
-  // MaterialModel({
-  //   this.id,
-  //   required this.subject,
-  //   required this.link,
-  //   required this.type,
-  //   this.semester,
-  //   this.author,
-  //   this.accepted = false,
-  // });
 
   MaterialModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -25,24 +15,17 @@ class MaterialModel {
     link = json['link'] ?? '';
     type = json['type'] ?? '';
     semester = json['semester'];
-    // author = json['author'] != null ? json['author']['name'] : null;
+    author = json['author'] != null ? Author.fromJson(json['author']) : null;
     accepted = json['accepted'];
   }
 }
 
-// class Author {
-//   String? name;
+class Author {
+  String? name;
+  String? photo;
 
-//   Author({this.name});
-
-//   Author.fromJson(Map<String, dynamic> json) {
-//     name = json['name'] ?? '';
-//   }
-// }
-
-enum MaterialType {
-  // ignore: constant_identifier_names
-  DOCUMENT,
-  // ignore: constant_identifier_names
-  YOUTUBE,
+  Author.fromJson(Map<String, dynamic> json) {
+    name = json['name'] ?? '';
+    photo = json['photo'] ?? '';
+  }
 }

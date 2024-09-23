@@ -65,17 +65,16 @@ class Requests extends StatelessWidget {
                         builder: (context) => ListView.separated(
                             physics: const BouncingScrollPhysics(),
                             itemBuilder: (context, index) {
-                              //return Text('${cubit.requests![index].author?.authorName}', style: TextStyle(fontSize: 30, color: Colors.white),);
                               return requestedMaterialBuilder(
                                   backgroundColor, index, context,
-                                  title: 'material Title',
+                                  title: cubit.requests![index].title,
                                   type: cubit.requests![index].type,
                                   pfp: cubit.requests![index].author?.photo,
-                                  authorName:
-                                      cubit.requests![index].author?.name,
+                                  authorName: cubit.requests![index].author?.name,
                                   link: cubit.requests![index].link,
                                   subjectName: 'Calculus1',
-                                  description: 'chapter 4');
+                                  description: cubit.requests![index].description,
+                              );
                             },
                             separatorBuilder: (context, index) => const Padding(
                                 padding: EdgeInsetsDirectional.all(5)),
@@ -108,8 +107,8 @@ class Requests extends StatelessWidget {
     );
   }
 
-  Widget requestedMaterialBuilder(List<String> colorText, index, context,
-      {title, link, type, authorName, pfp, subjectName, description}) {
+  Widget requestedMaterialBuilder(List<String> colorText, index, context, {title, link, type, authorName, pfp, subjectName, description})
+  {
     var random = Random();
 
     int min = 0;
@@ -122,18 +121,18 @@ class Requests extends StatelessWidget {
           borderRadius: BorderRadius.circular(20)),
       margin: const EdgeInsetsDirectional.symmetric(horizontal: 10),
       padding: const EdgeInsetsDirectional.symmetric(horizontal: 10),
-      height: 150,
+      height: 170,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           //pfp, name, subject
           Padding(
-            padding: const EdgeInsetsDirectional.only(bottom: 5, top: 10),
+            padding: const EdgeInsetsDirectional.only(bottom: 5, top: 10, start: 10, end: 10),
             child: Row(
               children: [
                 CircleAvatar(
                   backgroundImage: NetworkImage(pfp.toString()),
-                  radius: 20,
+                  radius: 17,
                 ),
                 const SizedBox(
                   width: 10,
@@ -158,16 +157,31 @@ class Requests extends StatelessWidget {
               ],
             ),
           ),
+          //title, material type
           Padding(
-            padding: const EdgeInsetsDirectional.only(
-                start: 10.0, end: 10, top: 5, bottom: 5),
-            child: Text(
-              description,
-              style: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
+            padding: const EdgeInsetsDirectional.only(start: 10.0, end: 10, top: 0, bottom: 5),
+            child: Row(
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                ),
+                const Spacer(),
+                Text(
+                  type,
+                  style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.white),
+                ),
+              ],
             ),
+          ),
+          Padding(
+            padding: const EdgeInsetsDirectional.symmetric(horizontal: 10.0),
+            child: Text(description, style: TextStyle(fontSize: 13, color: Colors.grey[300]), maxLines: 1, overflow: TextOverflow.ellipsis,),
           ),
           //Link Icon, Link Content preview, accept, decline
           LayoutBuilder(
@@ -203,8 +217,7 @@ class Requests extends StatelessWidget {
                   // Checkmark button
                   MaterialButton(
                     onPressed: () {
-                      AdminCubit.get(context).acceptRequest(
-                          (AdminCubit.get(context).requests![index].id!));
+                      AdminCubit.get(context).acceptRequest((AdminCubit.get(context).requests![index].id!));
                     },
                     shape: const CircleBorder(), // Checkmark icon
                     minWidth: 0, // Reduce min width to make it smaller

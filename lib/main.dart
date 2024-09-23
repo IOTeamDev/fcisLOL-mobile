@@ -58,16 +58,12 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-            create: (BuildContext context) => AdminCubit()
-              ..getAnnouncements()
-              ..getRequests()),
-        BlocProvider(
-            create: (BuildContext context) => MaterialCubit()..getMaterials())
+        BlocProvider(create: (BuildContext context) => AdminCubit()..getAnnouncements()..getRequests()),
+        BlocProvider(create: (BuildContext context) => MaterialCubit()..getMaterials()),
       ],
       child: BlocConsumer<AdminCubit, AdminCubitStates>(
         builder: (context, state) => MaterialApp(
-          home: MaterialDetails(),
+          home: AdminPanal(),
           debugShowCheckedModeBanner: false,
         ),
         listener: (context, state) {},

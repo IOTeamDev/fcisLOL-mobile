@@ -2,14 +2,16 @@ class RequestsModel {
   int? id;
   String? link;
   String? type;
-  String? subject;
+  String? title;
+  String? description;
   Author? author;
 
   RequestsModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     link = json['link'];
     type = json['type'];
-    subject = json['subject']??'';
+    title = json['title'];
+    description = json['description'];
     author = json['author'] != null ? Author.fromJson(json['author']) : null;
   }
 

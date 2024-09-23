@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/constants/colors.dart';
 import 'package:lol/constants/constants.dart';
-import 'package:lol/material/cubit/material_cubit.dart' as material_cubit;
+import 'package:lol/material/cubit/material_cubit.dart';
 import 'package:lol/material/model/material_model.dart' as material_model;
 import 'package:lol/shared/components/components.dart';
+
+import '../cubit/material_state.dart';
 
 class MaterialDetails extends StatefulWidget {
   const MaterialDetails({super.key});
@@ -31,7 +33,7 @@ class _MaterialDetailsState extends State<MaterialDetails>
   void initState() {
     _tabControllerOfShowingContent = TabController(length: 2, vsync: this);
     _tabControllerOfAddingContent = TabController(length: 2, vsync: this);
-    BlocProvider.of<material_cubit.MaterialCubit>(context).getMaterials();
+    BlocProvider.of<MaterialCubit>(context).getMaterials();
     super.initState();
   }
 
@@ -51,7 +53,7 @@ class _MaterialDetailsState extends State<MaterialDetails>
               _linkController.text = '';
               scaffoldKey.currentState!.showBottomSheet(
                   backgroundColor: const Color.fromRGBO(25, 25, 25, 1),
-                  (context) => customBottomSheet());
+                      (context) => customBottomSheet());
             }
             setState(() {
               bottomSheetOpened = !bottomSheetOpened;
@@ -63,15 +65,15 @@ class _MaterialDetailsState extends State<MaterialDetails>
           backgroundColor: additional2,
           child: bottomSheetOpened
               ? Icon(
-                  Icons.close,
-                  color: a,
-                  size: 40,
-                )
+            Icons.keyboard_arrow_down,
+            color: a,
+            size: 40,
+          )
               : Icon(
-                  Icons.add,
-                  color: a,
-                  size: 40,
-                ),
+            Icons.add,
+            color: a,
+            size: 40,
+          ),
         ),
       ),
       key: scaffoldKey,
@@ -135,22 +137,19 @@ class _MaterialDetailsState extends State<MaterialDetails>
   }
 
   Widget customTabBarView({required TabController tabController}) {
-    return BlocBuilder<material_cubit.MaterialCubit,
-        material_cubit.MaterialState>(
+    return BlocBuilder<MaterialCubit, MaterialCubitState>(
       builder: (context, state) {
-        if (state is material_cubit.GetMaterialLoading) {
+        if (state is GetMaterialLoading) {
           return Center(
             child: CircularProgressIndicator(
               color: a,
             ),
           );
-        } else if (state is material_cubit.GetMaterialLoaded) {
+        } else if (state is GetMaterialLoaded) {
           List<material_model.MaterialModel> materialVidoes = [];
-          materialVidoes.addAll(state.materials
-              .where((e) => e.type == material_model.MaterialType.YOUTUBE));
+          materialVidoes.addAll(state.materials.where((e) => e.type == 'VIDEO'));
           List<material_model.MaterialModel> materialDocuments = [];
-          materialDocuments.addAll(state.materials
-              .where((e) => e.type == material_model.MaterialType.DOCUMENT));
+          materialDocuments.addAll(state.materials.where((e) => e.type == 'DOCUMENT'));
           return TabBarView(
             controller: tabController,
             children: [
@@ -175,10 +174,10 @@ class _MaterialDetailsState extends State<MaterialDetails>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Image.network(
-                              materialVidoes[i].link!,
+                              getYouTubeThumbnail(materialVidoes[i].link!),
                               height: screenHeight(context) / 5,
                               width: double.infinity,
-                              fit: BoxFit.fill,
+                              fit: BoxFit.cover,
                             ),
                             Expanded(
                               child: Text(
@@ -238,7 +237,7 @@ class _MaterialDetailsState extends State<MaterialDetails>
               ),
             ],
           );
-        } else if (state is material_cubit.GetMaterialError) {
+        } else if (state is GetMaterialError) {
           return Text(state.errorMessage.toString());
         } else {
           throw Exception('error');
@@ -307,7 +306,7 @@ class _MaterialDetailsState extends State<MaterialDetails>
         }
         return null;
       },
-      style: TextStyle(color: a, fontSize: 20),
+      style: TextStyle(color: a, fontSize: 18),
       controller: controller,
       decoration: InputDecoration(
           fillColor: const Color.fromRGBO(217, 217, 217, 0.25),
@@ -319,7 +318,7 @@ class _MaterialDetailsState extends State<MaterialDetails>
           hintText: title,
           hintStyle: const TextStyle(
             color: Color.fromRGBO(255, 255, 255, 0.48),
-            fontSize: 22,
+            fontSize: 20,
           )),
     );
   }

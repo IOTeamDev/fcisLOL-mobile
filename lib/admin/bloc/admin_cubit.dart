@@ -33,10 +33,10 @@ class AdminCubit extends Cubit<AdminCubitStates> {
               'semester': 'Three'
             },
             token:
-                'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE3MjY3ODYyOTUsImV4cCI6MTc1Nzg5MDI5NX0.IlnTrdxQH_Zlu9AUf3TMi5HfOrjPv-Pu3-peDlZOnlM')
+                'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcyNzAxMjQzOSwiZXhwIjoxNzU4MTE2NDM5fQ.WdqfOR7HKHMUYKax1w5P0awJZyuLBZqDl5ia602b4Wk')
         .then((value) {
-      announcementModel = AnnouncementModel.fromJson(value.data);
-      emit(AdminSaveAnnouncementSuccessState(announcementModel!));
+      //announcementModel = AnnouncementModel.fromJson(value.data);
+      emit(AdminSaveAnnouncementSuccessState());
       getAnnouncements();
     }).catchError((error) {
       emit(AdminSaveAnnouncementsErrorState(error));
@@ -68,7 +68,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
           'semester': 'Four'
         },
         token:
-            'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE3MjY3ODYyOTUsImV4cCI6MTc1Nzg5MDI5NX0.IlnTrdxQH_Zlu9AUf3TMi5HfOrjPv-Pu3-peDlZOnlM',
+            'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcyNzAxMjQzOSwiZXhwIjoxNzU4MTE2NDM5fQ.WdqfOR7HKHMUYKax1w5P0awJZyuLBZqDl5ia602b4Wk',
         query: {'id': int.parse(id)}).then((value) {
       print(value.data);
       // Assuming the response returns the updated announcement
@@ -93,7 +93,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     DioHelp.deleteData(
         path: ANNOUNCEMENTS,
         token:
-            'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE3MjY3ODYyOTUsImV4cCI6MTc1Nzg5MDI5NX0.IlnTrdxQH_Zlu9AUf3TMi5HfOrjPv-Pu3-peDlZOnlM',
+            'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcyNzAxMjQzOSwiZXhwIjoxNzU4MTE2NDM5fQ.WdqfOR7HKHMUYKax1w5P0awJZyuLBZqDl5ia602b4Wk',
         query: {'id': id}).then((value) {
       emit(AdminDeleteAnnouncementSuccessState());
       getAnnouncements();
@@ -105,7 +105,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     emit(AdminGetRequestsLoadingState());
     DioHelp.getData(
         path: MATERIAL,
-        query: {'subject': 'CALC_1', 'accepted': false}).then((value) {
+        query: {'subject': 'CALC_1', 'accepted': true}).then((value) {
       requests = [];
       value.data.forEach((element) {
         requests!.add(RequestsModel.fromJson(element));
@@ -123,7 +123,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
             path: MATERIAL,
             data: {'id': id},
             token:
-                'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE3MjY3ODYyOTUsImV4cCI6MTc1Nzg5MDI5NX0.IlnTrdxQH_Zlu9AUf3TMi5HfOrjPv-Pu3-peDlZOnlM')
+                'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcyNzAxMjQzOSwiZXhwIjoxNzU4MTE2NDM5fQ.WdqfOR7HKHMUYKax1w5P0awJZyuLBZqDl5ia602b4Wk')
         .then((value) {
       emit(AdminDeleteMaterialSuccessState());
       getRequests();
@@ -136,7 +136,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
             path: ACCEPT,
             query: {'id': id, 'accepted': true},
             token:
-                'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE3MjY3ODYyOTUsImV4cCI6MTc1Nzg5MDI5NX0.IlnTrdxQH_Zlu9AUf3TMi5HfOrjPv-Pu3-peDlZOnlM')
+                'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcyNzAxMjQzOSwiZXhwIjoxNzU4MTE2NDM5fQ.WdqfOR7HKHMUYKax1w5P0awJZyuLBZqDl5ia602b4Wk')
         .then((value) {
       emit(AdminAcceptRequestSuccessState());
       getRequests();
