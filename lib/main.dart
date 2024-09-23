@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/admin/bloc/admin_cubit.dart';
 import 'package:lol/admin/bloc/admin_cubit_states.dart';
 import 'package:lol/admin/screens/admin_panal.dart';
-import 'package:lol/material/cubit/material_cubit.dart';
-import 'package:lol/material/screens/material_details.dart';
+
+import 'package:lol/subject/cubit/subject_cubit.dart';
 import 'package:lol/utilities/shared_prefrence.dart';
 import 'auth/bloc/login_cubit.dart';
 import 'auth/screens/login.dart';
@@ -39,7 +39,9 @@ main() async {
     startPage = const OnBoarding();
   } else {
     if (selectedLevel == 0 && TOKEN == null) {
-      startPage = ChoosingYear(loginCubit: LoginCubit(),);
+      startPage = ChoosingYear(
+        loginCubit: LoginCubit(),
+      );
     } else {
       startPage = const Home();
     }
@@ -59,8 +61,12 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (BuildContext context) => AdminCubit()..getAnnouncements()..getRequests()),
-        BlocProvider(create: (BuildContext context) => MaterialCubit()..getMaterials()),
+        BlocProvider(
+            create: (BuildContext context) => AdminCubit()
+              ..getAnnouncements()
+              ..getRequests()),
+        BlocProvider(
+            create: (BuildContext context) => SubjectCubit()..getMaterials()),
       ],
       child: BlocConsumer<AdminCubit, AdminCubitStates>(
         builder: (context, state) => MaterialApp(
