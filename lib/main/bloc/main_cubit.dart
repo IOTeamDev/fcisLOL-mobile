@@ -3,12 +3,17 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lol/auth/bloc/login_cubit.dart';
 import 'package:lol/auth/bloc/login_cubit_states.dart';
 import 'package:lol/auth/model/login_model.dart';
 import 'package:lol/constants/constants.dart';
 import 'package:lol/main/bloc/main_cubit_states.dart';
 import 'package:lol/main/model/profile_model.dart';
+import 'package:lol/main/screens/choosing_year.dart';
+import 'package:lol/main/screens/home.dart';
 import 'package:lol/utilities/dio.dart';
+import 'package:lol/utilities/navigation.dart';
+import 'package:lol/utilities/shared_prefrence.dart';
 
 //uid null?
 class MainCubit extends Cubit<MainCubitStates> {
@@ -66,6 +71,13 @@ class MainCubit extends Cubit<MainCubitStates> {
       print(onError);
       emit(GetProfileFailure());
     });
+  }
+
+  void logout(context) {
+    TOKEN = null;
+    Cache.removeValue(key: "token");
+    navigatReplace(context, ChoosingYear(loginCubit: LoginCubit(),));
+    emit(Logout());
   }
 
 // deleteImage(){//Used

@@ -26,6 +26,8 @@ class LoginScreen extends StatelessWidget {
       create: (context) => LoginCubit(),
       child: BlocConsumer<LoginCubit, LoginStates>(
         listener: (context, state) {
+
+          
           if (state is LoginSuccess) {
             TOKEN = state.token;
             Cache.writeData(key: "token", value: state.token);
@@ -36,7 +38,7 @@ class LoginScreen extends StatelessWidget {
                 titleWidget:
                     const Text("Successfully signed in. Welcome back!"));
 
-            navigatReplace(context, const Profile());
+            navigatReplace(context, const Home());
           }
           if (state is LoginFailed) {
             snack(
