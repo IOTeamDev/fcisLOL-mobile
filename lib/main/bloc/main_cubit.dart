@@ -20,6 +20,12 @@ class MainCubit extends Cubit<MainCubitStates> {
   MainCubit() : super(InitialMainState());
   static MainCubit get(context) => BlocProvider.of(context);
 
+  bool isDarkMode = false;
+  void changeMode() {
+    isDarkMode = !isDarkMode;
+    emit(ChangeMode());
+  }
+
   File? userImageFile;
   String? userImagePath;
   var picker = ImagePicker();
@@ -76,7 +82,11 @@ class MainCubit extends Cubit<MainCubitStates> {
   void logout(context) {
     TOKEN = null;
     Cache.removeValue(key: "token");
-    navigatReplace(context, ChoosingYear(loginCubit: LoginCubit(),));
+    navigatReplace(
+        context,
+        ChoosingYear(
+          loginCubit: LoginCubit(),
+        ));
     emit(Logout());
   }
 

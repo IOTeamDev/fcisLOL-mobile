@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/admin/bloc/admin_cubit.dart';
 import 'package:lol/admin/bloc/admin_cubit_states.dart';
 import 'package:lol/admin/screens/admin_panal.dart';
+import 'package:lol/main/screens/darwer.dart';
 import 'package:lol/material/cubit/material_cubit.dart';
 import 'package:lol/material/screens/material_details.dart';
 import 'package:lol/utilities/shared_prefrence.dart';
@@ -64,7 +65,7 @@ class App extends StatelessWidget {
       ],
       child: BlocConsumer<AdminCubit, AdminCubitStates>(
         builder: (context, state) => MaterialApp(
-          home: LoginScreen(),
+          home: Home(),
           debugShowCheckedModeBanner: false,
         ),
         listener: (context, state) {},
