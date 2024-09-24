@@ -39,7 +39,6 @@ class AnnouncementDetail extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        var cubit = AdminCubit.get(context).announcements![id];
         return Scaffold(
           backgroundColor: Colors.black,
           body: Stack(children: [
@@ -51,23 +50,23 @@ class AnnouncementDetail extends StatelessWidget {
                 children: [
                   //Back Button
                   backButton(context),
-                  adminTopTitleWithDrawerButton(
-                      title: 'Announcement', size: 35, hasDrawer: false),
+                  adminTopTitleWithDrawerButton(title: 'Announcement', size: 35, hasDrawer: false),
                   Container(
-                    margin: const EdgeInsetsDirectional.symmetric(
-                        horizontal: 15, vertical: 20),
+                    margin: const EdgeInsetsDirectional.symmetric(horizontal: 15, vertical: 20),
                     padding: const EdgeInsets.all(15),
                     width: double.infinity,
                     height: screenHeight(context) / 1.45,
                     decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            colors: [
-                              HexColor('DA22FF').withOpacity(0.45),
-                              HexColor('9B35F3').withOpacity(0.45)
-                            ],
-                            begin: Alignment.bottomRight,
-                            end: Alignment.topLeft),
-                        borderRadius: BorderRadius.circular(20)),
+                      gradient: LinearGradient(
+                        colors: [
+                          HexColor('DA22FF').withOpacity(0.45),
+                          HexColor('9B35F3').withOpacity(0.45)
+                        ],
+                        begin: Alignment.bottomRight,
+                        end: Alignment.topLeft
+                      ),
+                      borderRadius: BorderRadius.circular(20)
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

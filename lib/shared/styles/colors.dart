@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 Color a = const Color(0xffEAFCFF);
 Color b = const Color(0xff3B485E);
@@ -19,3 +20,4 @@ Color preDom2 = const Color(0xffDAE1FB);
 Color dom = const Color(0xffFEFEFE);
 Color preDom3 = const Color(0xff121037);
 Color additional3 = const Color(0xff4EBF9E);
+HexColor remove = HexColor('F74C4C');

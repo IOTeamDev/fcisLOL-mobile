@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lol/layout/home/bloc/main_cubit.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
 import 'package:lol/layout/admin_panel/admin_panal.dart';
@@ -62,11 +63,12 @@ class App extends StatelessWidget {
       providers: [
         BlocProvider(
             create: (BuildContext context) => AdminCubit()
-              // ..getAnnouncements()
-              // ..getRequests()
+              ..getAnnouncements()
+              ..getRequests()
         ),
-        BlocProvider(
-            create: (BuildContext context) => SubjectCubit()..getMaterials()),
+        BlocProvider(create: (BuildContext context) => SubjectCubit()..getMaterials()),
+        if(TOKEN != null)
+        BlocProvider(create: (BuildContext context) => MainCubit()..getCurrentUserData(TOKEN!)),
       ],
       child: BlocConsumer<AdminCubit, AdminCubitStates>(
         builder: (context, state) => MaterialApp(

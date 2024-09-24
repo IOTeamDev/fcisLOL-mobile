@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lol/layout/home/bloc/main_cubit.dart';
 import 'package:lol/shared/styles/colors.dart';
 import 'package:lol/shared/components/constants.dart';
 import 'package:lol/modules/subject/cubit/subject_cubit.dart';
@@ -48,8 +49,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
           showToastMessage(
               message: 'error while uploading file', states: ToastStates.ERROR);
         } else if (state is SaveMaterialLoading) {
-          showToastMessage(
-              message: 'Uploading file........', states: ToastStates.WARNING);
+          showToastMessage(message: 'Uploading file........', states: ToastStates.WARNING);
         }
       },
       child: Scaffold(
@@ -115,8 +115,8 @@ class _MaterialDetailsState extends State<SubjectDetails>
 
   Widget buildFloatingActionButton() {
     return SizedBox(
-      height: 70,
-      width: 70,
+      height: 60,
+      width: 60,
       child: FloatingActionButton(
         onPressed: () {
           _titleController.text = '';
@@ -135,7 +135,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
         child: Icon(
           Icons.add,
           color: a,
-          size: 40,
+          size: 30,
         ),
       ),
     );
@@ -240,7 +240,11 @@ class _MaterialDetailsState extends State<SubjectDetails>
                 color: a,
               ),
             ),
-            SizedBox(height: 40, child: removeButton())
+            ConditionalBuilder(
+                condition: MainCubit.get(context).userModel != null && MainCubit.get(context).userModel!.role =='ADMIN',
+                builder: (context) => SizedBox(height: 40, child: removeButton()),
+                fallback: null
+            ),
           ],
         ),
       ),
@@ -257,28 +261,35 @@ class _MaterialDetailsState extends State<SubjectDetails>
       child: Card(
           color: const Color.fromRGBO(217, 217, 217, 0.25),
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(
-                  Icons.folder_outlined,
-                  size: screenWidth(context) / 7,
-                  color: a,
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(end: 10.0),
+                  child: Icon(
+                    Icons.folder_outlined,
+                    size: screenWidth(context) / 10,
+                    color: a,
+                  ),
                 ),
                 Expanded(
                   child: Text(
                     '${document.title}',
                     style: TextStyle(
                       color: a,
-                      fontSize: screenWidth(context) / 15,
+                      fontSize: screenWidth(context) / 20,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.start,
                   ),
                 ),
-                SizedBox(height: 50, child: removeButton())
+                ConditionalBuilder(
+                  condition: MainCubit.get(context).userModel != null && MainCubit.get(context).userModel!.role =='ADMIN',
+                  builder: (context) => SizedBox(height: 40, child: removeButton()),
+                  fallback: null
+                ),
               ],
             ),
           )),
@@ -288,10 +299,10 @@ class _MaterialDetailsState extends State<SubjectDetails>
   Widget removeButton() {
     return ElevatedButton(
         onPressed: () {},
-        style: ElevatedButton.styleFrom(backgroundColor: additional1),
+        style: ElevatedButton.styleFrom(backgroundColor: remove, padding: EdgeInsetsDirectional.symmetric(horizontal: 15, vertical: 0)),
         child: Text(
           'Remove',
-          style: TextStyle(color: a, fontSize: screenWidth(context) / 22),
+          style: TextStyle(color: a, fontSize: screenWidth(context) / 24),
         ));
   }
 
@@ -362,8 +373,8 @@ class _MaterialDetailsState extends State<SubjectDetails>
 
   Widget buildBottomSheet() {
     return DraggableScrollableSheet(
-      initialChildSize: 0.9,
-      maxChildSize: 0.9,
+      initialChildSize: 0.55,
+      maxChildSize: 0.55,
       builder: (context, scrollController) {
         return Container(
             decoration: const BoxDecoration(
