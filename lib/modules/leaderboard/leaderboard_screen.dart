@@ -10,12 +10,15 @@ class LeaderboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var scafooldKey = GlobalKey<ScaffoldState>();
     return BlocProvider(
       create: (context) => LeaderboardCubit()..getLeaderboard(),
       child: BlocConsumer<LeaderboardCubit, LeaderboardStates>(
         listener: (context, state){},
         builder:(context, state) => Scaffold(
+          key: scafooldKey,
           backgroundColor: Colors.black,
+          drawer: drawerBuilder(context),
           body: Stack(
             children: [
               backgroundEffects(),
