@@ -11,6 +11,7 @@ import 'modules/auth/screens/login.dart';
 import 'modules/auth/screens/onboarding.dart';
 import 'modules/auth/screens/register.dart';
 import 'modules/auth/screens/select_image.dart';
+import 'modules/leaderboard/leaderboard_screen.dart';
 import 'shared/components/constants.dart';
 import 'modules/year_choose/choosing_year.dart';
 import 'layout/profile/profile.dart';
@@ -72,7 +73,7 @@ class App extends StatelessWidget {
       ],
       child: BlocConsumer<AdminCubit, AdminCubitStates>(
         builder: (context, state) => MaterialApp(
-          home: Home(),
+          home: LeaderboardScreen(),
           debugShowCheckedModeBanner: false,
         ),
         listener: (context, state) {},

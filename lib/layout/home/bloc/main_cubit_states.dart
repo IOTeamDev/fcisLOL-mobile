@@ -37,4 +37,3 @@ class RetrieveCurrentUserDataErrorState extends MainCubitStates{
   final String error;
   RetrieveCurrentUserDataErrorState({required this.error});
 }
-
