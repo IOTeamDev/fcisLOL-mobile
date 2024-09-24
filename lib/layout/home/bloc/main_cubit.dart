@@ -3,15 +3,17 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:lol/main/bloc/main_cubit_states.dart';
-import 'package:lol/main/screens/home.dart';
-import 'package:lol/models/profile/profile_model.dart';
 import 'package:lol/modules/auth/bloc/login_cubit.dart';
-import 'package:lol/modules/year_choose/choosing_year.dart';
+import 'package:lol/modules/auth/bloc/login_cubit_states.dart';
+import 'package:lol/models/login/login_model.dart';
 import 'package:lol/shared/components/constants.dart';
+import 'package:lol/layout/home/bloc/main_cubit_states.dart';
+import 'package:lol/models/profile/profile_model.dart';
+import 'package:lol/modules/year_choose/choosing_year.dart';
+import 'package:lol/layout/home/home.dart';
+import 'package:lol/shared/network/remote/dio.dart';
 import 'package:lol/shared/components/navigation.dart';
 import 'package:lol/shared/network/local/shared_prefrence.dart';
-import 'package:lol/shared/network/remote/dio.dart';
 
 //uid null?
 class MainCubit extends Cubit<MainCubitStates> {

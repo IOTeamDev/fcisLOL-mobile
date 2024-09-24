@@ -3,16 +3,18 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lol/main/bloc/main_cubit.dart';
-import 'package:lol/main/bloc/main_cubit_states.dart';
-import 'package:lol/main/screens/profile.dart';
-import 'package:lol/main.dart';
 import 'package:lol/modules/auth/bloc/login_cubit.dart';
 import 'package:lol/modules/auth/screens/login.dart';
-import 'package:lol/shared/components/constants.dart';
-import 'package:lol/shared/components/navigation.dart';
 import 'package:lol/shared/components/snack.dart';
+import 'package:lol/shared/components/constants.dart';
+import 'package:lol/layout/home//bloc/main_cubit.dart';
+import 'package:lol/layout/home/bloc/main_cubit_states.dart';
+import 'package:lol/layout/profile/profile.dart';
+import 'package:lol/main.dart';
+import 'package:lol/shared/components/navigation.dart';
+import 'package:lol/shared/network/local/shared_prefrence.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -420,6 +422,7 @@ class CustomDrawer extends StatelessWidget {
                   MainCubit.get(context).logout(context);
                 },
               ),
+              SizedBox(height: screenHeight(context)/5,),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: DarkLightModeToggle(),
