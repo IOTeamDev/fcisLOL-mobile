@@ -16,6 +16,6 @@ For help getting started with Flutter development, view the
 samples, guidance on mobile development, and a full API reference.
 
 ## Saved Cache keys:
-- 'token': to save users token
-- 'Level': to save the viewed level
-- 'FinishedOnBoard': to check up if User already entered the app for the first time and headed to login screen or year choose screen
+- [token]: to save users token
+- [Level]: to save the viewed level
+- [FinishedOnBoard]: to check up if User already entered the app for the first time and headed to login screen or year choose screen
