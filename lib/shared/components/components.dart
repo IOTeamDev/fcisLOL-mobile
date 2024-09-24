@@ -5,8 +5,8 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:linkify/linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../constants/constants.dart';
-import '../../main/screens/webview_screen.dart';
+import 'constants.dart';
+import '../../modules/webview/webview_screen.dart';
 
 Widget adminTopTitleWithDrawerButton(
     {scaffoldKey,
