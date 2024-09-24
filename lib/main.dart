@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/admin/bloc/admin_cubit.dart';
 import 'package:lol/admin/bloc/admin_cubit_states.dart';
 import 'package:lol/admin/screens/admin_panal.dart';
-
 import 'package:lol/subject/cubit/subject_cubit.dart';
 import 'package:lol/subject/screens/subject_details.dart';
 import 'package:lol/utilities/shared_prefrence.dart';
@@ -64,15 +63,14 @@ class App extends StatelessWidget {
       providers: [
         BlocProvider(
             create: (BuildContext context) => AdminCubit()
-              // ..getAnnouncements()
-              // ..getRequests()
-        ),
+              ..getAnnouncements()
+              ..getRequests()),
         BlocProvider(
             create: (BuildContext context) => SubjectCubit()..getMaterials()),
       ],
       child: BlocConsumer<AdminCubit, AdminCubitStates>(
         builder: (context, state) => MaterialApp(
-          home: SubjectDetails(),
+          home: LoginScreen(),
           debugShowCheckedModeBanner: false,
         ),
         listener: (context, state) {},
