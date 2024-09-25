@@ -1,8 +1,13 @@
+import 'dart:ui';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lol/layout/home/semster_model.dart';
+import 'package:lol/models/profile/profile_model.dart';
+import 'package:lol/models/subjects/subject_model.dart';
 import 'package:lol/modules/auth/bloc/login_cubit.dart';
 import 'package:lol/modules/auth/screens/login.dart';
 import 'package:lol/shared/components/snack.dart';
@@ -14,7 +19,6 @@ import 'package:lol/main.dart';
 import 'package:lol/shared/components/navigation.dart';
 import 'package:lol/shared/network/local/shared_prefrence.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -40,12 +44,22 @@ class Home extends StatelessWidget {
               enumColor: Messages.success,
               titleWidget: const Text("Logout Successfully"));
       }, builder: (context, state) {
+        ProfileModel? profile;
+          int? semesterIndex;
+        if (TOKEN != null && MainCubit.get(context).profileModel != null) {
+          profile = MainCubit.get(context).profileModel!;
+
+      semesterIndex   = semsesterIndex(
+              TOKEN != null ? profile!.semester : SelectedSemester!);
+        }
         return Scaffold(
           key: scaffoldKey,
           backgroundColor: const Color(0xff1B262C),
           appBar: AppBar(
             leading: IconButton(
                 onPressed: () {
+                  MainCubit.get(context).openDrawerState();
+
                   scaffoldKey.currentState!
                       .openDrawer(); // Use key to open the drawer
                 },
@@ -88,114 +102,134 @@ class Home extends StatelessWidget {
               ? Center(
                   child: CircularProgressIndicator(),
                 )
-              : Container(
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        Color(0xFF1c1c2e), // Dark indigo
-                        Color(0xFF2c2b3f), // Deep purple
-                      ],
-                    ),
-                  ),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 20),
-                        CarouselSlider(
-                          items: carsor.map((carsor) {
-                            return InkWell(
-                                child: Stack(
-                                    alignment: Alignment.bottomCenter,
-                                    children: [
-                                  Container(
-                                    clipBehavior: Clip.antiAlias,
-                                    // margin: const EdgeInsets.all(6.0),
-                                    // child: Image.asset("images/332573639_735780287983011_1562632886952931410_n.jpg",width: 400,height: 400,fit: BoxFit.cover,),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(3.0),
-                                      // image: DecorationImage(
-                                      //   image: AssetImage(
-                                      //     carsor.image ?? "images/llogo.jfif",
-                                      //   ),
-                                      //   fit: BoxFit.cover,
-                                      // ),
-                                    ),
-                                    child: Image.asset(
-                                      carsor.image!,
-                                      width: 400,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          Colors.black.withOpacity(0.2),
-                                          Colors.transparent,
-                                        ],
-                                        begin: Alignment.bottomCenter,
-                                        end: Alignment.topCenter,
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                      // padding: EdgeInsets.all(5),
-                                      // width: 400,
-                                      decoration: BoxDecoration(
-                                          color: const Color.fromARGB(
-                                                  51, 65, 180, 197)
-                                              .withOpacity(0.6)
-                                              .withAlpha(150),
-                                          borderRadius:
-                                              BorderRadius.circular(3)),
-                                      child: Text(
-                                        carsor.text!,
-                                        style: const TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w500),
-                                        textAlign: TextAlign.center,
-                                      ))
-                                ]));
-                          }).toList(),
-                          options: CarouselOptions(
-                            height: 200.0,
-                            autoPlay: true,
-                            enlargeCenterPage: true,
-                            aspectRatio: 16 / 9,
-                            autoPlayCurve: Curves.fastOutSlowIn,
-                            enableInfiniteScroll: true,
-                            autoPlayInterval: const Duration(seconds: 10),
-                            autoPlayAnimationDuration:
-                                const Duration(milliseconds: 800),
-                            viewportFraction: 0.8,
+              : InkWell(
+                  onTap: () {
+                    MainCubit.get(context).closeDrawerState();
+                  },
+                  child: Stack(
+                    children: [
+                      Container(
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              Color(0xFF1c1c2e), // Dark indigo
+                              Color(0xFF2c2b3f), // Deep purple
+                            ],
                           ),
                         ),
-                        const SizedBox(height: 20),
-                        const SizedBox(height: 10),
-                        Container(
-                          padding: const EdgeInsets.all(16.0),
-                          child: GridView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2, // Two items per row
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 10,
-                              childAspectRatio:
-                                  3 / 2, // Control the height and width ratio
-                            ),
-                            itemCount: subjectNamesList.length,
-                            itemBuilder: (context, index) {
-                              return subjectItemBuild(subjectNamesList[index]);
-                            },
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 20),
+                              CarouselSlider(
+                                items: carsor.map((carsor) {
+                                  return InkWell(
+                                      child: Stack(
+                                          alignment: Alignment.bottomCenter,
+                                          children: [
+                                        Container(
+                                          clipBehavior: Clip.antiAlias,
+                                          // margin: const EdgeInsets.all(6.0),
+                                          // child: Image.asset("images/332573639_735780287983011_1562632886952931410_n.jpg",width: 400,height: 400,fit: BoxFit.cover,),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(3.0),
+                                            // image: DecorationImage(
+                                            //   image: AssetImage(
+                                            //     carsor.image ?? "images/llogo.jfif",
+                                            //   ),
+                                            //   fit: BoxFit.cover,
+                                            // ),
+                                          ),
+                                          child: Image.asset(
+                                            carsor.image!,
+                                            width: 400,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                              colors: [
+                                                Colors.black.withOpacity(0.2),
+                                                Colors.transparent,
+                                              ],
+                                              begin: Alignment.bottomCenter,
+                                              end: Alignment.topCenter,
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                            // padding: EdgeInsets.all(5),
+                                            // width: 400,
+                                            decoration: BoxDecoration(
+                                                color: const Color.fromARGB(
+                                                        51, 65, 180, 197)
+                                                    .withOpacity(0.6)
+                                                    .withAlpha(150),
+                                                borderRadius:
+                                                    BorderRadius.circular(3)),
+                                            child: Text(
+                                              carsor.text!,
+                                              style: const TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w500),
+                                              textAlign: TextAlign.center,
+                                            ))
+                                      ]));
+                                }).toList(),
+                                options: CarouselOptions(
+                                  height: 200.0,
+                                  autoPlay: true,
+                                  enlargeCenterPage: true,
+                                  aspectRatio: 16 / 9,
+                                  autoPlayCurve: Curves.fastOutSlowIn,
+                                  enableInfiniteScroll: true,
+                                  autoPlayInterval: const Duration(seconds: 10),
+                                  autoPlayAnimationDuration:
+                                      const Duration(milliseconds: 800),
+                                  viewportFraction: 0.8,
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              const SizedBox(height: 10),
+                              Container(
+                                padding: const EdgeInsets.all(16.0),
+                                child: GridView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2, // Two items per row
+                                    crossAxisSpacing: 10,
+                                    mainAxisSpacing: 10,
+                                    childAspectRatio: 3 /
+                                        2, // Control the height and width ratio
+                                  ),
+                                  itemCount:
+                                      semesters[semesterIndex!].subjects.length,
+                                  itemBuilder: (context, index) {
+                                    return subjectItemBuild(
+                                        semesters[semesterIndex!]
+                                            .subjects[index]);
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                      // if (scaffoldKey.currentState?.isDrawerOpen == true)
+                      //   BackdropFilter(
+                      //     filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
+                      //     child: Container(
+                      //       color: Colors.transparent,
+                      //     ),
+                      //   ),
+                    ],
                   ),
                 ),
         );
@@ -231,8 +265,10 @@ class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // SelectedSemester = "One";
+
     var profileModel = MainCubit.get(context).profileModel;
     return Drawer(
+      width: screenWidth(context) / 1.3,
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -246,10 +282,15 @@ class CustomDrawer extends StatelessWidget {
                       decoration: BoxDecoration(color: Color(0xff0F4C75)),
                       accountName: Row(
                         children: [
-                          Text(profileModel!.name,style: TextStyle(overflow: TextOverflow.clip),),
-                        Spacer(),
+                          Text(
+                            profileModel!.name,
+                            style: TextStyle(overflow: TextOverflow.clip),
+                          ),
+                          Spacer(),
                           Text(Level(profileModel.semester)),
-                          SizedBox(width: 10,)
+                          SizedBox(
+                            width: 10,
+                          )
                         ],
                       ),
                       // accountEmail: Text("2nd year "),
@@ -422,7 +463,9 @@ class CustomDrawer extends StatelessWidget {
                   MainCubit.get(context).logout(context);
                 },
               ),
-              SizedBox(height: screenHeight(context)/5,),
+            SizedBox(
+              height: screenHeight(context) / 5,
+            ),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: DarkLightModeToggle(),
@@ -512,10 +555,10 @@ launchUrl(String url) async {
   }
 }
 
-Widget subjectItemBuild(subjectName) {
+Widget subjectItemBuild(SubjectModel subject) {
   return GestureDetector(
     onTap: () {
-      print("$subjectName clicked");
+      print("$subject clicked");
     },
     child: Card(
       elevation: 12.0, // More elevation for depth
@@ -531,8 +574,7 @@ Widget subjectItemBuild(subjectName) {
               image: DecorationImage(
                 colorFilter:
                     const ColorFilter.mode(Color(0xfff39c12), BlendMode.dstIn),
-                image: AssetImage('images/${subjectName.toLowerCase()}.png' ??
-                    "images/physics.png"),
+                image: NetworkImage(subject.subjectImage),
                 fit: BoxFit.cover,
               ),
             ),
@@ -552,12 +594,14 @@ Widget subjectItemBuild(subjectName) {
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: Text(
-              subjectName,
+              subject.subjectName,
+              maxLines: 2,
               style: GoogleFonts.montserrat(
                 color: Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ],
@@ -584,14 +628,14 @@ List<CarsorModel> carsor = [
       text:
           "Cyberus summers training application form opens today at 9:00 pm! Be ready "),
 ];
-List subjectNamesList = [
-  "Physics",
-  "Electronics",
-  "Calculus",
-  "Ethics",
-  "Business",
-  "StructuredProgramming",
-];
+// List subjectNamesList = [
+//   "Physics",
+//   "Electronics",
+//   "Calculus",
+//   "Ethics",
+//   "Business",
+//   "Intro to Computer Sciences",
+// ];
 
 // List carsor = [
 //   "images/clock.jpeg",

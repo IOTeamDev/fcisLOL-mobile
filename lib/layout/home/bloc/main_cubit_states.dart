@@ -4,6 +4,10 @@ abstract class MainCubitStates {}
 
 class InitialMainState extends MainCubitStates {}
 
+class OpenDrawerState extends MainCubitStates {}
+
+class CloseDrawerState extends MainCubitStates {}
+
 class ChangeMode extends MainCubitStates {}
 
 class GetUserImageSuccess extends MainCubitStates {}

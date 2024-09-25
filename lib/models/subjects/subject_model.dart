@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class SubjectModel {
+class MaterialModel {
   String? title;
   String? description;
   int? id;
@@ -10,7 +10,7 @@ class SubjectModel {
   String? semester;
   bool? accepted;
 
-  SubjectModel.fromJson(Map<String, dynamic> json) {
+  MaterialModel.fromJson(Map<String, dynamic> json) {
     id = json['id'] ?? 0;
     subject = json['subject'] ?? 'Unknown Subject';
     link = json['link'] ?? '';

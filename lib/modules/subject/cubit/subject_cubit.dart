@@ -12,10 +12,10 @@ class SubjectCubit extends Cubit<SubjectState> {
 
   static SubjectCubit get(context) => BlocProvider.of(context);
 
-  List<SubjectModel>? materials;
-  List<SubjectModel>? videos;
+  List<MaterialModel>? materials;
+  List<MaterialModel>? videos;
   int index = 0;
-  List<SubjectModel>? documents;
+  List<MaterialModel>? documents;
   void getMaterials() {
     emit(GetMaterialLoading());
     DioHelp.getData(
@@ -28,7 +28,7 @@ class SubjectCubit extends Cubit<SubjectState> {
       documents = [];
       response.data.forEach((e) {
 
-        materials!.add(SubjectModel.fromJson(e));
+        materials!.add(MaterialModel.fromJson(e));
         if(materials![index].type == 'VIDEO')
           {
             videos!.add(materials![index]);

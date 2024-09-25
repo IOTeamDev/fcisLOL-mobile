@@ -225,7 +225,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
     );
   }
 
-  Widget gridTileWidget({required SubjectModel video}) {
+  Widget gridTileWidget({required MaterialModel video}) {
     return GridTile(
       footer: Container(
         padding: const EdgeInsets.all(5),
@@ -255,7 +255,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
     );
   }
 
-  Widget documentsCard({required SubjectModel document}) {
+  Widget documentsCard({required MaterialModel document}) {
     return InkWell(
       onTap: () {},
       child: Card(

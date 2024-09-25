@@ -73,7 +73,7 @@ class App extends StatelessWidget {
       ],
       child: BlocConsumer<AdminCubit, AdminCubitStates>(
         builder: (context, state) => MaterialApp(
-          home: LeaderboardScreen(),
+          home: Home(),
           debugShowCheckedModeBanner: false,
         ),
         listener: (context, state) {},

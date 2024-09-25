@@ -24,6 +24,15 @@ class MainCubit extends Cubit<MainCubitStates> {
   MainCubit() : super(InitialMainState());
   static MainCubit get(context) => BlocProvider.of(context);
 
+  bool opendedDrawer = false;
+  void openDrawerState() {
+    opendedDrawer = true;
+    emit(OpenDrawerState());
+  }  void closeDrawerState() {
+    opendedDrawer = false;
+    emit(CloseDrawerState());
+  }
+
   bool isDarkMode = false;
   void changeMode() {
     isDarkMode = !isDarkMode;
