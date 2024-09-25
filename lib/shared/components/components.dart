@@ -213,7 +213,6 @@ String getYouTubeThumbnail(String videoUrl) {
   } else if (uri.queryParameters.containsKey('v')) {
     videoId = uri.queryParameters['v']!;
   }
-
   return 'https://img.youtube.com/vi/$videoId/hqdefault.jpg';
 }
 

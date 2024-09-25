@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/main/bloc/main_cubit.dart';
-import 'package:lol/main/bloc/main_cubit_states.dart';
+import '../../layout/home/bloc/main_cubit_states.dart';
 import 'package:lol/main/screens/home.dart';
 import 'package:lol/shared/components/constants.dart';
 import 'package:lol/shared/components/default_text_field.dart';

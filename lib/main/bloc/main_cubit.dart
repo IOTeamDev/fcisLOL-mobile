@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:lol/main/bloc/main_cubit_states.dart';
+import 'package:lol/shared/network/endpoints.dart';
+import '../../layout/home/bloc/main_cubit_states.dart';
 import 'package:lol/main/screens/home.dart';
 import 'package:lol/models/profile/profile_model.dart';
 import 'package:lol/modules/auth/bloc/login_cubit.dart';
@@ -66,7 +67,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     emit(GetProfileLoading());
     profileModel = null;
 
-    DioHelp.getData(path: "me", token: TOKEN).then(
+    DioHelp.getData(path: CURRENTUSER, token: TOKEN).then(
       (value) {
         profileModel = ProfileModel.fromJson(value.data);
         emit(GetProfileSuccess());
@@ -88,7 +89,4 @@ class MainCubit extends Cubit<MainCubitStates> {
     emit(Logout());
   }
 
-// deleteImage(){//Used
-
-// }
 }

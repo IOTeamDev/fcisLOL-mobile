@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lol/main/bloc/main_cubit.dart';
-import 'package:lol/main/bloc/main_cubit_states.dart';
 import 'package:lol/main/screens/profile.dart';
 import 'package:lol/main.dart';
 import 'package:lol/modules/auth/bloc/login_cubit.dart';
@@ -13,6 +12,8 @@ import 'package:lol/shared/components/constants.dart';
 import 'package:lol/shared/components/navigation.dart';
 import 'package:lol/shared/components/snack.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../layout/home/bloc/main_cubit_states.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});

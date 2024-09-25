@@ -241,7 +241,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
               ),
             ),
             ConditionalBuilder(
-                condition: MainCubit.get(context).userModel != null && MainCubit.get(context).userModel!.role =='ADMIN',
+                condition: MainCubit.get(context).profileModel != null && MainCubit.get(context).profileModel!.role =='ADMIN',
                 builder: (context) => SizedBox(height: 40, child: removeButton()),
                 fallback: null
             ),
@@ -286,7 +286,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                   ),
                 ),
                 ConditionalBuilder(
-                  condition: MainCubit.get(context).userModel != null && MainCubit.get(context).userModel!.role =='ADMIN',
+                  condition: MainCubit.get(context).profileModel != null && MainCubit.get(context).profileModel!.role =='ADMIN',
                   builder: (context) => SizedBox(height: 40, child: removeButton()),
                   fallback: null
                 ),

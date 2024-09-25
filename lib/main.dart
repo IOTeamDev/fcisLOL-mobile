@@ -69,7 +69,7 @@ class App extends StatelessWidget {
         ),
         BlocProvider(create: (BuildContext context) => SubjectCubit()..getMaterials()),
         if(TOKEN != null)
-        BlocProvider(create: (BuildContext context) => MainCubit()..getCurrentUserData(TOKEN!)),
+        BlocProvider(create: (BuildContext context) => MainCubit()..getProfileInfo()),
       ],
       child: BlocConsumer<AdminCubit, AdminCubitStates>(
         builder: (context, state) => MaterialApp(

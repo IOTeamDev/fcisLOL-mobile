@@ -29,8 +29,6 @@ class Logout extends MainCubitStates{}
 class RetrieveCurrentUserDataLoadingState extends MainCubitStates{}
 
 class RetrieveCurrentUserDataSuccessState extends MainCubitStates{
-  CurrentUserModel userModel;
-  RetrieveCurrentUserDataSuccessState({required this.userModel});
 }
 
 class RetrieveCurrentUserDataErrorState extends MainCubitStates{

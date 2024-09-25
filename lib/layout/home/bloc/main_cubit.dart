@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lol/models/current_user/current_user_model.dart';
 import 'package:lol/models/leaderboard/leaderboard_model.dart';
@@ -91,18 +92,5 @@ class MainCubit extends Cubit<MainCubitStates> {
           loginCubit: LoginCubit(),
         ));
     emit(Logout());
-  }
-  
-  CurrentUserModel? userModel;
-  String getCurrentUserData(String token)
-  {
-    emit(RetrieveCurrentUserDataLoadingState());
-
-    DioHelp.getData(path: CURRENTUSER).then((value){
-      userModel = value.data;
-      emit(RetrieveCurrentUserDataSuccessState(userModel: userModel!));
-      return userModel!.role;
-    });
-    return '';
   }
 }
