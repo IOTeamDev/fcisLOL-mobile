@@ -10,7 +10,8 @@ import 'package:lol/models/subjects/subject_model.dart';
 import 'package:lol/shared/components/components.dart';
 
 class SubjectDetails extends StatefulWidget {
-  const SubjectDetails({super.key});
+  final String subjectName;
+  const SubjectDetails({super.key, required this.subjectName});
 
   @override
   State<SubjectDetails> createState() => _MaterialDetailsState();
@@ -19,14 +20,11 @@ class SubjectDetails extends StatefulWidget {
 class _MaterialDetailsState extends State<SubjectDetails>
     with TickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-
   late TabController _tabControllerOfShowingContent;
-
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _linkController = TextEditingController();
-
   @override
   void initState() {
     _tabControllerOfShowingContent = TabController(length: 2, vsync: this);

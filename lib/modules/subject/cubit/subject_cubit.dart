@@ -49,6 +49,8 @@ class SubjectCubit extends Cubit<SubjectState> {
       required String type}) {
     emit(SaveMaterialLoading());
 
+//title + description => search
+
     DioHelp.postData(
       path: MATERIAL,
       data: {
@@ -60,7 +62,10 @@ class SubjectCubit extends Cubit<SubjectState> {
         'semester': 'One',
       },
       token:
-          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIzLCJpYXQiOjE3MjcxMTE2MzEsImV4cCI6MTc1ODIxNTYzMX0.PUT9eFsFd4Bo-5ulhxFQu3T1HmYXza31Vo-C7lz2Nzg',
+          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIzLCJpYXQiOjE3MjcxMTE2MzEsImV4cCI6MTc1ODIxNTYzMX0.PUT9eFsFd4Bo-5ulhxFQu3T1HmYXza31Vo-C7lz2Nzg'
+          
+          
+          ,
     ).then((response) {
       print(response.data);
       getMaterials();
@@ -77,6 +82,7 @@ class SubjectCubit extends Cubit<SubjectState> {
   String item1 = 'VIDEO';
   String item2 = 'DOCUMENT';
   String selectedType = 'VIDEO';
+
   void changeType({required String type}) {
     selectedType = type;
     emit(TypeChangedState(selectedType: selectedType));

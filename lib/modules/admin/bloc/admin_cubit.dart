@@ -103,7 +103,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     emit(AdminGetRequestsLoadingState());
     DioHelp.getData(
         path: MATERIAL,
-        query: {'subject': 'CALC_1', 'accepted': true}).then((value) {
+        query: {'subject': 'CALC_1', 'accepted': false}).then((value) {
       requests = [];
       value.data.forEach((element) {
         requests!.add(RequestsModel.fromJson(element));
