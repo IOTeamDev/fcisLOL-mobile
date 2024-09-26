@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:linkify/linkify.dart';
 import 'package:lol/layout/home/bloc/main_cubit.dart';
 import 'package:lol/shared/styles/colors.dart';
 import 'package:lol/shared/components/constants.dart';
@@ -26,13 +27,14 @@ class _MaterialDetailsState extends State<SubjectDetails>
   final _descriptionController = TextEditingController();
   final _linkController = TextEditingController();
 
-  String? _selectedType;
-
   @override
   void initState() {
     _tabControllerOfShowingContent = TabController(length: 2, vsync: this);
-    _tabControllerOfShowingContent.addListener(() {
-      setState(() {});
+    _tabControllerOfShowingContent.animation?.addListener(() {
+      int newIndex = _tabControllerOfShowingContent.animation!.value.round();
+      if (newIndex != SubjectCubit.get(context).selectedTabIndex) {
+        SubjectCubit.get(context).changeTap(index: newIndex);
+      }
     });
     super.initState();
   }
@@ -49,7 +51,8 @@ class _MaterialDetailsState extends State<SubjectDetails>
           showToastMessage(
               message: 'error while uploading file', states: ToastStates.ERROR);
         } else if (state is SaveMaterialLoading) {
-          showToastMessage(message: 'Uploading file........', states: ToastStates.WARNING);
+          showToastMessage(
+              message: 'Uploading file........', states: ToastStates.WARNING);
         }
       },
       child: Scaffold(
@@ -143,6 +146,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
 
   Widget customTabBarView() {
     var cubit = SubjectCubit.get(context);
+
     return TabBarView(
       controller: _tabControllerOfShowingContent,
       children: [
@@ -226,38 +230,50 @@ class _MaterialDetailsState extends State<SubjectDetails>
   }
 
   Widget gridTileWidget({required MaterialModel video}) {
-    return GridTile(
-      footer: Container(
-        padding: const EdgeInsets.all(5),
-        color: Colors.black,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              '${video.title}',
-              style: TextStyle(
-                fontSize: screenWidth(context) / 20,
-                color: a,
+    return InkWell(
+      onTap: () async {
+        final linkELement = LinkableElement(video.link, video.link!);
+        await onOpen(context, linkELement);
+      },
+      child: GridTile(
+        footer: Container(
+          padding: const EdgeInsets.all(5),
+          color: Colors.black,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '${video.title}',
+                style: TextStyle(
+                  fontSize: screenWidth(context) / 20,
+                  color: a,
+                ),
               ),
-            ),
-            ConditionalBuilder(
-                condition: MainCubit.get(context).profileModel != null && MainCubit.get(context).profileModel!.role =='ADMIN',
-                builder: (context) => SizedBox(height: 40, child: removeButton()),
-                fallback: null
-            ),
-          ],
+              TOKEN != null
+                  ? ConditionalBuilder(
+                      condition: MainCubit.get(context).profileModel != null &&
+                          MainCubit.get(context).profileModel!.role == 'ADMIN',
+                      builder: (context) =>
+                          SizedBox(height: 40, child: removeButton()),
+                      fallback: null)
+                  : Container(),
+            ],
+          ),
         ),
-      ),
-      child: Image.network(
-        getYouTubeThumbnail(video.link!),
-        fit: BoxFit.cover,
+        child: Image.network(
+          getYouTubeThumbnail(video.link!),
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }
 
   Widget documentsCard({required MaterialModel document}) {
     return InkWell(
-      onTap: () {},
+      onTap: () async {
+        final linkELement = LinkableElement(document.link, document.link!);
+        await onOpen(context, linkELement);
+      },
       child: Card(
           color: const Color.fromRGBO(217, 217, 217, 0.25),
           child: Container(
@@ -285,11 +301,16 @@ class _MaterialDetailsState extends State<SubjectDetails>
                     textAlign: TextAlign.start,
                   ),
                 ),
-                ConditionalBuilder(
-                  condition: MainCubit.get(context).profileModel != null && MainCubit.get(context).profileModel!.role =='ADMIN',
-                  builder: (context) => SizedBox(height: 40, child: removeButton()),
-                  fallback: null
-                ),
+                TOKEN != null
+                    ? ConditionalBuilder(
+                        condition:
+                            MainCubit.get(context).profileModel != null &&
+                                MainCubit.get(context).profileModel!.role ==
+                                    'ADMIN',
+                        builder: (context) =>
+                            SizedBox(height: 40, child: removeButton()),
+                        fallback: null)
+                    : Container(),
               ],
             ),
           )),
@@ -299,7 +320,10 @@ class _MaterialDetailsState extends State<SubjectDetails>
   Widget removeButton() {
     return ElevatedButton(
         onPressed: () {},
-        style: ElevatedButton.styleFrom(backgroundColor: remove, padding: EdgeInsetsDirectional.symmetric(horizontal: 15, vertical: 0)),
+        style: ElevatedButton.styleFrom(
+            backgroundColor: remove,
+            padding: const EdgeInsetsDirectional.symmetric(
+                horizontal: 15, vertical: 0)),
         child: Text(
           'Remove',
           style: TextStyle(color: a, fontSize: screenWidth(context) / 24),
@@ -310,25 +334,32 @@ class _MaterialDetailsState extends State<SubjectDetails>
       {required TabController tabController,
       required String title1,
       required String title2}) {
-    return TabBar(
-      dividerHeight: 0,
-      indicator: const BoxDecoration(),
-      controller: tabController,
-      tabs: [
-        tabForCustomTabBar(title1, tabController, 0),
-        tabForCustomTabBar(title2, tabController, 1)
-      ],
+    var cubit = SubjectCubit.get(context);
+    return BlocBuilder<SubjectCubit, SubjectState>(
+      builder: (context, state) {
+        return TabBar(
+          dividerHeight: 0,
+          indicator: const BoxDecoration(),
+          controller: tabController,
+          tabs: [
+            tabForCustomTabBar(title1, cubit.selectedTabIndex == 0),
+            tabForCustomTabBar(title2, cubit.selectedTabIndex == 1)
+          ],
+          onTap: (index) {
+            cubit.changeTap(index: index);
+          },
+        );
+      },
     );
   }
 
-  Widget tabForCustomTabBar(
-      String title, TabController tabController, int index) {
+  Widget tabForCustomTabBar(String title, bool isSelected) {
     return Tab(
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: tabController.index == index ? additional2 : null,
+          color: isSelected ? additional2 : Colors.transparent,
         ),
         child: Center(
           child: Text(
@@ -376,133 +407,145 @@ class _MaterialDetailsState extends State<SubjectDetails>
       initialChildSize: 0.55,
       maxChildSize: 0.55,
       builder: (context, scrollController) {
-        return Container(
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-              color: Color.fromRGBO(25, 25, 25, 1),
-            ),
-            padding: const EdgeInsets.all(16),
-            width: screenWidth(context),
-            child: addingMaterialForm(scrollController));
+        return Scaffold(
+          resizeToAvoidBottomInset: true,
+          backgroundColor: const Color.fromRGBO(25, 25, 25, 1),
+          body: Container(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              ),
+              padding: const EdgeInsets.all(16),
+              width: screenWidth(context),
+              child: addingMaterialForm(scrollController)),
+        );
       },
     );
   }
 
   Widget addingMaterialForm(ScrollController scrollController) {
-    return Form(
-        key: _formKey,
-        child: ListView(
+    var cubit = SubjectCubit.get(context);
+    return BlocBuilder<SubjectCubit, SubjectState>(
+      builder: (context, state) {
+        return SingleChildScrollView(
           controller: scrollController,
-          shrinkWrap: true,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5),
-              child: customTextFormField(
-                  title: 'Title',
-                  controller: _titleController,
-                  keyboardtype: TextInputType.name),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5),
-              child: customTextFormField(
-                  title: 'Description(e.g:chapter3)',
-                  controller: _descriptionController,
-                  keyboardtype: TextInputType.text),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5),
-              child: customTextFormField(
-                  title: 'Link',
-                  controller: _linkController,
-                  keyboardtype: TextInputType.url),
-            ),
-            Container(
-                margin: const EdgeInsets.symmetric(vertical: 15),
-                decoration: BoxDecoration(
-                    color: const Color.fromRGBO(217, 217, 217, 0.25),
-                    borderRadius: BorderRadius.circular(40)),
-                width: screenWidth(context) / 1.2,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(left: 0, top: 0, bottom: 0),
-                      padding: const EdgeInsets.all(10),
-                      width: screenWidth(context) / 4,
+          child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: customTextFormField(
+                        title: 'Title',
+                        controller: _titleController,
+                        keyboardtype: TextInputType.name),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: customTextFormField(
+                        title: 'Description(e.g:chapter3)',
+                        controller: _descriptionController,
+                        keyboardtype: TextInputType.text),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: customTextFormField(
+                        title: 'Link',
+                        controller: _linkController,
+                        keyboardtype: TextInputType.url),
+                  ),
+                  Container(
+                      margin: const EdgeInsets.symmetric(vertical: 15),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: additional2,
-                      ),
-                      child: Text(
-                        'Type',
-                        style: TextStyle(color: a, fontSize: 20),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    PopupMenuButton(
-                        onSelected: (value) {
-                          _selectedType = value;
-                        },
-                        iconColor: a,
-                        itemBuilder: (context) {
-                          return [
-                            const PopupMenuItem(
-                              value: 'VIDEO',
-                              child: Text('Video'),
+                          color: const Color.fromRGBO(217, 217, 217, 0.25),
+                          borderRadius: BorderRadius.circular(40)),
+                      width: screenWidth(context) / 1.2,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(
+                                left: 0, top: 0, bottom: 0),
+                            padding: const EdgeInsets.all(10),
+                            width: screenWidth(context) / 4,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: additional2,
                             ),
-                            const PopupMenuItem(
-                              value: 'DOCUMENT',
-                              child: Text('Document'),
-                            )
-                          ];
-                        }),
-                  ],
-                )),
-            //Cancel and submit buttons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                //Cancel Button
-                MaterialButton(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  minWidth: screenWidth(context) / 3,
-                  shape: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30)),
-                  color: const Color.fromRGBO(70, 70, 70, 0.36),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(
-                    'Cancel',
-                    style: TextStyle(color: additional1, fontSize: 20),
-                  ),
-                ),
-                //Submit Button
-                MaterialButton(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  minWidth: screenWidth(context) / 3,
-                  shape: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30)),
-                  color: additional2,
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      BlocProvider.of<SubjectCubit>(context).addMaterial(
-                          title: _titleController.text,
-                          description: _descriptionController.text,
-                          link: _linkController.text,
-                          type: _selectedType!);
+                            child: Text(
+                              cubit.selectedType.toLowerCase(),
+                              style: TextStyle(color: a, fontSize: 16),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          PopupMenuButton(
+                              onSelected: (type) {
+                                cubit.changeType(type: type);
+                              },
+                              iconColor: a,
+                              itemBuilder: (context) {
+                                return [
+                                  PopupMenuItem(
+                                    value: cubit.item1,
+                                    child: const Text('Video'),
+                                  ),
+                                  PopupMenuItem(
+                                    value: cubit.item2,
+                                    child: const Text(
+                                      'Document',
+                                    ),
+                                  )
+                                ];
+                              }),
+                        ],
+                      )),
+                  //Cancel and submit buttons
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      //Cancel Button
+                      MaterialButton(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        minWidth: screenWidth(context) / 3,
+                        shape: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30)),
+                        color: const Color.fromRGBO(70, 70, 70, 0.36),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          'Cancel',
+                          style: TextStyle(color: additional1, fontSize: 20),
+                        ),
+                      ),
+                      //Submit Button
+                      MaterialButton(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        minWidth: screenWidth(context) / 3,
+                        shape: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30)),
+                        color: additional2,
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            BlocProvider.of<SubjectCubit>(context).addMaterial(
+                                title: _titleController.text,
+                                description: _descriptionController.text,
+                                link: _linkController.text,
+                                type: cubit.selectedType);
 
-                      Navigator.of(context).pop();
-                    }
-                  },
-                  child: Text(
-                    'Submit',
-                    style: TextStyle(color: a, fontSize: 20),
-                  ),
-                ),
-              ],
-            )
-          ],
-        ));
+                            Navigator.of(context).pop();
+                          }
+                        },
+                        child: Text(
+                          'Submit',
+                          style: TextStyle(color: a, fontSize: 20),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              )),
+        );
+      },
+    );
   }
 }

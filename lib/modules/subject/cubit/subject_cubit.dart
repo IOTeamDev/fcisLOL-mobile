@@ -8,7 +8,7 @@ import 'package:lol/shared/network/remote/dio.dart';
 part 'subject_state.dart';
 
 class SubjectCubit extends Cubit<SubjectState> {
-  SubjectCubit() : super(Material1Initial());
+  SubjectCubit() : super(MaterialInitial());
 
   static SubjectCubit get(context) => BlocProvider.of(context);
 
@@ -18,33 +18,29 @@ class SubjectCubit extends Cubit<SubjectState> {
   List<MaterialModel>? documents;
   void getMaterials() {
     emit(GetMaterialLoading());
-    DioHelp.getData(
-        path: MATERIAL,
-        query: {'subject': 'CALC_1', 'accepted': true}).then((response) {
-      print(response.data);
-      materials = [];
-      videos = [];
-      index = 0;
-      documents = [];
-      response.data.forEach((e) {
 
-        materials!.add(MaterialModel.fromJson(e));
-        if(materials![index].type == 'VIDEO')
-          {
+    try {
+      DioHelp.getData(
+          path: MATERIAL,
+          query: {'subject': 'CALC_1', 'accepted': true}).then((response) {
+        materials = [];
+        videos = [];
+        index = 0;
+        documents = [];
+        response.data.forEach((e) {
+          materials!.add(MaterialModel.fromJson(e));
+          if (materials![index].type == 'VIDEO') {
             videos!.add(materials![index]);
-          }
-        else
-          {
+          } else {
             documents!.add(materials![index]);
           }
           index++;
+        });
+
+        emit(GetMaterialLoaded(materials: materials!));
       });
-
-      print(materials![0].title.toString());
-      emit(GetMaterialLoaded(materials: materials!));
-    });
+    } catch (e) {}
   }
-
 
   void addMaterial(
       {required String title,
@@ -63,11 +59,26 @@ class SubjectCubit extends Cubit<SubjectState> {
         'type': type,
         'semester': 'One',
       },
-      token: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIzLCJpYXQiOjE3MjcxMTE2MzEsImV4cCI6MTc1ODIxNTYzMX0.PUT9eFsFd4Bo-5ulhxFQu3T1HmYXza31Vo-C7lz2Nzg',
+      token:
+          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIzLCJpYXQiOjE3MjcxMTE2MzEsImV4cCI6MTc1ODIxNTYzMX0.PUT9eFsFd4Bo-5ulhxFQu3T1HmYXza31Vo-C7lz2Nzg',
     ).then((response) {
       print(response.data);
       getMaterials();
       emit(SaveMaterialSuccess());
     });
+  }
+
+  int selectedTabIndex = 0;
+  void changeTap({required int index}) {
+    selectedTabIndex = index;
+    emit(TabChangedState(selectedIndex: selectedTabIndex));
+  }
+
+  String item1 = 'VIDEO';
+  String item2 = 'DOCUMENT';
+  String selectedType = 'VIDEO';
+  void changeType({required String type}) {
+    selectedType = type;
+    emit(TypeChangedState(selectedType: selectedType));
   }
 }

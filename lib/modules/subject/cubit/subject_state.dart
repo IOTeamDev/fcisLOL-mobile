@@ -3,8 +3,6 @@ part of 'subject_cubit.dart';
 @immutable
 sealed class SubjectState {}
 
-final class Material1Initial extends SubjectState {}
-
 final class MaterialInitial extends SubjectState {}
 
 final class GetMaterialLoading extends SubjectState {}
@@ -29,4 +27,16 @@ final class SaveMaterialError extends SubjectState {
   final String errorMessage;
 
   SaveMaterialError({required this.errorMessage});
+}
+
+final class TabChangedState extends SubjectState {
+  final int selectedIndex;
+
+  TabChangedState({required this.selectedIndex});
+}
+
+class TypeChangedState extends SubjectState {
+  final String selectedType;
+
+  TypeChangedState({required this.selectedType});
 }
