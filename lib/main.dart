@@ -70,11 +70,11 @@ class App extends StatelessWidget {
             create: (BuildContext context) => SubjectCubit()..getMaterials()),
         if (TOKEN != null)
           BlocProvider(
-              create: (BuildContext context) => MainCubit()..getProfileInfo()),
+              create: (BuildContext context) => MainCubit()),
 
       ],
       child: BlocConsumer<AdminCubit, AdminCubitStates>(
-        builder: (context, state) => MaterialApp(
+        builder: (context, state) => const MaterialApp(
           home: Home(),
           debugShowCheckedModeBanner: false,
         ),

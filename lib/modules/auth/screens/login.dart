@@ -26,8 +26,6 @@ class LoginScreen extends StatelessWidget {
       create: (context) => LoginCubit(),
       child: BlocConsumer<LoginCubit, LoginStates>(
         listener: (context, state) {
-
-          
           if (state is LoginSuccess) {
             TOKEN = state.token;
             Cache.writeData(key: "token", value: state.token);
@@ -188,11 +186,8 @@ class LoginScreen extends StatelessWidget {
                           const Text("Not a member yet ?"),
                           defaultTextButton(
                             onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const Registerscreen()));
+                              navigatReplace(
+                                  context, Registerscreen());
                             },
                             text: "Register",
                           )

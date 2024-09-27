@@ -54,6 +54,8 @@ class SubjectCubit extends Cubit<SubjectState> {
     DioHelp.postData(
       path: MATERIAL,
       data: {
+
+        
         'subject': 'CALC_1',
         'title': title,
         'description': description,
@@ -62,10 +64,7 @@ class SubjectCubit extends Cubit<SubjectState> {
         'semester': 'One',
       },
       token:
-          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIzLCJpYXQiOjE3MjcxMTE2MzEsImV4cCI6MTc1ODIxNTYzMX0.PUT9eFsFd4Bo-5ulhxFQu3T1HmYXza31Vo-C7lz2Nzg'
-          
-          
-          ,
+          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIzLCJpYXQiOjE3MjcxMTE2MzEsImV4cCI6MTc1ODIxNTYzMX0.PUT9eFsFd4Bo-5ulhxFQu3T1HmYXza31Vo-C7lz2Nzg',
     ).then((response) {
       print(response.data);
       getMaterials();

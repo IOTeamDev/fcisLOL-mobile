@@ -22,21 +22,21 @@ List<SubjectModel> semesterOne = [
 ];
 
 List<SubjectModel> semesterTwo = [
-  SubjectModel(subjectName: "Ethics", subjectImage: ""),
-  SubjectModel(subjectName: "Structured Programming", subjectImage: ""),
-  SubjectModel(subjectName: "Business", subjectImage: ""),
-  SubjectModel(subjectName: "Calculus II", subjectImage: ""),
-  SubjectModel(subjectName: "Physics II", subjectImage: ""),
-  SubjectModel(subjectName: "Electronics", subjectImage: ""),
+  SubjectModel(subjectName: "Structured Programming", subjectImage: "https://www.springboard.com/blog/wp-content/uploads/2022/08/programming-skills.png"),
+  SubjectModel(subjectName: "Ethics", subjectImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRP9IzvM6HTqfSalkZi5VE38DYwCcOCgmssYw&s"),
+  SubjectModel(subjectName: "Physics II", subjectImage: "https://thumbs.dreamstime.com/b/captivating-image-features-abstract-representation-quantum-physics-particle-dynamics-vibrant-colors-blue-purple-322222806.jpg"),
+  SubjectModel(subjectName: "Business", subjectImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS34wULJo7LChwKRBw6JjiCpp-LYIjCqU6uQXd8xBZfqsPOJSc4"),
+  SubjectModel(subjectName: "Calculus II", subjectImage: "https://imageio.forbes.com/specials-images/imageserve/663a317a0c62c92476f504f4/Mathematics-function-integra-graph-formulas-on-the-chalkboard-/960x0.jpg?format=jpg&width=960"),
+  SubjectModel(subjectName: "Electronics", subjectImage: "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcT9aDj6Cw6APTvOFhsQK20H2GCsiwW9btt_p-ewKsJ2T78N0HIS"),
 ];
 
 List<SubjectModel> semesterThree = [
-  SubjectModel(subjectName: "Report Writing", subjectImage: ""),
-  SubjectModel(subjectName: "Object Oriented Programming", subjectImage: ""),
-  SubjectModel(subjectName: "Discrete Mathematics", subjectImage: ""),
-  SubjectModel(subjectName: "Logic Design", subjectImage: ""),
-  SubjectModel(subjectName: "Database Management Systems", subjectImage: ""),
-  SubjectModel(subjectName: "Statistical Analysis", subjectImage: ""),
+  SubjectModel(subjectName: "Report Writing", subjectImage: "https://schools.firstnews.co.uk/wp-content/uploads/sites/3/2019/10/Writing-a-newspaper-report-Featured-1200x900.jpg"),
+  SubjectModel(subjectName: "Object Oriented Programming", subjectImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG4e4tadUqb6A59hAbirAX0tk4ZXBMAIoWFdvRgBYyqyogglFC-ghxQJGp4ZWujaGglsY&usqp=CAU"),
+  SubjectModel(subjectName: "Discrete Mathematics", subjectImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/6n-graf.svg/250px-6n-graf.svg.png"),
+  SubjectModel(subjectName: "Logic Design", subjectImage: "https://learningmonkey.in/wp-content/uploads/2021/06/Digital-Logic-Design.jpg"),
+  SubjectModel(subjectName: "Database Management Systems", subjectImage: "https://zeenea.com/wp-content/uploads/2023/01/databases-zeenea.jpg.webp"),
+  SubjectModel(subjectName: "Statistical Analysis", subjectImage: "https://www.thesenior.com.au/images/transform/v1/crop/frm/matthew.crossman/2802f874-e561-4b7e-8873-41c68abcb44e.jpg/r0_0_4996_3286_w1200_h678_fmax.jpg"),
 ];
 
 List<SubjectModel> semesterFour = [

@@ -84,6 +84,7 @@ class Registerscreen extends StatelessWidget {
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
+                          SizedBox(height: 10,),
                           const Text(
                             "Create you account",
                             style: TextStyle(
@@ -97,39 +98,26 @@ class Registerscreen extends StatelessWidget {
                           const SizedBox(
                             height: 20,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                  child: LoginMethodContainer(
-                                      title: "Google",
-                                      image: "images/google1.png")),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                  child: LoginMethodContainer(
-                                      title: "Microsoft",
-                                      image:
-                                          "images/Microsoft_Logo_512px.png")),
-                            ],
+                          
+                          const SizedBox(
+                            width: 10,
                           ),
                           const SizedBox(
                             height: 10,
                           ),
-                          const Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Expanded(child: Divider()),
-
-                              Text(
-                                "   or  ",
-                                style: TextStyle(fontSize: 17),
-                              ),
-                              Expanded(child: Divider()),
-                              // Expanded(child: HalfDivider(context)),
-                            ],
-                          ),
+                          // const Row(
+                          //   mainAxisAlignment: MainAxisAlignment.start,
+                          //   children: [
+                          //     Expanded(child: Divider()),
+                
+                          //     Text(
+                          //       "   or  ",
+                          //       style: TextStyle(fontSize: 17),
+                          //     ),
+                          //     Expanded(child: Divider()),
+                          //     // Expanded(child: HalfDivider(context)),
+                          //   ],
+                          // ),
                           const SizedBox(
                             height: 5,
                           ),
@@ -175,7 +163,7 @@ class Registerscreen extends StatelessWidget {
                               const SizedBox(
                                 height: 5,
                               ),
-
+                
                               defaultTextField(
                                   validateor: (value) {
                                     if (value!.isEmpty) {
@@ -215,7 +203,7 @@ class Registerscreen extends StatelessWidget {
                                 height: 5,
                               ),
                               defaultTextField(
-
+                
                                   // label: "Phone",
                                   controller: phoneController),
                             ],
@@ -342,45 +330,5 @@ class Registerscreen extends StatelessWidget {
   }
 }
 
-Widget LoginMethodContainer({
-  String? image,
-  IconData? icon,
-  required String title,
-}) {
-  return InkWell(
-    onTap: () {
-      // Handle tap action
-    },
-    child: Container(
-      // margin: EdgeInsets.symmetric(horizontal: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey[300]!),
-      ),
-      height: 45,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          if (image != null)
-            Image.asset(
-              image,
-              width: 25,
-              height: 25,
-            ),
-          if (icon != null) Icon(icon),
-          const SizedBox(width: 15),
-          Text(
-            title,
-            style: TextStyle(
-              color: Colors.grey[700],
-              fontWeight: FontWeight.bold,
-              fontSize: 17,
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
-}
+
+
