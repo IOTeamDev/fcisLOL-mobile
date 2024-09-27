@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
@@ -22,6 +23,9 @@ import 'package:lol/main.dart';
 import 'package:lol/shared/components/navigation.dart';
 import 'package:lol/shared/network/local/shared_prefrence.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../modules/admin/screens/announcements/announcements_list.dart';
+import '../admin_panel/admin_panal.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -61,10 +65,11 @@ class Home extends StatelessWidget {
           appBar: AppBar(
             leading: IconButton(
                 onPressed: () {
-                  MainCubit.get(context).openDrawerState();
+                  scaffoldKey.currentState!.openDrawer();
 
-                  scaffoldKey.currentState!
-                      .openDrawer(); // Use key to open the drawer
+                  // Future.delayed(Duration.zero, () {
+                  //   MainCubit.get(context).openDrawerState();
+                  // });
                 },
                 icon: const Icon(
                   Icons.menu,
@@ -100,7 +105,11 @@ class Home extends StatelessWidget {
                 ),
             ],
           ),
-          drawer: CustomDrawer(),
+          drawer: ConditionalBuilder(
+            condition: MainCubit.get(context).profileModel != null && state is !GetProfileLoading,
+            builder:(context) => CustomDrawer(),
+            fallback: (context)=>  const Center(child: CircularProgressIndicator()),
+          ),
           body: MainCubit.get(context).profileModel == null
               ? Center(
                   child: CircularProgressIndicator(),
@@ -360,7 +369,7 @@ class CustomDrawer extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.announcement),
               title: Text("Announcements"),
-              onTap: () {},
+              onTap: () { navigate(context, AnnouncementsList());},
             ),
             ExpansionTile(
               leading: Icon(Icons.school),
@@ -382,11 +391,6 @@ class CustomDrawer extends StatelessWidget {
                 ),
               ],
             ),
-            ListTile(
-              leading: Icon(Icons.link),
-              title: Text("Links"),
-              onTap: () {},
-            ),
             ExpansionTile(
               leading: Icon(Icons.drive_file_move),
               title: Text("Drive"),
@@ -394,29 +398,33 @@ class CustomDrawer extends StatelessWidget {
                 ListTile(
                   title: Text("2027"),
                   onTap: () async {
-                    LinkableElement url = LinkableElement('drive','https://drive.google.com/drive/folders/1-1_Ef2qF0_rDzToD4OlqIl5xubgpMGU0');
+                    LinkableElement url = LinkableElement('drive',
+                        'https://drive.google.com/drive/folders/1-1_Ef2qF0_rDzToD4OlqIl5xubgpMGU0');
                     await onOpen(context, url);
                   },
                 ),
                 ListTile(
                   title: Text("2026"),
-                  onTap: () {
-                    launchUrlC(
-                        "https://drive.google.com/drive/folders/1CdZDa3z97RN_yRjFlC7IAcLfmw6D1yLy");
+                  onTap: () async {
+                    LinkableElement url = LinkableElement('drive',
+                        'https://drive.google.com/drive/folders/1CdZDa3z97RN_yRjFlC7IAcLfmw6D1yLy');
+                    await onOpen(context, url);
                   },
                 ),
                 ListTile(
                   title: Text("2025"),
-                  onTap: () {
-                    launchUrlC(
-                        "https://drive.google.com/drive/folders/1BAXez9FJKF_ASx79usd_-Xi47TdUYK73?fbclid=IwAR3cRtEV1aJrcvKoGNBLCbqBu2LMLrsWYfQkOZUb6SQE2dtT3ZtqrcCjxno");
+                  onTap: () async {
+                    LinkableElement url = LinkableElement('drive',
+                        'https://drive.google.com/drive/folders/1BAXez9FJKF_ASx79usd_-Xi47TdUYK73?fbclid=IwAR3cRtEV1aJrcvKoGNBLCbqBu2LMLrsWYfQkOZUb6SQE2dtT3ZtqrcCjxno');
+                    await onOpen(context, url);
                   },
                 ),
                 ListTile(
                   title: Text("2024"),
-                  onTap: () {
-                    launchUrlC(
-                        "https://drive.google.com/drive/u/0/folders/11egB46e3wtl1Q69wdCBBam87bwMF7Qo-");
+                  onTap: () async {
+                    LinkableElement url = LinkableElement('drive',
+                        'https://drive.google.com/drive/u/0/folders/11egB46e3wtl1Q69wdCBBam87bwMF7Qo-');
+                    await onOpen(context, url);
                   },
                 ),
               ],
@@ -430,7 +438,7 @@ class CustomDrawer extends StatelessWidget {
               ListTile(
                 leading: Icon(Icons.admin_panel_settings),
                 title: Text("Admin"),
-                onTap: () {},
+                onTap: () {navigate(context, AdminPanal());},
               ),
             if (TOKEN != null)
               ListTile(
@@ -457,8 +465,8 @@ class CustomDrawer extends StatelessWidget {
   }
 }
 launchUrlC(String url) async {
-  if (await canLaunch(url)) {
-    await launch(url);
+  if (await canLaunchUrl(Uri.parse(url))) {
+    await launchUrl(Uri.parse(url));
   } else {
     throw 'Could not launch $url';
   }
@@ -517,7 +525,7 @@ Widget DarkLightModeToggle(context) {
                 ),
                 SizedBox(width: 8),
                 Text(
-                  'Dark Mode',
+                  'Dark',
                   style: TextStyle(
                     color: mainCubit.isDarkMode ? Colors.black : Colors.white,
                   ),
@@ -540,7 +548,7 @@ Widget DarkLightModeToggle(context) {
                 ),
                 SizedBox(width: 8),
                 Text(
-                  'Light Mode',
+                  'Light',
                   style: TextStyle(
                     color: mainCubit.isDarkMode ? Colors.white : Colors.black,
                   ),
