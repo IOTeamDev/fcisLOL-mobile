@@ -12,7 +12,7 @@ ProfileModel.fromJson(Map model){
   semester = model['semester'];
   role = model['role'];
   phone = model['phone']??"";
-  photo = model['photo'];
+  photo = model['photo']??'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStCJpmc7wNF8Ti2Tuh_hcIRZUGOc23KBTx2A&s';
 }
 
 

@@ -86,10 +86,7 @@ class MainCubit extends Cubit<MainCubitStates> {
         profileModel = ProfileModel.fromJson(value.data);
         emit(GetProfileSuccess());
       },
-    ).catchError((onError) {
-      print(onError);
-      emit(GetProfileFailure());
-    });
+    );
   }
 
   void logout(context) {

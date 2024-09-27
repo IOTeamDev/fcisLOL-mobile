@@ -44,7 +44,8 @@ class _MaterialDetailsState extends State<SubjectDetails>
         if (state is SaveMaterialSuccess) {
           showToastMessage(
               message: 'تم عرض الطلب على مسؤول التطبيق وفى انتظار الموافقة  ',
-              states: ToastStates.SUCCESS);
+              states: ToastStates.SUCCESS
+          );
         } else if (state is SaveMaterialError) {
           showToastMessage(
               message: 'error while uploading file', states: ToastStates.ERROR);

@@ -4,6 +4,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lol/layout/home/semster_model.dart';
 import 'package:lol/models/profile/profile_model.dart';
@@ -237,6 +238,229 @@ class Home extends StatelessWidget {
         );
       }),
     );
+  }
+}
+
+class CustomDrawer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // SelectedSemester = "One";
+
+    var profileModel = MainCubit.get(context).profileModel;
+    return Drawer(
+      width: screenWidth(context) / 1.3,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TOKEN != null
+                ? GestureDetector(
+              onTap: () {
+                print("sdfsd");
+              },
+              child: UserAccountsDrawerHeader(
+                decoration: BoxDecoration(color: Color(0xff0F4C75)),
+                accountName: Row(
+                  children: [
+                    Text(
+                      profileModel!.name,
+                      style: TextStyle(overflow: TextOverflow.clip),
+                    ),
+                    Spacer(),
+                    Text(Level(profileModel.semester)),
+                    SizedBox(
+                      width: 10,
+                    )
+                  ],
+                ),
+                // accountEmail: Text("2nd year "),
+                accountEmail: TextButton(
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      minimumSize: Size(0, 0),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    onPressed: () => navigate(context, Profile()),
+                    child: Text(
+                      "Profile info",
+                      style: TextStyle(color: Colors.orange),
+                    )),
+                currentAccountPicture: ClipOval(
+                  child: Image.network(
+                    profileModel.photo,
+                    width: 30,
+                    height: 30,
+                    fit: BoxFit.cover,
+                  ),
+                  // backgroundImage: NetworkImage(profileModel.photo),
+                ),
+                // otherAccountsPictures: [
+                //   Icon(Icons.info, color: Colors.white),
+                // ],
+              ),
+            )
+                : GestureDetector(
+              onTap: () {
+                print("sdfsd");
+              },
+              child: UserAccountsDrawerHeader(
+                decoration: BoxDecoration(color: Color(0xff0F4C75)),
+                // accountName: Text(""),
+                // accountEmail: Text("2nd year "),
+                accountName: Text(""),
+                accountEmail: Text(
+                  Level(SelectedSemester!),
+                  style: TextStyle(fontSize: 20),
+                ),
+                // accountEmail:InkWell(
+                //   child: Ink(
+                //     child: Text(
+                //       // style: TextButton.styleFrom(padding: EdgeInsets.all(0)),
+                //       // onPressed: () {
+                //       //   Navigator.push(
+                //       //       context,
+                //       //       MaterialPageRoute(
+                //       //           builder: (context) => const LoginScreen()));
+                //       // },
+                //       // child: const Text(
+                //         "Login",
+                //         style: TextStyle(color: Colors.white),
+
+                //     ),
+                //   ),
+                // ) ,
+                currentAccountPicture: CircleAvatar(
+                  backgroundImage: NetworkImage(
+                      "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"),
+                ),
+                otherAccountsPictures: [
+                  InkWell(
+                    onTap: () => navigatReplace(context, LoginScreen()),
+                    child: Ink(
+                      child: Text(
+                        // style: TextButton.styleFrom(padding: EdgeInsets.all(0)),
+                        // onPressed: () {
+                        //   Navigator.push(
+                        //       context,
+                        //       MaterialPageRoute(
+                        //           builder: (context) => const LoginScreen()));
+                        // },
+                        // child: const Text(
+                        "Login",
+                        style: TextStyle(
+                          color: Colors.orange,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.announcement),
+              title: Text("Announcements"),
+              onTap: () {},
+            ),
+            ExpansionTile(
+              leading: Icon(Icons.school),
+              title: Text("Years"),
+              children: [
+                ExpansionTile(
+                  title: Text("First Year"),
+                  children: [
+                    ListTile(title: Text("First Semester")),
+                    ListTile(title: Text("Second Semester")),
+                  ],
+                ),
+                ExpansionTile(
+                  title: Text("Second Year"),
+                  children: [
+                    ListTile(title: Text("First Semester")),
+                    ListTile(title: Text("Second Semester")),
+                  ],
+                ),
+              ],
+            ),
+            ListTile(
+              leading: Icon(Icons.link),
+              title: Text("Links"),
+              onTap: () {},
+            ),
+            ExpansionTile(
+              leading: Icon(Icons.drive_file_move),
+              title: Text("Drive"),
+              children: [
+                ListTile(
+                  title: Text("2027"),
+                  onTap: () async {
+                    LinkableElement url = LinkableElement('drive','https://drive.google.com/drive/folders/1-1_Ef2qF0_rDzToD4OlqIl5xubgpMGU0');
+                    await onOpen(context, url);
+                  },
+                ),
+                ListTile(
+                  title: Text("2026"),
+                  onTap: () {
+                    launchUrlC(
+                        "https://drive.google.com/drive/folders/1CdZDa3z97RN_yRjFlC7IAcLfmw6D1yLy");
+                  },
+                ),
+                ListTile(
+                  title: Text("2025"),
+                  onTap: () {
+                    launchUrlC(
+                        "https://drive.google.com/drive/folders/1BAXez9FJKF_ASx79usd_-Xi47TdUYK73?fbclid=IwAR3cRtEV1aJrcvKoGNBLCbqBu2LMLrsWYfQkOZUb6SQE2dtT3ZtqrcCjxno");
+                  },
+                ),
+                ListTile(
+                  title: Text("2024"),
+                  onTap: () {
+                    launchUrlC(
+                        "https://drive.google.com/drive/u/0/folders/11egB46e3wtl1Q69wdCBBam87bwMF7Qo-");
+                  },
+                ),
+              ],
+            ),
+            ListTile(
+              leading: Icon(Icons.group),
+              title: Text("About Us"),
+              onTap: () {},
+            ),
+            if (profileModel!.role == "ADMIN")
+              ListTile(
+                leading: Icon(Icons.admin_panel_settings),
+                title: Text("Admin"),
+                onTap: () {},
+              ),
+            if (TOKEN != null)
+              ListTile(
+                leading: Icon(Icons.logout, color: Colors.red),
+                title: Text(
+                  "Log out",
+                  style: TextStyle(color: Colors.red),
+                ),
+                onTap: () {
+                  MainCubit.get(context).logout(context);
+                },
+              ),
+            SizedBox(
+              height: screenHeight(context) / 5,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: DarkLightModeToggle(context),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+launchUrlC(String url) async {
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
   }
 }
 
