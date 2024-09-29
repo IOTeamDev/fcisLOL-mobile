@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/layout/home/bloc/main_cubit.dart';
+import 'package:lol/shared/components/default_text_field.dart';
 import 'package:lol/shared/styles/colors.dart';
 import 'package:lol/shared/components/constants.dart';
 import 'package:lol/modules/subject/cubit/subject_cubit.dart';
@@ -39,19 +40,32 @@ class _MaterialDetailsState extends State<SubjectDetails>
 
   @override
   Widget build(BuildContext context) {
+    var cubit = SubjectCubit.get(context);
     return BlocListener<SubjectCubit, SubjectState>(
       listener: (context, state) {
         if (state is SaveMaterialSuccess) {
           showToastMessage(
               message: 'تم عرض الطلب على مسؤول التطبيق وفى انتظار الموافقة  ',
-              states: ToastStates.SUCCESS
-          );
+              states: ToastStates.SUCCESS);
         } else if (state is SaveMaterialError) {
           showToastMessage(
-              message: 'error while uploading file', states: ToastStates.ERROR);
+              message: 'error while uploading Material',
+              states: ToastStates.ERROR);
         } else if (state is SaveMaterialLoading) {
           showToastMessage(
-              message: 'Uploading file........', states: ToastStates.WARNING);
+              message: 'Uploading Material........',
+              states: ToastStates.WARNING);
+        } else if (state is DeleteMaterialLoading) {
+          showToastMessage(
+              message: 'Deleting Material........',
+              states: ToastStates.WARNING);
+        } else if (state is DeleteMaterialSuccess) {
+          showToastMessage(
+              message: 'Material Deleted', states: ToastStates.SUCCESS);
+        } else if (state is DeleteMaterialError) {
+          showToastMessage(
+              message: 'error while deleting material',
+              states: ToastStates.ERROR);
         }
       },
       child: Scaffold(
@@ -65,7 +79,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
             Column(
               children: [
                 const SizedBox(
-                  height: 50,
+                  height: 30,
                 ),
                 Container(
                   margin: const EdgeInsets.only(bottom: 8.0),
@@ -79,6 +93,36 @@ class _MaterialDetailsState extends State<SubjectDetails>
                         color: Colors.white,
                         size: 30,
                       )),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 16.0, right: 16.0, bottom: 5.0),
+                  child: TextField(
+                    onChanged: (query) {
+                      cubit.runFilter(query: query);
+                      print('quury =>>>>>>>>>>>>>>>>>> $query');
+                    },
+                    style: TextStyle(color: a, fontSize: 20),
+                    keyboardType: TextInputType.text,
+                    textInputAction: TextInputAction.search,
+                    decoration: InputDecoration(
+                        suffixIcon: Icon(
+                          Icons.search,
+                          size: 30,
+                          color: a,
+                        ),
+                        // fillColor: const Color.fromRGBO(217, 217, 217, 0.25),
+                        // filled: true,
+                        contentPadding: const EdgeInsets.all(8.0),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        hintText: 'Search',
+                        hintStyle: const TextStyle(
+                          color: Color.fromRGBO(255, 255, 255, 0.48),
+                          fontSize: 15,
+                        )),
+                  ),
                 ),
                 adminTopTitleWithDrawerButton(
                     scaffoldKey: scaffoldKey,
@@ -106,7 +150,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                     color: Color.fromRGBO(255, 255, 255, 0.25),
                   ),
                 ),
-                Expanded(child: customTabBarView())
+                Expanded(child: customTabBarView()),
               ],
             )
           ],
@@ -252,8 +296,8 @@ class _MaterialDetailsState extends State<SubjectDetails>
                   ? ConditionalBuilder(
                       condition: MainCubit.get(context).profileModel != null &&
                           MainCubit.get(context).profileModel!.role == 'ADMIN',
-                      builder: (context) =>
-                          SizedBox(height: 40, child: removeButton()),
+                      builder: (context) => SizedBox(
+                          height: 40, child: removeButton(material: video)),
                       fallback: null)
                   : Container(),
             ],
@@ -306,8 +350,9 @@ class _MaterialDetailsState extends State<SubjectDetails>
                             MainCubit.get(context).profileModel != null &&
                                 MainCubit.get(context).profileModel!.role ==
                                     'ADMIN',
-                        builder: (context) =>
-                            SizedBox(height: 40, child: removeButton()),
+                        builder: (context) => SizedBox(
+                            height: 40,
+                            child: removeButton(material: document)),
                         fallback: null)
                     : Container(),
               ],
@@ -316,9 +361,12 @@ class _MaterialDetailsState extends State<SubjectDetails>
     );
   }
 
-  Widget removeButton() {
+  Widget removeButton({required MaterialModel material}) {
+    var cubit = SubjectCubit.get(context);
     return ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          cubit.deleteMaterial(material: material);
+        },
         style: ElevatedButton.styleFrom(
             backgroundColor: remove,
             padding: const EdgeInsetsDirectional.symmetric(
@@ -368,36 +416,6 @@ class _MaterialDetailsState extends State<SubjectDetails>
           ),
         ),
       ),
-    );
-  }
-
-  Widget customTextFormField(
-      {required String title,
-      required TextEditingController controller,
-      required TextInputType keyboardtype}) {
-    return TextFormField(
-      keyboardType: keyboardtype,
-      textInputAction: TextInputAction.next,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'This field must not be Empty';
-        }
-        return null;
-      },
-      style: TextStyle(color: a, fontSize: 20),
-      controller: controller,
-      decoration: InputDecoration(
-          fillColor: const Color.fromRGBO(217, 217, 217, 0.25),
-          filled: true,
-          contentPadding: const EdgeInsets.all(20),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(50),
-          ),
-          hintText: title,
-          hintStyle: const TextStyle(
-            color: Color.fromRGBO(255, 255, 255, 0.48),
-            fontSize: 22,
-          )),
     );
   }
 

@@ -29,13 +29,27 @@ final class SaveMaterialError extends SubjectState {
   SaveMaterialError({required this.errorMessage});
 }
 
+class DeleteMaterialLoading extends SubjectState {}
+
+class DeleteMaterialSuccess extends SubjectState {
+  final MaterialModel material;
+
+  DeleteMaterialSuccess({required this.material});
+}
+
+final class DeleteMaterialError extends SubjectState {
+  final String error;
+
+  DeleteMaterialError({required this.error});
+}
+
 final class TabChangedState extends SubjectState {
   final int selectedIndex;
 
   TabChangedState({required this.selectedIndex});
 }
 
-class TypeChangedState extends SubjectState {
+final class TypeChangedState extends SubjectState {
   final String selectedType;
 
   TypeChangedState({required this.selectedType});
