@@ -100,7 +100,7 @@ class App extends StatelessWidget {
            Consumer<ThemeProvide>(
             builder: (context,value,child) {
               return MaterialApp(
-                home: Home(),
+                home: LoginScreen(),
                 debugShowCheckedModeBanner: false,
                 theme: value.isDark?ThemeData.dark():
                      ThemeData.light(),
