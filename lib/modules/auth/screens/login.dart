@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/default_button.dart';
 import 'package:lol/shared/components/default_text_button.dart';
 import 'package:lol/shared/components/default_text_field.dart';
@@ -30,20 +31,18 @@ class LoginScreen extends StatelessWidget {
             TOKEN = state.token;
             Cache.writeData(key: "token", value: state.token);
             print("${state.token}Token");
-            snack(
-                context: context,
-                enumColor: Messages.success,
-                titleWidget:
-                    const Text("Successfully signed in. Welcome back!"));
+            showToastMessage(
+              message: "Successfully signed in. Welcome back!",
+              states: ToastStates.SUCCESS,
+            );
 
             navigatReplace(context, const Home());
           }
           if (state is LoginFailed) {
-            snack(
-                context: context,
-                enumColor: Messages.error,
-                titleWidget:
-                    const Text("Invalid email or password. Please try again"));
+            showToastMessage(
+                states: ToastStates.ERROR,
+                // enumColor: Messages.error,
+                message: "Invalid email or password. Please try again");
           }
         },
         builder: (context, state) {
@@ -173,7 +172,7 @@ class LoginScreen extends StatelessWidget {
                               buttonFunc: () {
                                 if (formKey.currentState!.validate()) {
                                   loginCubit.login(
-                                      email: emailController.text,
+                                      email: emailController.text.toLowerCase(),
                                       password: passwordController.text);
                                 }
                               },
@@ -186,8 +185,7 @@ class LoginScreen extends StatelessWidget {
                           const Text("Not a member yet ?"),
                           defaultTextButton(
                             onPressed: () {
-                              navigatReplace(
-                                  context, Registerscreen());
+                              navigatReplace(context, Registerscreen());
                             },
                             text: "Register",
                           )

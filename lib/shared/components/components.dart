@@ -15,7 +15,7 @@ import '../../modules/webview/webview_screen.dart';
 
 Widget adminTopTitleWithDrawerButton(
     {scaffoldKey,
-    String  title ="",
+    String title = "",
     double size = 40,
     required bool hasDrawer,
     double bottomPadding = 15}) {
@@ -174,13 +174,13 @@ Widget divider() {
 }
 
 void showToastMessage({
-  @required String? message,
+  required String message,
   Color textColor = Colors.white,
-  @required ToastStates? states,
+  required ToastStates states,
   double fontSize = 16,
   gravity = ToastGravity.BOTTOM,
   int lengthForIOSAndWeb = 5,
-  toastLength = Toast.LENGTH_LONG,
+  toastLength = Toast.LENGTH_SHORT,
 }) =>
     Fluttertoast.showToast(
       msg: message!,
@@ -192,7 +192,7 @@ void showToastMessage({
       fontSize: fontSize,
     );
 
-enum ToastStates { SUCCESS, ERROR, WARNING }
+enum ToastStates { SUCCESS, ERROR, WARNING,INFO }
 
 Color chooseToastColor(ToastStates states) {
   Color? color;
@@ -205,6 +205,9 @@ Color chooseToastColor(ToastStates states) {
       break;
     case ToastStates.ERROR:
       color = Colors.red[600];
+      break; 
+       case ToastStates.INFO:
+      color = Colors.grey[600];
       break;
   }
   return color!;
@@ -241,13 +244,6 @@ Future<void> onOpen(BuildContext context, LinkableElement link) async {
         builder: (context) => WebviewScreen(url),
       ),
     );
-  }
-}
-
-launchUrlC(String url) async {
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    throw 'Could not launch $url';
+    // launchUrl(Uri.parse(link.url));
   }
 }

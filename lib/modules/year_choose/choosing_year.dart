@@ -5,7 +5,7 @@ import 'package:lol/modules/auth/bloc/login_cubit.dart';
 import 'package:lol/modules/auth/bloc/login_cubit_states.dart';
 import 'package:lol/modules/auth/screens/login.dart';
 import 'package:lol/modules/auth/screens/register.dart';
-import 'package:lol/shared/components/snack.dart';
+import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/constants.dart';
 import 'package:lol/layout/home/home.dart';
 import 'package:lol/shared/components/navigation.dart';
@@ -25,11 +25,11 @@ class ChoosingYear extends StatelessWidget {
       // create: (context) => LoginCubit(),
       child: BlocConsumer<LoginCubit, LoginStates>(
           builder: (context, state) => Scaffold(
-                backgroundColor: Colors.blueGrey,
+                backgroundColor: const Color(0xff1B262C),
                 appBar: AppBar(
                   title: const Text("temp"),
                   centerTitle: true,
-                  backgroundColor: Colors.blueGrey,
+                  backgroundColor: const Color(0xff0F4C75),
                 ),
                 body: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -69,20 +69,21 @@ class ChoosingYear extends StatelessWidget {
               TOKEN = state.token;
               Cache.writeData(key: "token", value: state.token);
               print(state.token);
-              snack(
-                  context: context,
-                  enumColor: Messages.success,
-                  titleWidget: const Text("Successfully signed up !"));
+              showToastMessage(
+                message: "Successfully signed up !",
+                // context: context,
+                states: ToastStates.SUCCESS,
+                // titleWidget: const Text("")
+              );
 
               navigatReplace(context, const Home());
             }
             if (state is RegisterFailed) {
-              snack(
-                  context: context,
-                  enumColor: Messages.error,
-                  titleWidget:
-                      const Text("Please try with another email address"));
-              navigatReplace(context, LoginScreen());
+              showToastMessage(
+                message: "Please try with another email address",
+                states: ToastStates.ERROR,
+              );
+              navigatReplace(context, const LoginScreen());
             }
           }),
     );
@@ -93,7 +94,7 @@ class Year extends StatefulWidget {
   final String title;
   final UserInfo? userInfo;
 
-  Year({super.key, required this.title, this.userInfo});
+  const Year({super.key, required this.title, this.userInfo});
 
   @override
   YearState createState() => YearState();
@@ -110,16 +111,21 @@ class YearState extends State<Year> {
       children: [
         GestureDetector(
           onTap: () {
-            setState(() {
-              isExpanded = !isExpanded;
-            });
+            if (widget.title == "Level 4")
+              showToastMessage(
+                  message: "Currently Updating", states: ToastStates.INFO);
+            // s(titleWidget: Text("Currently Updating",style: TextStyle(color: Colors.black),), context: context, enumColor: Messages.warning);
+            else
+              setState(() {
+                isExpanded = !isExpanded;
+              });
           },
           child: Container(
             width: 150,
             height: 100,
             margin: const EdgeInsets.all(25),
             decoration: BoxDecoration(
-              color: Colors.grey,
+              color: const Color.fromARGB(255, 197, 71, 25),
               borderRadius: BorderRadius.circular(8.0),
             ),
             child: Center(
@@ -177,7 +183,10 @@ class YearState extends State<Year> {
                               password: userInfo.password,
                               semester: semester);
                         else {
-                          Cache.writeData(key: "semester", value: semester);
+                          SelectedSemester = semester;
+                          Cache.writeData(
+                              key: "semester", value: SelectedSemester);
+
                           navigatReplace(context, const Home());
                         }
                       },
@@ -220,7 +229,11 @@ class YearState extends State<Year> {
                               password: userInfo.password,
                               semester: semester);
                         else {
-                          Cache.writeData(key: "semester", value: semester);
+                          SelectedSemester = semester;
+                          print("${SelectedSemester!}siiiii");
+                          Cache.writeData(
+                              key: "semester", value: SelectedSemester);
+
                           navigatReplace(context, const Home());
                         }
                       },

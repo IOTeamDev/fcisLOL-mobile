@@ -38,14 +38,14 @@ class Profile extends StatelessWidget {
               child: Scaffold(
                 appBar: AppBar(
                   title: InkWell(
-                    onTap: () => navigatReplace(context,Home()),// in all pages
+                    onTap: () => navigatReplace(context,const Home()),// in all pages
                   
-                      child: Row(
+                      child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [Text("temp"), Icon(Icons.label)],
                   )),
                 ),
-                body: mainCubit.profileModel==null?Center(child: CircularProgressIndicator(),): Column(
+                body: mainCubit.profileModel==null?const Center(child: CircularProgressIndicator(),): Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Stack(
@@ -59,7 +59,7 @@ class Profile extends StatelessWidget {
                                 alignment: Alignment.topCenter,
                                 child: Container(
                                   height: height * 0.2,
-                                  color: Color(0xff0F4C75),
+                                  color: const Color(0xff0F4C75),
                                   width: width,
                                 ))),
                         Stack(

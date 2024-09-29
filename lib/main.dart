@@ -1,11 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/layout/home/bloc/main_cubit.dart';
+import 'package:lol/layout/home/bloc/main_cubit_states.dart';
+import 'package:lol/layout/home/semester_navigate.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
 import 'package:lol/layout/admin_panel/admin_panal.dart';
 import 'package:lol/modules/subject/subject_details.dart';
 import 'package:lol/shared/network/local/shared_prefrence.dart';
+import 'package:provider/provider.dart';
 import 'modules/auth/bloc/login_cubit.dart';
 import 'modules/auth/screens/login.dart';
 import 'modules/auth/screens/onboarding.dart';
@@ -21,25 +24,26 @@ import 'shared/observer.dart';
 import 'package:flutter/material.dart';
 import 'layout/home/home.dart';
 
-late int selectedLevel;
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Cache.initialize();
   await DioHelp.initial();
   await Firebase.initializeApp();
   Bloc.observer = MyBlocObserver();
+  bool isDark = await Cache.readData(key: "mode") ?? false;
 
   TOKEN = await Cache.readData(key: "token");
   print(TOKEN);
-  selectedLevel = await Cache.readData(key: "Level") ?? 0;
+  SelectedSemester = await Cache.readData(key: "semester");
   bool isOnBoardFinished =
       await Cache.readData(key: "FinishedOnBoard") ?? false;
 
+  // TOKEN = null;//
   final Widget startPage;
   if (!isOnBoardFinished) {
     startPage = const OnBoarding();
   } else {
-    if (selectedLevel == 0 && TOKEN == null) {
+    if (SelectedSemester == null && TOKEN == null) {
       startPage = ChoosingYear(
         loginCubit: LoginCubit(),
       );
@@ -48,13 +52,32 @@ main() async {
     }
   }
 
-  runApp(
-    App(
-      startPage: startPage,
+  runApp(ChangeNotifierProvider(
+    create: (context) => ThemeProvide()..loadMode(),
+    child: App( startPage:startPage
     ),
-  );
+  ));
 }
+class ThemeProvide extends ChangeNotifier {
+  bool isDark = false;
 
+  void changeMode() async{
+    isDark = !isDark;
+  await  Cache.writeData(key: "mode", value: isDark);
+    print('Theme mode changed: $isDark'); // Debugging log
+
+    // Notify listeners to rebuild widgets listening to this provider
+    notifyListeners();
+  }
+
+  Future<void> loadMode() async {
+    // Load the dark mode from shared preferences
+    isDark = await Cache.readData(key: "mode") ?? false;
+
+    // Notify listeners to rebuild widgets with the loaded theme
+    notifyListeners();
+  }
+}
 class App extends StatelessWidget {
   final Widget startPage;
   const App({super.key, required this.startPage});
@@ -69,17 +92,24 @@ class App extends StatelessWidget {
         BlocProvider(
             create: (BuildContext context) => SubjectCubit()..getMaterials()),
         if (TOKEN != null)
-          BlocProvider(
-              create: (BuildContext context) => MainCubit()),
-
+          BlocProvider(create: (BuildContext context) => MainCubit()),
+        BlocProvider(
+          create: (context) => MainCubit(),
+        )
       ],
-      child: BlocConsumer<AdminCubit, AdminCubitStates>(
-        builder: (context, state) => const MaterialApp(
-          home: Home(),
-          debugShowCheckedModeBanner: false,
-        ),
-        listener: (context, state) {},
-      ),
+      child: 
+           Consumer<ThemeProvide>(
+            builder: (context,value,child) {
+              return MaterialApp(
+                home: AdminPanal(),
+                debugShowCheckedModeBanner: false,
+                theme: value.isDark?ThemeData.dark():
+                     ThemeData.light(),
+              );
+            }
+          )
+    
+      
     );
   }
 }

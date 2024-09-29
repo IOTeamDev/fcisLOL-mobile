@@ -28,7 +28,9 @@ class MainCubit extends Cubit<MainCubitStates> {
   void openDrawerState() {
     opendedDrawer = true;
     emit(OpenDrawerState());
-  }  void closeDrawerState() {
+  }
+
+  void closeDrawerState() {
     opendedDrawer = false;
     emit(CloseDrawerState());
   }
@@ -36,6 +38,7 @@ class MainCubit extends Cubit<MainCubitStates> {
   bool isDarkMode = false;
   void changeMode() {
     isDarkMode = !isDarkMode;
+    print(isDarkMode.toString()+"Mode");
     emit(ChangeMode());
   }
 
@@ -78,6 +81,8 @@ class MainCubit extends Cubit<MainCubitStates> {
 
   ProfileModel? profileModel;
   getProfileInfo() {
+    if (TOKEN == null) return;
+
     emit(GetProfileLoading());
     profileModel = null;
 
@@ -86,10 +91,7 @@ class MainCubit extends Cubit<MainCubitStates> {
         profileModel = ProfileModel.fromJson(value.data);
         emit(GetProfileSuccess());
       },
-    ).catchError((onError) {
-      print(onError);
-      emit(GetProfileFailure());
-    });
+    );
   }
 
   void logout(context) {

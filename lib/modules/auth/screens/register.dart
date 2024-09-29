@@ -274,10 +274,10 @@ class Registerscreen extends StatelessWidget {
                                 )
                               : defaultButton(
                                   buttonFunc: () {
-                                    // if (formKey.currentState!.validate()) {
+                                    if (formKey.currentState!.validate()) {
                                     UserInfo userInfo = UserInfo(
                                         name: nameController.text,
-                                        email: emailController.text,
+                                        email: emailController.text.toLowerCase(),
                                         password: passwordController.text,
                                         phone: phoneController.text);
                                     navigate(
@@ -285,7 +285,7 @@ class Registerscreen extends StatelessWidget {
                                         SelectImage(
                                           userInfo: userInfo,
                                         ));
-                                    // }
+                                    }
                                     // LoginCubit.get(context).register(
                                     //     name: nameController.text,
                                     //     email: emailController.text,

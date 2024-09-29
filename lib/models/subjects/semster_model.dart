@@ -32,7 +32,7 @@ List<SubjectModel> semesterTwo = [
 
 List<SubjectModel> semesterThree = [
   SubjectModel(subjectName: "Report Writing", subjectImage: "https://schools.firstnews.co.uk/wp-content/uploads/sites/3/2019/10/Writing-a-newspaper-report-Featured-1200x900.jpg"),
-  SubjectModel(subjectName: "Object Oriented Programming", subjectImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG4e4tadUqb6A59hAbirAX0tk4ZXBMAIoWFdvRgBYyqyogglFC-ghxQJGp4ZWujaGglsY&usqp=CAU"),
+  SubjectModel(subjectName: "OOP", subjectImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG4e4tadUqb6A59hAbirAX0tk4ZXBMAIoWFdvRgBYyqyogglFC-ghxQJGp4ZWujaGglsY&usqp=CAU"),
   SubjectModel(subjectName: "Discrete Mathematics", subjectImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/6n-graf.svg/250px-6n-graf.svg.png"),
   SubjectModel(subjectName: "Logic Design", subjectImage: "https://learningmonkey.in/wp-content/uploads/2021/06/Digital-Logic-Design.jpg"),
   SubjectModel(subjectName: "Database Management Systems", subjectImage: "https://zeenea.com/wp-content/uploads/2023/01/databases-zeenea.jpg.webp"),
@@ -54,7 +54,7 @@ List<SubjectModel> semesterFive = [
   SubjectModel(subjectName: "Data Mining", subjectImage: ""),
   SubjectModel(subjectName: "Compiler Theory", subjectImage: ""),
   SubjectModel(subjectName: "Numerical Computing", subjectImage: ""),//
-  SubjectModel(subjectName: "Digital Signal Processing", subjectImage: ""),//
+  SubjectModel(subjectName: "DSP", subjectImage: ""),//
   SubjectModel(subjectName: "Statistical Inference", subjectImage: ""),//
   SubjectModel(subjectName: "Microprocessors & interfacing", subjectImage: ""),//
 ];
@@ -62,16 +62,16 @@ List<SubjectModel> semesterFive = [
 List<SubjectModel> semesterSix = [
   SubjectModel(subjectName: "Software Engineering", subjectImage: ""),//
   SubjectModel(subjectName: "Concepts of Programming Languages", subjectImage: ""),//
-  SubjectModel(subjectName: "High Performance Computing", subjectImage: ""),//
+  SubjectModel(subjectName: "HPC", subjectImage: ""),//
   SubjectModel(subjectName: "Analysis & Design of Algorithms", subjectImage: ""),//
   SubjectModel(subjectName: "Data Security", subjectImage: ""),//
   SubjectModel(subjectName: "Computer Graphics", subjectImage: ""),//
   SubjectModel(subjectName: "Machine Learning", subjectImage: ""),//
-  SubjectModel(subjectName: "Web Development & Design ", subjectImage: ""),//
+  SubjectModel(subjectName: "Web Development ", subjectImage: ""),//
   SubjectModel(subjectName: "Business Intelligence", subjectImage: ""),//
-  SubjectModel(subjectName: "Computer & Network Security", subjectImage: ""),//
+  SubjectModel(subjectName: "Network Security", subjectImage: ""),//
   SubjectModel(subjectName: "Data Communication", subjectImage: ""),//
-  SubjectModel(subjectName: "Natural Language Processing", subjectImage: ""),//
+  SubjectModel(subjectName: "NLP", subjectImage: ""),//
   SubjectModel(subjectName: "Embedded Systems", subjectImage: ""),//
 ];
 
