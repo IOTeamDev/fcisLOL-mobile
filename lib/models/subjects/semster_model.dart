@@ -31,48 +31,47 @@ List<SubjectModel> semesterTwo = [
 ];
 
 List<SubjectModel> semesterThree = [
-  SubjectModel(subjectName: "Report Writing", subjectImage: "https://schools.firstnews.co.uk/wp-content/uploads/sites/3/2019/10/Writing-a-newspaper-report-Featured-1200x900.jpg"),
   SubjectModel(subjectName: "OOP", subjectImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG4e4tadUqb6A59hAbirAX0tk4ZXBMAIoWFdvRgBYyqyogglFC-ghxQJGp4ZWujaGglsY&usqp=CAU"),
-  SubjectModel(subjectName: "Discrete Mathematics", subjectImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/6n-graf.svg/250px-6n-graf.svg.png"),
-  SubjectModel(subjectName: "Logic Design", subjectImage: "https://learningmonkey.in/wp-content/uploads/2021/06/Digital-Logic-Design.jpg"),
-  SubjectModel(subjectName: "Database Management Systems", subjectImage: "https://zeenea.com/wp-content/uploads/2023/01/databases-zeenea.jpg.webp"),
   SubjectModel(subjectName: "Statistical Analysis", subjectImage: "https://www.thesenior.com.au/images/transform/v1/crop/frm/matthew.crossman/2802f874-e561-4b7e-8873-41c68abcb44e.jpg/r0_0_4996_3286_w1200_h678_fmax.jpg"),
+  SubjectModel(subjectName: "Logic Design", subjectImage: "https://learningmonkey.in/wp-content/uploads/2021/06/Digital-Logic-Design.jpg"),
+  SubjectModel(subjectName: "Discrete Mathematics", subjectImage: "https://img.freepik.com/premium-vector/maths-learning-vector-line-round-colored-banner-math-concept-illustration_104589-5586.jpg"),
+  SubjectModel(subjectName: "Database Management Systems", subjectImage: "https://zeenea.com/wp-content/uploads/2023/01/databases-zeenea.jpg.webp"),
+  SubjectModel(subjectName: "Report Writing", subjectImage: "https://schools.firstnews.co.uk/wp-content/uploads/sites/3/2019/10/Writing-a-newspaper-report-Featured-1200x900.jpg"),
 ];
 
 List<SubjectModel> semesterFour = [
-  SubjectModel(subjectName: "Computer Architecture", subjectImage: ""),
-  SubjectModel(subjectName: "Data Structures", subjectImage: ""),
-  SubjectModel(subjectName: "Linear Algebra", subjectImage: ""),
-  SubjectModel(subjectName: "Artificial Intelligence", subjectImage: ""),
-  SubjectModel(subjectName: "Operations Research", subjectImage: ""),
+  SubjectModel(subjectName: "Computer Architecture", subjectImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvw_SJDKJ2LMN1ao7koeC4IcrHmBbnCISzYqUlVOPP5qJJQ87z1GRLsfua_Fyvd935UrI&usqp=CAU"),
+  SubjectModel(subjectName: "Data Structures", subjectImage: "https://futureskillsprime.in/sites/default/files/inline-images/Blog%20Images_Internal_551x313_Saurabh%27s%20blog%20image%201.jpg"),
+  SubjectModel(subjectName: "Linear Algebra", subjectImage: "https://img-c.udemycdn.com/course/240x135/1714498_8a8c_4.jpg"),
+  SubjectModel(subjectName: "Artificial Intelligence", subjectImage: "https://scitechdaily.com/images/Artificial-Intelligence-Robot-Thinking-Brain.jpg"),
+  SubjectModel(subjectName: "Operations Research", subjectImage: "https://ieor.columbia.edu/sites/default/files/styles/cu_crop/public/content/images/masters-msor-01.jpg?itok=BfVY0pZ4"),
 ];
 
 List<SubjectModel> semesterFive = [
-  SubjectModel(subjectName: "Operating Systems", subjectImage: ""),
-  SubjectModel(subjectName: "Computer Networks", subjectImage: ""),
-  SubjectModel(subjectName: "System Analysis & Design", subjectImage: ""),
-  SubjectModel(subjectName: "Data Mining", subjectImage: ""),
-  SubjectModel(subjectName: "Compiler Theory", subjectImage: ""),
-  SubjectModel(subjectName: "Numerical Computing", subjectImage: ""),//
-  SubjectModel(subjectName: "DSP", subjectImage: ""),//
-  SubjectModel(subjectName: "Statistical Inference", subjectImage: ""),//
-  SubjectModel(subjectName: "Microprocessors & interfacing", subjectImage: ""),//
+  SubjectModel(subjectName: "Operating Systems", subjectImage: "https://cloudpso.com/wp-content/uploads/2024/01/ops2.jpg"),
+  SubjectModel(subjectName: "DSP", subjectImage: "https://4.img-dpreview.com/files/p/articles/7461037188/digic_chip.jpeg"),//
+  SubjectModel(subjectName: "Computer Networks", subjectImage: "https://miro.medium.com/v2/resize:fit:1024/0*yDZ4O2EsLoVJSdDC.jpeg"),
+  SubjectModel(subjectName: "System Analysis & Design", subjectImage: "https://www.shutterstock.com/image-photo/intelligence-bi-business-analytics-ba-600nw-1081970570.jpg"),
+  SubjectModel(subjectName: "Data Mining", subjectImage: "https://artoftesting.com/wp-content/uploads/2022/02/data-mining.png"),
+  SubjectModel(subjectName: "Compiler Theory", subjectImage: "https://codequotient.com/blog/wp-content/uploads/2022/05/Difference-Between-Compiler-And-Interpreter-In-Java.jpg"),
+  SubjectModel(subjectName: "Numerical Computing", subjectImage: "https://www.mathworks.com/moler/index_ncm/_jcr_content/mainParsys/column_1/2/image_0.adapt.full.medium.png/1642102580164.png"),//
+  SubjectModel(subjectName: "Statistical Inference", subjectImage: "https://www.statisticsteacher.org/files/2023/03/1Thumbnail1_topic-advisor.png"),//
+  SubjectModel(subjectName: "Microprocessors & interfacing", subjectImage: "https://thumbs.dreamstime.com/b/aerial-view-colorful-digital-microprocessor-glowing-lighting-digital-interface-aerial-view-colorful-digital-325063205.jpg"),//
 ];
 
 List<SubjectModel> semesterSix = [
-  SubjectModel(subjectName: "Software Engineering", subjectImage: ""),//
-  SubjectModel(subjectName: "Concepts of Programming Languages", subjectImage: ""),//
-  SubjectModel(subjectName: "HPC", subjectImage: ""),//
-  SubjectModel(subjectName: "Analysis & Design of Algorithms", subjectImage: ""),//
-  SubjectModel(subjectName: "Data Security", subjectImage: ""),//
-  SubjectModel(subjectName: "Computer Graphics", subjectImage: ""),//
-  SubjectModel(subjectName: "Machine Learning", subjectImage: ""),//
-  SubjectModel(subjectName: "Web Development ", subjectImage: ""),//
-  SubjectModel(subjectName: "Business Intelligence", subjectImage: ""),//
-  SubjectModel(subjectName: "Network Security", subjectImage: ""),//
-  SubjectModel(subjectName: "Data Communication", subjectImage: ""),//
-  SubjectModel(subjectName: "NLP", subjectImage: ""),//
-  SubjectModel(subjectName: "Embedded Systems", subjectImage: ""),//
+  SubjectModel(subjectName: "Software Engineering", subjectImage: "https://t3.ftcdn.net/jpg/05/69/49/34/360_F_569493492_Y41ak1sGwkR0C1d9VZjnBjQcbF6mlWfl.jpg"),//
+  SubjectModel(subjectName: "Concepts of Programming Languages", subjectImage: "https://www.dignited.com/wp-content/uploads/2022/08/top10lan.jpg"),//
+  SubjectModel(subjectName: "HPC", subjectImage: "https://miro.medium.com/v2/resize:fit:1000/1*v1icYZnjM6tXmXe1tRXZjA.jpeg"),//
+  SubjectModel(subjectName: "Analysis & Design of Algorithms", subjectImage: "https://static.vecteezy.com/system/resources/previews/025/144/709/non_2x/algorithm-icon-design-vector.jpg"),//
+  SubjectModel(subjectName: "Data Security", subjectImage: "https://media.istockphoto.com/id/1412282189/photo/lock-network-technology-concept.jpg?s=612x612&w=0&k=20&c=hripuxLs9pS_7Ln6YWQR-Ow2_-BU5RdQ4vOY8s1q1iQ="),//
+  SubjectModel(subjectName: "Computer Graphics", subjectImage: "https://cdn.prod.website-files.com/61d6943d6b59241863c825d6/62cfb819803fdd30ff2deea5_compgraphic.jpeg"),//
+  SubjectModel(subjectName: "Machine Learning", subjectImage: "https://media.licdn.com/dms/image/D5612AQF_GlBbDplIzQ/article-cover_image-shrink_720_1280/0/1689792786512?e=2147483647&v=beta&t=u6lBTG-DRAzHPpjpydQttxCmvzA1sqxJZaFmWh1GKoE"),//
+  SubjectModel(subjectName: "Web Development ", subjectImage: "https://www.sectorlink.com/img/blog/web-devel-important.jpg"),//
+  SubjectModel(subjectName: "Business Intelligence", subjectImage: "https://images.ctfassets.net/xj0skx6m69u2/4xvFydVm2Pip0aVDK3aIyc/1306529dc227db3c7268209d457e9881/business-intellgence.jpg?fm=jpg&w=648&h=426&fit=fill&f=Center&q=85"),//
+  SubjectModel(subjectName: "Data Communication", subjectImage: "https://hasonss.com/blogs/wp-content/uploads/2024/03/25001339_7030492.webp"),//
+  SubjectModel(subjectName: "NLP", subjectImage: "https://www.expert.ai/wp-content/uploads/2021/06/NLP-examples-scaled.jpeg"),//
+  SubjectModel(subjectName: "Embedded Systems", subjectImage: "https://sklc-tinymce-2021.s3.amazonaws.com/comp/2023/05/Embedded%20Systems_1684763782.png"),//
 ];
 
 
@@ -107,12 +106,7 @@ case "One":
 
   case "Six":
   return 5;
-
-
-
 } 
 return -1;
-
-
 
 }

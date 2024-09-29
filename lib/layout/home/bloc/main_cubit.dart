@@ -36,12 +36,7 @@ class MainCubit extends Cubit<MainCubitStates> {
   }
 
   bool isDarkMode = false;
-  void changeMode() {
-    isDarkMode = !isDarkMode;
-    print(isDarkMode.toString()+"Mode");
-    emit(ChangeMode());
-  }
-
+  
   File? userImageFile;
   String? userImagePath;
   var picker = ImagePicker();

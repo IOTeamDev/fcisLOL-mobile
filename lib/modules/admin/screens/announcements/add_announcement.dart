@@ -10,6 +10,7 @@ import 'package:lol/modules/webview/webview_screen.dart';
 import 'package:lol/shared/components/navigation.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 
+import '../../../../layout/home/bloc/main_cubit.dart';
 import '../../../../shared/components/components.dart';
 import '../../bloc/admin_cubit.dart';
 
@@ -58,7 +59,7 @@ class _AddAnouncmentState extends State<AddAnouncment> {
         var cubit = AdminCubit.get(context);
         return Scaffold(
           key: scaffoldKey,
-          drawer: drawerBuilder(context),
+          drawer: CustomDrawer(context, name: MainCubit.get(context).profileModel!.name,logout: MainCubit()..logout(context),photo: MainCubit.get(context).profileModel!.photo,role: MainCubit.get(context).profileModel!.role, semester: MainCubit.get(context).profileModel!.semester,),
           backgroundColor: Colors.black,
           body: Stack(
             children: [

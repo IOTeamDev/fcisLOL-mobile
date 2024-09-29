@@ -5,7 +5,6 @@
   <uses-permission android:name="android.permission.INTERNET" />
 
   <application
-    android:enableOnBackInvokedCallback="true"
     android:label="mobile"
     android:name="${applicationName}"
     android:icon="@mipmap/ic_launcher">

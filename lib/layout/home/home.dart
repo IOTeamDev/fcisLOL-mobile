@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
@@ -26,14 +27,18 @@ import 'package:lol/shared/network/local/shared_prefrence.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../modules/admin/screens/announcements/announcements_list.dart';
+import '../admin_panel/admin_panal.dart';
+
 class Home extends StatelessWidget {
   const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    print(width.toString());
     print("${SelectedSemester!}Home semester");
-    // SelectedSemester = "One";
+    SelectedSemester = "One";
     var scaffoldKey = GlobalKey<ScaffoldState>();
     return MultiBlocProvider(
       providers: [
@@ -55,7 +60,7 @@ class Home extends StatelessWidget {
           );
       }, builder: (context, state) {
         ProfileModel? profile;
-        int? semesterIndex;
+        late int semesterIndex;
 
         // SelectedSemester = "Two";
         if (TOKEN != null && MainCubit.get(context).profileModel != null) {
@@ -76,7 +81,11 @@ class Home extends StatelessWidget {
           key: scaffoldKey,
           backgroundColor: const Color(0xff1B262C),
           appBar: AppBar(
+            leadingWidth: 50,
+
             leading: IconButton(
+                style: IconButton.styleFrom(
+                    padding: EdgeInsets.all(0), minimumSize: Size(0, 0)),
                 onPressed: () {
                   // MainCubit.get(context).openDrawerState();
                   if ((TOKEN != null && profile != null) || TOKEN == null)
@@ -85,28 +94,27 @@ class Home extends StatelessWidget {
                 },
                 icon: const Icon(
                   Icons.menu,
+                  size: 25,
                   color: Colors.white,
                 )),
             backgroundColor: const Color(0xff0F4C75),
             // centerTitle: true,
             title: GestureDetector(
-                onTap: () => navigatReplace(context, Home()),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(
-                      width: screenWidth(context) / 4.5,
-                    ),
-                    Icon(Icons.apple),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      "name",
-                      style: GoogleFonts.montserrat(),
-                    )
-                  ],
-                )),
+              onTap: () => navigatReplace(context, const Home()),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  const Icon(Icons.apple),
+                  const SizedBox(width: 10),
+                  Text(
+                    "name",
+                    style: GoogleFonts.montserrat(),
+                  ),
+                  SizedBox(width: 50)
+                ],
+              ),
+            ),
             actions: [
               if (TOKEN == null)
                 if (scaffoldKey.currentState?.isDrawerOpen == true)
@@ -137,7 +145,7 @@ class Home extends StatelessWidget {
                   ),
             ],
           ),
-          drawer: const CustomDrawer(),
+          drawer: CustomDrawer(),
           body: MainCubit.get(context).profileModel == null && TOKEN != null
               ? const Center(
                   child: CircularProgressIndicator(),
@@ -247,7 +255,7 @@ class Home extends StatelessWidget {
                                 ),
                                 itemCount:
                                     // semesters[semesterIndex!].subjects.length,
-                                    semesters[semesterIndex!].subjects.length,
+                                    semesters[semesterIndex].subjects.length,
                                 itemBuilder: (context, index) {
                                   return
 
@@ -255,7 +263,7 @@ class Home extends StatelessWidget {
                                       //     semesters[semesterIndex!]
                                       //         .subjects[index],context);
                                       subjectItemBuild(
-                                          semesters[semesterIndex!]
+                                          semesters[semesterIndex]
                                               .subjects[index],
                                           context);
                                 },
@@ -287,10 +295,10 @@ class CustomDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     // SelectedSemester = "Three";
     // print(SelectedSemester);
-
+double width=screenWidth(context);
     var profileModel = MainCubit.get(context).profileModel;
     return Drawer(
-      width: screenWidth(context) / 1.3,
+      width: width<600 ?width/1.5:width/2.5,
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -403,7 +411,9 @@ class CustomDrawer extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.announcement),
               title: const Text("Announcements"),
-              onTap: () {},
+              onTap: () {
+                navigate(context, const AnnouncementsList());
+              },
             ),
             ExpansionTile(
               leading: const Icon(Icons.school),
@@ -523,23 +533,26 @@ class CustomDrawer extends StatelessWidget {
                 ),
                 ListTile(
                   title: const Text("2026"),
-                  onTap: () {
-                    
-                        // "https://drive.google.com/drive/folders/1CdZDa3z97RN_yRjFlC7IAcLfmw6D1yLy"
+                  onTap: () async {
+                    LinkableElement url = LinkableElement('drive',
+                        'https://drive.google.com/drive/folders/1CdZDa3z97RN_yRjFlC7IAcLfmw6D1yLy');
+                    await onOpen(context, url);
                   },
                 ),
                 ListTile(
                   title: const Text("2025"),
-                  onTap: () {
-                    
-                        // "https://drive.google.com/drive/folders/1BAXez9FJKF_ASx79usd_-Xi47TdUYK73?fbclid=IwAR3cRtEV1aJrcvKoGNBLCbqBu2LMLrsWYfQkOZUb6SQE2dtT3ZtqrcCjxno"
+                  onTap: () async {
+                    LinkableElement url = LinkableElement('drive',
+                        'https://drive.google.com/drive/folders/1BAXez9FJKF_ASx79usd_-Xi47TdUYK73?fbclid=IwAR3cRtEV1aJrcvKoGNBLCbqBu2LMLrsWYfQkOZUb6SQE2dtT3ZtqrcCjxno');
+                    await onOpen(context, url);
                   },
                 ),
                 ListTile(
                   title: const Text("2024"),
-                  onTap: () {
-                    
-                        // "https://drive.google.com/drive/u/0/folders/11egB46e3wtl1Q69wdCBBam87bwMF7Qo-"
+                  onTap: () async {
+                    LinkableElement url = LinkableElement('drive',
+                        'https://drive.google.com/drive/u/0/folders/11egB46e3wtl1Q69wdCBBam87bwMF7Qo-');
+                    await onOpen(context, url);
                   },
                 ),
               ],
@@ -553,7 +566,9 @@ class CustomDrawer extends StatelessWidget {
               ListTile(
                 leading: const Icon(Icons.admin_panel_settings),
                 title: const Text("Admin"),
-                onTap: () {},
+                onTap: () {
+                  navigate(context, AdminPanal());
+                },
               ),
             if (TOKEN != null)
               ListTile(
@@ -564,12 +579,10 @@ class CustomDrawer extends StatelessWidget {
                 ),
                 onTap: () {
                   MainCubit.get(context).logout(context);
-                  Provider.of<ThemeProvide>(context,
-                                        listen: false)
-                                    .isDark = false;
-                                Provider.of<ThemeProvide>(context,
-                                        listen: false)
-                                    .notifyListeners();
+                  Provider.of<ThemeProvide>(context, listen: false).isDark =
+                      false;
+                  Provider.of<ThemeProvide>(context, listen: false)
+                      .notifyListeners();
                 },
               ),
             SizedBox(
@@ -585,7 +598,6 @@ class CustomDrawer extends StatelessWidget {
     );
   }
 }
-
 
 String Level(String semester) {
   switch (semester) {
@@ -629,21 +641,18 @@ Widget DarkLightModeToggle(context) {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
             decoration: BoxDecoration(
-              color: Provider.of<ThemeProvide>(context).isDark ? const Color.fromARGB(188, 92, 38, 38):Colors.transparent,
+              color: Provider.of<ThemeProvide>(context).isDark
+                  ? const Color.fromARGB(188, 92, 38, 38)
+                  : Colors.transparent,
               borderRadius: BorderRadius.circular(30.0),
             ),
-            child: Row(
+            child: const Row(
               children: [
-                Icon(
-                  Icons.dark_mode,
-                  color: Colors.black
-                ),
-                const SizedBox(width: 8),
+                Icon(Icons.dark_mode, color: Colors.black),
+                SizedBox(width: 8),
                 Text(
-                  'Dark Mode',
-                  style: TextStyle(
-                    color: Colors.black 
-                  ),
+                  'Dark',
+                  style: TextStyle(color: Colors.black),
                 ),
               ],
             ),
@@ -652,20 +661,26 @@ Widget DarkLightModeToggle(context) {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
             decoration: BoxDecoration(
-              color: !Provider.of<ThemeProvide>(context).isDark ? const Color.fromARGB(188, 92, 38, 38):Colors.transparent,
+              color: !Provider.of<ThemeProvide>(context).isDark
+                  ? const Color.fromARGB(188, 92, 38, 38)
+                  : Colors.transparent,
               borderRadius: BorderRadius.circular(30.0),
             ),
             child: Row(
               children: [
                 Icon(
                   Icons.light_mode,
-                  color: !Provider.of<ThemeProvide>(context).isDark ? Colors.white : Colors.black,
+                  color: !Provider.of<ThemeProvide>(context).isDark
+                      ? Colors.white
+                      : Colors.black,
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  'Light Mode',
+                  'Light',
                   style: TextStyle(
-                    color:!Provider.of<ThemeProvide>(context).isDark ? Colors.white : Colors.black,
+                    color: !Provider.of<ThemeProvide>(context).isDark
+                        ? Colors.white
+                        : Colors.black,
                   ),
                 ),
               ],
@@ -700,7 +715,7 @@ Widget subjectItemBuild(SubjectModel subject, context) {
               image: DecorationImage(
                 colorFilter:
                     const ColorFilter.mode(Color(0xfff39c12), BlendMode.dstIn),
-                image: NetworkImage(subject.subjectImage),
+                image: subject.subjectName=="Data Mining"? AssetImage("images/data-mining_cleanup.webp"):NetworkImage(subject.subjectImage),
                 fit: BoxFit.cover,
               ),
             ),

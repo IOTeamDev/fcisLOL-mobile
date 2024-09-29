@@ -89,8 +89,7 @@ class App extends StatelessWidget {
             create: (BuildContext context) => AdminCubit()
               ..getAnnouncements()
               ..getRequests()),
-        BlocProvider(
-            create: (BuildContext context) => SubjectCubit()..getMaterials()),
+        BlocProvider(create: (BuildContext context) => SubjectCubit()..getMaterials()),
         if (TOKEN != null)
           BlocProvider(create: (BuildContext context) => MainCubit()),
         BlocProvider(
@@ -101,7 +100,7 @@ class App extends StatelessWidget {
            Consumer<ThemeProvide>(
             builder: (context,value,child) {
               return MaterialApp(
-                home: AdminPanal(),
+                home: Home(),
                 debugShowCheckedModeBanner: false,
                 theme: value.isDark?ThemeData.dark():
                      ThemeData.light(),
