@@ -7,6 +7,7 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lol/models/current_user/current_user_model.dart';
 import 'package:lol/models/leaderboard/leaderboard_model.dart';
+import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
 import 'package:lol/modules/auth/bloc/login_cubit.dart';
 import 'package:lol/modules/auth/bloc/login_cubit_states.dart';
 import 'package:lol/models/login/login_model.dart';
@@ -19,6 +20,8 @@ import 'package:lol/shared/network/endpoints.dart';
 import 'package:lol/shared/network/remote/dio.dart';
 import 'package:lol/shared/components/navigation.dart';
 import 'package:lol/shared/network/local/shared_prefrence.dart';
+
+import 'package:lol/models/admin/requests_model.dart';
 
 //uid null?
 class MainCubit extends Cubit<MainCubitStates> {
@@ -64,6 +67,29 @@ class MainCubit extends Cubit<MainCubitStates> {
     }
   }
 
+  File? AnnouncementImageFile;
+  String? AnnouncementImagePath;
+  getAnnouncementImage() async {
+    emit(GetAnnouncementImageLoading());
+
+    var tempPostImage = await picker.pickImage(source: ImageSource.gallery);
+    if (tempPostImage != null) {
+      AnnouncementImageFile = File(tempPostImage.path);
+      final int sizeInBytes = await AnnouncementImageFile!.length();
+      final int sizeInMB = sizeInBytes ~/ (1024 * 1024);
+      print(sizeInBytes);
+      print(sizeInMB);
+      if (sizeInMB <= 1) {
+        emit(GetAnnouncementImageSuccess());
+      } else {
+        AnnouncementImageFile = null;
+        emit(GetAnnouncementLimitExceed());
+      }
+    } else {
+      emit(GetAnnouncementImageFailure());
+    }
+  }
+
   Future<void> UploadPImage({File? image, bool isUserProfile = true}) async {
     emit(UploadImageLoading());
     if (image == null) return;
@@ -76,6 +102,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     try {
       final imagePath = await uploadTask.ref.getDownloadURL();
       if (isUserProfile) userImagePath = imagePath;
+      else AnnouncementImagePath = imagePath;
       emit(UploadImageSuccess());
     } on Exception {
       emit(UploadImageFailure());
@@ -108,5 +135,44 @@ class MainCubit extends Cubit<MainCubitStates> {
         ),
         (route) => false);
     emit(Logout());
+  }
+
+  List<RequestsModel>? requests;
+  void getRequests({required semester}) {
+    emit(GetRequestsLoadingState());
+    DioHelp.getData(
+        path: MATERIAL,
+        query: {'semester': 'One', 'accepted': false}).then((value) {
+      requests = [];
+      value.data.forEach((element) {
+        requests!.add(RequestsModel.fromJson(element));
+      });
+
+      emit(GetRequestsSuccessState());
+    });
+  }
+
+  void deleteMaterial(int id, semester) {
+    emit(DeleteMaterialLoadingState());
+    DioHelp.deleteData(
+        path: MATERIAL,
+        data: {'id': id},
+        token: TOKEN)
+        .then((value) {
+      emit(DeleteMaterialSuccessState());
+      getRequests(semester: 'one');
+    });
+  }
+
+  void acceptRequest(int id) {
+    emit(AcceptRequestLoadingState());
+    DioHelp.getData(
+        path: ACCEPT,
+        query: {'id': id, 'accepted': true},
+        token: TOKEN)
+        .then((value) {
+      emit(AcceptRequestSuccessState());
+      getRequests(semester: semester);
+    });
   }
 }

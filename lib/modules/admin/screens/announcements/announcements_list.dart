@@ -13,71 +13,74 @@ class AnnouncementsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AdminCubit, AdminCubitStates>(
-      listener: (context, state){},
-      builder: (context, state) {
-        var cubit = AdminCubit.get(context);
-        return Scaffold(
-          backgroundColor: Colors.black,
-          body: Stack(
-            children: [
-              backgroundEffects(),
-              Container(
-                margin: const EdgeInsetsDirectional.only(top: 50),
-                width: double.infinity,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      backButton(context),
-                      adminTopTitleWithDrawerButton(hasDrawer: false, title: 'Announcements', size: 34),
-                      ConditionalBuilder(
-                        condition:
-                        state is! AdminGetAnnouncementLoadingState &&
-                            cubit.announcements != null &&
-                            cubit.announcements!.isNotEmpty,
-                        builder: (context) => ListView.separated(
-                          shrinkWrap: true,
-                          physics: const BouncingScrollPhysics(),
-                          itemBuilder: (context, index) => announcementBuilder(
-                              cubit.announcements![index].id,
-                              context,
-                              cubit.announcements![index].title,
-                              index,
-                              cubit.announcements![index].content,
-                              cubit.announcements![index].dueDate,
-                              cubit.announcements![index].type),
-                          separatorBuilder: (context, index) => const SizedBox(
-                            height: 10,
+    return BlocProvider(
+      create: (context) => AdminCubit()..getAnnouncements(),
+      child: BlocConsumer<AdminCubit, AdminCubitStates>(
+        listener: (context, state){},
+        builder: (context, state) {
+          var cubit = AdminCubit.get(context);
+          return Scaffold(
+            backgroundColor: Colors.black,
+            body: Stack(
+              children: [
+                backgroundEffects(),
+                Container(
+                  margin: const EdgeInsetsDirectional.only(top: 50),
+                  width: double.infinity,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        backButton(context),
+                        adminTopTitleWithDrawerButton(hasDrawer: false, title: 'Announcements', size: 34),
+                        ConditionalBuilder(
+                          condition:
+                          state is! AdminGetAnnouncementLoadingState &&
+                              cubit.announcements != null &&
+                              cubit.announcements!.isNotEmpty,
+                          builder: (context) => ListView.separated(
+                            shrinkWrap: true,
+                            physics: const BouncingScrollPhysics(),
+                            itemBuilder: (context, index) => announcementBuilder(
+                                cubit.announcements![index].id,
+                                context,
+                                cubit.announcements![index].title,
+                                index,
+                                cubit.announcements![index].content,
+                                cubit.announcements![index].dueDate,
+                                cubit.announcements![index].type),
+                            separatorBuilder: (context, index) => const SizedBox(
+                              height: 10,
+                            ),
+                            itemCount: cubit.announcements!.length,
+                            //cubit.announcements!.length
                           ),
-                          itemCount: cubit.announcements!.length,
-                          //cubit.announcements!.length
+                          fallback: (context) {
+                            if (state is AdminGetAnnouncementLoadingState) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            } else {
+                              return const Center(
+                                child: Text(
+                                  'You have no announcements yet!!!',
+                                  style: TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                  textAlign: TextAlign.center,
+                                ),
+                              );
+                            }
+                          },
                         ),
-                        fallback: (context) {
-                          if (state is AdminGetAnnouncementLoadingState) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          } else {
-                            return const Center(
-                              child: Text(
-                                'You have no announcements yet!!!',
-                                style: TextStyle(
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                                textAlign: TextAlign.center,
-                              ),
-                            );
-                          }
-                        },
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              )
-            ],
-          ),
-        );
-      },
+                )
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 

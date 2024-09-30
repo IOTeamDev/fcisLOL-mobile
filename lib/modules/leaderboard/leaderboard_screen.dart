@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lol/layout/home/bloc/main_cubit.dart';
 import 'package:lol/modules/leaderboard/cubit/leaderboard_cubit.dart';
 import 'package:lol/modules/leaderboard/cubit/leaderboard_states.dart';
 import 'package:lol/shared/components/components.dart';
@@ -62,7 +63,9 @@ class LeaderboardScreen extends StatelessWidget {
                         condition: LeaderboardCubit.get(context).leaderboardModel != null && state is! getLeaderboardLoadingState,
                         builder: (context) => ListView.separated(
                           itemCount: LeaderboardCubit.get(context).leaderboardModel!.length,
-                          itemBuilder: (context, index) => buildList((index+1), LeaderboardCubit.get(context).leaderboardModel![index].name, LeaderboardCubit.get(context).leaderboardModel![index].score),
+                          itemBuilder: (context, index) {
+                              return buildList((index+1), LeaderboardCubit.get(context).leaderboardModel![index].name, LeaderboardCubit.get(context).leaderboardModel![index].score);
+                          },
                           separatorBuilder: (context, state) => const SizedBox(height: 10,),
                         ),
                         fallback: (context) => const Center(child: CircularProgressIndicator(),),

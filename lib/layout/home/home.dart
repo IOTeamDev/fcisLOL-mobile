@@ -12,9 +12,14 @@ import 'package:lol/layout/home/semester_navigate.dart';
 import 'package:lol/models/subjects/semster_model.dart';
 import 'package:lol/models/profile/profile_model.dart';
 import 'package:lol/models/subjects/subject_model.dart';
+import 'package:lol/modules/admin/bloc/admin_cubit.dart';
 import 'package:lol/modules/auth/bloc/login_cubit.dart';
 import 'package:lol/modules/auth/screens/login.dart';
+import 'package:lol/modules/leaderboard/leaderboard_screen.dart';
 import 'package:lol/modules/subject/subject_details.dart';
+import 'package:lol/modules/support_and_about_us/about_us.dart';
+import 'package:lol/modules/support_and_about_us/user_advices/feedback_screen.dart';
+import 'package:lol/modules/support_and_about_us/user_advices/report_bug.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/snack.dart';
 import 'package:lol/shared/components/constants.dart';
@@ -47,6 +52,9 @@ class Home extends StatelessWidget {
         // ),
         BlocProvider(
           create: (context) => MainCubit()..getProfileInfo(),
+        ),
+        BlocProvider(
+          create: (context) => AdminCubit()..getAnnouncements(),
         ),
       ],
       child:
@@ -385,8 +393,7 @@ class Home extends StatelessWidget {
                       ),
                       otherAccountsPictures: [
                         InkWell(
-                          onTap: () =>
-                              navigatReplace(context, const LoginScreen()),
+                          onTap: () => navigatReplace(context, const LoginScreen()),
                           child: Ink(
                             child: const Text(
                               // style: TextButton.styleFrom(padding: EdgeInsets.all(0)),
@@ -408,6 +415,14 @@ class Home extends StatelessWidget {
                       ],
                     ),
                   ),
+            if (profileModel.role == "ADMIN")
+              ListTile(
+                leading: const Icon(Icons.admin_panel_settings),
+                title: const Text("Admin"),
+                onTap: () {
+                  navigate(context, AdminPanal());
+                },
+              ),
             ListTile(
               leading: const Icon(Icons.announcement),
               title: const Text("Announcements"),
@@ -557,19 +572,36 @@ class Home extends StatelessWidget {
                 ),
               ],
             ),
+            ExpansionTile(leading: Icon(Icons.support_agent), title: Text('Support'),
+              children: [
+                ListTile(
+                  title: const Text('Report Bug'),
+                  onTap: (){
+                    navigate(context, ReportBug());
+                  },
+                ),
+                ListTile(
+                  title: const Text('Feedback'),
+                  onTap: (){
+                    navigate(context, FeedbackScreen());
+                  },
+                ),
+              ],
+            ),
             ListTile(
               leading: const Icon(Icons.group),
               title: const Text("About Us"),
-              onTap: () {},
+              onTap: () {
+                navigate(context, AboutUs());
+              },
             ),
-            if (profileModel?.role == "ADMIN")
-              ListTile(
-                leading: const Icon(Icons.admin_panel_settings),
-                title: const Text("Admin"),
-                onTap: () {
-                  navigate(context, AdminPanal());
-                },
-              ),
+            ListTile(
+              leading: const Icon(Icons.leaderboard),
+              title: const Text('Leaderboard'),
+              onTap: (){
+                navigate(context, LeaderboardScreen());
+              },
+            ),
             if (TOKEN != null)
               ListTile(
                 leading: const Icon(Icons.logout, color: Colors.red),
@@ -585,7 +617,7 @@ class Home extends StatelessWidget {
                 },
               ),
             SizedBox(
-              height: screenHeight(context) / 5,
+              height: screenHeight(context) / 7,
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),

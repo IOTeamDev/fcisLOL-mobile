@@ -26,7 +26,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
 
   AnnouncementModel? announcementModel;
   void addAnnouncement(
-      {required title, description, required dueDate, required type}) {
+      {required title, description, required dueDate, required type, required currentSemester}) {
     emit(AdminSaveAnnouncementLoadingState());
     DioHelp.postData(
             path: ANNOUNCEMENTS,
@@ -35,10 +35,9 @@ class AdminCubit extends Cubit<AdminCubitStates> {
               'content': description ?? '',
               'due_date': dueDate,
               'type': type,
-              'semester': 'Three'
+              'semester': currentSemester
             },
-            token:
-                'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcyNzAxMjQzOSwiZXhwIjoxNzU4MTE2NDM5fQ.WdqfOR7HKHMUYKax1w5P0awJZyuLBZqDl5ia602b4Wk')
+            token: TOKEN)
         .then((value) {
       //announcementModel = AnnouncementModel.fromJson(value.data);
       emit(AdminSaveAnnouncementSuccessState());
@@ -61,7 +60,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
   }
 
   void updateAnnouncement(final String id,
-      {String? title, String? content, dynamic dueDate, String? type}) {
+      {String? title, String? content, dynamic dueDate, String? type, required currentSemester}) {
     emit(AdminUpdateAnnouncementLoadingState());
     DioHelp.putData(
         path: ANNOUNCEMENTS,
@@ -70,10 +69,9 @@ class AdminCubit extends Cubit<AdminCubitStates> {
           'content': content,
           'due_date': dueDate,
           'type': type,
-          'semester': 'Four'
+          'semester': currentSemester
         },
-        token:
-            'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcyNzAxMjQzOSwiZXhwIjoxNzU4MTE2NDM5fQ.WdqfOR7HKHMUYKax1w5P0awJZyuLBZqDl5ia602b4Wk',
+        token: TOKEN,
         query: {'id': int.parse(id)}).then((value) {
       print(value.data);
       // Assuming the response returns the updated announcement
@@ -97,54 +95,11 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     emit(AdminDeleteAnnouncementLoadingState());
     DioHelp.deleteData(
         path: ANNOUNCEMENTS,
-        token:
-            'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcyNzAxMjQzOSwiZXhwIjoxNzU4MTE2NDM5fQ.WdqfOR7HKHMUYKax1w5P0awJZyuLBZqDl5ia602b4Wk',
+        token: TOKEN,
         query: {'id': id}).then((value) {
       emit(AdminDeleteAnnouncementSuccessState());
       getAnnouncements();
     });
   }
 
-  List<RequestsModel>? requests;
-  void getRequests() {
-    emit(AdminGetRequestsLoadingState());
-    DioHelp.getData(
-        path: MATERIAL,
-        query: {'subject': 'CALC_1', 'accepted': false}).then((value) {
-      requests = [];
-      value.data.forEach((element) {
-        requests!.add(RequestsModel.fromJson(element));
-        print(value.data);
-        print(requests![0].id);
-      });
-
-      emit(AdminGetRequestsSuccessState(requests!));
-    });
-  }
-
-  void deleteMaterial(int id) {
-    emit(AdminDeleteMaterialLoadingState());
-    DioHelp.deleteData(
-            path: MATERIAL,
-            data: {'id': id},
-            token:
-                'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcyNzAxMjQzOSwiZXhwIjoxNzU4MTE2NDM5fQ.WdqfOR7HKHMUYKax1w5P0awJZyuLBZqDl5ia602b4Wk')
-        .then((value) {
-      emit(AdminDeleteMaterialSuccessState());
-      getRequests();
-    });
-  }
-
-  void acceptRequest(int id) {
-    emit(AdminAcceptRequestLoadingState());
-    DioHelp.getData(
-            path: ACCEPT,
-            query: {'id': id, 'accepted': true},
-            token:
-                'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcyNzAxMjQzOSwiZXhwIjoxNzU4MTE2NDM5fQ.WdqfOR7HKHMUYKax1w5P0awJZyuLBZqDl5ia602b4Wk')
-        .then((value) {
-      emit(AdminAcceptRequestSuccessState());
-      getRequests();
-    });
-  }
 }

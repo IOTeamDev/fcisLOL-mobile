@@ -6,6 +6,8 @@ import 'package:lol/layout/home/semester_navigate.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
 import 'package:lol/layout/admin_panel/admin_panal.dart';
+import 'package:lol/modules/admin/screens/Announcements/add_announcement.dart';
+import 'package:lol/modules/admin/screens/announcements/announcements_list.dart';
 import 'package:lol/modules/subject/subject_details.dart';
 import 'package:lol/shared/network/local/shared_prefrence.dart';
 import 'package:provider/provider.dart';
@@ -85,31 +87,24 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-            create: (BuildContext context) => AdminCubit()
-              ..getAnnouncements()
-              ..getRequests()),
         BlocProvider(create: (BuildContext context) => SubjectCubit()..getMaterials()),
-        if (TOKEN != null)
-          BlocProvider(create: (BuildContext context) => MainCubit()),
-        BlocProvider(
-          create: (context) => MainCubit(),
-        )
+        BlocProvider(create: (BuildContext context) => MainCubit(),
+        ),
       ],
-      child: 
+      child:
            Consumer<ThemeProvide>(
             builder: (context,value,child) {
               return MaterialApp(
 
-                home: LoginScreen(),
+                home: Home(),
                 debugShowCheckedModeBanner: false,
                 theme: value.isDark?ThemeData.dark():
                      ThemeData.light(),
               );
             }
           )
-    
-      
+
+
     );
   }
 }

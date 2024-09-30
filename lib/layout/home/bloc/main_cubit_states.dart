@@ -16,6 +16,14 @@ class GetUserImageFailure extends MainCubitStates {}
 
 class GetUserImageLoading extends MainCubitStates {}
 
+class GetAnnouncementImageSuccess extends MainCubitStates {}
+
+class GetAnnouncementLimitExceed extends MainCubitStates {}
+
+class GetAnnouncementImageFailure extends MainCubitStates {}
+
+class GetAnnouncementImageLoading extends MainCubitStates {}
+
 class GetUserImageLimitExceed extends MainCubitStates{}
 
 class UploadImageSuccess extends MainCubitStates {}
@@ -41,3 +49,21 @@ class RetrieveCurrentUserDataErrorState extends MainCubitStates{
   final String error;
   RetrieveCurrentUserDataErrorState({required this.error});
 }
+
+class GetRequestsLoadingState extends MainCubitStates{}
+
+class GetRequestsSuccessState extends MainCubitStates{}
+
+class GetRequestsErrorState extends MainCubitStates{}
+
+class DeleteMaterialLoadingState extends MainCubitStates{}
+
+class DeleteMaterialSuccessState extends MainCubitStates{}
+
+class DeleteMaterialErrorState extends MainCubitStates{}
+
+class AcceptRequestLoadingState extends MainCubitStates{}
+
+class AcceptRequestSuccessState extends MainCubitStates{}
+
+class AcceptRequestErrorState extends MainCubitStates{}
