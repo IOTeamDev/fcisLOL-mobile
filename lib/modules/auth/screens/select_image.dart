@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/modules/auth/bloc/login_cubit.dart';
 import 'package:lol/modules/auth/bloc/login_cubit_states.dart';
 import 'package:lol/modules/auth/screens/register.dart';
+import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/snack.dart';
 import 'package:lol/layout/home/bloc/main_cubit.dart';
 import 'package:lol/layout/home/bloc/main_cubit_states.dart';
@@ -28,6 +29,11 @@ class SelectImage extends StatelessWidget {
       ],
       child: BlocConsumer<MainCubit, MainCubitStates>(
         listener: (context, state) {
+          if (state is GetUserImageLimitExceed)
+            showToastMessage(
+                message:
+                    "Image size too large. Please select an image under 1MB.",
+                states: ToastStates.WARNING);
           // if (state is RegisterSuccess) {
           //   // token=state.token;
           //   // Cache.writeData(key: "token", value: state.token);
@@ -56,7 +62,7 @@ class SelectImage extends StatelessWidget {
                         radius: 60,
                         backgroundImage: mainCubit.userImageFile != null
                             ? FileImage(mainCubit.userImageFile!)
-                            :  AssetImage(
+                            : AssetImage(
                                 'images/default-avatar-icon-of-social-media-user-vector.jpg'),
                       ),
                       Positioned(
@@ -128,13 +134,19 @@ class SelectImage extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async{
+
+await MainCubit.get(context).UploadPImage(image: MainCubit.get(context).userImageFile);
+
+
+
                         userInfo.photo = mainCubit.userImagePath ??
                             "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg";
                         print(userInfo.toString());
                         navigate(
                             context,
-                            ChoosingYear(loginCubit: LoginCubit(),
+                            ChoosingYear(
+                              loginCubit: LoginCubit(),
                               userInfo: userInfo,
                             ));
 

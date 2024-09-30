@@ -16,6 +16,8 @@ class GetUserImageFailure extends MainCubitStates {}
 
 class GetUserImageLoading extends MainCubitStates {}
 
+class GetUserImageLimitExceed extends MainCubitStates{}
+
 class UploadImageSuccess extends MainCubitStates {}
 
 class UploadImageFailure extends MainCubitStates {}

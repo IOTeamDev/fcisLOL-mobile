@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:image_picker/image_picker.dart';
@@ -36,7 +37,7 @@ class MainCubit extends Cubit<MainCubitStates> {
   }
 
   bool isDarkMode = false;
-  
+
   File? userImageFile;
   String? userImagePath;
   var picker = ImagePicker();
@@ -48,15 +49,24 @@ class MainCubit extends Cubit<MainCubitStates> {
         source: fromGallery ? ImageSource.gallery : ImageSource.camera);
     if (tempPostImage != null) {
       userImageFile = File(tempPostImage.path);
-      emit(GetUserImageSuccess());
-      userImagePath = await UploadPImage(image: userImageFile!);
+      final int sizeInBytes = await userImageFile!.length();
+      final int sizeInMB = sizeInBytes ~/ (1024 * 1024);
+      print(sizeInBytes);
+      print(sizeInMB);
+      if (sizeInMB <= 1) {
+        emit(GetUserImageSuccess());
+      } else {
+        userImageFile = null;
+        emit(GetUserImageLimitExceed());
+      }
     } else {
       emit(GetUserImageFailure());
     }
   }
 
-  Future<String?> UploadPImage({required File image}) async {
+  Future<void> UploadPImage({File? image, bool isUserProfile = true}) async {
     emit(UploadImageLoading());
+    if (image == null) return;
 
     final uploadTask = await FirebaseStorage.instance
         .ref()
@@ -65,13 +75,12 @@ class MainCubit extends Cubit<MainCubitStates> {
 
     try {
       final imagePath = await uploadTask.ref.getDownloadURL();
+      if (isUserProfile) userImagePath = imagePath;
       emit(UploadImageSuccess());
-      return imagePath;
     } on Exception {
       emit(UploadImageFailure());
       // // TODO
     }
-    return null;
   }
 
   ProfileModel? profileModel;
@@ -92,11 +101,12 @@ class MainCubit extends Cubit<MainCubitStates> {
   void logout(context) {
     TOKEN = null;
     Cache.removeValue(key: "token");
-    navigatReplace(
+    Navigator.pushAndRemoveUntil(
         context,
-        ChoosingYear(
-          loginCubit: LoginCubit(),
-        ));
+        MaterialPageRoute(
+          builder: (context) => ChoosingYear(loginCubit: LoginCubit()),
+        ),
+        (route) => false);
     emit(Logout());
   }
 }

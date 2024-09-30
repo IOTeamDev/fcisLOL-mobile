@@ -37,8 +37,8 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     print(width.toString());
-    print("${SelectedSemester!}Home semester");
-    SelectedSemester = "One";
+    // print("${SelectedSemester!}Home semester");
+    // SelectedSemester = "One";
     var scaffoldKey = GlobalKey<ScaffoldState>();
     return MultiBlocProvider(
       providers: [
@@ -60,7 +60,7 @@ class Home extends StatelessWidget {
           );
       }, builder: (context, state) {
         ProfileModel? profile;
-        late int semesterIndex;
+         int ?semesterIndex;
 
         // SelectedSemester = "Two";
         if (TOKEN != null && MainCubit.get(context).profileModel != null) {
@@ -255,7 +255,7 @@ class Home extends StatelessWidget {
                                 ),
                                 itemCount:
                                     // semesters[semesterIndex!].subjects.length,
-                                    semesters[semesterIndex].subjects.length,
+                                    semesters[semesterIndex!].subjects.length,
                                 itemBuilder: (context, index) {
                                   return
 
@@ -263,7 +263,7 @@ class Home extends StatelessWidget {
                                       //     semesters[semesterIndex!]
                                       //         .subjects[index],context);
                                       subjectItemBuild(
-                                          semesters[semesterIndex]
+                                          semesters[semesterIndex!]
                                               .subjects[index],
                                           context);
                                 },
