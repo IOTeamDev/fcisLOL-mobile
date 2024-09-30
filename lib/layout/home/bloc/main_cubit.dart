@@ -164,7 +164,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     });
   }
 
-  void acceptRequest(int id) {
+  void acceptRequest(int id,semester) {
     emit(AcceptRequestLoadingState());
     DioHelp.getData(
         path: ACCEPT,

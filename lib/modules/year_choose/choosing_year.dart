@@ -11,8 +11,8 @@ import 'package:lol/layout/home/home.dart';
 import 'package:lol/shared/components/navigation.dart';
 import 'package:lol/shared/network/local/shared_prefrence.dart';
 
-late String semester;
 
+late String switchSemester;
 class ChoosingYear extends StatelessWidget {
   UserInfo? userInfo;
   final LoginCubit loginCubit;
@@ -161,16 +161,16 @@ class YearState extends State<Year> {
                         late int value;
                         switch (widget.title) {
                           case "Level 1":
-                            semester = "One";
+                            switchSemester = "One";
                             break;
                           case "Level 2":
-                            semester = "Three";
+                            switchSemester = "Three";
                             break;
                           case "Level 3":
-                            semester = "Five";
+                            switchSemester = "Five";
                             break;
                           case "Level 4":
-                            semester = "Seven";
+                            switchSemester = "Seven";
                             break;
                         }
                         if (userInfo != null) print(userInfo.email);
@@ -181,9 +181,9 @@ class YearState extends State<Year> {
                               phone: userInfo.phone,
                               photo: userInfo.photo!,
                               password: userInfo.password,
-                              semester: semester);
+                              semester: switchSemester);
                         else {
-                          SelectedSemester = semester;
+                          SelectedSemester = switchSemester;
                           Cache.writeData(
                               key: "semester", value: SelectedSemester);
 
@@ -206,16 +206,16 @@ class YearState extends State<Year> {
                       btnOkOnPress: () {
                         switch (widget.title) {
                           case "Level 1":
-                            semester = "Two";
+                            switchSemester = "Two";
                             break;
                           case "Level 2":
-                            semester = "Four";
+                            switchSemester = "Four";
                             break;
                           case "Level 3":
-                            semester = "Six";
+                            switchSemester = "Six";
                             break;
                           case "Level 4":
-                            semester = "Eight";
+                            switchSemester = "Eight";
                             break;
                         }
 
@@ -227,9 +227,9 @@ class YearState extends State<Year> {
                               phone: userInfo.phone,
                               photo: userInfo.photo!,
                               password: userInfo.password,
-                              semester: semester);
+                              semester: switchSemester);
                         else {
-                          SelectedSemester = semester;
+                          SelectedSemester = switchSemester;
                           print("${SelectedSemester!}siiiii");
                           Cache.writeData(
                               key: "semester", value: SelectedSemester);

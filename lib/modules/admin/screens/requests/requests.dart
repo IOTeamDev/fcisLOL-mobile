@@ -209,7 +209,7 @@ class Requests extends StatelessWidget {
                   const Spacer(),
                   MaterialButton(
                     onPressed: () {
-                      MainCubit.get(context).acceptRequest(MainCubit.get(context).requests![index].id!);
+                      MainCubit.get(context).acceptRequest(MainCubit.get(context).requests![index].id!,MainCubit.get(context).profileModel!.semester);
                     },
                     shape: const CircleBorder(),
                     minWidth: 0,

@@ -427,6 +427,9 @@ class _MaterialDetailsState extends State<SubjectDetails>
         return Scaffold(
           resizeToAvoidBottomInset: true,
           backgroundColor: const Color.fromRGBO(25, 25, 25, 1),
+
+
+
           body: Container(
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -535,6 +538,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                         ),
                       ),
                       //Submit Button
+                      if(TOKEN !=null)
                       MaterialButton(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         minWidth: screenWidth(context) / 3,
