@@ -62,19 +62,17 @@ class Home extends StatelessWidget {
         ProfileModel? profile;
          int ?semesterIndex;
 
-        // SelectedSemester = "Two";
-        if (TOKEN != null && MainCubit.get(context).profileModel != null) {
-          profile = MainCubit.get(context).profileModel!;
-          print(profile.name);
-        }
-        if (profile != null && TOKEN != null) {
-          semesterIndex = semsesterIndex(profile.semester);
-          print("2");
-        }
-        if (TOKEN == null) {
-          semesterIndex = semsesterIndex(SelectedSemester!);
-          print("3");
-        }
+              // SelectedSemester = "Two";
+              if (TOKEN != null && MainCubit.get(context).profileModel != null) {
+                profile = MainCubit.get(context).profileModel!;
+                print(profile.name);
+              }
+
+              if (profile != null && TOKEN != null) {
+                semesterIndex = semsesterIndex(profile.semester);
+              } else if (TOKEN == null) {
+                semesterIndex = semsesterIndex(SelectedSemester!);
+              }
 
         print("$semesterIndex index");
         return Scaffold(
@@ -145,7 +143,7 @@ class Home extends StatelessWidget {
                   ),
             ],
           ),
-          drawer: CustomDrawer(),
+          drawer: CustomDrawer(context),
           body: MainCubit.get(context).profileModel == null && TOKEN != null
               ? const Center(
                   child: CircularProgressIndicator(),
@@ -288,15 +286,17 @@ class Home extends StatelessWidget {
   }
 }
 
-class CustomDrawer extends StatelessWidget {
-  const CustomDrawer({super.key});
+  Widget CustomDrawer(context) {
+    final SelectedSemester = "Three";
+    print(SelectedSemester);
 
-  @override
-  Widget build(BuildContext context) {
-    // SelectedSemester = "Three";
-    // print(SelectedSemester);
-double width=screenWidth(context);
-    var profileModel = MainCubit.get(context).profileModel;
+    double width=screenWidth(context);
+    final profileModel = MainCubit.get(context).profileModel;
+    if (profileModel == null) {
+      return const Center(
+        child: Text('No profile data available.'),
+      );
+    }
     return Drawer(
       width: width<600 ?width/1.5:width/2.5,
       child: SingleChildScrollView(
@@ -581,8 +581,7 @@ double width=screenWidth(context);
                   MainCubit.get(context).logout(context);
                   Provider.of<ThemeProvide>(context, listen: false).isDark =
                       false;
-                  Provider.of<ThemeProvide>(context, listen: false)
-                      .notifyListeners();
+                  Provider.of<ThemeProvide>(context, listen: false).notifyListeners();
                 },
               ),
             SizedBox(
@@ -597,7 +596,6 @@ double width=screenWidth(context);
       ),
     );
   }
-}
 
 String Level(String semester) {
   switch (semester) {

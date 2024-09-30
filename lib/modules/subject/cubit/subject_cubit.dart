@@ -2,8 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/models/subjects/subject_model.dart';
+import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
+import 'package:lol/shared/components/constants.dart';
 import 'package:lol/shared/network/endpoints.dart';
 import 'package:lol/shared/network/remote/dio.dart';
+import 'package:string_similarity/string_similarity.dart';
 
 part 'subject_state.dart';
 
@@ -16,6 +19,33 @@ class SubjectCubit extends Cubit<SubjectState> {
   List<MaterialModel>? videos;
   int index = 0;
   List<MaterialModel>? documents;
+  List<MaterialModel>? filteredMaterials;
+
+  void runFilter({required String query}) {
+    filteredMaterials = [];
+    if (query.isEmpty) {
+      filteredMaterials = materials!;
+    } else {
+      for (var material in materials!) {
+        if (material.title!.toLowerCase().contains(query.toLowerCase()) ||
+            material.title!.similarityTo(query) > 0.1 ||
+            material.description!.toLowerCase().contains(query.toLowerCase()) ||
+            material.description!.similarityTo(query) > 0.1) {
+          filteredMaterials!.add(material);
+        }
+      }
+      // sort filteredMaterials according to how well each material matches the search query
+      filteredMaterials!.sort((a, b) {
+        double scoreA = a.title!.similarityTo(query);
+        double scoreB = b.title!.similarityTo(query);
+        return scoreB.compareTo(scoreA);
+      });
+    }
+    print(filteredMaterials);
+    filterVideosAndDocuments();
+    emit(GetMaterialLoaded(materials: filteredMaterials!));
+  }
+
   void getMaterials() {
     emit(GetMaterialLoading());
 
@@ -25,21 +55,29 @@ class SubjectCubit extends Cubit<SubjectState> {
           query: {'subject': 'CALC_1', 'accepted': true}).then((response) {
         materials = [];
         videos = [];
-        index = 0;
         documents = [];
+        index = 0;
+
         response.data.forEach((e) {
           materials!.add(MaterialModel.fromJson(e));
-          if (materials![index].type == 'VIDEO') {
-            videos!.add(materials![index]);
-          } else {
-            documents!.add(materials![index]);
-          }
-          index++;
         });
+        filteredMaterials = materials;
+        filterVideosAndDocuments();
 
-        emit(GetMaterialLoaded(materials: materials!));
+        emit(GetMaterialLoaded(materials: filteredMaterials!));
       });
-    } catch (e) {}
+    } catch (e) {
+      print('error =============> $e');
+    }
+  }
+
+  void filterVideosAndDocuments() {
+    videos = filteredMaterials!
+        .where((material) => material.type == 'VIDEO')
+        .toList();
+    documents = filteredMaterials!
+        .where((material) => material.type == 'DOCUMENT')
+        .toList();
   }
 
   void addMaterial(
@@ -49,13 +87,9 @@ class SubjectCubit extends Cubit<SubjectState> {
       required String type}) {
     emit(SaveMaterialLoading());
 
-//title + description => search
-
     DioHelp.postData(
       path: MATERIAL,
       data: {
-
-        
         'subject': 'CALC_1',
         'title': title,
         'description': description,
@@ -66,9 +100,19 @@ class SubjectCubit extends Cubit<SubjectState> {
       token:
           'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIzLCJpYXQiOjE3MjcxMTE2MzEsImV4cCI6MTc1ODIxNTYzMX0.PUT9eFsFd4Bo-5ulhxFQu3T1HmYXza31Vo-C7lz2Nzg',
     ).then((response) {
-      print(response.data);
       getMaterials();
       emit(SaveMaterialSuccess());
+    });
+  }
+
+  void deleteMaterial({required MaterialModel material}) {
+    emit(DeleteMaterialLoading());
+    DioHelp.deleteData(
+      path: MATERIAL,
+      token: TOKEN,
+    ).then((response) {
+      getMaterials();
+      emit(DeleteMaterialSuccess(material: material));
     });
   }
 

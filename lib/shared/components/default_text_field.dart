@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lol/shared/styles/colors.dart';
 
 Widget defaultTextField(
     {String? Function(String?)? validateor,
@@ -49,5 +50,37 @@ Widget defaultTextField(
               ), // Use prefixIcon instead of prefix
       ),
     ),
+  );
+}
+
+Widget customTextFormField(
+    {required String title,
+    required TextEditingController controller,
+    required TextInputType keyboardtype,
+    int? maxLines}) {
+  return TextFormField(
+    maxLines: maxLines,
+    keyboardType: keyboardtype,
+    textInputAction: TextInputAction.next,
+    validator: (value) {
+      if (value == null || value.isEmpty) {
+        return 'This field must not be Empty';
+      }
+      return null;
+    },
+    style: TextStyle(color: a, fontSize: 20),
+    controller: controller,
+    decoration: InputDecoration(
+        fillColor: const Color.fromRGBO(217, 217, 217, 0.25),
+        filled: true,
+        contentPadding: const EdgeInsets.all(20),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(50),
+        ),
+        hintText: title,
+        hintStyle: const TextStyle(
+          color: Color.fromRGBO(255, 255, 255, 0.48),
+          fontSize: 22,
+        )),
   );
 }

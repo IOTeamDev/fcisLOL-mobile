@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
+import 'package:lol/layout/home/home.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
 import 'package:lol/modules/admin/screens/announcements/announcement_detail.dart';
 import 'package:lol/modules/admin/screens/announcements/edit_announcement.dart';
@@ -59,7 +60,7 @@ class _AddAnouncmentState extends State<AddAnouncment> {
         var cubit = AdminCubit.get(context);
         return Scaffold(
           key: scaffoldKey,
-          drawer: CustomDrawer(context, name: MainCubit.get(context).profileModel!.name,logout: MainCubit()..logout(context),photo: MainCubit.get(context).profileModel!.photo,role: MainCubit.get(context).profileModel!.role, semester: MainCubit.get(context).profileModel!.semester,),
+          drawer: CustomDrawer(context),
           backgroundColor: Colors.black,
           body: Stack(
             children: [
