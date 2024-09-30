@@ -82,23 +82,24 @@ class SubjectCubit extends Cubit<SubjectState> {
 
   void addMaterial(
       {required String title,
-      required String description,
+      String description = '',
       required String link,
-      required String type}) {
+      required String type,
+      required String semester,
+      required String subjectName}) {
     emit(SaveMaterialLoading());
 
     DioHelp.postData(
       path: MATERIAL,
       data: {
-        'subject': 'CALC_1',
+        'subject': subjectName,
         'title': title,
         'description': description,
         'link': link,
         'type': type,
-        'semester': 'One',
+        'semester': semester,
       },
-      token:
-          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIzLCJpYXQiOjE3MjcxMTE2MzEsImV4cCI6MTc1ODIxNTYzMX0.PUT9eFsFd4Bo-5ulhxFQu3T1HmYXza31Vo-C7lz2Nzg',
+      token: TOKEN,
     ).then((response) {
       getMaterials();
       emit(SaveMaterialSuccess());

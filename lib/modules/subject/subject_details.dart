@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/layout/home/bloc/main_cubit.dart';
+import 'package:lol/models/profile/profile_model.dart';
 import 'package:lol/shared/components/default_text_field.dart';
 import 'package:lol/shared/styles/colors.dart';
 import 'package:lol/shared/components/constants.dart';
@@ -26,6 +27,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _linkController = TextEditingController();
+
   @override
   void initState() {
     _tabControllerOfShowingContent = TabController(length: 2, vsync: this);
@@ -100,7 +102,6 @@ class _MaterialDetailsState extends State<SubjectDetails>
                   child: TextField(
                     onChanged: (query) {
                       cubit.runFilter(query: query);
-                      print('quury =>>>>>>>>>>>>>>>>>> $query');
                     },
                     style: TextStyle(color: a, fontSize: 20),
                     keyboardType: TextInputType.text,
@@ -111,8 +112,6 @@ class _MaterialDetailsState extends State<SubjectDetails>
                           size: 30,
                           color: a,
                         ),
-                        // fillColor: const Color.fromRGBO(217, 217, 217, 0.25),
-                        // filled: true,
                         contentPadding: const EdgeInsets.all(8.0),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50),
@@ -126,7 +125,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                 ),
                 adminTopTitleWithDrawerButton(
                     scaffoldKey: scaffoldKey,
-                    title: 'Material Name',
+                    title: widget.subjectName,
                     size: 32,
                     hasDrawer: true),
                 Padding(
@@ -362,10 +361,10 @@ class _MaterialDetailsState extends State<SubjectDetails>
   }
 
   Widget removeButton({required MaterialModel material}) {
-    var cubit = SubjectCubit.get(context);
+    var cubit = MainCubit.get(context);
     return ElevatedButton(
         onPressed: () {
-          cubit.deleteMaterial(material: material);
+          cubit.deleteMaterial(material.id!, material.semester);
         },
         style: ElevatedButton.styleFrom(
             backgroundColor: remove,
@@ -452,14 +451,14 @@ class _MaterialDetailsState extends State<SubjectDetails>
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5),
                     child: customTextFormField(
-                        title: 'Title',
+                        title: 'Title (e.g:chapter3)',
                         controller: _titleController,
                         keyboardtype: TextInputType.name),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5),
                     child: customTextFormField(
-                        title: 'Description(e.g:chapter3)',
+                        title: 'Description (Optional)',
                         controller: _descriptionController,
                         keyboardtype: TextInputType.text),
                   ),
@@ -535,28 +534,34 @@ class _MaterialDetailsState extends State<SubjectDetails>
                         ),
                       ),
                       //Submit Button
-                      MaterialButton(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        minWidth: screenWidth(context) / 3,
-                        shape: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30)),
-                        color: additional2,
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            BlocProvider.of<SubjectCubit>(context).addMaterial(
-                                title: _titleController.text,
-                                description: _descriptionController.text,
-                                link: _linkController.text,
-                                type: cubit.selectedType);
+                      if (TOKEN != null)
+                        MaterialButton(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          minWidth: screenWidth(context) / 3,
+                          shape: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30)),
+                          color: additional2,
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              BlocProvider.of<SubjectCubit>(context)
+                                  .addMaterial(
+                                      title: _titleController.text,
+                                      description: _descriptionController.text,
+                                      link: _linkController.text,
+                                      type: cubit.selectedType,
+                                      subjectName: widget.subjectName,
+                                      semester: MainCubit.get(context)
+                                          .profileModel!
+                                          .semester);
 
-                            Navigator.of(context).pop();
-                          }
-                        },
-                        child: Text(
-                          'Submit',
-                          style: TextStyle(color: a, fontSize: 20),
+                              Navigator.of(context).pop();
+                            }
+                          },
+                          child: Text(
+                            'Submit',
+                            style: TextStyle(color: a, fontSize: 20),
+                          ),
                         ),
-                      ),
                     ],
                   )
                 ],

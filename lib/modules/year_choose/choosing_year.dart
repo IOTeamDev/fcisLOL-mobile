@@ -111,14 +111,14 @@ class YearState extends State<Year> {
       children: [
         GestureDetector(
           onTap: () {
-            if (widget.title == "Level 4")
+            if (widget.title == "Level 4") {
               showToastMessage(
                   message: "Currently Updating", states: ToastStates.INFO);
-            // s(titleWidget: Text("Currently Updating",style: TextStyle(color: Colors.black),), context: context, enumColor: Messages.warning);
-            else
+            } else {
               setState(() {
                 isExpanded = !isExpanded;
               });
+            }
           },
           child: Container(
             width: 150,
@@ -174,7 +174,7 @@ class YearState extends State<Year> {
                             break;
                         }
                         if (userInfo != null) print(userInfo.email);
-                        if (userInfo != null)
+                        if (userInfo != null) {
                           loginCubit.register(
                               name: userInfo.name,
                               email: userInfo.email,
@@ -182,7 +182,7 @@ class YearState extends State<Year> {
                               photo: userInfo.photo!,
                               password: userInfo.password,
                               semester: semester);
-                        else {
+                        } else {
                           SelectedSemester = semester;
                           Cache.writeData(
                               key: "semester", value: SelectedSemester);
@@ -220,7 +220,7 @@ class YearState extends State<Year> {
                         }
 
                         if (userInfo != null) print(userInfo.email);
-                        if (userInfo != null)
+                        if (userInfo != null) {
                           loginCubit.register(
                               name: userInfo.name,
                               email: userInfo.email,
@@ -228,7 +228,7 @@ class YearState extends State<Year> {
                               photo: userInfo.photo!,
                               password: userInfo.password,
                               semester: semester);
-                        else {
+                        } else {
                           SelectedSemester = semester;
                           print("${SelectedSemester!}siiiii");
                           Cache.writeData(

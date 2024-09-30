@@ -9,6 +9,7 @@ import 'package:lol/layout/admin_panel/admin_panal.dart';
 import 'package:lol/modules/admin/screens/Announcements/add_announcement.dart';
 import 'package:lol/modules/admin/screens/announcements/announcements_list.dart';
 import 'package:lol/modules/subject/subject_details.dart';
+import 'package:lol/modules/support_and_about_us/user_advices/feedback_screen.dart';
 import 'package:lol/shared/network/local/shared_prefrence.dart';
 import 'package:provider/provider.dart';
 import 'modules/auth/bloc/login_cubit.dart';
@@ -56,16 +57,16 @@ main() async {
 
   runApp(ChangeNotifierProvider(
     create: (context) => ThemeProvide()..loadMode(),
-    child: App( startPage:startPage
-    ),
+    child: App(startPage: startPage),
   ));
 }
+
 class ThemeProvide extends ChangeNotifier {
   bool isDark = false;
 
-  void changeMode() async{
+  void changeMode() async {
     isDark = !isDark;
-  await  Cache.writeData(key: "mode", value: isDark);
+    await Cache.writeData(key: "mode", value: isDark);
     print('Theme mode changed: $isDark'); // Debugging log
 
     // Notify listeners to rebuild widgets listening to this provider
@@ -80,31 +81,26 @@ class ThemeProvide extends ChangeNotifier {
     notifyListeners();
   }
 }
+
 class App extends StatelessWidget {
   final Widget startPage;
   const App({super.key, required this.startPage});
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (BuildContext context) => SubjectCubit()..getMaterials()),
-        BlocProvider(create: (BuildContext context) => MainCubit(),
-        ),
-      ],
-      child:
-           Consumer<ThemeProvide>(
-            builder: (context,value,child) {
-              return MaterialApp(
-
-                home: Home(),
-                debugShowCheckedModeBanner: false,
-                theme: value.isDark?ThemeData.dark():
-                     ThemeData.light(),
-              );
-            }
-          )
-
-
-    );
+        providers: [
+          BlocProvider(
+              create: (BuildContext context) => SubjectCubit()..getMaterials()),
+          BlocProvider(
+            create: (BuildContext context) => MainCubit()..getProfileInfo(),
+          ),
+        ],
+        child: Consumer<ThemeProvide>(builder: (context, value, child) {
+          return MaterialApp(
+            home: Home(),
+            debugShowCheckedModeBanner: false,
+            theme: value.isDark ? ThemeData.dark() : ThemeData.light(),
+          );
+        }));
   }
 }

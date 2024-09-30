@@ -16,20 +16,18 @@ import 'package:lol/shared/components/navigation.dart';
 import 'package:lol/shared/network/local/shared_prefrence.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-import '../bloc/login_cubit_states.dart';
-
 class UserInfo {
   late String name;
   late String email;
   late String password;
   late String phone;
-   String? photo;
+  String? photo;
 
   UserInfo(
       {required this.name,
       required this.email,
       required this.password,
-       this.photo,
+      this.photo,
       required this.phone});
 }
 
@@ -84,7 +82,9 @@ class Registerscreen extends StatelessWidget {
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
-                          SizedBox(height: 10,),
+                          SizedBox(
+                            height: 10,
+                          ),
                           const Text(
                             "Create you account",
                             style: TextStyle(
@@ -98,7 +98,7 @@ class Registerscreen extends StatelessWidget {
                           const SizedBox(
                             height: 20,
                           ),
-                          
+
                           const SizedBox(
                             width: 10,
                           ),
@@ -109,7 +109,7 @@ class Registerscreen extends StatelessWidget {
                           //   mainAxisAlignment: MainAxisAlignment.start,
                           //   children: [
                           //     Expanded(child: Divider()),
-                
+
                           //     Text(
                           //       "   or  ",
                           //       style: TextStyle(fontSize: 17),
@@ -163,7 +163,6 @@ class Registerscreen extends StatelessWidget {
                               const SizedBox(
                                 height: 5,
                               ),
-                
                               defaultTextField(
                                   validateor: (value) {
                                     if (value!.isEmpty) {
@@ -178,7 +177,7 @@ class Registerscreen extends StatelessWidget {
                                   controller: emailController),
                             ],
                           ),
-                            const SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           Column(
@@ -203,7 +202,7 @@ class Registerscreen extends StatelessWidget {
                                 height: 5,
                               ),
                               defaultTextField(
-                
+
                                   // label: "Phone",
                                   controller: phoneController),
                             ],
@@ -275,16 +274,17 @@ class Registerscreen extends StatelessWidget {
                               : defaultButton(
                                   buttonFunc: () {
                                     if (formKey.currentState!.validate()) {
-                                    UserInfo userInfo = UserInfo(
-                                        name: nameController.text,
-                                        email: emailController.text.toLowerCase(),
-                                        password: passwordController.text,
-                                        phone: phoneController.text);
-                                    navigate(
-                                        context,
-                                        SelectImage(
-                                          userInfo: userInfo,
-                                        ));
+                                      UserInfo userInfo = UserInfo(
+                                          name: nameController.text,
+                                          email: emailController.text
+                                              .toLowerCase(),
+                                          password: passwordController.text,
+                                          phone: phoneController.text);
+                                      navigate(
+                                          context,
+                                          SelectImage(
+                                            userInfo: userInfo,
+                                          ));
                                     }
                                     // LoginCubit.get(context).register(
                                     //     name: nameController.text,
@@ -329,6 +329,3 @@ class Registerscreen extends StatelessWidget {
     );
   }
 }
-
-
-

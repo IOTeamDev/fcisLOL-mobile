@@ -14,6 +14,7 @@ class FeedbackScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       key: scaffoldKey,
       drawer: drawerBuilder(context),
       backgroundColor: Colors.black,
@@ -47,7 +48,7 @@ class FeedbackScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(16),
                 child: divider(),
               ),
-              _buildFeedBackForm()
+              _buildFeedBackForm(context)
             ],
           )
         ],
@@ -55,10 +56,12 @@ class FeedbackScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildFeedBackForm() {
-    return Form(
-        child: SingleChildScrollView(
-      child: Column(
+  Widget _buildFeedBackForm(BuildContext context) {
+    return SingleChildScrollView(
+      padding:
+          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      child: Form(
+          child: Column(
         children: [
           customTextFormField(
               title: 'Full Name',
@@ -66,15 +69,15 @@ class FeedbackScreen extends StatelessWidget {
               keyboardtype: TextInputType.text),
           customTextFormField(
               title: 'Email',
-              controller: _nameController,
+              controller: _emailController,
               keyboardtype: TextInputType.text),
           customTextFormField(
               title: 'Enter your feedback here',
-              controller: _nameController,
+              controller: _feedbackController,
               keyboardtype: TextInputType.text,
-              maxLines: 9)
+              maxLines: 8)
         ],
-      ),
-    ));
+      )),
+    );
   }
 }

@@ -101,8 +101,11 @@ class MainCubit extends Cubit<MainCubitStates> {
 
     try {
       final imagePath = await uploadTask.ref.getDownloadURL();
-      if (isUserProfile) userImagePath = imagePath;
-      else AnnouncementImagePath = imagePath;
+      if (isUserProfile) {
+        userImagePath = imagePath;
+      } else {
+        AnnouncementImagePath = imagePath;
+      }
       emit(UploadImageSuccess());
     } on Exception {
       emit(UploadImageFailure());
@@ -154,10 +157,7 @@ class MainCubit extends Cubit<MainCubitStates> {
 
   void deleteMaterial(int id, semester) {
     emit(DeleteMaterialLoadingState());
-    DioHelp.deleteData(
-        path: MATERIAL,
-        data: {'id': id},
-        token: TOKEN)
+    DioHelp.deleteData(path: MATERIAL, data: {'id': id}, token: TOKEN)
         .then((value) {
       emit(DeleteMaterialSuccessState());
       getRequests(semester: 'one');
@@ -167,9 +167,7 @@ class MainCubit extends Cubit<MainCubitStates> {
   void acceptRequest(int id) {
     emit(AcceptRequestLoadingState());
     DioHelp.getData(
-        path: ACCEPT,
-        query: {'id': id, 'accepted': true},
-        token: TOKEN)
+            path: ACCEPT, query: {'id': id, 'accepted': true}, token: TOKEN)
         .then((value) {
       emit(AcceptRequestSuccessState());
       getRequests(semester: semester);
