@@ -110,10 +110,11 @@ class SubjectCubit extends Cubit<SubjectState> {
     });
   }
 
-  void deleteMaterial({required MaterialModel material}) {
+  void deleteMaterial({required MaterialModel material, required int id}) {
     emit(DeleteMaterialLoading());
     DioHelp.deleteData(
       path: MATERIAL,
+      query: {'id':7},
       token: TOKEN,
     ).then((response) {
       getMaterials();
