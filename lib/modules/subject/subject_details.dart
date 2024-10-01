@@ -437,7 +437,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
     print(
         "Current selected index: ${SubjectCubit.get(context).selectedTabIndex}");
 
-    return BlocConsumer<SubjectCubit, SubjectState>(  
+    return BlocConsumer<SubjectCubit, SubjectState>(
       builder: (context, state) => Tab(
         child: Container(
           width: double.infinity,
