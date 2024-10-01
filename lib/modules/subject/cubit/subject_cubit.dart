@@ -43,11 +43,14 @@ class SubjectCubit extends Cubit<SubjectState> {
     }
     print(filteredMaterials);
     filterVideosAndDocuments();
-    emit(GetMaterialLoaded(materials: filteredMaterials!));
+    emit(GetMaterialSuccess(materials: filteredMaterials!));
   }
 
   void getMaterials() {
     emit(GetMaterialLoading());
+    materials = null;
+    documents = null;
+    videos = null;
 
     try {
       DioHelp.getData(
@@ -56,15 +59,15 @@ class SubjectCubit extends Cubit<SubjectState> {
         materials = [];
         videos = [];
         documents = [];
-        index = 0;
 
         response.data.forEach((e) {
           materials!.add(MaterialModel.fromJson(e));
         });
         filteredMaterials = materials;
         filterVideosAndDocuments();
+        print(documents![0].description);
 
-        emit(GetMaterialLoaded(materials: filteredMaterials!));
+        emit(GetMaterialSuccess(materials: filteredMaterials!));
       });
     } catch (e) {
       print('error =============> $e');
@@ -86,13 +89,13 @@ class SubjectCubit extends Cubit<SubjectState> {
       required String link,
       required String type,
       required String semester,
-      required String subjectName}) {
+      String? subjectName}) {
     emit(SaveMaterialLoading());
 
     DioHelp.postData(
       path: MATERIAL,
       data: {
-        'subject': subjectName,
+        'subject': "CALC_1",
         'title': title,
         'description': description,
         'link': link,
@@ -101,8 +104,9 @@ class SubjectCubit extends Cubit<SubjectState> {
       },
       token: TOKEN,
     ).then((response) {
-      getMaterials();
+      print(response.data);
       emit(SaveMaterialSuccess());
+      getMaterials();
     });
   }
 

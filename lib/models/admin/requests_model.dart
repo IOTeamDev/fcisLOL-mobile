@@ -1,4 +1,5 @@
 class RequestsModel {
+  //subject name (back)
   int? id;
   String? link;
   String? type;
@@ -7,6 +8,7 @@ class RequestsModel {
   Author? author;
 
   RequestsModel.fromJson(Map<String, dynamic> json) {
+    
     id = json['id'];
     link = json['link'];
     type = json['type'];

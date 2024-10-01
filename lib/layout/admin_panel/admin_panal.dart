@@ -25,7 +25,8 @@ class AdminPanal extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => MainCubit()..getProfileInfo()),
-        BlocProvider(create: (context) => AdminCubit()),
+        BlocProvider(create: (context) => AdminCubit()
+        ),
       ],
       child: BlocConsumer<AdminCubit, AdminCubitStates>(
         listener: (context, state) {},

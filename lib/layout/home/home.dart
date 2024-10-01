@@ -16,6 +16,7 @@ import 'package:lol/modules/admin/bloc/admin_cubit.dart';
 import 'package:lol/modules/auth/bloc/login_cubit.dart';
 import 'package:lol/modules/auth/screens/login.dart';
 import 'package:lol/modules/leaderboard/leaderboard_screen.dart';
+import 'package:lol/modules/subject/cubit/subject_cubit.dart';
 import 'package:lol/modules/subject/subject_details.dart';
 import 'package:lol/modules/support_and_about_us/about_us.dart';
 import 'package:lol/modules/support_and_about_us/user_advices/feedback_screen.dart';
@@ -53,6 +54,9 @@ class Home extends StatelessWidget {
         BlocProvider(
           create: (context) => MainCubit()..getProfileInfo(),
         ),
+        //   BlocProvider(
+        //   create: (context) => SubjectCubit()..getMaterials(),
+        // ),
         BlocProvider(
           create: (context) => AdminCubit()..getAnnouncements(),
         ),
@@ -734,61 +738,63 @@ Widget DarkLightModeToggle(context) {
 }
 
 Widget subjectItemBuild(SubjectModel subject, context) {
-  return GestureDetector(
-    onTap: () {
-      navigate(
-          context,
-          SubjectDetails(
-            subjectName: subject.subjectName,
-          ));
-    },
-    child: Card(
-      elevation: 12.0, // More elevation for depth
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.0),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: Stack(
-        alignment: Alignment.bottomLeft,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                colorFilter:
-                    const ColorFilter.mode(Color(0xfff39c12), BlendMode.dstIn),
-                image: subject.subjectName == "Data Mining"
-                    ? AssetImage("images/data-mining_cleanup.webp")
-                    : NetworkImage(subject.subjectImage),
-                fit: BoxFit.cover,
+  return BlocProvider(create: (context) => SubjectCubit(),
+    child: GestureDetector(
+      onTap: () {
+        navigatReplace(
+            context,
+            SubjectDetails(
+              subjectName: subject.subjectName,
+            ));
+      },
+      child: Card(
+        elevation: 12.0, // More elevation for depth
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Stack(
+          alignment: Alignment.bottomLeft,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  colorFilter:
+                      const ColorFilter.mode(Color(0xfff39c12), BlendMode.dstIn),
+                  image: subject.subjectName == "Data Mining"
+                      ? AssetImage("images/data-mining_cleanup.webp")
+                      : NetworkImage(subject.subjectImage),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.black.withOpacity(0.6),
-                  Colors.transparent,
-                ],
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.black.withOpacity(0.6),
+                    Colors.transparent,
+                  ],
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Text(
-              subject.subjectName,
-              maxLines: 2,
-              style: GoogleFonts.montserrat(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Text(
+                subject.subjectName,
+                maxLines: 2,
+                style: GoogleFonts.montserrat(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+                overflow: TextOverflow.ellipsis,
               ),
-              overflow: TextOverflow.ellipsis,
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     ),
   );

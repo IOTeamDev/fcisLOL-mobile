@@ -35,7 +35,9 @@ class Requests extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => MainCubit()..getProfileInfo()),
+        BlocProvider(create: (context) => MainCubit()..getProfileInfo()
+        
+        ),
       ],
       child: BlocConsumer<MainCubit, MainCubitStates>(
         listener: (context, state) {
@@ -224,7 +226,8 @@ class Requests extends StatelessWidget {
                   MaterialButton(
                     onPressed: () {
                       MainCubit.get(context).acceptRequest(
-                          MainCubit.get(context).requests![index].id!);
+                          MainCubit.get(context).requests![index].id!,
+                          MainCubit.get(context).profileModel!.semester);
                     },
                     shape: const CircleBorder(),
                     minWidth: 0,

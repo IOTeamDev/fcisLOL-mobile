@@ -145,7 +145,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     emit(GetRequestsLoadingState());
     DioHelp.getData(
         path: MATERIAL,
-        query: {'semester': 'One', 'accepted': false}).then((value) {
+        query: {'semester': semester, 'accepted': false}).then((value) {
       requests = [];
       value.data.forEach((element) {
         requests!.add(RequestsModel.fromJson(element));
@@ -160,11 +160,11 @@ class MainCubit extends Cubit<MainCubitStates> {
     DioHelp.deleteData(path: MATERIAL, data: {'id': id}, token: TOKEN)
         .then((value) {
       emit(DeleteMaterialSuccessState());
-      getRequests(semester: 'one');
+      getRequests(semester: semester);
     });
   }
 
-  void acceptRequest(int id) {
+  void acceptRequest(int id,semester) {
     emit(AcceptRequestLoadingState());
     DioHelp.getData(
             path: ACCEPT, query: {'id': id, 'accepted': true}, token: TOKEN)

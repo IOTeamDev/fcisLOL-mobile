@@ -90,9 +90,9 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider(
-              create: (BuildContext context) => SubjectCubit()..getMaterials()),
+              create: (BuildContext context) => SubjectCubit()),
           BlocProvider(
-            create: (BuildContext context) => MainCubit()..getProfileInfo(),
+            create: (BuildContext context) => MainCubit(),
           ),
         ],
         child: Consumer<ThemeProvide>(builder: (context, value, child) {

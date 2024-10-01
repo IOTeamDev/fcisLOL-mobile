@@ -11,7 +11,7 @@ import 'package:lol/layout/home/home.dart';
 import 'package:lol/shared/components/navigation.dart';
 import 'package:lol/shared/network/local/shared_prefrence.dart';
 
-late String semester;
+late String switchSemester;
 
 class ChoosingYear extends StatelessWidget {
   UserInfo? userInfo;
@@ -22,70 +22,66 @@ class ChoosingYear extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: loginCubit,
-      // create: (context) => LoginCubit(),
       child: BlocConsumer<LoginCubit, LoginStates>(
-          builder: (context, state) => Scaffold(
-                backgroundColor: const Color(0xff1B262C),
-                appBar: AppBar(
-                  title: const Text("temp"),
-                  centerTitle: true,
-                  backgroundColor: const Color(0xff0F4C75),
-                ),
-                body: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Year(
-                          title: "Level 1",
-                          userInfo: userInfo,
-                        ),
-                        Year(
-                          title: "Level 2",
-                          userInfo: userInfo,
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Year(
-                          title: "Level 3",
-                          userInfo: userInfo,
-                        ),
-                        Year(
-                          title: "Level 4",
-                          userInfo: userInfo,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+        builder: (context, state) => Scaffold(
+          backgroundColor: const Color(0xff1B262C),
+          appBar: AppBar(
+            title: const Text("temp"),
+            centerTitle: true,
+            backgroundColor: const Color(0xff0F4C75),
+          ),
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Year(
+                    title: "Level 1",
+                    userInfo: userInfo,
+                  ),
+                  Year(
+                    title: "Level 2",
+                    userInfo: userInfo,
+                  ),
+                ],
               ),
-          listener: (context, state) {
-            if (state is RegisterSuccess) {
-              // token=state.token;
-              TOKEN = state.token;
-              Cache.writeData(key: "token", value: state.token);
-              print(state.token);
-              showToastMessage(
-                message: "Successfully signed up !",
-                // context: context,
-                states: ToastStates.SUCCESS,
-                // titleWidget: const Text("")
-              );
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Year(
+                    title: "Level 3",
+                    userInfo: userInfo,
+                  ),
+                  Year(
+                    title: "Level 4",
+                    userInfo: userInfo,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        listener: (context, state) {
+          if (state is RegisterSuccess) {
+            TOKEN = state.token;
+            Cache.writeData(key: "token", value: state.token);
+            showToastMessage(
+              message: "Successfully signed up!",
+              states: ToastStates.SUCCESS,
+            );
 
-              navigatReplace(context, const Home());
-            }
-            if (state is RegisterFailed) {
-              showToastMessage(
-                message: "Please try with another email address",
-                states: ToastStates.ERROR,
-              );
-              navigatReplace(context, const LoginScreen());
-            }
-          }),
+            navigatReplace(context, const Home());
+          }
+          if (state is RegisterFailed) {
+            showToastMessage(
+              message: "Please try with another email address",
+              states: ToastStates.ERROR,
+            );
+            navigatReplace(context, const LoginScreen());
+          }
+        },
+      ),
     );
   }
 }
@@ -107,6 +103,7 @@ class YearState extends State<Year> {
   Widget build(context) {
     var loginCubit = LoginCubit.get(context);
     UserInfo? userInfo = widget.userInfo;
+
     return Column(
       children: [
         GestureDetector(
@@ -153,37 +150,35 @@ class YearState extends State<Year> {
                       context: context,
                       dialogType: DialogType.info,
                       animType: AnimType.rightSlide,
-                      title:
-                          'You About To Assign In ${widget.title} Semster 1 ',
+                      title: 'You About To Assign In ${widget.title} Semester 1',
                       btnOkText: "Confirm",
                       btnCancelOnPress: () {},
                       btnOkOnPress: () {
-                        late int value;
                         switch (widget.title) {
                           case "Level 1":
-                            semester = "One";
+                            switchSemester = "One";
                             break;
                           case "Level 2":
-                            semester = "Three";
+                            switchSemester = "Three";
                             break;
                           case "Level 3":
-                            semester = "Five";
+                            switchSemester = "Five";
                             break;
                           case "Level 4":
-                            semester = "Seven";
+                            switchSemester = "Seven";
                             break;
                         }
-                        if (userInfo != null) print(userInfo.email);
                         if (userInfo != null) {
                           loginCubit.register(
-                              name: userInfo.name,
-                              email: userInfo.email,
-                              phone: userInfo.phone,
-                              photo: userInfo.photo!,
-                              password: userInfo.password,
-                              semester: semester);
+                            name: userInfo.name,
+                            email: userInfo.email,
+                            phone: userInfo.phone,
+                            photo: userInfo.photo!,
+                            password: userInfo.password,
+                            semester: switchSemester,
+                          );
                         } else {
-                          SelectedSemester = semester;
+                          SelectedSemester = switchSemester;
                           Cache.writeData(
                               key: "semester", value: SelectedSemester);
 
@@ -200,37 +195,35 @@ class YearState extends State<Year> {
                       context: context,
                       dialogType: DialogType.info,
                       animType: AnimType.rightSlide,
-                      title:
-                          'You About To Assign In ${widget.title} Semester 2 ',
+                      title: 'You About To Assign In ${widget.title} Semester 2',
                       btnCancelOnPress: () {},
                       btnOkOnPress: () {
                         switch (widget.title) {
                           case "Level 1":
-                            semester = "Two";
+                            switchSemester = "Two";
                             break;
                           case "Level 2":
-                            semester = "Four";
+                            switchSemester = "Four";
                             break;
                           case "Level 3":
-                            semester = "Six";
+                            switchSemester = "Six";
                             break;
                           case "Level 4":
-                            semester = "Eight";
+                            switchSemester = "Eight";
                             break;
                         }
 
-                        if (userInfo != null) print(userInfo.email);
                         if (userInfo != null) {
                           loginCubit.register(
-                              name: userInfo.name,
-                              email: userInfo.email,
-                              phone: userInfo.phone,
-                              photo: userInfo.photo!,
-                              password: userInfo.password,
-                              semester: semester);
+                            name: userInfo.name,
+                            email: userInfo.email,
+                            phone: userInfo.phone,
+                            photo: userInfo.photo!,
+                            password: userInfo.password,
+                            semester: switchSemester,
+                          );
                         } else {
-                          SelectedSemester = semester;
-                          print("${SelectedSemester!}siiiii");
+                          SelectedSemester = switchSemester;
                           Cache.writeData(
                               key: "semester", value: SelectedSemester);
 
