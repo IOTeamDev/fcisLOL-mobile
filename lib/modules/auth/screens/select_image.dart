@@ -29,11 +29,12 @@ class SelectImage extends StatelessWidget {
       ],
       child: BlocConsumer<MainCubit, MainCubitStates>(
         listener: (context, state) {
-          if (state is GetUserImageLimitExceed)
+          if (state is GetUserImageLimitExceed) {
             showToastMessage(
                 message:
                     "Image size too large. Please select an image under 1MB.",
                 states: ToastStates.WARNING);
+          }
           // if (state is RegisterSuccess) {
           //   // token=state.token;
           //   // Cache.writeData(key: "token", value: state.token);
@@ -134,11 +135,9 @@ class SelectImage extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () async{
-
-await MainCubit.get(context).UploadPImage(image: MainCubit.get(context).userImageFile);
-
-
+                      onPressed: () async {
+                        await MainCubit.get(context).UploadPImage(
+                            image: MainCubit.get(context).userImageFile);
 
                         userInfo.photo = mainCubit.userImagePath ??
                             "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg";

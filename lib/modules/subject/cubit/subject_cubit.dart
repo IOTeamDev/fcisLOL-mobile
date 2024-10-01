@@ -43,11 +43,14 @@ class SubjectCubit extends Cubit<SubjectState> {
     }
     print(filteredMaterials);
     filterVideosAndDocuments();
-    emit(GetMaterialLoaded(materials: filteredMaterials!));
+    emit(GetMaterialSuccess(materials: filteredMaterials!));
   }
 
   void getMaterials() {
     emit(GetMaterialLoading());
+    materials = null;
+    documents = null;
+    videos = null;
 
     try {
       DioHelp.getData(
@@ -56,15 +59,15 @@ class SubjectCubit extends Cubit<SubjectState> {
         materials = [];
         videos = [];
         documents = [];
-        index = 0;
 
         response.data.forEach((e) {
           materials!.add(MaterialModel.fromJson(e));
         });
         filteredMaterials = materials;
         filterVideosAndDocuments();
+        print(documents![0].description);
 
-        emit(GetMaterialLoaded(materials: filteredMaterials!));
+        emit(GetMaterialSuccess(materials: filteredMaterials!));
       });
     } catch (e) {
       print('error =============> $e');
@@ -82,26 +85,28 @@ class SubjectCubit extends Cubit<SubjectState> {
 
   void addMaterial(
       {required String title,
-      required String description,
+      String description = '',
       required String link,
-      required String type}) {
+      required String type,
+      required String semester,
+      String? subjectName}) {
     emit(SaveMaterialLoading());
 
     DioHelp.postData(
       path: MATERIAL,
       data: {
-        'subject': 'CALC_1',
+        'subject': "CALC_1",
         'title': title,
         'description': description,
         'link': link,
         'type': type,
-        'semester': 'One',
+        'semester': semester,
       },
-      token:
-          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIzLCJpYXQiOjE3MjcxMTE2MzEsImV4cCI6MTc1ODIxNTYzMX0.PUT9eFsFd4Bo-5ulhxFQu3T1HmYXza31Vo-C7lz2Nzg',
+      token: TOKEN,
     ).then((response) {
-      getMaterials();
+      print(response.data);
       emit(SaveMaterialSuccess());
+      getMaterials();
     });
   }
 

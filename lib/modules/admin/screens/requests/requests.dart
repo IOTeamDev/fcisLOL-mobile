@@ -35,15 +35,17 @@ class Requests extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => MainCubit()..getProfileInfo()),
+        BlocProvider(create: (context) => MainCubit()..getProfileInfo()
+        
+        ),
       ],
       child: BlocConsumer<MainCubit, MainCubitStates>(
-          listener: (context, state) {
-            if(state is GetProfileSuccess )
-              {
-                MainCubit.get(context).getRequests(semester: MainCubit.get(context).profileModel!.semester);
-              }
-          },
+        listener: (context, state) {
+          if (state is GetProfileSuccess) {
+            MainCubit.get(context).getRequests(
+                semester: MainCubit.get(context).profileModel!.semester);
+          }
+        },
         builder: (context, mainState) {
           var cubit = MainCubit.get(context);
 
@@ -57,35 +59,45 @@ class Requests extends StatelessWidget {
                   margin: const EdgeInsetsDirectional.only(top: 50),
                   width: double.infinity,
                   child: Column(
-                      children: [
-                        backButton(context),
-                        adminTopTitleWithDrawerButton(title: 'Requests', size: 40, hasDrawer: false),
-                        Expanded(
-                          child: ConditionalBuilder(
-                            condition: cubit.requests != null && cubit.requests!.isNotEmpty && mainState is! GetRequestsLoadingState && mainState is! GetProfileLoading,
+                    children: [
+                      backButton(context),
+                      adminTopTitleWithDrawerButton(
+                          title: 'Requests', size: 40, hasDrawer: false),
+                      Expanded(
+                        child: ConditionalBuilder(
+                            condition: cubit.requests != null &&
+                                cubit.requests!.isNotEmpty &&
+                                mainState is! GetRequestsLoadingState &&
+                                mainState is! GetProfileLoading,
                             builder: (context) => ListView.separated(
-                              physics: const BouncingScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                return requestedMaterialBuilder(
-                                  backgroundColor, index, context,
-                                  title: cubit.requests![index].title,
-                                  type: cubit.requests![index].type,
-                                  pfp: cubit.requests![index].author?.photo,
-                                  authorName: cubit.requests![index].author?.name,
-                                  link: cubit.requests![index].link,
-                                  subjectName: 'Calculus1', // Use proper subject if available
-                                  description: cubit.requests![index].description,
-                                );
-                              },
-                              separatorBuilder: (context, index) => const Padding(
-                                padding: EdgeInsetsDirectional.all(5),
-                              ),
-                              itemCount: cubit.requests!.length,
-                            ),
+                                  physics: const BouncingScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    return requestedMaterialBuilder(
+                                      backgroundColor, index, context,
+                                      title: cubit.requests![index].title,
+                                      type: cubit.requests![index].type,
+                                      pfp: cubit.requests![index].author?.photo,
+                                      authorName:
+                                          cubit.requests![index].author?.name,
+                                      link: cubit.requests![index].link,
+                                      subjectName:
+                                          'Calculus1', // Use proper subject if available
+                                      description:
+                                          cubit.requests![index].description,
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) =>
+                                      const Padding(
+                                    padding: EdgeInsetsDirectional.all(5),
+                                  ),
+                                  itemCount: cubit.requests!.length,
+                                ),
                             fallback: (context) {
-                              if (mainState is GetRequestsLoadingState)
-                                return const Center(child: CircularProgressIndicator(),);
-                              else
+                              if (mainState is GetRequestsLoadingState) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              } else {
                                 return const Center(
                                   child: Text(
                                     'No requests available',
@@ -96,12 +108,12 @@ class Requests extends StatelessWidget {
                                     ),
                                   ),
                                 );
-                            }
-                          ),
-                        )
-                      ],
-                    ),
+                              }
+                            }),
+                      )
+                    ],
                   ),
+                ),
               ],
             ),
           );
@@ -110,7 +122,8 @@ class Requests extends StatelessWidget {
     );
   }
 
-  Widget requestedMaterialBuilder(List<String> colorText, index, context, {title, link, type, authorName, pfp, subjectName, description}) {
+  Widget requestedMaterialBuilder(List<String> colorText, index, context,
+      {title, link, type, authorName, pfp, subjectName, description}) {
     var random = Random();
     int randomNum = random.nextInt(10);
 
@@ -126,7 +139,8 @@ class Requests extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsetsDirectional.only(bottom: 5, top: 10, start: 10, end: 10),
+            padding: const EdgeInsetsDirectional.only(
+                bottom: 5, top: 10, start: 10, end: 10),
             child: Row(
               children: [
                 CircleAvatar(
@@ -153,7 +167,8 @@ class Requests extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsetsDirectional.only(start: 10.0, end: 10, top: 0, bottom: 5),
+            padding: const EdgeInsetsDirectional.only(
+                start: 10.0, end: 10, top: 0, bottom: 5),
             child: Row(
               children: [
                 Text(
@@ -188,7 +203,8 @@ class Requests extends StatelessWidget {
                   const Icon(Icons.link, color: Colors.white),
                   const SizedBox(width: 5),
                   ConstrainedBox(
-                    constraints: BoxConstraints(maxWidth: constraints.maxWidth - 140),
+                    constraints:
+                        BoxConstraints(maxWidth: constraints.maxWidth - 140),
                     child: GestureDetector(
                       onTap: () async {
                         final linkElement = LinkableElement(link, link);
@@ -209,7 +225,9 @@ class Requests extends StatelessWidget {
                   const Spacer(),
                   MaterialButton(
                     onPressed: () {
-                      MainCubit.get(context).acceptRequest(MainCubit.get(context).requests![index].id!,MainCubit.get(context).profileModel!.semester);
+                      MainCubit.get(context).acceptRequest(
+                          MainCubit.get(context).requests![index].id!,
+                          MainCubit.get(context).profileModel!.semester);
                     },
                     shape: const CircleBorder(),
                     minWidth: 0,
@@ -237,4 +255,3 @@ class Requests extends StatelessWidget {
     );
   }
 }
-

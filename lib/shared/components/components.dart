@@ -28,13 +28,16 @@ Widget adminTopTitleWithDrawerButton(
     padding: EdgeInsetsDirectional.only(bottom: bottomPadding),
     child: Row(
       children: [
-        Padding(
-          padding: const EdgeInsetsDirectional.symmetric(horizontal: 20.0),
-          child: Text(
-            title,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(color: Colors.white, fontSize: size),
-            textAlign: TextAlign.start,
+        Expanded(
+          flex: 15,
+          child: Padding(
+            padding: const EdgeInsetsDirectional.symmetric(horizontal: 20.0),
+            child: Text(
+              title,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(color: Colors.white, fontSize: size),
+              textAlign: TextAlign.start,
+            ),
           ),
         ),
         const Spacer(),
@@ -192,7 +195,7 @@ void showToastMessage({
       toastLength: toastLength,
       gravity: gravity,
       timeInSecForIosWeb: lengthForIOSAndWeb,
-      backgroundColor: chooseToastColor(states!),
+      backgroundColor: chooseToastColor(states),
       textColor: textColor,
       fontSize: fontSize,
     );
@@ -243,10 +246,9 @@ Future<void> onOpen(BuildContext context, LinkableElement link) async {
     } else {
       navigate(context, WebviewScreen(url));
     }
-    ;
   } else {
     // For other links, open them using WebView
-        navigate(context, WebviewScreen(url));
+    navigate(context, WebviewScreen(url));
 
     // launchUrl(Uri.parse(link.url));
   }
