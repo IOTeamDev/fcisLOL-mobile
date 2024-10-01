@@ -221,7 +221,7 @@ Color chooseToastColor(ToastStates states) {
   return color!;
 }
 
-String getYouTubeThumbnail(String videoUrl) {
+String? getYouTubeThumbnail(String videoUrl) {
   final Uri uri = Uri.parse(videoUrl);
   String videoId = "";
 
@@ -229,6 +229,9 @@ String getYouTubeThumbnail(String videoUrl) {
     videoId = uri.pathSegments.first;
   } else if (uri.queryParameters.containsKey('v')) {
     videoId = uri.queryParameters['v']!;
+  }
+  else {
+    return null;
   }
   return 'https://img.youtube.com/vi/$videoId/hqdefault.jpg';
 }
