@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../../layout/home/bloc/main_cubit.dart';
 
 class ReportBug extends StatelessWidget {
 
   var _formKey = GlobalKey<FormState>();
 
   var _nameController = TextEditingController();
-  var _emailController = TextEditingController();
   var _titleController = TextEditingController();
   var _descriptionController = TextEditingController();
 
@@ -34,6 +36,22 @@ class ReportBug extends StatelessWidget {
                         children: [
                           TextFormField(
                             controller: _nameController,
+                            keyboardType: TextInputType.name,
+                            decoration: InputDecoration(
+                              hintText: 'Name',
+                              hintStyle: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.grey[400]),
+                              border: InputBorder.none,
+                            ),
+                            style: const TextStyle(
+                                color: Colors.white),
+                          ),
+                          divider(),
+                          SizedBox(height: 10,),
+                          TextFormField(
+                            controller: _titleController,
+                            keyboardType: TextInputType.text,
                             validator: (value) {
                               if (value == null ||
                                   value.isEmpty) {
@@ -42,7 +60,7 @@ class ReportBug extends StatelessWidget {
                               return null;
                             },
                             decoration: InputDecoration(
-                              hintText: 'Title',
+                              hintText: 'Bug title',
                               hintStyle: TextStyle(
                                   fontSize: 20,
                                   color: Colors.grey[400]),
@@ -50,6 +68,83 @@ class ReportBug extends StatelessWidget {
                             ),
                             style: const TextStyle(
                                 color: Colors.white),
+                          ),
+                          divider(),
+                          SizedBox(height: 10,),
+                          TextFormField(
+                            minLines: 5,
+                            maxLines: 5,
+                            controller: _descriptionController,
+                            keyboardType: TextInputType.multiline,
+                            validator: (value) {
+                              if (value == null ||
+                                  value.isEmpty) {
+                                return 'This field must not be Empty';
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              hintText: 'Bug description',
+                              hintStyle: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.grey[400]),
+                              border: InputBorder.none,
+                            ),
+                            style: const TextStyle(
+                                color: Colors.white),
+                          ),
+                          divider(),
+                          SizedBox(height: 10,),
+                          Padding(
+                            padding: const EdgeInsetsDirectional
+                                .symmetric(horizontal: 10.0),
+                            child: Row(
+                              children: [
+                                //cancel button
+                                ElevatedButton(
+                                  onPressed: () {
+                                      _nameController.clear();
+                                      _titleController.clear();
+                                      _descriptionController.clear();
+                                      Navigator.pop(context);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    padding:
+                                    const EdgeInsetsDirectional
+                                        .symmetric(
+                                        horizontal: 35),
+                                    backgroundColor:
+                                    HexColor('D9D9D9')
+                                        .withOpacity(0.2),
+                                    foregroundColor: Colors.white,
+                                    textStyle: const TextStyle(
+                                        fontSize: 15),
+                                  ),
+                                  child: const Text('Cancel'),
+                                ),
+                                const Spacer(),
+                                //submit button
+                                ElevatedButton(
+                                    onPressed: () async {
+                                      sendBugReport(bugTitle: _titleController.text, bugDescription: _descriptionController.text, userName: _nameController.text);
+                                          _descriptionController.clear();
+                                          _titleController.clear();
+                                          _nameController.clear();
+
+                                    },
+                                    style:
+                                    ElevatedButton.styleFrom(
+                                      padding: const EdgeInsetsDirectional.symmetric(horizontal: 40),
+                                      backgroundColor:
+                                      HexColor('B8A8F9'),
+                                      foregroundColor:
+                                      Colors.white,
+                                      textStyle: const TextStyle(
+                                          fontSize: 15),
+                                    ),
+                                    child: const Text('Submit')),
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -64,19 +159,27 @@ class ReportBug extends StatelessWidget {
     );
   }
 
-  Future<void> sendBugReport({required userEmail, userName, required feedbackTitle, required feedbackDescription}) async {
+  Future<void> sendBugReport({
+    String? userName,
+    required String bugTitle,
+    required String bugDescription,
+  }) async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
+      final String subject = Uri.encodeComponent(bugTitle);
+      final String body = Uri.encodeComponent(
+        'Name: ${userName != ''? userName ?? 'Anonymous':'Anonymous'}\n\nBug Description: \n$bugDescription',
+      );
+
       final Uri emailUri = Uri(
         scheme: 'mailto',
-        path: 'taemaomar65@gmail.com , elnawawyseif@gmail.com',
-        queryParameters: {
-          'subject': feedbackTitle,
-          'body': 'Name: ${userName ?? 'Anonymous'}\n\nBug Description: $feedbackDescription',
-        },
+        path: 'taemaomar65@gmail.com,elnawawyseif@gmail.com',
+        query: 'subject=$subject&body=$body',
       );
+
       await launchUrl(emailUri);
     }
   }
+
 }

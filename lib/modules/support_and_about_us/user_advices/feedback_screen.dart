@@ -12,7 +12,6 @@ class FeedbackScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
 
   final _nameController = TextEditingController();
-  final _emailController = TextEditingController();
   final _feedbackController = TextEditingController();
 
   @override
@@ -61,6 +60,7 @@ class FeedbackScreen extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       child: SingleChildScrollView(
         child: Form(
+          key: _formKey,
             child: Column(
           children: [
             customTextFormField(
@@ -69,13 +69,6 @@ class FeedbackScreen extends StatelessWidget {
                 controller: _nameController,
                 keyboardtype: TextInputType.text
             ),
-            SizedBox(
-              height: 20,
-            ),
-            customTextFormField(
-                title: 'Email',
-                controller: _emailController,
-                keyboardtype: TextInputType.emailAddress),
             SizedBox(
               height: 20,
             ),
@@ -100,7 +93,6 @@ class FeedbackScreen extends StatelessWidget {
                     color: additional1,
                     onPressed: () {
                       _nameController.text = '';
-                      _emailController.text = '';
                       _feedbackController.text = '';
                       Navigator.of(context).pop();
                     },
@@ -116,11 +108,9 @@ class FeedbackScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20)),
                   color: additional1,
                   onPressed: () {
-                    sendBugReport(userEmail:  _emailController.text, feedbackDescription: _feedbackController.text, userName: _nameController.text);
-                    _nameController.text = '';
-                    _emailController.text = '';
-                    _feedbackController.text = '';
-                    showToastMessage(message: 'Thanks for your feedback', states: ToastStates.SUCCESS);
+                    sendBugReport(feedbackDescription: _feedbackController.text, userName: _nameController.text);
+                    _nameController.clear();
+                    _feedbackController.clear();
 
                   },
                   child: Text(
@@ -136,17 +126,19 @@ class FeedbackScreen extends StatelessWidget {
     );
   }
 
-  Future<void> sendBugReport({required userEmail, userName, required feedbackDescription}) async {
+  Future<void> sendBugReport({String? userName, required String feedbackDescription}) async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
+      final String subject = Uri.encodeComponent('Feedback');
+      final String body = Uri.encodeComponent(
+        'Name: ${userName != ''? userName ?? 'Anonymous':'Anonymous'}\n\nFeedback Description: \n$feedbackDescription',
+      );
+
       final Uri emailUri = Uri(
         scheme: 'mailto',
-        path: 'taemaomar65@gmail.com',
-        queryParameters: {
-          'subject': 'Feedback',
-          'body': 'Name: ${userName ?? 'Anonymous'}\n\nBug Description: $feedbackDescription',
-        },
+        path: 'taemaomar65@gmail.com , elnawawyseif@gmail.com',
+        query: 'subject=$subject&body=$body',
       );
       await launchUrl(emailUri);
     }
