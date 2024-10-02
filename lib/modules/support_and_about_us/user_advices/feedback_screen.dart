@@ -3,11 +3,13 @@ import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/constants.dart';
 import 'package:lol/shared/components/default_text_field.dart';
 import 'package:lol/shared/styles/colors.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FeedbackScreen extends StatelessWidget {
   FeedbackScreen({super.key});
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final _formKey = GlobalKey<FormState>();
 
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -30,19 +32,7 @@ class FeedbackScreen extends StatelessWidget {
                 const SizedBox(
                   height: 50,
                 ),
-                Container(
-                  margin: const EdgeInsets.only(bottom: 8.0),
-                  alignment: Alignment.topLeft,
-                  child: MaterialButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Icon(
-                        Icons.arrow_back,
-                        color: Colors.white,
-                        size: 30,
-                      )),
-                ),
+                backButton(context),
                 Padding(
                   padding:
                       const EdgeInsetsDirectional.symmetric(horizontal: 20.0),
@@ -77,7 +67,8 @@ class FeedbackScreen extends StatelessWidget {
                 //
                 title: 'Full Name',
                 controller: _nameController,
-                keyboardtype: TextInputType.text),
+                keyboardtype: TextInputType.text
+            ),
             SizedBox(
               height: 20,
             ),
@@ -92,7 +83,8 @@ class FeedbackScreen extends StatelessWidget {
                 title: 'Your Feedback',
                 controller: _feedbackController,
                 keyboardtype: TextInputType.multiline,
-                maxLines: 8),
+                maxLines: 8,
+            ),
             SizedBox(
               height: 20,
             ),
@@ -124,12 +116,12 @@ class FeedbackScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20)),
                   color: additional1,
                   onPressed: () {
+                    sendBugReport(userEmail:  _emailController.text, feedbackDescription: _feedbackController.text, userName: _nameController.text);
                     _nameController.text = '';
                     _emailController.text = '';
                     _feedbackController.text = '';
-                    showToastMessage(
-                        message: 'Thanks for your feedback',
-                        states: ToastStates.SUCCESS);
+                    showToastMessage(message: 'Thanks for your feedback', states: ToastStates.SUCCESS);
+
                   },
                   child: Text(
                     'Send',
@@ -142,5 +134,21 @@ class FeedbackScreen extends StatelessWidget {
         )),
       ),
     );
+  }
+
+  Future<void> sendBugReport({required userEmail, userName, required feedbackDescription}) async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      final Uri emailUri = Uri(
+        scheme: 'mailto',
+        path: 'taemaomar65@gmail.com',
+        queryParameters: {
+          'subject': 'Feedback',
+          'body': 'Name: ${userName ?? 'Anonymous'}\n\nBug Description: $feedbackDescription',
+        },
+      );
+      await launchUrl(emailUri);
+    }
   }
 }

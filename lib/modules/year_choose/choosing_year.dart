@@ -118,7 +118,7 @@ class YearState extends State<Year> {
             }
           },
           child: Container(
-            width: 150,
+            width: 100,
             height: 100,
             margin: const EdgeInsets.all(25),
             decoration: BoxDecoration(

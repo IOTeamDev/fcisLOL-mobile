@@ -53,12 +53,16 @@ class _MaterialDetailsState extends State<SubjectDetails>
         ],
         child: BlocListener<SubjectCubit, SubjectState>(
             listener: (context, state) {
-              if (state is SaveMaterialSuccess) {
+              if (state is SaveMaterialSuccess && MainCubit.get(context).profileModel!.role != 'ADMIN') {
                 showToastMessage(
                     message:
-                        'تم عرض الطلب على مسؤول التطبيق وفى انتظار الموافقة  ',
+                        'The request has been sent to the Admin, and waiting for approval...',
                     states: ToastStates.SUCCESS);
-              } else if (state is SaveMaterialError) {
+              } else if( state is SaveMaterialSuccess && MainCubit.get(context).profileModel!.role == 'ADMIN')
+              {
+                  showToastMessage(message: 'Material Added Successfully!!', states: ToastStates.SUCCESS);
+              }
+              else if (state is SaveMaterialError) {
                 showToastMessage(
                     message: 'error while uploading Material',
                     states: ToastStates.ERROR);
@@ -312,14 +316,10 @@ class _MaterialDetailsState extends State<SubjectDetails>
                   color: a,
                 ),
               ),
-              TOKEN != null
-                  ? ConditionalBuilder(
-                      condition: MainCubit.get(context).profileModel != null &&
-                          MainCubit.get(context).profileModel!.role == 'ADMIN',
-                      builder: (context) => SizedBox(
-                          height: 40, child: removeButton(material: video)),
-                      fallback: null)
-                  : Container(),
+             ConditionalBuilder(
+                 condition: MainCubit.get(context).profileModel != null && MainCubit.get(context).profileModel!.role == 'ADMIN',
+                 builder: (context) => removeButton(material: video),
+                 fallback: null),
             ],
           ),
         ),
@@ -369,8 +369,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                     textAlign: TextAlign.start,
                   ),
                 ),
-                TOKEN != null
-                    ? ConditionalBuilder(
+                ConditionalBuilder(
                         condition:
                             MainCubit.get(context).profileModel != null &&
                                 MainCubit.get(context).profileModel!.role ==
@@ -378,8 +377,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                         builder: (context) => SizedBox(
                             height: 40,
                             child: removeButton(material: document)),
-                        fallback: null)
-                    : Container(),
+                        fallback: null),
               ],
             ),
           )),
@@ -395,7 +393,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
         style: ElevatedButton.styleFrom(
             backgroundColor: remove,
             padding: const EdgeInsetsDirectional.symmetric(
-                horizontal: 15, vertical: 0)),
+                horizontal: 15, vertical: 40)),
         child: Text(
           'Remove',
           style: TextStyle(color: a, fontSize: screenWidth(context) / 24),
@@ -579,8 +577,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                                       link: _linkController.text,
                                       type: cubit.selectedType,
                                       subjectName: widget.subjectName,
-                                      semester: 'One');
-
+                                      semester: MainCubit.get(context).profileModel!.semester);
                               Navigator.of(context).pop();
                             }
                           },
