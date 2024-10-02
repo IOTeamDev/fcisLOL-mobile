@@ -1,14 +1,13 @@
+// import 'dart:nativewrappers/_internal/vm/lib/internal_patch.dart';
+
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/layout/home/bloc/main_cubit.dart';
-import 'package:lol/layout/home/bloc/main_cubit_states.dart';
-import 'package:lol/layout/home/home.dart';
 import 'package:lol/models/profile/profile_model.dart';
 import 'package:lol/shared/components/default_text_field.dart';
-import 'package:lol/shared/components/navigation.dart';
+import 'package:lol/shared/network/endpoints.dart';
 import 'package:lol/shared/styles/colors.dart';
 import 'package:lol/shared/components/constants.dart';
 import 'package:lol/modules/subject/cubit/subject_cubit.dart';
@@ -41,172 +40,141 @@ class _MaterialDetailsState extends State<SubjectDetails>
         SubjectCubit.get(context).changeTap(index: newIndex);
       }
     });
+    SubjectCubit.get(context).getMaterials(subject: widget.subjectName);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    var cubit = SubjectCubit.get(context);
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => MainCubit()..getProfileInfo(),
-        ),
-        BlocProvider(create: (context) => SubjectCubit()..getMaterials())
-      ],
-      child: BlocConsumer<SubjectCubit, SubjectState>(
-        listener: (context, state) {
-          if (state is SaveMaterialSuccess) {
-            showToastMessage(
-                message: 'تم عرض الطلب على مسؤول التطبيق وفى انتظار الموافقة  ',
-                states: ToastStates.SUCCESS);
-          } else if (state is SaveMaterialError) {
-            showToastMessage(
-                message: 'error while uploading Material',
-                states: ToastStates.ERROR);
-          } else if (state is SaveMaterialLoading) {
-            showToastMessage(
-                message: 'Uploading Material........',
-                states: ToastStates.WARNING);
-          } else if (state is DeleteMaterialLoading) {
-            showToastMessage(
-                message: 'Deleting Material........',
-                states: ToastStates.WARNING);
-          } else if (state is DeleteMaterialSuccess) {
-            showToastMessage(
-                message: 'Material Deleted', states: ToastStates.SUCCESS);
-          } else if (state is DeleteMaterialError) {
-            showToastMessage(
-                message: 'error while deleting material',
-                states: ToastStates.ERROR);
-          }
-        },
-        builder: (context, state) {
-          var cubit = SubjectCubit.get(context);
-          if (MainCubit.get(context).profileModel != null)
-            print(MainCubit.get(context).profileModel!.name);
-          //   TOKEN = null;
-          // MainCubit.get(context).profileModel = null;
-          return Scaffold(
-            // appBar: AppBar(),
-
-            floatingActionButton: MainCubit.get(context).profileModel == null
-                ? null
-                : buildFloatingActionButton(),
-            key: scaffoldKey,
-            backgroundColor: Colors.black,
-            body: MainCubit.get(context).profileModel == null
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : Stack(
+        providers: [
+          BlocProvider(create: (context) => MainCubit()..getProfileInfo()),
+        ],
+        child: BlocListener<SubjectCubit, SubjectState>(
+            listener: (context, state) {
+              if (state is SaveMaterialSuccess) {
+                showToastMessage(
+                    message:
+                        'تم عرض الطلب على مسؤول التطبيق وفى انتظار الموافقة  ',
+                    states: ToastStates.SUCCESS);
+              } else if (state is SaveMaterialError) {
+                showToastMessage(
+                    message: 'error while uploading Material',
+                    states: ToastStates.ERROR);
+              } else if (state is SaveMaterialLoading) {
+                showToastMessage(
+                    message: 'Uploading Material........',
+                    states: ToastStates.WARNING);
+              } else if (state is DeleteMaterialLoading) {
+                showToastMessage(
+                    message: 'Deleting Material........',
+                    states: ToastStates.WARNING);
+              } else if (state is DeleteMaterialSuccess) {
+                showToastMessage(
+                    message: 'Material Deleted', states: ToastStates.SUCCESS);
+              } else if (state is DeleteMaterialError) {
+                showToastMessage(
+                    message: 'error while deleting material',
+                    states: ToastStates.ERROR);
+              }
+            },
+            child: Scaffold(
+              floatingActionButton: MainCubit.get(context).profileModel == null
+                  ? buildFloatingActionButton()
+                  : buildFloatingActionButton(),
+              key: scaffoldKey,
+              drawer: drawerBuilder(context),
+              backgroundColor: Colors.black,
+              body: Stack(
+                children: [
+                  backgroundEffects(),
+                  Column(
                     children: [
-                      backgroundEffects(),
-                      MainCubit.get(context).profileModel == null
-                          ? Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : Column(
-                              children: [
-                                const SizedBox(
-                                  height: 30,
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.only(bottom: 8.0),
-                                  alignment: Alignment.topLeft,
-                                  child: MaterialButton(
-                                      onPressed: () {
-                                        navigatReplace(context, Home());
-                                      },
-                                      child: const Icon(
-                                        Icons.arrow_back,
-                                        color: Colors.white,
-                                        size: 30,
-                                      )),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 16.0, right: 16.0, bottom: 5.0),
-                                  child: TextField(
-                                    onChanged: (query) {
-                                      cubit.runFilter(query: query);
-                                    },
-                                    style: TextStyle(color: a, fontSize: 20),
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.search,
-                                    decoration: InputDecoration(
-                                        suffixIcon: Icon(
-                                          Icons.search,
-                                          size: 30,
-                                          color: a,
-                                        ),
-                                        contentPadding:
-                                            const EdgeInsets.all(8.0),
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                        ),
-                                        hintText: 'Search',
-                                        hintStyle: const TextStyle(
-                                          color: Color.fromRGBO(
-                                              255, 255, 255, 0.48),
-                                          fontSize: 15,
-                                        )),
-                                  ),
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                      left: 20, top: 10, bottom: 10),
-                                  child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        widget.subjectName,
-                                        style: GoogleFonts.montserrat(
-                                            color: Colors.white,
-                                            fontSize: 30,
-                                            fontWeight: FontWeight.w500),
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      )),
-                                ),
-
-                                // adminTopTitleWithDrawerButton(
-                                //     scaffoldKey: scaffoldKey,
-                                //     title: widget.subjectName,
-                                //     size: 32,
-                                //     hasDrawer: true),
-                                Padding(
-                                  padding: const EdgeInsets.all(16),
-                                  child: divider(),
-                                ),
-                                Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 16.0, vertical: 8.0),
-                                    decoration: BoxDecoration(
-                                        color: const Color.fromRGBO(
-                                            217, 217, 217, 0.25),
-                                        borderRadius:
-                                            BorderRadius.circular(40)),
-                                    width: screenWidth(context) / 1.2,
-                                    child: customTabBar(
-                                        tabController:
-                                            _tabControllerOfShowingContent,
-                                        title1: 'Videos',
-                                        title2: 'Documents')),
-                                const Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 16),
-                                  child: Divider(
-                                    color: Color.fromRGBO(255, 255, 255, 0.25),
-                                  ),
-                                ),
-                                Expanded(child: customTabBarView()),
-                              ],
-                            )
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 8.0),
+                        alignment: Alignment.topLeft,
+                        child: MaterialButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Icon(
+                              Icons.arrow_back,
+                              color: Colors.white,
+                              size: 30,
+                            )),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 16.0, right: 16.0, bottom: 5.0),
+                        child: TextField(
+                          onChanged: (query) {
+                            cubit.runFilter(query: query);
+                          },
+                          style: TextStyle(color: a, fontSize: 20),
+                          keyboardType: TextInputType.text,
+                          textInputAction: TextInputAction.search,
+                          decoration: InputDecoration(
+                              suffixIcon: Icon(
+                                Icons.search,
+                                size: 30,
+                                color: a,
+                              ),
+                              contentPadding: const EdgeInsets.all(8.0),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              hintText: 'Search',
+                              hintStyle: const TextStyle(
+                                color: Color.fromRGBO(255, 255, 255, 0.48),
+                                fontSize: 15,
+                              )),
+                        ),
+                      ),
+                      SizedBox(
+                        width: screenWidth(context),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
+                          child: Text(
+                            widget.subjectName,
+                            style: TextStyle(
+                                color: a, fontSize: screenWidth(context) / 15),
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: divider(),
+                      ),
+                      Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 16.0, vertical: 8.0),
+                          decoration: BoxDecoration(
+                              color: const Color.fromRGBO(217, 217, 217, 0.25),
+                              borderRadius: BorderRadius.circular(40)),
+                          width: screenWidth(context) / 1.2,
+                          child: customTabBar(
+                              tabController: _tabControllerOfShowingContent,
+                              title1: 'Videos',
+                              title2: 'Documents')),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        child: Divider(
+                          color: Color.fromRGBO(255, 255, 255, 0.25),
+                        ),
+                      ),
+                      Expanded(child: customTabBarView()),
                     ],
-                  ),
-          );
-        },
-      ),
-    );
+                  )
+                ],
+              ),
+            )));
   }
 
   Widget buildFloatingActionButton() {
@@ -238,63 +206,89 @@ class _MaterialDetailsState extends State<SubjectDetails>
   }
 
   Widget customTabBarView() {
-    return BlocConsumer<SubjectCubit, SubjectState>(
-      builder: (context, state) {
-        bool ok = true;
-        var cubit = SubjectCubit.get(context);
-        var documents = cubit.documents;
-        if (cubit.documents != null) print(cubit.documents![1].title);
-        return cubit.videos == null || cubit.documents == null
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
-            : TabBarView(
-                controller: _tabControllerOfShowingContent,
-                children: [
-                  Padding(
+    // var mainCubit = MainCubit.get(context);
+
+    return TabBarView(
+      controller: _tabControllerOfShowingContent,
+      children: [
+        BlocBuilder<SubjectCubit, SubjectState>(
+          builder: (context, state) {
+            var cubit = SubjectCubit.get(context);
+            return ConditionalBuilder(
+                condition:
+                    state is! GetMaterialLoading && cubit.videos!.isNotEmpty,
+                builder: (context) => Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: GridView.builder(
-                          itemCount: cubit.videos!.length,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 1,
-                                  mainAxisSpacing: 20,
-                                  childAspectRatio: 1.5),
-                          itemBuilder: (context, i) {
-                            return Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                    color: const Color.fromRGBO(
-                                        217, 217, 217, 0.1),
-                                    borderRadius: BorderRadius.circular(15)),
-                                child: gridTileWidget(video: cubit.videos![i]));
-                          })),
-                  if (documents != null && documents.isNotEmpty)
-                    Builder(builder: (context) {
-                      if (ok) {
-                        print(cubit.documents![1].subject);
-                        MainCubit.get(context).getProfileInfo();
-                        ok = false;
-                        print(cubit.documents![1].subject! + "suusuus");
-                      }
-                      return Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: ListView.builder(
-                          itemCount: documents!.length,
-                          itemBuilder: (context, i) {
-                            return documentsCard(document: documents[i]);
-                          },
+                        itemCount: cubit.videos!.length,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 1,
+                          mainAxisSpacing: 20,
+                          childAspectRatio: 1.5,
                         ),
-                      );
-                    })
-                  else if (documents == null)
-                    Center(child: CircularProgressIndicator())
-                  else
-                    Center(child: Text("No documents available")),
-                ],
-              );
-      },
-      listener: (context, state) {},
+                        itemBuilder: (context, i) {
+                          return Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: const Color.fromRGBO(217, 217, 217, 0.1),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: gridTileWidget(video: cubit.videos![i]),
+                          );
+                        },
+                      ),
+                    ),
+                fallback: (context) {
+                  if (state is GetMaterialLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    return Center(
+                      child: Text(
+                        'No Materials Available',
+                        style: TextStyle(color: a),
+                      ),
+                    );
+                  }
+                });
+          },
+        ),
+        BlocBuilder<SubjectCubit, SubjectState>(
+          builder: (context, state) {
+            var cubit = SubjectCubit.get(context);
+            return ConditionalBuilder(
+                condition:
+                    state is! GetMaterialLoading && cubit.documents!.isNotEmpty,
+                builder: (context) {
+                  return Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: ListView.builder(
+                      itemCount: cubit.documents!.length,
+                      itemBuilder: (context, i) {
+                        return documentsCard(document: cubit.documents![i]);
+                      },
+                    ),
+                  );
+                },
+                fallback: (context) {
+                  if (state is GetMaterialLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    return Center(
+                      child: Text(
+                        'No Materials Available',
+                        style: TextStyle(color: a),
+                      ),
+                    );
+                  }
+                });
+          },
+        ),
+      ],
     );
   }
 
@@ -312,7 +306,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '${video.title}',
+                video.title ?? '',
                 style: TextStyle(
                   fontSize: screenWidth(context) / 20,
                   color: a,
@@ -329,11 +323,10 @@ class _MaterialDetailsState extends State<SubjectDetails>
             ],
           ),
         ),
-
-        child: getYouTubeThumbnail(video.link!) != null? Image.network(
+        child: Image.network(
           getYouTubeThumbnail(video.link!)!,
           fit: BoxFit.cover,
-        ) : Image.network(fit: BoxFit.cover, 'https://www.buffalotech.com/images/made/images/remote/https_i.ytimg.com/vi/06wIw-NdHIw/sddefault_300_225_s.jpg',),
+        ),
       ),
     );
   }
@@ -373,8 +366,10 @@ class _MaterialDetailsState extends State<SubjectDetails>
                 ),
                 TOKEN != null
                     ? ConditionalBuilder(
-                        condition: MainCubit.get(context).profileModel!.role ==
-                            'ADMIN',
+                        condition:
+                            MainCubit.get(context).profileModel != null &&
+                                MainCubit.get(context).profileModel!.role ==
+                                    'ADMIN',
                         builder: (context) => SizedBox(
                             height: 40,
                             child: removeButton(material: document)),
@@ -387,10 +382,10 @@ class _MaterialDetailsState extends State<SubjectDetails>
   }
 
   Widget removeButton({required MaterialModel material}) {
-    var cubit = MainCubit.get(context);
+    var cubit = SubjectCubit.get(context);
     return ElevatedButton(
         onPressed: () {
-          cubit.deleteMaterial(material.id!, material.semester);
+          cubit.deleteMaterial(material: material, id: material.id!);
         },
         style: ElevatedButton.styleFrom(
             backgroundColor: remove,
@@ -407,54 +402,41 @@ class _MaterialDetailsState extends State<SubjectDetails>
       required String title1,
       required String title2}) {
     var cubit = SubjectCubit.get(context);
-    return BlocConsumer<SubjectCubit, SubjectState>(
-      builder: (context, state) => TabBar(
-        dividerHeight: 0,
-        indicator: const BoxDecoration(),
-        controller: tabController,
-        tabs: [
-          tabForCustomTabBar(title1, cubit.selectedTabIndex == 0),
-          tabForCustomTabBar(title2, cubit.selectedTabIndex == 1)
-        ],
-        onTap: (index) {
-          // _tabControllerOfShowingContent.animateTo(index);
-
-          cubit.changeTap(index: index);
-        },
-      ),
-      listener: (context, state) {},
+    return BlocBuilder<SubjectCubit, SubjectState>(
+      buildWhen: (previous, current) => current is TabChangedState,
+      builder: (context, state) {
+        return TabBar(
+          dividerHeight: 0,
+          indicator: const BoxDecoration(),
+          controller: tabController,
+          tabs: [
+            tabForCustomTabBar(title1, cubit.selectedTabIndex == 0),
+            tabForCustomTabBar(title2, cubit.selectedTabIndex == 1)
+          ],
+          onTap: (index) {
+            cubit.changeTap(index: index);
+          },
+        );
+      },
     );
   }
 
   Widget tabForCustomTabBar(String title, bool isSelected) {
-    bool ok = true;
-    if (ok) {
-      MainCubit.get(context).getProfileInfo();
-      ok = false;
-    }
-
-    print('$isSelected tabindex $title');
-    print(
-        "Current selected index: ${SubjectCubit.get(context).selectedTabIndex}");
-
-    return BlocConsumer<SubjectCubit, SubjectState>(
-      builder: (context, state) => Tab(
-        child: Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: isSelected ? additional2 : Colors.transparent,
-          ),
-          child: Center(
-            child: Text(
-              title,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(color: a, fontSize: 20),
-            ),
+    return Tab(
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: isSelected ? additional2 : Colors.transparent,
+        ),
+        child: Center(
+          child: Text(
+            title,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(color: a, fontSize: 20),
           ),
         ),
       ),
-      listener: (context, state) {},
     );
   }
 
@@ -479,19 +461,10 @@ class _MaterialDetailsState extends State<SubjectDetails>
   }
 
   Widget addingMaterialForm(ScrollController scrollController) {
-    bool ok = true;
-    return BlocConsumer<MainCubit, MainCubitStates>(
-      listener: (context, state) {},
+    var cubit = SubjectCubit.get(context);
+    return BlocBuilder<SubjectCubit, SubjectState>(
+      buildWhen: (previous, current) => current is TypeChangedState,
       builder: (context, state) {
-        if (ok) {
-          MainCubit.get(context).getProfileInfo();
-          ok = false;
-        }
-        // var cubit = SubjectCubit.get(context);
-        if (MainCubit.get(context).profileModel != null)
-          print(MainCubit.get(context).profileModel!.email);
-        else
-          print("null modek ");
         return SingleChildScrollView(
           controller: scrollController,
           child: Form(
@@ -510,7 +483,8 @@ class _MaterialDetailsState extends State<SubjectDetails>
                     child: customTextFormField(
                         title: 'Description (Optional)',
                         controller: _descriptionController,
-                        keyboardtype: TextInputType.text),
+                        keyboardtype: TextInputType.text,
+                        isDescription: true),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5),
@@ -538,27 +512,24 @@ class _MaterialDetailsState extends State<SubjectDetails>
                               color: additional2,
                             ),
                             child: Text(
-                              SubjectCubit.get(context)
-                                  .selectedType
-                                  .toLowerCase(),
+                              cubit.selectedType.toLowerCase(),
                               style: TextStyle(color: a, fontSize: 16),
                               textAlign: TextAlign.center,
                             ),
                           ),
                           PopupMenuButton(
                               onSelected: (type) {
-                                SubjectCubit.get(context)
-                                    .changeType(type: type);
+                                cubit.changeType(type: type);
                               },
                               iconColor: a,
                               itemBuilder: (context) {
                                 return [
                                   PopupMenuItem(
-                                    value: SubjectCubit.get(context).item1,
+                                    value: cubit.item1,
                                     child: const Text('Video'),
                                   ),
                                   PopupMenuItem(
-                                    value: SubjectCubit.get(context).item2,
+                                    value: cubit.item2,
                                     child: const Text(
                                       'Document',
                                     ),
@@ -587,33 +558,32 @@ class _MaterialDetailsState extends State<SubjectDetails>
                         ),
                       ),
                       //Submit Button
+                      if (TOKEN != null)
+                        MaterialButton(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          minWidth: screenWidth(context) / 3,
+                          shape: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30)),
+                          color: additional2,
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              BlocProvider.of<SubjectCubit>(context)
+                                  .addMaterial(
+                                      title: _titleController.text,
+                                      description: _descriptionController.text,
+                                      link: _linkController.text,
+                                      type: cubit.selectedType,
+                                      subjectName: widget.subjectName,
+                                      semester: 'One');
 
-                      MaterialButton(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        minWidth: screenWidth(context) / 3,
-                        shape: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30)),
-                        color: additional2,
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            BlocProvider.of<SubjectCubit>(context).addMaterial(
-                                title: _titleController.text,
-                                description: _descriptionController.text,
-                                link: _linkController.text,
-                                type: SubjectCubit.get(context).selectedType,
-                                // subjectName: widget.subjectName,
-                                semester: MainCubit.get(context)
-                                    .profileModel!
-                                    .semester);
-
-                            Navigator.of(context).pop();
-                          }
-                        },
-                        child: Text(
-                          'Submit',
-                          style: TextStyle(color: a, fontSize: 20),
+                              Navigator.of(context).pop();
+                            }
+                          },
+                          child: Text(
+                            'Submit',
+                            style: TextStyle(color: a, fontSize: 20),
+                          ),
                         ),
-                      ),
                     ],
                   )
                 ],

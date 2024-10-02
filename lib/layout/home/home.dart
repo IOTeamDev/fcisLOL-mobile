@@ -398,8 +398,7 @@ Widget CustomDrawer(context) {
                   ),
                   otherAccountsPictures: [
                     InkWell(
-                      onTap: () =>
-                          navigatReplace(context, const LoginScreen()),
+                      onTap: () => navigatReplace(context, const LoginScreen()),
                       child: Ink(
                         child: const Text(
                           // style: TextButton.styleFrom(padding: EdgeInsets.all(0)),
@@ -422,218 +421,215 @@ Widget CustomDrawer(context) {
                 ),
               ),
         Expanded(
-            child: SingleChildScrollView(
+          child: SingleChildScrollView(
               child: Column(
+            children: [
+              if (profileModel.role == "ADMIN")
+                ListTile(
+                  leading: const Icon(Icons.admin_panel_settings),
+                  title: const Text("Admin"),
+                  onTap: () {
+                    navigate(context, AdminPanal());
+                  },
+                ),
+              ListTile(
+                leading: const Icon(Icons.announcement),
+                title: const Text("Announcements"),
+                onTap: () {
+                  navigate(context, const AnnouncementsList());
+                },
+              ),
+              ExpansionTile(
+                leading: const Icon(Icons.school),
+                title: const Text("Years"),
                 children: [
-                  if (profileModel.role == "ADMIN")
-                    ListTile(
-                      leading: const Icon(Icons.admin_panel_settings),
-                      title: const Text("Admin"),
-                      onTap: () {
-                        navigate(context, AdminPanal());
-                      },
-                    ),
-                  ListTile(
-                    leading: const Icon(Icons.announcement),
-                    title: const Text("Announcements"),
-                    onTap: () {
-                      navigate(context, const AnnouncementsList());
-                    },
+                  ExpansionTile(
+                    title: const Text("First Year"),
+                    children: [
+                      ListTile(
+                        title: const Text("First Semester"),
+                        onTap: () {
+                          // MainCubit.get(context).profileModel = null;
+                          // TOKEN = null;
+                          navigate(
+                              context, const SemesterNavigate(semester: "One"));
+                        },
+                      ),
+                      ListTile(
+                        title: const Text("Second Semester"),
+                        onTap: () {
+                          // MainCubit.get(context).profileModel = null;
+                          // TOKEN = null;
+                          navigate(
+                              context, const SemesterNavigate(semester: "Two"));
+                        },
+                      ),
+                    ],
                   ),
                   ExpansionTile(
-                    leading: const Icon(Icons.school),
-                    title: const Text("Years"),
+                    title: const Text("Second Year"),
                     children: [
-                      ExpansionTile(
-                        title: const Text("First Year"),
-                        children: [
-                          ListTile(
-                            title: const Text("First Semester"),
-                            onTap: () {
-                              // MainCubit.get(context).profileModel = null;
-                              // TOKEN = null;
-                              navigate(
-                                  context, const SemesterNavigate(semester: "One"));
-                            },
-                          ),
-                          ListTile(
-                            title: const Text("Second Semester"),
-                            onTap: () {
-                              // MainCubit.get(context).profileModel = null;
-                              // TOKEN = null;
-                              navigate(
-                                  context, const SemesterNavigate(semester: "Two"));
-                            },
-                          ),
-                        ],
+                      ListTile(
+                        title: const Text("First Semester"),
+                        onTap: () {
+                          // MainCubit.get(context).profileModel = null;
+                          // TOKEN = null;
+                          navigate(context,
+                              const SemesterNavigate(semester: "Three"));
+                        },
                       ),
-                      ExpansionTile(
-                        title: const Text("Second Year"),
-                        children: [
-                          ListTile(
-                            title: const Text("First Semester"),
-                            onTap: () {
-                              // MainCubit.get(context).profileModel = null;
-                              // TOKEN = null;
-                              navigate(
-                                  context, const SemesterNavigate(semester: "Three"));
-                            },
-                          ),
-                          ListTile(
-                            title: const Text("Second Semester"),
-                            onTap: () {
-                              // MainCubit.get(context).profileModel = null;
-                              // TOKEN = null;
-                              navigate(
-                                  context, const SemesterNavigate(semester: "Four"));
-                            },
-                          ),
-                        ],
+                      ListTile(
+                        title: const Text("Second Semester"),
+                        onTap: () {
+                          // MainCubit.get(context).profileModel = null;
+                          // TOKEN = null;
+                          navigate(context,
+                              const SemesterNavigate(semester: "Four"));
+                        },
                       ),
-                      ExpansionTile(
-                        title: const Text("Third Year"),
-                        children: [
-                          ListTile(
-                            title: const Text("First Semester"),
-                            onTap: () {
-                              // MainCubit.get(context).profileModel = null;
-                              // TOKEN = null;
-                              navigate(
-                                  context, const SemesterNavigate(semester: "Five"));
-                            },
-                          ),
-                          ListTile(
-                            title: const Text("Second Semester"),
-                            onTap: () {
-                              // MainCubit.get(context).profileModel = null;
-                              // TOKEN = null;
-                              navigate(
-                                  context, const SemesterNavigate(semester: "Six"));
-                            },
-                          ),
-                        ],
+                    ],
+                  ),
+                  ExpansionTile(
+                    title: const Text("Third Year"),
+                    children: [
+                      ListTile(
+                        title: const Text("First Semester"),
+                        onTap: () {
+                          // MainCubit.get(context).profileModel = null;
+                          // TOKEN = null;
+                          navigate(context,
+                              const SemesterNavigate(semester: "Five"));
+                        },
                       ),
-                      InkWell(
-                        onTap: () => showToastMessage(
-                            message: "Currently Updating ...",
-                            states: ToastStates.INFO),
-                        child: ExpansionTile(
-                          enabled: false,
-                          title: const Text("Seniors"),
-                          children: [
-                            ListTile(
-                              title: const Text("First Semester"),
-                              onTap: () {
-                                // MainCubit.get(context).profileModel = null;
-                                // TOKEN = null;
-                                navigate(
-                                    context, const SemesterNavigate(semester: "One"));
-                              },
-                            ),
-                            ListTile(
-                              title: const Text("Second Semester"),
-                              onTap: () {
-                                // MainCubit.get(context).profileModel = null;
-                                // TOKEN = null;
-                                navigate(
-                                    context, const SemesterNavigate(semester: "Two"));
-                              },
-                            ),
-                          ],
+                      ListTile(
+                        title: const Text("Second Semester"),
+                        onTap: () {
+                          // MainCubit.get(context).profileModel = null;
+                          // TOKEN = null;
+                          navigate(
+                              context, const SemesterNavigate(semester: "Six"));
+                        },
+                      ),
+                    ],
+                  ),
+                  InkWell(
+                    onTap: () => showToastMessage(
+                        message: "Currently Updating ...",
+                        states: ToastStates.INFO),
+                    child: ExpansionTile(
+                      enabled: false,
+                      title: const Text("Seniors"),
+                      children: [
+                        ListTile(
+                          title: const Text("First Semester"),
+                          onTap: () {
+                            // MainCubit.get(context).profileModel = null;
+                            // TOKEN = null;
+                            navigate(context,
+                                const SemesterNavigate(semester: "One"));
+                          },
                         ),
-                      ),
-                    ],
-                  ),
-
-                  ExpansionTile(
-                    leading: const Icon(Icons.drive_file_move),
-                    title: const Text("Drive"),
-                    children: [
-                      ListTile(
-                        title: const Text("2027"),
-                        onTap: () async {
-                          LinkableElement url = LinkableElement('drive',
-                              'https://drive.google.com/drive/folders/1-1_Ef2qF0_rDzToD4OlqIl5xubgpMGU0');
-                          await onOpen(context, url);
-                        },
-                      ),
-                      ListTile(
-                        title: const Text("2026"),
-                        onTap: () async {
-                          LinkableElement url = LinkableElement('drive',
-                              'https://drive.google.com/drive/folders/1CdZDa3z97RN_yRjFlC7IAcLfmw6D1yLy');
-                          await onOpen(context, url);
-                        },
-                      ),
-                      ListTile(
-                        title: const Text("2025"),
-                        onTap: () async {
-                          LinkableElement url = LinkableElement('drive',
-                              'https://drive.google.com/drive/folders/1BAXez9FJKF_ASx79usd_-Xi47TdUYK73?fbclid=IwAR3cRtEV1aJrcvKoGNBLCbqBu2LMLrsWYfQkOZUb6SQE2dtT3ZtqrcCjxno');
-                          await onOpen(context, url);
-                        },
-                      ),
-                      ListTile(
-                        title: const Text("2024"),
-                        onTap: () async {
-                          LinkableElement url = LinkableElement('drive',
-                              'https://drive.google.com/drive/u/0/folders/11egB46e3wtl1Q69wdCBBam87bwMF7Qo-');
-                          await onOpen(context, url);
-                        },
-                      ),
-                    ],
-                  ),
-                  ExpansionTile(
-                    leading: Icon(Icons.support_agent),
-                    title: Text('Support'),
-                    children: [
-                      ListTile(
-                        title: const Text('Report Bug'),
-                        onTap: () {
-                          navigate(context, ReportBug());
-                        },
-                      ),
-                      ListTile(
-                        title: const Text('Feedback'),
-                        onTap: () {
-                          navigate(context, FeedbackScreen());
-                        },
-                      ),
-                    ],
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.group),
-                    title: const Text("About Us"),
-                    onTap: () {
-                      navigate(context, AboutUs());
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.leaderboard),
-                    title: const Text('Leaderboard'),
-                    onTap: () {
-                      navigate(context, LeaderboardScreen());
-                    },
-                  ),
-                  if (TOKEN != null)
-                    ListTile(
-                      leading: const Icon(Icons.logout, color: Colors.red),
-                      title: const Text(
-                        "Log out",
-                        style: TextStyle(color: Colors.red),
-                      ),
-                      onTap: () {
-                        MainCubit.get(context).logout(context);
-                        Provider.of<ThemeProvide>(context, listen: false).isDark =
-                            false;
-                        Provider.of<ThemeProvide>(context, listen: false)
-                            .notifyListeners();
-                      },
+                        ListTile(
+                          title: const Text("Second Semester"),
+                          onTap: () {
+                            // MainCubit.get(context).profileModel = null;
+                            // TOKEN = null;
+                            navigate(context,
+                                const SemesterNavigate(semester: "Two"));
+                          },
+                        ),
+                      ],
                     ),
-
+                  ),
                 ],
-              )
-            ),
+              ),
+              ExpansionTile(
+                leading: const Icon(Icons.drive_file_move),
+                title: const Text("Drive"),
+                children: [
+                  ListTile(
+                    title: const Text("2027"),
+                    onTap: () async {
+                      LinkableElement url = LinkableElement('drive',
+                          'https://drive.google.com/drive/folders/1-1_Ef2qF0_rDzToD4OlqIl5xubgpMGU0');
+                      await onOpen(context, url);
+                    },
+                  ),
+                  ListTile(
+                    title: const Text("2026"),
+                    onTap: () async {
+                      LinkableElement url = LinkableElement('drive',
+                          'https://drive.google.com/drive/folders/1CdZDa3z97RN_yRjFlC7IAcLfmw6D1yLy');
+                      await onOpen(context, url);
+                    },
+                  ),
+                  ListTile(
+                    title: const Text("2025"),
+                    onTap: () async {
+                      LinkableElement url = LinkableElement('drive',
+                          'https://drive.google.com/drive/folders/1BAXez9FJKF_ASx79usd_-Xi47TdUYK73?fbclid=IwAR3cRtEV1aJrcvKoGNBLCbqBu2LMLrsWYfQkOZUb6SQE2dtT3ZtqrcCjxno');
+                      await onOpen(context, url);
+                    },
+                  ),
+                  ListTile(
+                    title: const Text("2024"),
+                    onTap: () async {
+                      LinkableElement url = LinkableElement('drive',
+                          'https://drive.google.com/drive/u/0/folders/11egB46e3wtl1Q69wdCBBam87bwMF7Qo-');
+                      await onOpen(context, url);
+                    },
+                  ),
+                ],
+              ),
+              ExpansionTile(
+                leading: Icon(Icons.support_agent),
+                title: Text('Support'),
+                children: [
+                  ListTile(
+                    title: const Text('Report Bug'),
+                    onTap: () {
+                      navigate(context, ReportBug());
+                    },
+                  ),
+                  ListTile(
+                    title: const Text('Feedback'),
+                    onTap: () {
+                      navigate(context, FeedbackScreen());
+                    },
+                  ),
+                ],
+              ),
+              ListTile(
+                leading: const Icon(Icons.group),
+                title: const Text("About Us"),
+                onTap: () {
+                  navigate(context, AboutUs());
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.leaderboard),
+                title: const Text('Leaderboard'),
+                onTap: () {
+                  navigate(context, LeaderboardScreen());
+                },
+              ),
+              if (TOKEN != null)
+                ListTile(
+                  leading: const Icon(Icons.logout, color: Colors.red),
+                  title: const Text(
+                    "Log out",
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  onTap: () {
+                    MainCubit.get(context).logout(context);
+                    Provider.of<ThemeProvide>(context, listen: false).isDark =
+                        false;
+                    Provider.of<ThemeProvide>(context, listen: false)
+                        .notifyListeners();
+                  },
+                ),
+            ],
+          )),
         ),
         Padding(
           padding: const EdgeInsets.all(16.0),
@@ -738,10 +734,11 @@ Widget DarkLightModeToggle(context) {
 }
 
 Widget subjectItemBuild(SubjectModel subject, context) {
-  return BlocProvider(create: (context) => SubjectCubit(),
+  return BlocProvider(
+    create: (context) => SubjectCubit(),
     child: GestureDetector(
       onTap: () {
-        navigatReplace(
+        navigate(
             context,
             SubjectDetails(
               subjectName: subject.subjectName,
@@ -759,8 +756,8 @@ Widget subjectItemBuild(SubjectModel subject, context) {
             Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  colorFilter:
-                      const ColorFilter.mode(Color(0xfff39c12), BlendMode.dstIn),
+                  colorFilter: const ColorFilter.mode(
+                      Color(0xfff39c12), BlendMode.dstIn),
                   image: subject.subjectName == "Data Mining"
                       ? AssetImage("images/data-mining_cleanup.webp")
                       : NetworkImage(subject.subjectImage),

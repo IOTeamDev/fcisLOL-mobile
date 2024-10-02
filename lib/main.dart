@@ -90,14 +90,14 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider(
-              create: (BuildContext context) => SubjectCubit()),
+              create: (BuildContext context) => SubjectCubit()..getMaterials()),
           BlocProvider(
             create: (BuildContext context) => MainCubit(),
           ),
         ],
         child: Consumer<ThemeProvide>(builder: (context, value, child) {
           return MaterialApp(
-            home: LoginScreen(),
+            home: Home(),
             debugShowCheckedModeBanner: false,
             theme: value.isDark ? ThemeData.dark() : ThemeData.light(),
           );

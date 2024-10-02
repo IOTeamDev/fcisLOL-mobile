@@ -57,13 +57,14 @@ Widget customTextFormField(
     {required String title,
     required TextEditingController controller,
     required TextInputType keyboardtype,
-    int? maxLines}) {
+    int? maxLines,
+    bool isDescription = false}) {
   return TextFormField(
     maxLines: maxLines,
     keyboardType: keyboardtype,
     textInputAction: TextInputAction.next,
     validator: (value) {
-      if (value == null || value.isEmpty) {
+      if (value == null || value.isEmpty && !isDescription) {
         return 'This field must not be Empty';
       }
       return null;

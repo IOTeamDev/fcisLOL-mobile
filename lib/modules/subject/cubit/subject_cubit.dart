@@ -17,7 +17,7 @@ class SubjectCubit extends Cubit<SubjectState> {
 
   List<MaterialModel>? materials;
   List<MaterialModel>? videos;
-  int index = 0;
+
   List<MaterialModel>? documents;
   List<MaterialModel>? filteredMaterials;
 
@@ -41,37 +41,27 @@ class SubjectCubit extends Cubit<SubjectState> {
         return scoreB.compareTo(scoreA);
       });
     }
-    print(filteredMaterials);
-    filterVideosAndDocuments();
     emit(GetMaterialSuccess(materials: filteredMaterials!));
+    filterVideosAndDocuments();
   }
 
-  void getMaterials() {
+  void getMaterials({String? subject}) {
     emit(GetMaterialLoading());
-    materials = null;
-    documents = null;
-    videos = null;
 
-    try {
-      DioHelp.getData(
-          path: MATERIAL,
-          query: {'subject': 'CALC_1', 'accepted': true}).then((response) {
-        materials = [];
-        videos = [];
-        documents = [];
+    DioHelp.getData(
+        path: MATERIAL,
+        query: {'subject': subject, 'accepted': true}).then((response) {
+      materials = [];
+      videos = [];
+      documents = [];
 
-        response.data.forEach((e) {
-          materials!.add(MaterialModel.fromJson(e));
-        });
-        filteredMaterials = materials;
-        filterVideosAndDocuments();
-        print(documents![0].description);
-
-        emit(GetMaterialSuccess(materials: filteredMaterials!));
+      response.data.forEach((e) {
+        materials!.add(MaterialModel.fromJson(e));
       });
-    } catch (e) {
-      print('error =============> $e');
-    }
+      filteredMaterials = materials;
+      emit(GetMaterialSuccess(materials: filteredMaterials!));
+      filterVideosAndDocuments();
+    });
   }
 
   void filterVideosAndDocuments() {
@@ -89,13 +79,13 @@ class SubjectCubit extends Cubit<SubjectState> {
       required String link,
       required String type,
       required String semester,
-      String? subjectName}) {
+      required String subjectName}) {
     emit(SaveMaterialLoading());
 
     DioHelp.postData(
       path: MATERIAL,
       data: {
-        'subject': "CALC_1",
+        'subject': subjectName,
         'title': title,
         'description': description,
         'link': link,
@@ -104,9 +94,8 @@ class SubjectCubit extends Cubit<SubjectState> {
       },
       token: TOKEN,
     ).then((response) {
-      print(response.data);
       emit(SaveMaterialSuccess());
-      getMaterials();
+      getMaterials(subject: subjectName);
     });
   }
 
@@ -114,10 +103,10 @@ class SubjectCubit extends Cubit<SubjectState> {
     emit(DeleteMaterialLoading());
     DioHelp.deleteData(
       path: MATERIAL,
-      query: {'id':7},
+      query: {'id': id},
       token: TOKEN,
     ).then((response) {
-      getMaterials();
+      getMaterials(subject: material.subject);
       emit(DeleteMaterialSuccess(material: material));
     });
   }
