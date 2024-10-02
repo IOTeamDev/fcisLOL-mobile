@@ -323,10 +323,15 @@ class _MaterialDetailsState extends State<SubjectDetails>
             ],
           ),
         ),
-        child: Image.network(
-          getYouTubeThumbnail(video.link!)!,
-          fit: BoxFit.cover,
-        ),
+        child: getYouTubeThumbnail(video.link!) != null
+            ? Image.network(
+                getYouTubeThumbnail(video.link!)!,
+                fit: BoxFit.cover,
+              )
+            : Image.network(
+                fit: BoxFit.cover,
+                'https://www.buffalotech.com/images/made/images/remote/https_i.ytimg.com/vi/06wIw-NdHIw/sddefault_300_225_s.jpg',
+              ),
       ),
     );
   }
