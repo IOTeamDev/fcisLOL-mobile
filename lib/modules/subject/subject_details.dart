@@ -1,10 +1,10 @@
-// import 'dart:nativewrappers/_internal/vm/lib/internal_patch.dart';
-
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/layout/home/bloc/main_cubit.dart';
+import 'package:lol/main.dart';
 import 'package:lol/models/profile/profile_model.dart';
 import 'package:lol/shared/components/default_text_field.dart';
 import 'package:lol/shared/network/endpoints.dart';
@@ -41,28 +41,32 @@ class _MaterialDetailsState extends State<SubjectDetails>
       }
     });
     SubjectCubit.get(context).getMaterials(subject: widget.subjectName);
+    MainCubit.get(context).getProfileInfo();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     var cubit = SubjectCubit.get(context);
+
     return MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context) => MainCubit()..getProfileInfo()),
+          BlocProvider(create: (context) => MainCubit()),
         ],
         child: BlocListener<SubjectCubit, SubjectState>(
             listener: (context, state) {
-              if (state is SaveMaterialSuccess && MainCubit.get(context).profileModel!.role != 'ADMIN') {
-                showToastMessage(
-                    message:
-                        'The request has been sent to the Admin, and waiting for approval...',
-                    states: ToastStates.SUCCESS);
-              } else if( state is SaveMaterialSuccess && MainCubit.get(context).profileModel!.role == 'ADMIN')
-              {
-                  showToastMessage(message: 'Material Added Successfully!!', states: ToastStates.SUCCESS);
-              }
-              else if (state is SaveMaterialError) {
+              if (state is SaveMaterialSuccess) {
+                if (MainCubit.get(context).profileModel!.role != 'ADMIN') {
+                  showToastMessage(
+                      message:
+                          'The request has been sent to the Admin, and waiting for approval...',
+                      states: ToastStates.SUCCESS);
+                } else {
+                  showToastMessage(
+                      message: 'Material Added Successfully!!',
+                      states: ToastStates.SUCCESS);
+                }
+              } else if (state is SaveMaterialError) {
                 showToastMessage(
                     message: 'error while uploading Material',
                     states: ToastStates.ERROR);
@@ -84,9 +88,8 @@ class _MaterialDetailsState extends State<SubjectDetails>
               }
             },
             child: Scaffold(
-              floatingActionButton: MainCubit.get(context).profileModel == null
-                  ? buildFloatingActionButton()
-                  : buildFloatingActionButton(),
+              floatingActionButton:
+                  TOKEN == null ? null : buildFloatingActionButton(),
               key: scaffoldKey,
               drawer: drawerBuilder(context),
               backgroundColor: Colors.black,
@@ -210,8 +213,6 @@ class _MaterialDetailsState extends State<SubjectDetails>
   }
 
   Widget customTabBarView() {
-    // var mainCubit = MainCubit.get(context);
-
     return TabBarView(
       controller: _tabControllerOfShowingContent,
       children: [
@@ -297,6 +298,8 @@ class _MaterialDetailsState extends State<SubjectDetails>
   }
 
   Widget gridTileWidget({required MaterialModel video}) {
+    print(
+        'profile Model =>>>>>>>>>>>>>>>>${MainCubit.get(context).profileModel!.role}');
     return InkWell(
       onTap: () async {
         final linkELement = LinkableElement(video.link, video.link!);
@@ -316,10 +319,8 @@ class _MaterialDetailsState extends State<SubjectDetails>
                   color: a,
                 ),
               ),
-             ConditionalBuilder(
-                 condition: MainCubit.get(context).profileModel != null && MainCubit.get(context).profileModel!.role == 'ADMIN',
-                 builder: (context) => removeButton(material: video),
-                 fallback: null),
+              if (MainCubit.get(context).profileModel?.role == 'ADMIN')
+                removeButton(material: video)
             ],
           ),
         ),
@@ -369,15 +370,8 @@ class _MaterialDetailsState extends State<SubjectDetails>
                     textAlign: TextAlign.start,
                   ),
                 ),
-                ConditionalBuilder(
-                        condition:
-                            MainCubit.get(context).profileModel != null &&
-                                MainCubit.get(context).profileModel!.role ==
-                                    'ADMIN',
-                        builder: (context) => SizedBox(
-                            height: 40,
-                            child: removeButton(material: document)),
-                        fallback: null),
+                if (MainCubit.get(context).profileModel?.role == 'ADMIN')
+                  removeButton(material: document),
               ],
             ),
           )),
@@ -386,18 +380,36 @@ class _MaterialDetailsState extends State<SubjectDetails>
 
   Widget removeButton({required MaterialModel material}) {
     var cubit = SubjectCubit.get(context);
-    return ElevatedButton(
-        onPressed: () {
-          cubit.deleteMaterial(material: material, id: material.id!);
-        },
-        style: ElevatedButton.styleFrom(
-            backgroundColor: remove,
-            padding: const EdgeInsetsDirectional.symmetric(
-                horizontal: 15, vertical: 40)),
-        child: Text(
-          'Remove',
-          style: TextStyle(color: a, fontSize: screenWidth(context) / 24),
-        ));
+    return BlocBuilder<SubjectCubit, SubjectState>(
+      buildWhen: (previous, current) =>
+          current is DeleteMaterialError ||
+          current is DeleteMaterialLoading ||
+          current is DeleteMaterialSuccess,
+      builder: (context, state) {
+        return ElevatedButton(
+            onPressed: () {
+              AwesomeDialog(
+                context: context,
+                dialogType: DialogType.info,
+                animType: AnimType.rightSlide,
+                title: 'Sure about deleting ${material.title}?',
+                btnOkText: "Confirm",
+                btnCancelOnPress: () {},
+                btnOkOnPress: () {
+                  cubit.deleteMaterial(
+                      id: material.id!, subjectName: material.subject!);
+                },
+              ).show();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: remove,
+            ),
+            child: Text(
+              'Remove',
+              style: TextStyle(color: a, fontSize: screenWidth(context) / 24),
+            ));
+      },
+    );
   }
 
   Widget customTabBar(
@@ -577,7 +589,9 @@ class _MaterialDetailsState extends State<SubjectDetails>
                                       link: _linkController.text,
                                       type: cubit.selectedType,
                                       subjectName: widget.subjectName,
-                                      semester: MainCubit.get(context).profileModel!.semester);
+                                      semester: MainCubit.get(context)
+                                          .profileModel!
+                                          .semester);
                               Navigator.of(context).pop();
                             }
                           },

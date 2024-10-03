@@ -174,7 +174,8 @@ class Registerscreen extends StatelessWidget {
                                       return null; // Form is valid.
                                     }
                                   },
-                                  controller: emailController),
+                                  controller: emailController,
+                                  type: TextInputType.emailAddress),
                             ],
                           ),
                           const SizedBox(

@@ -60,79 +60,82 @@ class FeedbackScreen extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       child: SingleChildScrollView(
         child: Form(
-          key: _formKey,
+            key: _formKey,
             child: Column(
-          children: [
-            customTextFormField(
-                //
-                title: 'Full Name',
-                controller: _nameController,
-                keyboardtype: TextInputType.text
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            customTextFormField(
-                title: 'Your Feedback',
-                controller: _feedbackController,
-                keyboardtype: TextInputType.multiline,
-                maxLines: 8,
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                MaterialButton(
-                    minWidth: screenWidth(context) / 3,
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    textColor: a,
-                    shape: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    color: additional1,
-                    onPressed: () {
-                      _nameController.text = '';
-                      _feedbackController.text = '';
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      'Cancel',
-                      style: TextStyle(fontSize: 25),
-                    )),
-                MaterialButton(
-                  minWidth: screenWidth(context) / 3,
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  textColor: a,
-                  shape: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  color: additional1,
-                  onPressed: () {
-                    sendBugReport(feedbackDescription: _feedbackController.text, userName: _nameController.text);
-                    _nameController.clear();
-                    _feedbackController.clear();
-
-                  },
-                  child: Text(
-                    'Send',
-                    style: TextStyle(fontSize: 25),
-                  ),
+                customTextFormField(
+                    //
+                    title: 'Full Name',
+                    controller: _nameController,
+                    keyboardtype: TextInputType.text),
+                SizedBox(
+                  height: 20,
+                ),
+                customTextFormField(
+                  title: 'Your Feedback',
+                  controller: _feedbackController,
+                  keyboardtype: TextInputType.multiline,
+                  maxLines: 8,
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    MaterialButton(
+                        minWidth: screenWidth(context) / 3,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        textColor: a,
+                        shape: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        color: additional1,
+                        onPressed: () {
+                          _nameController.text = '';
+                          _feedbackController.text = '';
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          'Cancel',
+                          style: TextStyle(fontSize: 25),
+                        )),
+                    MaterialButton(
+                      minWidth: screenWidth(context) / 3,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      textColor: a,
+                      shape: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      color: additional1,
+                      onPressed: () {
+                        sendBugReport(
+                            feedbackDescription: _feedbackController.text,
+                            userName: _nameController.text);
+                        _nameController.clear();
+                        _feedbackController.clear();
+                      },
+                      child: Text(
+                        'Send',
+                        style: TextStyle(fontSize: 25),
+                      ),
+                    )
+                  ],
                 )
               ],
-            )
-          ],
-        )),
+            )),
       ),
     );
   }
 
-  Future<void> sendBugReport({String? userName, required String feedbackDescription}) async {
+  Future<void> sendBugReport(
+      {String? userName, required String feedbackDescription}) async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
       final String subject = Uri.encodeComponent('Feedback');
       final String body = Uri.encodeComponent(
-        'Name: ${userName != ''? userName ?? 'Anonymous':'Anonymous'}\n\nFeedback Description: \n$feedbackDescription',
+        'Name: ${userName != '' ? userName ?? 'Anonymous' : 'Anonymous'}\n\nFeedback Description: \n$feedbackDescription',
       );
 
       final Uri emailUri = Uri(
