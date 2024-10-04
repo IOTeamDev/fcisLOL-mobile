@@ -140,7 +140,7 @@ class FeedbackScreen extends StatelessWidget {
 
       final Uri emailUri = Uri(
         scheme: 'mailto',
-        path: 'taemaomar65@gmail.com , elnawawyseif@gmail.com',
+        path: 'taemaomar65@gmail.com',
         query: 'subject=$subject&body=$body',
       );
       await launchUrl(emailUri);

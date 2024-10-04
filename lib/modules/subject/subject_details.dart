@@ -56,16 +56,10 @@ class _MaterialDetailsState extends State<SubjectDetails>
         child: BlocListener<SubjectCubit, SubjectState>(
             listener: (context, state) {
               if (state is SaveMaterialSuccess) {
-                if (MainCubit.get(context).profileModel!.role != 'ADMIN') {
                   showToastMessage(
                       message:
                           'The request has been sent to the Admin, and waiting for approval...',
                       states: ToastStates.SUCCESS);
-                } else {
-                  showToastMessage(
-                      message: 'Material Added Successfully!!',
-                      states: ToastStates.SUCCESS);
-                }
               } else if (state is SaveMaterialError) {
                 showToastMessage(
                     message: 'error while uploading Material',
@@ -297,13 +291,11 @@ class _MaterialDetailsState extends State<SubjectDetails>
     );
   }
 
-  Widget gridTileWidget({required MaterialModel video}) {
-    print(
-        'profile Model =>>>>>>>>>>>>>>>>${MainCubit.get(context).profileModel!.role}');
+  Widget gridTileWidget({required MaterialModel video, rule}) {
     return InkWell(
       onTap: () async {
-        final linkELement = LinkableElement(video.link, video.link!);
-        await onOpen(context, linkELement);
+        final linkableElement = LinkableElement(video.link, video.link!);
+        await onOpen(context, linkableElement);
       },
       child: GridTile(
         footer: Container(
@@ -340,8 +332,8 @@ class _MaterialDetailsState extends State<SubjectDetails>
   Widget documentsCard({required MaterialModel document}) {
     return InkWell(
       onTap: () async {
-        final linkELement = LinkableElement(document.link, document.link!);
-        await onOpen(context, linkELement);
+        final linkElement = LinkableElement(document.link, document.link!);
+        await onOpen(context, linkElement);
       },
       child: Card(
           color: const Color.fromRGBO(217, 217, 217, 0.25),

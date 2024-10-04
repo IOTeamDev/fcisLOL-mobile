@@ -85,23 +85,20 @@ class _AddAnouncmentState extends State<AddAnouncment> {
                           onTap: () {
                             setState(() {
                               isExpanded = true; // Toggle the expansion
-                              _height = 400;
+                              _height = 450;
                             });
-                            Future.delayed(const Duration(milliseconds: 200), () {
+                            Future.delayed(const Duration(milliseconds: 350), () {
                               setState(() {
                                 showContent = true;
                               });
                             });
                           },
                           child: AnimatedContainer(
-                            margin: const EdgeInsetsDirectional.symmetric(
-                                vertical: 20, horizontal: 10),
+                            margin: const EdgeInsetsDirectional.symmetric(vertical: 20, horizontal: 10),
                             duration: const Duration(milliseconds: 500),
                             width: double.infinity,
                             height: _height,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: HexColor('B8A8F9').withOpacity(0.20)),
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: HexColor('B8A8F9').withOpacity(0.20)),
                             curve: Curves.fastEaseInToSlowEaseOut,
                             child: isExpanded && showContent
                                 ? Padding(
@@ -235,6 +232,7 @@ class _AddAnouncmentState extends State<AddAnouncment> {
                                               ),
                                             ],
                                           ),
+                                          //Upload Image button
                                           IconButton(onPressed: (){
                                             mainCubit.getAnnouncementImage();
                                           }, icon: Icon(Icons.image, color: Colors.white,)),
@@ -243,7 +241,7 @@ class _AddAnouncmentState extends State<AddAnouncment> {
                                           //Cancel and Submit buttons
                                           Padding(
                                             padding: const EdgeInsetsDirectional
-                                                .symmetric(horizontal: 10.0),
+                                                .symmetric(horizontal: 10.0, vertical: 10),
                                             child: Row(
                                               children: [
                                                 //cancel button
@@ -285,6 +283,7 @@ class _AddAnouncmentState extends State<AddAnouncment> {
                                                           dueDate: dateController.text,
                                                           type: selectedItem,
                                                           description: descriptionController.text,
+                                                          image: MainCubit.get(context).AnnouncementImagePath,
                                                           currentSemester: MainCubit.get(context).profileModel!.semester
                                                         );
                                                         setState(() {

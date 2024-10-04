@@ -26,7 +26,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
 
   AnnouncementModel? announcementModel;
   void addAnnouncement(
-      {required title, description, required dueDate, required type, required currentSemester}) {
+      {required title, description, required dueDate, required type, required currentSemester, image}) {
     emit(AdminSaveAnnouncementLoadingState());
     DioHelp.postData(
             path: ANNOUNCEMENTS,
@@ -35,7 +35,8 @@ class AdminCubit extends Cubit<AdminCubitStates> {
               'content': description ?? '',
               'due_date': dueDate,
               'type': type,
-              'semester': currentSemester
+              'semester': currentSemester,
+              'image': image
             },
             token: TOKEN)
         .then((value) {
