@@ -32,15 +32,20 @@ class AdminCubit extends Cubit<AdminCubitStates> {
   List<FcmToken> fcmTokens = [];
 
   Future<void>? getFcmTokens() {
+    print("object");
     DioHelp.getData(path: "users").then(
       (value) {
         value.data.forEach((element) {
           fcmTokens.add(FcmToken.fromJson(element));
+          print(fcmTokens[6].semester);
         });
 
         emit(GetFcmTokensSuccess());
       },
-    ).catchError((onError) => GetFcmTokensError());
+    ).catchError((onError) {
+      print(onError.toString());
+      emit(GetFcmTokensError());
+    });
   }
 
   AnnouncementModel? announcementModel;
@@ -183,7 +188,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
 
     for (var user in filteredUsers) {
       if (user != null)
-        sendFCMNotification(title: title, body: body, token: user.fcmToken);
+        sendFCMNotification(title: title, body: body, token: user.fcmToken??"");
     }
   }
 }

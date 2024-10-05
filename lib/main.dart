@@ -125,9 +125,14 @@ class App extends StatelessWidget {
               create: (BuildContext context) => SubjectCubit()..getMaterials()),
           BlocProvider(
             create: (BuildContext context) => MainCubit()..getProfileInfo(),
+          ),  BlocProvider(
+            create: (BuildContext context) => AdminCubit()..getFcmTokens(),
           ),
+
         ],
         child: Consumer<ThemeProvide>(builder: (context, value, child) {
+                    AdminCubit.get(context).getFcmTokens();
+
           return MaterialApp(
             home: Home(),
             debugShowCheckedModeBanner: false,

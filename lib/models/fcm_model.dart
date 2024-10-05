@@ -1,7 +1,7 @@
 class FcmToken {
   late String semester;
 
-  late String fcmToken;
+   String? fcmToken;
 
   FcmToken.fromJson(Map<String, dynamic> model) {
     semester = model["semester"] ;
