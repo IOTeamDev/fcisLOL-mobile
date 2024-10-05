@@ -68,7 +68,7 @@ main() async {
   bool isDark = await Cache.readData(key: "mode") ?? false;
 
   TOKEN = await Cache.readData(key: "token");
-  print(TOKEN);
+  print('token=>>>>>>>>>>>>>>>>>>>>>>>>$TOKEN');
   SelectedSemester = await Cache.readData(key: "semester");
   bool isOnBoardFinished =
       await Cache.readData(key: "FinishedOnBoard") ?? false;
@@ -124,7 +124,7 @@ class App extends StatelessWidget {
           BlocProvider(
               create: (BuildContext context) => SubjectCubit()..getMaterials()),
           BlocProvider(
-            create: (BuildContext context) => MainCubit(),
+            create: (BuildContext context) => MainCubit()..getProfileInfo(),
           ),
         ],
         child: Consumer<ThemeProvide>(builder: (context, value, child) {

@@ -50,6 +50,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
       required dueDate,
       required type,
       String? notificationTitle,
+      image,
       required currentSemester}) {
     emit(AdminSaveAnnouncementLoadingState());
     DioHelp.postData(
@@ -59,7 +60,8 @@ class AdminCubit extends Cubit<AdminCubitStates> {
               'content': description ?? '',
               'due_date': dueDate,
               'type': type,
-              'semester': currentSemester
+              'semester': currentSemester,
+              'image': image
             },
             token: TOKEN)
         .then((value) {

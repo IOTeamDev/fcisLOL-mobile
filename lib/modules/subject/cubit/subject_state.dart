@@ -31,11 +31,7 @@ final class SaveMaterialError extends SubjectState {
 
 class DeleteMaterialLoading extends SubjectState {}
 
-class DeleteMaterialSuccess extends SubjectState {
-  final MaterialModel material;
-
-  DeleteMaterialSuccess({required this.material});
-}
+class DeleteMaterialSuccess extends SubjectState {}
 
 final class DeleteMaterialError extends SubjectState {
   final String error;

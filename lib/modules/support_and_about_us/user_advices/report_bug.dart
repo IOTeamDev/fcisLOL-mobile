@@ -6,12 +6,13 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../layout/home/bloc/main_cubit.dart';
 
 class ReportBug extends StatelessWidget {
+  final _formKey = GlobalKey<FormState>();
 
-  var _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
+  final _titleController = TextEditingController();
+  final _descriptionController = TextEditingController();
 
-  var _nameController = TextEditingController();
-  var _titleController = TextEditingController();
-  var _descriptionController = TextEditingController();
+  ReportBug({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,8 @@ class ReportBug extends StatelessWidget {
               child: Column(
                 children: [
                   backButton(context),
-                  adminTopTitleWithDrawerButton(title: 'Announcements', size: 32, hasDrawer: false),
+                  adminTopTitleWithDrawerButton(
+                      title: 'Announcements', size: 32, hasDrawer: false),
                   Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: Form(
@@ -40,21 +42,20 @@ class ReportBug extends StatelessWidget {
                             decoration: InputDecoration(
                               hintText: 'Name',
                               hintStyle: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.grey[400]),
+                                  fontSize: 20, color: Colors.grey[400]),
                               border: InputBorder.none,
                             ),
-                            style: const TextStyle(
-                                color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                           ),
                           divider(),
-                          SizedBox(height: 10,),
+                          SizedBox(
+                            height: 10,
+                          ),
                           TextFormField(
                             controller: _titleController,
                             keyboardType: TextInputType.text,
                             validator: (value) {
-                              if (value == null ||
-                                  value.isEmpty) {
+                              if (value == null || value.isEmpty) {
                                 return 'This field must not be Empty';
                               }
                               return null;
@@ -62,23 +63,22 @@ class ReportBug extends StatelessWidget {
                             decoration: InputDecoration(
                               hintText: 'Bug title',
                               hintStyle: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.grey[400]),
+                                  fontSize: 20, color: Colors.grey[400]),
                               border: InputBorder.none,
                             ),
-                            style: const TextStyle(
-                                color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                           ),
                           divider(),
-                          SizedBox(height: 10,),
+                          SizedBox(
+                            height: 10,
+                          ),
                           TextFormField(
                             minLines: 5,
                             maxLines: 5,
                             controller: _descriptionController,
                             keyboardType: TextInputType.multiline,
                             validator: (value) {
-                              if (value == null ||
-                                  value.isEmpty) {
+                              if (value == null || value.isEmpty) {
                                 return 'This field must not be Empty';
                               }
                               return null;
@@ -86,39 +86,36 @@ class ReportBug extends StatelessWidget {
                             decoration: InputDecoration(
                               hintText: 'Bug description',
                               hintStyle: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.grey[400]),
+                                  fontSize: 20, color: Colors.grey[400]),
                               border: InputBorder.none,
                             ),
-                            style: const TextStyle(
-                                color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                           ),
                           divider(),
-                          SizedBox(height: 10,),
+                          SizedBox(
+                            height: 10,
+                          ),
                           Padding(
-                            padding: const EdgeInsetsDirectional
-                                .symmetric(horizontal: 10.0),
+                            padding: const EdgeInsetsDirectional.symmetric(
+                                horizontal: 10.0),
                             child: Row(
                               children: [
                                 //cancel button
                                 ElevatedButton(
                                   onPressed: () {
-                                      _nameController.clear();
-                                      _titleController.clear();
-                                      _descriptionController.clear();
-                                      Navigator.pop(context);
+                                    _nameController.clear();
+                                    _titleController.clear();
+                                    _descriptionController.clear();
+                                    Navigator.pop(context);
                                   },
                                   style: ElevatedButton.styleFrom(
                                     padding:
-                                    const EdgeInsetsDirectional
-                                        .symmetric(
-                                        horizontal: 35),
+                                        const EdgeInsetsDirectional.symmetric(
+                                            horizontal: 35),
                                     backgroundColor:
-                                    HexColor('D9D9D9')
-                                        .withOpacity(0.2),
+                                        HexColor('D9D9D9').withOpacity(0.2),
                                     foregroundColor: Colors.white,
-                                    textStyle: const TextStyle(
-                                        fontSize: 15),
+                                    textStyle: const TextStyle(fontSize: 15),
                                   ),
                                   child: const Text('Cancel'),
                                 ),
@@ -126,21 +123,22 @@ class ReportBug extends StatelessWidget {
                                 //submit button
                                 ElevatedButton(
                                     onPressed: () async {
-                                      sendBugReport(bugTitle: _titleController.text, bugDescription: _descriptionController.text, userName: _nameController.text);
-                                          _descriptionController.clear();
-                                          _titleController.clear();
-                                          _nameController.clear();
-
+                                      sendBugReport(
+                                          bugTitle: _titleController.text,
+                                          bugDescription:
+                                              _descriptionController.text,
+                                          userName: _nameController.text);
+                                      _descriptionController.clear();
+                                      _titleController.clear();
+                                      _nameController.clear();
                                     },
-                                    style:
-                                    ElevatedButton.styleFrom(
-                                      padding: const EdgeInsetsDirectional.symmetric(horizontal: 40),
-                                      backgroundColor:
-                                      HexColor('B8A8F9'),
-                                      foregroundColor:
-                                      Colors.white,
-                                      textStyle: const TextStyle(
-                                          fontSize: 15),
+                                    style: ElevatedButton.styleFrom(
+                                      padding:
+                                          const EdgeInsetsDirectional.symmetric(
+                                              horizontal: 40),
+                                      backgroundColor: HexColor('B8A8F9'),
+                                      foregroundColor: Colors.white,
+                                      textStyle: const TextStyle(fontSize: 15),
                                     ),
                                     child: const Text('Submit')),
                               ],
@@ -169,17 +167,16 @@ class ReportBug extends StatelessWidget {
 
       final String subject = Uri.encodeComponent(bugTitle);
       final String body = Uri.encodeComponent(
-        'Name: ${userName != ''? userName ?? 'Anonymous':'Anonymous'}\n\nBug Description: \n$bugDescription',
+        'Name: ${userName != '' ? userName ?? 'Anonymous' : 'Anonymous'}\n\nBug Description: \n$bugDescription',
       );
 
       final Uri emailUri = Uri(
         scheme: 'mailto',
-        path: 'taemaomar65@gmail.com,elnawawyseif@gmail.com',
+        path: 'taemaomar65@gmail.com',
         query: 'subject=$subject&body=$body',
       );
 
       await launchUrl(emailUri);
     }
   }
-
 }

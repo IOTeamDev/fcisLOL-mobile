@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lol/shared/components/components.dart';
 
 class AboutUs extends StatelessWidget {
   const AboutUs({super.key});
@@ -6,7 +7,16 @@ class AboutUs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(),
+      body: Stack(
+        children: [
+          backgroundEffects(),
+          Column(
+            children: [
+              
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

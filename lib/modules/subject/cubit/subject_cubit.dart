@@ -54,6 +54,7 @@ class SubjectCubit extends Cubit<SubjectState> {
       materials = [];
       videos = [];
       documents = [];
+      filteredMaterials = [];
 
       response.data.forEach((e) {
         materials!.add(MaterialModel.fromJson(e));
@@ -99,15 +100,12 @@ class SubjectCubit extends Cubit<SubjectState> {
     });
   }
 
-  void deleteMaterial({required MaterialModel material, required int id}) {
+  void deleteMaterial({required String subjectName, required int id}) {
     emit(DeleteMaterialLoading());
-    DioHelp.deleteData(
-      path: MATERIAL,
-      query: {'id': id},
-      token: TOKEN,
-    ).then((response) {
-      getMaterials(subject: material.subject);
-      emit(DeleteMaterialSuccess(material: material));
+    DioHelp.deleteData(path: MATERIAL, token: TOKEN, data: {'id': id})
+        .then((response) {
+      getMaterials(subject: subjectName);
+      emit(DeleteMaterialSuccess());
     });
   }
 
