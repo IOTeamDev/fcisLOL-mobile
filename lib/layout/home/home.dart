@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -76,19 +75,24 @@ class Home extends StatelessWidget {
         int? semesterIndex;
 
         // SelectedSemester = "Two";
-        if (TOKEN != null && MainCubit.get(context).profileModel != null) {
+        if (MainCubit.get(context).profileModel != null) {
           profile = MainCubit.get(context).profileModel!;
           print(profile.name);
         }
 
-        if (profile != null && TOKEN != null) {
+        if (profile != null) {
           semesterIndex = semsesterIndex(profile.semester);
         } else if (TOKEN == null) {
           semesterIndex = semsesterIndex(SelectedSemester!);
         }
 
-        print("$semesterIndex index");
-        return Scaffold(
+        // print("$semesterIndex index");
+          return profile == null && TOKEN != null
+    ? const Scaffold(
+        backgroundColor: Color(0xff1B262C),
+        body: Center(child: CircularProgressIndicator()),
+      )
+    :  Scaffold(
           key: scaffoldKey,
           backgroundColor: const Color(0xff1B262C),
           appBar: AppBar(
@@ -158,7 +162,7 @@ class Home extends StatelessWidget {
             ],
           ),
           drawer: CustomDrawer(context),
-          body: MainCubit.get(context).profileModel == null && TOKEN != null
+          body:profile == null && TOKEN != null
               ? const Center(
                   child: CircularProgressIndicator(),
                 )
@@ -301,16 +305,12 @@ class Home extends StatelessWidget {
 }
 
 Widget CustomDrawer(context) {
-  final SelectedSemester = "Three";
-  print(SelectedSemester);
-
+  // final SelectedSemester = "Three";
+  // print(SelectedSemester.toString() + "Drawer ");
+  ProfileModel? profileModel;
   double width = screenWidth(context);
-  final profileModel = MainCubit.get(context).profileModel;
-  if (profileModel == null) {
-    return const Center(
-      child: Text('No profile data available.'),
-    );
-  }
+  if (TOKEN != null)  profileModel = MainCubit.get(context).profileModel;
+  
   return Drawer(
     width: width < 600 ? width / 1.5 : width / 2.5,
     child: Column(
@@ -326,7 +326,7 @@ Widget CustomDrawer(context) {
                   accountName: Row(
                     children: [
                       Text(
-                        profileModel.name,
+                        profileModel!.name,
                         style: const TextStyle(overflow: TextOverflow.clip),
                       ),
                       const Spacer(),
@@ -372,7 +372,7 @@ Widget CustomDrawer(context) {
                   // accountEmail: Text("2nd year "),
                   accountName: const Text(""),
                   accountEmail: Text(
-                    Level(SelectedSemester),
+                    Level(SelectedSemester!),
                     style: const TextStyle(fontSize: 20),
                   ),
                   // accountEmail:InkWell(
@@ -424,7 +424,7 @@ Widget CustomDrawer(context) {
           child: SingleChildScrollView(
               child: Column(
             children: [
-              if (profileModel.role == "ADMIN")
+              if (profileModel?.role == "ADMIN")
                 ListTile(
                   leading: const Icon(Icons.admin_panel_settings),
                   title: const Text("Admin"),

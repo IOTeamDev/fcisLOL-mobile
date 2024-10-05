@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/layout/home/bloc/main_cubit.dart';
 import 'package:lol/layout/home/bloc/main_cubit_states.dart';
 import 'package:lol/layout/home/semester_navigate.dart';
+import 'package:lol/models/login/login_model.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
 import 'package:lol/layout/admin_panel/admin_panal.dart';
@@ -27,11 +31,39 @@ import 'shared/observer.dart';
 import 'package:flutter/material.dart';
 import 'layout/home/home.dart';
 
+// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+//   await Firebase.initializeApp();
+//   // If you're going to use other Firebase services in the background, such as Firestore,
+//   // make sure you call `initializeApp` before using other Firebase services.
+
+//   print("Handling a background message: ${message.messageId}");
+// }
+
+
+
+Future<String?> getFCMToken() async {
+  return await FirebaseMessaging.instance.getToken();
+}
+
+
+// void sendNotificationToSemesterThreeUsers(List<UserModel> users) {
+//   // Filter users whose semester is three
+//   List<UserModel> semesterThreeUsers = users.where((user) => user.semester == 3).toList();
+
+//   for (var user in semesterThreeUsers) {
+//     if (user.fcmToken.isNotEmpty) {
+//       sendFCMNotification(user.fcmToken);
+//     }
+//   }
+// }
+
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Cache.initialize();
   await DioHelp.initial();
   await Firebase.initializeApp();
+
+  // await initNotifation();
   Bloc.observer = MyBlocObserver();
   bool isDark = await Cache.readData(key: "mode") ?? false;
 
@@ -97,7 +129,7 @@ class App extends StatelessWidget {
         ],
         child: Consumer<ThemeProvide>(builder: (context, value, child) {
           return MaterialApp(
-            home: LoginScreen(),
+            home: Home(),
             debugShowCheckedModeBanner: false,
             theme: value.isDark ? ThemeData.dark() : ThemeData.light(),
           );

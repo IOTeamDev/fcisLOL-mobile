@@ -29,6 +29,7 @@ class LoginCubit extends Cubit<LoginStates> {
     required String photo,
     required String password,
     required String semester,
+     String? fcmToken,
   }) {
     emit(RegisterLoading());
     DioHelp.postData(path: "users", data: {
@@ -38,10 +39,12 @@ class LoginCubit extends Cubit<LoginStates> {
       "phone": phone,
       "photo": photo,
       "semester": semester,
+      "fcmToken": fcmToken,
     }).then(
       (value) {
         modelLogin = LoginModel.fromJson(value.data);
         print(modelLogin!.token);
+        print(modelLogin!.user.fcmToken);
         emit(RegisterSuccess(token: modelLogin!.token));
       },
     ).catchError((erro) => emit(RegisterFailed()));

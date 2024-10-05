@@ -279,6 +279,8 @@ class _AddAnouncmentState extends State<AddAnouncment> {
                                                 ElevatedButton(
                                                     onPressed: () async {
                                                       await MainCubit.get(context).UploadPImage(image: MainCubit.get(context).AnnouncementImageFile, isUserProfile: false);
+
+                                                      
                                                       if (formKey.currentState!.validate() && selectedItem != null) {
                                                         cubit.addAnnouncement(
                                                           title: titleController.text,
