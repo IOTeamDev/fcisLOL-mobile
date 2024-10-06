@@ -86,218 +86,227 @@ class Home extends StatelessWidget {
         }
 
         // print("$semesterIndex index");
-          return profile == null && TOKEN != null
-    ? const Scaffold(
-        backgroundColor: Color(0xff1B262C),
-        body: Center(child: CircularProgressIndicator()),
-      )
-    :  Scaffold(
-          key: scaffoldKey,
-          backgroundColor: const Color(0xff1B262C),
-          appBar: AppBar(
-            leadingWidth: 50,
+        return profile == null && TOKEN != null
+            ? const Scaffold(
+                backgroundColor: Color(0xff1B262C),
+                body: Center(child: CircularProgressIndicator()),
+              )
+            : Scaffold(
+                key: scaffoldKey,
+                backgroundColor: const Color(0xff1B262C),
+                appBar: AppBar(
+                  leadingWidth: 50,
 
-            leading: IconButton(
-                style: IconButton.styleFrom(
-                    padding: EdgeInsets.all(0), minimumSize: Size(0, 0)),
-                onPressed: () {
-                  // MainCubit.get(context).openDrawerState();
-                  if ((TOKEN != null && profile != null) || TOKEN == null) {
-                    scaffoldKey.currentState!
-                        .openDrawer(); // Use key to open the drawer
-                  }
-                },
-                icon: const Icon(
-                  Icons.menu,
-                  size: 25,
-                  color: Colors.white,
-                )),
-            backgroundColor: const Color(0xff0F4C75),
-            // centerTitle: true,
-            title: GestureDetector(
-              onTap: () => navigatReplace(context, const Home()),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  const Icon(Icons.apple),
-                  const SizedBox(width: 10),
-                  Text(
-                    "name",
-                    style: GoogleFonts.montserrat(),
-                  ),
-                  SizedBox(width: 50)
-                ],
-              ),
-            ),
-            actions: [
-              if (TOKEN == null)
-                if (scaffoldKey.currentState?.isDrawerOpen == true)
-                  Container(
-                    margin: const EdgeInsets.only(right: 10),
-                    decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [
-                              Color(0xff4fd1c5),
-                              Color(0xff38b2ac),
-                            ]),
-                        color: const Color(0xFF00ADB5),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: MaterialButton(
+                  leading: IconButton(
+                      style: IconButton.styleFrom(
+                          padding: EdgeInsets.all(0), minimumSize: Size(0, 0)),
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const LoginScreen()));
+                        // MainCubit.get(context).openDrawerState();
+                        if ((TOKEN != null && profile != null) ||
+                            TOKEN == null) {
+                          scaffoldKey.currentState!
+                              .openDrawer(); // Use key to open the drawer
+                        }
                       },
-                      child: const Text(
-                        "Login",
-                        style: TextStyle(color: Colors.white),
-                      ),
+                      icon: const Icon(
+                        Icons.menu,
+                        size: 25,
+                        color: Colors.white,
+                      )),
+                  backgroundColor: const Color(0xff0F4C75),
+                  // centerTitle: true,
+                  title: GestureDetector(
+                    onTap: () => navigatReplace(context, const Home()),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        const Icon(Icons.apple),
+                        const SizedBox(width: 10),
+                        Text(
+                          "name",
+                          style: GoogleFonts.montserrat(),
+                        ),
+                        SizedBox(width: 50)
+                      ],
                     ),
                   ),
-            ],
-          ),
-          drawer: CustomDrawer(context),
-          body:profile == null && TOKEN != null
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
-              : Stack(
-                  children: [
-                    Container(
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            Color(0xFF1c1c2e), // Dark indigo
-                            Color(0xFF2c2b3f), // Deep purple
-                          ],
-                        ),
-                      ),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 20),
-                            CarouselSlider(
-                              items: carsor.map((carsor) {
-                                return InkWell(
-                                    child: Stack(
-                                        alignment: Alignment.bottomCenter,
-                                        children: [
-                                      Container(
-                                        clipBehavior: Clip.antiAlias,
-                                        // margin: const EdgeInsets.all(6.0),
-                                        // child: Image.asset("images/332573639_735780287983011_1562632886952931410_n.jpg",width: 400,height: 400,fit: BoxFit.cover,),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(3.0),
-                                          // image: DecorationImage(
-                                          //   image: AssetImage(
-                                          //     carsor.image ?? "images/llogo.jfif",
-                                          //   ),
-                                          //   fit: BoxFit.cover,
-                                          // ),
-                                        ),
-                                        child: Image.asset(
-                                          carsor.image!,
-                                          width: 400,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          gradient: LinearGradient(
-                                            colors: [
-                                              Colors.black.withOpacity(0.2),
-                                              Colors.transparent,
-                                            ],
-                                            begin: Alignment.bottomCenter,
-                                            end: Alignment.topCenter,
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                          // padding: EdgeInsets.all(5),
-                                          // width: 400,
-                                          decoration: BoxDecoration(
-                                              color: const Color.fromARGB(
-                                                      51, 65, 180, 197)
-                                                  .withOpacity(0.6)
-                                                  .withAlpha(150),
-                                              borderRadius:
-                                                  BorderRadius.circular(3)),
-                                          child: Text(
-                                            carsor.text!,
-                                            style: const TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w500),
-                                            textAlign: TextAlign.center,
-                                          ))
-                                    ]));
-                              }).toList(),
-                              options: CarouselOptions(
-                                height: 200.0,
-                                autoPlay: true,
-                                enlargeCenterPage: true,
-                                aspectRatio: 16 / 9,
-                                autoPlayCurve: Curves.fastOutSlowIn,
-                                enableInfiniteScroll: true,
-                                autoPlayInterval: const Duration(seconds: 10),
-                                autoPlayAnimationDuration:
-                                    const Duration(milliseconds: 800),
-                                viewportFraction: 0.8,
-                              ),
+                  actions: [
+                    if (TOKEN == null)
+                      if (scaffoldKey.currentState?.isDrawerOpen == true)
+                        Container(
+                          margin: const EdgeInsets.only(right: 10),
+                          decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    Color(0xff4fd1c5),
+                                    Color(0xff38b2ac),
+                                  ]),
+                              color: const Color(0xFF00ADB5),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: MaterialButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const LoginScreen()));
+                            },
+                            child: const Text(
+                              "Login",
+                              style: TextStyle(color: Colors.white),
                             ),
-                            const SizedBox(height: 20),
-                            const SizedBox(height: 10),
-                            Container(
-                              padding: const EdgeInsets.all(16.0),
-                              child: GridView.builder(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2, // Two items per row
-                                  crossAxisSpacing: 10,
-                                  mainAxisSpacing: 10,
-                                  childAspectRatio: 3 /
-                                      2, // Control the height and width ratio
-                                ),
-                                itemCount:
-                                    // semesters[semesterIndex!].subjects.length,
-                                    semesters[semesterIndex!].subjects.length,
-                                itemBuilder: (context, index) {
-                                  return
-
-                                      // subjectItemBuild(
-                                      //     semesters[semesterIndex!]
-                                      //         .subjects[index],context);
-                                      subjectItemBuild(
-                                          semesters[semesterIndex!]
-                                              .subjects[index],
-                                          context);
-                                },
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                    // if (scaffoldKey.currentState?.isDrawerOpen == true)
-                    //   BackdropFilter(
-                    //     filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
-                    //     child: Container(
-                    //       color: Colors.transparent,
-                    //     ),
-                    //   ),
                   ],
                 ),
-        );
+                drawer: CustomDrawer(context),
+                body: profile == null && TOKEN != null
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Stack(
+                        children: [
+                          Container(
+                            decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Color(0xFF1c1c2e), // Dark indigo
+                                  Color(0xFF2c2b3f), // Deep purple
+                                ],
+                              ),
+                            ),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(height: 20),
+                                  CarouselSlider(
+                                    items: carsor.map((carsor) {
+                                      return InkWell(
+                                          child: Stack(
+                                              alignment: Alignment.bottomCenter,
+                                              children: [
+                                            Container(
+                                              clipBehavior: Clip.antiAlias,
+                                              // margin: const EdgeInsets.all(6.0),
+                                              // child: Image.asset("images/332573639_735780287983011_1562632886952931410_n.jpg",width: 400,height: 400,fit: BoxFit.cover,),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(3.0),
+                                                // image: DecorationImage(
+                                                //   image: AssetImage(
+                                                //     carsor.image ?? "images/llogo.jfif",
+                                                //   ),
+                                                //   fit: BoxFit.cover,
+                                                // ),
+                                              ),
+                                              child: Image.asset(
+                                                carsor.image!,
+                                                width: 400,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                gradient: LinearGradient(
+                                                  colors: [
+                                                    Colors.black
+                                                        .withOpacity(0.2),
+                                                    Colors.transparent,
+                                                  ],
+                                                  begin: Alignment.bottomCenter,
+                                                  end: Alignment.topCenter,
+                                                ),
+                                              ),
+                                            ),
+                                            Container(
+                                                // padding: EdgeInsets.all(5),
+                                                // width: 400,
+                                                decoration: BoxDecoration(
+                                                    color: const Color.fromARGB(
+                                                            51, 65, 180, 197)
+                                                        .withOpacity(0.6)
+                                                        .withAlpha(150),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            3)),
+                                                child: Text(
+                                                  carsor.text!,
+                                                  style: const TextStyle(
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                  textAlign: TextAlign.center,
+                                                ))
+                                          ]));
+                                    }).toList(),
+                                    options: CarouselOptions(
+                                      height: 200.0,
+                                      autoPlay: true,
+                                      enlargeCenterPage: true,
+                                      aspectRatio: 16 / 9,
+                                      autoPlayCurve: Curves.fastOutSlowIn,
+                                      enableInfiniteScroll: true,
+                                      autoPlayInterval:
+                                          const Duration(seconds: 10),
+                                      autoPlayAnimationDuration:
+                                          const Duration(milliseconds: 800),
+                                      viewportFraction: 0.8,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  const SizedBox(height: 10),
+                                  Container(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: GridView.builder(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2, // Two items per row
+                                        crossAxisSpacing: 10,
+                                        mainAxisSpacing: 10,
+                                        childAspectRatio: 3 /
+                                            2, // Control the height and width ratio
+                                      ),
+                                      itemCount:
+                                          // semesters[semesterIndex!].subjects.length,
+                                          semesters[semesterIndex!]
+                                              .subjects
+                                              .length,
+                                      itemBuilder: (context, index) {
+                                        return
+
+                                            // subjectItemBuild(
+                                            //     semesters[semesterIndex!]
+                                            //         .subjects[index],context);
+                                            subjectItemBuild(
+                                                semesters[semesterIndex!]
+                                                    .subjects[index],
+                                                context);
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          // if (scaffoldKey.currentState?.isDrawerOpen == true)
+                          //   BackdropFilter(
+                          //     filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
+                          //     child: Container(
+                          //       color: Colors.transparent,
+                          //     ),
+                          //   ),
+                        ],
+                      ),
+              );
       }),
     );
   }
@@ -308,8 +317,8 @@ Widget CustomDrawer(context) {
   // print(SelectedSemester.toString() + "Drawer ");
   ProfileModel? profileModel;
   double width = screenWidth(context);
-  if (TOKEN != null)  profileModel = MainCubit.get(context).profileModel;
-  
+  if (TOKEN != null) profileModel = MainCubit.get(context).profileModel;
+
   return Drawer(
     width: width < 600 ? width / 1.5 : width / 2.5,
     child: Column(

@@ -28,8 +28,6 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart' as http;
 
-
-
 class SubjectDetails extends StatefulWidget {
   final String subjectName;
   const SubjectDetails({super.key, required this.subjectName});
@@ -71,11 +69,15 @@ class _MaterialDetailsState extends State<SubjectDetails>
         ],
         child: BlocListener<SubjectCubit, SubjectState>(
             listener: (context, state) {
-              if (state is SaveMaterialSuccess) {
-                  showToastMessage(
-                      message:
-                          'The request has been sent to the Admin, and waiting for approval...',
-                      states: ToastStates.SUCCESS);
+              if (state is SaveMaterialSuccessUser) {
+                showToastMessage(
+                    message:
+                        'The request has been sent to the Admin, and waiting for approval...',
+                    states: ToastStates.SUCCESS);
+              } else if (state is SaveMaterialSuccessAdmin) {
+                showToastMessage(
+                    message: 'Material Added Successfully',
+                    states: ToastStates.SUCCESS);
               } else if (state is SaveMaterialError) {
                 showToastMessage(
                     message: 'error while uploading Material',
@@ -262,7 +264,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                   } else {
                     return Center(
                       child: Text(
-                        'No Materials Available',
+                        'Materials Appear here',
                         style: TextStyle(color: a),
                       ),
                     );
@@ -274,19 +276,18 @@ class _MaterialDetailsState extends State<SubjectDetails>
           builder: (context, state) {
             var cubit = SubjectCubit.get(context);
             return ConditionalBuilder(
-                condition: state is! GetMaterialLoading,
+                condition:
+                    state is! GetMaterialLoading && cubit.documents!.isNotEmpty,
                 builder: (context) {
                   return Padding(
-                      padding: const EdgeInsets.all(16.0),
-
-                child:       ListView.builder(
-                        itemCount: cubit.documents!.length,
-                        itemBuilder: (context, i) {
-                          return documentsCard(document: cubit.documents![i]);
-                        },
-                      ),
-                      );
-                
+                    padding: const EdgeInsets.all(16.0),
+                    child: ListView.builder(
+                      itemCount: cubit.documents!.length,
+                      itemBuilder: (context, i) {
+                        return documentsCard(document: cubit.documents![i]);
+                      },
+                    ),
+                  );
                 },
                 fallback: (context) {
                   if (state is GetMaterialLoading) {
@@ -296,7 +297,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                   } else {
                     return Center(
                       child: Text(
-                        'No Materials Available',
+                        'Materials Appear here',
                         style: TextStyle(color: a),
                       ),
                     );
@@ -328,7 +329,8 @@ class _MaterialDetailsState extends State<SubjectDetails>
                   color: a,
                 ),
               ),
-              if (MainCubit.get(context).profileModel?.role == 'ADMIN')
+              if (MainCubit.get(context).profileModel?.role == 'ADMIN' &&
+                  TOKEN != null)
                 removeButton(material: video)
             ],
           ),
@@ -379,7 +381,8 @@ class _MaterialDetailsState extends State<SubjectDetails>
                     textAlign: TextAlign.start,
                   ),
                 ),
-                if (MainCubit.get(context).profileModel?.role == 'ADMIN')
+                if (MainCubit.get(context).profileModel?.role == 'ADMIN' &&
+                    TOKEN != null)
                   removeButton(material: document),
               ],
             ),
@@ -594,33 +597,38 @@ class _MaterialDetailsState extends State<SubjectDetails>
                               ),
                             ),
                             //Submit Button
-                              if (TOKEN != null)
-                        MaterialButton(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          minWidth: screenWidth(context) / 3,
-                          shape: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30)),
-                          color: additional2,
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              BlocProvider.of<SubjectCubit>(context)
-                                  .addMaterial(
-                                      title: _titleController.text,
-                                      description: _descriptionController.text,
-                                      link: _linkController.text,
-                                      type: cubit.selectedType,
-                                      subjectName: widget.subjectName,
-                                      semester: MainCubit.get(context)
-                                          .profileModel!
-                                          .semester);
-                              Navigator.of(context).pop();
-                            }
-                          },
-                          child: Text(
-                            'Submit',
-                            style: TextStyle(color: a, fontSize: 20),
-                          ),
-                        ),
+                            if (TOKEN != null)
+                              MaterialButton(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                minWidth: screenWidth(context) / 3,
+                                shape: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30)),
+                                color: additional2,
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    BlocProvider.of<SubjectCubit>(context)
+                                        .addMaterial(
+                                            title: _titleController.text,
+                                            description:
+                                                _descriptionController.text,
+                                            link: _linkController.text,
+                                            type: cubit.selectedType,
+                                            subjectName: widget.subjectName,
+                                            semester: MainCubit.get(context)
+                                                .profileModel!
+                                                .semester,
+                                            role: MainCubit.get(context)
+                                                .profileModel!
+                                                .role);
+                                    Navigator.of(context).pop();
+                                  }
+                                },
+                                child: Text(
+                                  'Submit',
+                                  style: TextStyle(color: a, fontSize: 20),
+                                ),
+                              ),
                           ],
                         )
                       ],

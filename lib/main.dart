@@ -39,12 +39,9 @@ import 'layout/home/home.dart';
 //   print("Handling a background message: ${message.messageId}");
 // }
 
-
-
 Future<String?> getFCMToken() async {
   return await FirebaseMessaging.instance.getToken();
 }
-
 
 // void sendNotificationToSemesterThreeUsers(List<UserModel> users) {
 //   // Filter users whose semester is three
@@ -125,13 +122,13 @@ class App extends StatelessWidget {
               create: (BuildContext context) => SubjectCubit()..getMaterials()),
           BlocProvider(
             create: (BuildContext context) => MainCubit()..getProfileInfo(),
-          ),  BlocProvider(
+          ),
+          BlocProvider(
             create: (BuildContext context) => AdminCubit()..getFcmTokens(),
           ),
-
         ],
         child: Consumer<ThemeProvide>(builder: (context, value, child) {
-                    AdminCubit.get(context).getFcmTokens();
+          AdminCubit.get(context).getFcmTokens();
 
           return MaterialApp(
             home: Home(),

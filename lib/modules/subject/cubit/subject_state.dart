@@ -21,7 +21,9 @@ final class GetMaterialError extends SubjectState {
 
 final class SaveMaterialLoading extends SubjectState {}
 
-final class SaveMaterialSuccess extends SubjectState {}
+final class SaveMaterialSuccessAdmin extends SubjectState {}
+
+final class SaveMaterialSuccessUser extends SubjectState {}
 
 final class SaveMaterialError extends SubjectState {
   final String errorMessage;
