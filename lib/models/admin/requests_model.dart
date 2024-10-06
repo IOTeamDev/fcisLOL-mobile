@@ -4,6 +4,7 @@ class RequestsModel {
   String? link;
   String? type;
   String? title;
+  String? subject;
   String? description;
   Author? author;
 
@@ -14,6 +15,7 @@ class RequestsModel {
     type = json['type'];
     title = json['title'];
     description = json['description'];
+    subject = json['subject'];
     author = json['author'] != null ? Author.fromJson(json['author']) : null;
   }
 
