@@ -3,6 +3,9 @@ import 'package:lol/models/admin/requests_model.dart';
 
 abstract class AdminCubitStates {}
 
+
+
+
 class InitialAdminState extends AdminCubitStates{}
 
 class AdminGetAnnouncementLoadingState extends AdminCubitStates{}
@@ -85,3 +88,7 @@ class AdminAcceptRequestErrorState extends AdminCubitStates{
 
   AdminAcceptRequestErrorState(this.error);
 }
+
+class GetFcmTokensSuccess extends AdminCubitStates{}
+
+class GetFcmTokensError extends AdminCubitStates{}

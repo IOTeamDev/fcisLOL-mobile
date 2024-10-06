@@ -2,6 +2,8 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:googleapis/admin/directory_v1.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/layout/home/bloc/main_cubit.dart';
 import 'package:lol/main.dart';
@@ -13,6 +15,18 @@ import 'package:lol/shared/components/constants.dart';
 import 'package:lol/modules/subject/cubit/subject_cubit.dart';
 import 'package:lol/models/subjects/subject_model.dart';
 import 'package:lol/shared/components/components.dart';
+import 'package:googleapis/drive/v3.dart' as drive;
+import 'package:googleapis_auth/googleapis_auth.dart';
+import 'package:googleapis_auth/auth_io.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'package:file_picker/file_picker.dart';
+
+import 'dart:convert';
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
+import 'package:http/http.dart' as http;
 
 class SubjectDetails extends StatefulWidget {
   final String subjectName;
@@ -55,11 +69,15 @@ class _MaterialDetailsState extends State<SubjectDetails>
         ],
         child: BlocListener<SubjectCubit, SubjectState>(
             listener: (context, state) {
-              if (state is SaveMaterialSuccess) {
-                  showToastMessage(
-                      message:
-                          'The request has been sent to the Admin, and waiting for approval...',
-                      states: ToastStates.SUCCESS);
+              if (state is SaveMaterialSuccessUser) {
+                showToastMessage(
+                    message:
+                        'The request has been sent to the Admin, and waiting for approval...',
+                    states: ToastStates.SUCCESS);
+              } else if (state is SaveMaterialSuccessAdmin) {
+                showToastMessage(
+                    message: 'Material Added Successfully',
+                    states: ToastStates.SUCCESS);
               } else if (state is SaveMaterialError) {
                 showToastMessage(
                     message: 'error while uploading Material',
@@ -246,7 +264,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                   } else {
                     return Center(
                       child: Text(
-                        'No Materials Available',
+                        'Materials Appear here',
                         style: TextStyle(color: a),
                       ),
                     );
@@ -279,7 +297,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                   } else {
                     return Center(
                       child: Text(
-                        'No Materials Available',
+                        'Materials Appear here',
                         style: TextStyle(color: a),
                       ),
                     );
@@ -311,7 +329,8 @@ class _MaterialDetailsState extends State<SubjectDetails>
                   color: a,
                 ),
               ),
-              if (MainCubit.get(context).profileModel?.role == 'ADMIN')
+              if (MainCubit.get(context).profileModel?.role == 'ADMIN' &&
+                  TOKEN != null)
                 removeButton(material: video)
             ],
           ),
@@ -362,7 +381,8 @@ class _MaterialDetailsState extends State<SubjectDetails>
                     textAlign: TextAlign.start,
                   ),
                 ),
-                if (MainCubit.get(context).profileModel?.role == 'ADMIN')
+                if (MainCubit.get(context).profileModel?.role == 'ADMIN' &&
+                    TOKEN != null)
                   removeButton(material: document),
               ],
             ),
@@ -468,135 +488,152 @@ class _MaterialDetailsState extends State<SubjectDetails>
   }
 
   Widget addingMaterialForm(ScrollController scrollController) {
+    bool wannaProfileModel = true;
     var cubit = SubjectCubit.get(context);
     return BlocBuilder<SubjectCubit, SubjectState>(
       buildWhen: (previous, current) => current is TypeChangedState,
       builder: (context, state) {
-        return SingleChildScrollView(
-          controller: scrollController,
-          child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: customTextFormField(
-                        title: 'Title (e.g:chapter3)',
-                        controller: _titleController,
-                        keyboardtype: TextInputType.name),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: customTextFormField(
-                        title: 'Description (Optional)',
-                        controller: _descriptionController,
-                        keyboardtype: TextInputType.text,
-                        isDescription: true),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: customTextFormField(
-                        title: 'Link',
-                        controller: _linkController,
-                        keyboardtype: TextInputType.url),
-                  ),
-                  Container(
-                      margin: const EdgeInsets.symmetric(vertical: 15),
-                      decoration: BoxDecoration(
-                          color: const Color.fromRGBO(217, 217, 217, 0.25),
-                          borderRadius: BorderRadius.circular(40)),
-                      width: screenWidth(context) / 1.2,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(
-                                left: 0, top: 0, bottom: 0),
-                            padding: const EdgeInsets.all(10),
-                            width: screenWidth(context) / 4,
+        if (wannaProfileModel) {
+          MainCubit.get(context).getProfileInfo();
+          wannaProfileModel = false;
+        }
+
+        return wannaProfileModel
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : SingleChildScrollView(
+                controller: scrollController,
+                child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5),
+                          child: customTextFormField(
+                              title: 'Title (e.g:chapter3)',
+                              controller: _titleController,
+                              keyboardtype: TextInputType.name),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5),
+                          child: customTextFormField(
+                              title: 'Description (Optional)',
+                              controller: _descriptionController,
+                              keyboardtype: TextInputType.text,
+                              isDescription: true),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5),
+                          child: customTextFormField(
+                              title: 'Link',
+                              controller: _linkController,
+                              keyboardtype: TextInputType.url),
+                        ),
+                        Container(
+                            margin: const EdgeInsets.symmetric(vertical: 15),
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: additional2,
-                            ),
-                            child: Text(
-                              cubit.selectedType.toLowerCase(),
-                              style: TextStyle(color: a, fontSize: 16),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          PopupMenuButton(
-                              onSelected: (type) {
-                                cubit.changeType(type: type);
-                              },
-                              iconColor: a,
-                              itemBuilder: (context) {
-                                return [
-                                  PopupMenuItem(
-                                    value: cubit.item1,
-                                    child: const Text('Video'),
+                                color:
+                                    const Color.fromRGBO(217, 217, 217, 0.25),
+                                borderRadius: BorderRadius.circular(40)),
+                            width: screenWidth(context) / 1.2,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.only(
+                                      left: 0, top: 0, bottom: 0),
+                                  padding: const EdgeInsets.all(10),
+                                  width: screenWidth(context) / 4,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: additional2,
                                   ),
-                                  PopupMenuItem(
-                                    value: cubit.item2,
-                                    child: const Text(
-                                      'Document',
-                                    ),
-                                  )
-                                ];
-                              }),
-                        ],
-                      )),
-                  //Cancel and submit buttons
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      //Cancel Button
-                      MaterialButton(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        minWidth: screenWidth(context) / 3,
-                        shape: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30)),
-                        color: const Color.fromRGBO(70, 70, 70, 0.36),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Text(
-                          'Cancel',
-                          style: TextStyle(color: additional1, fontSize: 20),
-                        ),
-                      ),
-                      //Submit Button
-                      if (TOKEN != null)
-                        MaterialButton(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          minWidth: screenWidth(context) / 3,
-                          shape: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30)),
-                          color: additional2,
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              BlocProvider.of<SubjectCubit>(context)
-                                  .addMaterial(
-                                      title: _titleController.text,
-                                      description: _descriptionController.text,
-                                      link: _linkController.text,
-                                      type: cubit.selectedType,
-                                      subjectName: widget.subjectName,
-                                      semester: MainCubit.get(context)
-                                          .profileModel!
-                                          .semester);
-                              Navigator.of(context).pop();
-                            }
-                          },
-                          child: Text(
-                            'Submit',
-                            style: TextStyle(color: a, fontSize: 20),
-                          ),
-                        ),
-                    ],
-                  )
-                ],
-              )),
-        );
+                                  child: Text(
+                                    cubit.selectedType.toLowerCase(),
+                                    style: TextStyle(color: a, fontSize: 16),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                PopupMenuButton(
+                                    onSelected: (type) {
+                                      cubit.changeType(type: type);
+                                    },
+                                    iconColor: a,
+                                    itemBuilder: (context) {
+                                      return [
+                                        PopupMenuItem(
+                                          value: cubit.item1,
+                                          child: const Text('Video'),
+                                        ),
+                                        PopupMenuItem(
+                                          value: cubit.item2,
+                                          child: const Text(
+                                            'Document',
+                                          ),
+                                        )
+                                      ];
+                                    }),
+                              ],
+                            )),
+                        //Cancel and submit buttons
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            //Cancel Button
+                            MaterialButton(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              minWidth: screenWidth(context) / 3,
+                              shape: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(30)),
+                              color: const Color.fromRGBO(70, 70, 70, 0.36),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text(
+                                'Cancel',
+                                style:
+                                    TextStyle(color: additional1, fontSize: 20),
+                              ),
+                            ),
+                            //Submit Button
+                            if (TOKEN != null)
+                              MaterialButton(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                minWidth: screenWidth(context) / 3,
+                                shape: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30)),
+                                color: additional2,
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    BlocProvider.of<SubjectCubit>(context)
+                                        .addMaterial(
+                                            title: _titleController.text,
+                                            description:
+                                                _descriptionController.text,
+                                            link: _linkController.text,
+                                            type: cubit.selectedType,
+                                            subjectName: widget.subjectName,
+                                            semester: MainCubit.get(context)
+                                                .profileModel!
+                                                .semester,
+                                            role: MainCubit.get(context)
+                                                .profileModel!
+                                                .role);
+                                    Navigator.of(context).pop();
+                                  }
+                                },
+                                child: Text(
+                                  'Submit',
+                                  style: TextStyle(color: a, fontSize: 20),
+                                ),
+                              ),
+                          ],
+                        )
+                      ],
+                    )),
+              );
       },
     );
   }

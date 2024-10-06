@@ -7,3 +7,5 @@ const String ACCEPT = 'material/accept';
 const String CURRENTUSER = 'me';
 
 const String LEADERBOARD = 'leaderboard';
+
+const String USERS = 'users';

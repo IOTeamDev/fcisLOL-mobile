@@ -80,7 +80,8 @@ class SubjectCubit extends Cubit<SubjectState> {
       required String link,
       required String type,
       required String semester,
-      required String subjectName}) {
+      required String subjectName,
+      required String role}) {
     emit(SaveMaterialLoading());
 
     DioHelp.postData(
@@ -95,7 +96,11 @@ class SubjectCubit extends Cubit<SubjectState> {
       },
       token: TOKEN,
     ).then((response) {
-      emit(SaveMaterialSuccess());
+      if (role == 'ADMIN') {
+        emit(SaveMaterialSuccessAdmin());
+      } else {
+        emit(SaveMaterialSuccessUser());
+      }
       getMaterials(subject: subjectName);
     });
   }

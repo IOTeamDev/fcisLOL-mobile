@@ -172,6 +172,10 @@ class LoginScreen extends StatelessWidget {
                           : defaultButton(
                               buttonFunc: () {
                                 if (formKey.currentState!.validate()) {
+
+// update fcm token
+
+
                                   loginCubit.login(
                                       email: emailController.text.toLowerCase(),
                                       password: passwordController.text);

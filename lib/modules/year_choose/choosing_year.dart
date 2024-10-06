@@ -1,6 +1,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lol/main.dart';
 import 'package:lol/modules/auth/bloc/login_cubit.dart';
 import 'package:lol/modules/auth/bloc/login_cubit_states.dart';
 import 'package:lol/modules/auth/screens/login.dart';
@@ -150,10 +151,11 @@ class YearState extends State<Year> {
                       context: context,
                       dialogType: DialogType.info,
                       animType: AnimType.rightSlide,
-                      title: 'You About To Assign In ${widget.title} Semester 1',
+                      title:
+                          'You About To Assign In ${widget.title} Semester 1',
                       btnOkText: "Confirm",
                       btnCancelOnPress: () {},
-                      btnOkOnPress: () {
+                      btnOkOnPress: () async {
                         switch (widget.title) {
                           case "Level 1":
                             switchSemester = "One";
@@ -169,6 +171,8 @@ class YearState extends State<Year> {
                             break;
                         }
                         if (userInfo != null) {
+                          String? fcmToken = await getFCMToken();
+
                           loginCubit.register(
                             name: userInfo.name,
                             email: userInfo.email,
@@ -195,9 +199,10 @@ class YearState extends State<Year> {
                       context: context,
                       dialogType: DialogType.info,
                       animType: AnimType.rightSlide,
-                      title: 'You About To Assign In ${widget.title} Semester 2',
+                      title:
+                          'You About To Assign In ${widget.title} Semester 2',
                       btnCancelOnPress: () {},
-                      btnOkOnPress: () {
+                      btnOkOnPress: () async {
                         switch (widget.title) {
                           case "Level 1":
                             switchSemester = "Two";
@@ -214,10 +219,13 @@ class YearState extends State<Year> {
                         }
 
                         if (userInfo != null) {
+                          String? fcmToken = await getFCMToken();
+
                           loginCubit.register(
                             name: userInfo.name,
                             email: userInfo.email,
                             phone: userInfo.phone,
+                            fcmToken: fcmToken,
                             photo: userInfo.photo!,
                             password: userInfo.password,
                             semester: switchSemester,
