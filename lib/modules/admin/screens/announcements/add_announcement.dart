@@ -259,16 +259,10 @@ class _AddAnouncmentState extends State<AddAnouncment> {
                                                     });
                                                   },
                                                   style: ElevatedButton.styleFrom(
-                                                    padding:
-                                                        const EdgeInsetsDirectional
-                                                            .symmetric(
-                                                            horizontal: 35),
-                                                    backgroundColor:
-                                                        HexColor('D9D9D9')
-                                                            .withOpacity(0.2),
+                                                    padding: const EdgeInsetsDirectional.symmetric(horizontal: 35),
+                                                    backgroundColor: HexColor('D9D9D9').withOpacity(0.2),
                                                     foregroundColor: Colors.white,
-                                                    textStyle: const TextStyle(
-                                                        fontSize: 15),
+                                                    textStyle: const TextStyle(fontSize: 15),
                                                   ),
                                                   child: const Text('Cancel'),
                                                 ),

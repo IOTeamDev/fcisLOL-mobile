@@ -30,7 +30,7 @@ class AnnouncementDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AdminCubit(),
+      create: (context) => AdminCubit()..getAnnouncements(),
       child: BlocConsumer<AdminCubit, AdminCubitStates>(
         listener: (context, state) {
           if (state is AdminDeleteAnnouncementSuccessState) {

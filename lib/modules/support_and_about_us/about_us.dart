@@ -12,7 +12,7 @@ class AboutUs extends StatelessWidget {
           backgroundEffects(),
           Column(
             children: [
-              
+
             ],
           ),
         ],
