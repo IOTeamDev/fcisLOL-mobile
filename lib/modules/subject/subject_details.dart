@@ -159,7 +159,9 @@ class _MaterialDetailsState extends State<SubjectDetails>
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 8),
                           child: Text(
-                            widget.subjectName,
+                            widget.subjectName
+                                .replaceAll('_', " ")
+                                .replaceAll("and", "&"),
                             style: TextStyle(
                                 color: a, fontSize: screenWidth(context) / 15),
                             maxLines: 3,

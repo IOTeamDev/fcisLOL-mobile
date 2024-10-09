@@ -119,17 +119,16 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider(
-              create: (BuildContext context) => SubjectCubit()..getMaterials()),
+              create: (BuildContext context) => SubjectCubit()),
           BlocProvider(
-            create: (BuildContext context) => MainCubit()..getProfileInfo(),
+            create: (BuildContext context) => MainCubit()
           ),
           BlocProvider(
-            create: (BuildContext context) => AdminCubit()..getFcmTokens(),
+            create: (BuildContext context) => AdminCubit()
           ),
         ],
         child: Consumer<ThemeProvide>(builder: (context, value, child) {
-          AdminCubit.get(context).getFcmTokens();
-
+          // AdminCubit.get(context).getFcmTokens();
           return MaterialApp(
             home: Home(),
             debugShowCheckedModeBanner: false,

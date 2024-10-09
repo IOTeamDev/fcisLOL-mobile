@@ -7,10 +7,12 @@ import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lol/layout/home/semester_navigate.dart';
+import 'package:lol/models/admin/announcement_model.dart';
 import 'package:lol/models/subjects/semster_model.dart';
 import 'package:lol/models/profile/profile_model.dart';
 import 'package:lol/models/subjects/subject_model.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit.dart';
+import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
 import 'package:lol/modules/auth/bloc/login_cubit.dart';
 import 'package:lol/modules/auth/screens/login.dart';
 import 'package:lol/modules/leaderboard/leaderboard_screen.dart';
@@ -56,7 +58,7 @@ class Home extends StatelessWidget {
         //   create: (context) => SubjectCubit()..getMaterials(),
         // ),
         BlocProvider(
-          create: (context) => AdminCubit()..getAnnouncements(),
+          create: (context) => AdminCubit(),
         ),
       ],
       child:
@@ -70,6 +72,26 @@ class Home extends StatelessWidget {
           );
         }
       }, builder: (context, state) {
+        bool wannaAnnouncements = true;
+        print('$wannaAnnouncements wanna announcement ');
+        List<AnnouncementModel>? anonuncments =
+            AdminCubit.get(context).announcements;
+
+        if (anonuncments != null)
+          print(anonuncments[0].title + "dfggdfghghfdfgh");
+        else
+          print("Announcements are null");
+        if ((state is GetProfileSuccess || TOKEN == null) &&
+            wannaAnnouncements) {
+          BlocProvider.of<AdminCubit>(context).getAnnouncements();
+          wannaAnnouncements = false;
+          if (anonuncments != null)
+            print(anonuncments[0].title);
+          else
+            print("Announcements are null");
+        }
+        print('$wannaAnnouncements wanna announcement ');
+
         ProfileModel? profile;
         int? semesterIndex;
 
@@ -185,80 +207,99 @@ class Home extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const SizedBox(height: 20),
-                                  CarouselSlider(
-                                    items: carsor.map((carsor) {
-                                      return InkWell(
-                                          child: Stack(
-                                              alignment: Alignment.bottomCenter,
-                                              children: [
-                                            Container(
-                                              clipBehavior: Clip.antiAlias,
-                                              // margin: const EdgeInsets.all(6.0),
-                                              // child: Image.asset("images/332573639_735780287983011_1562632886952931410_n.jpg",width: 400,height: 400,fit: BoxFit.cover,),
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(3.0),
-                                                // image: DecorationImage(
-                                                //   image: AssetImage(
-                                                //     carsor.image ?? "images/llogo.jfif",
-                                                //   ),
-                                                //   fit: BoxFit.cover,
-                                                // ),
-                                              ),
-                                              child: Image.asset(
-                                                carsor.image!,
-                                                width: 400,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                gradient: LinearGradient(
-                                                  colors: [
-                                                    Colors.black
-                                                        .withOpacity(0.2),
-                                                    Colors.transparent,
-                                                  ],
-                                                  begin: Alignment.bottomCenter,
-                                                  end: Alignment.topCenter,
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                                // padding: EdgeInsets.all(5),
-                                                // width: 400,
-                                                decoration: BoxDecoration(
-                                                    color: const Color.fromARGB(
-                                                            51, 65, 180, 197)
-                                                        .withOpacity(0.6)
-                                                        .withAlpha(150),
+                                  BlocBuilder<AdminCubit, AdminCubitStates>(
+                                      builder: (context, state) {
+                                    if (AdminCubit.get(context).announcements ==
+                                        null)
+                                      return Center(
+                                          child: CircularProgressIndicator());
+                                    else {
+                                      var anonuncmentsss =
+                                          AdminCubit.get(context).announcements;
+
+                                      return CarouselSlider(
+                                        items:
+                                            anonuncmentsss!.map((anonuncments) {
+                                          return InkWell(
+                                              child: Stack(
+                                                  alignment:
+                                                      Alignment.bottomCenter,
+                                                  children: [
+                                                Container(
+                                                  clipBehavior: Clip.antiAlias,
+                                                  // margin: const EdgeInsets.all(6.0),
+                                                  // child: Image.asset("images/332573639_735780287983011_1562632886952931410_n.jpg",width: 400,height: 400,fit: BoxFit.cover,),
+                                                  decoration: BoxDecoration(
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            3)),
-                                                child: Text(
-                                                  carsor.text!,
-                                                  style: const TextStyle(
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                  textAlign: TextAlign.center,
-                                                ))
-                                          ]));
-                                    }).toList(),
-                                    options: CarouselOptions(
-                                      height: 200.0,
-                                      autoPlay: true,
-                                      enlargeCenterPage: true,
-                                      aspectRatio: 16 / 9,
-                                      autoPlayCurve: Curves.fastOutSlowIn,
-                                      enableInfiniteScroll: true,
-                                      autoPlayInterval:
-                                          const Duration(seconds: 10),
-                                      autoPlayAnimationDuration:
-                                          const Duration(milliseconds: 800),
-                                      viewportFraction: 0.8,
-                                    ),
-                                  ),
+                                                            3.0),
+                                                    // image: DecorationImage(
+                                                    //   image: AssetImage(
+                                                    //     carsor.image ?? "images/llogo.jfif",
+                                                    //   ),
+                                                    //   fit: BoxFit.cover,
+                                                    // ),
+                                                  ),
+                                                  child: Image.network(
+                                                    anonuncments.image!,
+                                                    width: 400,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    gradient: LinearGradient(
+                                                      colors: [
+                                                        Colors.black
+                                                            .withOpacity(0.2),
+                                                        Colors.transparent,
+                                                      ],
+                                                      begin: Alignment
+                                                          .bottomCenter,
+                                                      end: Alignment.topCenter,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Container(
+                                                    // padding: EdgeInsets.all(5),
+                                                    // width: 400,
+                                                    decoration: BoxDecoration(
+                                                        color: const Color
+                                                                .fromARGB(51,
+                                                                65, 180, 197)
+                                                            .withOpacity(0.6)
+                                                            .withAlpha(150),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(3)),
+                                                    child: Text(
+                                                      anonuncments.title,
+                                                      style: const TextStyle(
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ))
+                                              ]));
+                                        }).toList(),
+                                        options: CarouselOptions(
+                                          height: 200.0,
+                                          autoPlay: true,
+                                          enlargeCenterPage: true,
+                                          aspectRatio: 16 / 9,
+                                          autoPlayCurve: Curves.fastOutSlowIn,
+                                          enableInfiniteScroll: true,
+                                          autoPlayInterval:
+                                              const Duration(seconds: 10),
+                                          autoPlayAnimationDuration:
+                                              const Duration(milliseconds: 800),
+                                          viewportFraction: 0.8,
+                                        ),
+                                      );
+                                    }
+                                    
+                                  }),
                                   const SizedBox(height: 20),
                                   const SizedBox(height: 10),
                                   Container(
@@ -788,7 +829,7 @@ Widget subjectItemBuild(SubjectModel subject, context) {
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: Text(
-                subject.subjectName,
+                subject.subjectName.replaceAll('_', " ").replaceAll("and", "&"),
                 maxLines: 2,
                 style: GoogleFonts.montserrat(
                   color: Colors.white,
@@ -805,24 +846,24 @@ Widget subjectItemBuild(SubjectModel subject, context) {
   );
 }
 
-class CarsorModel {
-  String? image;
-  String? text;
-  CarsorModel({this.image, this.text});
-}
+// class CarsorModel {
+//   String? image;
+//   String? text;
+//   CarsorModel({this.image, this.text});
+// }
 
-List<CarsorModel> carsor = [
-  CarsorModel(
-      image: "images/140.jpg", text: "Latest Of Academic Schedule \"9-17\" "),
-  CarsorModel(
-      image: "images/332573639_735780287983011_1562632886952931410_n.jpg",
-      text:
-          "RoboTech summers training application form opens today at 9:00 pm! Be ready "),
-  CarsorModel(
-      image: "images/338185486_3489006871419356_4868524435440167213_n.jpg",
-      text:
-          "Cyberus summers training application form opens today at 9:00 pm! Be ready "),
-];
+// List<CarsorModel> carsor = [
+//   CarsorModel(
+//       image: "images/140.jpg", text: "Latest Of Academic Schedule \"9-17\" "),
+//   CarsorModel(
+//       image: "images/332573639_735780287983011_1562632886952931410_n.jpg",
+//       text:
+//           "RoboTech summers training application form opens today at 9:00 pm! Be ready "),
+//   CarsorModel(
+//       image: "images/338185486_3489006871419356_4868524435440167213_n.jpg",
+//       text:
+//           "Cyberus summers training application form opens today at 9:00 pm! Be ready "),
+// ];
 // List subjectNamesList = [
 //   "Physics",
 //   "Electronics",

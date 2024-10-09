@@ -37,7 +37,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
       (value) {
         value.data.forEach((element) {
           fcmTokens.add(FcmToken.fromJson(element));
-          print(fcmTokens[6].semester);
+          // print(fcmTokens[0].semester);
         });
 
         emit(GetFcmTokensSuccess());
@@ -85,6 +85,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
 
   List<AnnouncementModel>? announcements;
   void getAnnouncements() {
+    announcements = null;
     emit(AdminGetAnnouncementLoadingState());
     DioHelp.getData(path: ANNOUNCEMENTS).then((value) {
       announcements = [];
@@ -190,5 +191,6 @@ class AdminCubit extends Cubit<AdminCubitStates> {
       if (user != null)
         sendFCMNotification(title: title, body: body, token: user.fcmToken??"");
     }
+              
   }
 }
