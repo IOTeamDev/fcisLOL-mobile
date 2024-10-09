@@ -7,3 +7,5 @@ class getLeaderboardLoadingState extends LeaderboardStates{}
 class getLeaderboardSuccessState extends LeaderboardStates{}
 
 class getLeaderboardErrorState extends LeaderboardStates{}
+
+class GetScore4User extends LeaderboardStates{}

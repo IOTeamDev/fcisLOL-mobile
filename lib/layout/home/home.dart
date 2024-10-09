@@ -220,11 +220,9 @@ class Home extends StatelessWidget {
                                       return CarouselSlider(
                                         items:
                                             anonuncmentsss!.map((anonuncments) {
-                                          return InkWell(
-                                              child: Stack(
-                                                  alignment:
-                                                      Alignment.bottomCenter,
-                                                  children: [
+                                          return Stack(
+                                              alignment: Alignment.bottomCenter,
+                                              children: [
                                                 Container(
                                                   clipBehavior: Clip.antiAlias,
                                                   // margin: const EdgeInsets.all(6.0),
@@ -281,7 +279,7 @@ class Home extends StatelessWidget {
                                                       textAlign:
                                                           TextAlign.center,
                                                     ))
-                                              ]));
+                                              ]);
                                         }).toList(),
                                         options: CarouselOptions(
                                           height: 200.0,
@@ -298,7 +296,6 @@ class Home extends StatelessWidget {
                                         ),
                                       );
                                     }
-                                    
                                   }),
                                   const SizedBox(height: 20),
                                   const SizedBox(height: 10),

@@ -86,27 +86,31 @@ class LeaderboardScreen extends StatelessWidget {
                     Expanded(
                       child: ConditionalBuilder(
                         condition:
-                            LeaderboardCubit.get(context).leaderboardModel !=
+                            LeaderboardCubit.get(context).notAdminleaderboardModel !=
                                     null &&
                                 state is! getLeaderboardLoadingState,
-                        builder: (context) => ListView.separated(
-                          itemCount: LeaderboardCubit.get(context)
-                              .leaderboardModel!
-                              .length,
-                          itemBuilder: (context, index) {
-                            return buildList(
-                                (index + 1),
-                                LeaderboardCubit.get(context)
-                                    .leaderboardModel![index]
-                                    .name,
-                                LeaderboardCubit.get(context)
-                                    .leaderboardModel![index]
-                                    .score);
-                          },
-                          separatorBuilder: (context, state) => const SizedBox(
-                            height: 10,
-                          ),
-                        ),
+                        builder: (context) {
+                        
+                          return ListView.separated(
+                            itemCount: LeaderboardCubit.get(context)
+                                .notAdminleaderboardModel!
+                                .length,
+                            itemBuilder: (context, index) {
+                              return buildList(
+                                  (index + 1),
+                                  LeaderboardCubit.get(context)
+                                      .notAdminleaderboardModel![index]
+                                      .name,
+                                  LeaderboardCubit.get(context)
+                                      .notAdminleaderboardModel![index]
+                                      .score);
+                            },
+                            separatorBuilder: (context, state) =>
+                                const SizedBox(
+                              height: 10,
+                            ),
+                          );
+                        },
                         fallback: (context) => const Center(
                           child: CircularProgressIndicator(),
                         ),

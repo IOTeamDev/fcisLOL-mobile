@@ -12,16 +12,52 @@ class LeaderboardCubit extends Cubit<LeaderboardStates> {
   static LeaderboardCubit get(context) => BlocProvider.of(context);
 
   List<LeaderboardModel>? leaderboardModel;
+  List<LeaderboardModel>? notAdminleaderboardModel;
+
+  LeaderboardModel? score4User;
+
+  void getScore4User(int userId) {
+    score4User = null;
+    for (int i = 0; i < leaderboardModel!.length; i++) {
+      if (leaderboardModel![i].id == userId) {
+        score4User = leaderboardModel![i];
+        print(score4User!.score);
+        // emit(GetScore4User());
+      }
+    }  
+    for (int i = 0; i < notAdminleaderboardModel!.length; i++) {
+      if (notAdminleaderboardModel![i].id == userId) {
+    score4User?.userRank = i + 1;
+        print(score4User?.userRank);
+        // emit(GetScore4User());
+      }
+    }
+  }
+
   void getLeaderboard() {
+    notAdminleaderboardModel=null;
+    leaderboardModel=null;
     emit(getLeaderboardLoadingState());
     DioHelp.getData(path: LEADERBOARD, query: {'semester': 'One'})
         .then((value) {
       leaderboardModel = [];
+      notAdminleaderboardModel = [];
       value.data.forEach((element) {
-        leaderboardModel!.add(LeaderboardModel.fromJson(element));
+        // exclude the admin
+        leaderboardModel?.add(LeaderboardModel.fromJson(
+            element)); //just to get the score of Admin
+
+        // if (element['role'] != "ADMIN") {
+        notAdminleaderboardModel?.add(LeaderboardModel.fromJson(element));
+        // }
+//role
       });
-      leaderboardModel!.sort((a, b) => b.score!.compareTo(a.score!));
+      notAdminleaderboardModel!.sort((a, b) => b.score!.compareTo(a.score!));
       emit(getLeaderboardSuccessState());
+    }).catchError((onError) {
+      print(onError.toString());
+
+      emit(getLeaderboardErrorState());
     });
   }
 }

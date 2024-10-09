@@ -8,6 +8,7 @@ import 'package:linkify/linkify.dart';
 import 'package:lol/layout/home/bloc/main_cubit.dart';
 import 'package:lol/main.dart';
 import 'package:lol/models/profile/profile_model.dart';
+import 'package:lol/modules/auth/screens/login.dart';
 import 'package:lol/shared/components/default_text_field.dart';
 import 'package:lol/shared/network/endpoints.dart';
 import 'package:lol/shared/styles/colors.dart';
@@ -100,8 +101,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
               }
             },
             child: Scaffold(
-              floatingActionButton:
-                  TOKEN == null ? null : buildFloatingActionButton(),
+              floatingActionButton: buildFloatingActionButton(),
               key: scaffoldKey,
               drawer: drawerBuilder(context),
               backgroundColor: Colors.black,
@@ -204,14 +204,35 @@ class _MaterialDetailsState extends State<SubjectDetails>
       width: 60,
       child: FloatingActionButton(
         onPressed: () {
-          _titleController.text = '';
-          _descriptionController.text = '';
-          _linkController.text = '';
-          showModalBottomSheet(
-              isScrollControlled: true,
-              backgroundColor: Colors.transparent,
+          if (TOKEN == null)
+            AwesomeDialog(
               context: context,
-              builder: (context) => buildBottomSheet());
+
+              dialogType: DialogType.info,
+              animType: AnimType.rightSlide,
+              // titleTextStyle: TextStyle(fontSize: 12),
+              title:"Log in to continue adding material.",
+              btnOkText:"Sign in" ,
+              btnCancelText: "Maybe later",
+
+              btnCancelOnPress: () {},
+              btnOkOnPress: () => Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginScreen(),
+                  ),
+                  (route) => false),
+            ).show();
+          else {
+            _titleController.text = '';
+            _descriptionController.text = '';
+            _linkController.text = '';
+            showModalBottomSheet(
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                context: context,
+                builder: (context) => buildBottomSheet());
+          }
         },
         shape: OutlineInputBorder(
           borderRadius: BorderRadius.circular(50),
