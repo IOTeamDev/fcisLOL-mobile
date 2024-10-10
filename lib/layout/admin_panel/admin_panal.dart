@@ -6,7 +6,7 @@ import 'package:lol/layout/home/bloc/main_cubit.dart';
 import 'package:lol/layout/home/bloc/main_cubit_states.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
-import 'package:lol/modules/admin/screens/Announcements/add_announcement.dart';
+import 'package:lol/modules/admin/screens/announcements/add_announcement.dart';
 import 'package:lol/modules/admin/screens/requests/requests.dart';
 import 'package:lol/shared/components/constants.dart';
 import 'package:lol/shared/components/components.dart';
@@ -58,7 +58,7 @@ class AdminPanal extends StatelessWidget {
                             children: [
                               ElevatedButton(
                                 onPressed: () {
-                                  navigate(context, const AddAnouncment());
+                                  navigate(context,  AddAnnouncement(semester: MainCubit.get(context).profileModel!.semester,));
                                 },
                                 style: ElevatedButton.styleFrom(
                                   padding:

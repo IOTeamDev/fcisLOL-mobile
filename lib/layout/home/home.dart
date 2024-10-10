@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:googleapis/admin/directory_v1.dart';
 import 'package:lol/layout/home/semester_navigate.dart';
 import 'package:lol/models/admin/announcement_model.dart';
 import 'package:lol/models/subjects/semster_model.dart';
@@ -78,12 +79,18 @@ class Home extends StatelessWidget {
             AdminCubit.get(context).announcements;
 
         if (anonuncments != null)
-          print(anonuncments[0].title + "dfggdfghghfdfgh");
+          print("${anonuncments[0].title}dfggdfghghfdfgh");
         else
           print("Announcements are null");
         if ((state is GetProfileSuccess || TOKEN == null) &&
             wannaAnnouncements) {
-          BlocProvider.of<AdminCubit>(context).getAnnouncements();
+          if (TOKEN == null)
+            BlocProvider.of<AdminCubit>(context)
+                .getAnnouncements(SelectedSemester!);
+          else
+            BlocProvider.of<AdminCubit>(context).getAnnouncements(
+                MainCubit.get(context).profileModel!.semester);
+
           wannaAnnouncements = false;
           if (anonuncments != null)
             print(anonuncments[0].title);
@@ -218,76 +225,102 @@ class Home extends StatelessWidget {
                                           AdminCubit.get(context).announcements;
 
                                       return CarouselSlider(
-                                        items:
-                                            anonuncmentsss!.map((anonuncments) {
-                                          return Stack(
-                                              alignment: Alignment.bottomCenter,
-                                              children: [
+                                        items: anonuncmentsss!.isEmpty
+                                            ? [
                                                 Container(
-                                                  clipBehavior: Clip.antiAlias,
-                                                  // margin: const EdgeInsets.all(6.0),
-                                                  // child: Image.asset("images/332573639_735780287983011_1562632886952931410_n.jpg",width: 400,height: 400,fit: BoxFit.cover,),
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            3.0),
-                                                    // image: DecorationImage(
-                                                    //   image: AssetImage(
-                                                    //     carsor.image ?? "images/llogo.jfif",
-                                                    //   ),
-                                                    //   fit: BoxFit.cover,
-                                                    // ),
-                                                  ),
-                                                  child: Image.network(
-                                                    anonuncments.image!,
-                                                    width: 400,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                ),
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                    gradient: LinearGradient(
-                                                      colors: [
-                                                        Colors.black
-                                                            .withOpacity(0.2),
-                                                        Colors.transparent,
-                                                      ],
-                                                      begin: Alignment
-                                                          .bottomCenter,
-                                                      end: Alignment.topCenter,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Container(
-                                                    // padding: EdgeInsets.all(5),
-                                                    // width: 400,
-                                                    decoration: BoxDecoration(
-                                                        color: const Color
-                                                                .fromARGB(51,
-                                                                65, 180, 197)
-                                                            .withOpacity(0.6)
-                                                            .withAlpha(150),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(3)),
-                                                    child: Text(
-                                                      anonuncments.title,
-                                                      style: const TextStyle(
-                                                          fontSize: 20,
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ))
-                                              ]);
-                                        }).toList(),
+                                                  child: Image.network(width: double.infinity,fit: BoxFit.cover,
+                                                      "https://e00-elmundo.uecdn.es/assets/multimedia/imagenes/2022/02/04/16439302481269.jpg"),
+                                                )
+                                              ]
+                                            : anonuncmentsss!
+                                                .map((anonuncments) {
+                                                return Stack(
+                                                    alignment:
+                                                        Alignment.bottomCenter,
+                                                    children: [
+                                                      Container(
+                                                        clipBehavior:
+                                                            Clip.antiAlias,
+                                                        // margin: const EdgeInsets.all(6.0),
+                                                        // child: Image.asset("images/332573639_735780287983011_1562632886952931410_n.jpg",width: 400,height: 400,fit: BoxFit.cover,),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      3.0),
+                                                          // image: DecorationImage(
+                                                          //   image: AssetImage(
+                                                          //     carsor.image ?? "images/llogo.jfif",
+                                                          //   ),
+                                                          //   fit: BoxFit.cover,
+                                                          // ),
+                                                        ),
+                                                        child: Image.network(
+                                                          anonuncments.image,
+                                                          width: 400,
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          gradient:
+                                                              LinearGradient(
+                                                            colors: [
+                                                              Colors.black
+                                                                  .withOpacity(
+                                                                      0.2),
+                                                              Colors
+                                                                  .transparent,
+                                                            ],
+                                                            begin: Alignment
+                                                                .bottomCenter,
+                                                            end: Alignment
+                                                                .topCenter,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                          // padding: EdgeInsets.all(5),
+                                                          // width: 400,
+                                                          decoration: BoxDecoration(
+                                                              color: const Color
+                                                                      .fromARGB(
+                                                                      51,
+                                                                      65,
+                                                                      180,
+                                                                      197)
+                                                                  .withOpacity(
+                                                                      0.6)
+                                                                  .withAlpha(
+                                                                      150),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          3)),
+                                                          child: Text(
+                                                            anonuncments.title,
+                                                            style: const TextStyle(
+                                                                fontSize: 20,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ))
+                                                    ]);
+                                              }).toList(),
                                         options: CarouselOptions(
                                           height: 200.0,
                                           autoPlay: true,
                                           enlargeCenterPage: true,
                                           aspectRatio: 16 / 9,
                                           autoPlayCurve: Curves.fastOutSlowIn,
-                                          enableInfiniteScroll: true,
+                                          enableInfiniteScroll:
+                                              anonuncmentsss.isEmpty
+                                                  ? false
+                                                  : true,
                                           autoPlayInterval:
                                               const Duration(seconds: 10),
                                           autoPlayAnimationDuration:
@@ -479,10 +512,18 @@ Widget CustomDrawer(context) {
                   },
                 ),
               ListTile(
-                leading: const Icon(Icons.announcement),
-                title: const Text("Announcements"),
+                leading: Icon(Icons.announcement),
+                title: Text("Announcements"),
                 onTap: () {
-                  navigate(context, const AnnouncementsList());
+                  if (TOKEN == null)
+                    navigate(context,
+                        AnnouncementsList(semester: SelectedSemester!));
+                  else
+                    navigate(
+                        context,
+                        AnnouncementsList(
+                            semester:
+                                MainCubit.get(context).profileModel!.semester));
                 },
               ),
               ExpansionTile(

@@ -15,16 +15,15 @@ import '../../../../layout/home/bloc/main_cubit.dart';
 import '../../../../shared/components/components.dart';
 import '../../bloc/admin_cubit.dart';
 
-
-class AddAnouncment extends StatefulWidget {
-  const AddAnouncment({super.key});
+class AddAnnouncement extends StatefulWidget {
+  final String semester;
+  const AddAnnouncement({super.key, required this.semester});
 
   @override
-  State<AddAnouncment> createState() => _AddAnouncmentState();
+  State<AddAnnouncement> createState() => _AddAnouncmentState();
 }
 
-class _AddAnouncmentState extends State<AddAnouncment> {
-
+class _AddAnouncmentState extends State<AddAnnouncement> {
   double _height = 80;
   bool isExpanded = false;
   bool showContent = false;
@@ -40,15 +39,23 @@ class _AddAnouncmentState extends State<AddAnouncment> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => MainCubit(),),
-        BlocProvider(create: (context) => AdminCubit()..getAnnouncements(),),
+        BlocProvider(
+          create: (context) => MainCubit(),
+        ),
+        BlocProvider(
+          create: (context) => AdminCubit()..getAnnouncements(widget.semester),
+        ),
       ],
       child: BlocConsumer<AdminCubit, AdminCubitStates>(
         listener: (context, state) {
           if (state is AdminSaveAnnouncementSuccessState) {
-            showToastMessage(message: 'Announcement Added Successfully', states: ToastStates.SUCCESS);
+            showToastMessage(
+                message: 'Announcement Added Successfully',
+                states: ToastStates.SUCCESS);
           } else if (state is AdminSaveAnnouncementsErrorState) {
-            showToastMessage(message: 'An Error Occurred: ${state.error}', states: ToastStates.ERROR);
+            showToastMessage(
+                message: 'An Error Occurred: ${state.error}',
+                states: ToastStates.ERROR);
           }
 
           if (state is AdminDeleteAnnouncementSuccessState) {
@@ -78,27 +85,29 @@ class _AddAnouncmentState extends State<AddAnouncment> {
                         //back button
                         backButton(context),
                         adminTopTitleWithDrawerButton(
-                            title: 'Announcements',
-                            size: 32,
-                            hasDrawer: false),
+                            title: 'Announcements', size: 32, hasDrawer: false),
                         GestureDetector(
                           onTap: () {
                             setState(() {
                               isExpanded = true; // Toggle the expansion
                               _height = 450;
                             });
-                            Future.delayed(const Duration(milliseconds: 350), () {
+                            Future.delayed(const Duration(milliseconds: 350),
+                                () {
                               setState(() {
                                 showContent = true;
                               });
                             });
                           },
                           child: AnimatedContainer(
-                            margin: const EdgeInsetsDirectional.symmetric(vertical: 20, horizontal: 10),
+                            margin: const EdgeInsetsDirectional.symmetric(
+                                vertical: 20, horizontal: 10),
                             duration: const Duration(milliseconds: 500),
                             width: double.infinity,
                             height: _height,
-                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: HexColor('B8A8F9').withOpacity(0.20)),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: HexColor('B8A8F9').withOpacity(0.20)),
                             curve: Curves.fastEaseInToSlowEaseOut,
                             child: isExpanded && showContent
                                 ? Padding(
@@ -166,7 +175,7 @@ class _AddAnouncmentState extends State<AddAnouncment> {
                                                 child: TextFormField(
                                                   controller: dateController,
                                                   keyboardType:
-                                                      TextInputType.datetime,
+                                                      TextInputType.none,
                                                   onTap: () => showDatePicker(
                                                     context: context,
                                                     initialDate: DateTime.now(),
@@ -196,7 +205,8 @@ class _AddAnouncmentState extends State<AddAnouncment> {
                                                     hintText: 'Due Date',
                                                     hintStyle: TextStyle(
                                                         fontSize: 16,
-                                                        color: Colors.grey[400]),
+                                                        color:
+                                                            Colors.grey[400]),
                                                     border: InputBorder.none,
                                                   ),
                                                   style: const TextStyle(
@@ -214,8 +224,10 @@ class _AddAnouncmentState extends State<AddAnouncment> {
                                                     color: Colors.white),
                                                 dropdownColor: Colors.black,
                                                 value: selectedItem,
-                                                items: _items.map((String item) {
-                                                  return DropdownMenuItem<String>(
+                                                items:
+                                                    _items.map((String item) {
+                                                  return DropdownMenuItem<
+                                                      String>(
                                                     value: item,
                                                     child: Text(
                                                       item,
@@ -233,15 +245,22 @@ class _AddAnouncmentState extends State<AddAnouncment> {
                                             ],
                                           ),
                                           //Upload Image button
-                                          IconButton(onPressed: (){
-                                            mainCubit.getAnnouncementImage();
-                                          }, icon: Icon(Icons.image, color: Colors.white,)),
+                                          IconButton(
+                                              onPressed: () {
+                                                mainCubit
+                                                    .getAnnouncementImage();
+                                              },
+                                              icon: Icon(
+                                                Icons.image,
+                                                color: Colors.white,
+                                              )),
                                           const Spacer(),
                                           divider(),
                                           //Cancel and Submit buttons
                                           Padding(
                                             padding: const EdgeInsetsDirectional
-                                                .symmetric(horizontal: 10.0, vertical: 10),
+                                                .symmetric(
+                                                horizontal: 10.0, vertical: 10),
                                             child: Row(
                                               children: [
                                                 //cancel button
@@ -250,19 +269,27 @@ class _AddAnouncmentState extends State<AddAnouncment> {
                                                     setState(() {
                                                       titleController.text = '';
                                                       dateController.text = '';
-                                                      descriptionController.text =
-                                                          '';
+                                                      descriptionController
+                                                          .text = '';
                                                       isExpanded =
                                                           false; // Toggle the expansion
                                                       _height = 80;
                                                       showContent = false;
                                                     });
                                                   },
-                                                  style: ElevatedButton.styleFrom(
-                                                    padding: const EdgeInsetsDirectional.symmetric(horizontal: 35),
-                                                    backgroundColor: HexColor('D9D9D9').withOpacity(0.2),
-                                                    foregroundColor: Colors.white,
-                                                    textStyle: const TextStyle(fontSize: 15),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    padding:
+                                                        const EdgeInsetsDirectional
+                                                            .symmetric(
+                                                            horizontal: 35),
+                                                    backgroundColor:
+                                                        HexColor('D9D9D9')
+                                                            .withOpacity(0.2),
+                                                    foregroundColor:
+                                                        Colors.white,
+                                                    textStyle: const TextStyle(
+                                                        fontSize: 15),
                                                   ),
                                                   child: const Text('Cancel'),
                                                 ),
@@ -270,40 +297,70 @@ class _AddAnouncmentState extends State<AddAnouncment> {
                                                 //submit button
                                                 ElevatedButton(
                                                     onPressed: () async {
-                                                      await MainCubit.get(context).UploadPImage(image: MainCubit.get(context).AnnouncementImageFile, isUserProfile: false);
+                                                      await MainCubit.get(
+                                                              context)
+                                                          .UploadPImage(
+                                                              image: MainCubit
+                                                                      .get(
+                                                                          context)
+                                                                  .AnnouncementImageFile,
+                                                              isUserProfile:
+                                                                  false);
 
-                                                      
-                                                      if (formKey.currentState!.validate() && selectedItem != null) {
+                                                      if (formKey.currentState!
+                                                              .validate() &&
+                                                          selectedItem !=
+                                                              null) {
                                                         cubit.addAnnouncement(
-                                                          title: titleController.text,
-                                                          dueDate: dateController.text,
-                                                          type: selectedItem,
-                                                          description: descriptionController.text,
-                                                          image: MainCubit.get(context).AnnouncementImagePath,
-                                                          currentSemester: MainCubit.get(context).profileModel!.semester
-                                                        );
+                                                            title:
+                                                                titleController
+                                                                    .text,
+                                                            dueDate:
+                                                                dateController
+                                                                    .text,
+                                                            type: selectedItem,
+                                                            description:
+                                                                descriptionController
+                                                                    .text,
+                                                            image: MainCubit
+                                                                    .get(
+                                                                        context)
+                                                                .AnnouncementImagePath,
+                                                            currentSemester:
+                                                                MainCubit.get(
+                                                                        context)
+                                                                    .profileModel!
+                                                                    .semester);
                                                         setState(() {
                                                           isExpanded = false;
-                                                          titleController.clear();
-                                                          descriptionController.clear();
-                                                          dateController.clear();
+                                                          titleController
+                                                              .clear();
+                                                          descriptionController
+                                                              .clear();
+                                                          dateController
+                                                              .clear();
                                                           showContent = false;
                                                           selectedItem = null;
                                                           _height = 80;
                                                         });
                                                       }
                                                     },
-                                                    style:
-                                                      ElevatedButton.styleFrom(
-                                                      padding: const EdgeInsetsDirectional.symmetric(horizontal: 40),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      padding:
+                                                          const EdgeInsetsDirectional
+                                                              .symmetric(
+                                                              horizontal: 40),
                                                       backgroundColor:
                                                           HexColor('B8A8F9'),
                                                       foregroundColor:
                                                           Colors.white,
-                                                      textStyle: const TextStyle(
-                                                          fontSize: 15),
+                                                      textStyle:
+                                                          const TextStyle(
+                                                              fontSize: 15),
                                                     ),
-                                                    child: const Text('Submit')),
+                                                    child:
+                                                        const Text('Submit')),
                                               ],
                                             ),
                                           ),
@@ -312,8 +369,9 @@ class _AddAnouncmentState extends State<AddAnouncment> {
                                     ))
                                 : !isExpanded
                                     ? const Padding(
-                                        padding: EdgeInsetsDirectional.symmetric(
-                                            vertical: 10, horizontal: 15),
+                                        padding:
+                                            EdgeInsetsDirectional.symmetric(
+                                                vertical: 10, horizontal: 15),
                                         child: Row(
                                           children: [
                                             Text(
@@ -335,21 +393,25 @@ class _AddAnouncmentState extends State<AddAnouncment> {
                           ),
                         ),
                         ConditionalBuilder(
-                          condition: state is! AdminGetAnnouncementLoadingState &&
-                              cubit.announcements != null &&
-                              cubit.announcements!.isNotEmpty,
+                          condition:
+                              state is! AdminGetAnnouncementLoadingState &&
+                                  cubit.announcements != null &&
+                                  cubit.announcements!.isNotEmpty,
                           builder: (context) => ListView.separated(
                             shrinkWrap: true,
                             physics: const BouncingScrollPhysics(),
-                            itemBuilder: (context, index) => announcementBuilder(
-                                cubit.announcements![index].id.toString(),
-                                context,
-                                cubit.announcements![index].title,
-                                index,
-                                cubit.announcements![index].content,
-                                cubit.announcements![index].dueDate,
-                                cubit.announcements![index].type),
-                            separatorBuilder: (context, index) => const SizedBox(
+                            itemBuilder: (context, index) =>
+                                announcementBuilder(
+                                  widget.semester,
+                                    cubit.announcements![index].id.toString(),
+                                    context,
+                                    cubit.announcements![index].title,
+                                    index,
+                                    cubit.announcements![index].content,
+                                    cubit.announcements![index].dueDate,
+                                    cubit.announcements![index].type),
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(
                               height: 10,
                             ),
                             itemCount: cubit.announcements!.length,
@@ -384,13 +446,14 @@ class _AddAnouncmentState extends State<AddAnouncment> {
     );
   }
 
-  Widget announcementBuilder(String cubitId, context, title, ID, content, date, selectedItem) {
+  Widget announcementBuilder(semester,
+      String cubitId, context, title, ID, content, date, selectedItem) {
     var cubit = AdminCubit.get(context).announcements![ID];
     return GestureDetector(
       onTap: () async {
         String refresh = await Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => AnnouncementDetail(
-            title: cubit.title,
+          builder: (context) => AnnouncementDetail(semester: semester,
+            title: cubit.title!,
             description: cubit.content,
             date: cubit.dueDate,
             id: ID,
@@ -399,7 +462,7 @@ class _AddAnouncmentState extends State<AddAnouncment> {
         ));
 
         if (refresh == 'refresh') {
-          AdminCubit.get(context).getAnnouncements();
+          AdminCubit.get(context).getAnnouncements(semester);
         }
       },
       child: Container(
@@ -426,8 +489,8 @@ class _AddAnouncmentState extends State<AddAnouncment> {
                 print(cubit.id);
                 String Refresh = await Navigator.of(context).push(
                   MaterialPageRoute(
-                      builder: (context) => EditAnnouncement(
-                            title: cubit.title,
+                      builder: (context) => EditAnnouncement(semester: semester,
+                            title: cubit.title!,
                             content: cubit.content,
                             date: cubit.dueDate,
                             id: ID.toString(),
@@ -436,7 +499,7 @@ class _AddAnouncmentState extends State<AddAnouncment> {
                 );
 
                 if (Refresh == 'refresh') {
-                  AdminCubit.get(context).getAnnouncements();
+                  AdminCubit.get(context).getAnnouncements(semester);
                 }
               },
               shape: const CircleBorder(),
@@ -450,7 +513,7 @@ class _AddAnouncmentState extends State<AddAnouncment> {
             //Delete Icon
             MaterialButton(
               onPressed: () {
-                AdminCubit.get(context).deleteAnnouncement(cubit.id);
+                AdminCubit.get(context).deleteAnnouncement(cubit.id,semester);
               },
               shape: const CircleBorder(),
               minWidth: 0,

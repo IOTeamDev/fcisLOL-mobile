@@ -30,7 +30,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
   static AdminCubit get(context) => BlocProvider.of(context);
 
   List<FcmToken> fcmTokens = [];
-
+//List of notifications messages
   Future<void>? getFcmTokens() {
     print("object");
     DioHelp.getData(path: "users").then(
@@ -77,17 +77,18 @@ class AdminCubit extends Cubit<AdminCubitStates> {
           body: title); // LOL
 
       emit(AdminSaveAnnouncementSuccessState());
-      getAnnouncements();
+      getAnnouncements(currentSemester);
     }).catchError((error) {
       emit(AdminSaveAnnouncementsErrorState(error));
     });
   }
 
   List<AnnouncementModel>? announcements;
-  void getAnnouncements() {
+  void getAnnouncements(String semester) {
     announcements = null;
     emit(AdminGetAnnouncementLoadingState());
-    DioHelp.getData(path: ANNOUNCEMENTS).then((value) {
+    DioHelp.getData(path: ANNOUNCEMENTS, query: {'semester': semester})
+        .then((value) {
       announcements = [];
       value.data.forEach((element) {
         announcements!.add(AnnouncementModel.fromJson(element));
@@ -132,12 +133,12 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     });
   }
 
-  void deleteAnnouncement(int id) {
+  void deleteAnnouncement(int id, semester) {
     emit(AdminDeleteAnnouncementLoadingState());
     DioHelp.deleteData(path: ANNOUNCEMENTS, token: TOKEN, query: {'id': id})
         .then((value) {
       emit(AdminDeleteAnnouncementSuccessState());
-      getAnnouncements();
+      getAnnouncements(semester);
     });
   }
 
@@ -147,7 +148,9 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     required String token,
   }) async {
     const String serverKey = 'YOUR_SERVER_KEY';
-    const String fcmEndpoint = 'https://fcm.googleapis.com/fcm/send';
+
+    const String fcmEndpoint =
+        'https://fcm.googleapis.com/v1/projects/fcis-da7f4/messages:send';
 
     final Map<String, dynamic> notification = {
       "to": token,
@@ -189,8 +192,8 @@ class AdminCubit extends Cubit<AdminCubitStates> {
 
     for (var user in filteredUsers) {
       if (user != null)
-        sendFCMNotification(title: title, body: body, token: user.fcmToken??"");
+        sendFCMNotification(
+            title: title, body: body, token: user.fcmToken ?? "");
     }
-              
   }
 }

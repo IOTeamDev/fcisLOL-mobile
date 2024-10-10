@@ -12,6 +12,7 @@ import '../../bloc/admin_cubit.dart';
 
 class EditAnnouncement extends StatefulWidget {
   final String id;
+  final String semester;
   final String title;
   final String content;
   final String date;
@@ -23,7 +24,7 @@ class EditAnnouncement extends StatefulWidget {
     required this.title,
     required this.content,
     required this.date,
-    this.selectedItem,
+    this.selectedItem, required this.semester,
   });
 
   @override
@@ -65,7 +66,7 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => AdminCubit()..getAnnouncements()),
+        BlocProvider(create: (context) => AdminCubit()..getAnnouncements(widget.semester)),
         BlocProvider(create: (context) => MainCubit()..getProfileInfo()),
       ],
       child: BlocConsumer<AdminCubit, AdminCubitStates>(

@@ -19,18 +19,20 @@ class AnnouncementDetail extends StatelessWidget {
   final String description;
   final dynamic date;
   final String selectedType;
+  final String semester;
+
   const AnnouncementDetail(
       {super.key,
       required this.title,
       required this.description,
       required this.date,
       required this.id,
-      required this.selectedType});
+      required this.selectedType, required this.semester});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AdminCubit()..getAnnouncements(),
+      create: (context) => AdminCubit()..getAnnouncements(semester),
       child: BlocConsumer<AdminCubit, AdminCubitStates>(
         listener: (context, state) {
           if (state is AdminDeleteAnnouncementSuccessState) {
