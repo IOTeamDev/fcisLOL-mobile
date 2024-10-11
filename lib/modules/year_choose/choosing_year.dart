@@ -1,4 +1,6 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/main.dart';
@@ -11,6 +13,7 @@ import 'package:lol/shared/components/constants.dart';
 import 'package:lol/layout/home/home.dart';
 import 'package:lol/shared/components/navigation.dart';
 import 'package:lol/shared/network/local/shared_prefrence.dart';
+import 'package:lol/shared/network/remote/cloud_messeging.dart';
 
 late String switchSemester;
 
@@ -171,9 +174,12 @@ class YearState extends State<Year> {
                             break;
                         }
                         if (userInfo != null) {
-                          String? fcmToken = await getFCMToken();
-
+                          FCMHelper fCMHelper = FCMHelper();
+                          fCMHelper.initNotifications();
+                          String? fcmToken =
+                              await FirebaseMessaging.instance.getToken();
                           loginCubit.register(
+                            fcmToken: fcmToken,
                             name: userInfo.name,
                             email: userInfo.email,
                             phone: userInfo.phone,
@@ -219,7 +225,10 @@ class YearState extends State<Year> {
                         }
 
                         if (userInfo != null) {
-                          String? fcmToken = await getFCMToken();
+                          FCMHelper fCMHelper = FCMHelper();
+                          fCMHelper.initNotifications();
+                          String? fcmToken =
+                              await FirebaseMessaging.instance.getToken();
 
                           loginCubit.register(
                             name: userInfo.name,

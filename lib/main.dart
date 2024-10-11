@@ -16,6 +16,7 @@ import 'package:lol/modules/subject/subject_details.dart';
 import 'package:lol/modules/support_and_about_us/about_us.dart';
 import 'package:lol/modules/support_and_about_us/user_advices/feedback_screen.dart';
 import 'package:lol/shared/network/local/shared_prefrence.dart';
+import 'package:lol/shared/network/remote/fcm_helper.dart';
 import 'package:provider/provider.dart';
 import 'modules/auth/bloc/login_cubit.dart';
 import 'modules/auth/screens/login.dart';
@@ -40,10 +41,6 @@ import 'layout/home/home.dart';
 //   print("Handling a background message: ${message.messageId}");
 // }
 
-Future<String?> getFCMToken() async {
-  return await FirebaseMessaging.instance.getToken();
-}
-
 // void sendNotificationToSemesterThreeUsers(List<UserModel> users) {
 //   // Filter users whose semester is three
 //   List<UserModel> semesterThreeUsers = users.where((user) => user.semester == 3).toList();
@@ -60,6 +57,14 @@ main() async {
   await Cache.initialize();
   await DioHelp.initial();
   await Firebase.initializeApp();
+
+// fCMHelper.initNotifications();
+
+// fCMHelper.sendNotifications(
+//   fcmToken: "chUAaG_7Tu68jnmU8UpxSN:APA91bHgHAocyXqRhWLeSw7NFepQMKaefT1i0ust8oQVvYsS1kt4OGk0wXHAqD3U6Erciw1IyPS5FUPNwxgkeNEXF4Q5W76GbTS-NZSexTaZNdLQCq1SZZzDkh23RHktWgqd7vBZLRRn",  // Use the token from step 2
+//   title: "Test Notification",
+//   body: "This is a test notification.",
+// );
 
   // await initNotifation();
   Bloc.observer = MyBlocObserver();
@@ -119,19 +124,14 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-          BlocProvider(
-              create: (BuildContext context) => SubjectCubit()),
-          BlocProvider(
-            create: (BuildContext context) => MainCubit()
-          ),
-          BlocProvider(
-            create: (BuildContext context) => AdminCubit()
-          ),
+          BlocProvider(create: (BuildContext context) => SubjectCubit()),
+          BlocProvider(create: (BuildContext context) => MainCubit()),
+          BlocProvider(create: (BuildContext context) => AdminCubit()),
         ],
         child: Consumer<ThemeProvide>(builder: (context, value, child) {
           // AdminCubit.get(context).getFcmTokens();
           return MaterialApp(
-            home: Home(),
+            home: startPage,
             debugShowCheckedModeBanner: false,
             theme: value.isDark ? ThemeData.dark() : ThemeData.light(),
           );

@@ -228,7 +228,9 @@ class Home extends StatelessWidget {
                                         items: anonuncmentsss!.isEmpty
                                             ? [
                                                 Container(
-                                                  child: Image.network(width: double.infinity,fit: BoxFit.cover,
+                                                  child: Image.network(
+                                                      width: double.infinity,
+                                                      fit: BoxFit.cover,
                                                       "https://e00-elmundo.uecdn.es/assets/multimedia/imagenes/2022/02/04/16439302481269.jpg"),
                                                 )
                                               ]
@@ -708,11 +710,26 @@ Widget CustomDrawer(context) {
                     style: TextStyle(color: Colors.red),
                   ),
                   onTap: () {
-                    MainCubit.get(context).logout(context);
-                    Provider.of<ThemeProvide>(context, listen: false).isDark =
-                        false;
-                    Provider.of<ThemeProvide>(context, listen: false)
-                        .notifyListeners();
+                    AwesomeDialog(
+                      context: context,
+                      title: "Log Out",
+                      dialogType: DialogType.warning,
+                      body: Text("Are you sure you want to log out?",style: TextStyle(fontSize: 17),),
+                      animType: AnimType.rightSlide,
+                      btnOkColor: Colors.red,
+                      btnCancelOnPress: () {},
+                      btnOkText: "Log Out",
+                      btnCancelColor: Colors.grey,
+                      
+                      // titleTextStyle: TextStyle(fontSize: 22),
+                      btnOkOnPress: () {
+                        MainCubit.get(context).logout(context);
+                        Provider.of<ThemeProvide>(context, listen: false)
+                            .isDark = false;
+                        Provider.of<ThemeProvide>(context, listen: false)
+                            .notifyListeners();
+                      },
+                    ).show();
                   },
                 ),
             ],

@@ -130,7 +130,9 @@ class MainCubit extends Cubit<MainCubitStates> {
 
   void logout(context) {
     TOKEN = null;
+    SelectedSemester = null;
     Cache.removeValue(key: "token");
+    Cache.removeValue(key: "semester");
     Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
@@ -164,7 +166,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     });
   }
 
-  void acceptRequest(int id,semester) {
+  void acceptRequest(int id, semester) {
     emit(AcceptRequestLoadingState());
     DioHelp.getData(
             path: ACCEPT, query: {'id': id, 'accepted': true}, token: TOKEN)
