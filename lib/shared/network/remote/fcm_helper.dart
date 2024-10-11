@@ -18,28 +18,8 @@ class FCMHelper {
     print(deviceToken);
     print(
         "===================Device FirebaseMessaging Token====================");
-          var serverKeyAuthorization = await getAccessToken();
 
-      print(serverKeyAuthorization.toString()+"dsfgsdg");
   }
-
-  // handle notifications when received
-  void handleMessages(RemoteMessage? message) {
-    if (message != null) {
-      // navigatorKey.currentState?.pushNamed(NotificationsScreen.routeName, arguments: message);
-      showToastMessage(
-        message: "on Background Message notification",
-        states: ToastStates.SUCCESS,
-      );
-    }
-  }
-
-  // handel notifications in case app is terminated
-  void handleBackgroundNotifications() async {
-    FirebaseMessaging.instance.getInitialMessage().then((handleMessages));
-    FirebaseMessaging.onMessageOpenedApp.listen(handleMessages);
-  }
-
   Future<String?> getAccessToken() async {
     final serviceAccountJson = {
       "type": "service_account",
@@ -84,6 +64,22 @@ class FCMHelper {
       return null;
     }
   }
+  // handle notifications when received
+  void handleMessages(RemoteMessage? message) {
+    if (message != null) {
+      // navigatorKey.currentState?.pushNamed(NotificationsScreen.routeName, arguments: message);
+      showToastMessage(
+        message: "on Background Message notification",
+        states: ToastStates.SUCCESS,
+      );
+    }
+  }
+
+  // handel notifications in case app is terminated
+  void handleBackgroundNotifications() async {
+    FirebaseMessaging.instance.getInitialMessage().then((handleMessages));
+    FirebaseMessaging.onMessageOpenedApp.listen(handleMessages);
+  }
 
   Map<String, dynamic> getBody({
     required String fcmToken,
@@ -120,7 +116,7 @@ class FCMHelper {
     try {
       var serverKeyAuthorization = await getAccessToken();
 
-      print(serverKeyAuthorization.toString()+"dsfgsdg");
+      print(serverKeyAuthorization.toString() + "dsfgsdg");
 
       // change your project id
       const String urlEndPoint =
