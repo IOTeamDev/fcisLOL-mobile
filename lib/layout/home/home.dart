@@ -7,6 +7,7 @@ import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:googleapis/admin/directory_v1.dart';
+import 'package:googleapis/mybusinessaccountmanagement/v1.dart';
 import 'package:lol/layout/home/semester_navigate.dart';
 import 'package:lol/models/admin/announcement_model.dart';
 import 'package:lol/models/subjects/semster_model.dart';
@@ -78,12 +79,13 @@ class Home extends StatelessWidget {
         List<AnnouncementModel>? anonuncments =
             AdminCubit.get(context).announcements;
 
-        if (anonuncments != null)
-          print("${anonuncments[0].title}dfggdfghghfdfgh");
-        else
-          print("Announcements are null");
+        // if (anonuncments != null)
+        //   print("${anonuncments[0].title}dfggdfghghfdfgh");
+        // else
+        //   print("Announcements are null");
         if ((state is GetProfileSuccess || TOKEN == null) &&
             wannaAnnouncements) {
+          BlocProvider.of<AdminCubit>(context).getFcmTokens();
           if (TOKEN == null)
             BlocProvider.of<AdminCubit>(context)
                 .getAnnouncements(SelectedSemester!);
@@ -92,10 +94,10 @@ class Home extends StatelessWidget {
                 MainCubit.get(context).profileModel!.semester);
 
           wannaAnnouncements = false;
-          if (anonuncments != null)
-            print(anonuncments[0].title);
-          else
-            print("Announcements are null");
+          // if (anonuncments != null)
+          //   print(anonuncments[0].title);
+          // else
+          //   print("Announcements are null");
         }
         print('$wannaAnnouncements wanna announcement ');
 
@@ -130,12 +132,15 @@ class Home extends StatelessWidget {
                       style: IconButton.styleFrom(
                           padding: EdgeInsets.all(0), minimumSize: Size(0, 0)),
                       onPressed: () {
-                        // MainCubit.get(context).openDrawerState();
+                        MainCubit.get(context).openDrawerState();
                         if ((TOKEN != null && profile != null) ||
                             TOKEN == null) {
                           scaffoldKey.currentState!
                               .openDrawer(); // Use key to open the drawer
                         }
+                        // BlocProvider.of<AdminCubit>(context)
+                        //     .sendNotificationToUsers(
+                        //         semester: "One", title: "title", body: "body");
                       },
                       icon: const Icon(
                         Icons.menu,
@@ -161,34 +166,34 @@ class Home extends StatelessWidget {
                     ),
                   ),
                   actions: [
-                    if (TOKEN == null)
-                      if (scaffoldKey.currentState?.isDrawerOpen == true)
-                        Container(
-                          margin: const EdgeInsets.only(right: 10),
-                          decoration: BoxDecoration(
-                              gradient: const LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: [
-                                    Color(0xff4fd1c5),
-                                    Color(0xff38b2ac),
-                                  ]),
-                              color: const Color(0xFF00ADB5),
-                              borderRadius: BorderRadius.circular(10)),
-                          child: MaterialButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const LoginScreen()));
-                            },
-                            child: const Text(
-                              "Login",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
+                    // if (TOKEN == null)
+                    //   if (scaffoldKey.currentState?.isDrawerOpen == true)
+                    //     Container(
+                    //       margin: const EdgeInsets.only(right: 10),
+                    //       decoration: BoxDecoration(
+                    //           gradient: const LinearGradient(
+                    //               begin: Alignment.topLeft,
+                    //               end: Alignment.bottomRight,
+                    //               colors: [
+                    //                 Color(0xff4fd1c5),
+                    //                 Color(0xff38b2ac),
+                    //               ]),
+                    //           color: const Color(0xFF00ADB5),
+                    //           borderRadius: BorderRadius.circular(10)),
+                    //       child: MaterialButton(
+                    //         onPressed: () {
+                    //           Navigator.push(
+                    //               context,
+                    //               MaterialPageRoute(
+                    //                   builder: (context) =>
+                    //                       const LoginScreen()));
+                    //         },
+                    //         child: const Text(
+                    //           "Login",
+                    //           style: TextStyle(color: Colors.white),
+                    //         ),
+                    //       ),
+                    //     ),
                   ],
                 ),
                 drawer: CustomDrawer(context),
@@ -714,13 +719,16 @@ Widget CustomDrawer(context) {
                       context: context,
                       title: "Log Out",
                       dialogType: DialogType.warning,
-                      body: Text("Are you sure you want to log out?",style: TextStyle(fontSize: 17),),
+                      body: Text(
+                        "Are you sure you want to log out?",
+                        style: TextStyle(fontSize: 17),
+                      ),
                       animType: AnimType.rightSlide,
                       btnOkColor: Colors.red,
                       btnCancelOnPress: () {},
                       btnOkText: "Log Out",
                       btnCancelColor: Colors.grey,
-                      
+
                       // titleTextStyle: TextStyle(fontSize: 22),
                       btnOkOnPress: () {
                         MainCubit.get(context).logout(context);
@@ -842,6 +850,12 @@ Widget subjectItemBuild(SubjectModel subject, context) {
     create: (context) => SubjectCubit(),
     child: GestureDetector(
       onTap: () {
+        // BlocProvider.of<AdminCubit>(context).sendFCMNotification(
+        //     title: "title",
+        //     body: "body",
+        //     token:
+        //         "chUAaG_7Tu68jnmU8UpxSN:APA91bHgHAocyXqRhWLeSw7NFepQMKaefT1i0ust8oQVvYsS1kt4OGk0wXHAqD3U6Erciw1IyPS5FUPNwxgkeNEXF4Q5W76GbTS-NZSexTaZNdLQCq1SZZzDkh23RHktWgqd7vBZLRRn");
+
         navigate(
             context,
             SubjectDetails(

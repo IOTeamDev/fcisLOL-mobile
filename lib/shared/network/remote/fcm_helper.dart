@@ -18,15 +18,15 @@ class FCMHelper {
     print(deviceToken);
     print(
         "===================Device FirebaseMessaging Token====================");
-
   }
+
   Future<String?> getAccessToken() async {
     final serviceAccountJson = {
       "type": "service_account",
       "project_id": "fcis-da7f4",
-      "private_key_id": "2dada9c2e127654c9161f89de3746e6a5d568c82",
+      "private_key_id": "65ecfe52787875cc2e579826d10fba890d36e150",
       "private_key":
-          "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQC7MvhxTp5Gt3FW\nLMLa62hg/S6xKxjDFx1NYzolS6sZqflLV7pS4iJ6h/n+KZGpymB8wCed8K73aUwc\nHGNI4I2JuKQdPbifDvhyRf8TB6WuPJvciTZme5LginKL/B86lH0l5rC+Sc6HSm/r\nCc41RUpsnDkRlcGuifs2WNKpTM92atS7suORvmj+fJiBibRpLPL/STxl8mOz5Um8\nv8oiiruq1sM2XWzfBxxNZyJq7Mp3xvlZvM+DPIHkFpw/enfOGEOS4K9hrDaofCjX\nLteRMZ2wHNxLO8oQKVaMvC1K+PbGqRcNQYnU7cCZQSLo+ORqpPZokvJzpd7093bH\ngpfCI26bAgMBAAECggEAGL6xFpE03NYs1h5Ol4+cmY1+GY8/07H/fpZKPlnVQSw1\ntt7e00vvENFem1k1VwNYY8Umt3r0NeImXGToPt7n9reAghkBiYz6DGjyQbq2DOUY\nGTvOBBf7n1DNuXFXU3ADZvoqjMzGzx1o0+HU7ze8kcTIymlIU+ELYvC00ApGNjnJ\nB8OSKJHBLRCSTyJNrmutscMGoBh8C/tND+Y4GdMKeSJcNT9mJ1GXPYlkYjq4QdCR\nZu8XlFrswuUX2Kp5FBBp6NrswMULfqdytuW6QheGgy8slzxlnnBai09tBTVhHnhy\nPx6gUdbxz8FjwF9KRKaiRncobOQ11ZTD4DfY03IF6QKBgQDfm4FvuPodZuVqBcPq\njfSrfPedczzz8lCAkW6dnWfgHF6yNFrl6QUbmLR8T88VJcbdrRtGrfc4dvnz1azq\nEWH+7pcw6MwPIOuT5HBnMlrY+dlJQvfB9oL9vf/FadqvP4tXNa+hrCobcKLdUzl1\n66qFV0nj1zzRJYbZwPWzRGy2TwKBgQDWUUJyVeNcYedmwdlyAmxf0QV05LpWefB7\nLaSvV0TVG/bFVuRQcqG9Hni7N2w9iNKX3LmxKCz+E5s7d0xdSYmO7MfOcjP7kQ1k\n6u3sOVDLyIGUM8PflzZwGoj6Mm5DoapzK467YDGsd3RLYkxe7KUSNLvWFBo/58Wt\nVpUizi979QKBgQDQULAqZDrnL1glCM/3cV5ycM7CaXxsi9+Bl3tk7SK7v9Jc1Lem\nHws6JW5nrXZv7iyxkjaqByIdAYJlLjiUK7OO67oAv7Bzm6i8tAIfseK+5y0NuozU\nr5JjUCG7SZ2IzHtEuOgxhxIHVEz2QjVy7SWEaciVsYygEATsUn7UDrf0swKBgQCn\nOUBfdiSxMLMduqOwEbP+D1nym4XJc9vwQOz+41kR73/c+q+rFcadiekqK1SJrvij\nBdbeJDr3BNVa0PsEzxxGKPq+Wt20rLmGxMhgSViBqTFyMfHjxFj1n77BehgPLVWS\nB6qXCbe4mnxjVY/BgWRLkFn/8C+LLY1Qcv5q6fajAQKBgQC9oap3m0jhLhWBqx4L\nJvaIpzrhXUDpsbO8aaPPar0ZW18RtXP8mnWvcFKKaWupL11mn33bEGGdYMY7kAlR\n6Tm/J9PckKverXbYW1orXdg4qNbEgXuT2xWBXDxvUqEd42nFeDSCSzvfIhfHxn2A\nWq4gDLz/jEepVCFwHsdDGNLCcA==\n-----END PRIVATE KEY-----\n",
+          "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDGvHRWT/NIICC0\nPE7W2nFdZdlwiieYdPZRes7SwKIjnLFnCDmQ7Cqc88gnas0ufTm0JGG7DOtSN7g5\ngpCwJTIQxmbXkjT4W6O+4LTCducyHrWk2OKam4aFTBzkFkZKJXuDqI3j4LiXVHUB\n9wZPhbW8Z6QE6VE3mgtsiZqNNZpW+r0J5PNrRkM47fWDR7N+8btLRFShZIGt82Co\nhHIp4y37n28XpsJGpCPaOdrNVxIn/lpntYh43ASBlNGIbN3pZW7NavO3MKig5yBJ\nXed0xnwUbJ6uBwUAYI8oARL3wlEY6LaJGS83c435lOtedi9hYsGC51TiAxlcR7km\ns1K7alJJAgMBAAECggEADVNkH/Mm890MTFbnOMK3dhoxoQ6by+jQfmipbG90anEO\njS3Q7FiFnUtpuPORSVl7Zcqduf+KWj44Y7TPSQcJdcn+lIcDdxbFTUkpyF4AL80S\n2XhIg4eZAXWifKHIufPhoGj221g9ZbpI8+YxiGIFwa8XtqjtZE4iOiIk7eyG9Od8\njhqCS655JYZcXeghDbbwBBDhyVCt5bdmtmF8MRmp6nlr2o4lhWR7rw5LAaZ5N09K\n0QDjpw/95afymtc4DCX5TCR28Ck3kTHBopujPRcysvviXFM3kS3o8fFnoUyb7kN8\nXMCbr3v39kw868xtQ888Bo3Aswldx5hZped7DprfjQKBgQD+roL2/IDtKix8SAp3\nQq9PcL9tQb5uo6aWZKfFE+xnITzY8iGBYjnFOFKJEh8Tj7t+Vvpa6Dxqynfu/kS1\n3HASJHo83o1xPy6xfQZunHrYyVXNiBfU2vB+obrxjcO1OAmyqj/YXnXKdVg5M+s6\nl342TKnjvBaOyP44SI5C/AICBQKBgQDHw86rA5k94bHLZS7+e9OidB3KP7PKeqSx\nRENd9vTAXnIfJp9ct4AFk5kqYgQLBBAcjUKfik3SStvCXGDMGMh6o+o/fgk2tQ0N\n6YlD73Xt4RLJdzTOG50AaSoerID7R5N281eXv7RDPwSClqojhS9bzxPAB2seEkgs\ncfnMlqCudQKBgQCWgfcvkyV2AvhrMf/NXwFPhyf5n2K0682lDzL+irmocMIOy3j1\nh2DwpkpQav8mhkidbzVgx+H8kk6yVF2yw+UPM7NxiWw5QseLaIGGmL8YolMstYKv\n7fs2OsnJuqevzsAcb/RvH9OopBRRKdeXtrOFz2SPCzahhzKFfItmFpvxKQKBgQCG\n7NklJuwVIOC+mVwRZL+ABV+toDMmeonMdWfvCoMrf18jbSnMLODaY2PbfZJvglID\nhuHN8lM3y3n9H/n9QGwAccAhHFbKzaTAldExwoZrok7XJp3S7FGx2lYpm6gOkLyo\nZhnuk/wEQ4cfUPYfwbBIGWiklh4ilISNCHqJVd+3lQKBgD801IyXNo/irQ72/v/t\nV/GcchnnUluCp1nkj7PKqxIGfpAiy2UEg7SIZlywJPpjSHWAkm6cmTfGs/By8Cab\nydiOAC8FS+VrOls0RujuPawzO5LVo9yjYY68cO1i3Msb47i0lECAVQ25dXVZkT2y\nktzxs012eMTlOJ5faB0xR7ES\n-----END PRIVATE KEY-----\n",
       "client_email":
           "firebase-adminsdk-7wunf@fcis-da7f4.iam.gserviceaccount.com",
       "client_id": "114518216051661235216",
@@ -64,6 +64,7 @@ class FCMHelper {
       return null;
     }
   }
+
   // handle notifications when received
   void handleMessages(RemoteMessage? message) {
     if (message != null) {

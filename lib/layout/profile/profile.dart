@@ -2,6 +2,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:googleapis/games/v1.dart';
 import 'package:googleapis/mybusinessaccountmanagement/v1.dart';
@@ -16,6 +17,8 @@ import 'package:lol/shared/styles/colors.dart';
 import 'package:lol/shared/components/constants.dart';
 import 'package:lol/layout/home/bloc/main_cubit.dart';
 import 'package:lol/layout/home/bloc/main_cubit_states.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:lol/layout/home/home.dart';
 import 'package:lol/shared/components/navigation.dart';
 
@@ -143,6 +146,8 @@ class Profile extends StatelessWidget {
                                       MainCubit.get(context).profileModel!.id);
                                   var score4User =
                                       LeaderboardCubit.get(context).score4User;
+                                  var userRank = score4User?.userRank;
+                                  // userRank = 1;
 
                                   return Row(
                                     mainAxisAlignment:
@@ -160,15 +165,36 @@ class Profile extends StatelessWidget {
                                       if (MainCubit.get(context)
                                                   .profileModel!
                                                   .role !=
-                                              "ADMIN" &&
-                                          score4User.score != 0)
+                                              "ADMIN"
+                                           &&score4User.score != 0
+                                          )
                                         Column(
                                           children: [
-                                            Icon(Icons.looks_one),
+                                            Icon(Icons.emoji_events_outlined),
                                             SizedBox(
                                               height: 10,
                                             ),
-                                            Text(score4User.userRank.toString())
+                                            Row(
+                                              children: [
+                                                if (userRank! >= 1 &&
+                                                    userRank! <= 3)
+                                                  Container(
+                                                      margin: EdgeInsets.only(
+                                                          right: 5),
+                                                      child: Icon(
+                                                        FontAwesomeIcons.medal,
+                                                        color: Color(userRank ==
+                                                                1
+                                                            ? 0xffFFD700
+                                                            : userRank == 2
+                                                                ? 0xFFC0C0C0
+                                                                : 0xFFCD7F32),
+                                                      )),
+                                                Text(userRank.toString()),
+                                                // Icon(FontAwesomeIcons.medal,color: Colors.yellow,),
+                                                // Icon(FontAwesomeIcons.medal,color: Colors.yellow,)
+                                              ],
+                                            )
                                           ],
                                         )
                                     ],
@@ -270,7 +296,11 @@ class Profile extends StatelessWidget {
                                                         SizedBox(
                                                           height: 5,
                                                         ),
-                                                itemCount: 5),
+                                                itemCount:
+                                                    MainCubit.get(context)
+                                                        .profileModel!
+                                                        .materials
+                                                        .length),
                                           )
                                         ],
                                       ),
@@ -299,7 +329,8 @@ Widget demoItemBuilder(ProfileMaterilaModel material, context) {
         child: GridTile(
           footer: Container(
             padding: const EdgeInsets.all(5),
-            color: Colors.black54, // Slight transparency for better readability.
+            color:
+                Colors.black54, // Slight transparency for better readability.
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -308,7 +339,8 @@ Widget demoItemBuilder(ProfileMaterilaModel material, context) {
                     material.title ?? '',
                     style: TextStyle(
                       fontSize: screenWidth(context) / 20,
-                      color: Colors.white, // Ensure text contrast on dark background.
+                      color: Colors
+                          .white, // Ensure text contrast on dark background.
                     ),
                     maxLines: 1, // Limit to 1 line for footer text.
                     overflow: TextOverflow.ellipsis, // Handle long titles.
@@ -357,4 +389,3 @@ Widget demoItemBuilder(ProfileMaterilaModel material, context) {
     );
   }
 }
-

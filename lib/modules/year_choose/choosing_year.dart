@@ -13,7 +13,7 @@ import 'package:lol/shared/components/constants.dart';
 import 'package:lol/layout/home/home.dart';
 import 'package:lol/shared/components/navigation.dart';
 import 'package:lol/shared/network/local/shared_prefrence.dart';
-import 'package:lol/shared/network/remote/cloud_messeging.dart';
+import 'package:lol/shared/network/remote/fcm_helper.dart';
 
 late String switchSemester;
 

@@ -1,10 +1,12 @@
 class FcmToken {
   late String semester;
 
-   late String  fcmToken;
+    String?  fcmToken;
+    late String  name;
 
   FcmToken.fromJson(Map<String, dynamic> model) {
     semester = model["semester"] ;
     fcmToken = model["fcmToken"];
+    name = model["name"];
   }
 }

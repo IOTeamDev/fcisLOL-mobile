@@ -57,6 +57,8 @@ main() async {
   await Cache.initialize();
   await DioHelp.initial();
   await Firebase.initializeApp();
+  String? fcmToken = await FirebaseMessaging.instance.getToken();
+  print(fcmToken);
 
 // fCMHelper.initNotifications();
 
@@ -131,7 +133,7 @@ class App extends StatelessWidget {
         child: Consumer<ThemeProvide>(builder: (context, value, child) {
           // AdminCubit.get(context).getFcmTokens();
           return MaterialApp(
-            home: startPage,
+            home: Home(),
             debugShowCheckedModeBanner: false,
             theme: value.isDark ? ThemeData.dark() : ThemeData.light(),
           );

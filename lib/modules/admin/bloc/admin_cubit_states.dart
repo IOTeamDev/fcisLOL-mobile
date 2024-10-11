@@ -92,3 +92,7 @@ class AdminAcceptRequestErrorState extends AdminCubitStates{
 class GetFcmTokensSuccess extends AdminCubitStates{}
 
 class GetFcmTokensError extends AdminCubitStates{}
+
+class SendNotificationSuccess extends AdminCubitStates{}
+
+class SendNotificationError extends AdminCubitStates{}

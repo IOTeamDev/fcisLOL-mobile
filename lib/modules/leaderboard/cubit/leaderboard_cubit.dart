@@ -18,16 +18,18 @@ class LeaderboardCubit extends Cubit<LeaderboardStates> {
 
   void getScore4User(int userId) {
     score4User = null;
+    
     for (int i = 0; i < leaderboardModel!.length; i++) {
-      if (leaderboardModel![i].id == userId) {
+      print('${leaderboardModel?[i].id}ididididiidididiidididididid');
+      if (leaderboardModel?[i].id == userId) {
+        print(leaderboardModel![i].name.toString() + "dfsgdfggsdg");
         score4User = leaderboardModel![i];
-        print(score4User!.score);
-        // emit(GetScore4User());
+        print(score4User!.name.toString() + "dfsgdfggsdg");
       }
-    }  
+    }
     for (int i = 0; i < notAdminleaderboardModel!.length; i++) {
       if (notAdminleaderboardModel![i].id == userId) {
-    score4User?.userRank = i + 1;
+        score4User?.userRank = i + 1;
         print(score4User?.userRank);
         // emit(GetScore4User());
       }
@@ -35,8 +37,8 @@ class LeaderboardCubit extends Cubit<LeaderboardStates> {
   }
 
   void getLeaderboard() {
-    notAdminleaderboardModel=null;
-    leaderboardModel=null;
+    notAdminleaderboardModel = null;
+    leaderboardModel = null;
     emit(getLeaderboardLoadingState());
     DioHelp.getData(path: LEADERBOARD, query: {'semester': 'One'})
         .then((value) {
@@ -47,9 +49,9 @@ class LeaderboardCubit extends Cubit<LeaderboardStates> {
         leaderboardModel?.add(LeaderboardModel.fromJson(
             element)); //just to get the score of Admin
 
-        // if (element['role'] != "ADMIN") {
-        notAdminleaderboardModel?.add(LeaderboardModel.fromJson(element));
-        // }
+        if (element['role'] != "ADMIN") {
+          notAdminleaderboardModel?.add(LeaderboardModel.fromJson(element));
+        }
 //role
       });
       notAdminleaderboardModel!.sort((a, b) => b.score!.compareTo(a.score!));
