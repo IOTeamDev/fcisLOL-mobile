@@ -170,18 +170,10 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                           ).then((value) {
                                             if (value != null) {
                                               setState(() {
-                                                dateController.text =
-                                                    DateFormat.yMMMd()
-                                                        .format(value);
+                                                dateController.text = value.toIso8601String();
                                               });
                                             }
                                           }),
-                                          validator: (value) {
-                                            if (value == null || value.isEmpty) {
-                                              return 'Date must not be empty';
-                                            }
-                                            return null;
-                                          },
                                           decoration: InputDecoration(
                                             suffixIcon: const Icon(
                                               Icons.date_range,

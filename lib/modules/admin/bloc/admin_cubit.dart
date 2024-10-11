@@ -27,6 +27,7 @@ import '../../../models/profile/profile_model.dart';
 import '../../../shared/components/constants.dart';
 import '../../../shared/components/navigation.dart';
 import '../../../shared/network/local/shared_prefrence.dart';
+import '../../../shared/network/remote/fcm_helper.dart';
 import '../../auth/bloc/login_cubit.dart';
 import '../../year_choose/choosing_year.dart';
 
@@ -60,7 +61,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
   AnnouncementModel? announcementModel;
   List<String> notificationsTitles = [
     "New update: Take a look!",
-    "Don't Miss That !",
+    "Don't Miss That!!!",
     "Take a look at what's new!",
     "Something new is waiting for you!",
     "Just added: Check it out!",
@@ -70,7 +71,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
   void addAnnouncement(
       {required title,
       description,
-      required dueDate,
+      dueDate,
       required type,
       image,
       required currentSemester}) {

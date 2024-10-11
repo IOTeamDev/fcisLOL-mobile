@@ -180,23 +180,13 @@ class _AddAnouncmentState extends State<AddAnnouncement> {
                                                     context: context,
                                                     initialDate: DateTime.now(),
                                                     firstDate: DateTime.now(),
-                                                    lastDate: DateTime.parse(
-                                                        '2027-12-31'),
+                                                    lastDate: DateTime.parse('2027-12-31'),
                                                   ).then((value) {
                                                     if (value != null) {
                                                       //print(DateFormat.YEAR_MONTH_DAY);
-                                                      dateController.text =
-                                                          DateFormat.yMMMd()
-                                                              .format(value);
+                                                      dateController.text = value.toIso8601String();
                                                     }
                                                   }),
-                                                  validator: (value) {
-                                                    if (value == null ||
-                                                        value.isEmpty) {
-                                                      return 'Date must not be EMPTY!!';
-                                                    }
-                                                    return null;
-                                                  },
                                                   decoration: InputDecoration(
                                                     suffixIcon: const Icon(
                                                       Icons.date_range,
@@ -246,33 +236,29 @@ class _AddAnouncmentState extends State<AddAnnouncement> {
                                           ),
                                           //Upload Image button
                                           IconButton(
-                                              onPressed: () {
-                                                mainCubit
-                                                    .getAnnouncementImage();
-                                              },
-                                              icon: Icon(
-                                                Icons.image,
-                                                color: Colors.white,
-                                              )),
+                                            onPressed: () {
+                                              mainCubit.getAnnouncementImage();
+                                            },
+                                            icon: Icon(
+                                              Icons.image,
+                                              color: Colors.white,
+                                            ),
+                                          ),
                                           const Spacer(),
                                           divider(),
                                           //Cancel and Submit buttons
                                           Padding(
-                                            padding: const EdgeInsetsDirectional
-                                                .symmetric(
-                                                horizontal: 10.0, vertical: 10),
+                                            padding: const EdgeInsetsDirectional.symmetric(horizontal: 10.0, vertical: 10),
                                             child: Row(
                                               children: [
                                                 //cancel button
                                                 ElevatedButton(
                                                   onPressed: () {
                                                     setState(() {
-                                                      titleController.text = '';
-                                                      dateController.text = '';
-                                                      descriptionController
-                                                          .text = '';
-                                                      isExpanded =
-                                                          false; // Toggle the expansion
+                                                      titleController.clear();
+                                                      dateController.clear();
+                                                      descriptionController.clear();
+                                                      isExpanded = false; // Toggle the expansion
                                                       _height = 80;
                                                       showContent = false;
                                                     });
@@ -280,9 +266,7 @@ class _AddAnouncmentState extends State<AddAnnouncement> {
                                                   style:
                                                       ElevatedButton.styleFrom(
                                                     padding:
-                                                        const EdgeInsetsDirectional
-                                                            .symmetric(
-                                                            horizontal: 35),
+                                                        const EdgeInsetsDirectional.symmetric(horizontal: 35),
                                                     backgroundColor:
                                                         HexColor('D9D9D9')
                                                             .withOpacity(0.2),
@@ -297,48 +281,21 @@ class _AddAnouncmentState extends State<AddAnnouncement> {
                                                 //submit button
                                                 ElevatedButton(
                                                     onPressed: () async {
-                                                      await MainCubit.get(
-                                                              context)
-                                                          .UploadPImage(
-                                                              image: MainCubit
-                                                                      .get(
-                                                                          context)
-                                                                  .AnnouncementImageFile,
-                                                              isUserProfile:
-                                                                  false);
-
-                                                      if (formKey.currentState!
-                                                              .validate() &&
-                                                          selectedItem !=
-                                                              null) {
+                                                      await MainCubit.get(context).UploadPImage(image: MainCubit.get(context).AnnouncementImageFile, isUserProfile: false);
+                                                      if (formKey.currentState!.validate() && selectedItem != null) {
                                                         cubit.addAnnouncement(
-                                                            title:
-                                                                titleController
-                                                                    .text,
-                                                            dueDate:
-                                                                dateController
-                                                                    .text,
-                                                            type: selectedItem,
-                                                            description:
-                                                                descriptionController
-                                                                    .text,
-                                                            image: MainCubit
-                                                                    .get(
-                                                                        context)
-                                                                .AnnouncementImagePath,
-                                                            currentSemester:
-                                                                MainCubit.get(
-                                                                        context)
-                                                                    .profileModel!
-                                                                    .semester);
+                                                          title: titleController.text,
+                                                          dueDate: dateController.text,
+                                                          type: selectedItem,
+                                                          description: descriptionController.text,
+                                                          image: MainCubit.get(context).AnnouncementImagePath,
+                                                          currentSemester: MainCubit.get(context).profileModel!.semester
+                                                        );
                                                         setState(() {
                                                           isExpanded = false;
-                                                          titleController
-                                                              .clear();
-                                                          descriptionController
-                                                              .clear();
-                                                          dateController
-                                                              .clear();
+                                                          titleController.clear();
+                                                          descriptionController.clear();
+                                                          dateController.clear();
                                                           showContent = false;
                                                           selectedItem = null;
                                                           _height = 80;
