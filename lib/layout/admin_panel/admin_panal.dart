@@ -31,6 +31,7 @@ class AdminPanal extends StatelessWidget {
       child: BlocConsumer<AdminCubit, AdminCubitStates>(
         listener: (context, state) {},
         builder: (context, state) {
+          var mainCubit = MainCubit.get(context);
           return Scaffold(
             backgroundColor: Colors.black,
             body: Stack(children: [
@@ -43,13 +44,11 @@ class AdminPanal extends StatelessWidget {
                     // Back Button
                     backButton(context),
                     // Text With Drawer Button
-                    adminTopTitleWithDrawerButton(
-                        title: 'Admin', hasDrawer: true, bottomPadding: 50),
+                    adminTopTitleWithDrawerButton(title: 'Admin', hasDrawer: true, bottomPadding: 50),
                     // Buttons
                     Container(
                       width: double.infinity,
-                      margin:
-                          const EdgeInsetsDirectional.symmetric(horizontal: 30),
+                      margin: const EdgeInsetsDirectional.symmetric(horizontal: 30),
                       height: 260,
                       child: Column(
                         children: [
@@ -58,7 +57,7 @@ class AdminPanal extends StatelessWidget {
                             children: [
                               ElevatedButton(
                                 onPressed: () {
-                                  navigate(context,  AddAnnouncement(semester: MainCubit.get(context).profileModel!.semester,));
+                                  navigate(context,  AddAnnouncement(semester: mainCubit.profileModel!.semester,));
                                 },
                                 style: ElevatedButton.styleFrom(
                                   padding:
@@ -142,6 +141,7 @@ class AdminPanal extends StatelessWidget {
                         fit: BoxFit.fitWidth,
                       ),
                     ),
+                   
                   ],
                 ),
               ),

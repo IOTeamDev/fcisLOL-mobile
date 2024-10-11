@@ -22,12 +22,16 @@ class AnnouncementDetail extends StatelessWidget {
   final String semester;
 
   const AnnouncementDetail(
-      {super.key,
+    {
+      super.key,
       required this.title,
       required this.description,
       required this.date,
       required this.id,
-      required this.selectedType, required this.semester});
+      required this.selectedType,
+      required this.semester
+    }
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +58,7 @@ class AnnouncementDetail extends StatelessWidget {
                   children: [
                     //Back Button
                     backButton(context),
-                    adminTopTitleWithDrawerButton(title: 'Announcement', size: 35, hasDrawer: false),
+                    adminTopTitleWithDrawerButton(title: 'Announcement Detail', size: 32, hasDrawer: false),
                     Container(
                       margin: const EdgeInsetsDirectional.symmetric(horizontal: 15, vertical: 20),
                       padding: const EdgeInsets.all(15),
@@ -114,7 +118,7 @@ class AnnouncementDetail extends StatelessWidget {
                                           const EdgeInsetsDirectional.symmetric(
                                               vertical: 25.0),
                                       child: Text(
-                                        'DeadLine: $date',
+                                        'DeadLine: ${date??'No due date'}',
                                         style: const TextStyle(
                                           color: Colors.white,
                                         ),

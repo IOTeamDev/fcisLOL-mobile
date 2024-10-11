@@ -19,7 +19,7 @@ import 'package:lol/modules/admin/screens/announcements/add_announcement.dart';
 import 'package:lol/models/login/login_model.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/network/endpoints.dart';
-import 'package:lol/shared/network/remote/cloud_messeging.dart';
+//import 'package:lol/shared/network/remote/cloud_messeging.dart';
 import 'package:lol/shared/network/remote/dio.dart';
 
 import '../../../layout/home/bloc/main_cubit_states.dart';
@@ -27,6 +27,7 @@ import '../../../models/profile/profile_model.dart';
 import '../../../shared/components/constants.dart';
 import '../../../shared/components/navigation.dart';
 import '../../../shared/network/local/shared_prefrence.dart';
+import '../../../shared/network/remote/fcm_helper.dart';
 import '../../auth/bloc/login_cubit.dart';
 import '../../year_choose/choosing_year.dart';
 
@@ -58,7 +59,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
   AnnouncementModel? announcementModel;
   List<String> notificationsTitles = [
     "New update: Take a look!",
-    "Don't Miss That !",
+    "Don't Miss That!!!",
     "Take a look at what's new!",
     "Something new is waiting for you!",
     "Just added: Check it out!",
@@ -68,7 +69,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
   void addAnnouncement(
       {required title,
       description,
-      required dueDate,
+      dueDate,
       required type,
       image,
       required currentSemester}) {
