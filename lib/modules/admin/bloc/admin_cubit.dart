@@ -19,8 +19,8 @@ import 'package:lol/modules/admin/screens/announcements/add_announcement.dart';
 import 'package:lol/models/login/login_model.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/network/endpoints.dart';
-//import 'package:lol/shared/network/remote/cloud_messeging.dart';
 import 'package:lol/shared/network/remote/dio.dart';
+import 'package:lol/shared/network/remote/fcm_helper.dart';
 
 import '../../../layout/home/bloc/main_cubit_states.dart';
 import '../../../models/profile/profile_model.dart';
@@ -39,15 +39,17 @@ class AdminCubit extends Cubit<AdminCubitStates> {
 
   List<FcmToken> fcmTokens = [];
 //List of notifications messages
-  Future<void>? getFcmTokens() {
+  Future? getFcmTokens() {
     print("object");
     DioHelp.getData(path: "users").then(
       (value) {
         value.data.forEach((element) {
           fcmTokens.add(FcmToken.fromJson(element));
-          // print(fcmTokens[0].semester);
+          // print(fcmTokens[1].semester);
         });
-
+        // fcmTokens.forEach((element) {
+        //   if (element.name == "phone") print(element.semester);
+        // });
         emit(GetFcmTokensSuccess());
       },
     ).catchError((onError) {
@@ -162,7 +164,6 @@ class AdminCubit extends Cubit<AdminCubitStates> {
 
   // FCMHelper fCMHelper = FCMHelper();
 
-
   Future<void> sendFCMNotification({
     required String title,
     required String body,
@@ -170,49 +171,75 @@ class AdminCubit extends Cubit<AdminCubitStates> {
   }) async {
     FCMHelper fCMHelper = FCMHelper();
 
-    try {
-      var serverKeyAuthorization = await fCMHelper.getAccessToken();
+    await fCMHelper.initNotifications();
+    var serverKeyAuthorization = await fCMHelper.getAccessToken();
 
-      print(serverKeyAuthorization.toString() + "dsfgsdg");
+    print(serverKeyAuthorization.toString() + "dsfgsdg");
 
-      // change your project id
-      const String urlEndPoint =
-          "https://fcm.googleapis.com/v1/projects/fcis-da7f4/messages:send";
+    // change your project id
+    const String urlEndPoint =
+        "https://fcm.googleapis.com/v1/projects/fcis-da7f4/messages:send";
 
-      Dio dio = Dio();
-      dio.options.headers['Content-Type'] = 'application/json';
-      dio.options.headers['Authorization'] = 'Bearer $serverKeyAuthorization';
+    Dio dio = Dio();
+    dio.options.headers['Content-Type'] = 'application/json';
+    dio.options.headers['Authorization'] = 'Bearer $serverKeyAuthorization';
 
-      var response = await dio.post(
-        urlEndPoint,
-        data: fCMHelper.getBody(
-          fcmToken: token,
-          title: title,
-          body: body,
-        ),
-      );
+    dio
+        .post(
+          urlEndPoint,
+          data: fCMHelper.getBody(
+            fcmToken: token,
+            title: title,
+            body: body,
+          ),
+        )
+        .then((onValue) => emit(GetFcmTokensSuccess()))
+        .catchError((onError) {
+      print(onError.toString());
+      emit(SendNotificationError());
+    });
 
-      // Print response status code and body for debugging
-      print('Response Status Code: ${response.statusCode}');
-      print('Response Data: ${response.data}');
-    } catch (e) {
-      print("Error sending notification: $e");
+    // Print response status code and body for debugging
+    //   print('Response Status Code: ${response.statusCode}');
+    //   print('Response Data: ${response.data}');
+    // } catch (e) {
+    //   print("Error sending notification: $e");
+    // }
+  }
+
+  Future<void> sendNotificationToUsers({
+  required String semester,
+  required String title,
+  required String body,
+}) async {
+  // Wait for FCM tokens to be fetched
+  // await getFcmTokens();
+
+  // Ensure the tokens are fetched successfully and the list is populated
+  if (fcmTokens.isEmpty) {
+    print('No FCM tokens found');
+  // await getFcmTokens();
+  }
+
+  print(fcmTokens.length); // Print the number of fetched tokens
+
+  // Filter users based on semester
+  List<FcmToken> filteredUsers = fcmTokens.where((user) => user.semester == semester).toList();
+
+  if (filteredUsers.isEmpty) {
+    print('No users found for semester: $semester');
+    return; // Exit early if no users are found for the semester
+  }
+
+  // Send notifications to each user
+  for (var user in filteredUsers) {
+    if (user.fcmToken != null) {
+      print('${user.semester} - Sending notification to: ${user.fcmToken}');
+      await sendFCMNotification(title: title, body: body, token: user.fcmToken!);
     }
   }
 
-  void sendNotificationToUsers(
-      {required String semester,
-      required String title,
-      required String body}) async {
-    await getFcmTokens();
+  print('Notifications sent successfully');
+}
 
-    // Filter users whose semester is three
-    List<FcmToken> filteredUsers =
-        fcmTokens.where((user) => user.semester == semester).toList();
-
-    for (var user in filteredUsers) {
-      if (user.fcmToken != null)
-        sendFCMNotification(title: title, body: body, token: user.fcmToken!);
-    }
-  }
 }
