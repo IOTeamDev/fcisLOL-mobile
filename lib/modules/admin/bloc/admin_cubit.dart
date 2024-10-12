@@ -86,20 +86,17 @@ class AdminCubit extends Cubit<AdminCubitStates> {
               'due_date': dueDate,
               'type': type,
               'semester': currentSemester,
-              'image': image
+              'image': image??'https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/140.jpg?alt=media&token=3e5a4144-20ca-44ce-ba14-57432e49914f'
             },
-            token: TOKEN)
-        .then((value) {
-      //announcementModel = AnnouncementModel.fromJson(value.data);
+            token: TOKEN
+    ).then((value) {
       sendNotificationToUsers(
           semester: currentSemester,
           title: notificationsTitles[randomIndex],
-          body: title); // LOL
-
+          body: title
+      ); // LOL
       emit(AdminSaveAnnouncementSuccessState());
       getAnnouncements(currentSemester);
-    }).catchError((error) {
-      emit(AdminSaveAnnouncementsErrorState(error));
     });
   }
 

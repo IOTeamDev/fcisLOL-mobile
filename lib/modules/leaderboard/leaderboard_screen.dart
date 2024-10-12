@@ -2,8 +2,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/layout/home/bloc/main_cubit.dart';
-import 'package:lol/modules/leaderboard/cubit/leaderboard_cubit.dart';
-import 'package:lol/modules/leaderboard/cubit/leaderboard_states.dart';
+import 'package:lol/layout/home/bloc/main_cubit_states.dart';
 import 'package:lol/shared/components/components.dart';
 
 class LeaderboardScreen extends StatelessWidget {
@@ -12,10 +11,17 @@ class LeaderboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var scaffoldKey = GlobalKey<ScaffoldState>();
-    return BlocProvider(
-      create: (context) => LeaderboardCubit()..getLeaderboard(),
-      child: BlocConsumer<LeaderboardCubit, LeaderboardStates>(
-        listener: (context, state) {},
+    return MultiBlocProvider(
+      providers:[
+        BlocProvider(create: (context) => MainCubit()..getProfileInfo()),
+      ],
+      child: BlocConsumer<MainCubit, MainCubitStates>(
+        listener: (context, state) {
+          if(state is GetProfileSuccess)
+          {
+              MainCubit.get(context).getLeaderboard(MainCubit.get(context).profileModel!.semester);
+          }
+        },
         builder: (context, state) => Scaffold(
           key: scaffoldKey,
           backgroundColor: Colors.black,
@@ -45,70 +51,39 @@ class LeaderboardScreen extends StatelessWidget {
                       child: Row(
                         children: [
                           Container(
-                            padding:
-                                EdgeInsetsDirectional.symmetric(horizontal: 10),
-                            decoration: BoxDecoration(
-                                border: Border(
-                                    right: BorderSide(color: Colors.grey))),
-                            child: Text('Rank',
-                                style: TextStyle(
-                                    color: Colors.grey, fontSize: 20)),
+                            padding: EdgeInsetsDirectional.symmetric(horizontal: 10),
+                            decoration: BoxDecoration(border: Border(right: BorderSide(color: Colors.grey))),
+                            child: Text('Rank', style: TextStyle(color: Colors.grey, fontSize: 20)),
                           ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Text(
-                            'Name',
-                            style: TextStyle(color: Colors.grey, fontSize: 20),
-                          ),
+                          SizedBox(width: 20,),
+                          Text('Name', style: TextStyle(color: Colors.grey, fontSize: 20),),
                           Spacer(),
                           Container(
-                              padding: EdgeInsetsDirectional.symmetric(
-                                  horizontal: 10),
-                              decoration: BoxDecoration(
-                                  border: Border(
-                                      left: BorderSide(color: Colors.grey))),
-                              child: Text(
-                                'Score',
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 20,
-                                ),
-                              )),
+                            padding: EdgeInsetsDirectional.symmetric(horizontal: 10),
+                            decoration: BoxDecoration(border: Border(left: BorderSide(color: Colors.grey))),
+                            child: Text('Score', style: TextStyle(color: Colors.grey, fontSize: 20,),)
+                          ),
                         ],
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsetsDirectional.symmetric(
-                          vertical: 8.0, horizontal: 20),
+                      padding: const EdgeInsetsDirectional.symmetric(vertical: 8.0, horizontal: 20),
                       child: divider(),
                     ),
                     Expanded(
                       child: ConditionalBuilder(
-                        condition:
-                            LeaderboardCubit.get(context).notAdminleaderboardModel !=
-                                    null &&
-                                state is! getLeaderboardLoadingState,
+                        condition: MainCubit.get(context).notAdminLeaderboardModel != null && state is! getLeaderboardLoadingState,
                         builder: (context) {
-                        
                           return ListView.separated(
-                            itemCount: LeaderboardCubit.get(context)
-                                .notAdminleaderboardModel!
-                                .length,
+                            itemCount: MainCubit.get(context).notAdminLeaderboardModel!.length,
                             itemBuilder: (context, index) {
                               return buildList(
-                                  (index + 1),
-                                  LeaderboardCubit.get(context)
-                                      .notAdminleaderboardModel![index]
-                                      .name,
-                                  LeaderboardCubit.get(context)
-                                      .notAdminleaderboardModel![index]
-                                      .score);
+                                (index + 1),
+                                MainCubit.get(context).notAdminLeaderboardModel![index].name,
+                                MainCubit.get(context).notAdminLeaderboardModel![index].score
+                              );
                             },
-                            separatorBuilder: (context, state) =>
-                                const SizedBox(
-                              height: 10,
-                            ),
+                            separatorBuilder: (context, state) => const SizedBox(height: 10,),
                           );
                         },
                         fallback: (context) => const Center(
@@ -118,7 +93,7 @@ class LeaderboardScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -136,10 +111,8 @@ class LeaderboardScreen extends StatelessWidget {
           children: [
             Container(
               padding: EdgeInsetsDirectional.symmetric(horizontal: 10),
-              decoration: BoxDecoration(
-                  border: Border(right: BorderSide(color: Colors.grey))),
-              child: Text(index.toString(),
-                  style: TextStyle(color: Colors.white, fontSize: 20)),
+              decoration: BoxDecoration(border: Border(right: BorderSide(color: Colors.grey))),
+              child: Text(index.toString(), style: TextStyle(color: Colors.white, fontSize: 20)),
             ),
             SizedBox(
               width: 20,
@@ -150,16 +123,16 @@ class LeaderboardScreen extends StatelessWidget {
             ),
             Spacer(),
             Container(
-                padding: EdgeInsetsDirectional.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                    border: Border(left: BorderSide(color: Colors.grey))),
-                child: Text(
-                  score.toString(),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                  ),
-                )),
+              padding: EdgeInsetsDirectional.symmetric(horizontal: 10),
+              decoration: BoxDecoration(border: Border(left: BorderSide(color: Colors.grey))),
+              child: Text(
+                score.toString(),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
+              ),
+            ),
           ],
         ),
       ),

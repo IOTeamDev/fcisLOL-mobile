@@ -88,14 +88,14 @@ class AnnouncementDetail extends StatelessWidget {
                           const SizedBox(
                             height: 20,
                           ),
-                          Expanded(
-                            child: SingleChildScrollView(
-                              child: Container(
-                                padding: const EdgeInsets.all(15),
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                    color: HexColor('D9D9D9').withOpacity(0.2),
-                                    borderRadius: BorderRadius.circular(20)),
+                          Container(
+                            padding: const EdgeInsets.all(15),
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                color: HexColor('D9D9D9').withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Expanded(
+                              child: SingleChildScrollView(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [

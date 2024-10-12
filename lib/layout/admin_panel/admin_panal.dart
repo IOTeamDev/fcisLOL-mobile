@@ -17,8 +17,8 @@ import '../../modules/auth/screens/login.dart';
 import '../home/home.dart';
 import '../profile/profile.dart';
 
-class AdminPanal extends StatelessWidget {
-  const AdminPanal({super.key});
+class AdminPanel extends StatelessWidget {
+  const AdminPanel({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class AdminPanal extends StatelessWidget {
         BlocProvider(create: (context) => AdminCubit()
         ),
       ],
-      child: BlocConsumer<AdminCubit, AdminCubitStates>(
+      child: BlocConsumer<MainCubit, MainCubitStates>(
         listener: (context, state) {},
         builder: (context, state) {
           var mainCubit = MainCubit.get(context);
@@ -46,90 +46,94 @@ class AdminPanal extends StatelessWidget {
                     // Text With Drawer Button
                     adminTopTitleWithDrawerButton(title: 'Admin', hasDrawer: true, bottomPadding: 50),
                     // Buttons
-                    Container(
-                      width: double.infinity,
-                      margin: const EdgeInsetsDirectional.symmetric(horizontal: 30),
-                      height: 260,
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  navigate(context,  AddAnnouncement(semester: mainCubit.profileModel!.semester,));
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  padding:
-                                      EdgeInsets.zero, // Remove default padding
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  minimumSize: const Size(250, 125),
-                                ),
-                                child: Ink(
-                                  decoration: BoxDecoration(
-                                    image: const DecorationImage(
-                                      image: AssetImage(
-                                          'images/admin/Frame 4.png'),
-                                      fit: BoxFit.cover,
+                    ConditionalBuilder(
+                      condition: MainCubit.get(context).profileModel != null && state is! GetProfileLoading,
+                      fallback: (context) => const Center(child: CircularProgressIndicator()),
+                      builder: (context) => Container(
+                        width: double.infinity,
+                        margin: const EdgeInsetsDirectional.symmetric(horizontal: 30),
+                        height: 260,
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    navigate(context,  AddAnnouncement(semester: mainCubit.profileModel!.semester,));
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    padding:
+                                        EdgeInsets.zero, // Remove default padding
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
                                     ),
-                                    borderRadius: BorderRadius.circular(20),
+                                    minimumSize: const Size(250, 125),
                                   ),
-                                  child: Container(
-                                    width: 250,
-                                    height: 125,
-                                    alignment: Alignment.center,
-                                    child: const Text(
-                                      'Announcements',
-                                      style: TextStyle(
-                                          fontSize: 30, color: Colors.white),
+                                  child: Ink(
+                                    decoration: BoxDecoration(
+                                      image: const DecorationImage(
+                                        image: AssetImage(
+                                            'images/admin/Frame 4.png'),
+                                        fit: BoxFit.cover,
+                                      ),
+                                      borderRadius: BorderRadius.circular(20),
                                     ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Spacer(),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  navigate(context, Requests());
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  padding:
-                                      EdgeInsets.zero, // Remove default padding
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  minimumSize: const Size(250, 125),
-                                ),
-                                child: Ink(
-                                  decoration: BoxDecoration(
-                                    image: const DecorationImage(
-                                      image: AssetImage(
-                                          'images/admin/Frame 2.png'),
-                                      fit: BoxFit.cover,
-                                    ),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Container(
-                                    width: 250,
-                                    height: 125,
-                                    alignment: Alignment.center,
-                                    child: const Text(
-                                      'Requests',
-                                      style: TextStyle(
-                                          fontSize: 30, color: Colors.white),
+                                    child: Container(
+                                      width: 250,
+                                      height: 125,
+                                      alignment: Alignment.center,
+                                      child: const Text(
+                                        'Announcements',
+                                        style: TextStyle(
+                                            fontSize: 30, color: Colors.white),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                            const Spacer(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    navigate(context, Requests());
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    padding:
+                                        EdgeInsets.zero, // Remove default padding
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    minimumSize: const Size(250, 125),
+                                  ),
+                                  child: Ink(
+                                    decoration: BoxDecoration(
+                                      image: const DecorationImage(
+                                        image: AssetImage(
+                                            'images/admin/Frame 2.png'),
+                                        fit: BoxFit.cover,
+                                      ),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Container(
+                                      width: 250,
+                                      height: 125,
+                                      alignment: Alignment.center,
+                                      child: const Text(
+                                        'Requests',
+                                        style: TextStyle(
+                                            fontSize: 30, color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     const Spacer(),

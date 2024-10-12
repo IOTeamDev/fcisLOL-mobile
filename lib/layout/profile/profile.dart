@@ -7,8 +7,6 @@ import 'package:googleapis/games/v1.dart';
 import 'package:googleapis/mybusinessaccountmanagement/v1.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/models/profile/profile_materila_model.dart';
-import 'package:lol/modules/leaderboard/cubit/leaderboard_cubit.dart';
-import 'package:lol/modules/leaderboard/cubit/leaderboard_states.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/default_button.dart';
 import 'package:lol/shared/components/default_text_field.dart';
@@ -121,9 +119,9 @@ class Profile extends StatelessWidget {
 
                         BlocProvider(
                           create: (context) =>
-                              LeaderboardCubit()..getLeaderboard(),
+                              MainCubit()..getLeaderboard(MainCubit.get(context).profileModel!.semester),
                           child:
-                              BlocBuilder<LeaderboardCubit, LeaderboardStates>(
+                              BlocBuilder<MainCubit, MainCubitStates>(
                             builder: (context, state) {
                               // var user = MainCubit.get(context).profileModel;
                               // bool wannaLeaderbord = true;
@@ -135,14 +133,11 @@ class Profile extends StatelessWidget {
                               //   wannaLeaderbord = false;
                               // print(wannaLeaderbord.toString() + " Leaderboard");
                               // }
-                              if (LeaderboardCubit.get(context)
-                                      .leaderboardModel !=
-                                  null)
-                                return Builder(builder: (context) {
-                                  LeaderboardCubit.get(context).getScore4User(
-                                      MainCubit.get(context).profileModel!.id);
-                                  var score4User =
-                                      LeaderboardCubit.get(context).score4User;
+                              if (MainCubit.get(context).score4User != null)
+                                return Builder(
+                                  builder: (context) {
+                                  MainCubit.get(context).getScore4User(MainCubit.get(context).profileModel!.id);
+                                  var score4User = MainCubit.get(context).score4User;
 
                                   return Row(
                                     mainAxisAlignment:
@@ -157,11 +152,7 @@ class Profile extends StatelessWidget {
                                           Text(score4User!.score.toString())
                                         ],
                                       ),
-                                      if (MainCubit.get(context)
-                                                  .profileModel!
-                                                  .role !=
-                                              "ADMIN" &&
-                                          score4User.score != 0)
+                                      if (MainCubit.get(context).profileModel!.role != "ADMIN" && score4User.score != 0)
                                         Column(
                                           children: [
                                             Icon(Icons.looks_one),
@@ -265,13 +256,9 @@ class Profile extends StatelessWidget {
                                                         context),
                                                   );
                                                 },
-                                                separatorBuilder:
-                                                    (context, index) =>
-                                                        SizedBox(
-                                                          height: 5,
-                                                        ),
-                                                itemCount: 5),
-                                          )
+                                                separatorBuilder: (context, index) => SizedBox(height: 5,), itemCount: 5
+                                            ),
+                                          ),
                                         ],
                                       ),
                                     ]),

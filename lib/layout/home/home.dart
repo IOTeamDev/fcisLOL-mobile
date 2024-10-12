@@ -63,54 +63,58 @@ class Home extends StatelessWidget {
         ),
       ],
       child:
-          BlocConsumer<MainCubit, MainCubitStates>(listener: (context, state) {
-            if (state is Logout) {
-              showToastMessage(
-                message: "Logout Successfully",
-                // context: context,
-                states: ToastStates.SUCCESS,
-                // titleWidget: const
-              );
-            }
-          }, builder: (context, state) {
-            bool wannaAnnouncements = true;
-            print('$wannaAnnouncements wanna announcement ');
-            List<AnnouncementModel>? anonuncments = AdminCubit.get(context).announcements;
+          BlocConsumer<MainCubit, MainCubitStates>(
+            listener: (context, state) {
+              if (state is Logout) {
+                showToastMessage(
+                  message: "Logout Successfully",
+                  // context: context,
+                  states: ToastStates.SUCCESS,
+                  // titleWidget: const
+                );
+              }
+            },
+            builder: (context, state) {
+              bool wannaAnnouncements = true;
+              print('$wannaAnnouncements wanna announcement ');
 
-            if (anonuncments != null)
-              print("${anonuncments[0].title} dfggdfghghfdfgh");
-            else
-              print("Announcements are null");
-            if ((state is GetProfileSuccess || TOKEN == null) && wannaAnnouncements) {
-              if (TOKEN == null)
-                BlocProvider.of<AdminCubit>(context).getAnnouncements(SelectedSemester!);
+              List<AnnouncementModel>? announcements = AdminCubit.get(context).announcements;
+
+              if (announcements != null && announcements.isNotEmpty)
+                print("${announcements[0].title} dfggdfghghfdfgh");
               else
-                BlocProvider.of<AdminCubit>(context).getAnnouncements(MainCubit.get(context).profileModel!.semester);
-              wannaAnnouncements = false;
-              if (anonuncments != null)
-                print(anonuncments[0].title);
-              else
-                print("Announcements are null");
-          }
-            print('$wannaAnnouncements wanna announcement ');
+                print("Announcements are null or empty");
+              if ((state is GetProfileSuccess || TOKEN == null) && wannaAnnouncements) {
+                if (TOKEN == null)
+                  BlocProvider.of<AdminCubit>(context).getAnnouncements(SelectedSemester!);
+                else
+                  BlocProvider.of<AdminCubit>(context).getAnnouncements(MainCubit.get(context).profileModel!.semester);
+                wannaAnnouncements = false;
 
-            ProfileModel? profile;
-            int? semesterIndex;
+                if (announcements != null && announcements.isNotEmpty)
+                  print(announcements[0].title);
+                else
+                  print("Announcements are null");
+              }
+              print('$wannaAnnouncements wanna announcement ');
 
-            // SelectedSemester = "Two";
-            if (MainCubit.get(context).profileModel != null) {
-              profile = MainCubit.get(context).profileModel!;
-              print(profile.name);
-            }
+              ProfileModel? profile;
+              int? semesterIndex;
 
-            if (profile != null) {
-              semesterIndex = semsesterIndex(profile.semester);
-            } else if (TOKEN == null) {
-              semesterIndex = semsesterIndex(SelectedSemester!);
-            }
+              // SelectedSemester = "Two";
+              if (MainCubit.get(context).profileModel != null) {
+                profile = MainCubit.get(context).profileModel!;
+                print(profile.name);
+              }
+
+              if (profile != null) {
+                semesterIndex = semsesterIndex(profile.semester);
+              } else if (TOKEN == null) {
+                semesterIndex = semsesterIndex(SelectedSemester!);
+              }
 
           // print("$semesterIndex index");
-          return profile == null && TOKEN != null
+            return profile == null && TOKEN != null
               ? const Scaffold(
                   backgroundColor: Color(0xff1B262C),
                   body: Center(child: CircularProgressIndicator()),
@@ -505,7 +509,7 @@ Widget CustomDrawer(context) {
                   leading: const Icon(Icons.admin_panel_settings),
                   title: const Text("Admin"),
                   onTap: () {
-                    navigate(context, AdminPanal());
+                    navigate(context, AdminPanel());
                   },
                 ),
               ListTile(

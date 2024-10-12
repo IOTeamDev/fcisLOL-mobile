@@ -20,19 +20,19 @@ class AddAnnouncement extends StatefulWidget {
   const AddAnnouncement({super.key, required this.semester});
 
   @override
-  State<AddAnnouncement> createState() => _AddAnouncmentState();
+  State<AddAnnouncement> createState() => _AddAnnouncementState();
 }
 
-class _AddAnouncmentState extends State<AddAnnouncement> {
+class _AddAnnouncementState extends State<AddAnnouncement> {
   double _height = 80;
-  bool isExpanded = false;
-  bool showContent = false;
+  bool _isExpanded = false;
+  bool _showContent = false;
 
-  var formKey = GlobalKey<FormState>();
-  var titleController = TextEditingController();
-  var dateController = TextEditingController();
-  var descriptionController = TextEditingController();
-  String? selectedItem;
+  var _formKey = GlobalKey<FormState>();
+  var _titleController = TextEditingController();
+  var _dateController = TextEditingController();
+  var _descriptionController = TextEditingController();
+  String? _selectedItem;
   final List<String> _items = ['Assignment', 'Quiz', 'Other'];
 
   @override
@@ -40,7 +40,7 @@ class _AddAnouncmentState extends State<AddAnnouncement> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => MainCubit(),
+          create: (context) => MainCubit()..getProfileInfo(),
         ),
         BlocProvider(
           create: (context) => AdminCubit()..getAnnouncements(widget.semester),
@@ -89,13 +89,13 @@ class _AddAnouncmentState extends State<AddAnnouncement> {
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              isExpanded = true; // Toggle the expansion
+                              _isExpanded = true; // Toggle the expansion
                               _height = 450;
                             });
                             Future.delayed(const Duration(milliseconds: 350),
                                 () {
                               setState(() {
-                                showContent = true;
+                                _showContent = true;
                               });
                             });
                           },
@@ -109,22 +109,22 @@ class _AddAnouncmentState extends State<AddAnnouncement> {
                                 borderRadius: BorderRadius.circular(20),
                                 color: HexColor('B8A8F9').withOpacity(0.20)),
                             curve: Curves.fastEaseInToSlowEaseOut,
-                            child: isExpanded && showContent
+                            child: _isExpanded && _showContent
                                 ? Padding(
                                     padding:
                                         const EdgeInsetsDirectional.symmetric(
                                             horizontal: 10.0, vertical: 10),
                                     child: Form(
-                                      key: formKey,
+                                      key: _formKey,
                                       child: AnimatedOpacity(
-                                        opacity: isExpanded ? 1.0 : 0,
+                                        opacity: _isExpanded ? 1.0 : 0,
                                         duration:
                                             const Duration(milliseconds: 500),
                                         curve: Curves.easeInOut,
                                         child: Column(children: [
                                           //Title Text Input
                                           TextFormField(
-                                            controller: titleController,
+                                            controller: _titleController,
                                             validator: (value) {
                                               if (value == null ||
                                                   value.isEmpty) {
@@ -148,7 +148,7 @@ class _AddAnouncmentState extends State<AddAnnouncement> {
                                           ),
                                           //Description Input text Field
                                           TextFormField(
-                                            controller: descriptionController,
+                                            controller: _descriptionController,
                                             minLines: 5,
                                             maxLines: 5,
                                             decoration: InputDecoration(
@@ -173,7 +173,7 @@ class _AddAnouncmentState extends State<AddAnnouncement> {
                                               //DatePicker Input text Field
                                               Expanded(
                                                 child: TextFormField(
-                                                  controller: dateController,
+                                                  controller: _dateController,
                                                   keyboardType:
                                                       TextInputType.none,
                                                   onTap: () => showDatePicker(
@@ -184,7 +184,7 @@ class _AddAnouncmentState extends State<AddAnnouncement> {
                                                   ).then((value) {
                                                     if (value != null) {
                                                       //print(DateFormat.YEAR_MONTH_DAY);
-                                                      dateController.text = value.toIso8601String();
+                                                      _dateController.text = value.toUtc().toIso8601String();
                                                     }
                                                   }),
                                                   decoration: InputDecoration(
@@ -213,7 +213,7 @@ class _AddAnouncmentState extends State<AddAnnouncement> {
                                                 style: const TextStyle(
                                                     color: Colors.white),
                                                 dropdownColor: Colors.black,
-                                                value: selectedItem,
+                                                value: _selectedItem,
                                                 items:
                                                     _items.map((String item) {
                                                   return DropdownMenuItem<
@@ -228,7 +228,7 @@ class _AddAnouncmentState extends State<AddAnnouncement> {
                                                 }).toList(),
                                                 onChanged: (String? newValue) {
                                                   setState(() {
-                                                    selectedItem = newValue;
+                                                    _selectedItem = newValue;
                                                   });
                                                 },
                                               ),
@@ -255,12 +255,12 @@ class _AddAnouncmentState extends State<AddAnnouncement> {
                                                 ElevatedButton(
                                                   onPressed: () {
                                                     setState(() {
-                                                      titleController.clear();
-                                                      dateController.clear();
-                                                      descriptionController.clear();
-                                                      isExpanded = false; // Toggle the expansion
+                                                      _titleController.clear();
+                                                      _dateController.clear();
+                                                      _descriptionController.clear();
+                                                      _isExpanded = false; // Toggle the expansion
                                                       _height = 80;
-                                                      showContent = false;
+                                                      _showContent = false;
                                                     });
                                                   },
                                                   style:
@@ -280,51 +280,43 @@ class _AddAnouncmentState extends State<AddAnnouncement> {
                                                 const Spacer(),
                                                 //submit button
                                                 ElevatedButton(
-                                                    onPressed: () async {
+                                                  onPressed: () async {
+                                                    if (_formKey.currentState!.validate() && _selectedItem != null) {
+                                                      setState(() {
+                                                        _isExpanded = false;
+                                                        _titleController.clear();
+                                                        _descriptionController.clear();
+                                                        _dateController.clear();
+                                                        _showContent = false;
+                                                        _selectedItem = null;
+                                                        _height = 80;
+                                                      });
                                                       await MainCubit.get(context).UploadPImage(image: MainCubit.get(context).AnnouncementImageFile, isUserProfile: false);
-                                                      if (formKey.currentState!.validate() && selectedItem != null) {
-                                                        cubit.addAnnouncement(
-                                                          title: titleController.text,
-                                                          dueDate: dateController.text,
-                                                          type: selectedItem,
-                                                          description: descriptionController.text,
-                                                          image: MainCubit.get(context).AnnouncementImagePath,
-                                                          currentSemester: MainCubit.get(context).profileModel!.semester
-                                                        );
-                                                        setState(() {
-                                                          isExpanded = false;
-                                                          titleController.clear();
-                                                          descriptionController.clear();
-                                                          dateController.clear();
-                                                          showContent = false;
-                                                          selectedItem = null;
-                                                          _height = 80;
-                                                        });
-                                                      }
-                                                    },
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      padding:
-                                                          const EdgeInsetsDirectional
-                                                              .symmetric(
-                                                              horizontal: 40),
-                                                      backgroundColor:
-                                                          HexColor('B8A8F9'),
-                                                      foregroundColor:
-                                                          Colors.white,
-                                                      textStyle:
-                                                          const TextStyle(
-                                                              fontSize: 15),
-                                                    ),
-                                                    child:
-                                                        const Text('Submit')),
+                                                      cubit.addAnnouncement(
+                                                        title: _titleController.text,
+                                                        dueDate: _dateController.text,
+                                                        type: _selectedItem,
+                                                        description: _descriptionController.text,
+                                                        image: MainCubit.get(context).AnnouncementImagePath,
+                                                        currentSemester: MainCubit.get(context).profileModel!.semester
+                                                      );
+                                                    }
+                                                  },
+                                                  style: ElevatedButton.styleFrom(
+                                                    padding: const EdgeInsetsDirectional.symmetric(horizontal: 40),
+                                                    backgroundColor: HexColor('B8A8F9'),
+                                                    foregroundColor: Colors.white,
+                                                    textStyle: const TextStyle(fontSize: 15),
+                                                  ),
+                                                  child: const Text('Submit')
+                                                ),
                                               ],
                                             ),
                                           ),
                                         ]),
                                       ),
                                     ))
-                                : !isExpanded
+                                : !_isExpanded
                                     ? const Padding(
                                         padding:
                                             EdgeInsetsDirectional.symmetric(

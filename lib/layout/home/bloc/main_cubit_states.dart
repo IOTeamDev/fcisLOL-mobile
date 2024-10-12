@@ -67,3 +67,9 @@ class AcceptRequestLoadingState extends MainCubitStates{}
 class AcceptRequestSuccessState extends MainCubitStates{}
 
 class AcceptRequestErrorState extends MainCubitStates{}
+
+class getLeaderboardLoadingState extends MainCubitStates{}
+
+class getLeaderboardSuccessState extends MainCubitStates{}
+
+class getLeaderboardErrorState extends MainCubitStates{}
