@@ -92,6 +92,7 @@ class MainCubit extends Cubit<MainCubitStates> {
   }
 
   Future<void> UploadPImage({File? image, bool isUserProfile = true}) async {
+    AnnouncementImagePath = null;
     emit(UploadImageLoading());
     if (image == null) return;
 

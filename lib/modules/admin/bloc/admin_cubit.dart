@@ -49,6 +49,17 @@ class AdminCubit extends Cubit<AdminCubitStates> {
         // fcmTokens.forEach((element) {
         //   if (element.name == "phone") print(element.semester);
         // });
+        fcmTokens.forEach((action) {
+          // sendFCMNotification(
+          //     title: "title",
+          //     body: "body",
+          //     token:
+          //         "chUAaG_7Tu68jnmU8UpxSN:APA91bHgHAocyXqRhWLeSw7NFepQMKaefT1i0ust8oQVvYsS1kt4OGk0wXHAqD3U6Erciw1IyPS5FUPNwxgkeNEXF4Q5W76GbTS-NZSexTaZNdLQCq1SZZzDkh23RHktWgqd7vBZLRRn");
+          if (action.fcmToken != null) {
+            print(action.name.toString());
+            print(action.fcmToken.toString());
+          }
+        });
         emit(GetFcmTokensSuccess());
       },
     ).catchError((onError) {
@@ -74,6 +85,12 @@ class AdminCubit extends Cubit<AdminCubitStates> {
       required type,
       image,
       required currentSemester}) {
+    print(title + "title");
+    print(description + "desc");
+    print(dueDate + "Date");
+    print(type.toString() + "type");
+    print(currentSemester);
+    print(image);
     Random random = Random();
 
     // Get a random index
@@ -87,15 +104,15 @@ class AdminCubit extends Cubit<AdminCubitStates> {
               'due_date': dueDate,
               'type': type,
               'semester': currentSemester,
-              'image': image??'https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/140.jpg?alt=media&token=3e5a4144-20ca-44ce-ba14-57432e49914f'
+              'image': image ??
+                  'https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/140.jpg?alt=media&token=3e5a4144-20ca-44ce-ba14-57432e49914f'
             },
-            token: TOKEN
-    ).then((value) {
+            token: TOKEN)
+        .then((value) {
       sendNotificationToUsers(
           semester: currentSemester,
           title: notificationsTitles[randomIndex],
-          body: title
-      ); // LOL
+          body: title); // LOL
       emit(AdminSaveAnnouncementSuccessState());
       getAnnouncements(currentSemester);
     });
@@ -207,38 +224,42 @@ class AdminCubit extends Cubit<AdminCubitStates> {
   }
 
   Future<void> sendNotificationToUsers({
-  required String semester,
-  required String title,
-  required String body,
-}) async {
-  // Wait for FCM tokens to be fetched
-  // await getFcmTokens();
+    required String semester,
+    required String title,
+    required String body,
+  }) async {
 
-  // Ensure the tokens are fetched successfully and the list is populated
-  if (fcmTokens.isEmpty) {
-    print('No FCM tokens found');
-  // await getFcmTokens();
-  }
+        await FirebaseMessaging.instance.requestPermission();
 
-  print(fcmTokens.length); // Print the number of fetched tokens
+    // Wait for FCM tokens to be fetched
+    // await getFcmTokens();
 
-  // Filter users based on semester
-  List<FcmToken> filteredUsers = fcmTokens.where((user) => user.semester == semester).toList();
-
-  if (filteredUsers.isEmpty) {
-    print('No users found for semester: $semester');
-    return; // Exit early if no users are found for the semester
-  }
-
-  // Send notifications to each user
-  for (var user in filteredUsers) {
-    if (user.fcmToken != null) {
-      print('${user.semester} - Sending notification to: ${user.fcmToken}');
-      await sendFCMNotification(title: title, body: body, token: user.fcmToken!);
+    // Ensure the tokens are fetched successfully and the list is populated
+    if (fcmTokens.isEmpty) {
+      print('No FCM tokens found');
+      // await getFcmTokens();
     }
+
+    print(fcmTokens.length); // Print the number of fetched tokens
+
+    // Filter users based on semester
+    List<FcmToken> filteredUsers =
+        fcmTokens.where((user) => user.semester == semester).toList();
+
+    if (filteredUsers.isEmpty) {
+      print('No users found for semester: $semester');
+      return; // Exit early if no users are found for the semester
+    }
+
+    // Send notifications to each user
+    for (var user in filteredUsers) {
+      if (user.fcmToken != null) {
+        print('${user.semester} - Sending notification to: ${user.fcmToken}');
+        await sendFCMNotification(
+            title: title, body: body, token: user.fcmToken!);
+      }
+    }
+
+    print('Notifications sent successfully');
   }
-
-  print('Notifications sent successfully');
-}
-
 }
