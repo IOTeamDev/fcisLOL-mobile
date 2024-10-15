@@ -31,6 +31,9 @@ class Profile extends StatelessWidget {
       create: (context) => MainCubit()..getProfileInfo(),
       child: BlocConsumer<MainCubit, MainCubitStates>(
         builder: (context, state) {
+          if (state is GetProfileSuccess)
+            BlocProvider.of<MainCubit>(context)
+                .getLeaderboard(MainCubit.get(context).profileModel!.semester);
           var mainCubit = MainCubit.get(context);
           if (mainCubit.profileModel != null) {
             if (mainCubit.profileModel!.phone != null) {
@@ -117,60 +120,51 @@ class Profile extends StatelessWidget {
                           height: 20,
                         ),
 
-                        BlocProvider(
-                          create: (context) =>
-                              MainCubit()..getLeaderboard(MainCubit.get(context).profileModel!.semester),
-                          child:
-                              BlocBuilder<MainCubit, MainCubitStates>(
-                            builder: (context, state) {
-                              // var user = MainCubit.get(context).profileModel;
-                              // bool wannaLeaderbord = true;
-                              // print(
-                              //     "$wannaLeaderbord Leaderboard");
-                              // if (wannaLeaderbord) {
-                              //   BlocProvider.of<LeaderboardCubit>(context)
-                              //       .getLeaderboard();
-                              //   wannaLeaderbord = false;
-                              // print(wannaLeaderbord.toString() + " Leaderboard");
-                              // }
-                              if (MainCubit.get(context).score4User != null)
-                                return Builder(
-                                  builder: (context) {
-                                  MainCubit.get(context).getScore4User(MainCubit.get(context).profileModel!.id);
-                                  var score4User = MainCubit.get(context).score4User;
-
-                                  return Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
+                        Builder(
+                          builder: (context) {
+                            if (MainCubit.get(context).leaderboardModel != null)
+                              return Builder(builder: (context) {
+                                MainCubit.get(context).getScore4User(
+                                    MainCubit.get(context).profileModel!.id);
+                                var score4User =
+                                    MainCubit.get(context).score4User;
+                        
+                                return Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        // Icon(),
+                                        Text("My Score",style: TextStyle(color: Colors.redAccent,fontSize: 16,fontWeight: FontWeight.bold),),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(score4User!.score.toString())
+                                      ],
+                                    ),
+                                    if (MainCubit.get(context)
+                                                .profileModel!
+                                                .role !=
+                                            "ADMIN" &&
+                                        score4User.score != 0)
                                       Column(
                                         children: [
-                                          Icon(Icons.crib_outlined),
+                                          Icon(Icons.looks_one),
                                           SizedBox(
                                             height: 10,
                                           ),
-                                          Text(score4User!.score.toString())
+                                          Text(score4User.userRank.toString())
                                         ],
-                                      ),
-                                      if (MainCubit.get(context).profileModel!.role != "ADMIN" && score4User.score != 0)
-                                        Column(
-                                          children: [
-                                            Icon(Icons.looks_one),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Text(score4User.userRank.toString())
-                                          ],
-                                        )
-                                    ],
-                                  );
-                                });
-                              else
-                                return Center(
-                                  child: CircularProgressIndicator(),
+                                      )
+                                  ],
                                 );
-                            },
-                          ),
+                              });
+                            else
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
+                          },
                         ),
 
                         const SizedBox(
@@ -256,8 +250,12 @@ class Profile extends StatelessWidget {
                                                         context),
                                                   );
                                                 },
-                                                separatorBuilder: (context, index) => SizedBox(height: 5,), itemCount: 5
-                                            ),
+                                                separatorBuilder:
+                                                    (context, index) =>
+                                                        SizedBox(
+                                                          height: 5,
+                                                        ),
+                                                itemCount: 5),
                                           ),
                                         ],
                                       ),
@@ -286,7 +284,8 @@ Widget demoItemBuilder(ProfileMaterilaModel material, context) {
         child: GridTile(
           footer: Container(
             padding: const EdgeInsets.all(5),
-            color: Colors.black54, // Slight transparency for better readability.
+            color:
+                Colors.black54, // Slight transparency for better readability.
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -295,7 +294,8 @@ Widget demoItemBuilder(ProfileMaterilaModel material, context) {
                     material.title ?? '',
                     style: TextStyle(
                       fontSize: screenWidth(context) / 20,
-                      color: Colors.white, // Ensure text contrast on dark background.
+                      color: Colors
+                          .white, // Ensure text contrast on dark background.
                     ),
                     maxLines: 1, // Limit to 1 line for footer text.
                     overflow: TextOverflow.ellipsis, // Handle long titles.
@@ -344,4 +344,3 @@ Widget demoItemBuilder(ProfileMaterilaModel material, context) {
     );
   }
 }
-

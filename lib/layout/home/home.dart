@@ -63,323 +63,296 @@ class Home extends StatelessWidget {
         ),
       ],
       child:
-          BlocConsumer<MainCubit, MainCubitStates>(
-            listener: (context, state) {
-              if (state is Logout) {
-                showToastMessage(
-                  message: "Logout Successfully",
-                  // context: context,
-                  states: ToastStates.SUCCESS,
-                  // titleWidget: const
-                );
-              }
-            },
-            builder: (context, state) {
-              bool wannaAnnouncements = true;
-              print('$wannaAnnouncements wanna announcement ');
+          BlocConsumer<MainCubit, MainCubitStates>(listener: (context, state) {
+        if (state is Logout) {
+          showToastMessage(
+            message: "Logout Successfully",
+            // context: context,
+            states: ToastStates.SUCCESS,
+            // titleWidget: const
+          );
+        }
+      }, builder: (context, state) {
+        bool wannaAnnouncements = true;
+        print('$wannaAnnouncements wanna announcement ');
 
-              List<AnnouncementModel>? announcements = AdminCubit.get(context).announcements;
+        List<AnnouncementModel>? announcements =
+            AdminCubit.get(context).announcements;
 
-              if (announcements != null && announcements.isNotEmpty)
-                print("${announcements[0].title} dfggdfghghfdfgh");
-              else
-                print("Announcements are null or empty");
-              if ((state is GetProfileSuccess || TOKEN == null) && wannaAnnouncements) {
-                if (TOKEN == null)
-                  BlocProvider.of<AdminCubit>(context).getAnnouncements(SelectedSemester!);
-                else
-                  BlocProvider.of<AdminCubit>(context).getAnnouncements(MainCubit.get(context).profileModel!.semester);
-                wannaAnnouncements = false;
+        if (announcements != null && announcements.isNotEmpty)
+          print("${announcements[0].title} dfggdfghghfdfgh");
+        else
+          print("Announcements are null or empty");
+        if ((state is GetProfileSuccess || TOKEN == null) &&
+            wannaAnnouncements) {
+          if (TOKEN == null)
+            BlocProvider.of<AdminCubit>(context)
+                .getAnnouncements(SelectedSemester!);
+          else
+            BlocProvider.of<AdminCubit>(context).getAnnouncements(
+                MainCubit.get(context).profileModel!.semester);
+          wannaAnnouncements = false;
 
-                if (announcements != null && announcements.isNotEmpty)
-                  print(announcements[0].title);
-                else
-                  print("Announcements are null");
-              }
-              print('$wannaAnnouncements wanna announcement ');
+          if (announcements != null && announcements.isNotEmpty)
+            print(announcements[0].title);
+          else
+            print("Announcements are null");
+        }
+        print('$wannaAnnouncements wanna announcement ');
 
-              ProfileModel? profile;
-              int? semesterIndex;
+        ProfileModel? profile;
+        int? semesterIndex;
 
-              // SelectedSemester = "Two";
-              if (MainCubit.get(context).profileModel != null) {
-                profile = MainCubit.get(context).profileModel!;
-                print(profile.name);
-              }
+        // SelectedSemester = "Two";
+        if (MainCubit.get(context).profileModel != null) {
+          profile = MainCubit.get(context).profileModel!;
+          print(profile.name);
+        }
 
-              if (profile != null) {
-                semesterIndex = semsesterIndex(profile.semester);
-              } else if (TOKEN == null) {
-                semesterIndex = semsesterIndex(SelectedSemester!);
-              }
+        if (profile != null) {
+          semesterIndex = semsesterIndex(profile.semester);
+        } else if (TOKEN == null) {
+          semesterIndex = semsesterIndex(SelectedSemester!);
+        }
 
-          // print("$semesterIndex index");
-            return profile == null && TOKEN != null
-              ? const Scaffold(
-                  backgroundColor: Color(0xff1B262C),
-                  body: Center(child: CircularProgressIndicator()),
-                )
-              : Scaffold(
-                  key: scaffoldKey,
-                  backgroundColor: const Color(0xff1B262C),
-                  appBar: AppBar(
-                    leadingWidth: 50,
+        // print("$semesterIndex index");
+        return profile == null && TOKEN != null
+            ? const Scaffold(
+                backgroundColor: Color(0xff1B262C),
+                body: Center(child: CircularProgressIndicator()),
+              )
+            : Scaffold(
+                key: scaffoldKey,
+                backgroundColor: const Color(0xff1B262C),
+                appBar: AppBar(
+                  leadingWidth: 50,
 
-                    leading: IconButton(
-                        style: IconButton.styleFrom(
-                            padding: EdgeInsets.all(0), minimumSize: Size(0, 0)),
-                        onPressed: () {
-                          // MainCubit.get(context).openDrawerState();
-                          if ((TOKEN != null && profile != null) ||
-                              TOKEN == null) {
-                            scaffoldKey.currentState!
-                                .openDrawer(); // Use key to open the drawer
-                          }
-                        },
-                        icon: const Icon(
-                          Icons.menu,
-                          size: 25,
-                          color: Colors.white,
-                        )),
-                    backgroundColor: const Color(0xff0F4C75),
-                    // centerTitle: true,
-                    title: GestureDetector(
-                      onTap: () => navigatReplace(context, const Home()),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.max,
+                  leading: IconButton(
+                      style: IconButton.styleFrom(
+                          padding: EdgeInsets.all(0), minimumSize: Size(0, 0)),
+                      onPressed: () {
+                        // MainCubit.get(context).openDrawerState();
+                        if ((TOKEN != null && profile != null) ||
+                            TOKEN == null) {
+                          scaffoldKey.currentState!
+                              .openDrawer(); // Use key to open the drawer
+                        }
+                      },
+                      icon: const Icon(
+                        Icons.menu,
+                        size: 25,
+                        color: Colors.white,
+                      )),
+                  backgroundColor: const Color(0xff0F4C75),
+                  // centerTitle: true,
+                  title: GestureDetector(
+                    onTap: () => navigatReplace(context, const Home()),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        const Icon(Icons.apple),
+                        const SizedBox(width: 10),
+                        Text(
+                          "name",
+                          style: GoogleFonts.montserrat(),
+                        ),
+                        SizedBox(width: 50)
+                      ],
+                    ),
+                  ),
+                
+                ),
+                drawer: CustomDrawer(context),
+                body: profile == null && TOKEN != null
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Stack(
                         children: [
-                          const Icon(Icons.apple),
-                          const SizedBox(width: 10),
-                          Text(
-                            "name",
-                            style: GoogleFonts.montserrat(),
+                          Container(
+                            decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Color(0xFF1c1c2e), // Dark indigo
+                                  Color(0xFF2c2b3f), // Deep purple
+                                ],
+                              ),
+                            ),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(height: 20),
+                                  BlocBuilder<AdminCubit, AdminCubitStates>(
+                                      builder: (context, state) {
+                                    if (AdminCubit.get(context).announcements ==
+                                        null)
+                                      return Center(
+                                          child: CircularProgressIndicator());
+                                    else {
+                                      var anonuncmentsss =
+                                          AdminCubit.get(context).announcements;
+
+                                      return CarouselSlider(
+                                        items: anonuncmentsss!.isEmpty
+                                            ? [
+                                                Container(
+                                                  child: Image.network(
+                                                      width: double.infinity,
+                                                      fit: BoxFit.cover,
+                                                      "https://e00-elmundo.uecdn.es/assets/multimedia/imagenes/2022/02/04/16439302481269.jpg"),
+                                                )
+                                              ]
+                                            : anonuncmentsss!
+                                                .map((anonuncments) {
+                                                return Stack(
+                                                    alignment:
+                                                        Alignment.bottomCenter,
+                                                    children: [
+                                                      Container(
+                                                        clipBehavior:
+                                                            Clip.antiAlias,
+                                                        // margin: const EdgeInsets.all(6.0),
+                                                        // child: Image.asset("images/332573639_735780287983011_1562632886952931410_n.jpg",width: 400,height: 400,fit: BoxFit.cover,),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      3.0),
+                                                          // image: DecorationImage(
+                                                          //   image: AssetImage(
+                                                          //     carsor.image ?? "images/llogo.jfif",
+                                                          //   ),
+                                                          //   fit: BoxFit.cover,
+                                                          // ),
+                                                        ),
+                                                        child: Image.network(
+                                                          anonuncments.image,
+                                                          width: 400,
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          gradient:
+                                                              LinearGradient(
+                                                            colors: [
+                                                              Colors.black
+                                                                  .withOpacity(
+                                                                      0.2),
+                                                              Colors
+                                                                  .transparent,
+                                                            ],
+                                                            begin: Alignment
+                                                                .bottomCenter,
+                                                            end: Alignment
+                                                                .topCenter,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                          // padding: EdgeInsets.all(5),
+                                                          // width: 400,
+                                                          decoration: BoxDecoration(
+                                                              color: const Color
+                                                                      .fromARGB(
+                                                                      51,
+                                                                      65,
+                                                                      180,
+                                                                      197)
+                                                                  .withOpacity(
+                                                                      0.6)
+                                                                  .withAlpha(
+                                                                      150),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          3)),
+                                                          child: Text(
+                                                            anonuncments.title,
+                                                            style: const TextStyle(
+                                                                fontSize: 20,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ))
+                                                    ]);
+                                              }).toList(),
+                                        options: CarouselOptions(
+                                          height: 200.0,
+                                          autoPlay: true,
+                                          enlargeCenterPage: true,
+                                          aspectRatio: 16 / 9,
+                                          autoPlayCurve: Curves.fastOutSlowIn,
+                                          enableInfiniteScroll:
+                                              anonuncmentsss.isEmpty
+                                                  ? false
+                                                  : true,
+                                          autoPlayInterval:
+                                              const Duration(seconds: 10),
+                                          autoPlayAnimationDuration:
+                                              const Duration(milliseconds: 800),
+                                          viewportFraction: 0.8,
+                                        ),
+                                      );
+                                    }
+                                  }),
+                                  const SizedBox(height: 20),
+                                  const SizedBox(height: 10),
+                                  Container(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: GridView.builder(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2, // Two items per row
+                                        crossAxisSpacing: 10,
+                                        mainAxisSpacing: 10,
+                                        childAspectRatio: 3 /
+                                            2, // Control the height and width ratio
+                                      ),
+                                      itemCount:
+                                          // semesters[semesterIndex!].subjects.length,
+                                          semesters[semesterIndex!]
+                                              .subjects
+                                              .length,
+                                      itemBuilder: (context, index) {
+                                        return
+
+                                            // subjectItemBuild(
+                                            //     semesters[semesterIndex!]
+                                            //         .subjects[index],context);
+                                            subjectItemBuild(
+                                                semesters[semesterIndex!]
+                                                    .subjects[index],
+                                                context);
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                          SizedBox(width: 50)
+                          // if (scaffoldKey.currentState?.isDrawerOpen == true)
+                          //   BackdropFilter(
+                          //     filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
+                          //     child: Container(
+                          //       color: Colors.transparent,
+                          //     ),
+                          //   ),
                         ],
                       ),
-                    ),
-                    actions: [
-                      if (TOKEN == null)
-                        if (scaffoldKey.currentState?.isDrawerOpen == true)
-                          Container(
-                            margin: const EdgeInsets.only(right: 10),
-                            decoration: BoxDecoration(
-                                gradient: const LinearGradient(
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                    colors: [
-                                      Color(0xff4fd1c5),
-                                      Color(0xff38b2ac),
-                                    ]),
-                                color: const Color(0xFF00ADB5),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: MaterialButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const LoginScreen()));
-                              },
-                              child: const Text(
-                                "Login",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ),
-                    ],
-                  ),
-                  drawer: CustomDrawer(context),
-                  body: profile == null && TOKEN != null
-                      ? const Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : Stack(
-                          children: [
-                            Container(
-                              decoration: const BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: [
-                                    Color(0xFF1c1c2e), // Dark indigo
-                                    Color(0xFF2c2b3f), // Deep purple
-                                  ],
-                                ),
-                              ),
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const SizedBox(height: 20),
-                                    BlocBuilder<AdminCubit, AdminCubitStates>(
-                                        builder: (context, state) {
-                                      if (AdminCubit.get(context).announcements ==
-                                          null)
-                                        return Center(
-                                            child: CircularProgressIndicator());
-                                      else {
-                                        var anonuncmentsss =
-                                            AdminCubit.get(context).announcements;
-
-                                        return CarouselSlider(
-                                          items: anonuncmentsss!.isEmpty
-                                              ? [
-                                                  Container(
-                                                    child: Image.network(
-                                                        width: double.infinity,
-                                                        fit: BoxFit.cover,
-                                                        "https://e00-elmundo.uecdn.es/assets/multimedia/imagenes/2022/02/04/16439302481269.jpg"),
-                                                  )
-                                                ]
-                                              : anonuncmentsss!
-                                                  .map((anonuncments) {
-                                                  return Stack(
-                                                      alignment:
-                                                          Alignment.bottomCenter,
-                                                      children: [
-                                                        Container(
-                                                          clipBehavior:
-                                                              Clip.antiAlias,
-                                                          // margin: const EdgeInsets.all(6.0),
-                                                          // child: Image.asset("images/332573639_735780287983011_1562632886952931410_n.jpg",width: 400,height: 400,fit: BoxFit.cover,),
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        3.0),
-                                                            // image: DecorationImage(
-                                                            //   image: AssetImage(
-                                                            //     carsor.image ?? "images/llogo.jfif",
-                                                            //   ),
-                                                            //   fit: BoxFit.cover,
-                                                            // ),
-                                                          ),
-                                                          child: Image.network(
-                                                            anonuncments.image,
-                                                            width: 400,
-                                                            fit: BoxFit.cover,
-                                                          ),
-                                                        ),
-                                                        Container(
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            gradient:
-                                                                LinearGradient(
-                                                              colors: [
-                                                                Colors.black
-                                                                    .withOpacity(
-                                                                        0.2),
-                                                                Colors
-                                                                    .transparent,
-                                                              ],
-                                                              begin: Alignment
-                                                                  .bottomCenter,
-                                                              end: Alignment
-                                                                  .topCenter,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Container(
-                                                            // padding: EdgeInsets.all(5),
-                                                            // width: 400,
-                                                            decoration: BoxDecoration(
-                                                                color: const Color
-                                                                        .fromARGB(
-                                                                        51,
-                                                                        65,
-                                                                        180,
-                                                                        197)
-                                                                    .withOpacity(
-                                                                        0.6)
-                                                                    .withAlpha(
-                                                                        150),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            3)),
-                                                            child: Text(
-                                                              anonuncments.title,
-                                                              style: const TextStyle(
-                                                                  fontSize: 20,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500),
-                                                              textAlign: TextAlign
-                                                                  .center,
-                                                            ))
-                                                      ]);
-                                                }).toList(),
-                                          options: CarouselOptions(
-                                            height: 200.0,
-                                            autoPlay: true,
-                                            enlargeCenterPage: true,
-                                            aspectRatio: 16 / 9,
-                                            autoPlayCurve: Curves.fastOutSlowIn,
-                                            enableInfiniteScroll:
-                                                anonuncmentsss.isEmpty
-                                                    ? false
-                                                    : true,
-                                            autoPlayInterval:
-                                                const Duration(seconds: 10),
-                                            autoPlayAnimationDuration:
-                                                const Duration(milliseconds: 800),
-                                            viewportFraction: 0.8,
-                                          ),
-                                        );
-                                      }
-                                    }),
-                                    const SizedBox(height: 20),
-                                    const SizedBox(height: 10),
-                                    Container(
-                                      padding: const EdgeInsets.all(16.0),
-                                      child: GridView.builder(
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        gridDelegate:
-                                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2, // Two items per row
-                                          crossAxisSpacing: 10,
-                                          mainAxisSpacing: 10,
-                                          childAspectRatio: 3 /
-                                              2, // Control the height and width ratio
-                                        ),
-                                        itemCount:
-                                            // semesters[semesterIndex!].subjects.length,
-                                            semesters[semesterIndex!]
-                                                .subjects
-                                                .length,
-                                        itemBuilder: (context, index) {
-                                          return
-
-                                              // subjectItemBuild(
-                                              //     semesters[semesterIndex!]
-                                              //         .subjects[index],context);
-                                              subjectItemBuild(
-                                                  semesters[semesterIndex!]
-                                                      .subjects[index],
-                                                  context);
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            // if (scaffoldKey.currentState?.isDrawerOpen == true)
-                            //   BackdropFilter(
-                            //     filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
-                            //     child: Container(
-                            //       color: Colors.transparent,
-                            //     ),
-                            //   ),
-                          ],
-                        ),
-                );
-        }),
+              );
+      }),
     );
   }
 }
@@ -713,13 +686,16 @@ Widget CustomDrawer(context) {
                       context: context,
                       title: "Log Out",
                       dialogType: DialogType.warning,
-                      body: Text("Are you sure you want to log out?",style: TextStyle(fontSize: 17),),
+                      body: Text(
+                        "Are you sure you want to log out?",
+                        style: TextStyle(fontSize: 17),
+                      ),
                       animType: AnimType.rightSlide,
                       btnOkColor: Colors.red,
                       btnCancelOnPress: () {},
                       btnOkText: "Log Out",
                       btnCancelColor: Colors.grey,
-                      
+
                       // titleTextStyle: TextStyle(fontSize: 22),
                       btnOkOnPress: () {
                         MainCubit.get(context).logout(context);

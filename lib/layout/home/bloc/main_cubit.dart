@@ -95,7 +95,8 @@ class MainCubit extends Cubit<MainCubitStates> {
     emit(UploadImageLoading());
     if (image == null) return;
 
-    showToastMessage(message: 'Uploading your photo', states: ToastStates.WARNING);
+    showToastMessage(
+        message: 'Uploading your photo', states: ToastStates.WARNING);
     final uploadTask = await FirebaseStorage.instance
         .ref()
         .child("images/${Uri.file(image.path).pathSegments.last}")
@@ -121,8 +122,8 @@ class MainCubit extends Cubit<MainCubitStates> {
 
     emit(GetProfileLoading());
     profileModel = null;
-    DioHelp.getData(path: CURRENTUSER, token: TOKEN).then((value)
-      {
+    DioHelp.getData(path: CURRENTUSER, token: TOKEN).then(
+      (value) {
         profileModel = ProfileModel.fromJson(value.data);
 
         emit(GetProfileSuccess());
@@ -134,12 +135,12 @@ class MainCubit extends Cubit<MainCubitStates> {
     TOKEN = null;
     SelectedSemester = null;
     Cache.removeValue(key: "token");
-    Cache.removeValue(key: "semester");
+    Cache.removeValue(key: "semester"); //SelectedSemester
     Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
           builder: (context) => ChoosingYear(loginCubit: LoginCubit()),
-        ),
+        ), //removing all background screens
         (route) => false);
     emit(Logout());
   }
@@ -183,8 +184,9 @@ class MainCubit extends Cubit<MainCubitStates> {
 
   LeaderboardModel? score4User;
 
-  void getScore4User(int userId) {
+  void getScore4User(int userId) async {
     score4User = null;
+    print(leaderboardModel!.length.toString() + "dsmksdjkl");
     for (int i = 0; i < leaderboardModel!.length; i++) {
       if (leaderboardModel![i].id == userId) {
         score4User = leaderboardModel![i];
@@ -199,18 +201,22 @@ class MainCubit extends Cubit<MainCubitStates> {
         // emit(GetScore4User());
       }
     }
+    print(score4User!.score);
   }
 
-  void getLeaderboard(currentSemester) {
-    notAdminLeaderboardModel=null;
-    leaderboardModel=null;
-    emit(getLeaderboardLoadingState());
-    DioHelp.getData(path: LEADERBOARD, query: {'semester': currentSemester}).then((value) {
+  Future? getLeaderboard(currentSemester) {
+    // getProfileInfo();
+    notAdminLeaderboardModel = null;
+    leaderboardModel = null;
+    emit(GetLeaderboardLoadingState());
+    DioHelp.getData(path: LEADERBOARD, query: {'semester': currentSemester})
+        .then((value) {
       leaderboardModel = [];
       notAdminLeaderboardModel = [];
       value.data.forEach((element) {
         // exclude the admin
-        leaderboardModel?.add(LeaderboardModel.fromJson(element)); //just to get the score of Admin
+        leaderboardModel?.add(LeaderboardModel.fromJson(
+            element)); //just to get the score of Admin
 
         if (element['role'] != "ADMIN") {
           notAdminLeaderboardModel?.add(LeaderboardModel.fromJson(element));
@@ -218,11 +224,16 @@ class MainCubit extends Cubit<MainCubitStates> {
 //role
       });
       notAdminLeaderboardModel!.sort((a, b) => b.score!.compareTo(a.score!));
-      emit(getLeaderboardSuccessState());
+      print(leaderboardModel!.length);
+      if (profileModel != null)
+        getScore4User(profileModel!.id);
+      else
+        print("object");
+      emit(GetLeaderboardSuccessState());
     }).catchError((onError) {
       print(onError.toString());
 
-      emit(getLeaderboardErrorState());
+      emit(GetLeaderboardErrorState());
     });
   }
 }
