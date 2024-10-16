@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,6 +34,8 @@ import 'shared/observer.dart';
 import 'package:flutter/material.dart';
 import 'layout/home/home.dart';
 
+String? private_key_id;
+String? private_key;
 // Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 //   await Firebase.initializeApp();
 //   // If you're going to use other Firebase services in the background, such as Firestore,
@@ -51,7 +54,7 @@ import 'layout/home/home.dart';
 //     }
 //   }
 // }
-
+Map<String, dynamic> fcisServiceMap = {};
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Cache.initialize();
@@ -60,6 +63,21 @@ main() async {
   String? fcmToken = await FirebaseMessaging.instance.getToken();
   print(fcmToken);
 
+  await FirebaseFirestore.instance
+      .collection("4notifications")
+      .doc("private_keys")
+      .get()
+      .then((value) {
+
+
+fcisServiceMap=value.data()?["fcisServiceMap"];
+private_key=value.data()?["private_key"];
+private_key_id=value.data()?["private_key_id"];
+private_key= private_key!.replaceAll(r'\n', '\n').trim();
+
+    print(fcisServiceMap["project_id"].toString()+"+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+      });
 // fCMHelper.initNotifications();
 
 // fCMHelper.sendNotifications(

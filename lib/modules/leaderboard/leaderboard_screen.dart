@@ -72,7 +72,7 @@ class LeaderboardScreen extends StatelessWidget {
                     ),
                     Expanded(
                       child: ConditionalBuilder(
-                        condition: MainCubit.get(context).notAdminLeaderboardModel != null && state is! getLeaderboardLoadingState,
+                        condition: MainCubit.get(context).notAdminLeaderboardModel != null && state is! GetLeaderboardLoadingState,
                         builder: (context) {
                           return ListView.separated(
                             itemCount: MainCubit.get(context).notAdminLeaderboardModel!.length,

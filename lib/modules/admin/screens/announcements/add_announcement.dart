@@ -43,7 +43,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
           create: (context) => MainCubit()..getProfileInfo(),
         ),
         BlocProvider(
-          create: (context) => AdminCubit()..getAnnouncements(widget.semester),
+          create: (context) => AdminCubit()..getAnnouncements(widget.semester)..getFcmTokens(),
         ),
       ],
       child: BlocConsumer<AdminCubit, AdminCubitStates>(
@@ -180,14 +180,19 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                     context: context,
                                                     initialDate: DateTime.now(),
                                                     firstDate: DateTime.now(),
-                                                    lastDate: DateTime.parse('2027-12-31'),
+                                                    lastDate: DateTime.parse(
+                                                        '2027-12-31'),
                                                   ).then((value) {
                                                     if (value != null) {
                                                       //print(DateFormat.YEAR_MONTH_DAY);
-                                                      _dateController.text = value.toUtc().toIso8601String();
+                                                      _dateController.text =
+                                                          value
+                                                              .toUtc()
+                                                              .toIso8601String();
                                                     }
                                                   }),
                                                   decoration: InputDecoration(
+                                                    
                                                     suffixIcon: const Icon(
                                                       Icons.date_range,
                                                       color: Colors.grey,
@@ -248,7 +253,9 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                           divider(),
                                           //Cancel and Submit buttons
                                           Padding(
-                                            padding: const EdgeInsetsDirectional.symmetric(horizontal: 10.0, vertical: 10),
+                                            padding: const EdgeInsetsDirectional
+                                                .symmetric(
+                                                horizontal: 10.0, vertical: 10),
                                             child: Row(
                                               children: [
                                                 //cancel button
@@ -257,8 +264,10 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                     setState(() {
                                                       _titleController.clear();
                                                       _dateController.clear();
-                                                      _descriptionController.clear();
-                                                      _isExpanded = false; // Toggle the expansion
+                                                      _descriptionController
+                                                          .clear();
+                                                      _isExpanded =
+                                                          false; // Toggle the expansion
                                                       _height = 80;
                                                       _showContent = false;
                                                     });
@@ -266,7 +275,9 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                   style:
                                                       ElevatedButton.styleFrom(
                                                     padding:
-                                                        const EdgeInsetsDirectional.symmetric(horizontal: 35),
+                                                        const EdgeInsetsDirectional
+                                                            .symmetric(
+                                                            horizontal: 35),
                                                     backgroundColor:
                                                         HexColor('D9D9D9')
                                                             .withOpacity(0.2),
@@ -280,36 +291,77 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                 const Spacer(),
                                                 //submit button
                                                 ElevatedButton(
-                                                  onPressed: () async {
-                                                    if (_formKey.currentState!.validate() && _selectedItem != null) {
-                                                      setState(() {
-                                                        _isExpanded = false;
-                                                        _titleController.clear();
-                                                        _descriptionController.clear();
-                                                        _dateController.clear();
-                                                        _showContent = false;
-                                                        _selectedItem = null;
-                                                        _height = 80;
-                                                      });
-                                                      await MainCubit.get(context).UploadPImage(image: MainCubit.get(context).AnnouncementImageFile, isUserProfile: false);
-                                                      cubit.addAnnouncement(
-                                                        title: _titleController.text,
-                                                        dueDate: _dateController.text,
-                                                        type: _selectedItem,
-                                                        description: _descriptionController.text,
-                                                        image: MainCubit.get(context).AnnouncementImagePath,
-                                                        currentSemester: MainCubit.get(context).profileModel!.semester
-                                                      );
-                                                    }
-                                                  },
-                                                  style: ElevatedButton.styleFrom(
-                                                    padding: const EdgeInsetsDirectional.symmetric(horizontal: 40),
-                                                    backgroundColor: HexColor('B8A8F9'),
-                                                    foregroundColor: Colors.white,
-                                                    textStyle: const TextStyle(fontSize: 15),
-                                                  ),
-                                                  child: const Text('Submit')
-                                                ),
+                                                    onPressed: () async {
+                                                      if (_formKey.currentState!
+                                                              .validate() &&
+                                                          _selectedItem !=
+                                                              null) {
+                                                                setState(() {
+                                                                    _isExpanded = false;
+                                                          _showContent = false;
+                                                          _height = 80;
+                                                                });
+                                                      
+
+                                                        print(_selectedItem);
+                                                        print(
+                                                            "${MainCubit.get(context).profileModel!.semester}sdsdaffsdkljkjkljkljklhjklhjk00");
+                                                        await MainCubit.get(
+                                                                context)
+                                                            .UploadPImage(
+                                                                image: MainCubit
+                                                                        .get(
+                                                                            context)
+                                                                    .AnnouncementImageFile,
+                                                                isUserProfile:
+                                                                    false);
+                                                        cubit.addAnnouncement(
+                                                            title: _titleController
+                                                                .text,
+                                                            dueDate:
+                                                                _dateController
+                                                                    .text,
+                                                            type: _selectedItem,
+                                                            description:
+                                                                _descriptionController
+                                                                    .text,
+                                                            image: MainCubit
+                                                                    .get(
+                                                                        context)
+                                                                .AnnouncementImagePath,
+                                                            currentSemester:
+                                                                MainCubit.get(
+                                                                        context)
+                                                                    .profileModel!
+                                                                    .semester);
+                                                                      setState(() {
+                                                        
+                                                          _titleController
+                                                              .clear();
+                                                          _descriptionController
+                                                              .clear();
+                                                          _dateController
+                                                              .clear();
+                                                          _selectedItem = null;
+                                                        });
+                                                      }
+                                                    },
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      padding:
+                                                          const EdgeInsetsDirectional
+                                                              .symmetric(
+                                                              horizontal: 40),
+                                                      backgroundColor:
+                                                          HexColor('B8A8F9'),
+                                                      foregroundColor:
+                                                          Colors.white,
+                                                      textStyle:
+                                                          const TextStyle(
+                                                              fontSize: 15),
+                                                    ),
+                                                    child:
+                                                        const Text('Submit')),
                                               ],
                                             ),
                                           ),
@@ -351,7 +403,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                             physics: const BouncingScrollPhysics(),
                             itemBuilder: (context, index) =>
                                 announcementBuilder(
-                                  widget.semester,
+                                    widget.semester,
                                     cubit.announcements![index].id.toString(),
                                     context,
                                     cubit.announcements![index].title,
@@ -395,13 +447,14 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
     );
   }
 
-  Widget announcementBuilder(semester,
-      String cubitId, context, title, ID, content, date, selectedItem) {
+  Widget announcementBuilder(semester, String cubitId, context, title, ID,
+      content, date, selectedItem) {
     var cubit = AdminCubit.get(context).announcements![ID];
     return GestureDetector(
       onTap: () async {
         String refresh = await Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => AnnouncementDetail(semester: semester,
+          builder: (context) => AnnouncementDetail(
+            semester: semester,
             title: cubit.title!,
             description: cubit.content,
             date: cubit.dueDate,
@@ -438,7 +491,8 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                 print(cubit.id);
                 String Refresh = await Navigator.of(context).push(
                   MaterialPageRoute(
-                      builder: (context) => EditAnnouncement(semester: semester,
+                      builder: (context) => EditAnnouncement(
+                            semester: semester,
                             title: cubit.title!,
                             content: cubit.content,
                             date: cubit.dueDate,
@@ -462,7 +516,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
             //Delete Icon
             MaterialButton(
               onPressed: () {
-                AdminCubit.get(context).deleteAnnouncement(cubit.id,semester);
+                AdminCubit.get(context).deleteAnnouncement(cubit.id, semester);
               },
               shape: const CircleBorder(),
               minWidth: 0,

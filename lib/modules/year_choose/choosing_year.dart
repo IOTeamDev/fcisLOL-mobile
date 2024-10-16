@@ -30,6 +30,28 @@ class ChoosingYear extends StatelessWidget {
         builder: (context, state) => Scaffold(
           backgroundColor: const Color(0xff1B262C),
           appBar: AppBar(
+            actions: [
+              if(userInfo==null)
+              Container(
+                margin: const EdgeInsets.only(right: 10),
+                decoration: BoxDecoration(
+                    
+                    color:  Colors.grey,
+                    borderRadius: BorderRadius.circular(10)),
+                child: MaterialButton(
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginScreen()),(route) => false,);
+                  },
+                  child: const Text(
+                    "Login",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
             title: const Text("temp"),
             centerTitle: true,
             backgroundColor: const Color(0xff0F4C75),

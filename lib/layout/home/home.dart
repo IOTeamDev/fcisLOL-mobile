@@ -63,139 +63,113 @@ class Home extends StatelessWidget {
         ),
       ],
       child:
-          BlocConsumer<MainCubit, MainCubitStates>(
-            listener: (context, state) {
-              if (state is Logout) {
-                showToastMessage(
-                  message: "Logout Successfully",
-                  // context: context,
-                  states: ToastStates.SUCCESS,
-                  // titleWidget: const
-                );
-              }
-            },
-            builder: (context, state) {
-              bool wannaAnnouncements = true;
-              print('$wannaAnnouncements wanna announcement ');
+          BlocConsumer<MainCubit, MainCubitStates>(listener: (context, state) {
+        if (state is Logout) {
+          showToastMessage(
+            message: "Logout Successfully",
+            // context: context,
+            states: ToastStates.SUCCESS,
+            // titleWidget: const
+          );
+        }
+      }, builder: (context, state) {
+        bool wannaAnnouncements = true;
+        print('$wannaAnnouncements wanna announcement ');
 
-              List<AnnouncementModel>? announcements = AdminCubit.get(context).announcements;
+        List<AnnouncementModel>? announcements =
+            AdminCubit.get(context).announcements;
 
-              if (announcements != null && announcements.isNotEmpty)
-                print("${announcements[0].title} dfggdfghghfdfgh");
-              else
-                print("Announcements are null or empty");
-              if ((state is GetProfileSuccess || TOKEN == null) && wannaAnnouncements) {
-                if (TOKEN == null)
-                  BlocProvider.of<AdminCubit>(context).getAnnouncements(SelectedSemester!);
-                else
-                  BlocProvider.of<AdminCubit>(context).getAnnouncements(MainCubit.get(context).profileModel!.semester);
-                wannaAnnouncements = false;
+        if (announcements != null && announcements.isNotEmpty)
+          print("${announcements[0].title} dfggdfghghfdfgh");
+        else
+          print("Announcements are null or empty");
+        if ((state is GetProfileSuccess || TOKEN == null) &&
+            wannaAnnouncements) {
+          if (TOKEN == null)
+            BlocProvider.of<AdminCubit>(context)
+                .getAnnouncements(SelectedSemester!);
+          else
+            BlocProvider.of<AdminCubit>(context).getAnnouncements(
+                MainCubit.get(context).profileModel!.semester);
+          wannaAnnouncements = false;
 
-                if (announcements != null && announcements.isNotEmpty)
-                  print(announcements[0].title);
-                else
-                  print("Announcements are null");
-              }
-              print('$wannaAnnouncements wanna announcement ');
+          if (announcements != null && announcements.isNotEmpty)
+            print(announcements[0].title);
+          else
+            print("Announcements are null");
+        }
+        print('$wannaAnnouncements wanna announcement ');
 
-              ProfileModel? profile;
-              int? semesterIndex;
+        ProfileModel? profile;
+        int? semesterIndex;
 
-              // SelectedSemester = "Two";
-              if (MainCubit.get(context).profileModel != null) {
-                profile = MainCubit.get(context).profileModel!;
-                print(profile.name);
-              }
+        // SelectedSemester = "Two";
+        if (MainCubit.get(context).profileModel != null) {
+          profile = MainCubit.get(context).profileModel!;
+          print(profile.name);
+        }
 
-              if (profile != null) {
-                semesterIndex = semsesterIndex(profile.semester);
-              } else if (TOKEN == null) {
-                semesterIndex = semsesterIndex(SelectedSemester!);
-              }
+        if (profile != null) {
+          semesterIndex = semsesterIndex(profile.semester);
+        } else if (TOKEN == null) {
+          semesterIndex = semsesterIndex(SelectedSemester!);
+        }
 
-          // print("$semesterIndex index");
-            return profile == null && TOKEN != null
-              ? const Scaffold(
-                  backgroundColor: Color(0xff1B262C),
-                  body: Center(child: CircularProgressIndicator()),
-                )
-              : Scaffold(
-                  key: scaffoldKey,
-                  backgroundColor: const Color(0xff1B262C),
-                  appBar: AppBar(
-                    leadingWidth: 50,
+        // print("$semesterIndex index");
+        return profile == null && TOKEN != null
+            ? const Scaffold(
+                backgroundColor: Color(0xff1B262C),
+                body: Center(child: CircularProgressIndicator()),
+              )
+            : Scaffold(
+                key: scaffoldKey,
+                backgroundColor: const Color(0xff1B262C),
+                appBar: AppBar(
+                  leadingWidth: 50,
 
-                    leading: IconButton(
-                        style: IconButton.styleFrom(
-                            padding: EdgeInsets.all(0), minimumSize: Size(0, 0)),
-                        onPressed: () {
-                          // MainCubit.get(context).openDrawerState();
-                          if ((TOKEN != null && profile != null) ||
-                              TOKEN == null) {
-                            scaffoldKey.currentState!
-                                .openDrawer(); // Use key to open the drawer
-                          }
-                        },
-                        icon: const Icon(
-                          Icons.menu,
-                          size: 25,
-                          color: Colors.white,
-                        )),
-                    backgroundColor: const Color(0xff0F4C75),
-                    // centerTitle: true,
-                    title: GestureDetector(
-                      onTap: () => navigatReplace(context, const Home()),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          const Icon(Icons.apple),
-                          const SizedBox(width: 10),
-                          Text(
-                            "name",
-                            style: GoogleFonts.montserrat(),
-                          ),
-                          SizedBox(width: 50)
-                        ],
-                      ),
+                  leading: IconButton(
+                      style: IconButton.styleFrom(
+                          padding: EdgeInsets.all(0), minimumSize: Size(0, 0)),
+                      onPressed: () {
+                        // MainCubit.get(context).openDrawerState();
+                        if ((TOKEN != null && profile != null) ||
+                            TOKEN == null) {
+                          scaffoldKey.currentState!
+                              .openDrawer(); // Use key to open the drawer
+                        }
+                      },
+                      icon: const Icon(
+                        Icons.menu,
+                        size: 25,
+                        color: Colors.white,
+                      )),
+                  backgroundColor: const Color(0xff0F4C75),
+                  // centerTitle: true,
+                  title: GestureDetector(
+                    onTap: () => navigatReplace(context, const Home()),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        const Icon(Icons.apple),
+                        const SizedBox(width: 10),
+                        Text(
+                          "name",
+                          style: GoogleFonts.montserrat(),
+                        ),
+                        SizedBox(width: 50)
+                      ],
                     ),
-                    actions: [
-                      if (TOKEN == null)
-                        if (scaffoldKey.currentState?.isDrawerOpen == true)
-                          Container(
-                            margin: const EdgeInsets.only(right: 10),
-                            decoration: BoxDecoration(
-                                gradient: const LinearGradient(
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                    colors: [
-                                      Color(0xff4fd1c5),
-                                      Color(0xff38b2ac),
-                                    ]),
-                                color: const Color(0xFF00ADB5),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: MaterialButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const LoginScreen()));
-                              },
-                              child: const Text(
-                                "Login",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ),
-                    ],
                   ),
-                  drawer: CustomDrawer(context),
-                  body: profile == null && TOKEN != null
-                      ? const Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : Stack(
+                ),
+                drawer: CustomDrawer(context),
+                body: profile == null && TOKEN != null
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Container(
+                        height: double.infinity,
+                        child: Stack(
                           children: [
                             Container(
                               decoration: const BoxDecoration(
@@ -215,13 +189,15 @@ class Home extends StatelessWidget {
                                     const SizedBox(height: 20),
                                     BlocBuilder<AdminCubit, AdminCubitStates>(
                                         builder: (context, state) {
-                                      if (AdminCubit.get(context).announcements ==
+                                      if (AdminCubit.get(context)
+                                              .announcements ==
                                           null)
                                         return Center(
                                             child: CircularProgressIndicator());
                                       else {
                                         var anonuncmentsss =
-                                            AdminCubit.get(context).announcements;
+                                            AdminCubit.get(context)
+                                                .announcements;
 
                                         return CarouselSlider(
                                           items: anonuncmentsss!.isEmpty
@@ -236,8 +212,8 @@ class Home extends StatelessWidget {
                                               : anonuncmentsss!
                                                   .map((anonuncments) {
                                                   return Stack(
-                                                      alignment:
-                                                          Alignment.bottomCenter,
+                                                      alignment: Alignment
+                                                          .bottomCenter,
                                                       children: [
                                                         Container(
                                                           clipBehavior:
@@ -301,14 +277,16 @@ class Home extends StatelessWidget {
                                                                         .circular(
                                                                             3)),
                                                             child: Text(
-                                                              anonuncments.title,
+                                                              anonuncments
+                                                                  .title,
                                                               style: const TextStyle(
                                                                   fontSize: 20,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w500),
-                                                              textAlign: TextAlign
-                                                                  .center,
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
                                                             ))
                                                       ]);
                                                 }).toList(),
@@ -325,7 +303,8 @@ class Home extends StatelessWidget {
                                             autoPlayInterval:
                                                 const Duration(seconds: 10),
                                             autoPlayAnimationDuration:
-                                                const Duration(milliseconds: 800),
+                                                const Duration(
+                                                    milliseconds: 800),
                                             viewportFraction: 0.8,
                                           ),
                                         );
@@ -341,7 +320,8 @@ class Home extends StatelessWidget {
                                         shrinkWrap: true,
                                         gridDelegate:
                                             const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2, // Two items per row
+                                          crossAxisCount:
+                                              2, // Two items per row
                                           crossAxisSpacing: 10,
                                           mainAxisSpacing: 10,
                                           childAspectRatio: 3 /
@@ -378,8 +358,9 @@ class Home extends StatelessWidget {
                             //   ),
                           ],
                         ),
-                );
-        }),
+                      ),
+              );
+      }),
     );
   }
 }
@@ -713,13 +694,16 @@ Widget CustomDrawer(context) {
                       context: context,
                       title: "Log Out",
                       dialogType: DialogType.warning,
-                      body: Text("Are you sure you want to log out?",style: TextStyle(fontSize: 17),),
+                      body: Text(
+                        "Are you sure you want to log out?",
+                        style: TextStyle(fontSize: 17),
+                      ),
                       animType: AnimType.rightSlide,
                       btnOkColor: Colors.red,
                       btnCancelOnPress: () {},
                       btnOkText: "Log Out",
                       btnCancelColor: Colors.grey,
-                      
+
                       // titleTextStyle: TextStyle(fontSize: 22),
                       btnOkOnPress: () {
                         MainCubit.get(context).logout(context);
