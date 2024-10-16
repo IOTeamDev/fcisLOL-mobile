@@ -190,7 +190,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     await fCMHelper.initNotifications();
     var serverKeyAuthorization = await fCMHelper.getAccessToken();
 
-    print(serverKeyAuthorization.toString() + "dsfgsdg");
+    print(serverKeyAuthorization.toString() + "_________________________________________________________________________________");
 
     // change your project id
     const String urlEndPoint =
@@ -209,7 +209,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
             body: body,
           ),
         )
-        .then((onValue) => emit(GetFcmTokensSuccess()))
+        .then((onValue) => emit(SendNotificationSuccess()))
         .catchError((onError) {
       print(onError.toString());
       emit(SendNotificationError());
@@ -260,6 +260,6 @@ class AdminCubit extends Cubit<AdminCubitStates> {
       }
     }
 
-    print('Notifications sent successfully');
+    // print('Notifications sent successfully');
   }
 }

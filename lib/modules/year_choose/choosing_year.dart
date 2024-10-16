@@ -31,6 +31,7 @@ class ChoosingYear extends StatelessWidget {
           backgroundColor: const Color(0xff1B262C),
           appBar: AppBar(
             actions: [
+              if(userInfo==null)
               Container(
                 margin: const EdgeInsets.only(right: 10),
                 decoration: BoxDecoration(
