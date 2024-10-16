@@ -1,8 +1,8 @@
 import 'dart:math';
-
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:googleapis/playintegrity/v1.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/layout/home/bloc/main_cubit.dart';
@@ -127,130 +127,135 @@ class Requests extends StatelessWidget {
     var random = Random();
     int randomNum = random.nextInt(10);
 
-    return Container(
-      decoration: BoxDecoration(
-        color: HexColor(colorText[randomNum]).withOpacity(0.45),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      margin: const EdgeInsetsDirectional.symmetric(horizontal: 10),
-      padding: const EdgeInsetsDirectional.symmetric(horizontal: 10),
-      height: 170,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsetsDirectional.only(
-                bottom: 5, top: 10, start: 10, end: 10),
-            child: Row(
-              children: [
-                CircleAvatar(
-                  backgroundImage: NetworkImage(pfp.toString()),
-                  radius: 17,
-                ),
-                const SizedBox(width: 10),
-                Text(
-                  authorName.toString(),
-                  style: TextStyle(fontSize: 18, color: Colors.grey[300]),
-                ),
-                const Spacer(),
-                ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 100),
-                  child: Text(
-                    subjectName,
-                    style: TextStyle(color: Colors.grey[300]),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    textWidthBasis: TextWidthBasis.longestLine,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsetsDirectional.only(
-                start: 10.0, end: 10, top: 0, bottom: 5),
-            child: Row(
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                const Spacer(),
-                Text(
-                  type,
-                  style: const TextStyle(fontSize: 14, color: Colors.white),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsetsDirectional.symmetric(horizontal: 10.0),
-            child: Text(
-              description,
-              style: TextStyle(fontSize: 13, color: Colors.grey[300]),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          LayoutBuilder(
-            builder: (context, constraints) {
-              return Row(
+    return InkWell(
+      onTap: (){
+        navigate(context, RequestDetails());
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: HexColor(colorText[randomNum]).withOpacity(0.45),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        margin: const EdgeInsetsDirectional.symmetric(horizontal: 10),
+        padding: const EdgeInsetsDirectional.symmetric(horizontal: 10),
+        height: 170,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsetsDirectional.only(
+                  bottom: 5, top: 10, start: 10, end: 10),
+              child: Row(
                 children: [
-                  const Icon(Icons.link, color: Colors.white),
-                  const SizedBox(width: 5),
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(pfp.toString()),
+                    radius: 17,
+                  ),
+                  const SizedBox(width: 10),
+                  Text(
+                    authorName.toString(),
+                    style: TextStyle(fontSize: 18, color: Colors.grey[300]),
+                  ),
+                  const Spacer(),
                   ConstrainedBox(
-                    constraints:
-                        BoxConstraints(maxWidth: constraints.maxWidth - 140),
-                    child: GestureDetector(
-                      onTap: () async {
-                        final linkElement = LinkableElement(link, link);
-                        await onOpen(context, linkElement);
-                      },
-                      child: Text(
-                        link,
-                        style: const TextStyle(
-                          color: Colors.blue,
-                          decoration: TextDecoration.underline,
-                          decorationColor: Colors.blue,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                    constraints: const BoxConstraints(maxWidth: 100),
+                    child: Text(
+                      subjectName,
+                      style: TextStyle(color: Colors.grey[300]),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textWidthBasis: TextWidthBasis.longestLine,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsetsDirectional.only(
+                  start: 10.0, end: 10, top: 0, bottom: 5),
+              child: Row(
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
                   ),
                   const Spacer(),
-                  MaterialButton(
-                    onPressed: () {
-                      MainCubit.get(context).acceptRequest(
-                          MainCubit.get(context).requests![index].id!,
-                          MainCubit.get(context).profileModel!.semester);
-                    },
-                    shape: const CircleBorder(),
-                    minWidth: 0,
-                    padding: const EdgeInsets.all(8),
-                    child: const Icon(Icons.check, color: Colors.green),
-                  ),
-                  MaterialButton(
-                    onPressed: () {
-                      MainCubit.get(context).deleteMaterial(
-                        MainCubit.get(context).requests![index].id!,
-                        MainCubit.get(context).profileModel!.semester,
-                      );
-                    },
-                    shape: const CircleBorder(),
-                    minWidth: 0,
-                    padding: const EdgeInsets.all(8),
-                    child: const Icon(Icons.close, color: Colors.red),
+                  Text(
+                    type,
+                    style: const TextStyle(fontSize: 14, color: Colors.white),
                   ),
                 ],
-              );
-            },
-          ),
-        ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsetsDirectional.symmetric(horizontal: 10.0),
+              child: Text(
+                description,
+                style: TextStyle(fontSize: 13, color: Colors.grey[300]),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            LayoutBuilder(
+              builder: (context, constraints) {
+                return Row(
+                  children: [
+                    const Icon(Icons.link, color: Colors.white),
+                    const SizedBox(width: 5),
+                    ConstrainedBox(
+                      constraints:
+                          BoxConstraints(maxWidth: constraints.maxWidth - 140),
+                      child: GestureDetector(
+                        onTap: () async {
+                          final linkElement = LinkableElement(link, link);
+                          await onOpen(context, linkElement);
+                        },
+                        child: Text(
+                          link,
+                          style: const TextStyle(
+                            color: Colors.blue,
+                            decoration: TextDecoration.underline,
+                            decorationColor: Colors.blue,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                    const Spacer(),
+                    MaterialButton(
+                      onPressed: () {
+                        MainCubit.get(context).acceptRequest(
+                            MainCubit.get(context).requests![index].id!,
+                            MainCubit.get(context).profileModel!.semester);
+                      },
+                      shape: const CircleBorder(),
+                      minWidth: 0,
+                      padding: const EdgeInsets.all(8),
+                      child: const Icon(Icons.check, color: Colors.green),
+                    ),
+                    MaterialButton(
+                      onPressed: () {
+                        MainCubit.get(context).deleteMaterial(
+                          MainCubit.get(context).requests![index].id!,
+                          MainCubit.get(context).profileModel!.semester,
+                        );
+                      },
+                      shape: const CircleBorder(),
+                      minWidth: 0,
+                      padding: const EdgeInsets.all(8),
+                      child: const Icon(Icons.close, color: Colors.red),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

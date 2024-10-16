@@ -75,7 +75,9 @@ class RequestsDetails extends StatelessWidget {
                                   blurRadius: 15)
                             ]),
                         child: const Column(
-                          children: [],
+                          children: [
+
+                          ],
                         ),
                       ),
                     ),
