@@ -35,18 +35,21 @@ class Requests extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => MainCubit()..getProfileInfo()
-        
-        ),
+        BlocProvider(create: (context) => MainCubit()..getProfileInfo()),
       ],
-      child: BlocConsumer<MainCubit, MainCubitStates>(
+
+      child: BlocConsumer<MainCubit, MainCubitStates>
+      (
         listener: (context, state) {
           if (state is GetProfileSuccess) {
             MainCubit.get(context).getRequests(
-                semester: MainCubit.get(context).profileModel!.semester);
+              semester: MainCubit.get(context).profileModel!.semester
+            );
           }
         },
-        builder: (context, mainState) {
+
+        builder: (context, mainState)
+        {
           var cubit = MainCubit.get(context);
 
           return Scaffold(
@@ -61,29 +64,22 @@ class Requests extends StatelessWidget {
                   child: Column(
                     children: [
                       backButton(context),
-                      adminTopTitleWithDrawerButton(
-                          title: 'Requests', size: 40, hasDrawer: false),
+                      adminTopTitleWithDrawerButton(title: 'Requests', size: 40, hasDrawer: false),
                       Expanded(
                         child: ConditionalBuilder(
-                            condition: cubit.requests != null &&
-                                cubit.requests!.isNotEmpty &&
-                                mainState is! GetRequestsLoadingState &&
-                                mainState is! GetProfileLoading,
+                          condition: cubit.requests != null && cubit.requests!.isNotEmpty && mainState is! GetRequestsLoadingState && mainState is! GetProfileLoading,
                             builder: (context) => ListView.separated(
-                                  physics: const BouncingScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    return requestedMaterialBuilder(
-                                      backgroundColor, index, context,
-                                      title: cubit.requests![index].title,
-                                      type: cubit.requests![index].type,
-                                      pfp: cubit.requests![index].author?.photo,
-                                      authorName:
-                                          cubit.requests![index].author?.name,
-                                      link: cubit.requests![index].link,
-                                      subjectName:
-                                          'Calculus1', // Use proper subject if available
-                                      description:
-                                          cubit.requests![index].description,
+                              physics: const BouncingScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                return requestedMaterialBuilder(
+                                  backgroundColor, index, context,
+                                  title: cubit.requests![index].title,
+                                  type: cubit.requests![index].type,
+                                  pfp: cubit.requests![index].author?.photo,
+                                  authorName: cubit.requests![index].author?.name,
+                                  link: cubit.requests![index].link,
+                                  subjectName: cubit.requests![index].subject, // Use proper subject if available
+                                  description: cubit.requests![index].description,
                                     );
                                   },
                                   separatorBuilder: (context, index) =>
@@ -109,7 +105,8 @@ class Requests extends StatelessWidget {
                                   ),
                                 );
                               }
-                            }),
+                          }
+                        ),
                       )
                     ],
                   ),
