@@ -19,18 +19,24 @@ class AnnouncementDetail extends StatelessWidget {
   final String description;
   final dynamic date;
   final String selectedType;
+  final String semester;
+
   const AnnouncementDetail(
-      {super.key,
+    {
+      super.key,
       required this.title,
       required this.description,
       required this.date,
       required this.id,
-      required this.selectedType});
+      required this.selectedType,
+      required this.semester
+    }
+  );
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AdminCubit(),
+      create: (context) => AdminCubit()..getAnnouncements(semester),
       child: BlocConsumer<AdminCubit, AdminCubitStates>(
         listener: (context, state) {
           if (state is AdminDeleteAnnouncementSuccessState) {
@@ -52,7 +58,7 @@ class AnnouncementDetail extends StatelessWidget {
                   children: [
                     //Back Button
                     backButton(context),
-                    adminTopTitleWithDrawerButton(title: 'Announcement', size: 35, hasDrawer: false),
+                    adminTopTitleWithDrawerButton(title: 'Announcement Detail', size: 32, hasDrawer: false),
                     Container(
                       margin: const EdgeInsetsDirectional.symmetric(horizontal: 15, vertical: 20),
                       padding: const EdgeInsets.all(15),
@@ -82,14 +88,14 @@ class AnnouncementDetail extends StatelessWidget {
                           const SizedBox(
                             height: 20,
                           ),
-                          Expanded(
-                            child: SingleChildScrollView(
-                              child: Container(
-                                padding: const EdgeInsets.all(15),
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                    color: HexColor('D9D9D9').withOpacity(0.2),
-                                    borderRadius: BorderRadius.circular(20)),
+                          Container(
+                            padding: const EdgeInsets.all(15),
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                color: HexColor('D9D9D9').withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Expanded(
+                              child: SingleChildScrollView(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -112,7 +118,7 @@ class AnnouncementDetail extends StatelessWidget {
                                           const EdgeInsetsDirectional.symmetric(
                                               vertical: 25.0),
                                       child: Text(
-                                        'DeadLine: $date',
+                                        'DeadLine: ${date??'No due date'}',
                                         style: const TextStyle(
                                           color: Colors.white,
                                         ),

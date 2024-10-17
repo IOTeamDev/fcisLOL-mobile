@@ -9,14 +9,15 @@ import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/navigation.dart';
 
 class AnnouncementsList extends StatelessWidget {
-  const AnnouncementsList({super.key});
+  final String semester;
+  const AnnouncementsList({super.key, required this.semester});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AdminCubit()..getAnnouncements(),
+      create: (context) => AdminCubit()..getAnnouncements(semester),
       child: BlocConsumer<AdminCubit, AdminCubitStates>(
-        listener: (context, state){},
+        listener: (context, state) {},
         builder: (context, state) {
           var cubit = AdminCubit.get(context);
           return Scaffold(
@@ -31,24 +32,27 @@ class AnnouncementsList extends StatelessWidget {
                     child: Column(
                       children: [
                         backButton(context),
-                        adminTopTitleWithDrawerButton(hasDrawer: false, title: 'Announcements', size: 34),
+                        adminTopTitleWithDrawerButton(
+                            hasDrawer: false, title: 'Announcements', size: 34),
                         ConditionalBuilder(
                           condition:
-                          state is! AdminGetAnnouncementLoadingState &&
-                              cubit.announcements != null &&
-                              cubit.announcements!.isNotEmpty,
+                              state is! AdminGetAnnouncementLoadingState &&
+                                  cubit.announcements != null &&
+                                  cubit.announcements!.isNotEmpty,
                           builder: (context) => ListView.separated(
                             shrinkWrap: true,
                             physics: const BouncingScrollPhysics(),
-                            itemBuilder: (context, index) => announcementBuilder(
-                                cubit.announcements![index].id,
-                                context,
-                                cubit.announcements![index].title,
-                                index,
-                                cubit.announcements![index].content,
-                                cubit.announcements![index].dueDate,
-                                cubit.announcements![index].type),
-                            separatorBuilder: (context, index) => const SizedBox(
+                            itemBuilder: (context, index) =>
+                                announcementBuilder(
+                                    cubit.announcements![index].id,
+                                    context,
+                                    cubit.announcements![index].title,
+                                    index,
+                                    cubit.announcements![index].content,
+                                    cubit.announcements![index].dueDate,
+                                    cubit.announcements![index].type),
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(
                               height: 10,
                             ),
                             itemCount: cubit.announcements!.length,
@@ -84,10 +88,19 @@ class AnnouncementsList extends StatelessWidget {
     );
   }
 
-  Widget announcementBuilder(int id, BuildContext context, String title, int index, String content, dueDate, type) {
+  Widget announcementBuilder(int id, BuildContext context, String title,
+      int index, String content, dueDate, type) {
     return GestureDetector(
-      onTap: (){
-        navigate(context, AnnouncementDetail(title: title, description: content, date: dueDate, id: id, selectedType: type));
+      onTap: () {
+        navigate(
+            context,
+            AnnouncementDetail(
+                semester: semester, //
+                title: title,
+                description: content,
+                date: dueDate,
+                id: id,
+                selectedType: type));
       },
       child: Container(
         margin: EdgeInsetsDirectional.symmetric(horizontal: 10),
@@ -95,19 +108,35 @@ class AnnouncementsList extends StatelessWidget {
         width: double.infinity,
         height: 150,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          gradient: LinearGradient(colors: [HexColor('8D10FA').withOpacity(0.45) , HexColor('DA22FF').withOpacity(0.45)], begin: Alignment.centerLeft, end: Alignment.centerRight)),
+            borderRadius: BorderRadius.circular(20),
+            gradient: LinearGradient(colors: [
+              HexColor('8D10FA').withOpacity(0.45),
+              HexColor('DA22FF').withOpacity(0.45)
+            ], begin: Alignment.centerLeft, end: Alignment.centerRight)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: TextStyle(color: Colors.white, fontSize: 20),),
-            SizedBox(height: 10,),
-            Text(content, style: TextStyle(color: Colors.grey, fontSize: 14), maxLines: 2, overflow: TextOverflow.ellipsis,),
+            Text(
+              title,
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              content,
+              style: TextStyle(color: Colors.grey, fontSize: 14),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
             Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(dueDate, style: TextStyle(color: Colors.white, fontSize: 14),)
+                Text(
+                  dueDate,
+                  style: TextStyle(color: Colors.white, fontSize: 14),
+                )
               ],
             )
           ],

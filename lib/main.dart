@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,8 +14,10 @@ import 'package:lol/layout/admin_panel/admin_panal.dart';
 import 'package:lol/modules/admin/screens/Announcements/add_announcement.dart';
 import 'package:lol/modules/admin/screens/announcements/announcements_list.dart';
 import 'package:lol/modules/subject/subject_details.dart';
+import 'package:lol/modules/support_and_about_us/about_us.dart';
 import 'package:lol/modules/support_and_about_us/user_advices/feedback_screen.dart';
 import 'package:lol/shared/network/local/shared_prefrence.dart';
+import 'package:lol/shared/network/remote/fcm_helper.dart';
 import 'package:provider/provider.dart';
 import 'modules/auth/bloc/login_cubit.dart';
 import 'modules/auth/screens/login.dart';
@@ -31,6 +34,8 @@ import 'shared/observer.dart';
 import 'package:flutter/material.dart';
 import 'layout/home/home.dart';
 
+String? private_key_id;
+String? private_key;
 // Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 //   await Firebase.initializeApp();
 //   // If you're going to use other Firebase services in the background, such as Firestore,
@@ -38,10 +43,6 @@ import 'layout/home/home.dart';
 
 //   print("Handling a background message: ${message.messageId}");
 // }
-
-Future<String?> getFCMToken() async {
-  return await FirebaseMessaging.instance.getToken();
-}
 
 // void sendNotificationToSemesterThreeUsers(List<UserModel> users) {
 //   // Filter users whose semester is three
@@ -53,12 +54,35 @@ Future<String?> getFCMToken() async {
 //     }
 //   }
 // }
-
+Map<String, dynamic> fcisServiceMap = {};
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Cache.initialize();
   await DioHelp.initial();
   await Firebase.initializeApp();
+  String? fcmToken = await FirebaseMessaging.instance.getToken();
+  print(fcmToken);
+
+  await FirebaseFirestore.instance
+      .collection("4notifications")
+      .doc("private_keys")
+      .get()
+      .then((value) {
+    fcisServiceMap = value.data()?["fcisServiceMap"];
+    private_key = value.data()?["private_key"];
+    private_key_id = value.data()?["private_key_id"];
+    private_key = private_key!.replaceAll(r'\n', '\n').trim();
+
+    print(
+        "${fcisServiceMap["project_id"]}+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+  });
+// fCMHelper.initNotifications();
+
+// fCMHelper.sendNotifications(
+//   fcmToken: "chUAaG_7Tu68jnmU8UpxSN:APA91bHgHAocyXqRhWLeSw7NFepQMKaefT1i0ust8oQVvYsS1kt4OGk0wXHAqD3U6Erciw1IyPS5FUPNwxgkeNEXF4Q5W76GbTS-NZSexTaZNdLQCq1SZZzDkh23RHktWgqd7vBZLRRn",  // Use the token from step 2
+//   title: "Test Notification",
+//   body: "This is a test notification.",
+// );
 
   // await initNotifation();
   Bloc.observer = MyBlocObserver();
@@ -118,20 +142,14 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-          BlocProvider(
-              create: (BuildContext context) => SubjectCubit()..getMaterials()),
-          BlocProvider(
-            create: (BuildContext context) => MainCubit()..getProfileInfo(),
-          ),
-          BlocProvider(
-            create: (BuildContext context) => AdminCubit()..getFcmTokens(),
-          ),
+          BlocProvider(create: (BuildContext context) => SubjectCubit()),
+          BlocProvider(create: (BuildContext context) => MainCubit()),
+          BlocProvider(create: (BuildContext context) => AdminCubit()),
         ],
         child: Consumer<ThemeProvide>(builder: (context, value, child) {
-          AdminCubit.get(context).getFcmTokens();
-
+          // AdminCubit.get(context).getFcmTokens();
           return MaterialApp(
-            home: Home(),
+            home: startPage,
             debugShowCheckedModeBanner: false,
             theme: value.isDark ? ThemeData.dark() : ThemeData.light(),
           );

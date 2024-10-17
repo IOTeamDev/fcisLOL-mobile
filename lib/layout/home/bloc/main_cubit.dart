@@ -11,6 +11,7 @@ import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
 import 'package:lol/modules/auth/bloc/login_cubit.dart';
 import 'package:lol/modules/auth/bloc/login_cubit_states.dart';
 import 'package:lol/models/login/login_model.dart';
+import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/constants.dart';
 import 'package:lol/layout/home/bloc/main_cubit_states.dart';
 import 'package:lol/models/profile/profile_model.dart';
@@ -91,9 +92,12 @@ class MainCubit extends Cubit<MainCubitStates> {
   }
 
   Future<void> UploadPImage({File? image, bool isUserProfile = true}) async {
+    AnnouncementImagePath = null;
     emit(UploadImageLoading());
     if (image == null) return;
 
+    showToastMessage(
+        message: 'Uploading your photo', states: ToastStates.WARNING);
     final uploadTask = await FirebaseStorage.instance
         .ref()
         .child("images/${Uri.file(image.path).pathSegments.last}")
@@ -119,10 +123,10 @@ class MainCubit extends Cubit<MainCubitStates> {
 
     emit(GetProfileLoading());
     profileModel = null;
-
     DioHelp.getData(path: CURRENTUSER, token: TOKEN).then(
       (value) {
         profileModel = ProfileModel.fromJson(value.data);
+
         emit(GetProfileSuccess());
       },
     );
@@ -130,12 +134,14 @@ class MainCubit extends Cubit<MainCubitStates> {
 
   void logout(context) {
     TOKEN = null;
+    SelectedSemester = null;
     Cache.removeValue(key: "token");
+    Cache.removeValue(key: "semester"); //SelectedSemester
     Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
           builder: (context) => ChoosingYear(loginCubit: LoginCubit()),
-        ),
+        ), //removing all background screens
         (route) => false);
     emit(Logout());
   }
@@ -164,7 +170,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     });
   }
 
-  void acceptRequest(int id,semester) {
+  void acceptRequest(int id, semester) {
     emit(AcceptRequestLoadingState());
     DioHelp.getData(
             path: ACCEPT, query: {'id': id, 'accepted': true}, token: TOKEN)
@@ -172,5 +178,65 @@ class MainCubit extends Cubit<MainCubitStates> {
       emit(AcceptRequestSuccessState());
       getRequests(semester: semester);
     });
+  }
+
+  List<LeaderboardModel>? leaderboardModel;
+  List<LeaderboardModel>? notAdminLeaderboardModel;
+
+  LeaderboardModel? score4User;
+
+  void getScore4User(int userId) async {
+    score4User = null;
+    print("${leaderboardModel!.length}dsmksdjkl");
+    for (int i = 0; i < leaderboardModel!.length; i++) {
+      if (leaderboardModel![i].id == userId) {
+        score4User = leaderboardModel![i];
+        print(score4User!.score);
+        // emit(GetScore4User());
+      }
+    }
+    for (int i = 0; i < notAdminLeaderboardModel!.length; i++) {
+      if (notAdminLeaderboardModel![i].id == userId) {
+        score4User?.userRank = i + 1;
+        print(score4User?.userRank);
+        // emit(GetScore4User());
+      }
+    }
+    print(score4User!.score);
+  }
+
+  Future? getLeaderboard(currentSemester) {
+    // getProfileInfo();
+    notAdminLeaderboardModel = null;
+    leaderboardModel = null;
+    emit(GetLeaderboardLoadingState());
+    DioHelp.getData(path: LEADERBOARD, query: {'semester': currentSemester})
+        .then((value) {
+      leaderboardModel = [];
+      notAdminLeaderboardModel = [];
+      value.data.forEach((element) {
+        // exclude the admin
+        leaderboardModel?.add(LeaderboardModel.fromJson(
+            element)); //just to get the score of Admin
+
+        if (element['role'] != "ADMIN") {
+          notAdminLeaderboardModel?.add(LeaderboardModel.fromJson(element));
+        }
+//role
+      });
+      notAdminLeaderboardModel!.sort((a, b) => b.score!.compareTo(a.score!));
+      print(leaderboardModel!.length);
+      if (profileModel != null) {
+        getScore4User(profileModel!.id);
+      } else {
+        print("object");
+      }
+      emit(GetLeaderboardSuccessState());
+    }).catchError((onError) {
+      print(onError.toString());
+
+      emit(GetLeaderboardErrorState());
+    });
+    return null;
   }
 }

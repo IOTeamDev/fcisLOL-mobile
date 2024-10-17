@@ -16,13 +16,23 @@ class SemesterNavigate extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xff1B262C),
       appBar: AppBar(
-        title: InkWell(
-          child: const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [Text("Home")],
-          ),
-          onTap: () => navigatReplace(context, const Home()),
-        ),
+        leadingWidth: 50,
+        title:  GestureDetector(
+                    onTap: () => navigatReplace(context, const Home()),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        const Icon(Icons.apple),
+                        // const SizedBox(width: 10),
+                        Text(
+                          "name",
+                          style: GoogleFonts.montserrat(),
+                        ),
+                        SizedBox(width: 50)
+                      ],
+                    ),
+                  ),
         backgroundColor: const Color(0xff0F4C75),
       ),
       body: Container(
@@ -60,7 +70,7 @@ class SemesterNavigate extends StatelessWidget {
                     semesters[semesterIndex].subjects.length,
                 itemBuilder: (context, index) {
                   return
-          
+
                       // subjectItemBuild(
                       //     semesters[semesterIndex!]
                       //         .subjects[index],context);

@@ -1,4 +1,6 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/main.dart';
@@ -11,6 +13,7 @@ import 'package:lol/shared/components/constants.dart';
 import 'package:lol/layout/home/home.dart';
 import 'package:lol/shared/components/navigation.dart';
 import 'package:lol/shared/network/local/shared_prefrence.dart';
+import 'package:lol/shared/network/remote/fcm_helper.dart';
 
 late String switchSemester;
 
@@ -27,6 +30,28 @@ class ChoosingYear extends StatelessWidget {
         builder: (context, state) => Scaffold(
           backgroundColor: const Color(0xff1B262C),
           appBar: AppBar(
+            actions: [
+              if(userInfo==null)
+              Container(
+                margin: const EdgeInsets.only(right: 10),
+                decoration: BoxDecoration(
+                    
+                    color:  Colors.grey,
+                    borderRadius: BorderRadius.circular(10)),
+                child: MaterialButton(
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginScreen()),(route) => false,);
+                  },
+                  child: const Text(
+                    "Login",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
             title: const Text("temp"),
             centerTitle: true,
             backgroundColor: const Color(0xff0F4C75),
@@ -171,9 +196,12 @@ class YearState extends State<Year> {
                             break;
                         }
                         if (userInfo != null) {
-                          String? fcmToken = await getFCMToken();
-
+                          FCMHelper fCMHelper = FCMHelper();
+                          fCMHelper.initNotifications();
+                          String? fcmToken =
+                              await FirebaseMessaging.instance.getToken();
                           loginCubit.register(
+                            fcmToken: fcmToken,
                             name: userInfo.name,
                             email: userInfo.email,
                             phone: userInfo.phone,
@@ -219,7 +247,10 @@ class YearState extends State<Year> {
                         }
 
                         if (userInfo != null) {
-                          String? fcmToken = await getFCMToken();
+                          FCMHelper fCMHelper = FCMHelper();
+                          fCMHelper.initNotifications();
+                          String? fcmToken =
+                              await FirebaseMessaging.instance.getToken();
 
                           loginCubit.register(
                             name: userInfo.name,

@@ -1,6 +1,12 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
+import 'package:googleapis_auth/auth_io.dart' as auth;
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:lol/shared/components/components.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,12 +20,13 @@ import 'package:lol/models/login/login_model.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/network/endpoints.dart';
 import 'package:lol/shared/network/remote/dio.dart';
+import 'package:lol/shared/network/remote/fcm_helper.dart';
 
-import '../../../layout/home/bloc/main_cubit_states.dart';
 import '../../../models/profile/profile_model.dart';
 import '../../../shared/components/constants.dart';
 import '../../../shared/components/navigation.dart';
 import '../../../shared/network/local/shared_prefrence.dart';
+import '../../../shared/network/remote/fcm_helper.dart';
 import '../../auth/bloc/login_cubit.dart';
 import '../../year_choose/choosing_year.dart';
 
@@ -30,16 +37,29 @@ class AdminCubit extends Cubit<AdminCubitStates> {
   static AdminCubit get(context) => BlocProvider.of(context);
 
   List<FcmToken> fcmTokens = [];
-
-  Future<void>? getFcmTokens() {
+//List of notifications messages
+  Future? getFcmTokens() {
     print("object");
     DioHelp.getData(path: "users").then(
       (value) {
         value.data.forEach((element) {
           fcmTokens.add(FcmToken.fromJson(element));
-          print(fcmTokens[6].semester);
+          // print(fcmTokens[1].semester);
         });
-
+        // fcmTokens.forEach((element) {
+        //   if (element.name == "phone") print(element.semester);
+        // });
+        for (var action in fcmTokens) {
+          // sendFCMNotification(
+          //     title: "title",
+          //     body: "body",
+          //     token:
+          //         "chUAaG_7Tu68jnmU8UpxSN:APA91bHgHAocyXqRhWLeSw7NFepQMKaefT1i0ust8oQVvYsS1kt4OGk0wXHAqD3U6Erciw1IyPS5FUPNwxgkeNEXF4Q5W76GbTS-NZSexTaZNdLQCq1SZZzDkh23RHktWgqd7vBZLRRn");
+          if (action.fcmToken != null) {
+            print(action.name.toString());
+            print(action.fcmToken.toString());
+          }
+        }
         emit(GetFcmTokensSuccess());
       },
     ).catchError((onError) {
@@ -50,14 +70,32 @@ class AdminCubit extends Cubit<AdminCubitStates> {
   }
 
   AnnouncementModel? announcementModel;
+  List<String> notificationsTitles = [
+    "New update: Take a look!",
+    "Don't Miss That!!!",
+    "Take a look at what's new!",
+    "Something new is waiting for you!",
+    "Just added: Check it out!",
+    "We have something new for you! Take a look!",
+    "Be the First to Know!",
+  ];
   void addAnnouncement(
       {required title,
       description,
-      required dueDate,
+      dueDate,
       required type,
-      String? notificationTitle,
       image,
       required currentSemester}) {
+    print(title + "title");
+    print(description + "desc");
+    print(dueDate + "Date");
+    print("${type}type");
+    print(currentSemester);
+    print(image);
+    Random random = Random();
+
+    // Get a random index
+    int randomIndex = random.nextInt(notificationsTitles.length);
     emit(AdminSaveAnnouncementLoadingState());
     DioHelp.postData(
             path: ANNOUNCEMENTS,
@@ -67,27 +105,27 @@ class AdminCubit extends Cubit<AdminCubitStates> {
               'due_date': dueDate,
               'type': type,
               'semester': currentSemester,
-              'image': image
+              'image': image ??
+                  'https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/140.jpg?alt=media&token=3e5a4144-20ca-44ce-ba14-57432e49914f'
             },
             token: TOKEN)
         .then((value) {
-      //announcementModel = AnnouncementModel.fromJson(value.data);
       sendNotificationToUsers(
           semester: currentSemester,
-          title: notificationTitle ?? "Don't Miss That !",
+          title: notificationsTitles[randomIndex],
           body: title); // LOL
-
       emit(AdminSaveAnnouncementSuccessState());
-      getAnnouncements();
-    }).catchError((error) {
-      emit(AdminSaveAnnouncementsErrorState(error));
+      getAnnouncements(currentSemester);
     });
   }
 
   List<AnnouncementModel>? announcements;
-  void getAnnouncements() {
+  void getAnnouncements(String semester) {
+    announcements = null;
+    print(SelectedSemester.toString());
     emit(AdminGetAnnouncementLoadingState());
-    DioHelp.getData(path: ANNOUNCEMENTS).then((value) {
+    DioHelp.getData(path: ANNOUNCEMENTS, query: {'semester': semester})
+        .then((value) {
       announcements = [];
       value.data.forEach((element) {
         announcements!.add(AnnouncementModel.fromJson(element));
@@ -132,14 +170,16 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     });
   }
 
-  void deleteAnnouncement(int id) {
+  void deleteAnnouncement(int id, semester) {
     emit(AdminDeleteAnnouncementLoadingState());
     DioHelp.deleteData(path: ANNOUNCEMENTS, token: TOKEN, query: {'id': id})
         .then((value) {
       emit(AdminDeleteAnnouncementSuccessState());
-      getAnnouncements();
+      getAnnouncements(semester);
     });
   }
+
+  // FCMHelper fCMHelper = FCMHelper();
 
   Future<void> sendFCMNotification({
     required String title,
@@ -184,12 +224,28 @@ class AdminCubit extends Cubit<AdminCubitStates> {
       required String body}) async {
     await getFcmTokens();
 
-    // Filter users whose semester is three
+    // Ensure the tokens are fetched successfully and the list is populated
+    if (fcmTokens.isEmpty) {
+      print('No FCM tokens found');
+      // await getFcmTokens();
+    }
+
+    print(fcmTokens.length); // Print the number of fetched tokens
+
+    // Filter users based on semester
     List<FcmToken> filteredUsers =
         fcmTokens.where((user) => user.semester == semester).toList();
 
-    for (var user in filteredUsers) {
-      sendFCMNotification(title: title, body: body, token: user.fcmToken??"");
+    if (filteredUsers.isEmpty) {
+      print('No users found for semester: $semester');
+      return; // Exit early if no users are found for the semester
     }
+
+    // Send notifications to each user
+    for (var user in filteredUsers) {
+      sendFCMNotification(title: title, body: body, token: user.fcmToken ?? "");
+    }
+
+    // print('Notifications sent successfully');
   }
 }

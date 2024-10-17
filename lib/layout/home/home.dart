@@ -6,11 +6,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:googleapis/admin/directory_v1.dart';
 import 'package:lol/layout/home/semester_navigate.dart';
+import 'package:lol/models/admin/announcement_model.dart';
 import 'package:lol/models/subjects/semster_model.dart';
 import 'package:lol/models/profile/profile_model.dart';
 import 'package:lol/models/subjects/subject_model.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit.dart';
+import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
 import 'package:lol/modules/auth/bloc/login_cubit.dart';
 import 'package:lol/modules/auth/screens/login.dart';
 import 'package:lol/modules/leaderboard/leaderboard_screen.dart';
@@ -56,7 +59,7 @@ class Home extends StatelessWidget {
         //   create: (context) => SubjectCubit()..getMaterials(),
         // ),
         BlocProvider(
-          create: (context) => AdminCubit()..getAnnouncements(),
+          create: (context) => AdminCubit(),
         ),
       ],
       child:
@@ -70,6 +73,36 @@ class Home extends StatelessWidget {
           );
         }
       }, builder: (context, state) {
+        bool wannaAnnouncements = true;
+        print('$wannaAnnouncements wanna announcement ');
+
+        List<AnnouncementModel>? announcements =
+            AdminCubit.get(context).announcements;
+
+        if (announcements != null && announcements.isNotEmpty) {
+          print("${announcements[0].title} dfggdfghghfdfgh");
+        } else {
+          print("Announcements are null or empty");
+        }
+        if ((state is GetProfileSuccess || TOKEN == null) &&
+            wannaAnnouncements) {
+          if (TOKEN == null) {
+            BlocProvider.of<AdminCubit>(context)
+                .getAnnouncements(SelectedSemester!);
+          } else {
+            BlocProvider.of<AdminCubit>(context).getAnnouncements(
+                MainCubit.get(context).profileModel!.semester);
+          }
+          wannaAnnouncements = false;
+
+          if (announcements != null && announcements.isNotEmpty) {
+            print(announcements[0].title);
+          } else {
+            print("Announcements are null");
+          }
+        }
+        print('$wannaAnnouncements wanna announcement ');
+
         ProfileModel? profile;
         int? semesterIndex;
 
@@ -131,180 +164,203 @@ class Home extends StatelessWidget {
                       ],
                     ),
                   ),
-                  actions: [
-                    if (TOKEN == null)
-                      if (scaffoldKey.currentState?.isDrawerOpen == true)
-                        Container(
-                          margin: const EdgeInsets.only(right: 10),
-                          decoration: BoxDecoration(
-                              gradient: const LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: [
-                                    Color(0xff4fd1c5),
-                                    Color(0xff38b2ac),
-                                  ]),
-                              color: const Color(0xFF00ADB5),
-                              borderRadius: BorderRadius.circular(10)),
-                          child: MaterialButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const LoginScreen()));
-                            },
-                            child: const Text(
-                              "Login",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                  ],
                 ),
                 drawer: CustomDrawer(context),
                 body: profile == null && TOKEN != null
                     ? const Center(
                         child: CircularProgressIndicator(),
                       )
-                    : Stack(
-                        children: [
-                          Container(
-                            decoration: const BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [
-                                  Color(0xFF1c1c2e), // Dark indigo
-                                  Color(0xFF2c2b3f), // Deep purple
-                                ],
+                    : SizedBox(
+                        height: double.infinity,
+                        child: Stack(
+                          children: [
+                            Container(
+                              decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    Color(0xFF1c1c2e), // Dark indigo
+                                    Color(0xFF2c2b3f), // Deep purple
+                                  ],
+                                ),
                               ),
-                            ),
-                            child: SingleChildScrollView(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(height: 20),
-                                  CarouselSlider(
-                                    items: carsor.map((carsor) {
-                                      return InkWell(
-                                          child: Stack(
-                                              alignment: Alignment.bottomCenter,
-                                              children: [
-                                            Container(
-                                              clipBehavior: Clip.antiAlias,
-                                              // margin: const EdgeInsets.all(6.0),
-                                              // child: Image.asset("images/332573639_735780287983011_1562632886952931410_n.jpg",width: 400,height: 400,fit: BoxFit.cover,),
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(3.0),
-                                                // image: DecorationImage(
-                                                //   image: AssetImage(
-                                                //     carsor.image ?? "images/llogo.jfif",
-                                                //   ),
-                                                //   fit: BoxFit.cover,
-                                                // ),
-                                              ),
-                                              child: Image.asset(
-                                                carsor.image!,
-                                                width: 400,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                gradient: LinearGradient(
-                                                  colors: [
-                                                    Colors.black
-                                                        .withOpacity(0.2),
-                                                    Colors.transparent,
-                                                  ],
-                                                  begin: Alignment.bottomCenter,
-                                                  end: Alignment.topCenter,
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                                // padding: EdgeInsets.all(5),
-                                                // width: 400,
-                                                decoration: BoxDecoration(
-                                                    color: const Color.fromARGB(
-                                                            51, 65, 180, 197)
-                                                        .withOpacity(0.6)
-                                                        .withAlpha(150),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            3)),
-                                                child: Text(
-                                                  carsor.text!,
-                                                  style: const TextStyle(
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                  textAlign: TextAlign.center,
-                                                ))
-                                          ]));
-                                    }).toList(),
-                                    options: CarouselOptions(
-                                      height: 200.0,
-                                      autoPlay: true,
-                                      enlargeCenterPage: true,
-                                      aspectRatio: 16 / 9,
-                                      autoPlayCurve: Curves.fastOutSlowIn,
-                                      enableInfiniteScroll: true,
-                                      autoPlayInterval:
-                                          const Duration(seconds: 10),
-                                      autoPlayAnimationDuration:
-                                          const Duration(milliseconds: 800),
-                                      viewportFraction: 0.8,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 20),
-                                  const SizedBox(height: 10),
-                                  Container(
-                                    padding: const EdgeInsets.all(16.0),
-                                    child: GridView.builder(
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2, // Two items per row
-                                        crossAxisSpacing: 10,
-                                        mainAxisSpacing: 10,
-                                        childAspectRatio: 3 /
-                                            2, // Control the height and width ratio
-                                      ),
-                                      itemCount:
-                                          // semesters[semesterIndex!].subjects.length,
-                                          semesters[semesterIndex!]
-                                              .subjects
-                                              .length,
-                                      itemBuilder: (context, index) {
-                                        return
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(height: 20),
+                                    BlocBuilder<AdminCubit, AdminCubitStates>(
+                                        builder: (context, state) {
+                                      if (AdminCubit.get(context)
+                                              .announcements ==
+                                          null) {
+                                        return Center(
+                                            child: CircularProgressIndicator());
+                                      } else {
+                                        var anonuncmentsss =
+                                            AdminCubit.get(context)
+                                                .announcements;
 
-                                            // subjectItemBuild(
-                                            //     semesters[semesterIndex!]
-                                            //         .subjects[index],context);
-                                            subjectItemBuild(
-                                                semesters[semesterIndex!]
-                                                    .subjects[index],
-                                                context);
-                                      },
+                                        return CarouselSlider(
+                                          items: anonuncmentsss!.isEmpty
+                                              ? [
+                                                  Container(
+                                                    child: Image.network(
+                                                        width: double.infinity,
+                                                        fit: BoxFit.cover,
+                                                        "https://e00-elmundo.uecdn.es/assets/multimedia/imagenes/2022/02/04/16439302481269.jpg"),
+                                                  )
+                                                ]
+                                              : anonuncmentsss
+                                                  .map((anonuncments) {
+                                                  return Stack(
+                                                      alignment: Alignment
+                                                          .bottomCenter,
+                                                      children: [
+                                                        Container(
+                                                          clipBehavior:
+                                                              Clip.antiAlias,
+                                                          // margin: const EdgeInsets.all(6.0),
+                                                          // child: Image.asset("images/332573639_735780287983011_1562632886952931410_n.jpg",width: 400,height: 400,fit: BoxFit.cover,),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        3.0),
+                                                            // image: DecorationImage(
+                                                            //   image: AssetImage(
+                                                            //     carsor.image ?? "images/llogo.jfif",
+                                                            //   ),
+                                                            //   fit: BoxFit.cover,
+                                                            // ),
+                                                          ),
+                                                          child: Image.network(
+                                                            anonuncments.image,
+                                                            width: 400,
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            gradient:
+                                                                LinearGradient(
+                                                              colors: [
+                                                                Colors.black
+                                                                    .withOpacity(
+                                                                        0.2),
+                                                                Colors
+                                                                    .transparent,
+                                                              ],
+                                                              begin: Alignment
+                                                                  .bottomCenter,
+                                                              end: Alignment
+                                                                  .topCenter,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                            // padding: EdgeInsets.all(5),
+                                                            // width: 400,
+                                                            decoration: BoxDecoration(
+                                                                color: const Color
+                                                                        .fromARGB(
+                                                                        51,
+                                                                        65,
+                                                                        180,
+                                                                        197)
+                                                                    .withOpacity(
+                                                                        0.6)
+                                                                    .withAlpha(
+                                                                        150),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            3)),
+                                                            child: Text(
+                                                              anonuncments
+                                                                  .title,
+                                                              style: const TextStyle(
+                                                                  fontSize: 20,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500),
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                            ))
+                                                      ]);
+                                                }).toList(),
+                                          options: CarouselOptions(
+                                            height: 200.0,
+                                            autoPlay: true,
+                                            enlargeCenterPage: true,
+                                            aspectRatio: 16 / 9,
+                                            autoPlayCurve: Curves.fastOutSlowIn,
+                                            enableInfiniteScroll:
+                                                anonuncmentsss.isEmpty
+                                                    ? false
+                                                    : true,
+                                            autoPlayInterval:
+                                                const Duration(seconds: 10),
+                                            autoPlayAnimationDuration:
+                                                const Duration(
+                                                    milliseconds: 800),
+                                            viewportFraction: 0.8,
+                                          ),
+                                        );
+                                      }
+                                    }),
+                                    const SizedBox(height: 20),
+                                    const SizedBox(height: 10),
+                                    Container(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: GridView.builder(
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        gridDelegate:
+                                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount:
+                                              2, // Two items per row
+                                          crossAxisSpacing: 10,
+                                          mainAxisSpacing: 10,
+                                          childAspectRatio: 3 /
+                                              2, // Control the height and width ratio
+                                        ),
+                                        itemCount:
+                                            // semesters[semesterIndex!].subjects.length,
+                                            semesters[semesterIndex!]
+                                                .subjects
+                                                .length,
+                                        itemBuilder: (context, index) {
+                                          return
+
+                                              // subjectItemBuild(
+                                              //     semesters[semesterIndex!]
+                                              //         .subjects[index],context);
+                                              subjectItemBuild(
+                                                  semesters[semesterIndex!]
+                                                      .subjects[index],
+                                                  context);
+                                        },
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                          // if (scaffoldKey.currentState?.isDrawerOpen == true)
-                          //   BackdropFilter(
-                          //     filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
-                          //     child: Container(
-                          //       color: Colors.transparent,
-                          //     ),
-                          //   ),
-                        ],
+                            // if (scaffoldKey.currentState?.isDrawerOpen == true)
+                            //   BackdropFilter(
+                            //     filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
+                            //     child: Container(
+                            //       color: Colors.transparent,
+                            //     ),
+                            //   ),
+                          ],
+                        ),
                       ),
               );
       }),
@@ -437,14 +493,23 @@ Widget CustomDrawer(context) {
                   leading: const Icon(Icons.admin_panel_settings),
                   title: const Text("Admin"),
                   onTap: () {
-                    navigate(context, AdminPanal());
+                    navigate(context, AdminPanel());
                   },
                 ),
               ListTile(
-                leading: const Icon(Icons.announcement),
-                title: const Text("Announcements"),
+                leading: Icon(Icons.announcement),
+                title: Text("Announcements"),
                 onTap: () {
-                  navigate(context, const AnnouncementsList());
+                  if (TOKEN == null) {
+                    navigate(context,
+                        AnnouncementsList(semester: SelectedSemester!));
+                  } else {
+                    navigate(
+                        context,
+                        AnnouncementsList(
+                            semester:
+                                MainCubit.get(context).profileModel!.semester));
+                  }
                 },
               ),
               ExpansionTile(
@@ -629,11 +694,29 @@ Widget CustomDrawer(context) {
                     style: TextStyle(color: Colors.red),
                   ),
                   onTap: () {
-                    MainCubit.get(context).logout(context);
-                    Provider.of<ThemeProvide>(context, listen: false).isDark =
-                        false;
-                    Provider.of<ThemeProvide>(context, listen: false)
-                        .notifyListeners();
+                    AwesomeDialog(
+                      context: context,
+                      title: "Log Out",
+                      dialogType: DialogType.warning,
+                      body: Text(
+                        "Are you sure you want to log out?",
+                        style: TextStyle(fontSize: 17),
+                      ),
+                      animType: AnimType.rightSlide,
+                      btnOkColor: Colors.red,
+                      btnCancelOnPress: () {},
+                      btnOkText: "Log Out",
+                      btnCancelColor: Colors.grey,
+
+                      // titleTextStyle: TextStyle(fontSize: 22),
+                      btnOkOnPress: () {
+                        MainCubit.get(context).logout(context);
+                        Provider.of<ThemeProvide>(context, listen: false)
+                            .isDark = false;
+                        Provider.of<ThemeProvide>(context, listen: false)
+                            .notifyListeners();
+                      },
+                    ).show();
                   },
                 ),
             ],
@@ -788,7 +871,7 @@ Widget subjectItemBuild(SubjectModel subject, context) {
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: Text(
-                subject.subjectName,
+                subject.subjectName.replaceAll('_', " ").replaceAll("and", "&"),
                 maxLines: 2,
                 style: GoogleFonts.montserrat(
                   color: Colors.white,
@@ -805,24 +888,24 @@ Widget subjectItemBuild(SubjectModel subject, context) {
   );
 }
 
-class CarsorModel {
-  String? image;
-  String? text;
-  CarsorModel({this.image, this.text});
-}
+// class CarsorModel {
+//   String? image;
+//   String? text;
+//   CarsorModel({this.image, this.text});
+// }
 
-List<CarsorModel> carsor = [
-  CarsorModel(
-      image: "images/140.jpg", text: "Latest Of Academic Schedule \"9-17\" "),
-  CarsorModel(
-      image: "images/332573639_735780287983011_1562632886952931410_n.jpg",
-      text:
-          "RoboTech summers training application form opens today at 9:00 pm! Be ready "),
-  CarsorModel(
-      image: "images/338185486_3489006871419356_4868524435440167213_n.jpg",
-      text:
-          "Cyberus summers training application form opens today at 9:00 pm! Be ready "),
-];
+// List<CarsorModel> carsor = [
+//   CarsorModel(
+//       image: "images/140.jpg", text: "Latest Of Academic Schedule \"9-17\" "),
+//   CarsorModel(
+//       image: "images/332573639_735780287983011_1562632886952931410_n.jpg",
+//       text:
+//           "RoboTech summers training application form opens today at 9:00 pm! Be ready "),
+//   CarsorModel(
+//       image: "images/338185486_3489006871419356_4868524435440167213_n.jpg",
+//       text:
+//           "Cyberus summers training application form opens today at 9:00 pm! Be ready "),
+// ];
 // List subjectNamesList = [
 //   "Physics",
 //   "Electronics",

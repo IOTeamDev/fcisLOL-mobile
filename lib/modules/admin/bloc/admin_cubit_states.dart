@@ -24,11 +24,7 @@ class AdminGetAnnouncementsErrorState extends AdminCubitStates{
 
 class AdminSaveAnnouncementLoadingState extends AdminCubitStates{}
 
-class AdminSaveAnnouncementSuccessState extends AdminCubitStates{
-  // final AnnouncementModel announcementModel;
-  //
-  // AdminSaveAnnouncementSuccessState(this.announcementModel);
-}
+class AdminSaveAnnouncementSuccessState extends AdminCubitStates{}
 
 class AdminSaveAnnouncementsErrorState extends AdminCubitStates{
   final String error;
@@ -92,3 +88,7 @@ class AdminAcceptRequestErrorState extends AdminCubitStates{
 class GetFcmTokensSuccess extends AdminCubitStates{}
 
 class GetFcmTokensError extends AdminCubitStates{}
+
+class SendNotificationSuccess extends AdminCubitStates{}
+
+class SendNotificationError extends AdminCubitStates{}
