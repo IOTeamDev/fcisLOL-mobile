@@ -28,10 +28,10 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
   bool _isExpanded = false;
   bool _showContent = false;
 
-  var _formKey = GlobalKey<FormState>();
-  var _titleController = TextEditingController();
-  var _dateController = TextEditingController();
-  var _descriptionController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final _titleController = TextEditingController();
+  final _dateController = TextEditingController();
+  final _descriptionController = TextEditingController();
   String? _selectedItem;
   final List<String> _items = ['Assignment', 'Quiz', 'Other'];
 
@@ -43,7 +43,9 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
           create: (context) => MainCubit()..getProfileInfo(),
         ),
         BlocProvider(
-          create: (context) => AdminCubit()..getAnnouncements(widget.semester)..getFcmTokens(),
+          create: (context) => AdminCubit()
+            ..getAnnouncements(widget.semester)
+            ..getFcmTokens(),
         ),
       ],
       child: BlocConsumer<AdminCubit, AdminCubitStates>(
@@ -192,7 +194,6 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                     }
                                                   }),
                                                   decoration: InputDecoration(
-                                                    
                                                     suffixIcon: const Icon(
                                                       Icons.date_range,
                                                       color: Colors.grey,
@@ -296,12 +297,11 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                               .validate() &&
                                                           _selectedItem !=
                                                               null) {
-                                                                setState(() {
-                                                                    _isExpanded = false;
+                                                        setState(() {
+                                                          _isExpanded = false;
                                                           _showContent = false;
                                                           _height = 80;
-                                                                });
-                                                      
+                                                        });
 
                                                         print(_selectedItem);
                                                         print(
@@ -334,8 +334,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                                         context)
                                                                     .profileModel!
                                                                     .semester);
-                                                                      setState(() {
-                                                        
+                                                        setState(() {
                                                           _titleController
                                                               .clear();
                                                           _descriptionController
@@ -455,7 +454,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
         String refresh = await Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => AnnouncementDetail(
             semester: semester,
-            title: cubit.title!,
+            title: cubit.title,
             description: cubit.content,
             date: cubit.dueDate,
             id: ID,
@@ -493,7 +492,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                   MaterialPageRoute(
                       builder: (context) => EditAnnouncement(
                             semester: semester,
-                            title: cubit.title!,
+                            title: cubit.title,
                             content: cubit.content,
                             date: cubit.dueDate,
                             id: ID.toString(),
