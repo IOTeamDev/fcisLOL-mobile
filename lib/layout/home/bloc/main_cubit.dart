@@ -187,7 +187,7 @@ class MainCubit extends Cubit<MainCubitStates> {
 
   void getScore4User(int userId) async {
     score4User = null;
-    print(leaderboardModel!.length.toString() + "dsmksdjkl");
+    print("${leaderboardModel!.length}dsmksdjkl");
     for (int i = 0; i < leaderboardModel!.length; i++) {
       if (leaderboardModel![i].id == userId) {
         score4User = leaderboardModel![i];
@@ -226,15 +226,17 @@ class MainCubit extends Cubit<MainCubitStates> {
       });
       notAdminLeaderboardModel!.sort((a, b) => b.score!.compareTo(a.score!));
       print(leaderboardModel!.length);
-      if (profileModel != null)
+      if (profileModel != null) {
         getScore4User(profileModel!.id);
-      else
+      } else {
         print("object");
+      }
       emit(GetLeaderboardSuccessState());
     }).catchError((onError) {
       print(onError.toString());
 
       emit(GetLeaderboardErrorState());
     });
+    return null;
   }
 }

@@ -31,9 +31,10 @@ class Profile extends StatelessWidget {
       create: (context) => MainCubit()..getProfileInfo(),
       child: BlocConsumer<MainCubit, MainCubitStates>(
         builder: (context, state) {
-          if (state is GetProfileSuccess)
+          if (state is GetProfileSuccess) {
             BlocProvider.of<MainCubit>(context)
                 .getLeaderboard(MainCubit.get(context).profileModel!.semester);
+          }
           var mainCubit = MainCubit.get(context);
           if (mainCubit.profileModel != null) {
             if (mainCubit.profileModel!.phone != null) {
@@ -122,13 +123,14 @@ class Profile extends StatelessWidget {
 
                         Builder(
                           builder: (context) {
-                            if (MainCubit.get(context).leaderboardModel != null)
+                            if (MainCubit.get(context).leaderboardModel !=
+                                null) {
                               return Builder(builder: (context) {
                                 MainCubit.get(context).getScore4User(
                                     MainCubit.get(context).profileModel!.id);
                                 var score4User =
                                     MainCubit.get(context).score4User;
-                        
+
                                 return Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
@@ -136,7 +138,13 @@ class Profile extends StatelessWidget {
                                     Column(
                                       children: [
                                         // Icon(),
-                                        Text("My Score",style: TextStyle(color: Colors.redAccent,fontSize: 16,fontWeight: FontWeight.bold),),
+                                        Text(
+                                          "My Score",
+                                          style: TextStyle(
+                                              color: Colors.redAccent,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                         SizedBox(
                                           height: 10,
                                         ),
@@ -160,10 +168,11 @@ class Profile extends StatelessWidget {
                                   ],
                                 );
                               });
-                            else
+                            } else {
                               return Center(
                                 child: CircularProgressIndicator(),
                               );
+                            }
                           },
                         ),
 

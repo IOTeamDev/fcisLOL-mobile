@@ -46,7 +46,7 @@ class AnnouncementsList extends StatelessWidget {
                                 announcementBuilder(
                                     cubit.announcements![index].id,
                                     context,
-                                    cubit.announcements![index].title!,
+                                    cubit.announcements![index].title,
                                     index,
                                     cubit.announcements![index].content,
                                     cubit.announcements![index].dueDate,
@@ -94,7 +94,8 @@ class AnnouncementsList extends StatelessWidget {
       onTap: () {
         navigate(
             context,
-            AnnouncementDetail(semester: semester,//
+            AnnouncementDetail(
+                semester: semester, //
                 title: title,
                 description: content,
                 date: dueDate,

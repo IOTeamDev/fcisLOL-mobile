@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 
 class AboutUs extends StatelessWidget {
+  const AboutUs({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
             // Header Section
-        
+
             // Meet the Team Section
             SliverPadding(
-              padding: const EdgeInsets.only(left: 16,right: 16,top: 10,bottom: 5),
+              padding: const EdgeInsets.only(
+                  left: 16, right: 16, top: 10, bottom: 5),
               sliver: SliverToBoxAdapter(
                 child: Text(
                   'Meet the Team',
@@ -23,7 +25,7 @@ class AboutUs extends StatelessWidget {
                 ),
               ),
             ),
-        
+
             // Team Members Grid Section
             SliverPadding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -86,7 +88,7 @@ class AboutUs extends StatelessWidget {
                 ),
               ),
             ),
-        
+
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -135,10 +137,10 @@ class AboutUs extends StatelessWidget {
               onPressed: () {
                 _contactTeamMember(contactEmail);
               },
-              child: Text('Contact'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blueAccent,
               ),
+              child: Text('Contact'),
             ),
           ],
         ),

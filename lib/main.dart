@@ -68,16 +68,14 @@ main() async {
       .doc("private_keys")
       .get()
       .then((value) {
+    fcisServiceMap = value.data()?["fcisServiceMap"];
+    private_key = value.data()?["private_key"];
+    private_key_id = value.data()?["private_key_id"];
+    private_key = private_key!.replaceAll(r'\n', '\n').trim();
 
-
-fcisServiceMap=value.data()?["fcisServiceMap"];
-private_key=value.data()?["private_key"];
-private_key_id=value.data()?["private_key_id"];
-private_key= private_key!.replaceAll(r'\n', '\n').trim();
-
-    print(fcisServiceMap["project_id"].toString()+"+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-
-      });
+    print(
+        "${fcisServiceMap["project_id"]}+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+  });
 // fCMHelper.initNotifications();
 
 // fCMHelper.sendNotifications(
