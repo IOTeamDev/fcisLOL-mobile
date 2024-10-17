@@ -11,7 +11,6 @@ class FeedbackScreen extends StatelessWidget {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
 
-  final _nameController = TextEditingController();
   final _feedbackController = TextEditingController();
 
   @override
@@ -64,14 +63,6 @@ class FeedbackScreen extends StatelessWidget {
             child: Column(
               children: [
                 customTextFormField(
-                    //
-                    title: 'Full Name',
-                    controller: _nameController,
-                    keyboardtype: TextInputType.text),
-                SizedBox(
-                  height: 20,
-                ),
-                customTextFormField(
                   title: 'Your Feedback',
                   controller: _feedbackController,
                   keyboardtype: TextInputType.multiline,
@@ -92,7 +83,6 @@ class FeedbackScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(20)),
                         color: additional1,
                         onPressed: () {
-                          _nameController.text = '';
                           _feedbackController.text = '';
                           Navigator.of(context).pop();
                         },
@@ -109,10 +99,7 @@ class FeedbackScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20)),
                       color: additional1,
                       onPressed: () {
-                        sendBugReport(
-                            feedbackDescription: _feedbackController.text,
-                            userName: _nameController.text);
-                        _nameController.clear();
+                        sendBugReport(feedbackDescription: _feedbackController.text,);
                         _feedbackController.clear();
                       },
                       child: Text(
@@ -129,14 +116,12 @@ class FeedbackScreen extends StatelessWidget {
   }
 
   Future<void> sendBugReport(
-      {String? userName, required String feedbackDescription}) async {
+      {required String feedbackDescription}) async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
       final String subject = Uri.encodeComponent('Feedback');
-      final String body = Uri.encodeComponent(
-        'Name: ${userName != '' ? userName ?? 'Anonymous' : 'Anonymous'}\n\nFeedback Description: \n$feedbackDescription',
-      );
+      final String body = Uri.encodeComponent(feedbackDescription);
 
       final Uri emailUri = Uri(
         scheme: 'mailto',

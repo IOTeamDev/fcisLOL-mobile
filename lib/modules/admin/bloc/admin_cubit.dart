@@ -85,12 +85,6 @@ class AdminCubit extends Cubit<AdminCubitStates> {
       required type,
       image,
       required currentSemester}) {
-    print(title + "title");
-    print(description + "desc");
-    print(dueDate + "Date");
-    print(type.toString() + "type");
-    print(currentSemester);
-    print(image);
     Random random = Random();
 
     // Get a random index
@@ -101,7 +95,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
             data: {
               'title': title,
               'content': description ?? '',
-              'due_date': dueDate,
+              'due_date': dueDate??'',
               'type': type,
               'semester': currentSemester,
               'image': image ??

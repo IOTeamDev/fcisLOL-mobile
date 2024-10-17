@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -10,6 +12,7 @@ import 'package:lol/shared/components/constants.dart';
 import 'package:lol/modules/webview/webview_screen.dart';
 import 'package:lol/shared/components/navigation.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:lol/shared/styles/colors.dart';
 
 import '../../../../layout/home/bloc/main_cubit.dart';
 import '../../../../shared/components/components.dart';
@@ -32,6 +35,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
   var _titleController = TextEditingController();
   var _dateController = TextEditingController();
   var _descriptionController = TextEditingController();
+  String? dueDateFormatted;
   String? _selectedItem;
   final List<String> _items = ['Assignment', 'Quiz', 'Other'];
 
@@ -90,7 +94,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                           onTap: () {
                             setState(() {
                               _isExpanded = true; // Toggle the expansion
-                              _height = 450;
+                              _height = 410;
                             });
                             Future.delayed(const Duration(milliseconds: 350),
                                 () {
@@ -118,8 +122,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                       key: _formKey,
                                       child: AnimatedOpacity(
                                         opacity: _isExpanded ? 1.0 : 0,
-                                        duration:
-                                            const Duration(milliseconds: 500),
+                                        duration: const Duration(milliseconds: 500),
                                         curve: Curves.easeInOut,
                                         child: Column(children: [
                                           //Title Text Input
@@ -137,12 +140,10 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                               hintStyle: TextStyle(
                                                   fontSize: 20,
                                                   color: Colors.grey[400]),
-                                              border: InputBorder.none,
                                             ),
                                             style: const TextStyle(
                                                 color: Colors.white),
                                           ),
-                                          divider(),
                                           const SizedBox(
                                             height: 10,
                                           ),
@@ -156,15 +157,10 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                               hintStyle: TextStyle(
                                                   fontSize: 20,
                                                   color: Colors.grey[400]),
-                                              border: InputBorder.none,
                                             ),
                                             style: const TextStyle(
                                                 color: Colors.white),
                                           ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          divider(),
                                           const SizedBox(
                                             height: 10,
                                           ),
@@ -185,10 +181,11 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                   ).then((value) {
                                                     if (value != null) {
                                                       //print(DateFormat.YEAR_MONTH_DAY);
-                                                      _dateController.text =
-                                                          value
-                                                              .toUtc()
-                                                              .toIso8601String();
+                                                      _dateController.text = value.toUtc().toIso8601String();
+                                                      dueDateFormatted = _dateController.text;
+                                                      _dateController.text = DateFormat('dd/MM/yyyy').format(value);
+                                                      print(dueDateFormatted);
+                                                      print(_dateController.text);
                                                     }
                                                   }),
                                                   decoration: InputDecoration(
@@ -212,22 +209,18 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                               DropdownButton<String>(
                                                 hint: const Text(
                                                   'Type',
-                                                  style: TextStyle(
-                                                      color: Colors.white),
+                                                  style: TextStyle(color: Colors.white),
                                                 ),
-                                                style: const TextStyle(
-                                                    color: Colors.white),
-                                                dropdownColor: Colors.black,
                                                 value: _selectedItem,
-                                                items:
-                                                    _items.map((String item) {
-                                                  return DropdownMenuItem<
-                                                      String>(
+                                                dropdownColor: Colors.white, // Background color for the dropdown list
+                                                iconEnabledColor: Colors.white, // Color of the dropdown icon
+                                                style: const TextStyle(color: Colors.white), // Style for the selected item outside the list
+                                                items: _items.map((String item) {
+                                                  return DropdownMenuItem<String>(
                                                     value: item,
                                                     child: Text(
                                                       item,
-                                                      style: const TextStyle(
-                                                          color: Colors.white),
+                                                      style: const TextStyle(color: Colors.black), // Always black for the list items
                                                     ),
                                                   );
                                                 }).toList(),
@@ -236,7 +229,21 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                     _selectedItem = newValue;
                                                   });
                                                 },
-                                              ),
+                                                selectedItemBuilder: (BuildContext context) {
+                                                  // Ensuring the selected item has the same padding and alignment as the menu items
+                                                  return _items.map((String item) {
+                                                    return DropdownMenuItem<String>(
+                                                      value: item,
+                                                      child: Text(
+                                                        item,
+                                                        style: const TextStyle(
+                                                          color: Colors.white, // White color for the selected item displayed outside
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }).toList();
+                                                },
+                                              )
                                             ],
                                           ),
                                           //Upload Image button
@@ -264,16 +271,16 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                     setState(() {
                                                       _titleController.clear();
                                                       _dateController.clear();
-                                                      _descriptionController
-                                                          .clear();
-                                                      _isExpanded =
-                                                          false; // Toggle the expansion
+                                                      _descriptionController.clear();
+                                                      _isExpanded = false; // Toggle the expansion
                                                       _height = 80;
                                                       _showContent = false;
+                                                      dueDateFormatted = null;
                                                     });
                                                   },
                                                   style:
                                                       ElevatedButton.styleFrom(
+                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13)),
                                                     padding:
                                                         const EdgeInsetsDirectional
                                                             .symmetric(
@@ -316,38 +323,24 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                                 isUserProfile:
                                                                     false);
                                                         cubit.addAnnouncement(
-                                                            title: _titleController
-                                                                .text,
-                                                            dueDate:
-                                                                _dateController
-                                                                    .text,
+                                                            title: _titleController.text,
+                                                            dueDate: dueDateFormatted,
                                                             type: _selectedItem,
-                                                            description:
-                                                                _descriptionController
-                                                                    .text,
-                                                            image: MainCubit
-                                                                    .get(
-                                                                        context)
-                                                                .AnnouncementImagePath,
-                                                            currentSemester:
-                                                                MainCubit.get(
-                                                                        context)
-                                                                    .profileModel!
-                                                                    .semester);
-                                                                      setState(() {
-                                                        
-                                                          _titleController
-                                                              .clear();
-                                                          _descriptionController
-                                                              .clear();
-                                                          _dateController
-                                                              .clear();
+                                                            description: _descriptionController.text,
+                                                            image: MainCubit.get(context).AnnouncementImagePath,
+                                                            currentSemester: MainCubit.get(context).profileModel!.semester);
+                                                        setState(() {
+                                                          _titleController.clear();
+                                                          _descriptionController.clear();
+                                                          _dateController.clear();
                                                           _selectedItem = null;
+                                                          dueDateFormatted = null;
                                                         });
                                                       }
                                                     },
                                                     style: ElevatedButton
                                                         .styleFrom(
+                                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13)),
                                                       padding:
                                                           const EdgeInsetsDirectional
                                                               .symmetric(
@@ -400,7 +393,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                   cubit.announcements!.isNotEmpty,
                           builder: (context) => ListView.separated(
                             shrinkWrap: true,
-                            physics: const BouncingScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) =>
                                 announcementBuilder(
                                     widget.semester,
@@ -449,30 +442,27 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
 
   Widget announcementBuilder(semester, String cubitId, context, title, ID,
       content, date, selectedItem) {
+    var rand = Random();
+    int random = rand.nextInt(announcementsColorList.length);
     var cubit = AdminCubit.get(context).announcements![ID];
     return GestureDetector(
-      onTap: () async {
-        String refresh = await Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => AnnouncementDetail(
-            semester: semester,
-            title: cubit.title!,
-            description: cubit.content,
-            date: cubit.dueDate,
-            id: ID,
-            selectedType: cubit.type,
-          ),
+      onTap: () {
+        navigate(context, AnnouncementDetail(
+          semester: semester,
+          title: cubit.title,
+          description: cubit.content,
+          date: cubit.dueDate,
+          id: ID,
+          selectedType: cubit.type,
         ));
 
-        if (refresh == 'refresh') {
-          AdminCubit.get(context).getAnnouncements(semester);
-        }
       },
       child: Container(
         margin: const EdgeInsetsDirectional.symmetric(horizontal: 10),
         padding: const EdgeInsetsDirectional.symmetric(horizontal: 10),
         height: 80,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20), color: HexColor('B8A8F9')),
+            borderRadius: BorderRadius.circular(20), color: announcementsColorList[random]),
         child: Row(
           children: [
             ConstrainedBox(
@@ -493,7 +483,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                   MaterialPageRoute(
                       builder: (context) => EditAnnouncement(
                             semester: semester,
-                            title: cubit.title!,
+                            title: cubit.title,
                             content: cubit.content,
                             date: cubit.dueDate,
                             id: ID.toString(),
@@ -505,12 +495,13 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                   AdminCubit.get(context).getAnnouncements(semester);
                 }
               },
-              shape: const CircleBorder(),
-              minWidth: 0,
-              padding: const EdgeInsets.all(5),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              color: Colors.white,
+              minWidth: 10,
+              padding: const EdgeInsets.all(6),
               child: const Icon(
-                Icons.edit,
-                color: Colors.green,
+                Icons.edit_outlined,
+                color: Colors.black,
               ), // Padding for icon
             ),
             //Delete Icon
@@ -518,9 +509,10 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
               onPressed: () {
                 AdminCubit.get(context).deleteAnnouncement(cubit.id, semester);
               },
-              shape: const CircleBorder(),
-              minWidth: 0,
-              padding: const EdgeInsets.all(5),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              minWidth: 10,
+              color: Colors.white,
+              padding: const EdgeInsets.all(6),
               child: const Icon(
                 Icons.delete_sharp,
                 color: Colors.red,

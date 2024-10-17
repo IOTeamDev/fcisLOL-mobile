@@ -8,7 +8,6 @@ import '../../../layout/home/bloc/main_cubit.dart';
 class ReportBug extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
 
-  final _nameController = TextEditingController();
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
 
@@ -36,18 +35,6 @@ class ReportBug extends StatelessWidget {
                       key: _formKey,
                       child: Column(
                         children: [
-                          TextFormField(
-                            controller: _nameController,
-                            keyboardType: TextInputType.name,
-                            decoration: InputDecoration(
-                              hintText: 'Name',
-                              hintStyle: TextStyle(
-                                  fontSize: 20, color: Colors.grey[400]),
-                              border: InputBorder.none,
-                            ),
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                          divider(),
                           SizedBox(
                             height: 10,
                           ),
@@ -103,7 +90,6 @@ class ReportBug extends StatelessWidget {
                                 //cancel button
                                 ElevatedButton(
                                   onPressed: () {
-                                    _nameController.clear();
                                     _titleController.clear();
                                     _descriptionController.clear();
                                     Navigator.pop(context);
@@ -126,11 +112,9 @@ class ReportBug extends StatelessWidget {
                                       sendBugReport(
                                           bugTitle: _titleController.text,
                                           bugDescription:
-                                              _descriptionController.text,
-                                          userName: _nameController.text);
+                                              _descriptionController.text,);
                                       _descriptionController.clear();
                                       _titleController.clear();
-                                      _nameController.clear();
                                     },
                                     style: ElevatedButton.styleFrom(
                                       padding:
@@ -158,7 +142,6 @@ class ReportBug extends StatelessWidget {
   }
 
   Future<void> sendBugReport({
-    String? userName,
     required String bugTitle,
     required String bugDescription,
   }) async {
@@ -167,7 +150,7 @@ class ReportBug extends StatelessWidget {
 
       final String subject = Uri.encodeComponent(bugTitle);
       final String body = Uri.encodeComponent(
-        'Name: ${userName != '' ? userName ?? 'Anonymous' : 'Anonymous'}\n\nBug Description: \n$bugDescription',
+        bugDescription,
       );
 
       final Uri emailUri = Uri(

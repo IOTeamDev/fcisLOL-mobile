@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:intl/intl.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
 import 'package:lol/modules/admin/screens/announcements/announcement_detail.dart';
@@ -58,7 +59,7 @@ class AnnouncementDetail extends StatelessWidget {
                   children: [
                     //Back Button
                     backButton(context),
-                    adminTopTitleWithDrawerButton(title: 'Announcement Detail', size: 32, hasDrawer: false),
+                    adminTopTitleWithDrawerButton(title: 'Announcement Detail', size: 27, hasDrawer: false),
                     Container(
                       margin: const EdgeInsetsDirectional.symmetric(horizontal: 15, vertical: 20),
                       padding: const EdgeInsets.all(15),
@@ -88,20 +89,21 @@ class AnnouncementDetail extends StatelessWidget {
                           const SizedBox(
                             height: 20,
                           ),
-                          Container(
-                            padding: const EdgeInsets.all(15),
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                color: HexColor('D9D9D9').withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Expanded(
+                          Expanded(
+                            flex: int.fromEnvironment(description, defaultValue: description == '' ?0:1),
+                            child: Container(
+                              padding: const EdgeInsets.all(15),
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  color: HexColor('D9D9D9').withOpacity(0.2),
+                                  borderRadius: BorderRadius.circular(20)),
                               child: SingleChildScrollView(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Linkify(
                                       onOpen: (link) => onOpen(context, link),
-                                      text: description,
+                                      text: 'content:\n$description',
                                       style: const TextStyle(
                                         color: Colors.white,
                                       ),
@@ -118,7 +120,7 @@ class AnnouncementDetail extends StatelessWidget {
                                           const EdgeInsetsDirectional.symmetric(
                                               vertical: 25.0),
                                       child: Text(
-                                        'DeadLine: ${date??'No due date'}',
+                                        'DeadLine: ${date == 'No Due Date'? date:DateFormat('dd/MM/yyyy').format(DateTime.parse(date)).toString()}',
                                         style: const TextStyle(
                                           color: Colors.white,
                                         ),

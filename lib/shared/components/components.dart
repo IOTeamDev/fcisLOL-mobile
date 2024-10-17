@@ -175,7 +175,7 @@ Widget backButton(context, {double bottomPadding = 8}) {
 
 Widget divider() {
   return Container(
-    height: 2,
+    height: 1,
     width: double.infinity,
     color: Colors.grey,
   );
