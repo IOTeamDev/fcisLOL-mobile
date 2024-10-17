@@ -31,10 +31,10 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
   bool _isExpanded = false;
   bool _showContent = false;
 
-  var _formKey = GlobalKey<FormState>();
-  var _titleController = TextEditingController();
-  var _dateController = TextEditingController();
-  var _descriptionController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final _titleController = TextEditingController();
+  final _dateController = TextEditingController();
+  final _descriptionController = TextEditingController();
   String? dueDateFormatted;
   String? _selectedItem;
   final List<String> _items = ['Assignment', 'Quiz', 'Other'];
