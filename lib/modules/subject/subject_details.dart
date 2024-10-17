@@ -23,11 +23,6 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:file_picker/file_picker.dart';
 
-import 'dart:convert';
-import 'dart:io';
-import 'package:file_picker/file_picker.dart';
-import 'package:http/http.dart' as http;
-
 class SubjectDetails extends StatefulWidget {
   final String subjectName;
   const SubjectDetails({super.key, required this.subjectName});
@@ -118,6 +113,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                         alignment: Alignment.topLeft,
                         child: MaterialButton(
                             onPressed: () {
+                              cubit.changeTap(index: 0);
                               Navigator.of(context).pop();
                             },
                             child: const Icon(

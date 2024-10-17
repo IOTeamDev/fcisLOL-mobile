@@ -46,6 +46,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
       print(onError.toString());
       emit(GetFcmTokensError());
     });
+    return null;
   }
 
   AnnouncementModel? announcementModel;
@@ -169,10 +170,11 @@ class AdminCubit extends Cubit<AdminCubitStates> {
             },
             body: jsonEncode(notification))
         .then((onValue) {
-      if (onValue.statusCode == 200)
+      if (onValue.statusCode == 200) {
         print('Notification sent successfully');
-      else
+      } else {
         print('Failed to send notification: ${onValue.body}');
+      }
     }).catchError((onError) => print(onError.toString()));
   }
 
@@ -187,8 +189,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
         fcmTokens.where((user) => user.semester == semester).toList();
 
     for (var user in filteredUsers) {
-      if (user != null)
-        sendFCMNotification(title: title, body: body, token: user.fcmToken??"");
+      sendFCMNotification(title: title, body: body, token: user.fcmToken??"");
     }
   }
 }
