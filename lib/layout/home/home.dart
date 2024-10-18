@@ -383,6 +383,9 @@ Widget CustomDrawer(context) {
                   print("sdfsd");
                 },
                 child: UserAccountsDrawerHeader(
+                  otherAccountsPictures: [
+                    Text("data"),
+                  ],
                   decoration: const BoxDecoration(color: Color(0xff0F4C75)),
                   accountName: Row(
                     children: [
@@ -731,15 +734,15 @@ String Level(String semester) {
   switch (semester) {
     case "One":
     case "Two":
-      return "1st year";
+      return "Freshman";
 
     case "Three":
     case "Four":
-      return "2nd year";
+      return "Sophomore";
 
     case "Five":
     case "Six":
-      return "3rd year";
+      return "Junior";
 
     case "Seven":
     case "Eight":
