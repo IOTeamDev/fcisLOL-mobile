@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lol/drawer.dart';
 import 'package:lol/layout/home/bloc/main_cubit.dart';
 import 'package:lol/layout/home/bloc/main_cubit_states.dart';
 import 'package:lol/layout/home/semester_navigate.dart';
@@ -68,16 +69,14 @@ main() async {
       .doc("private_keys")
       .get()
       .then((value) {
+    fcisServiceMap = value.data()?["fcisServiceMap"];
+    private_key = value.data()?["private_key"];
+    private_key_id = value.data()?["private_key_id"];
+    private_key = private_key!.replaceAll(r'\n', '\n').trim();
 
-
-fcisServiceMap=value.data()?["fcisServiceMap"];
-private_key=value.data()?["private_key"];
-private_key_id=value.data()?["private_key_id"];
-private_key= private_key!.replaceAll(r'\n', '\n').trim();
-
-    print(fcisServiceMap["project_id"].toString()+"+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-
-      });
+    print(fcisServiceMap["project_id"].toString() +
+        "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+  });
 // fCMHelper.initNotifications();
 
 // fCMHelper.sendNotifications(
