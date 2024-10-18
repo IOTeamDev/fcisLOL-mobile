@@ -45,7 +45,6 @@ class MainCubit extends Cubit<MainCubitStates> {
   File? userImageFile;
   String? userImagePath;
   var picker = ImagePicker();
-
   getUserImage({required bool fromGallery}) async {
     emit(GetUserImageLoading());
 
@@ -68,30 +67,9 @@ class MainCubit extends Cubit<MainCubitStates> {
     }
   }
 
-  File? AnnouncementImageFile;
-  String? AnnouncementImagePath;
-  getAnnouncementImage() async {
-    emit(GetAnnouncementImageLoading());
 
-    var tempPostImage = await picker.pickImage(source: ImageSource.gallery);
-    if (tempPostImage != null) {
-      AnnouncementImageFile = File(tempPostImage.path);
-      final int sizeInBytes = await AnnouncementImageFile!.length();
-      final int sizeInMB = sizeInBytes ~/ (1024 * 1024);
-      print(sizeInBytes);
-      print(sizeInMB);
-      if (sizeInMB <= 1) {
-        emit(GetAnnouncementImageSuccess());
-      } else {
-        AnnouncementImageFile = null;
-        emit(GetAnnouncementLimitExceed());
-      }
-    } else {
-      emit(GetAnnouncementImageFailure());
-    }
-  }
 
-  Future<void> UploadPImage({File? image, bool isUserProfile = true}) async {
+  Future<void> UploadPImage({AnnouncementImagePath, File? image, bool isUserProfile = true}) async {
     AnnouncementImagePath = null;
     emit(UploadImageLoading());
     if (image == null) return;

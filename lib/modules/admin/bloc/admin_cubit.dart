@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
@@ -117,8 +119,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     announcements = null;
     print(SelectedSemester.toString());
     emit(AdminGetAnnouncementLoadingState());
-    DioHelp.getData(path: ANNOUNCEMENTS, query: {'semester': semester})
-        .then((value) {
+    DioHelp.getData(path: ANNOUNCEMENTS, query: {'semester': semester}).then((value) {
       announcements = [];
       value.data.forEach((element) {
         announcements!.add(AnnouncementModel.fromJson(element));
@@ -255,5 +256,40 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     }
 
     // print('Notifications sent successfully');
+  }
+
+  File? AnnouncementImageFile;
+  String? AnnouncementImagePath;
+  IconData pickerIcon = Icons.image;
+  String imageName = 'Select Image';
+  var picker = ImagePicker();
+  getAnnouncementImage() async {
+    emit(ImagePickingLoadingState());
+
+    var tempPostImage = await picker.pickImage(source: ImageSource.gallery);
+    if (tempPostImage != null) {
+      AnnouncementImageFile = File(tempPostImage.path);
+      pickerIcon = Icons.close;
+      imageName = tempPostImage.path.split('/').last;
+      final int sizeInBytes = await AnnouncementImageFile!.length();
+      final int sizeInMB = sizeInBytes ~/ (1024 * 1024);
+      print(sizeInBytes);
+      print(sizeInMB);
+      if (sizeInMB <= 1) {
+        pickerIcon = Icons.clear;
+        showToastMessage(message: 'Imaged Picked Successfully', states: ToastStates.SUCCESS);
+        emit(ImagePickingSuccessState());
+      } else {
+        showToastMessage(message: 'Image Limit Exceeded', states: ToastStates.WARNING);
+        imageName = 'Select Image';
+        pickerIcon = Icons.image;
+        AnnouncementImageFile = null;
+        emit(ImagePickingExceedState());
+      }
+    } else {
+      pickerIcon = Icons.image;
+      imageName = 'Select Image';
+      emit(ImagePickingErrorState());
+    }
   }
 }

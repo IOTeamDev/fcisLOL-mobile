@@ -16,19 +16,6 @@ import 'package:lol/shared/components/constants.dart';
 
 class Requests extends StatelessWidget {
   var scaffoldKey = GlobalKey<ScaffoldState>();
-  List<String> backgroundColor = [
-    '94ffff',
-    'ff94ad',
-    'bc94ff',
-    'add271',
-    '5d5fff',
-    'e17fd1',
-    'b6bffe',
-    '7d29fb',
-    'ff5938',
-    '00664e',
-  ];
-
   Requests({super.key});
 
   @override
@@ -50,21 +37,26 @@ class Requests extends StatelessWidget {
 
         builder: (context, mainState)
         {
+          double width = screenWidth(context);
+          double height = screenHeight(context);
           var cubit = MainCubit.get(context);
 
           return Scaffold(
             key: scaffoldKey,
-            backgroundColor: Colors.black,
+            backgroundColor: HexColor('#23252A'),
             body: Stack(
               children: [
-                backgroundEffects(),
                 Container(
-                  margin: const EdgeInsetsDirectional.only(top: 50),
+                  margin: const EdgeInsetsDirectional.only(top: 90),
                   width: double.infinity,
                   child: Column(
                     children: [
-                      backButton(context),
-                      adminTopTitleWithDrawerButton(title: 'Requests', size: 40, hasDrawer: false),
+                      Stack(
+                        children: [
+                          Positioned(child: backButton(context), left: 0,),
+                          Center(child: Text('Requests' , style: TextStyle(fontSize: width/10, color: Colors.white), textAlign: TextAlign.center,)),
+                        ],
+                      ),
                       Expanded(
                         child: ConditionalBuilder(
                           condition: cubit.requests != null && cubit.requests!.isNotEmpty && mainState is! GetRequestsLoadingState && mainState is! GetProfileLoading,
@@ -72,7 +64,7 @@ class Requests extends StatelessWidget {
                               physics: const BouncingScrollPhysics(),
                               itemBuilder: (context, index) {
                                 return requestedMaterialBuilder(
-                                  backgroundColor, index, context,
+                                  index, context,
                                   title: cubit.requests![index].title,
                                   type: cubit.requests![index].type,
                                   pfp: cubit.requests![index].author?.photo,
@@ -119,10 +111,8 @@ class Requests extends StatelessWidget {
     );
   }
 
-  Widget requestedMaterialBuilder(List<String> colorText, index, context,
+  Widget requestedMaterialBuilder(index, context,
       {title, link, type, authorName, pfp, subjectName, description}) {
-    var random = Random();
-    int randomNum = random.nextInt(10);
 
     return InkWell(
       onTap: (){
@@ -130,7 +120,7 @@ class Requests extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: HexColor(colorText[randomNum]).withOpacity(0.45),
+          color: HexColor('#3B3B3B').withOpacity(0.45),
           borderRadius: BorderRadius.circular(20),
         ),
         margin: const EdgeInsetsDirectional.symmetric(horizontal: 10),

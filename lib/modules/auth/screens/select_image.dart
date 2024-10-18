@@ -136,8 +136,7 @@ class SelectImage extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () async {
-                        await MainCubit.get(context).UploadPImage(
-                            image: MainCubit.get(context).userImageFile);
+                        await MainCubit.get(context).UploadPImage(image: MainCubit.get(context).userImageFile, );
 
                         userInfo.photo = mainCubit.userImagePath ??
                             "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg";

@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/layout/home/bloc/main_cubit.dart';
 import 'package:lol/layout/home/bloc/main_cubit_states.dart';
@@ -31,125 +32,80 @@ class AdminPanel extends StatelessWidget {
       child: BlocConsumer<MainCubit, MainCubitStates>(
         listener: (context, state) {},
         builder: (context, state) {
+          double width = screenWidth(context);
+          double height = screenHeight(context);
           var mainCubit = MainCubit.get(context);
           return Scaffold(
-            backgroundColor: Colors.black,
-            body: Stack(children: [
-              backgroundEffects(),
-              Container(
-                margin: const EdgeInsetsDirectional.only(top: 50),
-                width: double.infinity,
-                child: Column(
-                  children: [
-                    // Back Button
-                    backButton(context),
-                    // Text With Drawer Button
-                    adminTopTitleWithDrawerButton(title: 'Admin', hasDrawer: true, bottomPadding: 50),
-                    // Buttons
-                    ConditionalBuilder(
-                      condition: MainCubit.get(context).profileModel != null && state is! GetProfileLoading,
-                      fallback: (context) => const Center(child: CircularProgressIndicator()),
-                      builder: (context) => Container(
-                        width: double.infinity,
-                        margin: const EdgeInsetsDirectional.symmetric(horizontal: 30),
-                        height: 260,
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                ElevatedButton(
-                                  onPressed: () {
-                                    navigate(context,  AddAnnouncement(semester: mainCubit.profileModel!.semester,));
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    padding:
-                                        EdgeInsets.zero, // Remove default padding
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    minimumSize: const Size(250, 125),
-                                  ),
-                                  child: Ink(
-                                    decoration: BoxDecoration(
-                                      image: const DecorationImage(
-                                        image: AssetImage(
-                                            'images/admin/Frame 4.png'),
-                                        fit: BoxFit.cover,
-                                      ),
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    child: Container(
-                                      width: 250,
-                                      height: 125,
-                                      alignment: Alignment.center,
-                                      child: const Text(
-                                        'Announcements',
-                                        style: TextStyle(
-                                            fontSize: 30, color: Colors.white),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
+            backgroundColor: HexColor('#23252A'),
+            body: Container(
+              margin: const EdgeInsetsDirectional.only(top: 90),
+              width: double.infinity,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Back Button
+                  Stack(
+                    children: [
+                      Positioned(child: backButton(context), left: 0,),
+                      Center(child: Text('Admin' , style: TextStyle(fontSize: width/10, color: Colors.white), textAlign: TextAlign.center,)),
+                    ],
+                  ),
+                  SizedBox(height: 50,),
+                  // Buttons
+                  ConditionalBuilder(
+                    condition: MainCubit.get(context).profileModel != null && state is! GetProfileLoading,
+                    fallback: (context) => const Center(child: CircularProgressIndicator()),
+                    builder: (context) => Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(height: 13, width: width - 70, decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40)), color: Colors.white,),),
+                        ElevatedButton(
+                          onPressed: () {
+                            navigate(context,  AddAnnouncement(semester: mainCubit.profileModel!.semester,));
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: HexColor('#3B3B3B'),
+                            padding: EdgeInsets.zero, // Remove default padding
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                            const Spacer(),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                ElevatedButton(
-                                  onPressed: () {
-                                    navigate(context, Requests());
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    padding:
-                                        EdgeInsets.zero, // Remove default padding
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    minimumSize: const Size(250, 125),
-                                  ),
-                                  child: Ink(
-                                    decoration: BoxDecoration(
-                                      image: const DecorationImage(
-                                        image: AssetImage(
-                                            'images/admin/Frame 2.png'),
-                                        fit: BoxFit.cover,
-                                      ),
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    child: Container(
-                                      width: 250,
-                                      height: 125,
-                                      alignment: Alignment.center,
-                                      child: const Text(
-                                        'Requests',
-                                        style: TextStyle(
-                                            fontSize: 30, color: Colors.white),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                            minimumSize: Size( width - 40, height / 4.5),
+                          ),
+                          child: Column(
+                            children: [
+                              Icon(Icons.campaign, color: Colors.white, size: width / 4),
+                              Text('Announcements', style: TextStyle(fontSize: width / 15 , color: Colors.white)),
+                            ],
+                          ),
                         ),
-                      ),
+                        SizedBox(height: 30,),
+                        Container(height: 13, width: width - 70, decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40)), color: Colors.white,),),
+                        ElevatedButton(
+                          onPressed: () {
+                            navigate(context, Requests());
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: HexColor('#4764C5'),
+                            padding: EdgeInsets.zero, // Remove default padding
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            minimumSize: Size( width - 40, height / 4.5),
+                          ),
+                          child: Column(
+                            children: [
+                              Icon(Icons.email, color: Colors.white, size: width / 4),
+                              Text('Requests', style: TextStyle(fontSize: width / 15 , color: Colors.white),)
+                            ],
+                          )
+                        ),
+                      ],
                     ),
-                    const Spacer(),
-                    const SizedBox(
-                      width: double.infinity,
-                      height: 300,
-                      child: Image(
-                        image: AssetImage('images/admin/background_admin.png'),
-                        fit: BoxFit.fitWidth,
-                      ),
-                    ),
-                   
-                  ],
-                ),
+                  ),
+
+                ],
               ),
-            ]),
+            ),
           );
         },
       ),

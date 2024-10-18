@@ -92,3 +92,11 @@ class GetFcmTokensError extends AdminCubitStates{}
 class SendNotificationSuccess extends AdminCubitStates{}
 
 class SendNotificationError extends AdminCubitStates{}
+
+class ImagePickingLoadingState extends AdminCubitStates{}
+
+class ImagePickingSuccessState extends AdminCubitStates{}
+
+class ImagePickingErrorState extends AdminCubitStates{}
+
+class ImagePickingExceedState extends AdminCubitStates{}
