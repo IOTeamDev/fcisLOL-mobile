@@ -501,14 +501,9 @@ Widget CustomDrawer(context) {
                 title: Text("Announcements"),
                 onTap: () {
                   if (TOKEN == null) {
-                    navigate(context,
-                        AnnouncementsList(semester: SelectedSemester!));
+                    navigate(context, AnnouncementsList(semester: SelectedSemester!));
                   } else {
-                    navigate(
-                        context,
-                        AnnouncementsList(
-                            semester:
-                                MainCubit.get(context).profileModel!.semester));
+                    navigate(context, AnnouncementsList(semester: MainCubit.get(context).profileModel!.semester));
                   }
                 },
               ),

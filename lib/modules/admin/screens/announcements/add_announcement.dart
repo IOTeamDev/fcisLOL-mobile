@@ -442,8 +442,8 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
 
   Widget announcementBuilder(semester, String cubitId, context, title, ID,
       content, date, selectedItem) {
-    var rand = Random();
-    int random = rand.nextInt(announcementsColorList.length);
+    // var rand = Random();
+    // int random = rand.nextInt(announcementsColorList.length);
     var cubit = AdminCubit.get(context).announcements![ID];
     return GestureDetector(
       onTap: () {
@@ -462,7 +462,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
         padding: const EdgeInsetsDirectional.symmetric(horizontal: 10),
         height: 80,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20), color: announcementsColorList[random]),
+            borderRadius: BorderRadius.circular(20), color: announcementsColorList[0]),
         child: Row(
           children: [
             ConstrainedBox(

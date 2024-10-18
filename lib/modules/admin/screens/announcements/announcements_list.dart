@@ -2,6 +2,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:intl/intl.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
 import 'package:lol/modules/admin/screens/announcements/announcement_detail.dart';
@@ -134,7 +135,7 @@ class AnnouncementsList extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  dueDate,
+                  dueDate == 'No Due Date'? dueDate:DateFormat('dd/MM/yyyy').format(DateTime.parse(dueDate)).toString(),
                   style: TextStyle(color: Colors.white, fontSize: 14),
                 )
               ],
