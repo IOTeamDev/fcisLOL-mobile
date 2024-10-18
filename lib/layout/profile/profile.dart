@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:googleapis/games/v1.dart';
 import 'package:googleapis/mybusinessaccountmanagement/v1.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/models/profile/profile_materila_model.dart';
 import 'package:lol/shared/components/components.dart';
@@ -31,9 +34,10 @@ class Profile extends StatelessWidget {
       create: (context) => MainCubit()..getProfileInfo(),
       child: BlocConsumer<MainCubit, MainCubitStates>(
         builder: (context, state) {
-          if (state is GetProfileSuccess)
+          if (state is GetProfileSuccess) {
             BlocProvider.of<MainCubit>(context)
                 .getLeaderboard(MainCubit.get(context).profileModel!.semester);
+          }
           var mainCubit = MainCubit.get(context);
           if (mainCubit.profileModel != null) {
             if (mainCubit.profileModel!.phone != null) {
@@ -122,21 +126,24 @@ class Profile extends StatelessWidget {
 
                         Builder(
                           builder: (context) {
-                            if (MainCubit.get(context).leaderboardModel != null)
+                            if (MainCubit.get(context).leaderboardModel != null) {
                               return Builder(builder: (context) {
-                                MainCubit.get(context).getScore4User(
-                                    MainCubit.get(context).profileModel!.id);
-                                var score4User =
-                                    MainCubit.get(context).score4User;
-                        
+                                MainCubit.get(context).getScore4User(MainCubit.get(context).profileModel!.id);
+                                var score4User = MainCubit.get(context).score4User;
                                 return Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                  MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Column(
                                       children: [
                                         // Icon(),
-                                        Text("My Score",style: TextStyle(color: Colors.redAccent,fontSize: 16,fontWeight: FontWeight.bold),),
+                                        Text(
+                                          "My Score",
+                                          style: TextStyle(
+                                              color: Colors.redAccent,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                         SizedBox(
                                           height: 10,
                                         ),
@@ -160,10 +167,11 @@ class Profile extends StatelessWidget {
                                   ],
                                 );
                               });
-                            else
+                            } else {
                               return Center(
                                 child: CircularProgressIndicator(),
                               );
+                            }
                           },
                         ),
 
@@ -226,17 +234,12 @@ class Profile extends StatelessWidget {
                                           Expanded(
                                             child: ListView.separated(
                                                 itemBuilder: (context, index) {
-                                                  var materials =
-                                                      MainCubit.get(context)
-                                                          .profileModel!
-                                                          .materials;
-
+                                                  var materials = MainCubit.get(context).profileModel!.materials;
+                                                  var mainCubit = MainCubit.get(context);
                                                   return Container(
-                                                    padding:
-                                                        const EdgeInsets.all(8),
+                                                    padding: const EdgeInsets.all(8),
                                                     decoration: BoxDecoration(
-                                                      color:
-                                                          const Color.fromRGBO(
+                                                      color: const Color.fromRGBO(
                                                               217,
                                                               217,
                                                               217,
@@ -245,17 +248,20 @@ class Profile extends StatelessWidget {
                                                           BorderRadius.circular(
                                                               15),
                                                     ),
-                                                    child: demoItemBuilder(
-                                                        materials[index],
-                                                        context),
+                                                    child: materialBuilder(
+                                                        index,
+                                                        context,
+                                                      title: mainCubit.profileModel!.materials[index].title,
+                                                      description: mainCubit.profileModel!.materials[index].description,
+                                                      type: mainCubit.profileModel!.materials[index].type,
+                                                      link: mainCubit.profileModel!.materials[index].link,
+                                                      subjectName: mainCubit.profileModel!.materials[index].subject,
+                                                    ),
                                                   );
                                                 },
-                                                separatorBuilder:
-                                                    (context, index) =>
-                                                        SizedBox(
-                                                          height: 5,
-                                                        ),
-                                                itemCount: 5),
+                                                separatorBuilder: (context, index) => SizedBox(height: 5,),
+                                                itemCount: 5
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -343,4 +349,113 @@ Widget demoItemBuilder(ProfileMaterilaModel material, context) {
       ),
     );
   }
+}
+
+Widget materialBuilder(index, context, {title, link, type, subjectName, description}) {
+
+  return Container(
+    decoration: BoxDecoration(
+      color: HexColor('#3B3B3B').withOpacity(1),
+      borderRadius: BorderRadius.circular(20),
+    ),
+    margin: const EdgeInsetsDirectional.symmetric(horizontal: 10),
+    padding: const EdgeInsetsDirectional.symmetric(horizontal: 10),
+    height: 170,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsetsDirectional.only(
+              bottom: 5, top: 10, start: 10, end: 10),
+          child: Row(
+            children: [
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 100),
+                child: Text(
+                  subjectName,
+                  style: TextStyle(color: Colors.grey[300]),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textWidthBasis: TextWidthBasis.longestLine,
+                ),
+              ),
+              const Spacer(),
+              MaterialButton(
+                onPressed: () {
+                  MainCubit.get(context).deleteMaterial(
+                    MainCubit.get(context).requests![index].id!,
+                    MainCubit.get(context).profileModel!.semester,
+                  );
+                },
+                shape: const CircleBorder(),
+                minWidth: 0,
+                padding: const EdgeInsets.all(8),
+                child: const Icon(Icons.close, color: Colors.red),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsetsDirectional.only(
+              start: 10.0, end: 10, top: 0, bottom: 5),
+          child: Row(
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              const Spacer(),
+              Text(
+                type,
+                style: const TextStyle(fontSize: 14, color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsetsDirectional.symmetric(horizontal: 10.0),
+          child: Text(
+            description,
+            style: TextStyle(fontSize: 13, color: Colors.grey[300]),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            return Row(
+              children: [
+                const Icon(Icons.link, color: Colors.white),
+                const SizedBox(width: 5),
+                ConstrainedBox(
+                  constraints:
+                  BoxConstraints(maxWidth: constraints.maxWidth - 80),
+                  child: GestureDetector(
+                    onTap: () async {
+                      final linkElement = LinkableElement(link, link);
+                      await onOpen(context, linkElement);
+                    },
+                    child: Text(
+                      link,
+                      style: const TextStyle(
+                        color: Colors.blue,
+                        decoration: TextDecoration.underline,
+                        decorationColor: Colors.blue,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+      ],
+    ),
+  );
 }

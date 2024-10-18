@@ -22,23 +22,24 @@ class FCMHelper {
   }
 
   Future<String?> getAccessToken() async {
-    print(private_key_id.toString()+"---------");
+    print("$private_key_id---------");
     print(private_key);
 
-    final serviceAccountJson =
-
-     {
+    final serviceAccountJson = {
       "type": "service_account",
-  "project_id": "fcis-da7f4",
-  "private_key_id":private_key_id,
-  "private_key": private_key,
-  "client_email": "firebase-adminsdk-7wunf@fcis-da7f4.iam.gserviceaccount.com",
-  "client_id": "114518216051661235216",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-7wunf%40fcis-da7f4.iam.gserviceaccount.com",
-  "universe_domain": "googleapis.com"
+      "project_id": "fcis-da7f4",
+      "private_key_id": private_key_id,
+      "private_key": private_key,
+      "client_email":
+          "firebase-adminsdk-7wunf@fcis-da7f4.iam.gserviceaccount.com",
+      "client_id": "114518216051661235216",
+      "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+      "token_uri": "https://oauth2.googleapis.com/token",
+      "auth_provider_x509_cert_url":
+          "https://www.googleapis.com/oauth2/v1/certs",
+      "client_x509_cert_url":
+          "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-7wunf%40fcis-da7f4.iam.gserviceaccount.com",
+      "universe_domain": "googleapis.com"
     };
 
     List<String> scopes = [
@@ -119,7 +120,7 @@ class FCMHelper {
     try {
       var serverKeyAuthorization = await getAccessToken();
 
-      print(serverKeyAuthorization.toString() + "dsfgsdg");
+      print("${serverKeyAuthorization}dsfgsdg");
 
       // change your project id
       const String urlEndPoint =

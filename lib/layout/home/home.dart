@@ -79,24 +79,27 @@ class Home extends StatelessWidget {
         List<AnnouncementModel>? announcements =
             AdminCubit.get(context).announcements;
 
-        if (announcements != null && announcements.isNotEmpty)
+        if (announcements != null && announcements.isNotEmpty) {
           print("${announcements[0].title} dfggdfghghfdfgh");
-        else
+        } else {
           print("Announcements are null or empty");
+        }
         if ((state is GetProfileSuccess || TOKEN == null) &&
             wannaAnnouncements) {
-          if (TOKEN == null)
+          if (TOKEN == null) {
             BlocProvider.of<AdminCubit>(context)
                 .getAnnouncements(SelectedSemester!);
-          else
+          } else {
             BlocProvider.of<AdminCubit>(context).getAnnouncements(
                 MainCubit.get(context).profileModel!.semester);
+          }
           wannaAnnouncements = false;
 
-          if (announcements != null && announcements.isNotEmpty)
+          if (announcements != null && announcements.isNotEmpty) {
             print(announcements[0].title);
-          else
+          } else {
             print("Announcements are null");
+          }
         }
         print('$wannaAnnouncements wanna announcement ');
 
@@ -167,7 +170,7 @@ class Home extends StatelessWidget {
                     ? const Center(
                         child: CircularProgressIndicator(),
                       )
-                    : Container(
+                    : SizedBox(
                         height: double.infinity,
                         child: Stack(
                           children: [
@@ -191,10 +194,10 @@ class Home extends StatelessWidget {
                                         builder: (context, state) {
                                       if (AdminCubit.get(context)
                                               .announcements ==
-                                          null)
+                                          null) {
                                         return Center(
                                             child: CircularProgressIndicator());
-                                      else {
+                                      } else {
                                         var anonuncmentsss =
                                             AdminCubit.get(context)
                                                 .announcements;
@@ -209,7 +212,7 @@ class Home extends StatelessWidget {
                                                         "https://e00-elmundo.uecdn.es/assets/multimedia/imagenes/2022/02/04/16439302481269.jpg"),
                                                   )
                                                 ]
-                                              : anonuncmentsss!
+                                              : anonuncmentsss
                                                   .map((anonuncments) {
                                                   return Stack(
                                                       alignment: Alignment
@@ -500,15 +503,11 @@ Widget CustomDrawer(context) {
                 leading: Icon(Icons.announcement),
                 title: Text("Announcements"),
                 onTap: () {
-                  if (TOKEN == null)
-                    navigate(context,
-                        AnnouncementsList(semester: SelectedSemester!));
-                  else
-                    navigate(
-                        context,
-                        AnnouncementsList(
-                            semester:
-                                MainCubit.get(context).profileModel!.semester));
+                  if (TOKEN == null) {
+                    navigate(context, AnnouncementsList(semester: SelectedSemester!));
+                  } else {
+                    navigate(context, AnnouncementsList(semester: MainCubit.get(context).profileModel!.semester));
+                  }
                 },
               ),
               ExpansionTile(

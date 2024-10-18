@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/layout/home/bloc/main_cubit.dart';
 import 'package:lol/layout/home/bloc/main_cubit_states.dart';
-import 'package:lol/shared/components/components.dart';
+import  'package:lol/shared/components/components.dart';
+import 'package:lol/shared/components/constants.dart';
 
 class LeaderboardScreen extends StatelessWidget {
   const LeaderboardScreen({super.key});
@@ -17,9 +18,16 @@ class LeaderboardScreen extends StatelessWidget {
       ],
       child: BlocConsumer<MainCubit, MainCubitStates>(
         listener: (context, state) {
-          if(state is GetProfileSuccess)
+          if (TOKEN == null)
           {
-              MainCubit.get(context).getLeaderboard(MainCubit.get(context).profileModel!.semester);
+              MainCubit.get(context).getLeaderboard(SelectedSemester);
+          }
+          else
+          {
+            if(state is GetProfileSuccess)
+            {
+                MainCubit.get(context).getLeaderboard(MainCubit.get(context).profileModel!.semester);
+            }
           }
         },
         builder: (context, state) => Scaffold(

@@ -45,7 +45,6 @@ class MainCubit extends Cubit<MainCubitStates> {
   File? userImageFile;
   String? userImagePath;
   var picker = ImagePicker();
-
   getUserImage({required bool fromGallery}) async {
     emit(GetUserImageLoading());
 
@@ -68,30 +67,9 @@ class MainCubit extends Cubit<MainCubitStates> {
     }
   }
 
-  File? AnnouncementImageFile;
-  String? AnnouncementImagePath;
-  getAnnouncementImage() async {
-    emit(GetAnnouncementImageLoading());
 
-    var tempPostImage = await picker.pickImage(source: ImageSource.gallery);
-    if (tempPostImage != null) {
-      AnnouncementImageFile = File(tempPostImage.path);
-      final int sizeInBytes = await AnnouncementImageFile!.length();
-      final int sizeInMB = sizeInBytes ~/ (1024 * 1024);
-      print(sizeInBytes);
-      print(sizeInMB);
-      if (sizeInMB <= 1) {
-        emit(GetAnnouncementImageSuccess());
-      } else {
-        AnnouncementImageFile = null;
-        emit(GetAnnouncementLimitExceed());
-      }
-    } else {
-      emit(GetAnnouncementImageFailure());
-    }
-  }
 
-  Future<void> UploadPImage({File? image, bool isUserProfile = true}) async {
+  Future<void> UploadPImage({AnnouncementImagePath, File? image, bool isUserProfile = true}) async {
     AnnouncementImagePath = null;
     emit(UploadImageLoading());
     if (image == null) return;
@@ -187,7 +165,7 @@ class MainCubit extends Cubit<MainCubitStates> {
 
   void getScore4User(int userId) async {
     score4User = null;
-    print(leaderboardModel!.length.toString() + "dsmksdjkl");
+    print("${leaderboardModel!.length}dsmksdjkl");
     for (int i = 0; i < leaderboardModel!.length; i++) {
       if (leaderboardModel![i].id == userId) {
         score4User = leaderboardModel![i];
@@ -226,15 +204,17 @@ class MainCubit extends Cubit<MainCubitStates> {
       });
       notAdminLeaderboardModel!.sort((a, b) => b.score!.compareTo(a.score!));
       print(leaderboardModel!.length);
-      if (profileModel != null)
+      if (profileModel != null) {
         getScore4User(profileModel!.id);
-      else
+      } else {
         print("object");
+      }
       emit(GetLeaderboardSuccessState());
     }).catchError((onError) {
       print(onError.toString());
 
       emit(GetLeaderboardErrorState());
     });
+    return null;
   }
 }
