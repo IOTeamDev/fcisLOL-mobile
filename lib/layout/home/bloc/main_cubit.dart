@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,7 +6,6 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lol/models/current_user/current_user_model.dart';
 import 'package:lol/models/leaderboard/leaderboard_model.dart';
-import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
 import 'package:lol/modules/auth/bloc/login_cubit.dart';
 import 'package:lol/modules/auth/bloc/login_cubit_states.dart';
 import 'package:lol/models/login/login_model.dart';
@@ -23,6 +21,9 @@ import 'package:lol/shared/components/navigation.dart';
 import 'package:lol/shared/network/local/shared_prefrence.dart';
 
 import 'package:lol/models/admin/requests_model.dart';
+
+import 'package:lol/models/admin/announcement_model.dart';
+
 
 //uid null?
 class MainCubit extends Cubit<MainCubitStates> {
@@ -64,6 +65,40 @@ class MainCubit extends Cubit<MainCubitStates> {
       }
     } else {
       emit(GetUserImageFailure());
+    }
+  }
+
+  File? AnnouncementImageFile;
+  String? AnnouncementImagePath;
+  IconData pickerIcon = Icons.image;
+  String imageName = 'Select Image';
+  getAnnouncementImage() async {
+    emit(GetAnnouncementImageLoading());
+
+    var tempPostImage = await picker.pickImage(source: ImageSource.gallery);
+    if (tempPostImage != null) {
+      AnnouncementImageFile = File(tempPostImage.path);
+      pickerIcon = Icons.close;
+      imageName = tempPostImage.path.split('/').last;
+      final int sizeInBytes = await AnnouncementImageFile!.length();
+      final int sizeInMB = sizeInBytes ~/ (1024 * 1024);
+      print(sizeInBytes);
+      print(sizeInMB);
+      if (sizeInMB <= 1) {
+        pickerIcon = Icons.clear;
+        showToastMessage(message: 'Imaged Picked Successfully', states: ToastStates.SUCCESS);
+        emit(GetAnnouncementImageSuccess());
+      } else {
+        showToastMessage(message: 'Image Limit Exceeded', states: ToastStates.WARNING);
+        imageName = 'Select Image';
+        pickerIcon = Icons.image;
+        AnnouncementImageFile = null;
+        emit(GetAnnouncementLimitExceed());
+      }
+    } else {
+      pickerIcon = Icons.image;
+      imageName = 'Select Image';
+      emit(GetAnnouncementImageFailure());
     }
   }
 
@@ -155,6 +190,58 @@ class MainCubit extends Cubit<MainCubitStates> {
         .then((value) {
       emit(AcceptRequestSuccessState());
       getRequests(semester: semester);
+    });
+  }
+
+  List<AnnouncementModel>? announcements;
+  void getAnnouncements(String semester) {
+    announcements = null;
+    print(SelectedSemester.toString());
+    emit(GetAnnouncementsLoadingState());
+    DioHelp.getData(path: ANNOUNCEMENTS, query: {'semester': semester}).then((value) {
+      announcements = [];
+      value.data.forEach((element) {
+        announcements!.add(AnnouncementModel.fromJson(element));
+      });
+      emit(GetAnnouncementsSuccessState());
+    });
+  }
+
+  void updateAnnouncement(final String id,
+      {String? title,
+        String? content,
+        dynamic dueDate,
+        String? type,
+        required currentSemester,
+        String? image,
+      }) {
+    emit(UpdateAnnouncementsLoadingState());
+    DioHelp.putData(
+        path: ANNOUNCEMENTS,
+        data: {
+          'title': title,
+          'content': content,
+          'due_date': dueDate,
+          'type': type,
+          'semester': currentSemester,
+          'image':image,
+        },
+        token: TOKEN,
+        query: {'id': int.parse(id)}).then((value) {
+      // Assuming the response returns the updated announcement
+      AnnouncementModel updatedAnnouncement =
+      AnnouncementModel.fromJson(value.data);
+
+      // Update the local announcements list
+      if (announcements != null) {
+        int index = announcements!.indexWhere((ann) => ann.id.toString() == id);
+        if (index != -1) {
+          announcements![index] = updatedAnnouncement;
+        }
+      }
+      emit(UpdateAnnouncementsSuccessState());
+    }).catchError((error) {
+      emit(UpdateAnnouncementsErrorState());
     });
   }
 

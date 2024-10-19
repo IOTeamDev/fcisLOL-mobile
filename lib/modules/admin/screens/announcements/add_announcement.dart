@@ -38,8 +38,6 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
   final _descriptionController = TextEditingController();
   String? dueDateFormatted;
   String? _selectedItem;
-  String imageName = 'Select Image';
-  IconData pickerIcon = Icons.image;
   final List<String> _items = ['Assignment', 'Quiz', 'Other'];
 
   @override
@@ -494,14 +492,15 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                 print(cubit.id);
                 String Refresh = await Navigator.of(context).push(
                   MaterialPageRoute(
-                      builder: (context) => EditAnnouncement(
-                            semester: semester,
-                            title: cubit.title,
-                            content: cubit.content,
-                            date: cubit.dueDate,
-                            id: ID.toString(),
-                            selectedItem: cubit.type,
-                          )),
+                    builder: (context) => EditAnnouncement(
+                      semester: semester,
+                      title: cubit.title,
+                      content: cubit.content,
+                      date: cubit.dueDate,
+                      id: ID.toString(),
+                      selectedItem: cubit.type,
+                    )
+                  ),
                 );
 
                 if (Refresh == 'refresh') {
