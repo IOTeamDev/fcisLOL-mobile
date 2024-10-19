@@ -85,6 +85,8 @@ const AnnouncementDetail(
 
                           ),
                         ),
+                        SizedBox(height: 5,),
+                        Container(width: double.infinity, height: 2, color: Colors.white,),
                         const SizedBox(
                           height: 20,
                         ),

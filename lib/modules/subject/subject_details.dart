@@ -256,7 +256,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                     return Center(
                       child: Text(
                         'Materials Appear here',
-                        style: TextStyle(color: a),
+                        style: TextStyle(color: Colors.white),
                       ),
                     );
                   }
