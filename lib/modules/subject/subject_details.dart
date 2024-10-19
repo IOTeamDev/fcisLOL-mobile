@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/admin/directory_v1.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/layout/home/bloc/main_cubit.dart';
 import 'package:lol/main.dart';
@@ -92,14 +93,14 @@ class _MaterialDetailsState extends State<SubjectDetails>
             child: Scaffold(
               floatingActionButton: buildFloatingActionButton(),
               key: scaffoldKey,
-              backgroundColor: Color(0xff1B262C),
+              backgroundColor: HexColor('#23252A'),
               body: Column(
                 children: [
                   const SizedBox(
                     height: 40,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       MaterialButton(
                           onPressed: () {
@@ -110,19 +111,18 @@ class _MaterialDetailsState extends State<SubjectDetails>
                             color: Colors.white,
                             size: 30,
                           )),
-                      SizedBox(
-                        width: screenWidth(context) / 1.3,
+                      Expanded(
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 8),
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           child: Text(
                             widget.subjectName
                                 .replaceAll('_', " ")
                                 .replaceAll("and", "&"),
                             style: TextStyle(
-                                color: a, fontSize: screenWidth(context) / 15),
+                                color: Colors.white, fontSize: screenWidth(context) / 15),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.start,
                           ),
                         ),
                       ),
@@ -135,11 +135,12 @@ class _MaterialDetailsState extends State<SubjectDetails>
                       onChanged: (query) {
                         cubit.runFilter(query: query);
                       },
+
                       style: TextStyle(color: Color(0xff1B262C), fontSize: 20),
                       keyboardType: TextInputType.text,
                       textInputAction: TextInputAction.search,
                       decoration: InputDecoration(
-                          fillColor: a,
+                          fillColor: Colors.white,
                           filled: true,
                           prefixIcon: Icon(
                             Icons.search,
@@ -212,7 +213,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
         backgroundColor: Color.fromRGBO(71, 100, 197, 1),
         child: Icon(
           Icons.add,
-          color: a,
+          color: Colors.white,
           size: 40,
         ),
       ),
@@ -288,7 +289,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                     return Center(
                       child: Text(
                         'Materials Appear here',
-                        style: TextStyle(color: a),
+                        style: TextStyle(color: Colors.white),
                       ),
                     );
                   }
@@ -331,7 +332,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                     video.title ?? '',
                     style: TextStyle(
                       fontSize: screenWidth(context) / 18,
-                      color: a,
+                      color: Colors.white,
                     ),
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
@@ -411,7 +412,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
           ),
           minWidth: 30,
           height: 50,
-          color: a,
+          color: Colors.white,
           onPressed: () {
             AwesomeDialog(
               context: context,
@@ -441,9 +442,9 @@ class _MaterialDetailsState extends State<SubjectDetails>
       required String title1,
       required String title2}) {
     return TabBar(
-      indicatorColor: a,
+      indicatorColor: Colors.white,
       indicatorWeight: 1.0,
-      labelColor: a,
+      labelColor: Colors.white,
       dividerColor: Color.fromRGBO(96, 96, 96, 1),
       unselectedLabelColor: Color.fromRGBO(59, 59, 59, 1),
       controller: tabController,
@@ -511,15 +512,13 @@ class _MaterialDetailsState extends State<SubjectDetails>
                                     hintText: 'Title (e.g:chapter3)',
                                     hintStyle: TextStyle(
                                         fontSize: 20,
-                                        color:
-                                            Color.fromRGBO(132, 132, 132, 1)),
+                                        color: Color.fromRGBO(132, 132, 132, 1)),
                                   ),
                                   style: const TextStyle(color: Colors.white),
                                 ),
                               ),
                               Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
+                                padding: const EdgeInsets.symmetric(vertical: 10),
                                 child: TextFormField(
                                   textInputAction: TextInputAction.next,
                                   keyboardType: TextInputType.multiline,
@@ -528,8 +527,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                                     hintText: 'Description (Optional)',
                                     hintStyle: TextStyle(
                                         fontSize: 20,
-                                        color:
-                                            Color.fromRGBO(132, 132, 132, 1)),
+                                        color: Color.fromRGBO(132, 132, 132, 1)),
                                   ),
                                   style: const TextStyle(color: Colors.white),
                                 ),
@@ -615,7 +613,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                                     shape: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(15)),
-                                    color: a,
+                                    color: Colors.white,
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },
