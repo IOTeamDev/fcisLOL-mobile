@@ -41,11 +41,11 @@ final class DeleteMaterialError extends SubjectState {
   DeleteMaterialError({required this.error});
 }
 
-final class TabChangedState extends SubjectState {
-  final int selectedIndex;
+// final class TabChangedState extends SubjectState {
+//   final int selectedIndex;
 
-  TabChangedState({required this.selectedIndex});
-}
+//   TabChangedState({required this.selectedIndex});
+// }
 
 final class TypeChangedState extends SubjectState {
   final String selectedType;

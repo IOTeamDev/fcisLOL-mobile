@@ -88,7 +88,7 @@ main() async {
 
   // await initNotifation();
   Bloc.observer = MyBlocObserver();
-   isDark = await Cache.readData(key: "mode") ?? false;
+  isDark = await Cache.readData(key: "mode") ?? false;
 
   TOKEN = await Cache.readData(key: "token");
   print('token=>>>>>>>>>>>>>>>>>>>>>>>>$TOKEN');
@@ -152,9 +152,9 @@ class App extends StatelessWidget {
         child: Consumer<ThemeProvide>(builder: (context, value, child) {
           // AdminCubit.get(context).getFcmTokens();
           return MaterialApp(
-            home: Home(),
+            home: LoginScreen(),
             debugShowCheckedModeBanner: false,
-            theme: isDark?  ThemeData.dark() : ThemeData.light(),
+            theme: isDark ? ThemeData.dark() : ThemeData.light(),
           );
         }));
   }

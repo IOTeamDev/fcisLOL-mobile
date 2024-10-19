@@ -109,17 +109,16 @@ class SubjectCubit extends Cubit<SubjectState> {
     emit(DeleteMaterialLoading());
     DioHelp.deleteData(path: MATERIAL, token: TOKEN, data: {'id': id})
         .then((response) {
-
       getMaterials(subject: subjectName);
       emit(DeleteMaterialSuccess());
     });
   }
 
-  int selectedTabIndex = 0;
-  void changeTap({required int index}) {
-    selectedTabIndex = index;
-    emit(TabChangedState(selectedIndex: selectedTabIndex));
-  }
+  // int selectedTabIndex = 0;
+  // void changeTap({required int index}) {
+  //   selectedTabIndex = index;
+  //   emit(TabChangedState(selectedIndex: selectedTabIndex));
+  // }
 
   String item1 = 'VIDEO';
   String item2 = 'DOCUMENT';

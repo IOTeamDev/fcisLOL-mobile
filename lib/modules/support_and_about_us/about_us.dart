@@ -64,7 +64,7 @@ class AboutUs extends StatelessWidget {
                         'contactUrl': ''
                       },
                       {
-                        'name': 'Saif Sayed',
+                        'name': 'Saif Elnawawy',
                         'imagePath': '',
                         'role': 'Flutter Developer',
                         'contactUrl': ''

@@ -58,8 +58,10 @@ Widget customTextFormField(
     required TextEditingController controller,
     required TextInputType keyboardtype,
     int? maxLines,
-    bool isDescription = false}) {
+    bool isDescription = false,
+    bool autoFocus = false}) {
   return TextFormField(
+    autofocus: autoFocus,
     maxLines: maxLines,
     keyboardType: keyboardtype,
     textInputAction: TextInputAction.next,
