@@ -126,240 +126,236 @@ class Home extends StatelessWidget {
               )
             : Scaffold(
                 key: scaffoldKey,
-                backgroundColor: const Color(0xff1B262C),
-                appBar: AppBar(
-                  leadingWidth: 50,
-
-                  leading: IconButton(
-                      style: IconButton.styleFrom(
-                          padding: EdgeInsets.all(0), minimumSize: Size(0, 0)),
-                      onPressed: () {
-                        // MainCubit.get(context).openDrawerState();
-                        if ((TOKEN != null && profile != null) ||
-                            TOKEN == null) {
-                          scaffoldKey.currentState!
-                              .openDrawer(); // Use key to open the drawer
-                        }
-                      },
-                      icon: const Icon(
-                        Icons.menu,
-                        size: 25,
-                        color: Colors.white,
-                      )),
-                  backgroundColor: const Color(0xff0F4C75),
-                  // centerTitle: true,
-                  title: GestureDetector(
-                    onTap: () => navigatReplace(context, const Home()),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        const Icon(Icons.apple),
-                        const SizedBox(width: 10),
-                        Text(
-                          "name",
-                          style: GoogleFonts.montserrat(),
-                        ),
-                        SizedBox(width: 50)
-                      ],
-                    ),
-                  ),
-                ),
+                // backgroundColor: Color(0xffE1E1E1),
                 drawer: CustomDrawer(context),
                 body: profile == null && TOKEN != null
                     ? const Center(
                         child: CircularProgressIndicator(),
                       )
-                    : SizedBox(
-                        height: double.infinity,
-                        child: Stack(
-                          children: [
-                            Container(
-                              decoration: const BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: [
-                                    Color(0xFF1c1c2e), // Dark indigo
-                                    Color(0xFF2c2b3f), // Deep purple
-                                  ],
-                                ),
-                              ),
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const SizedBox(height: 20),
-                                    BlocBuilder<AdminCubit, AdminCubitStates>(
-                                        builder: (context, state) {
-                                      if (AdminCubit.get(context)
-                                              .announcements ==
-                                          null) {
-                                        return Center(
-                                            child: CircularProgressIndicator());
-                                      } else {
-                                        var anonuncmentsss =
-                                            AdminCubit.get(context)
-                                                .announcements;
-
-                                        return CarouselSlider(
-                                          items: anonuncmentsss!.isEmpty
-                                              ? [
-                                                  Container(
-                                                    child: Image.network(
-                                                        width: double.infinity,
-                                                        fit: BoxFit.cover,
-                                                        "https://e00-elmundo.uecdn.es/assets/multimedia/imagenes/2022/02/04/16439302481269.jpg"),
-                                                  )
-                                                ]
-                                              : anonuncmentsss
-                                                  .map((anonuncments) {
-                                                  return Stack(
-                                                      alignment: Alignment
-                                                          .bottomCenter,
-                                                      children: [
-                                                        Container(
-                                                          clipBehavior:
-                                                              Clip.antiAlias,
-                                                          // margin: const EdgeInsets.all(6.0),
-                                                          // child: Image.asset("images/332573639_735780287983011_1562632886952931410_n.jpg",width: 400,height: 400,fit: BoxFit.cover,),
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        3.0),
-                                                            // image: DecorationImage(
-                                                            //   image: AssetImage(
-                                                            //     carsor.image ?? "images/llogo.jfif",
-                                                            //   ),
-                                                            //   fit: BoxFit.cover,
-                                                            // ),
-                                                          ),
-                                                          child: Image.network(
-                                                            anonuncments.image,
-                                                            width: 400,
-                                                            fit: BoxFit.cover,
-                                                          ),
-                                                        ),
-                                                        Container(
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            gradient:
-                                                                LinearGradient(
-                                                              colors: [
-                                                                Colors.black
-                                                                    .withOpacity(
-                                                                        0.2),
-                                                                Colors
-                                                                    .transparent,
-                                                              ],
-                                                              begin: Alignment
-                                                                  .bottomCenter,
-                                                              end: Alignment
-                                                                  .topCenter,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Container(
-                                                            // padding: EdgeInsets.all(5),
-                                                            // width: 400,
-                                                            decoration: BoxDecoration(
-                                                                color: const Color
-                                                                        .fromARGB(
-                                                                        51,
-                                                                        65,
-                                                                        180,
-                                                                        197)
-                                                                    .withOpacity(
-                                                                        0.6)
-                                                                    .withAlpha(
-                                                                        150),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            3)),
-                                                            child: Text(
-                                                              anonuncments
-                                                                  .title,
-                                                              style: const TextStyle(
-                                                                  fontSize: 20,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500),
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                            ))
-                                                      ]);
-                                                }).toList(),
-                                          options: CarouselOptions(
-                                            height: 200.0,
-                                            autoPlay: true,
-                                            enlargeCenterPage: true,
-                                            aspectRatio: 16 / 9,
-                                            autoPlayCurve: Curves.fastOutSlowIn,
-                                            enableInfiniteScroll:
-                                                anonuncmentsss.isEmpty
-                                                    ? false
-                                                    : true,
-                                            autoPlayInterval:
-                                                const Duration(seconds: 10),
-                                            autoPlayAnimationDuration:
-                                                const Duration(
-                                                    milliseconds: 800),
-                                            viewportFraction: 0.8,
-                                          ),
-                                        );
-                                      }
-                                    }),
-                                    const SizedBox(height: 20),
-                                    const SizedBox(height: 10),
-                                    Container(
-                                      padding: const EdgeInsets.all(16.0),
-                                      child: GridView.builder(
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        gridDelegate:
-                                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount:
-                                              2, // Two items per row
-                                          crossAxisSpacing: 10,
-                                          mainAxisSpacing: 10,
-                                          childAspectRatio: 3 /
-                                              2, // Control the height and width ratio
-                                        ),
-                                        itemCount:
-                                            // semesters[semesterIndex!].subjects.length,
-                                            semesters[semesterIndex!]
-                                                .subjects
-                                                .length,
-                                        itemBuilder: (context, index) {
-                                          return
-
-                                              // subjectItemBuild(
-                                              //     semesters[semesterIndex!]
-                                              //         .subjects[index],context);
-                                              subjectItemBuild(
-                                                  semesters[semesterIndex!]
-                                                      .subjects[index],
-                                                  context);
-                                        },
+                    : SingleChildScrollView(
+                        child: SafeArea(
+                          child: Padding(
+                            padding: EdgeInsets.all(8),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(20),
+                                  child: Row(
+                                    children: [
+                                      IconButton(
+                                          style: IconButton.styleFrom(
+                                              padding: EdgeInsets.all(0),
+                                              minimumSize: Size(0, 0)),
+                                          onPressed: () {
+                                            // MainCubit.get(context).openDrawerState();
+                                            if ((TOKEN != null &&
+                                                    profile != null) ||
+                                                TOKEN == null) {
+                                              scaffoldKey.currentState!
+                                                  .openDrawer(); // Use key to open the drawer
+                                            }
+                                          },
+                                          icon: Image.asset(
+                                            !isDark
+                                                ? "images/mage_dashboard-fill-1.png"
+                                                : "images/mage_dashboard-fill.png",
+                                            width: 25,
+                                            height: 25,
+                                          )),
+                                      Expanded(
+                                          child: GestureDetector(
+                                              onTap: () => navigatReplace(
+                                                  context, const Home()),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  const Icon(Icons.apple),
+                                                  const SizedBox(width: 10),
+                                                  Text(
+                                                    "UniNotes",
+                                                    style:
+                                                        GoogleFonts.montserrat(
+                                                            fontSize: 23,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                  ),
+                                                ],
+                                              ))),
+                                      SizedBox(
+                                        width: 25,
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
+                                Container(
+                                    margin: EdgeInsets.only(left: 40),
+                                    child: Text(
+                                      "Announcements",
+                                      style: TextStyle(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w600),
+                                    )),
+                                BlocBuilder<AdminCubit, AdminCubitStates>(
+                                    builder: (context, state) {
+                                  if (AdminCubit.get(context).announcements ==
+                                      null) {
+                                    return Center(
+                                        child: CircularProgressIndicator());
+                                  } else {
+                                    var anonuncmentsss =
+                                        AdminCubit.get(context).announcements;
+
+                                    return CarouselSlider(
+                                      items: anonuncmentsss!.isEmpty
+                                          ? [
+                                              Container(
+                                                child: Image.network(
+                                                    width: double.infinity,
+                                                    fit: BoxFit.cover,
+                                                    "https://static.rfstat.com/logo-presets/3632/thumbnail_2af106485690_1x.webp"),
+                                              )
+                                            ]
+                                          : anonuncmentsss.map((anonuncments) {
+                                              return Stack(
+                                                  alignment:
+                                                      Alignment.bottomCenter,
+                                                  children: [
+                                                    Container(
+                                                      clipBehavior:
+                                                          Clip.antiAlias,
+                                                      // margin: const EdgeInsets.all(6.0),
+                                                      // child: Image.asset("images/332573639_735780287983011_1562632886952931410_n.jpg",width: 400,height: 400,fit: BoxFit.cover,),
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10.0),
+                                                        // image: DecorationImage(
+                                                        //   image: AssetImage(
+                                                        //     carsor.image ?? "images/llogo.jfif",
+                                                        //   ),
+                                                        //   fit: BoxFit.cover,
+                                                        // ),
+                                                      ),
+                                                      child: Image.network(
+                                                        anonuncments.image,
+                                                        width: 400,
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      width: double.infinity,
+                                                      height: double
+                                                          .infinity, // Adjust height as needed
+                                                      decoration: BoxDecoration(
+                                                        gradient:
+                                                            LinearGradient(
+                                                          colors: [
+                                                            Colors.transparent,
+                                                            Colors.transparent,
+                                                            Colors.transparent,
+                                                            Colors.black
+                                                                .withOpacity(
+                                                                    0.3),
+                                                            Colors.black
+                                                                .withOpacity(
+                                                                    0.6),
+                                                          ],
+                                                          begin: Alignment
+                                                              .topCenter,
+                                                          end: Alignment
+                                                              .bottomCenter,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 30,
+                                                              vertical: 10),
+                                                      child: Align(
+                                                        alignment: Alignment
+                                                            .bottomLeft,
+                                                        child: Text(
+                                                          anonuncments.title,
+                                                          style: TextStyle(
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 20,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ]);
+                                            }).toList(),
+                                      options: CarouselOptions(
+                                        height: 200.0,
+                                        autoPlay: true,
+                                        enlargeCenterPage: true,
+                                        aspectRatio: 16 / 9,
+                                        autoPlayCurve: Curves.fastOutSlowIn,
+                                        enableInfiniteScroll:
+                                            anonuncmentsss.isEmpty
+                                                ? false
+                                                : true,
+                                        autoPlayInterval:
+                                            const Duration(seconds: 10),
+                                        autoPlayAnimationDuration:
+                                            const Duration(milliseconds: 800),
+                                        viewportFraction: 0.8,
+                                      ),
+                                    );
+                                  }
+                                }),
+                                const SizedBox(height: 20),
+                                Container(
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 20),
+                                    child: divider()),
+                                const SizedBox(height: 20),
+                                Container(
+                                    margin: EdgeInsets.only(left: 40),
+                                    child: Text(
+                                      "Subjects",
+                                      style: TextStyle(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w600),
+                                    )),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 10),
+                                  child: GridView.builder(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(), // Disable scrolling in the GridView
+                                    shrinkWrap:
+                                        true, // Shrink the GridView to fit its content
+                                    gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2, // Two items per row
+                                      crossAxisSpacing: 10,
+                                      mainAxisSpacing: 10,
+                                    ),
+                                    itemCount: semesters[semesterIndex!]
+                                        .subjects
+                                        .length,
+                                    itemBuilder: (context, index) {
+                                      return subjectItemBuild(
+                                          semesters[semesterIndex!]
+                                              .subjects[index],
+                                          context);
+                                    },
+                                  ),
+                                ),
+                              ],
                             ),
-                            // if (scaffoldKey.currentState?.isDrawerOpen == true)
-                            //   BackdropFilter(
-                            //     filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
-                            //     child: Container(
-                            //       color: Colors.transparent,
-                            //     ),
-                            //   ),
-                          ],
+                          ),
                         ),
                       ),
               );
@@ -376,220 +372,156 @@ Widget CustomDrawer(context) {
   if (TOKEN != null) profileModel = MainCubit.get(context).profileModel;
 
   return Drawer(
+    backgroundColor: isDark ? Colors.black : Colors.white,
     width: width < 600 ? width / 1.5 : width / 2.5,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TOKEN != null
-            ? GestureDetector(
-                onTap: () {
-                  print("sdfsd");
-                },
-                child: UserAccountsDrawerHeader(
-                  otherAccountsPictures: [
-                    Text("data"),
-                  ],
-                  decoration: const BoxDecoration(color: Color(0xff0F4C75)),
-                  accountName: Row(
-                    children: [
-                      Text(
-                        profileModel!.name,
-                        style: const TextStyle(overflow: TextOverflow.clip),
-                      ),
-                      const Spacer(),
-                      Text(Level(profileModel.semester)),
-                      const SizedBox(
-                        width: 10,
-                      )
-                    ],
-                  ),
-                  // accountEmail: Text("2nd year "),
-                  accountEmail: TextButton(
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.zero,
-                        minimumSize: const Size(0, 0),
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
-                      onPressed: () => navigate(context, const Profile()),
-                      child: const Text(
-                        "Profile info",
-                        style: TextStyle(color: Colors.orange),
-                      )),
-                  currentAccountPicture: ClipOval(
-                    child: Image.network(
-                      profileModel.photo,
-                      width: 30,
-                      height: 30,
-                      fit: BoxFit.cover,
+            ? UserAccountsDrawerHeader(
+                otherAccountsPictures: [
+                  IconButton(
+                      onPressed: () {
+                        print(isDark);
+                        Navigator.pop(context);
+                        Provider.of<ThemeProvide>(context, listen: false)
+                            .changeMode();
+                      },
+                      icon: Icon(
+                        isDark ? Icons.light_mode : Icons.dark_mode,
+                        color: !isDark ? Colors.black : Colors.white,
+                      ))
+                ],
+                decoration: const BoxDecoration(color: Color(0xff4763C4)),
+                accountName: Row(
+                  children: [
+                    Text(
+                      profileModel!.name,
+                      style: const TextStyle(overflow: TextOverflow.ellipsis),
                     ),
-                    // backgroundImage: NetworkImage(profileModel.photo),
-                  ),
-                  // otherAccountsPictures: [
-                  //   Icon(Icons.info, color: Colors.white),
-                  // ],
+                    const Spacer(),
+                    Text(Level(profileModel.semester)),
+                    const SizedBox(
+                      width: 10,
+                    )
+                  ],
                 ),
-              )
-            : GestureDetector(
-                onTap: () {
-                  print("sdfsd");
-                },
-                child: UserAccountsDrawerHeader(
-                  decoration: const BoxDecoration(color: Color(0xff0F4C75)),
-                  // accountName: Text(""),
-                  // accountEmail: Text("2nd year "),
-                  accountName: const Text(""),
-                  accountEmail: Text(
-                    Level(SelectedSemester!),
-                    style: const TextStyle(fontSize: 20),
-                  ),
-                  // accountEmail:InkWell(
-                  //   child: Ink(
-                  //     child: Text(
-                  //       // style: TextButton.styleFrom(padding: EdgeInsets.all(0)),
-                  //       // onPressed: () {
-                  //       //   Navigator.push(
-                  //       //       context,
-                  //       //       MaterialPageRoute(
-                  //       //           builder: (context) => const LoginScreen()));
-                  //       // },
-                  //       // child: const Text(
-                  //         "Login",
-                  //         style: TextStyle(color: Colors.white),
-
-                  //     ),
-                  //   ),
-                  // ) ,
-                  currentAccountPicture: const CircleAvatar(
-                    backgroundImage: NetworkImage(
-                        "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"),
-                  ),
-                  otherAccountsPictures: [
-                    InkWell(
-                      onTap: () => navigatReplace(context, const LoginScreen()),
-                      child: Ink(
-                        child: const Text(
-                          // style: TextButton.styleFrom(padding: EdgeInsets.all(0)),
-                          // onPressed: () {
-                          //   Navigator.push(
-                          //       context,
-                          //       MaterialPageRoute(
-                          //           builder: (context) => const LoginScreen()));
-                          // },
-                          // child: const Text(
-                          "Login",
-                          style: TextStyle(
-                            color: Colors.orange,
-                            fontSize: 15,
+                // accountEmail: Text("2nd year "),
+                accountEmail: Container(
+                  margin: EdgeInsets.zero, // Remove any margin
+                  padding: EdgeInsets.zero, // Remove any padding
+                  child: Container(
+                    margin: EdgeInsets.only(top: 5),
+                    child: GestureDetector(
+                      onTap: () => navigate(context, const Profile()),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Image.asset(
+                            "images/profile.png",
+                            width: 20,
+                            height: 20,
                           ),
-                        ),
+                          SizedBox(width: 10),
+                          Text("Profile info"),
+                        ],
                       ),
                     ),
-                  ],
+                  ),
                 ),
+                currentAccountPicture: ClipOval(
+                  child: Image.network(
+                    profileModel.photo,
+                    width: 30,
+                    height: 30,
+                    fit: BoxFit.cover,
+                  ),
+                  // backgroundImage: NetworkImage(profileModel.photo),
+                ),
+                // otherAccountsPictures: [
+                //   Icon(Icons.info, color: Colors.white),
+                // ],
+              )
+            : UserAccountsDrawerHeader(
+                decoration: const BoxDecoration(color: Color(0xff4763C4)),
+                // accountName: Text(""),
+                // accountEmail: Text("2nd year "),
+                accountName: const Text("Guest"),
+                accountEmail: Text(
+                  Level(SelectedSemester!),
+                  style: const TextStyle(fontSize: 20),
+                ),
+                // accountEmail:InkWell(
+                //   child: Ink(
+                //     child: Text(
+                //       // style: TextButton.styleFrom(padding: EdgeInsets.all(0)),
+                //       // onPressed: () {
+                //       //   Navigator.push(
+                //       //       context,
+                //       //       MaterialPageRoute(
+                //       //           builder: (context) => const LoginScreen()));
+                //       // },
+                //       // child: const Text(
+                //         "Login",
+                //         style: TextStyle(color: Colors.white),
+
+                //     ),
+                //   ),
+                // ) ,
+                currentAccountPicture: const CircleAvatar(
+                  backgroundImage: NetworkImage(
+                      "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"),
+                ),
+                otherAccountsPictures: [
+                  IconButton(
+                      onPressed: () {
+                        print(isDark);
+                        Navigator.pop(context);
+                        Provider.of<ThemeProvide>(context, listen: false)
+                            .changeMode();
+                      },
+                      icon: Icon(
+                        isDark ? Icons.light_mode : Icons.dark_mode,
+                        color: !isDark ? Colors.black : Colors.white,
+                      ))
+                ],
               ),
         Expanded(
           child: SingleChildScrollView(
-              child: Column(
-            children: [
-              if (profileModel?.role == "ADMIN")
+              child: Container(
+            child: Column(
+              children: [
+                if (profileModel?.role == "ADMIN")
+                  ListTile(
+                    leading: const Icon(Icons.admin_panel_settings),
+                    title: const Text("Admin"),
+                    onTap: () {
+                      navigate(context, AdminPanel());
+                    },
+                  ),
                 ListTile(
-                  leading: const Icon(Icons.admin_panel_settings),
-                  title: const Text("Admin"),
+                  leading: Icon(Icons.announcement),
+                  title: Text("Announcements"),
                   onTap: () {
-                    navigate(context, AdminPanel());
+                    if (TOKEN == null) {
+                      navigate(context,
+                          AnnouncementsList(semester: SelectedSemester!));
+                    } else {
+                      navigate(
+                          context,
+                          AnnouncementsList(
+                              semester: MainCubit.get(context)
+                                  .profileModel!
+                                  .semester));
+                    }
                   },
                 ),
-              ListTile(
-                leading: Icon(Icons.announcement),
-                title: Text("Announcements"),
-                onTap: () {
-                  if (TOKEN == null) {
-                    navigate(context, AnnouncementsList(semester: SelectedSemester!));
-                  } else {
-                    navigate(context, AnnouncementsList(semester: MainCubit.get(context).profileModel!.semester));
-                  }
-                },
-              ),
-              ExpansionTile(
-                leading: const Icon(Icons.school),
-                title: const Text("Years"),
-                children: [
-                  ExpansionTile(
-                    title: const Text("First Year"),
-                    children: [
-                      ListTile(
-                        title: const Text("First Semester"),
-                        onTap: () {
-                          // MainCubit.get(context).profileModel = null;
-                          // TOKEN = null;
-                          navigate(
-                              context, const SemesterNavigate(semester: "One"));
-                        },
-                      ),
-                      ListTile(
-                        title: const Text("Second Semester"),
-                        onTap: () {
-                          // MainCubit.get(context).profileModel = null;
-                          // TOKEN = null;
-                          navigate(
-                              context, const SemesterNavigate(semester: "Two"));
-                        },
-                      ),
-                    ],
-                  ),
-                  ExpansionTile(
-                    title: const Text("Second Year"),
-                    children: [
-                      ListTile(
-                        title: const Text("First Semester"),
-                        onTap: () {
-                          // MainCubit.get(context).profileModel = null;
-                          // TOKEN = null;
-                          navigate(context,
-                              const SemesterNavigate(semester: "Three"));
-                        },
-                      ),
-                      ListTile(
-                        title: const Text("Second Semester"),
-                        onTap: () {
-                          // MainCubit.get(context).profileModel = null;
-                          // TOKEN = null;
-                          navigate(context,
-                              const SemesterNavigate(semester: "Four"));
-                        },
-                      ),
-                    ],
-                  ),
-                  ExpansionTile(
-                    title: const Text("Third Year"),
-                    children: [
-                      ListTile(
-                        title: const Text("First Semester"),
-                        onTap: () {
-                          // MainCubit.get(context).profileModel = null;
-                          // TOKEN = null;
-                          navigate(context,
-                              const SemesterNavigate(semester: "Five"));
-                        },
-                      ),
-                      ListTile(
-                        title: const Text("Second Semester"),
-                        onTap: () {
-                          // MainCubit.get(context).profileModel = null;
-                          // TOKEN = null;
-                          navigate(
-                              context, const SemesterNavigate(semester: "Six"));
-                        },
-                      ),
-                    ],
-                  ),
-                  InkWell(
-                    onTap: () => showToastMessage(
-                        message: "Currently Updating ...",
-                        states: ToastStates.INFO),
-                    child: ExpansionTile(
-                      enabled: false,
-                      title: const Text("Seniors"),
+                ExpansionTile(
+                  leading: const Icon(Icons.school),
+                  title: const Text("Years"),
+                  children: [
+                    ExpansionTile(
+                      title: const Text("First Year"),
                       children: [
                         ListTile(
                           title: const Text("First Semester"),
@@ -611,118 +543,194 @@ Widget CustomDrawer(context) {
                         ),
                       ],
                     ),
-                  ),
-                ],
-              ),
-              ExpansionTile(
-                leading: const Icon(Icons.drive_file_move),
-                title: const Text("Drive"),
-                children: [
-                  ListTile(
-                    title: const Text("2027"),
-                    onTap: () async {
-                      LinkableElement url = LinkableElement('drive',
-                          'https://drive.google.com/drive/folders/1-1_Ef2qF0_rDzToD4OlqIl5xubgpMGU0');
-                      await onOpen(context, url);
-                    },
-                  ),
-                  ListTile(
-                    title: const Text("2026"),
-                    onTap: () async {
-                      LinkableElement url = LinkableElement('drive',
-                          'https://drive.google.com/drive/folders/1CdZDa3z97RN_yRjFlC7IAcLfmw6D1yLy');
-                      await onOpen(context, url);
-                    },
-                  ),
-                  ListTile(
-                    title: const Text("2025"),
-                    onTap: () async {
-                      LinkableElement url = LinkableElement('drive',
-                          'https://drive.google.com/drive/folders/1BAXez9FJKF_ASx79usd_-Xi47TdUYK73?fbclid=IwAR3cRtEV1aJrcvKoGNBLCbqBu2LMLrsWYfQkOZUb6SQE2dtT3ZtqrcCjxno');
-                      await onOpen(context, url);
-                    },
-                  ),
-                  ListTile(
-                    title: const Text("2024"),
-                    onTap: () async {
-                      LinkableElement url = LinkableElement('drive',
-                          'https://drive.google.com/drive/u/0/folders/11egB46e3wtl1Q69wdCBBam87bwMF7Qo-');
-                      await onOpen(context, url);
-                    },
-                  ),
-                ],
-              ),
-              ExpansionTile(
-                leading: Icon(Icons.support_agent),
-                title: Text('Support'),
-                children: [
-                  ListTile(
-                    title: const Text('Report Bug'),
-                    onTap: () {
-                      navigate(context, ReportBug());
-                    },
-                  ),
-                  ListTile(
-                    title: const Text('Feedback'),
-                    onTap: () {
-                      navigate(context, FeedbackScreen());
-                    },
-                  ),
-                ],
-              ),
-              ListTile(
-                leading: const Icon(Icons.group),
-                title: const Text("About Us"),
-                onTap: () {
-                  navigate(context, AboutUs());
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.leaderboard),
-                title: const Text('Leaderboard'),
-                onTap: () {
-                  navigate(context, LeaderboardScreen());
-                },
-              ),
-              if (TOKEN != null)
-                ListTile(
-                  leading: const Icon(Icons.logout, color: Colors.red),
-                  title: const Text(
-                    "Log out",
-                    style: TextStyle(color: Colors.red),
-                  ),
-                  onTap: () {
-                    AwesomeDialog(
-                      context: context,
-                      title: "Log Out",
-                      dialogType: DialogType.warning,
-                      body: Text(
-                        "Are you sure you want to log out?",
-                        style: TextStyle(fontSize: 17),
+                    ExpansionTile(
+                      title: const Text("Second Year"),
+                      children: [
+                        ListTile(
+                          title: const Text("First Semester"),
+                          onTap: () {
+                            // MainCubit.get(context).profileModel = null;
+                            // TOKEN = null;
+                            navigate(context,
+                                const SemesterNavigate(semester: "Three"));
+                          },
+                        ),
+                        ListTile(
+                          title: const Text("Second Semester"),
+                          onTap: () {
+                            // MainCubit.get(context).profileModel = null;
+                            // TOKEN = null;
+                            navigate(context,
+                                const SemesterNavigate(semester: "Four"));
+                          },
+                        ),
+                      ],
+                    ),
+                    ExpansionTile(
+                      title: const Text("Third Year"),
+                      children: [
+                        ListTile(
+                          title: const Text("First Semester"),
+                          onTap: () {
+                            // MainCubit.get(context).profileModel = null;
+                            // TOKEN = null;
+                            navigate(context,
+                                const SemesterNavigate(semester: "Five"));
+                          },
+                        ),
+                        ListTile(
+                          title: const Text("Second Semester"),
+                          onTap: () {
+                            // MainCubit.get(context).profileModel = null;
+                            // TOKEN = null;
+                            navigate(context,
+                                const SemesterNavigate(semester: "Six"));
+                          },
+                        ),
+                      ],
+                    ),
+                    InkWell(
+                      onTap: () => showToastMessage(
+                          message: "Currently Updating ...",
+                          states: ToastStates.INFO),
+                      child: ExpansionTile(
+                        enabled: false,
+                        title: const Text("Seniors"),
+                        children: [
+                          ListTile(
+                            title: const Text("First Semester"),
+                            onTap: () {
+                              // MainCubit.get(context).profileModel = null;
+                              // TOKEN = null;
+                              navigate(context,
+                                  const SemesterNavigate(semester: "One"));
+                            },
+                          ),
+                          ListTile(
+                            title: const Text("Second Semester"),
+                            onTap: () {
+                              // MainCubit.get(context).profileModel = null;
+                              // TOKEN = null;
+                              navigate(context,
+                                  const SemesterNavigate(semester: "Two"));
+                            },
+                          ),
+                        ],
                       ),
-                      animType: AnimType.rightSlide,
-                      btnOkColor: Colors.red,
-                      btnCancelOnPress: () {},
-                      btnOkText: "Log Out",
-                      btnCancelColor: Colors.grey,
-
-                      // titleTextStyle: TextStyle(fontSize: 22),
-                      btnOkOnPress: () {
-                        MainCubit.get(context).logout(context);
-                        Provider.of<ThemeProvide>(context, listen: false)
-                            .isDark = false;
-                        Provider.of<ThemeProvide>(context, listen: false)
-                            .notifyListeners();
+                    ),
+                  ],
+                ),
+                ExpansionTile(
+                  leading: Image.asset(
+                    "images/mingcute_drive-fill.png",
+                    width: 25,
+                    height: 25,
+                    color: !isDark ? Colors.black : null,
+                  ),
+                  title: const Text("Drive"),
+                  children: [
+                    ListTile(
+                      title: const Text("2027"),
+                      onTap: () async {
+                        LinkableElement url = LinkableElement('drive',
+                            'https://drive.google.com/drive/folders/1-1_Ef2qF0_rDzToD4OlqIl5xubgpMGU0');
+                        await onOpen(context, url);
                       },
-                    ).show();
+                    ),
+                    ListTile(
+                      title: const Text("2026"),
+                      onTap: () async {
+                        LinkableElement url = LinkableElement('drive',
+                            'https://drive.google.com/drive/folders/1CdZDa3z97RN_yRjFlC7IAcLfmw6D1yLy');
+                        await onOpen(context, url);
+                      },
+                    ),
+                    ListTile(
+                      title: const Text("2025"),
+                      onTap: () async {
+                        LinkableElement url = LinkableElement('drive',
+                            'https://drive.google.com/drive/folders/1BAXez9FJKF_ASx79usd_-Xi47TdUYK73?fbclid=IwAR3cRtEV1aJrcvKoGNBLCbqBu2LMLrsWYfQkOZUb6SQE2dtT3ZtqrcCjxno');
+                        await onOpen(context, url);
+                      },
+                    ),
+                    ListTile(
+                      title: const Text("2024"),
+                      onTap: () async {
+                        LinkableElement url = LinkableElement('drive',
+                            'https://drive.google.com/drive/u/0/folders/11egB46e3wtl1Q69wdCBBam87bwMF7Qo-');
+                        await onOpen(context, url);
+                      },
+                    ),
+                  ],
+                ),
+                ExpansionTile(
+                  leading: Icon(Icons.support_agent),
+                  title: Text('Support'),
+                  children: [
+                    ListTile(
+                      title: const Text('Report Bug'),
+                      onTap: () {
+                        navigate(context, ReportBug());
+                      },
+                    ),
+                    ListTile(
+                      title: const Text('Feedback'),
+                      onTap: () {
+                        navigate(context, FeedbackScreen());
+                      },
+                    ),
+                  ],
+                ),
+                ListTile(
+                  leading: const Icon(Icons.group),
+                  title: const Text("About Us"),
+                  onTap: () {
+                    navigate(context, AboutUs());
                   },
                 ),
-            ],
+                ListTile(
+                  leading: const Icon(Icons.leaderboard),
+                  title: const Text('Leaderboard'),
+                  onTap: () {
+                    navigate(context, LeaderboardScreen());
+                  },
+                ),
+                if (TOKEN != null)
+                  ListTile(
+                    leading: const Icon(Icons.logout, color: Colors.red),
+                    title: const Text(
+                      "Log out",
+                      style: TextStyle(color: Colors.red),
+                    ),
+                    onTap: () {
+                      AwesomeDialog(
+                        context: context,
+                        title: "Log Out",
+                        dialogType: DialogType.warning,
+                        body: Text(
+                          "Are you sure you want to log out?",
+                          style: TextStyle(fontSize: 17),
+                        ),
+                        animType: AnimType.rightSlide,
+                        btnOkColor: Colors.red,
+                        btnCancelOnPress: () {},
+                        btnOkText: "Log Out",
+                        btnCancelColor: Colors.grey,
+
+                        // titleTextStyle: TextStyle(fontSize: 22),
+                        btnOkOnPress: () {
+                          MainCubit.get(context).logout(context);
+                          Provider.of<ThemeProvide>(context, listen: false)
+                              .temp = false;
+                          Provider.of<ThemeProvide>(context, listen: false)
+                              .notifyListeners();
+                        },
+                      ).show();
+                    },
+                  ),
+              ],
+            ),
           )),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: DarkLightModeToggle(context),
         ),
       ],
     ),
@@ -771,7 +779,7 @@ Widget DarkLightModeToggle(context) {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
             decoration: BoxDecoration(
-              color: Provider.of<ThemeProvide>(context).isDark
+              color: isDark
                   ? const Color.fromARGB(188, 92, 38, 38)
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(30.0),
@@ -791,7 +799,7 @@ Widget DarkLightModeToggle(context) {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
             decoration: BoxDecoration(
-              color: !Provider.of<ThemeProvide>(context).isDark
+              color: !isDark
                   ? const Color.fromARGB(188, 92, 38, 38)
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(30.0),
@@ -800,17 +808,13 @@ Widget DarkLightModeToggle(context) {
               children: [
                 Icon(
                   Icons.light_mode,
-                  color: !Provider.of<ThemeProvide>(context).isDark
-                      ? Colors.white
-                      : Colors.black,
+                  color: !isDark ? Colors.white : Colors.black,
                 ),
                 const SizedBox(width: 8),
                 Text(
                   'Light',
                   style: TextStyle(
-                    color: !Provider.of<ThemeProvide>(context).isDark
-                        ? Colors.white
-                        : Colors.black,
+                    color: isDark ? Colors.white : Colors.black,
                   ),
                 ),
               ],
@@ -839,36 +843,18 @@ Widget subjectItemBuild(SubjectModel subject, context) {
           borderRadius: BorderRadius.circular(16.0),
         ),
         clipBehavior: Clip.antiAlias,
-        child: Stack(
-          alignment: Alignment.bottomLeft,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  colorFilter: const ColorFilter.mode(
-                      Color(0xfff39c12), BlendMode.dstIn),
-                  image: subject.subjectName == "Data Mining"
-                      ? AssetImage("images/data-mining_cleanup.webp")
-                      : NetworkImage(subject.subjectImage),
-                  fit: BoxFit.cover,
-                ),
+        child: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(subject.subjectImage,
+                  height: 70, color: Colors.white),
+              SizedBox(
+                height: 10,
               ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.black.withOpacity(0.6),
-                    Colors.transparent,
-                  ],
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Text(
+              Text(
+                textAlign: TextAlign.center,
                 subject.subjectName.replaceAll('_', " ").replaceAll("and", "&"),
                 maxLines: 2,
                 style: GoogleFonts.montserrat(
@@ -878,8 +864,19 @@ Widget subjectItemBuild(SubjectModel subject, context) {
                 ),
                 overflow: TextOverflow.ellipsis,
               ),
-            ),
-          ],
+            ],
+          ),
+          decoration: BoxDecoration(
+              color: isDark ? Color(0xff5A5B5F) : Color(0xff4763C4)
+              // image: DecorationImage(
+              //   colorFilter: const ColorFilter.mode(
+              //       Color(0xfff39c12), BlendMode.dstIn),
+              //   image: subject.subjectName == "Data Mining"
+              //       ? AssetImage("images/data-mining_cleanup.webp")
+              //       : NetworkImage(subject.subjectImage),
+              //   fit: BoxFit.cover,
+              // ),
+              ),
         ),
       ),
     ),

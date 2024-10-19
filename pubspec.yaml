@@ -57,6 +57,13 @@ flutter:
 
   assets:
     - images/
+    - images/mage_dashboard-fill-1.png
+    - images/Ethics.png
+    - images/Electronics.png
+    - images/mingcute_drive-fill.png
+    - images/mage_dashboard-fill.png
+    - images/profile.png
+
     - images/admin/
     # - images/default-avatar-icon-of-social-media-user-vector.jpg
     #- "D:/Downloadss/default-avatar-icon-of-social-media-user-vector.jpg"

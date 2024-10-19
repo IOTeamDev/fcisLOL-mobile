@@ -89,9 +89,12 @@ class AdminCubit extends Cubit<AdminCubitStates> {
       required currentSemester}) {
     Random random = Random();
 
+
     // Get a random index
     int randomIndex = random.nextInt(notificationsTitles.length);
     emit(AdminSaveAnnouncementLoadingState());
+
+
     DioHelp.postData(
             path: ANNOUNCEMENTS,
             data: {

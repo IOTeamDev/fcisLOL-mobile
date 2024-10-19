@@ -55,6 +55,7 @@ String? private_key;
 //     }
 //   }
 // }
+bool isDark = false;
 Map<String, dynamic> fcisServiceMap = {};
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -87,7 +88,7 @@ main() async {
 
   // await initNotifation();
   Bloc.observer = MyBlocObserver();
-  bool isDark = await Cache.readData(key: "mode") ?? false;
+   isDark = await Cache.readData(key: "mode") ?? false;
 
   TOKEN = await Cache.readData(key: "token");
   print('token=>>>>>>>>>>>>>>>>>>>>>>>>$TOKEN');
@@ -116,11 +117,12 @@ main() async {
 }
 
 class ThemeProvide extends ChangeNotifier {
-  bool isDark = false;
+  bool temp = false;
 
   void changeMode() async {
-    isDark = !isDark;
-    await Cache.writeData(key: "mode", value: isDark);
+    temp = !temp;
+    await Cache.writeData(key: "mode", value: temp);
+    isDark = temp;
     print('Theme mode changed: $isDark'); // Debugging log
 
     // Notify listeners to rebuild widgets listening to this provider
@@ -152,7 +154,7 @@ class App extends StatelessWidget {
           return MaterialApp(
             home: Home(),
             debugShowCheckedModeBanner: false,
-            theme: value.isDark ? ThemeData.dark() : ThemeData.light(),
+            theme: isDark?  ThemeData.dark() : ThemeData.light(),
           );
         }));
   }

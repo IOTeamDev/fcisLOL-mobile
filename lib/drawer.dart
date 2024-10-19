@@ -164,3 +164,57 @@ class _CustomDrawerState extends State<CustomDrawe> {
     );
   }
 }
+/*
+
+  appBar: AppBar(
+                  leadingWidth: 50,
+
+                  leading: IconButton(
+                      style: IconButton.styleFrom(
+                          padding: EdgeInsets.all(0), minimumSize: Size(0, 0)),
+                      onPressed: () {
+                        // MainCubit.get(context).openDrawerState();
+                        if ((TOKEN != null && profile != null) ||
+                            TOKEN == null) {
+                          scaffoldKey.currentState!
+                              .openDrawer(); // Use key to open the drawer
+                        }
+                      },
+                      icon: const Icon(
+                        Icons.menu,
+                        size: 25,
+                        color: Colors.white,
+                      )),
+                  backgroundColor: const Color(0xff0F4C75),
+                  // centerTitle: true,
+                  title: GestureDetector(
+                    onTap: () => navigatReplace(context, const Home()),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        const Icon(Icons.apple),
+                        const SizedBox(width: 10),
+                        Text(
+                          "name",
+                          style: GoogleFonts.montserrat(),
+                        ),
+                        SizedBox(width: 50)
+                      ],
+                    ),
+                  ),
+                ),
+*/
+/*  Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Text(
+                subject.subjectName.replaceAll('_', " ").replaceAll("and", "&"),
+                maxLines: 2,
+                style: GoogleFonts.montserrat(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ), */

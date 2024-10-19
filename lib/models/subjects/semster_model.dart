@@ -43,27 +43,27 @@ List<SubjectModel> semesterTwo = [
   SubjectModel(
       subjectName: "Structured_Programming",
       subjectImage:
-          "https://www.springboard.com/blog/wp-content/uploads/2022/08/programming-skills.png"),
+          "images/SP (2).png"),
   SubjectModel(
       subjectName: "Ethics",
       subjectImage:
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRP9IzvM6HTqfSalkZi5VE38DYwCcOCgmssYw&s"),
+          "images/Ethics.png"),
   SubjectModel(
       subjectName: "Physics_II",
       subjectImage:
-          "https://thumbs.dreamstime.com/b/captivating-image-features-abstract-representation-quantum-physics-particle-dynamics-vibrant-colors-blue-purple-322222806.jpg"),
+          "images/physics2.png"),
   SubjectModel(
       subjectName: "Business",
       subjectImage:
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS34wULJo7LChwKRBw6JjiCpp-LYIjCqU6uQXd8xBZfqsPOJSc4"),
+          "images/bnussiness (2).png"),
   SubjectModel(
       subjectName: "Calculus_II",
       subjectImage:
-          "https://imageio.forbes.com/specials-images/imageserve/663a317a0c62c92476f504f4/Mathematics-function-integra-graph-formulas-on-the-chalkboard-/960x0.jpg?format=jpg&width=960"),
+          "images/Calc2.png"),
   SubjectModel(
       subjectName: "Electronics",
       subjectImage:
-          "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcT9aDj6Cw6APTvOFhsQK20H2GCsiwW9btt_p-ewKsJ2T78N0HIS"),
+          "images/Elec-removebg-preview.png"),
 ];
 
 List<SubjectModel> semesterThree = [
