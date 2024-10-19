@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +10,9 @@ import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
 import 'package:lol/modules/admin/screens/announcements/announcement_detail.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/navigation.dart';
+import 'package:lol/shared/styles/colors.dart';
+
+import '../../../../shared/components/constants.dart';
 
 class AnnouncementsList extends StatelessWidget {
   final String semester;
@@ -20,68 +25,68 @@ class AnnouncementsList extends StatelessWidget {
       child: BlocConsumer<AdminCubit, AdminCubitStates>(
         listener: (context, state) {},
         builder: (context, state) {
+          double width = screenWidth(context);
+          double height = screenHeight(context);
           var cubit = AdminCubit.get(context);
           return Scaffold(
-            backgroundColor: Colors.black,
-            body: Stack(
-              children: [
-                backgroundEffects(),
-                Container(
-                  margin: const EdgeInsetsDirectional.only(top: 50),
-                  width: double.infinity,
-                  child: SingleChildScrollView(
-                    child: Column(
+            backgroundColor: HexColor('#23252A'),
+            body: Container(
+              margin: const EdgeInsetsDirectional.only(top: 90),
+              width: double.infinity,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Stack(
                       children: [
-                        backButton(context),
-                        adminTopTitleWithDrawerButton(
-                            hasDrawer: false, title: 'Announcements', size: 34),
-                        ConditionalBuilder(
-                          condition:
-                              state is! AdminGetAnnouncementLoadingState &&
-                                  cubit.announcements != null &&
-                                  cubit.announcements!.isNotEmpty,
-                          builder: (context) => ListView.separated(
-                            shrinkWrap: true,
-                            physics: const BouncingScrollPhysics(),
-                            itemBuilder: (context, index) =>
-                                announcementBuilder(
-                                    cubit.announcements![index].id,
-                                    context,
-                                    cubit.announcements![index].title,
-                                    index,
-                                    cubit.announcements![index].content,
-                                    cubit.announcements![index].dueDate,
-                                    cubit.announcements![index].type),
-                            separatorBuilder: (context, index) =>
-                                const SizedBox(
-                              height: 10,
-                            ),
-                            itemCount: cubit.announcements!.length,
-                            //cubit.announcements!.length
-                          ),
-                          fallback: (context) {
-                            if (state is AdminGetAnnouncementLoadingState) {
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                            } else {
-                              return const Center(
-                                child: Text(
-                                  'You have no announcements yet!!!',
-                                  style: TextStyle(
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
-                                  textAlign: TextAlign.center,
-                                ),
-                              );
-                            }
-                          },
-                        ),
+                        Positioned(child: backButton(context), left: 0,),
+                        Center(child: Text('Announcements' , style: TextStyle(fontSize: width/12, color: Colors.white), textAlign: TextAlign.center,)),
                       ],
                     ),
-                  ),
-                )
-              ],
+                    ConditionalBuilder(
+                      condition:
+                          state is! AdminGetAnnouncementLoadingState &&
+                              cubit.announcements != null &&
+                              cubit.announcements!.isNotEmpty,
+                      builder: (context) => ListView.separated(
+                        shrinkWrap: true,
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (context, index) =>
+                            announcementBuilder(
+                                cubit.announcements![index].id,
+                                context,
+                                cubit.announcements![index].title,
+                                index,
+                                cubit.announcements![index].content,
+                                cubit.announcements![index].dueDate,
+                                cubit.announcements![index].type),
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(
+                          height: 10,
+                        ),
+                        itemCount: cubit.announcements!.length,
+                        //cubit.announcements!.length
+                      ),
+                      fallback: (context) {
+                        if (state is AdminGetAnnouncementLoadingState) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else {
+                          return const Center(
+                            child: Text(
+                              'You have no announcements yet!!!',
+                              style: TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                              textAlign: TextAlign.center,
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
             ),
           );
         },
@@ -91,6 +96,8 @@ class AnnouncementsList extends StatelessWidget {
 
   Widget announcementBuilder(int id, BuildContext context, String title,
       int index, String content, dueDate, type) {
+    var random = Random();
+    int rand = random.nextInt(announcementsColorList.length);
     return GestureDetector(
       onTap: () {
         navigate(
@@ -109,11 +116,9 @@ class AnnouncementsList extends StatelessWidget {
         width: double.infinity,
         height: 150,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            gradient: LinearGradient(colors: [
-              HexColor('8D10FA').withOpacity(0.45),
-              HexColor('DA22FF').withOpacity(0.45)
-            ], begin: Alignment.centerLeft, end: Alignment.centerRight)),
+          borderRadius: BorderRadius.circular(20),
+          color: announcementsColorList[rand]
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -126,7 +131,7 @@ class AnnouncementsList extends StatelessWidget {
             ),
             Text(
               content,
-              style: TextStyle(color: Colors.grey, fontSize: 14),
+              style: TextStyle(color: Colors.grey[300], fontSize: 14),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),

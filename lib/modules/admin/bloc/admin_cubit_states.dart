@@ -100,3 +100,9 @@ class ImagePickingSuccessState extends AdminCubitStates{}
 class ImagePickingErrorState extends AdminCubitStates{}
 
 class ImagePickingExceedState extends AdminCubitStates{}
+
+class UploadImageLoadingState extends AdminCubitStates{}
+
+class UploadImageSuccessState extends AdminCubitStates{}
+
+class UploadImageErrorState extends AdminCubitStates{}

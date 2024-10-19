@@ -22,7 +22,7 @@ class AnnouncementDetail extends StatelessWidget {
   final String selectedType;
   final String semester;
 
-  const AnnouncementDetail(
+const AnnouncementDetail(
     {
       super.key,
       required this.title,
@@ -48,96 +48,86 @@ class AnnouncementDetail extends StatelessWidget {
           }
         },
         builder: (context, state) {
+          double width = screenWidth(context);
+          double height = screenHeight(context);
           return Scaffold(
-            backgroundColor: Colors.black,
-            body: Stack(children: [
-              backgroundEffects(),
-              Container(
-                margin: const EdgeInsetsDirectional.only(top: 50),
-                width: double.infinity,
-                child: Column(
-                  children: [
-                    //Back Button
-                    backButton(context),
-                    adminTopTitleWithDrawerButton(title: 'Announcement Detail', size: 27, hasDrawer: false),
-                    Container(
-                      margin: const EdgeInsetsDirectional.symmetric(horizontal: 15, vertical: 20),
-                      padding: const EdgeInsets.all(15),
-                      width: double.infinity,
-                      height: screenHeight(context) / 1.45,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            HexColor('DA22FF').withOpacity(0.45),
-                            HexColor('9B35F3').withOpacity(0.45)
-                          ],
-                          begin: Alignment.bottomRight,
-                          end: Alignment.topLeft
+            backgroundColor: HexColor('#23252A'),
+            body: Container(
+              margin: const EdgeInsetsDirectional.only(top: 90),
+              width: double.infinity,
+              child: Column(
+                children: [
+                  //Back Button
+                  Stack(
+                    children: [
+                      Positioned(child: backButton(context), left: 0,),
+                      Center(child: Text('Announcement' , style: TextStyle(fontSize: width/12, color: Colors.white), textAlign: TextAlign.center,)),
+                    ],
+                  ),
+                  Container(
+                    margin: const EdgeInsetsDirectional.symmetric(horizontal: 15, vertical: 20),
+                    padding: const EdgeInsets.all(18),
+                    width: double.infinity,
+                    height: screenHeight(context) / 1.4,
+                    decoration: BoxDecoration(
+                     color: HexColor('#3B3B3B'),
+                      borderRadius: BorderRadius.circular(20)
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: width / 13,
+                              fontWeight: FontWeight.bold
+
+                          ),
                         ),
-                        borderRadius: BorderRadius.circular(20)
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            title,
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 21,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Expanded(
-                            flex: int.fromEnvironment(description, defaultValue: description == '' ?0:1),
-                            child: Container(
-                              padding: const EdgeInsets.all(15),
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                  color: HexColor('D9D9D9').withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Linkify(
-                                      onOpen: (link) => onOpen(context, link),
-                                      text: 'content:\n$description',
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                      linkStyle:
-                                          const TextStyle(color: Colors.blue),
-                                      linkifiers: const [
-                                        UrlLinkifier(),
-                                        EmailLinkifier(),
-                                        PhoneNumberLinkifier(),
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.symmetric(
-                                              vertical: 25.0),
-                                      child: Text(
-                                        'DeadLine: ${date == 'No Due Date'? date:DateFormat('dd/MM/yyyy').format(DateTime.parse(date)).toString()}',
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Linkify(
+                                  onOpen: (link) => onOpen(context, link),
+                                  text: 'content:\n${description == ''? 'No content':description}',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                  linkStyle:
+                                      const TextStyle(color: Colors.blue),
+                                  linkifiers: const [
+                                    UrlLinkifier(),
+                                    EmailLinkifier(),
+                                    PhoneNumberLinkifier(),
                                   ],
                                 ),
-                              ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsetsDirectional.symmetric(
+                                          vertical: 25.0),
+                                  child: Text(
+                                    'DeadLine: ${date == 'No Due Date'? date:DateFormat('dd/MM/yyyy').format(DateTime.parse(date)).toString()}',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
-            ]),
+            ),
           );
         },
       ),

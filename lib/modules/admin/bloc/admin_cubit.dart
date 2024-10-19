@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'package:dio/dio.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
@@ -293,6 +294,28 @@ class AdminCubit extends Cubit<AdminCubitStates> {
       pickerIcon = Icons.image;
       imageName = 'Select Image';
       emit(ImagePickingErrorState());
+    }
+  }
+
+  Future<void> UploadPImage({File? image}) async {
+    AnnouncementImagePath = null;
+    emit(UploadImageLoadingState());
+    if (image == null) return;
+
+    showToastMessage(
+        message: 'Uploading your photo', states: ToastStates.WARNING);
+    final uploadTask = await FirebaseStorage.instance
+        .ref()
+        .child("images/${Uri.file(image.path).pathSegments.last}")
+        .putFile(image);
+
+    try {
+      final imagePath = await uploadTask.ref.getDownloadURL();
+        AnnouncementImagePath = imagePath;
+      emit(UploadImageSuccessState());
+    } on Exception {
+      emit(UploadImageErrorState());
+      // // TODO
     }
   }
 }

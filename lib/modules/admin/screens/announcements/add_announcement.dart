@@ -34,7 +34,6 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
 
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
-  final _imageController = TextEditingController();
   final _dateController = TextEditingController();
   final _descriptionController = TextEditingController();
   String? dueDateFormatted;
@@ -274,9 +273,9 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                     },
                                                     child: Row(
                                                       children: [
-                                                        ConstrainedBox(constraints: BoxConstraints(maxWidth: width/4) ,child: Text(cubit.imageName, overflow: TextOverflow.ellipsis, maxLines: 1,)),
+                                                        ConstrainedBox(constraints: BoxConstraints(maxWidth: width/4) ,child: Text(cubit.imageName, style: TextStyle(color: Colors.black), overflow: TextOverflow.ellipsis, maxLines: 1,)),
                                                         SizedBox(width: 5,),
-                                                        IconButton(icon: Icon(cubit.pickerIcon), onPressed: (){
+                                                        IconButton(icon: Icon(cubit.pickerIcon, color: Colors.black,), onPressed: (){
                                                           if(cubit.AnnouncementImageFile == null) {
                                                             cubit.getAnnouncementImage();
                                                           }
@@ -324,7 +323,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                 backgroundColor: Colors.white,
                                                 textStyle: TextStyle(fontSize: width / 17),
                                               ),
-                                              child: const Text('Cancel'),
+                                              child: const Text('Cancel', style: TextStyle(color: Colors.black),),
                                             ),
                                             const Spacer(),
                                             //submit button
@@ -342,8 +341,8 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
 
 
                                                     print(_selectedItem);
-                                                    print("${MainCubit.get(context).profileModel!.semester}sdsdaffsdkljkjkljkljklhjklhjk00");
-                                                    await MainCubit.get(context).UploadPImage(image: AdminCubit.get(context).AnnouncementImageFile, isUserProfile: false, AnnouncementImagePath: AdminCubit.get(context).AnnouncementImagePath);
+                                                    //print("${MainCubit.get(context).profileModel!.semester}sdsdaffsdkljkjkljkljklhjklhjk00");
+                                                    await AdminCubit.get(context).UploadPImage(image: cubit.AnnouncementImageFile);
                                                     cubit.addAnnouncement(
                                                         title: _titleController.text,
                                                         dueDate: dueDateFormatted,
@@ -458,8 +457,6 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
 
   Widget announcementBuilder(semester, String cubitId, context, title, ID,
       content, date, selectedItem) {
-    // var rand = Random();
-    // int random = rand.nextInt(announcementsColorList.length);
     var cubit = AdminCubit.get(context).announcements![ID];
     return GestureDetector(
       onTap: () {

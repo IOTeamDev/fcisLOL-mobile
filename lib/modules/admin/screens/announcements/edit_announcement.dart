@@ -247,16 +247,8 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                         const Spacer(),
                                         ElevatedButton(
                                           onPressed: () {
-                                            if (_formKey.currentState!
-                                                    .validate() &&
-                                                selectedItem != null) {
-                                              print(id);
-                                              print(titleController.text);
-                                              print(contentController.text);
-                                              print(dateController.text);
-                                              print(selectedItem);
-                                              AdminCubit.get(context)
-                                                  .updateAnnouncement(
+                                            if (_formKey.currentState!.validate() && selectedItem != null) {
+                                              AdminCubit.get(context).updateAnnouncement(
                                                 AdminCubit.get(context).announcements![int.parse(id)].id.toString(),
                                                 title: titleController.text,
                                                 content: contentController.text,

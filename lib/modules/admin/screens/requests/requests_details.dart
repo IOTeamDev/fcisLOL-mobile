@@ -1,7 +1,17 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:linkify/linkify.dart';
+import 'package:lol/layout/home/bloc/main_cubit_states.dart';
+import 'package:lol/modules/admin/bloc/admin_cubit.dart';
+import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
+import 'package:lol/modules/subject/cubit/subject_cubit.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/constants.dart';
+
+import '../../../../layout/home/bloc/main_cubit.dart';
 
 class RequestsDetails extends StatelessWidget {
   int id;
@@ -12,6 +22,7 @@ class RequestsDetails extends StatelessWidget {
   String pfp;
   String type;
   String authorName;
+  String semester;
 
   RequestsDetails(
       {super.key,
@@ -22,69 +33,212 @@ class RequestsDetails extends StatelessWidget {
       required this.subjectName,
       required this.id,
       required this.title,
-      required this.pfp});
+      required this.pfp,
+      required this.semester});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Stack(
-        children: [
-          backgroundEffects(),
-          Container(
-              margin: const EdgeInsetsDirectional.only(top: 50),
+    double width = screenWidth(context);
+    double height = screenHeight(context);
+    return BlocProvider(
+      create: (context) => MainCubit()..getProfileInfo()..getRequests(semester: semester),
+      child: BlocConsumer<MainCubit, MainCubitStates>(
+        listener: (context, state){
+          if(state is DeleteMaterialSuccessState)
+          {
+            showToastMessage(message: 'Request Rejected!!!!', states: ToastStates.WARNING);
+            Navigator.pop(context, 'refresh');
+          }
+
+          if(state is AcceptRequestSuccessState)
+          {
+            showToastMessage(message: 'Request Accepted Successfully!!!!', states: ToastStates.SUCCESS);
+            Navigator.pop(context, 'refresh');
+          }
+        },
+        builder: (context, state) {
+          var cubit = MainCubit.get(context);
+          return Scaffold(
+          backgroundColor: HexColor('#23252A'),
+          body: Container(
+              margin: const EdgeInsetsDirectional.only(top: 90),
               width: double.infinity,
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    backButton(context),
-                    adminTopTitleWithDrawerButton(
-                        title: 'Request Detail', hasDrawer: false, size: 40),
+                    Stack(
+                      children: [
+                        Positioned(child: backButton(context), left: 0,),
+                        Center(child: Text('Request Details' , style: TextStyle(fontSize: width/12, color: Colors.white), textAlign: TextAlign.center,)),
+                      ],
+                    ),
                     Container(
                       margin: const EdgeInsetsDirectional.symmetric(
                           horizontal: 15, vertical: 20),
                       padding: const EdgeInsets.all(15),
                       width: double.infinity,
-                      height: screenHeight(context) / 1.45,
+                      height: screenHeight(context) / 1.4,
                       decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              colors: [
-                                HexColor('F4BEFF').withOpacity(0.2),
-                                HexColor('271D30').withOpacity(0.2)
-                              ],
-                              begin: Alignment.bottomRight,
-                              end: Alignment.topLeft),
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Container(
-                        width: double.infinity,
-                        margin: const EdgeInsets.all(5),
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            gradient: LinearGradient(
-                                colors: [
-                                  HexColor('BC94FF').withOpacity(0.5),
-                                  HexColor('BC94FF').withOpacity(1)
-                                ],
-                                begin: Alignment.bottomRight,
-                                end: Alignment.topLeft),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.black54.withOpacity(0.2),
-                                  spreadRadius: 7,
-                                  blurRadius: 15)
-                            ]),
-                        child: const Column(
+                        borderRadius: BorderRadius.circular(20),
+                        color: HexColor('#3B3B3B'),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-
+                            Row(
+                              children: [
+                                CircleAvatar(
+                                  backgroundImage: NetworkImage(pfp.toString()),
+                                  radius: 23,
+                                ),
+                                const SizedBox(width: 10),
+                                Text(
+                                  authorName.toString(),
+                                  style: TextStyle(fontSize: 18, color: Colors.grey[300]),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 20,),
+                            Expanded(
+                              child: SingleChildScrollView(
+                                physics: BouncingScrollPhysics(),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      title,
+                                      style: const TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsetsDirectional.symmetric(vertical: 5),
+                                      child:  Linkify(
+                                        onOpen: (link) => onOpen(context, link),
+                                        text: description,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16
+                                        ),
+                                        linkStyle:
+                                        const TextStyle(color: Colors.blue, fontSize: 18),
+                                        linkifiers: const [
+                                          UrlLinkifier(),
+                                          EmailLinkifier(),
+                                          PhoneNumberLinkifier(),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 10,),
+                            Row(
+                              children: [
+                                ConstrainedBox(
+                                  constraints: BoxConstraints(maxWidth: screenWidth(context)/1.7),
+                                  child: Text(
+                                    subjectName,
+                                    style: TextStyle(fontSize: 13, color: Colors.grey[300]),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                Spacer(),
+                                Text(
+                                  type,
+                                  style: TextStyle(fontSize: 13, color: Colors.grey[300]),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.symmetric(vertical: 15),
+                              child: LayoutBuilder(
+                                builder: (context, constraints) {
+                                  return Row(
+                                    children: [
+                                      const Icon(Icons.link, color: Colors.white),
+                                      const SizedBox(width: 5),
+                                      ConstrainedBox(
+                                        constraints:
+                                        BoxConstraints(maxWidth: constraints.maxWidth - 30),
+                                        child: GestureDetector(
+                                          onTap: () async {
+                                            final linkElement = LinkableElement(link, link);
+                                            await onOpen(context, linkElement);
+                                          },
+                                          child: Text(
+                                            link,
+                                            style: const TextStyle(
+                                              color: Colors.blue,
+                                              decoration: TextDecoration.underline,
+                                              decorationColor: Colors.blue,
+                                            ),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
+                            ),
+                            ConditionalBuilder(
+                              condition: cubit.profileModel != null && cubit.requests != null && state is !GetRequestsLoadingState,
+                              fallback: (context) => Center(child: CircularProgressIndicator(),),
+                              builder:(context) => Row(
+                                children: [
+                                  //cancel button
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      //print(cubit.requests![id].id);
+                                      cubit.deleteMaterial(cubit.requests![id].id!, semester);
+                                    },
+                                    style:
+                                    ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13)),
+                                      padding: const EdgeInsetsDirectional.symmetric(horizontal: 40),
+                                      backgroundColor: Colors.white,
+                                      textStyle: TextStyle(fontSize: width / 17),
+                                    ),
+                                    child: const Text('Reject', style: TextStyle(color: Colors.black),),
+                                  ),
+                                  const Spacer(),
+                                  //submit button
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        cubit.acceptRequest(cubit.requests![id].id!, semester);
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13)),
+                                        padding: const EdgeInsetsDirectional.symmetric(horizontal: 40),
+                                        backgroundColor:
+                                        HexColor('#4764C5'),
+                                        foregroundColor:
+                                        Colors.white,
+                                        textStyle: TextStyle(fontSize: width / 17),
+                                      ),
+                                      child: const Text('Accept')),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ),
-                    ),
                   ],
                 ),
               )),
-        ],
+        );
+        },
       ),
     );
   }

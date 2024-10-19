@@ -341,11 +341,16 @@ class _MaterialDetailsState extends State<SubjectDetails>
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                video.title ?? '',
-                style: TextStyle(
-                  fontSize: screenWidth(context) / 20,
-                  color: a,
+              ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: screenWidth(context) - 180),
+                child: Text(
+                  video.title ?? '',
+                  style: TextStyle(
+                    fontSize: screenWidth(context) / 20,
+                    color: a,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               if (MainCubit.get(context).profileModel?.role == 'ADMIN' &&
@@ -389,17 +394,20 @@ class _MaterialDetailsState extends State<SubjectDetails>
                   ),
                 ),
                 Expanded(
-                  child: Text(
-                    '${document.title}',
-                    style: TextStyle(
-                      color: a,
-                      fontSize: screenWidth(context) / 20,
+                  child: ConstrainedBox(
+                      constraints: BoxConstraints(maxWidth: screenWidth(context) - 180),
+                      child: Text(
+                        '${document.title}',
+                        style: TextStyle(
+                          color: a,
+                          fontSize: screenWidth(context) / 20,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.start,
+                      ),
                     ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.start,
                   ),
-                ),
                 if (MainCubit.get(context).profileModel?.role == 'ADMIN' &&
                     TOKEN != null)
                   removeButton(material: document),
@@ -479,6 +487,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
           child: Text(
             title,
             overflow: TextOverflow.ellipsis,
+            maxLines: 1,
             style: TextStyle(color: a, fontSize: 20),
           ),
         ),

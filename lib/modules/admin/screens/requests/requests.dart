@@ -10,6 +10,8 @@ import 'package:lol/layout/home/bloc/main_cubit_states.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
 import 'package:lol/modules/admin/screens/announcements/announcement_detail.dart';
+import 'package:lol/modules/admin/screens/requests/requests_details.dart';
+import 'package:lol/modules/subject/cubit/subject_cubit.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/navigation.dart';
 import 'package:lol/shared/components/constants.dart';
@@ -72,6 +74,7 @@ class Requests extends StatelessWidget {
                                   link: cubit.requests![index].link,
                                   subjectName: cubit.requests![index].subject, // Use proper subject if available
                                   description: cubit.requests![index].description,
+                                  semester: cubit.profileModel!.semester
                                     );
                                   },
                                   separatorBuilder: (context, index) =>
@@ -112,11 +115,14 @@ class Requests extends StatelessWidget {
   }
 
   Widget requestedMaterialBuilder(index, context,
-      {title, link, type, authorName, pfp, subjectName, description}) {
+      {title, link, type, authorName, pfp, subjectName, description, semester}) {
 
     return InkWell(
-      onTap: (){
-        navigate(context, RequestDetails());
+      onTap: () async{
+        String refresh = await Navigator.of(context).push(MaterialPageRoute(builder:(context) => RequestsDetails(authorName: authorName, type: type, description: description, link: link, subjectName: subjectName, id: index, title: title, pfp: pfp, semester: semester,)));
+        if (refresh == 'refresh') {
+          MainCubit.get(context).getRequests(semester: MainCubit.get(context).profileModel!.semester);
+        }
       },
       child: Container(
         decoration: BoxDecoration(
@@ -139,9 +145,14 @@ class Requests extends StatelessWidget {
                     radius: 17,
                   ),
                   const SizedBox(width: 10),
-                  Text(
-                    authorName.toString(),
-                    style: TextStyle(fontSize: 18, color: Colors.grey[300]),
+                  ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: screenWidth(context)/2),
+                    child: Text(
+                      authorName.toString(),
+                      style: TextStyle(fontSize: 18, color: Colors.grey[300]),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                   const Spacer(),
                   ConstrainedBox(
@@ -160,28 +171,21 @@ class Requests extends StatelessWidget {
             Padding(
               padding: const EdgeInsetsDirectional.only(
                   start: 10.0, end: 10, top: 0, bottom: 5),
-              child: Row(
-                children: [
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const Spacer(),
-                  Text(
-                    type,
-                    style: const TextStyle(fontSize: 14, color: Colors.white),
-                  ),
-                ],
+              child: Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             Padding(
               padding: const EdgeInsetsDirectional.symmetric(horizontal: 10.0),
               child: Text(
-                description,
+                type,
                 style: TextStyle(fontSize: 13, color: Colors.grey[300]),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
@@ -194,8 +198,7 @@ class Requests extends StatelessWidget {
                     const Icon(Icons.link, color: Colors.white),
                     const SizedBox(width: 5),
                     ConstrainedBox(
-                      constraints:
-                          BoxConstraints(maxWidth: constraints.maxWidth - 140),
+                      constraints: BoxConstraints(maxWidth: constraints.maxWidth - 140),
                       child: GestureDetector(
                         onTap: () async {
                           final linkElement = LinkableElement(link, link);
@@ -220,10 +223,11 @@ class Requests extends StatelessWidget {
                             MainCubit.get(context).requests![index].id!,
                             MainCubit.get(context).profileModel!.semester);
                       },
-                      shape: const CircleBorder(),
+                      color: Colors.green,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       minWidth: 0,
                       padding: const EdgeInsets.all(8),
-                      child: const Icon(Icons.check, color: Colors.green),
+                      child: const Icon(Icons.check, color: Colors.white),
                     ),
                     MaterialButton(
                       onPressed: () {
@@ -232,10 +236,11 @@ class Requests extends StatelessWidget {
                           MainCubit.get(context).profileModel!.semester,
                         );
                       },
-                      shape: const CircleBorder(),
+                      color: Colors.red,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       minWidth: 0,
                       padding: const EdgeInsets.all(8),
-                      child: const Icon(Icons.close, color: Colors.red),
+                      child: const Icon(Icons.close, color: Colors.white),
                     ),
                   ],
                 );
