@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/admin/directory_v1.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/layout/home/bloc/main_cubit.dart';
 import 'package:lol/main.dart';
@@ -92,7 +93,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
             child: Scaffold(
               floatingActionButton: buildFloatingActionButton(),
               key: scaffoldKey,
-              backgroundColor: Color(0xff1B262C),
+              backgroundColor: isDark ? HexColor('#23252A') : Colors.white,
               body: Column(
                 children: [
                   const SizedBox(
@@ -101,13 +102,13 @@ class _MaterialDetailsState extends State<SubjectDetails>
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      MaterialButton(
+                      IconButton(
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
-                          child: const Icon(
+                          icon: Icon(
                             Icons.arrow_back,
-                            color: Colors.white,
+                            color: isDark ? Colors.white : Colors.black,
                             size: 30,
                           )),
                       Expanded(
@@ -119,7 +120,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                                 .replaceAll('_', " ")
                                 .replaceAll("and", "&"),
                             style: TextStyle(
-                                color: Colors.white,
+                                color: isDark ? Colors.white : Colors.black,
                                 fontSize: screenWidth(context) / 15),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -135,24 +136,27 @@ class _MaterialDetailsState extends State<SubjectDetails>
                       onChanged: (query) {
                         cubit.runFilter(query: query);
                       },
-                      style: TextStyle(color: Color(0xff1B262C), fontSize: 20),
+                      style: TextStyle(
+                          color:
+                              isDark ? Color(0xff1B262C) : HexColor('#757575'),
+                          fontSize: 20),
                       keyboardType: TextInputType.text,
                       textInputAction: TextInputAction.search,
                       decoration: InputDecoration(
-                          fillColor: Colors.white,
+                          fillColor: HexColor('#CDCDCD'),
                           filled: true,
                           prefixIcon: Icon(
                             Icons.search,
                             size: 25,
-                            color: Color.fromRGBO(117, 117, 117, 1),
+                            color: HexColor('#757575'),
                           ),
                           contentPadding: const EdgeInsets.all(10.0),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(50),
                           ),
                           hintText: 'Search for Videos, Documents',
-                          hintStyle: const TextStyle(
-                            color: Color.fromRGBO(117, 117, 117, 1),
+                          hintStyle: TextStyle(
+                            color: HexColor('#757575'),
                             fontSize: 15,
                           )),
                     ),
@@ -209,7 +213,8 @@ class _MaterialDetailsState extends State<SubjectDetails>
         shape: OutlineInputBorder(
           borderRadius: BorderRadius.circular(50),
         ),
-        backgroundColor: Color.fromRGBO(71, 100, 197, 1),
+        backgroundColor:
+            isDark ? Color.fromRGBO(71, 100, 197, 1) : HexColor('#757575'),
         child: Icon(
           Icons.add,
           color: Colors.white,
@@ -238,7 +243,9 @@ class _MaterialDetailsState extends State<SubjectDetails>
                             margin: EdgeInsets.only(bottom: 16.0),
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: const Color.fromRGBO(59, 59, 59, 1),
+                              color: isDark
+                                  ? Color.fromRGBO(59, 59, 59, 1)
+                                  : HexColor('#4764C5'),
                               borderRadius: BorderRadius.circular(15),
                             ),
                             child: gridTileWidget(video: cubit.videos![i]),
@@ -248,14 +255,17 @@ class _MaterialDetailsState extends State<SubjectDetails>
                     ),
                 fallback: (context) {
                   if (state is GetMaterialLoading) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
+                    return Center(
+                      child: CircularProgressIndicator(
+                        color: isDark ? Colors.white : Colors.black,
+                      ),
                     );
                   } else {
                     return Center(
                       child: Text(
                         'Materials Appear here',
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(
+                            color: isDark ? Colors.white : Colors.black),
                       ),
                     );
                   }
@@ -281,14 +291,16 @@ class _MaterialDetailsState extends State<SubjectDetails>
                 },
                 fallback: (context) {
                   if (state is GetMaterialLoading) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
+                    return Center(
+                      child: CircularProgressIndicator(
+                          color: isDark ? Colors.white : Colors.black),
                     );
                   } else {
                     return Center(
                       child: Text(
                         'Materials Appear here',
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(
+                            color: isDark ? Colors.white : Colors.black),
                       ),
                     );
                   }
@@ -358,7 +370,9 @@ class _MaterialDetailsState extends State<SubjectDetails>
         await onOpen(context, linkElement);
       },
       child: Card(
-          color: const Color.fromRGBO(59, 59, 59, 1),
+          color: isDark
+              ? const Color.fromRGBO(59, 59, 59, 1)
+              : HexColor('#4764C5'),
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
             child: Row(
@@ -441,11 +455,12 @@ class _MaterialDetailsState extends State<SubjectDetails>
       required String title1,
       required String title2}) {
     return TabBar(
-      indicatorColor: Colors.white,
+      indicatorColor: isDark ? Colors.white : HexColor('#4764C5'),
       indicatorWeight: 1.0,
-      labelColor: Colors.white,
+      labelColor: isDark ? Colors.white : HexColor('#4764C5'),
       dividerColor: Color.fromRGBO(96, 96, 96, 1),
-      unselectedLabelColor: Color.fromRGBO(59, 59, 59, 1),
+      unselectedLabelColor:
+          isDark ? Color.fromRGBO(59, 59, 59, 1) : HexColor('#757575'),
       controller: tabController,
       tabs: [tabForCustomTabBar(title1), tabForCustomTabBar(title2)],
     );
@@ -471,8 +486,8 @@ class _MaterialDetailsState extends State<SubjectDetails>
       padding:
           EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: Container(
-          decoration: const BoxDecoration(
-            color: Color.fromRGBO(59, 59, 59, 1),
+          decoration: BoxDecoration(
+            color: isDark ? Color.fromRGBO(59, 59, 59, 1) : HexColor('#757575'),
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           ),
           padding: const EdgeInsets.all(16),
@@ -508,11 +523,17 @@ class _MaterialDetailsState extends State<SubjectDetails>
                                     return null;
                                   },
                                   decoration: InputDecoration(
+                                    enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: isDark
+                                                ? HexColor('#848484')
+                                                : HexColor('#FFFFFF'))),
                                     hintText: 'Title (e.g:chapter3)',
                                     hintStyle: TextStyle(
                                         fontSize: 20,
-                                        color:
-                                            Color.fromRGBO(132, 132, 132, 1)),
+                                        color: isDark
+                                            ? Color.fromRGBO(132, 132, 132, 1)
+                                            : Colors.white),
                                   ),
                                   style: const TextStyle(color: Colors.white),
                                 ),
@@ -525,11 +546,17 @@ class _MaterialDetailsState extends State<SubjectDetails>
                                   keyboardType: TextInputType.multiline,
                                   controller: _descriptionController,
                                   decoration: InputDecoration(
+                                    enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: isDark
+                                                ? HexColor('#848484')
+                                                : HexColor('#FFFFFF'))),
                                     hintText: 'Description (Optional)',
                                     hintStyle: TextStyle(
                                         fontSize: 20,
-                                        color:
-                                            Color.fromRGBO(132, 132, 132, 1)),
+                                        color: isDark
+                                            ? Color.fromRGBO(132, 132, 132, 1)
+                                            : Colors.white),
                                   ),
                                   style: const TextStyle(color: Colors.white),
                                 ),
@@ -548,11 +575,17 @@ class _MaterialDetailsState extends State<SubjectDetails>
                                     return null;
                                   },
                                   decoration: InputDecoration(
+                                    enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: isDark
+                                                ? HexColor('#848484')
+                                                : HexColor('#FFFFFF'))),
                                     hintText: 'Material Link',
                                     hintStyle: TextStyle(
                                         fontSize: 20,
-                                        color:
-                                            Color.fromRGBO(132, 132, 132, 1)),
+                                        color: isDark
+                                            ? Color.fromRGBO(132, 132, 132, 1)
+                                            : Colors.white),
                                   ),
                                   style: const TextStyle(color: Colors.white),
                                 ),

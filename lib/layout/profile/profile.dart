@@ -9,6 +9,7 @@ import 'package:googleapis/games/v1.dart';
 import 'package:googleapis/mybusinessaccountmanagement/v1.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:linkify/linkify.dart';
+import 'package:lol/main.dart';
 import 'package:lol/models/profile/profile_materila_model.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/default_button.dart';
@@ -49,225 +50,311 @@ class Profile extends StatelessWidget {
           return DefaultTabController(
             length: 2,
             child: Scaffold(
-              appBar: AppBar(
-                leadingWidth: 50,
-                title: GestureDetector(
-                  onTap: () => navigatReplace(context, const Home()),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      const Icon(Icons.apple),
-                      const SizedBox(width: 10),
-                      Text(
-                        "name",
-                        style: GoogleFonts.montserrat(),
-                      ),
-                      SizedBox(width: 50)
-                    ],
-                  ),
-                ),
-              ),
+              backgroundColor: isDark ? HexColor('#23252A') : Colors.white,
               body: mainCubit.profileModel == null
                   ? const Center(
                       child: CircularProgressIndicator(),
                     )
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Stack(
-                          alignment: Alignment.bottomCenter,
-                          children: [
-                            // Container(height: height,),
-                            SizedBox(
-                                height: height * 0.3,
-                                // width: width,
-                                child: Align(
-                                    alignment: Alignment.topCenter,
-                                    child: Container(
-                                      height: height * 0.2,
-                                      color: const Color(0xff0F4C75),
-                                      width: width,
-                                    ))),
-                            Stack(
-                              alignment: Alignment.bottomCenter,
+                  : Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            height: 60,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 25),
+                            child: Row(
                               children: [
-                                SizedBox(
-                                  height: 150,
-                                  child: Align(
-                                    alignment: Alignment.topCenter,
-                                    child: CircleAvatar(
-                                      radius: 50,
-                                      backgroundImage: NetworkImage(
-                                        mainCubit.profileModel!.photo,
-                                      ),
-                                      // child: Image.network(
-
-                                      //   width: 110,
-                                      //   height: 110,
-                                      //   fit: BoxFit.cover,
-                                      // ),
+                                IconButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    icon: Icon(
+                                      Icons.arrow_back,
+                                      color:
+                                          isDark ? Colors.white : Colors.black,
+                                      size: 30,
+                                    )),
+                                Spacer(),
+                                Text(
+                                  'My Profile',
+                                  style: TextStyle(
+                                      color:
+                                          isDark ? Colors.white : Colors.black,
+                                      fontSize: screenWidth(context) / 12),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Spacer(),
+                              ],
+                            ),
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: screenWidth(context) / 3,
+                                child: Align(
+                                  child: CircleAvatar(
+                                    radius: 40,
+                                    backgroundImage: NetworkImage(
+                                      mainCubit.profileModel!.photo,
                                     ),
                                   ),
                                 ),
-                                Text(
-                                  mainCubit.profileModel!.name,
-                                  style: const TextStyle(fontSize: 20),
-                                )
-                              ],
-                            )
-                            // ,Column()
-                          ],
-                        ),
-                        // Text("44"),
-                        const SizedBox(
-                          height: 20,
-                        ),
-
-                        Builder(
-                          builder: (context) {
-                            if (MainCubit.get(context).leaderboardModel != null) {
-                              return Builder(builder: (context) {
-                                MainCubit.get(context).getScore4User(MainCubit.get(context).profileModel!.id);
-                                var score4User = MainCubit.get(context).score4User;
-                                return Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Column(
-                                      children: [
-                                        // Icon(),
-                                        Text(
-                                          "My Score",
-                                          style: TextStyle(
-                                              color: Colors.redAccent,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text(score4User!.score.toString())
-                                      ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: screenWidth(context) / 1.8,
+                                    child: Text(
+                                      mainCubit.profileModel!.name,
+                                      style: TextStyle(
+                                          color: isDark
+                                              ? Colors.white
+                                              : Colors.black,
+                                          fontSize: screenWidth(context) / 20),
+                                      maxLines: 2,
                                     ),
-                                    if (MainCubit.get(context)
-                                                .profileModel!
-                                                .role !=
-                                            "ADMIN" &&
-                                        score4User.score != 0)
-                                      Column(
-                                        children: [
-                                          Icon(Icons.looks_one),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          Text(score4User.userRank.toString())
-                                        ],
-                                      )
-                                  ],
-                                );
-                              });
-                            } else {
-                              return Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
-                          },
-                        ),
-
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        const TabBar(tabs: [
-                          Tab(
-                            // icon: Icon(Icons.p),
-                            text: "Personal Info",
-                          ),
-                          Tab(
-                            // icon: Icon(Icons.nat),
-                            text: "My Uploads",
-                          )
-                        ])
-                        // i wanna make two navigations taps here
-                        ,
-                        Expanded(
-                          child: MainCubit.get(context).profileModel == null
-                              ? Center(
-                                  child: CircularProgressIndicator(),
-                                )
-                              : TabBarView(
-                                  physics: const BouncingScrollPhysics(),
-                                  children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(15.0),
-                                        child: Column(
-                                          children: [
-                                            const SizedBox(
-                                              height: 20,
-                                            ),
-                                            defaultTextField(
-                                                enabled: false,
-                                                label: "Name",
-                                                controller: nameController,
-                                                dtaPrefIcon: Icons.person),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            defaultTextField(
-                                                enabled: false,
-                                                label: "Email",
-                                                controller: emailController,
-                                                dtaPrefIcon: Icons.email),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            defaultTextField(
-                                                enabled: false,
-                                                label: "Phone",
-                                                controller: phoneController,
-                                                dtaPrefIcon: Icons.phone),
-                                          ],
-                                        ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Email: ',
+                                        style: TextStyle(
+                                            color: isDark
+                                                ? Colors.white
+                                                : Colors.black,
+                                            fontSize:
+                                                screenWidth(context) / 20),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
+                                      SizedBox(
+                                        width: screenWidth(context) / 2.5,
+                                        child: Text(
+                                          mainCubit.profileModel!.email,
+                                          style: TextStyle(
+                                              color: isDark
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                              fontSize:
+                                                  screenWidth(context) / 25),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Phone: ',
+                                        style: TextStyle(
+                                            color: isDark
+                                                ? Colors.white
+                                                : Colors.black,
+                                            fontSize:
+                                                screenWidth(context) / 20),
+                                        maxLines: 2,
+                                      ),
+                                      SizedBox(
+                                        width: screenWidth(context) / 2.5,
+                                        child: Text(
+                                          '${mainCubit.profileModel!.phone}',
+                                          style: TextStyle(
+                                              color: isDark
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                              fontSize:
+                                                  screenWidth(context) / 25),
+                                          maxLines: 2,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Builder(
+                            builder: (context) {
+                              if (MainCubit.get(context).leaderboardModel !=
+                                  null) {
+                                return Builder(builder: (context) {
+                                  MainCubit.get(context).getScore4User(
+                                      MainCubit.get(context).profileModel!.id);
+                                  var score4User =
+                                      MainCubit.get(context).score4User;
+                                  return Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
                                       Column(
                                         children: [
-                                          Expanded(
-                                            child: ListView.separated(
-                                                itemBuilder: (context, index) {
-                                                  var materials = MainCubit.get(context).profileModel!.materials;
-                                                  var mainCubit = MainCubit.get(context);
-                                                  return Container(
-                                                    padding: const EdgeInsets.all(8),
-                                                    decoration: BoxDecoration(
-                                                      color: const Color.fromRGBO(
-                                                              217,
-                                                              217,
-                                                              217,
-                                                              0.1),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15),
-                                                    ),
-                                                    child: materialBuilder(
+                                          // Icon(),
+                                          Text(
+                                            "Score: ${score4User!.score}",
+                                            style: TextStyle(
+                                                color: isDark
+                                                    ? Colors.white
+                                                    : Colors.black,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
+                                      if (MainCubit.get(context)
+                                                  .profileModel!
+                                                  .role !=
+                                              "ADMIN" &&
+                                          score4User.score != 0)
+                                        Column(
+                                          children: [
+                                            Icon(Icons.looks_one),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Text(score4User.userRank.toString())
+                                          ],
+                                        )
+                                    ],
+                                  );
+                                });
+                              } else {
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    color: isDark ? Colors.white : Colors.black,
+                                  ),
+                                );
+                              }
+                            },
+                          ),
+                          TabBar(
+                              dividerColor:
+                                  isDark ? HexColor('3B3B3B') : Colors.black,
+                              tabs: [
+                                Tab(
+                                  // icon: Icon(Icons.p),
+                                  text: "Personal Info",
+                                ),
+                                Tab(
+                                  // icon: Icon(Icons.nat),
+                                  text: "Contributions",
+                                )
+                              ])
+                          // i wanna make two navigations taps here
+                          ,
+                          Expanded(
+                            child: MainCubit.get(context).profileModel == null
+                                ? Center(
+                                    child: CircularProgressIndicator(
+                                      color:
+                                          isDark ? Colors.white : Colors.black,
+                                    ),
+                                  )
+                                : TabBarView(
+                                    physics: const BouncingScrollPhysics(),
+                                    children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(15.0),
+                                          child: Column(
+                                            children: [
+                                              const SizedBox(
+                                                height: 20,
+                                              ),
+                                              defaultTextField(
+                                                  enabled: false,
+                                                  label: "Name",
+                                                  controller: nameController,
+                                                  dtaPrefIcon: Icons.person),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              defaultTextField(
+                                                  enabled: false,
+                                                  label: "Email",
+                                                  controller: emailController,
+                                                  dtaPrefIcon: Icons.email),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              defaultTextField(
+                                                  enabled: false,
+                                                  label: "Phone",
+                                                  controller: phoneController,
+                                                  dtaPrefIcon: Icons.phone),
+                                            ],
+                                          ),
+                                        ),
+                                        Column(
+                                          children: [
+                                            Expanded(
+                                              child: ListView.separated(
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    var materials =
+                                                        MainCubit.get(context)
+                                                            .profileModel!
+                                                            .materials;
+                                                    var mainCubit =
+                                                        MainCubit.get(context);
+                                                    return Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8),
+                                                      decoration: BoxDecoration(
+                                                        color: isDark
+                                                            ? Color.fromRGBO(
+                                                                59, 59, 59, 1)
+                                                            : HexColor(
+                                                                '#4764C5'),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(15),
+                                                      ),
+                                                      child: materialBuilder(
                                                         index,
                                                         context,
-                                                      title: mainCubit.profileModel!.materials[index].title,
-                                                      description: mainCubit.profileModel!.materials[index].description,
-                                                      type: mainCubit.profileModel!.materials[index].type,
-                                                      link: mainCubit.profileModel!.materials[index].link,
-                                                      subjectName: mainCubit.profileModel!.materials[index].subject,
-                                                    ),
-                                                  );
-                                                },
-                                                separatorBuilder: (context, index) => SizedBox(height: 5,),
-                                                itemCount: 5
+                                                        title: mainCubit
+                                                            .profileModel!
+                                                            .materials[index]
+                                                            .title,
+                                                        description: mainCubit
+                                                            .profileModel!
+                                                            .materials[index]
+                                                            .description,
+                                                        type: mainCubit
+                                                            .profileModel!
+                                                            .materials[index]
+                                                            .type,
+                                                        link: mainCubit
+                                                            .profileModel!
+                                                            .materials[index]
+                                                            .link,
+                                                        subjectName: mainCubit
+                                                            .profileModel!
+                                                            .materials[index]
+                                                            .subject,
+                                                      ),
+                                                    );
+                                                  },
+                                                  separatorBuilder:
+                                                      (context, index) =>
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                  itemCount: 5),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    ]),
-                        )
-                      ],
+                                          ],
+                                        ),
+                                      ]),
+                          )
+                        ],
+                      ),
                     ),
             ),
           );
@@ -351,111 +438,90 @@ Widget demoItemBuilder(ProfileMaterilaModel material, context) {
   }
 }
 
-Widget materialBuilder(index, context, {title, link, type, subjectName, description}) {
-
+Widget materialBuilder(index, context,
+    {title, link, type, subjectName, description}) {
   return Container(
     decoration: BoxDecoration(
-      color: HexColor('#3B3B3B').withOpacity(1),
+      color: isDark ? Color.fromRGBO(59, 59, 59, 1) : HexColor('#4764C5'),
       borderRadius: BorderRadius.circular(20),
     ),
     margin: const EdgeInsetsDirectional.symmetric(horizontal: 10),
     padding: const EdgeInsetsDirectional.symmetric(horizontal: 10),
     height: 170,
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsetsDirectional.only(
-              bottom: 5, top: 10, start: 10, end: 10),
-          child: Row(
+    child: Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
             children: [
-              ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 100),
+              SizedBox(
+                width: screenWidth(context) / 3,
                 child: Text(
-                  subjectName,
-                  style: TextStyle(color: Colors.grey[300]),
+                  '$title ',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  textWidthBasis: TextWidthBasis.longestLine,
-                ),
-              ),
-              const Spacer(),
-              MaterialButton(
-                onPressed: () {
-                  MainCubit.get(context).deleteMaterial(
-                    MainCubit.get(context).requests![index].id!,
-                    MainCubit.get(context).profileModel!.semester,
-                  );
-                },
-                shape: const CircleBorder(),
-                minWidth: 0,
-                padding: const EdgeInsets.all(8),
-                child: const Icon(Icons.close, color: Colors.red),
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsetsDirectional.only(
-              start: 10.0, end: 10, top: 0, bottom: 5),
-          child: Row(
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              const Spacer(),
-              Text(
-                type,
-                style: const TextStyle(fontSize: 14, color: Colors.white),
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsetsDirectional.symmetric(horizontal: 10.0),
-          child: Text(
-            description,
-            style: TextStyle(fontSize: 13, color: Colors.grey[300]),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-        LayoutBuilder(
-          builder: (context, constraints) {
-            return Row(
-              children: [
-                const Icon(Icons.link, color: Colors.white),
-                const SizedBox(width: 5),
-                ConstrainedBox(
-                  constraints:
-                  BoxConstraints(maxWidth: constraints.maxWidth - 80),
-                  child: GestureDetector(
-                    onTap: () async {
-                      final linkElement = LinkableElement(link, link);
-                      await onOpen(context, linkElement);
-                    },
-                    child: Text(
-                      link,
-                      style: const TextStyle(
-                        color: Colors.blue,
-                        decoration: TextDecoration.underline,
-                        decorationColor: Colors.blue,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
-              ],
-            );
-          },
-        ),
-      ],
+              ),
+              const Spacer(),
+              SizedBox(
+                width: screenWidth(context) / 3,
+                child: Text(
+                  textAlign: TextAlign.end,
+                  '$subjectName',
+                  maxLines: 3,
+                  style: const TextStyle(fontSize: 20, color: Colors.white),
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsetsDirectional.symmetric(horizontal: 10.0),
+            child: Text(
+              type,
+              style: TextStyle(fontSize: 13, color: Colors.grey[300]),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              return Row(
+                children: [
+                  Icon(Icons.link, color: HexColor('#B7B7B7')),
+                  const SizedBox(width: 5),
+                  ConstrainedBox(
+                    constraints:
+                        BoxConstraints(maxWidth: constraints.maxWidth - 80),
+                    child: GestureDetector(
+                      onTap: () async {
+                        final linkElement = LinkableElement(link, link);
+                        await onOpen(context, linkElement);
+                      },
+                      child: Text(
+                        link,
+                        style: TextStyle(
+                          color: HexColor('#B7B7B7'),
+                          decoration: TextDecoration.underline,
+                          decorationColor: HexColor('#B7B7B7'),
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ],
+      ),
     ),
   );
 }
