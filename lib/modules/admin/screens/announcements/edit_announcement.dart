@@ -1,4 +1,3 @@
-
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,7 +18,6 @@ class EditAnnouncement extends StatefulWidget {
   final String content;
   final String date;
   final String? selectedItem;
-  final String? imageName;
   final String? imageLink;
 
   const EditAnnouncement({
@@ -30,7 +28,6 @@ class EditAnnouncement extends StatefulWidget {
     required this.date,
     this.selectedItem,
     required this.semester,
-    this.imageName,
     this.imageLink,
   });
 
@@ -83,9 +80,9 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
         listener: (context, state) {
           if(state is GetProfileSuccess)
           {
-            if(widget.imageName != null)
+            if(widget.imageLink != null)
             {
-              MainCubit.get(context).imageName = widget.imageName!;
+              MainCubit.get(context).imageName = 'Select Image';
               MainCubit.get(context).pickerIcon = Icons.clear;
             }
             else
@@ -138,7 +135,7 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                         margin: const EdgeInsetsDirectional.symmetric(
                             horizontal: 15, vertical: 20),
                         padding: const EdgeInsets.all(15),
-                        height: screenHeight(context) / 1.45,
+                        height: screenHeight(context) / 1.35,
                         width: double.infinity,
                         decoration: BoxDecoration(
                             color: HexColor('#3B3B3B'),
@@ -283,9 +280,8 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                               ),
                               //Upload Image button
                               Container(
-                                  padding: EdgeInsetsDirectional.symmetric(
-                                      horizontal: 15),
-                                  width: width / 2,
+                                  padding: EdgeInsetsDirectional.symmetric(horizontal: 15),
+                                  width: width / 2.1,
                                   height: 50,
                                   decoration: BoxDecoration(
                                     color: Colors.white,
@@ -328,7 +324,13 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                                 }),
                                           ],
                                         ),
-                                  )),
+                                  )
+                              ),
+                              SizedBox(height: 10,),
+                              ConstrainedBox(
+                                constraints: BoxConstraints(maxWidth: width/1.1),
+                                child: Text('keep it if you don\'t to change the photo!!', style: TextStyle(color: Colors.grey[400]),)
+                              ),
                               const Spacer(),
                               divider(),
                               // Cancel and Accept Buttons
@@ -372,7 +374,7 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                                 cubit.announcements![int.parse(id)].id.toString(),
                                                 title: titleController.text,
                                                 content: contentController.text,
-                                                dueDate: dueDateFormatted,
+                                                dueDate: dueDateFormatted == 'No Due Date'? null:dueDateFormatted,
                                                 type: selectedItem!,
                                                 image: cubit.AnnouncementImagePath??widget.imageLink??'',
                                                 currentSemester: widget.semester);

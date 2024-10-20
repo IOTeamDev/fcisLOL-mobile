@@ -121,7 +121,7 @@ class Home extends StatelessWidget {
         // print("$semesterIndex index");
         return profile == null && TOKEN != null
             ? const Scaffold(
-                backgroundColor: Color(0xff1B262C),
+                //backgroundColor: Color(0xff1B262C),
                 body: Center(child: CircularProgressIndicator()),
               )
             : Scaffold(

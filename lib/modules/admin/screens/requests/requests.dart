@@ -262,8 +262,7 @@ class Requests extends StatelessWidget {
                     ),
                     MaterialButton(
                       onPressed: () {
-
-  AwesomeDialog(
+                        AwesomeDialog(
                           context: context,
                           title: "Delete",
                           dialogType: DialogType.warning,

@@ -615,7 +615,6 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                             date: cubit.dueDate,
                             id: ID.toString(),
                             selectedItem: cubit.type,
-                            imageName: cubit.image.split('?').first.split('%').elementAt(1),
                             imageLink: cubit.image,
                           )),
                 );

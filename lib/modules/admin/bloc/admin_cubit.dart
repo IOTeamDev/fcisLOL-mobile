@@ -103,8 +103,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
               'due_date': dueDate ?? '',
               'type': type,
               'semester': currentSemester,
-              'image': image ??
-                  'https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/140.jpg?alt=media&token=3e5a4144-20ca-44ce-ba14-57432e49914f'
+              'image': image
             },
             token: TOKEN)
         .then((value) {
@@ -189,19 +188,16 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     await fCMHelper.initNotifications();
     var serverKeyAuthorization = await fCMHelper.getAccessToken();
 
-    print(
-        "${serverKeyAuthorization}_________________________________________________________________________________");
+    print("${serverKeyAuthorization}_________________________________________________________________________________");
 
     // change your project id
-    const String urlEndPoint =
-        "https://fcm.googleapis.com/v1/projects/fcis-da7f4/messages:send";
+    const String urlEndPoint = "https://fcm.googleapis.com/v1/projects/fcis-da7f4/messages:send";
 
     Dio dio = Dio();
     dio.options.headers['Content-Type'] = 'application/json';
     dio.options.headers['Authorization'] = 'Bearer $serverKeyAuthorization';
 
-    dio
-        .post(
+    dio.post(
           urlEndPoint,
           data: fCMHelper.getBody(
             fcmToken: token,
