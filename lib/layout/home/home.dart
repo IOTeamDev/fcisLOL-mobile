@@ -844,6 +844,17 @@ Widget subjectItemBuild(SubjectModel subject, context) {
         ),
         clipBehavior: Clip.antiAlias,
         child: Container(
+          decoration: BoxDecoration(
+              color: isDark ? Color(0xff5A5B5F) : Color(0xff4763C4)
+              // image: DecorationImage(
+              //   colorFilter: const ColorFilter.mode(
+              //       Color(0xfff39c12), BlendMode.dstIn),
+              //   image: subject.subjectName == "Data Mining"
+              //       ? AssetImage("images/data-mining_cleanup.webp")
+              //       : NetworkImage(subject.subjectImage),
+              //   fit: BoxFit.cover,
+              // ),
+              ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -866,17 +877,6 @@ Widget subjectItemBuild(SubjectModel subject, context) {
               ),
             ],
           ),
-          decoration: BoxDecoration(
-              color: isDark ? Color(0xff5A5B5F) : Color(0xff4763C4)
-              // image: DecorationImage(
-              //   colorFilter: const ColorFilter.mode(
-              //       Color(0xfff39c12), BlendMode.dstIn),
-              //   image: subject.subjectName == "Data Mining"
-              //       ? AssetImage("images/data-mining_cleanup.webp")
-              //       : NetworkImage(subject.subjectImage),
-              //   fit: BoxFit.cover,
-              // ),
-              ),
         ),
       ),
     ),

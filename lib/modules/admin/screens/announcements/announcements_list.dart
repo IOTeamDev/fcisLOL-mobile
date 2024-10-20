@@ -38,29 +38,35 @@ class AnnouncementsList extends StatelessWidget {
                   children: [
                     Stack(
                       children: [
-                        Positioned(child: backButton(context), left: 0,),
-                        Center(child: Text('Announcements' , style: TextStyle(fontSize: width/12, color: Colors.white), textAlign: TextAlign.center,)),
+                        Positioned(
+                          left: 0,
+                          child: backButton(context),
+                        ),
+                        Center(
+                            child: Text(
+                          'Announcements',
+                          style: TextStyle(
+                              fontSize: width / 12, color: Colors.white),
+                          textAlign: TextAlign.center,
+                        )),
                       ],
                     ),
                     ConditionalBuilder(
-                      condition:
-                          state is! AdminGetAnnouncementLoadingState &&
-                              cubit.announcements != null &&
-                              cubit.announcements!.isNotEmpty,
+                      condition: state is! AdminGetAnnouncementLoadingState &&
+                          cubit.announcements != null &&
+                          cubit.announcements!.isNotEmpty,
                       builder: (context) => ListView.separated(
                         shrinkWrap: true,
                         physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, index) =>
-                            announcementBuilder(
-                                cubit.announcements![index].id,
-                                context,
-                                cubit.announcements![index].title,
-                                index,
-                                cubit.announcements![index].content,
-                                cubit.announcements![index].dueDate,
-                                cubit.announcements![index].type),
-                        separatorBuilder: (context, index) =>
-                            const SizedBox(
+                        itemBuilder: (context, index) => announcementBuilder(
+                            cubit.announcements![index].id,
+                            context,
+                            cubit.announcements![index].title,
+                            index,
+                            cubit.announcements![index].content,
+                            cubit.announcements![index].dueDate,
+                            cubit.announcements![index].type),
+                        separatorBuilder: (context, index) => const SizedBox(
                           height: 10,
                         ),
                         itemCount: cubit.announcements!.length,
@@ -116,9 +122,8 @@ class AnnouncementsList extends StatelessWidget {
         width: double.infinity,
         height: 150,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: announcementsColorList[rand]
-        ),
+            borderRadius: BorderRadius.circular(20),
+            color: announcementsColorList[rand]),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -140,7 +145,11 @@ class AnnouncementsList extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  dueDate == 'No Due Date'? dueDate:DateFormat('dd/MM/yyyy').format(DateTime.parse(dueDate)).toString(),
+                  dueDate == 'No Due Date'
+                      ? dueDate
+                      : DateFormat('dd/MM/yyyy')
+                          .format(DateTime.parse(dueDate))
+                          .toString(),
                   style: TextStyle(color: Colors.white, fontSize: 14),
                 )
               ],

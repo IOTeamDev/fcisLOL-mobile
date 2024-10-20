@@ -55,7 +55,8 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
     // Initialize controllers with existing values
     titleController = TextEditingController(text: widget.title);
     contentController = TextEditingController(text: widget.content);
-    _dateController = TextEditingController(text: widget.date == 'No Due Date'? 'Due Date': widget.date );
+    _dateController = TextEditingController(
+        text: widget.date == 'No Due Date' ? 'Due Date' : widget.date);
     selectedItem = widget.selectedItem;
     id = widget.id;
   }
@@ -73,18 +74,20 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => MainCubit()..getProfileInfo()..getAnnouncements(widget.semester)),
+        BlocProvider(
+            create: (context) => MainCubit()
+              ..getProfileInfo()
+              ..getAnnouncements(widget.semester)),
       ],
       child: BlocConsumer<MainCubit, MainCubitStates>(
         listener: (context, state) {
-          if(state is GetAnnouncementImageSuccess)
-            {
-              setState(() {
-                MainCubit.get(context).imageName = 'Select Image';
-                MainCubit.get(context).AnnouncementImageFile = null;
-                MainCubit.get(context).pickerIcon = Icons.image;
-              });
-            }
+          if (state is GetAnnouncementImageSuccess) {
+            setState(() {
+              MainCubit.get(context).imageName = 'Select Image';
+              MainCubit.get(context).AnnouncementImageFile = null;
+              MainCubit.get(context).pickerIcon = Icons.image;
+            });
+          }
           if (state is AdminUpdateAnnouncementSuccessState) {
             showToastMessage(
                 message: 'Material Updated Successfully!!',
@@ -102,7 +105,8 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
               margin: const EdgeInsetsDirectional.only(top: 90),
               width: double.infinity,
               child: ConditionalBuilder(
-                condition: MainCubit.get(context).profileModel != null && state is! AdminGetAnnouncementLoadingState,
+                condition: MainCubit.get(context).profileModel != null &&
+                    state is! AdminGetAnnouncementLoadingState,
                 builder: (context) => SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,12 +114,22 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                       // Back Button
                       Stack(
                         children: [
-                          Positioned(child: backButton(context), left: 0,),
-                          Center(child: Text('Edit' , style: TextStyle(fontSize: width/10, color: Colors.white), textAlign: TextAlign.center,)),
+                          Positioned(
+                            left: 0,
+                            child: backButton(context),
+                          ),
+                          Center(
+                              child: Text(
+                            'Edit',
+                            style: TextStyle(
+                                fontSize: width / 10, color: Colors.white),
+                            textAlign: TextAlign.center,
+                          )),
                         ],
                       ),
                       Container(
-                        margin: const EdgeInsetsDirectional.symmetric(horizontal: 15, vertical: 20),
+                        margin: const EdgeInsetsDirectional.symmetric(
+                            horizontal: 15, vertical: 20),
                         padding: const EdgeInsets.all(15),
                         height: screenHeight(context) / 1.45,
                         width: double.infinity,
@@ -139,8 +153,7 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                 decoration: InputDecoration(
                                   hintText: 'Title',
                                   hintStyle: TextStyle(
-                                      fontSize: 20, color: Colors.grey[400]
-                                  ),
+                                      fontSize: 20, color: Colors.grey[400]),
                                 ),
                                 style: const TextStyle(color: Colors.white),
                               ),
@@ -207,16 +220,25 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                       ).then((value) {
                                         if (value != null) {
                                           //print(DateFormat.YEAR_MONTH_DAY);
-                                          _dateController.text = value.toUtc().toIso8601String();
-                                          dueDateFormatted = _dateController.text;
-                                          _dateController.text = DateFormat('dd/MM/yyyy').format(value);
+                                          _dateController.text =
+                                              value.toUtc().toIso8601String();
+                                          dueDateFormatted =
+                                              _dateController.text;
+                                          _dateController.text =
+                                              DateFormat('dd/MM/yyyy')
+                                                  .format(value);
                                           print(dueDateFormatted);
                                           print(_dateController.text);
                                         }
                                       }),
                                       child: Container(
-                                        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
-                                        padding: EdgeInsetsDirectional.symmetric(horizontal: 20),
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        padding:
+                                            EdgeInsetsDirectional.symmetric(
+                                                horizontal: 20),
                                         child: AbsorbPointer(
                                           child: TextFormField(
                                             controller: _dateController,
@@ -232,14 +254,19 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                                   color: Colors.black),
                                               border: InputBorder.none,
                                             ),
-                                            style: TextStyle(color: Colors.black,  overflow: TextOverflow.ellipsis,),
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
                                             maxLines: 1,
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                  SizedBox(width: width/10,),
+                                  SizedBox(
+                                    width: width / 10,
+                                  ),
                                   // Announcement Type Dropdown
                                   DropdownButton<String>(
                                     hint: const Text(
@@ -265,27 +292,32 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                         selectedItem = newValue;
                                       });
                                     },
-                                    selectedItemBuilder: (BuildContext context) {
-                                        // Ensuring the selected item has the same padding and alignment as the menu items
-                                        return _items.map((String item) {
-                                          return DropdownMenuItem<String>(
-                                            value: item,
-                                            child: Text(
-                                              item,
-                                              style: const TextStyle(
-                                                color: Colors.white, // White color for the selected item displayed outside
-                                              ),
+                                    selectedItemBuilder:
+                                        (BuildContext context) {
+                                      // Ensuring the selected item has the same padding and alignment as the menu items
+                                      return _items.map((String item) {
+                                        return DropdownMenuItem<String>(
+                                          value: item,
+                                          child: Text(
+                                            item,
+                                            style: const TextStyle(
+                                              color: Colors
+                                                  .white, // White color for the selected item displayed outside
                                             ),
-                                          );
-                                        }).toList();
+                                          ),
+                                        );
+                                      }).toList();
                                     },
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 10,),
+                              SizedBox(
+                                height: 10,
+                              ),
                               //Upload Image button
                               Container(
-                                  padding: EdgeInsetsDirectional.symmetric(horizontal: 15),
+                                  padding: EdgeInsetsDirectional.symmetric(
+                                      horizontal: 15),
                                   width: width / 2,
                                   height: 50,
                                   decoration: BoxDecoration(
@@ -294,40 +326,78 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                   ),
                                   child: GestureDetector(
                                     onTap: () {
-                                      if(cubit.AnnouncementImageFile == null)
+                                      if (cubit.AnnouncementImageFile == null) {
                                         cubit.getAnnouncementImage();
+                                      }
                                     },
-                                    child:ConditionalBuilder(
-                                      condition: cubit.AnnouncementImageFile != null,
-                                      builder: (context) => Row(
-                                        children: [
-                                          ConstrainedBox(constraints: BoxConstraints(maxWidth: width/4) ,child: Text(cubit.imageName, style: TextStyle(color: Colors.black), overflow: TextOverflow.ellipsis, maxLines: 1,)),
-                                          SizedBox(width: 5,),
-                                          IconButton(icon: Icon(cubit.pickerIcon, color: Colors.black,), onPressed: (){
-                                            if(cubit.AnnouncementImageFile == null) {
-                                              cubit.getAnnouncementImage();
-                                            }
-                                            else
-                                            {
-                                              setState(() {
-                                                cubit.AnnouncementImageFile = null;
-                                                cubit.pickerIcon = Icons.image;
-                                                cubit.imageName = 'Select Image';
-                                              });
-                                            }
-                                          }),
-                                        ],
-                                      ),
-                                      fallback: (context) =>Row(
-                                          children: [
-                                      ConstrainedBox(constraints: BoxConstraints(maxWidth: width/4) ,child: Text('Select Image', style: TextStyle(color: Colors.black), overflow: TextOverflow.ellipsis, maxLines: 1,)),
-                                      SizedBox(width: 5,),
-                                      IconButton(icon: Icon(Icons.image, color: Colors.black,), onPressed: (){}),
-                                      ],
-                                    )
-                                    ),
-                                  )
-                              ),
+                                    child: ConditionalBuilder(
+                                        condition:
+                                            cubit.AnnouncementImageFile != null,
+                                        builder: (context) => Row(
+                                              children: [
+                                                ConstrainedBox(
+                                                    constraints: BoxConstraints(
+                                                        maxWidth: width / 4),
+                                                    child: Text(
+                                                      cubit.imageName,
+                                                      style: TextStyle(
+                                                          color: Colors.black),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      maxLines: 1,
+                                                    )),
+                                                SizedBox(
+                                                  width: 5,
+                                                ),
+                                                IconButton(
+                                                    icon: Icon(
+                                                      cubit.pickerIcon,
+                                                      color: Colors.black,
+                                                    ),
+                                                    onPressed: () {
+                                                      if (cubit
+                                                              .AnnouncementImageFile ==
+                                                          null) {
+                                                        cubit
+                                                            .getAnnouncementImage();
+                                                      } else {
+                                                        setState(() {
+                                                          cubit.AnnouncementImageFile =
+                                                              null;
+                                                          cubit.pickerIcon =
+                                                              Icons.image;
+                                                          cubit.imageName =
+                                                              'Select Image';
+                                                        });
+                                                      }
+                                                    }),
+                                              ],
+                                            ),
+                                        fallback: (context) => Row(
+                                              children: [
+                                                ConstrainedBox(
+                                                    constraints: BoxConstraints(
+                                                        maxWidth: width / 4),
+                                                    child: Text(
+                                                      'Select Image',
+                                                      style: TextStyle(
+                                                          color: Colors.black),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      maxLines: 1,
+                                                    )),
+                                                SizedBox(
+                                                  width: 5,
+                                                ),
+                                                IconButton(
+                                                    icon: Icon(
+                                                      Icons.image,
+                                                      color: Colors.black,
+                                                    ),
+                                                    onPressed: () {}),
+                                              ],
+                                            )),
+                                  )),
                               const Spacer(),
                               divider(),
                               // Cancel and Accept Buttons
@@ -342,8 +412,8 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                       style: ElevatedButton.styleFrom(
                                         padding: const EdgeInsetsDirectional
                                             .symmetric(horizontal: 25),
-                                        backgroundColor: HexColor('D9D9D9')
-                                            .withOpacity(0.2),
+                                        backgroundColor:
+                                            HexColor('D9D9D9').withOpacity(0.2),
                                         foregroundColor: Colors.white,
                                         textStyle:
                                             const TextStyle(fontSize: 15),
@@ -358,17 +428,24 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                     const Spacer(),
                                     ElevatedButton(
                                       onPressed: () async {
-                                        if (_formKey.currentState!.validate() && selectedItem != null) {
-                                          await cubit.UploadPImage(isUserProfile: false, image: cubit.AnnouncementImageFile);
+                                        if (_formKey.currentState!.validate() &&
+                                            selectedItem != null) {
+                                          await cubit.UploadPImage(
+                                              isUserProfile: false,
+                                              image:
+                                                  cubit.AnnouncementImageFile);
                                           cubit.updateAnnouncement(
-                                            cubit.announcements![int.parse(id)].id.toString(),
-                                            title: titleController.text,
-                                            content: contentController.text,
-                                            dueDate: _dateController.text,
-                                            type: selectedItem!,
-                                            image: cubit.AnnouncementImagePath,
-                                            currentSemester: widget.semester
-                                          );
+                                              cubit
+                                                  .announcements![int.parse(id)]
+                                                  .id
+                                                  .toString(),
+                                              title: titleController.text,
+                                              content: contentController.text,
+                                              dueDate: _dateController.text,
+                                              type: selectedItem!,
+                                              image:
+                                                  cubit.AnnouncementImagePath,
+                                              currentSemester: widget.semester);
                                         } else {
                                           // Show error if validation fails
                                           showToastMessage(
@@ -403,7 +480,9 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                     ],
                   ),
                 ),
-                fallback: (context) => const Center(child: CircularProgressIndicator(),),
+                fallback: (context) => const Center(
+                  child: CircularProgressIndicator(),
+                ),
               ),
             ),
           );

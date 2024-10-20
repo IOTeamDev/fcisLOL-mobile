@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/admin/directory_v1.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/layout/home/bloc/main_cubit.dart';
 import 'package:lol/main.dart';
@@ -93,14 +92,14 @@ class _MaterialDetailsState extends State<SubjectDetails>
             child: Scaffold(
               floatingActionButton: buildFloatingActionButton(),
               key: scaffoldKey,
-              backgroundColor: HexColor('#23252A'),
+              backgroundColor: Color(0xff1B262C),
               body: Column(
                 children: [
                   const SizedBox(
                     height: 40,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       MaterialButton(
                           onPressed: () {
@@ -111,18 +110,20 @@ class _MaterialDetailsState extends State<SubjectDetails>
                             color: Colors.white,
                             size: 30,
                           )),
-                      Expanded(
+                      SizedBox(
+                        width: screenWidth(context) / 1.3,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
                           child: Text(
                             widget.subjectName
                                 .replaceAll('_', " ")
                                 .replaceAll("and", "&"),
                             style: TextStyle(
-                                color: Colors.white, fontSize: screenWidth(context) / 15),
+                                color: Colors.white,
+                                fontSize: screenWidth(context) / 15),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.start,
                           ),
                         ),
                       ),
@@ -135,7 +136,6 @@ class _MaterialDetailsState extends State<SubjectDetails>
                       onChanged: (query) {
                         cubit.runFilter(query: query);
                       },
-
                       style: TextStyle(color: Color(0xff1B262C), fontSize: 20),
                       keyboardType: TextInputType.text,
                       textInputAction: TextInputAction.search,
@@ -370,7 +370,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                   child: Icon(
                     Icons.folder_copy_sharp,
                     size: screenWidth(context) / 10,
-                    color: a,
+                    color: Colors.white,
                   ),
                 ),
                 Expanded(
@@ -380,7 +380,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                     child: Text(
                       '${document.title}',
                       style: TextStyle(
-                        color: a,
+                        color: Colors.white,
                         fontSize: screenWidth(context) / 20,
                       ),
                       maxLines: 1,
@@ -512,13 +512,15 @@ class _MaterialDetailsState extends State<SubjectDetails>
                                     hintText: 'Title (e.g:chapter3)',
                                     hintStyle: TextStyle(
                                         fontSize: 20,
-                                        color: Color.fromRGBO(132, 132, 132, 1)),
+                                        color:
+                                            Color.fromRGBO(132, 132, 132, 1)),
                                   ),
                                   style: const TextStyle(color: Colors.white),
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 10),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
                                 child: TextFormField(
                                   textInputAction: TextInputAction.next,
                                   keyboardType: TextInputType.multiline,
@@ -527,7 +529,8 @@ class _MaterialDetailsState extends State<SubjectDetails>
                                     hintText: 'Description (Optional)',
                                     hintStyle: TextStyle(
                                         fontSize: 20,
-                                        color: Color.fromRGBO(132, 132, 132, 1)),
+                                        color:
+                                            Color.fromRGBO(132, 132, 132, 1)),
                                   ),
                                   style: const TextStyle(color: Colors.white),
                                 ),
@@ -574,8 +577,8 @@ class _MaterialDetailsState extends State<SubjectDetails>
                                       ),
                                       child: Text(
                                         cubit.selectedType.toLowerCase(),
-                                        style:
-                                            TextStyle(color: a, fontSize: 16),
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 16),
                                         textAlign: TextAlign.center,
                                       ),
                                     ),
@@ -583,7 +586,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                                         onSelected: (type) {
                                           cubit.changeType(type: type);
                                         },
-                                        iconColor: a,
+                                        iconColor: Colors.white,
                                         itemBuilder: (context) {
                                           return [
                                             PopupMenuItem(
@@ -661,8 +664,8 @@ class _MaterialDetailsState extends State<SubjectDetails>
                                       },
                                       child: Text(
                                         'Submit',
-                                        style:
-                                            TextStyle(color: a, fontSize: 20),
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 20),
                                       ),
                                     ),
                                 ],

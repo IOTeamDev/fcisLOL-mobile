@@ -75,8 +75,8 @@ main() async {
     private_key_id = value.data()?["private_key_id"];
     private_key = private_key!.replaceAll(r'\n', '\n').trim();
 
-    print(fcisServiceMap["project_id"].toString() +
-        "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    print(
+        "${fcisServiceMap["project_id"]}+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
   });
 // fCMHelper.initNotifications();
 
@@ -152,7 +152,7 @@ class App extends StatelessWidget {
         child: Consumer<ThemeProvide>(builder: (context, value, child) {
           // AdminCubit.get(context).getFcmTokens();
           return MaterialApp(
-            home: LoginScreen(),
+            home: SubjectDetails(subjectName: 'Physics'),
             debugShowCheckedModeBanner: false,
             theme: isDark ? ThemeData.dark() : ThemeData.light(),
           );

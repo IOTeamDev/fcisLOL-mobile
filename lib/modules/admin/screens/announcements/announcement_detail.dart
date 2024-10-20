@@ -22,17 +22,14 @@ class AnnouncementDetail extends StatelessWidget {
   final String selectedType;
   final String semester;
 
-const AnnouncementDetail(
-    {
-      super.key,
+  const AnnouncementDetail(
+      {super.key,
       required this.title,
       required this.description,
       required this.date,
       required this.id,
       required this.selectedType,
-      required this.semester
-    }
-  );
+      required this.semester});
 
   @override
   Widget build(BuildContext context) {
@@ -60,19 +57,28 @@ const AnnouncementDetail(
                   //Back Button
                   Stack(
                     children: [
-                      Positioned(child: backButton(context), left: 0,),
-                      Center(child: Text('Announcement' , style: TextStyle(fontSize: width/12, color: Colors.white), textAlign: TextAlign.center,)),
+                      Positioned(
+                        left: 0,
+                        child: backButton(context),
+                      ),
+                      Center(
+                          child: Text(
+                        'Announcement',
+                        style: TextStyle(
+                            fontSize: width / 12, color: Colors.white),
+                        textAlign: TextAlign.center,
+                      )),
                     ],
                   ),
                   Container(
-                    margin: const EdgeInsetsDirectional.symmetric(horizontal: 15, vertical: 20),
+                    margin: const EdgeInsetsDirectional.symmetric(
+                        horizontal: 15, vertical: 20),
                     padding: const EdgeInsets.all(18),
                     width: double.infinity,
                     height: screenHeight(context) / 1.4,
                     decoration: BoxDecoration(
-                     color: HexColor('#3B3B3B'),
-                      borderRadius: BorderRadius.circular(20)
-                    ),
+                        color: HexColor('#3B3B3B'),
+                        borderRadius: BorderRadius.circular(20)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -81,12 +87,16 @@ const AnnouncementDetail(
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: width / 13,
-                              fontWeight: FontWeight.bold
-
-                          ),
+                              fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(height: 5,),
-                        Container(width: double.infinity, height: 2, color: Colors.white,),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Container(
+                          width: double.infinity,
+                          height: 2,
+                          color: Colors.white,
+                        ),
                         const SizedBox(
                           height: 20,
                         ),
@@ -97,7 +107,8 @@ const AnnouncementDetail(
                               children: [
                                 Linkify(
                                   onOpen: (link) => onOpen(context, link),
-                                  text: 'content:\n${description == ''? 'No content':description}',
+                                  text:
+                                      'content:\n${description == '' ? 'No content' : description}',
                                   style: const TextStyle(
                                     color: Colors.white,
                                   ),
@@ -114,7 +125,7 @@ const AnnouncementDetail(
                                       const EdgeInsetsDirectional.symmetric(
                                           vertical: 25.0),
                                   child: Text(
-                                    'DeadLine: ${date == 'No Due Date'? date:DateFormat('dd/MM/yyyy').format(DateTime.parse(date)).toString()}',
+                                    'DeadLine: ${date == 'No Due Date' ? date : DateFormat('dd/MM/yyyy').format(DateTime.parse(date)).toString()}',
                                     style: const TextStyle(
                                       color: Colors.white,
                                     ),

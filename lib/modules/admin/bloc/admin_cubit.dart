@@ -52,7 +52,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
         // fcmTokens.forEach((element) {
         //   if (element.name == "phone") print(element.semester);
         // });
-        fcmTokens.forEach((action) {
+        for (var action in fcmTokens) {
           // sendFCMNotification(
           //     title: "title",
           //     body: "body",
@@ -62,13 +62,14 @@ class AdminCubit extends Cubit<AdminCubitStates> {
             print(action.name.toString());
             print(action.fcmToken.toString());
           }
-        });
+        }
         emit(GetFcmTokensSuccess());
       },
     ).catchError((onError) {
       print(onError.toString());
       emit(GetFcmTokensError());
     });
+    return null;
   }
 
   AnnouncementModel? announcementModel;
@@ -90,18 +91,16 @@ class AdminCubit extends Cubit<AdminCubitStates> {
       required currentSemester}) {
     Random random = Random();
 
-
     // Get a random index
     int randomIndex = random.nextInt(notificationsTitles.length);
     emit(AdminSaveAnnouncementLoadingState());
-
 
     DioHelp.postData(
             path: ANNOUNCEMENTS,
             data: {
               'title': title,
               'content': description ?? '',
-              'due_date': dueDate??'',
+              'due_date': dueDate ?? '',
               'type': type,
               'semester': currentSemester,
               'image': image ??
@@ -123,7 +122,8 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     announcements = null;
     print(SelectedSemester.toString());
     emit(AdminGetAnnouncementLoadingState());
-    DioHelp.getData(path: ANNOUNCEMENTS, query: {'semester': semester}).then((value) {
+    DioHelp.getData(path: ANNOUNCEMENTS, query: {'semester': semester})
+        .then((value) {
       announcements = [];
       value.data.forEach((element) {
         announcements!.add(AnnouncementModel.fromJson(element));
@@ -189,7 +189,8 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     await fCMHelper.initNotifications();
     var serverKeyAuthorization = await fCMHelper.getAccessToken();
 
-    print(serverKeyAuthorization.toString() + "_________________________________________________________________________________");
+    print(
+        "${serverKeyAuthorization}_________________________________________________________________________________");
 
     // change your project id
     const String urlEndPoint =
@@ -227,8 +228,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     required String title,
     required String body,
   }) async {
-
-        await FirebaseMessaging.instance.requestPermission();
+    await FirebaseMessaging.instance.requestPermission();
 
     // Wait for FCM tokens to be fetched
     // await getFcmTokens();
@@ -281,10 +281,12 @@ class AdminCubit extends Cubit<AdminCubitStates> {
       print(sizeInMB);
       if (sizeInMB <= 1) {
         pickerIcon = Icons.clear;
-        showToastMessage(message: 'Imaged Picked Successfully', states: ToastStates.SUCCESS);
+        showToastMessage(
+            message: 'Imaged Picked Successfully', states: ToastStates.SUCCESS);
         emit(ImagePickingSuccessState());
       } else {
-        showToastMessage(message: 'Image Limit Exceeded', states: ToastStates.WARNING);
+        showToastMessage(
+            message: 'Image Limit Exceeded', states: ToastStates.WARNING);
         imageName = 'Select Image';
         pickerIcon = Icons.image;
         AnnouncementImageFile = null;
@@ -311,7 +313,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
 
     try {
       final imagePath = await uploadTask.ref.getDownloadURL();
-        AnnouncementImagePath = imagePath;
+      AnnouncementImagePath = imagePath;
       emit(UploadImageSuccessState());
     } on Exception {
       emit(UploadImageErrorState());

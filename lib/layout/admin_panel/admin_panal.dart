@@ -26,8 +26,7 @@ class AdminPanel extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => MainCubit()..getProfileInfo()),
-        BlocProvider(create: (context) => AdminCubit()
-        ),
+        BlocProvider(create: (context) => AdminCubit()),
       ],
       child: BlocConsumer<MainCubit, MainCubitStates>(
         listener: (context, state) {},
@@ -46,22 +45,48 @@ class AdminPanel extends StatelessWidget {
                   // Back Button
                   Stack(
                     children: [
-                      Positioned(child: backButton(context), left: 0,),
-                      Center(child: Text('Admin' , style: TextStyle(fontSize: width/10, color: Colors.white), textAlign: TextAlign.center,)),
+                      Positioned(
+                        left: 0,
+                        child: backButton(context),
+                      ),
+                      Center(
+                          child: Text(
+                        'Admin',
+                        style: TextStyle(
+                            fontSize: width / 10, color: Colors.white),
+                        textAlign: TextAlign.center,
+                      )),
                     ],
                   ),
-                  SizedBox(height: 50,),
+                  SizedBox(
+                    height: 50,
+                  ),
                   // Buttons
                   ConditionalBuilder(
-                    condition: MainCubit.get(context).profileModel != null && state is! GetProfileLoading,
-                    fallback: (context) => const Center(child: CircularProgressIndicator()),
+                    condition: MainCubit.get(context).profileModel != null &&
+                        state is! GetProfileLoading,
+                    fallback: (context) =>
+                        const Center(child: CircularProgressIndicator()),
                     builder: (context) => Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(height: 13, width: width - 70, decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40)), color: Colors.white,),),
+                        Container(
+                          height: 13,
+                          width: width - 70,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(40),
+                                topRight: Radius.circular(40)),
+                            color: Colors.white,
+                          ),
+                        ),
                         ElevatedButton(
                           onPressed: () {
-                            navigate(context,  AddAnnouncement(semester: mainCubit.profileModel!.semester,));
+                            navigate(
+                                context,
+                                AddAnnouncement(
+                                  semester: mainCubit.profileModel!.semester,
+                                ));
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: HexColor('#3B3B3B'),
@@ -69,40 +94,60 @@ class AdminPanel extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            minimumSize: Size( width - 40, height / 4.5),
+                            minimumSize: Size(width - 40, height / 4.5),
                           ),
                           child: Column(
                             children: [
-                              Icon(Icons.campaign, color: Colors.white, size: width / 4),
-                              Text('Announcements', style: TextStyle(fontSize: width / 15 , color: Colors.white)),
+                              Icon(Icons.campaign,
+                                  color: Colors.white, size: width / 4),
+                              Text('Announcements',
+                                  style: TextStyle(
+                                      fontSize: width / 15,
+                                      color: Colors.white)),
                             ],
                           ),
                         ),
-                        SizedBox(height: 30,),
-                        Container(height: 13, width: width - 70, decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40)), color: Colors.white,),),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Container(
+                          height: 13,
+                          width: width - 70,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(40),
+                                topRight: Radius.circular(40)),
+                            color: Colors.white,
+                          ),
+                        ),
                         ElevatedButton(
-                          onPressed: () {
-                            navigate(context, Requests());
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: HexColor('#4764C5'),
-                            padding: EdgeInsets.zero, // Remove default padding
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
+                            onPressed: () {
+                              navigate(context, Requests());
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: HexColor('#4764C5'),
+                              padding:
+                                  EdgeInsets.zero, // Remove default padding
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              minimumSize: Size(width - 40, height / 4.5),
                             ),
-                            minimumSize: Size( width - 40, height / 4.5),
-                          ),
-                          child: Column(
-                            children: [
-                              Icon(Icons.email, color: Colors.white, size: width / 4),
-                              Text('Requests', style: TextStyle(fontSize: width / 15 , color: Colors.white),)
-                            ],
-                          )
-                        ),
+                            child: Column(
+                              children: [
+                                Icon(Icons.email,
+                                    color: Colors.white, size: width / 4),
+                                Text(
+                                  'Requests',
+                                  style: TextStyle(
+                                      fontSize: width / 15,
+                                      color: Colors.white),
+                                )
+                              ],
+                            )),
                       ],
                     ),
                   ),
-
                 ],
               ),
             ),

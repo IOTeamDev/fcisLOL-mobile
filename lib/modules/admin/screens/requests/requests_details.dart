@@ -41,49 +41,61 @@ class RequestsDetails extends StatelessWidget {
     double width = screenWidth(context);
     double height = screenHeight(context);
     return BlocProvider(
-      create: (context) => MainCubit()..getProfileInfo()..getRequests(semester: semester),
+      create: (context) => MainCubit()
+        ..getProfileInfo()
+        ..getRequests(semester: semester),
       child: BlocConsumer<MainCubit, MainCubitStates>(
-        listener: (context, state){
-          if(state is DeleteMaterialSuccessState)
-          {
-            showToastMessage(message: 'Request Rejected!!!!', states: ToastStates.WARNING);
+        listener: (context, state) {
+          if (state is DeleteMaterialSuccessState) {
+            showToastMessage(
+                message: 'Request Rejected!!!!', states: ToastStates.WARNING);
             Navigator.pop(context, 'refresh');
           }
 
-          if(state is AcceptRequestSuccessState)
-          {
-            showToastMessage(message: 'Request Accepted Successfully!!!!', states: ToastStates.SUCCESS);
+          if (state is AcceptRequestSuccessState) {
+            showToastMessage(
+                message: 'Request Accepted Successfully!!!!',
+                states: ToastStates.SUCCESS);
             Navigator.pop(context, 'refresh');
           }
         },
         builder: (context, state) {
           var cubit = MainCubit.get(context);
           return Scaffold(
-          backgroundColor: HexColor('#23252A'),
-          body: Container(
-              margin: const EdgeInsetsDirectional.only(top: 90),
-              width: double.infinity,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Stack(
-                      children: [
-                        Positioned(child: backButton(context), left: 0,),
-                        Center(child: Text('Request Details' , style: TextStyle(fontSize: width/12, color: Colors.white), textAlign: TextAlign.center,)),
-                      ],
-                    ),
-                    Container(
-                      margin: const EdgeInsetsDirectional.symmetric(
-                          horizontal: 15, vertical: 20),
-                      padding: const EdgeInsets.all(15),
-                      width: double.infinity,
-                      height: screenHeight(context) / 1.4,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: HexColor('#3B3B3B'),
+            backgroundColor: HexColor('#23252A'),
+            body: Container(
+                margin: const EdgeInsetsDirectional.only(top: 90),
+                width: double.infinity,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Stack(
+                        children: [
+                          Positioned(
+                            left: 0,
+                            child: backButton(context),
+                          ),
+                          Center(
+                              child: Text(
+                            'Request Details',
+                            style: TextStyle(
+                                fontSize: width / 12, color: Colors.white),
+                            textAlign: TextAlign.center,
+                          )),
+                        ],
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Container(
+                        margin: const EdgeInsetsDirectional.symmetric(
+                            horizontal: 15, vertical: 20),
+                        padding: const EdgeInsets.all(15),
+                        width: double.infinity,
+                        height: screenHeight(context) / 1.4,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: HexColor('#3B3B3B'),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
                               children: [
@@ -94,13 +106,16 @@ class RequestsDetails extends StatelessWidget {
                                 const SizedBox(width: 10),
                                 Text(
                                   authorName.toString(),
-                                  style: TextStyle(fontSize: 18, color: Colors.grey[300]),
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.grey[300]),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ],
                             ),
-                            SizedBox(height: 20,),
+                            SizedBox(
+                              height: 20,
+                            ),
                             Expanded(
                               child: SingleChildScrollView(
                                 physics: BouncingScrollPhysics(),
@@ -117,16 +132,16 @@ class RequestsDetails extends StatelessWidget {
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     Padding(
-                                      padding: const EdgeInsetsDirectional.symmetric(vertical: 5),
-                                      child:  Linkify(
+                                      padding:
+                                          const EdgeInsetsDirectional.symmetric(
+                                              vertical: 5),
+                                      child: Linkify(
                                         onOpen: (link) => onOpen(context, link),
                                         text: description,
                                         style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16
-                                        ),
-                                        linkStyle:
-                                        const TextStyle(color: Colors.blue, fontSize: 18),
+                                            color: Colors.white, fontSize: 16),
+                                        linkStyle: const TextStyle(
+                                            color: Colors.blue, fontSize: 18),
                                         linkifiers: const [
                                           UrlLinkifier(),
                                           EmailLinkifier(),
@@ -138,14 +153,18 @@ class RequestsDetails extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 10,),
+                            SizedBox(
+                              height: 10,
+                            ),
                             Row(
                               children: [
                                 ConstrainedBox(
-                                  constraints: BoxConstraints(maxWidth: screenWidth(context)/1.7),
+                                  constraints: BoxConstraints(
+                                      maxWidth: screenWidth(context) / 1.7),
                                   child: Text(
                                     subjectName,
-                                    style: TextStyle(fontSize: 13, color: Colors.grey[300]),
+                                    style: TextStyle(
+                                        fontSize: 13, color: Colors.grey[300]),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -153,33 +172,39 @@ class RequestsDetails extends StatelessWidget {
                                 Spacer(),
                                 Text(
                                   type,
-                                  style: TextStyle(fontSize: 13, color: Colors.grey[300]),
+                                  style: TextStyle(
+                                      fontSize: 13, color: Colors.grey[300]),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ],
                             ),
                             Padding(
-                              padding: EdgeInsetsDirectional.symmetric(vertical: 15),
+                              padding:
+                                  EdgeInsetsDirectional.symmetric(vertical: 15),
                               child: LayoutBuilder(
                                 builder: (context, constraints) {
                                   return Row(
                                     children: [
-                                      const Icon(Icons.link, color: Colors.white),
+                                      const Icon(Icons.link,
+                                          color: Colors.white),
                                       const SizedBox(width: 5),
                                       ConstrainedBox(
-                                        constraints:
-                                        BoxConstraints(maxWidth: constraints.maxWidth - 30),
+                                        constraints: BoxConstraints(
+                                            maxWidth:
+                                                constraints.maxWidth - 30),
                                         child: GestureDetector(
                                           onTap: () async {
-                                            final linkElement = LinkableElement(link, link);
+                                            final linkElement =
+                                                LinkableElement(link, link);
                                             await onOpen(context, linkElement);
                                           },
                                           child: Text(
                                             link,
                                             style: const TextStyle(
                                               color: Colors.blue,
-                                              decoration: TextDecoration.underline,
+                                              decoration:
+                                                  TextDecoration.underline,
                                               decorationColor: Colors.blue,
                                             ),
                                             maxLines: 2,
@@ -193,39 +218,54 @@ class RequestsDetails extends StatelessWidget {
                               ),
                             ),
                             ConditionalBuilder(
-                              condition: cubit.profileModel != null && cubit.requests != null && state is !GetRequestsLoadingState,
-                              fallback: (context) => Center(child: CircularProgressIndicator(),),
-                              builder:(context) => Row(
+                              condition: cubit.profileModel != null &&
+                                  cubit.requests != null &&
+                                  state is! GetRequestsLoadingState,
+                              fallback: (context) => Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                              builder: (context) => Row(
                                 children: [
                                   //cancel button
                                   ElevatedButton(
                                     onPressed: () {
                                       //print(cubit.requests![id].id);
-                                      cubit.deleteMaterial(cubit.requests![id].id!, semester);
+                                      cubit.deleteMaterial(
+                                          cubit.requests![id].id!, semester);
                                     },
-                                    style:
-                                    ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13)),
-                                      padding: const EdgeInsetsDirectional.symmetric(horizontal: 40),
+                                    style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(13)),
+                                      padding:
+                                          const EdgeInsetsDirectional.symmetric(
+                                              horizontal: 40),
                                       backgroundColor: Colors.white,
-                                      textStyle: TextStyle(fontSize: width / 17),
+                                      textStyle:
+                                          TextStyle(fontSize: width / 17),
                                     ),
-                                    child: const Text('Reject', style: TextStyle(color: Colors.black),),
+                                    child: const Text(
+                                      'Reject',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
                                   ),
                                   const Spacer(),
                                   //submit button
                                   ElevatedButton(
                                       onPressed: () {
-                                        cubit.acceptRequest(cubit.requests![id].id!, semester);
+                                        cubit.acceptRequest(
+                                            cubit.requests![id].id!, semester);
                                       },
                                       style: ElevatedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13)),
-                                        padding: const EdgeInsetsDirectional.symmetric(horizontal: 40),
-                                        backgroundColor:
-                                        HexColor('#4764C5'),
-                                        foregroundColor:
-                                        Colors.white,
-                                        textStyle: TextStyle(fontSize: width / 17),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(13)),
+                                        padding: const EdgeInsetsDirectional
+                                            .symmetric(horizontal: 40),
+                                        backgroundColor: HexColor('#4764C5'),
+                                        foregroundColor: Colors.white,
+                                        textStyle:
+                                            TextStyle(fontSize: width / 17),
                                       ),
                                       child: const Text('Accept')),
                                 ],
@@ -234,10 +274,10 @@ class RequestsDetails extends StatelessWidget {
                           ],
                         ),
                       ),
-                  ],
-                ),
-              )),
-        );
+                    ],
+                  ),
+                )),
+          );
         },
       ),
     );

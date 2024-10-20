@@ -48,7 +48,9 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
           create: (context) => MainCubit()..getProfileInfo(),
         ),
         BlocProvider(
-          create: (context) => AdminCubit()..getAnnouncements(widget.semester)..getFcmTokens(),
+          create: (context) => AdminCubit()
+            ..getAnnouncements(widget.semester)
+            ..getFcmTokens(),
         ),
       ],
       child: BlocConsumer<AdminCubit, AdminCubitStates>(
@@ -88,8 +90,17 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                     //back button
                     Stack(
                       children: [
-                        Positioned(child: backButton(context), left: 0,),
-                        Center(child: Text('Announcements' , style: TextStyle(fontSize: width/13, color: Colors.white), textAlign: TextAlign.center,)),
+                        Positioned(
+                          left: 0,
+                          child: backButton(context),
+                        ),
+                        Center(
+                            child: Text(
+                          'Announcements',
+                          style: TextStyle(
+                              fontSize: width / 13, color: Colors.white),
+                          textAlign: TextAlign.center,
+                        )),
                       ],
                     ),
                     GestureDetector(
@@ -98,15 +109,15 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                           _isExpanded = true; // Toggle the expansion
                           _height = 430;
                         });
-                        Future.delayed(const Duration(milliseconds: 350),
-                            () {
+                        Future.delayed(const Duration(milliseconds: 350), () {
                           setState(() {
                             _showContent = true;
                           });
                         });
                       },
                       child: AnimatedContainer(
-                        margin: const EdgeInsetsDirectional.only(top: 50, start: 10, end: 10),
+                        margin: const EdgeInsetsDirectional.only(
+                            top: 50, start: 10, end: 10),
                         duration: const Duration(milliseconds: 500),
                         width: double.infinity,
                         height: _height,
@@ -116,8 +127,8 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                         curve: Curves.fastEaseInToSlowEaseOut,
                         child: _isExpanded && _showContent
                             ? Padding(
-                                padding:
-                                    const EdgeInsetsDirectional.symmetric(horizontal: 10.0, vertical: 10),
+                                padding: const EdgeInsetsDirectional.symmetric(
+                                    horizontal: 10.0, vertical: 10),
                                 child: Form(
                                   key: _formKey,
                                   child: AnimatedOpacity(
@@ -125,263 +136,383 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                     duration: const Duration(milliseconds: 500),
                                     curve: Curves.easeInOut,
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
-                                      //Title Text Input
-                                      TextFormField(
-                                        controller: _titleController,
-                                        validator: (value) {
-                                          if (value == null ||
-                                              value.isEmpty) {
-                                            return 'This field must not be Empty';
-                                          }
-                                          return null;
-                                        },
-                                        decoration: InputDecoration(
-                                          hintText: 'Title',
-                                          hintStyle: TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.grey[400]),
-                                        ),
-                                        style: const TextStyle(
-                                            color: Colors.white),
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      //Description Input text Field
-                                      TextFormField(
-                                        controller: _descriptionController,
-                                        minLines: 5,
-                                        maxLines: 5,
-                                        decoration: InputDecoration(
-                                          hintText: 'Description',
-                                          hintStyle: TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.grey[400]),
-                                        ),
-                                        style: const TextStyle(
-                                            color: Colors.white),
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Row(
-                                        children: [
-                                          //DatePicker Input text Field
-                                          Expanded(
-                                            child: GestureDetector(
-                                              onTap: () => showDatePicker(
-                                                context: context,
-                                                initialDate: DateTime.now(),
-                                                firstDate: DateTime.now(),
-                                                lastDate: DateTime.parse('2027-12-31'),
-                                              ).then((value) {
-                                                if (value != null) {
-                                                  //print(DateFormat.YEAR_MONTH_DAY);
-                                                  _dateController.text = value.toUtc().toIso8601String();
-                                                  dueDateFormatted = _dateController.text;
-                                                  _dateController.text = DateFormat('dd/MM/yyyy').format(value);
-                                                  print(dueDateFormatted);
-                                                  print(_dateController.text);
-                                                }
-                                              }),
-                                              child: Container(
-                                                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
-                                                padding: EdgeInsetsDirectional.symmetric(horizontal: 20),
-                                                child: AbsorbPointer(
-                                                  child: TextFormField(
-                                                    controller: _dateController,
-                                                    keyboardType:
-                                                        TextInputType.none,
-                                                    decoration: InputDecoration(
-                                                      suffixIcon: const Icon(
-                                                        Icons.date_range,
-                                                        color: Colors.black,
+                                          //Title Text Input
+                                          TextFormField(
+                                            controller: _titleController,
+                                            validator: (value) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return 'This field must not be Empty';
+                                              }
+                                              return null;
+                                            },
+                                            decoration: InputDecoration(
+                                              hintText: 'Title',
+                                              hintStyle: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Colors.grey[400]),
+                                            ),
+                                            style: const TextStyle(
+                                                color: Colors.white),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          //Description Input text Field
+                                          TextFormField(
+                                            controller: _descriptionController,
+                                            minLines: 5,
+                                            maxLines: 5,
+                                            decoration: InputDecoration(
+                                              hintText: 'Description',
+                                              hintStyle: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Colors.grey[400]),
+                                            ),
+                                            style: const TextStyle(
+                                                color: Colors.white),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            children: [
+                                              //DatePicker Input text Field
+                                              Expanded(
+                                                child: GestureDetector(
+                                                  onTap: () => showDatePicker(
+                                                    context: context,
+                                                    initialDate: DateTime.now(),
+                                                    firstDate: DateTime.now(),
+                                                    lastDate: DateTime.parse(
+                                                        '2027-12-31'),
+                                                  ).then((value) {
+                                                    if (value != null) {
+                                                      //print(DateFormat.YEAR_MONTH_DAY);
+                                                      _dateController.text =
+                                                          value
+                                                              .toUtc()
+                                                              .toIso8601String();
+                                                      dueDateFormatted =
+                                                          _dateController.text;
+                                                      _dateController.text =
+                                                          DateFormat(
+                                                                  'dd/MM/yyyy')
+                                                              .format(value);
+                                                      print(dueDateFormatted);
+                                                      print(
+                                                          _dateController.text);
+                                                    }
+                                                  }),
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10)),
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .symmetric(
+                                                                horizontal: 20),
+                                                    child: AbsorbPointer(
+                                                      child: TextFormField(
+                                                        controller:
+                                                            _dateController,
+                                                        keyboardType:
+                                                            TextInputType.none,
+                                                        decoration:
+                                                            InputDecoration(
+                                                          suffixIcon:
+                                                              const Icon(
+                                                            Icons.date_range,
+                                                            color: Colors.black,
+                                                          ),
+                                                          hintText: 'Due Date',
+                                                          hintStyle: TextStyle(
+                                                              fontSize: 14,
+                                                              color:
+                                                                  Colors.black),
+                                                          border:
+                                                              InputBorder.none,
+                                                        ),
+                                                        style: const TextStyle(
+                                                            color:
+                                                                Colors.black),
                                                       ),
-                                                      hintText: 'Due Date',
-                                                      hintStyle: TextStyle(
-                                                          fontSize: 14,
-                                                          color: Colors.black),
-                                                      border: InputBorder.none,
                                                     ),
-                                                    style: const TextStyle(
-                                                        color: Colors.black),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                          ),
-                                          SizedBox(width: width/10,),
-                                          //Announcement type Drop Down menu
-                                          DropdownButton<String>(
-                                            hint: const Text(
-                                              'Type',
-                                              style: TextStyle(color: Colors.white),
-                                            ),
-                                            value: _selectedItem,
-                                            dropdownColor: Colors.white, // Background color for the dropdown list
-                                            iconEnabledColor: Colors.white, // Color of the dropdown icon
-                                            style: const TextStyle(color: Colors.white), // Style for the selected item outside the list
-                                            items: _items.map((String item) {
-                                              return DropdownMenuItem<String>(
-                                                value: item,
-                                                child: Text(
-                                                  item,
-                                                  style: const TextStyle(color: Colors.black), // Always black for the list items
+                                              SizedBox(
+                                                width: width / 10,
+                                              ),
+                                              //Announcement type Drop Down menu
+                                              DropdownButton<String>(
+                                                hint: const Text(
+                                                  'Type',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
                                                 ),
-                                              );
-                                            }).toList(),
-                                            onChanged: (String? newValue) {
-                                              setState(() {
-                                                _selectedItem = newValue;
-                                              });
-                                            },
-                                            selectedItemBuilder: (BuildContext context) {
-                                              // Ensuring the selected item has the same padding and alignment as the menu items
-                                              return _items.map((String item) {
-                                                return DropdownMenuItem<String>(
-                                                  value: item,
-                                                  child: Text(
-                                                    item,
-                                                    style: const TextStyle(
-                                                      color: Colors.white, // White color for the selected item displayed outside
+                                                value: _selectedItem,
+                                                dropdownColor: Colors
+                                                    .white, // Background color for the dropdown list
+                                                iconEnabledColor: Colors
+                                                    .white, // Color of the dropdown icon
+                                                style: const TextStyle(
+                                                    color: Colors
+                                                        .white), // Style for the selected item outside the list
+                                                items:
+                                                    _items.map((String item) {
+                                                  return DropdownMenuItem<
+                                                      String>(
+                                                    value: item,
+                                                    child: Text(
+                                                      item,
+                                                      style: const TextStyle(
+                                                          color: Colors
+                                                              .black), // Always black for the list items
                                                     ),
-                                                  ),
-                                                );
-                                              }).toList();
-                                            },
-                                          )
-                                        ],
-                                      ),
-                                      SizedBox(height: 10,),
-                                      //Upload Image button
+                                                  );
+                                                }).toList(),
+                                                onChanged: (String? newValue) {
+                                                  setState(() {
+                                                    _selectedItem = newValue;
+                                                  });
+                                                },
+                                                selectedItemBuilder:
+                                                    (BuildContext context) {
+                                                  // Ensuring the selected item has the same padding and alignment as the menu items
+                                                  return _items
+                                                      .map((String item) {
+                                                    return DropdownMenuItem<
+                                                        String>(
+                                                      value: item,
+                                                      child: Text(
+                                                        item,
+                                                        style: const TextStyle(
+                                                          color: Colors
+                                                              .white, // White color for the selected item displayed outside
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }).toList();
+                                                },
+                                              )
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          //Upload Image button
                                           Container(
-                                            padding: EdgeInsetsDirectional.symmetric(horizontal: 15),
-                                            width: width / 2,
-                                            height: 50,
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.circular(10),
-                                            ),
-                                            child: GestureDetector(
-                                                    onTap: () {
-                                                      if(cubit.AnnouncementImageFile == null)
-                                                      cubit.getAnnouncementImage();
-                                                    },
-                                                    child: Row(
-                                                      children: [
-                                                        ConstrainedBox(constraints: BoxConstraints(maxWidth: width/4) ,child: Text(cubit.imageName, style: TextStyle(color: Colors.black), overflow: TextOverflow.ellipsis, maxLines: 1,)),
-                                                        SizedBox(width: 5,),
-                                                        IconButton(icon: Icon(cubit.pickerIcon, color: Colors.black,), onPressed: (){
-                                                          if(cubit.AnnouncementImageFile == null) {
-                                                            cubit.getAnnouncementImage();
-                                                          }
-                                                          else
-                                                          {
+                                              padding: EdgeInsetsDirectional
+                                                  .symmetric(horizontal: 15),
+                                              width: width / 2,
+                                              height: 50,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  if (cubit
+                                                          .AnnouncementImageFile ==
+                                                      null) {
+                                                    cubit
+                                                        .getAnnouncementImage();
+                                                  }
+                                                },
+                                                child: Row(
+                                                  children: [
+                                                    ConstrainedBox(
+                                                        constraints:
+                                                            BoxConstraints(
+                                                                maxWidth:
+                                                                    width / 4),
+                                                        child: Text(
+                                                          cubit.imageName,
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.black),
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          maxLines: 1,
+                                                        )),
+                                                    SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    IconButton(
+                                                        icon: Icon(
+                                                          cubit.pickerIcon,
+                                                          color: Colors.black,
+                                                        ),
+                                                        onPressed: () {
+                                                          if (cubit
+                                                                  .AnnouncementImageFile ==
+                                                              null) {
+                                                            cubit
+                                                                .getAnnouncementImage();
+                                                          } else {
                                                             setState(() {
-                                                             cubit.AnnouncementImageFile = null;
-                                                              cubit.pickerIcon = Icons.image;
-                                                              cubit.imageName = 'Select Image';
+                                                              cubit.AnnouncementImageFile =
+                                                                  null;
+                                                              cubit.pickerIcon =
+                                                                  Icons.image;
+                                                              cubit.imageName =
+                                                                  'Select Image';
                                                             });
                                                           }
                                                         }),
-                                                      ],
-                                                    ),
-                                            )
-                                          ),
-                                      const Spacer(),
-                                      divider(),
-                                      //Cancel and Submit buttons
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .symmetric(
-                                            horizontal: 10.0, vertical: 10),
-                                        child: Row(
-                                          children: [
-                                            //cancel button
-                                            ElevatedButton(
-                                              onPressed: () {
-                                                setState(() {
-                                                  _titleController.clear();
-                                                  _dateController.clear();
-                                                  _descriptionController.clear();
-                                                  _isExpanded = false; // Toggle the expansion
-                                                  _height = 80;
-                                                  _showContent = false;
-                                                  dueDateFormatted = null;
-                                                  cubit.AnnouncementImageFile = null;
-                                                  cubit.imageName = 'Select Image';
-                                                  cubit.pickerIcon = Icons.image;
-                                                });
-                                              },
-                                              style:
-                                                ElevatedButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13)),
-                                                padding: const EdgeInsetsDirectional.symmetric(horizontal: 35),
-                                                backgroundColor: Colors.white,
-                                                textStyle: TextStyle(fontSize: width / 17),
-                                              ),
-                                              child: const Text('Cancel', style: TextStyle(color: Colors.black),),
-                                            ),
-                                            const Spacer(),
-                                            //submit button
-                                            ElevatedButton(
-                                                onPressed: () async {
-                                                  if (_formKey.currentState!
-                                                          .validate() &&
-                                                      _selectedItem !=
-                                                          null) {
-                                                            setState(() {
-                                                                _isExpanded = false;
-                                                      _showContent = false;
-                                                      _height = 80;
-                                                            });
-
-
-                                                    print(_selectedItem);
-                                                    //print("${MainCubit.get(context).profileModel!.semester}sdsdaffsdkljkjkljkljklhjklhjk00");
-                                                    await AdminCubit.get(context).UploadPImage(image: cubit.AnnouncementImageFile);
-                                                    cubit.addAnnouncement(
-                                                        title: _titleController.text,
-                                                        dueDate: dueDateFormatted,
-                                                        type: _selectedItem,
-                                                        description: _descriptionController.text,
-                                                        image: AdminCubit.get(context).AnnouncementImagePath,
-                                                        currentSemester: MainCubit.get(context).profileModel!.semester);
+                                                  ],
+                                                ),
+                                              )),
+                                          const Spacer(),
+                                          divider(),
+                                          //Cancel and Submit buttons
+                                          Padding(
+                                            padding: const EdgeInsetsDirectional
+                                                .symmetric(
+                                                horizontal: 10.0, vertical: 10),
+                                            child: Row(
+                                              children: [
+                                                //cancel button
+                                                ElevatedButton(
+                                                  onPressed: () {
                                                     setState(() {
                                                       _titleController.clear();
-                                                      _descriptionController.clear();
                                                       _dateController.clear();
-                                                      _selectedItem = null;
+                                                      _descriptionController
+                                                          .clear();
+                                                      _isExpanded =
+                                                          false; // Toggle the expansion
+                                                      _height = 80;
+                                                      _showContent = false;
                                                       dueDateFormatted = null;
-                                                      cubit.AnnouncementImageFile = null;
-                                                      cubit.imageName = 'Select Image';
-                                                      cubit.pickerIcon = Icons.image;
+                                                      cubit.AnnouncementImageFile =
+                                                          null;
+                                                      cubit.imageName =
+                                                          'Select Image';
+                                                      cubit.pickerIcon =
+                                                          Icons.image;
                                                     });
-                                                  }
-                                                },
-                                                style: ElevatedButton
-                                                    .styleFrom(
-                                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13)),
-                                                  padding: const EdgeInsetsDirectional.symmetric(horizontal: 40),
-                                                  backgroundColor:
-                                                      HexColor('#4764C5'),
-                                                  foregroundColor:
-                                                      Colors.white,
-                                                  textStyle: TextStyle(fontSize: width / 17),
+                                                  },
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        13)),
+                                                    padding:
+                                                        const EdgeInsetsDirectional
+                                                            .symmetric(
+                                                            horizontal: 35),
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    textStyle: TextStyle(
+                                                        fontSize: width / 17),
+                                                  ),
+                                                  child: const Text(
+                                                    'Cancel',
+                                                    style: TextStyle(
+                                                        color: Colors.black),
+                                                  ),
                                                 ),
-                                                child: const Text('Submit')),
-                                          ],
-                                        ),
-                                      ),
-                                    ]),
+                                                const Spacer(),
+                                                //submit button
+                                                ElevatedButton(
+                                                    onPressed: () async {
+                                                      if (_formKey.currentState!
+                                                              .validate() &&
+                                                          _selectedItem !=
+                                                              null) {
+                                                        setState(() {
+                                                          _isExpanded = false;
+                                                          _showContent = false;
+                                                          _height = 80;
+                                                        });
+
+                                                        print(_selectedItem);
+                                                        //print("${MainCubit.get(context).profileModel!.semester}sdsdaffsdkljkjkljkljklhjklhjk00");
+                                                        await AdminCubit.get(
+                                                                context)
+                                                            .UploadPImage(
+                                                                image: cubit
+                                                                    .AnnouncementImageFile);
+                                                        cubit.addAnnouncement(
+                                                            title:
+                                                                _titleController
+                                                                    .text,
+                                                            dueDate:
+                                                                dueDateFormatted,
+                                                            type: _selectedItem,
+                                                            description:
+                                                                _descriptionController
+                                                                    .text,
+                                                            image: AdminCubit
+                                                                    .get(
+                                                                        context)
+                                                                .AnnouncementImagePath,
+                                                            currentSemester:
+                                                                MainCubit.get(
+                                                                        context)
+                                                                    .profileModel!
+                                                                    .semester);
+                                                        setState(() {
+                                                          _titleController
+                                                              .clear();
+                                                          _descriptionController
+                                                              .clear();
+                                                          _dateController
+                                                              .clear();
+                                                          _selectedItem = null;
+                                                          dueDateFormatted =
+                                                              null;
+                                                          cubit.AnnouncementImageFile =
+                                                              null;
+                                                          cubit.imageName =
+                                                              'Select Image';
+                                                          cubit.pickerIcon =
+                                                              Icons.image;
+                                                        });
+                                                      }
+                                                    },
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          13)),
+                                                      padding:
+                                                          const EdgeInsetsDirectional
+                                                              .symmetric(
+                                                              horizontal: 40),
+                                                      backgroundColor:
+                                                          HexColor('#4764C5'),
+                                                      foregroundColor:
+                                                          Colors.white,
+                                                      textStyle: TextStyle(
+                                                          fontSize: width / 17),
+                                                    ),
+                                                    child:
+                                                        const Text('Submit')),
+                                              ],
+                                            ),
+                                          ),
+                                        ]),
                                   ),
                                 ))
                             : !_isExpanded
                                 ? const Padding(
-                                    padding:
-                                        EdgeInsetsDirectional.symmetric(
-                                            vertical: 10, horizontal: 15),
+                                    padding: EdgeInsetsDirectional.symmetric(
+                                        vertical: 10, horizontal: 15),
                                     child: Row(
                                       children: [
                                         Text(
@@ -403,32 +534,30 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                       ),
                     ),
                     ConditionalBuilder(
-                      condition:
-                          state is! AdminGetAnnouncementLoadingState &&
-                              cubit.announcements != null &&
-                              cubit.announcements!.isNotEmpty,
+                      condition: state is! AdminGetAnnouncementLoadingState &&
+                          cubit.announcements != null &&
+                          cubit.announcements!.isNotEmpty,
                       builder: (context) => ListView.separated(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) =>
-                            announcementBuilder(
-                                widget.semester,
-                                cubit.announcements![index].id.toString(),
-                                context,
-                                cubit.announcements![index].title,
-                                index,
-                                cubit.announcements![index].content,
-                                cubit.announcements![index].dueDate,
-                                cubit.announcements![index].type),
-                        separatorBuilder: (context, index) =>
-                        const SizedBox(
+                        itemBuilder: (context, index) => announcementBuilder(
+                            widget.semester,
+                            cubit.announcements![index].id.toString(),
+                            context,
+                            cubit.announcements![index].title,
+                            index,
+                            cubit.announcements![index].content,
+                            cubit.announcements![index].dueDate,
+                            cubit.announcements![index].type),
+                        separatorBuilder: (context, index) => const SizedBox(
                           height: 10,
                         ),
                         itemCount: cubit.announcements!.length,
                       ),
                       fallback: (context) {
                         if (state is AdminGetAnnouncementLoadingState) {
-                          return const Center(child: CircularProgressIndicator());
+                          return const Center(
+                              child: CircularProgressIndicator());
                         } else {
                           return const Center(
                             child: Text(
@@ -458,22 +587,24 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
     var cubit = AdminCubit.get(context).announcements![ID];
     return GestureDetector(
       onTap: () {
-        navigate(context, AnnouncementDetail(
-          semester: semester,
-          title: cubit.title,
-          description: cubit.content,
-          date: cubit.dueDate,
-          id: ID,
-          selectedType: cubit.type,
-        ));
-
+        navigate(
+            context,
+            AnnouncementDetail(
+              semester: semester,
+              title: cubit.title,
+              description: cubit.content,
+              date: cubit.dueDate,
+              id: ID,
+              selectedType: cubit.type,
+            ));
       },
       child: Container(
         margin: const EdgeInsetsDirectional.symmetric(horizontal: 10),
         padding: const EdgeInsetsDirectional.symmetric(horizontal: 10),
         height: 80,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20), color: HexColor('#4764C5')),
+            borderRadius: BorderRadius.circular(20),
+            color: HexColor('#4764C5')),
         child: Row(
           children: [
             ConstrainedBox(
@@ -492,22 +623,22 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                 print(cubit.id);
                 String Refresh = await Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => EditAnnouncement(
-                      semester: semester,
-                      title: cubit.title,
-                      content: cubit.content,
-                      date: cubit.dueDate,
-                      id: ID.toString(),
-                      selectedItem: cubit.type,
-                    )
-                  ),
+                      builder: (context) => EditAnnouncement(
+                            semester: semester,
+                            title: cubit.title,
+                            content: cubit.content,
+                            date: cubit.dueDate,
+                            id: ID.toString(),
+                            selectedItem: cubit.type,
+                          )),
                 );
 
                 if (Refresh == 'refresh') {
                   AdminCubit.get(context).getAnnouncements(semester);
                 }
               },
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
               color: Colors.white,
               minWidth: 10,
               padding: const EdgeInsets.all(6),
@@ -521,7 +652,8 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
               onPressed: () {
                 AdminCubit.get(context).deleteAnnouncement(cubit.id, semester);
               },
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
               minWidth: 10,
               color: Colors.white,
               padding: const EdgeInsets.all(6),

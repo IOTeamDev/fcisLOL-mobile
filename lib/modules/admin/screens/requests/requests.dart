@@ -26,19 +26,14 @@ class Requests extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => MainCubit()..getProfileInfo()),
       ],
-
-      child: BlocConsumer<MainCubit, MainCubitStates>
-      (
+      child: BlocConsumer<MainCubit, MainCubitStates>(
         listener: (context, state) {
           if (state is GetProfileSuccess) {
             MainCubit.get(context).getRequests(
-              semester: MainCubit.get(context).profileModel!.semester
-            );
+                semester: MainCubit.get(context).profileModel!.semester);
           }
         },
-
-        builder: (context, mainState)
-        {
+        builder: (context, mainState) {
           double width = screenWidth(context);
           double height = screenHeight(context);
           var cubit = MainCubit.get(context);
@@ -55,27 +50,42 @@ class Requests extends StatelessWidget {
                     children: [
                       Stack(
                         children: [
-                          Positioned(child: backButton(context), left: 0,),
-                          Center(child: Text('Requests' , style: TextStyle(fontSize: width/10, color: Colors.white), textAlign: TextAlign.center,)),
+                          Positioned(
+                            left: 0,
+                            child: backButton(context),
+                          ),
+                          Center(
+                              child: Text(
+                            'Requests',
+                            style: TextStyle(
+                                fontSize: width / 10, color: Colors.white),
+                            textAlign: TextAlign.center,
+                          )),
                         ],
                       ),
                       Expanded(
                         child: ConditionalBuilder(
-                          condition: cubit.requests != null && cubit.requests!.isNotEmpty && mainState is! GetRequestsLoadingState && mainState is! GetProfileLoading,
+                            condition: cubit.requests != null &&
+                                cubit.requests!.isNotEmpty &&
+                                mainState is! GetRequestsLoadingState &&
+                                mainState is! GetProfileLoading,
                             builder: (context) => ListView.separated(
-                              physics: const BouncingScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                return requestedMaterialBuilder(
-                                  index, context,
-                                  title: cubit.requests![index].title,
-                                  type: cubit.requests![index].type,
-                                  pfp: cubit.requests![index].author?.photo,
-                                  authorName: cubit.requests![index].author?.name,
-                                  link: cubit.requests![index].link,
-                                  subjectName: cubit.requests![index].subject, // Use proper subject if available
-                                  description: cubit.requests![index].description,
-                                  semester: cubit.profileModel!.semester
-                                    );
+                                  physics: const BouncingScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    return requestedMaterialBuilder(
+                                        index, context,
+                                        title: cubit.requests![index].title,
+                                        type: cubit.requests![index].type,
+                                        pfp: cubit
+                                            .requests![index].author?.photo,
+                                        authorName:
+                                            cubit.requests![index].author?.name,
+                                        link: cubit.requests![index].link,
+                                        subjectName: cubit.requests![index]
+                                            .subject, // Use proper subject if available
+                                        description:
+                                            cubit.requests![index].description,
+                                        semester: cubit.profileModel!.semester);
                                   },
                                   separatorBuilder: (context, index) =>
                                       const Padding(
@@ -100,8 +110,7 @@ class Requests extends StatelessWidget {
                                   ),
                                 );
                               }
-                          }
-                        ),
+                            }),
                       )
                     ],
                   ),
@@ -115,13 +124,31 @@ class Requests extends StatelessWidget {
   }
 
   Widget requestedMaterialBuilder(index, context,
-      {title, link, type, authorName, pfp, subjectName, description, semester}) {
-
+      {title,
+      link,
+      type,
+      authorName,
+      pfp,
+      subjectName,
+      description,
+      semester}) {
     return InkWell(
-      onTap: () async{
-        String refresh = await Navigator.of(context).push(MaterialPageRoute(builder:(context) => RequestsDetails(authorName: authorName, type: type, description: description, link: link, subjectName: subjectName, id: index, title: title, pfp: pfp, semester: semester,)));
+      onTap: () async {
+        String refresh = await Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => RequestsDetails(
+                  authorName: authorName,
+                  type: type,
+                  description: description,
+                  link: link,
+                  subjectName: subjectName,
+                  id: index,
+                  title: title,
+                  pfp: pfp,
+                  semester: semester,
+                )));
         if (refresh == 'refresh') {
-          MainCubit.get(context).getRequests(semester: MainCubit.get(context).profileModel!.semester);
+          MainCubit.get(context).getRequests(
+              semester: MainCubit.get(context).profileModel!.semester);
         }
       },
       child: Container(
@@ -146,7 +173,8 @@ class Requests extends StatelessWidget {
                   ),
                   const SizedBox(width: 10),
                   ConstrainedBox(
-                    constraints: BoxConstraints(maxWidth: screenWidth(context)/2),
+                    constraints:
+                        BoxConstraints(maxWidth: screenWidth(context) / 2),
                     child: Text(
                       authorName.toString(),
                       style: TextStyle(fontSize: 18, color: Colors.grey[300]),
@@ -198,7 +226,8 @@ class Requests extends StatelessWidget {
                     const Icon(Icons.link, color: Colors.white),
                     const SizedBox(width: 5),
                     ConstrainedBox(
-                      constraints: BoxConstraints(maxWidth: constraints.maxWidth - 140),
+                      constraints:
+                          BoxConstraints(maxWidth: constraints.maxWidth - 140),
                       child: GestureDetector(
                         onTap: () async {
                           final linkElement = LinkableElement(link, link);
@@ -224,7 +253,8 @@ class Requests extends StatelessWidget {
                             MainCubit.get(context).profileModel!.semester);
                       },
                       color: Colors.green,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
                       minWidth: 0,
                       padding: const EdgeInsets.all(8),
                       child: const Icon(Icons.check, color: Colors.white),
@@ -237,7 +267,8 @@ class Requests extends StatelessWidget {
                         );
                       },
                       color: Colors.red,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
                       minWidth: 0,
                       padding: const EdgeInsets.all(8),
                       child: const Icon(Icons.close, color: Colors.white),
