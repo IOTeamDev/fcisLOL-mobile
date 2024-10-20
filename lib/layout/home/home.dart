@@ -143,10 +143,11 @@ class Home extends StatelessWidget {
                                   padding: const EdgeInsets.all(20),
                                   child: Row(
                                     children: [
-                                      IconButton(
-                                          style: IconButton.styleFrom(
-                                              padding: EdgeInsets.all(0),
-                                              minimumSize: Size(0, 0)),
+                                      MaterialButton(
+                                          padding: EdgeInsets.zero,
+                                          minWidth: 0,
+                                          materialTapTargetSize:
+                                              MaterialTapTargetSize.shrinkWrap,
                                           onPressed: () {
                                             // MainCubit.get(context).openDrawerState();
                                             if ((TOKEN != null &&
@@ -156,7 +157,7 @@ class Home extends StatelessWidget {
                                                   .openDrawer(); // Use key to open the drawer
                                             }
                                           },
-                                          icon: Image.asset(
+                                          child: Image.asset(
                                             !isDark
                                                 ? "images/mage_dashboard-fill-1.png"
                                                 : "images/mage_dashboard-fill.png",
@@ -630,6 +631,13 @@ Widget CustomDrawer(context) {
                   title: const Text("Drive"),
                   children: [
                     ListTile(
+                      title: const Text("2028"),
+                      onTap: () async {
+                        LinkableElement url = LinkableElement('drive',
+                            'https://drive.google.com/drive/folders/1TOj0c-vFblz4guLuRa4VQ56rq4kIuvDQ?fbclid=IwZXh0bgNhZW0CMTAAAR1l30on7Dhr4yV7aM4wyoAsCKsXqHWlJlhG1220oij8ae5SIy3vYLdogPY_aem_gjZq7IZHltbC53_jmnI7KQ');
+                        await onOpen(context, url);
+                      },
+                    ),ListTile(
                       title: const Text("2027"),
                       onTap: () async {
                         LinkableElement url = LinkableElement('drive',
@@ -695,39 +703,72 @@ Widget CustomDrawer(context) {
                     navigate(context, LeaderboardScreen());
                   },
                 ),
-                if (TOKEN != null)
-                  ListTile(
-                    leading: const Icon(Icons.logout, color: Colors.red),
-                    title: const Text(
-                      "Log out",
-                      style: TextStyle(color: Colors.red),
-                    ),
+                SizedBox(
+                  height: 50,
+                ),
+                Container(
+                  // padding: EdgeInsets.all(5),
+                  width: 150,
+                  height: 50,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color:TOKEN!=null? Colors.red:Colors.green),
+                  child: TOKEN!=null? GestureDetector(
                     onTap: () {
                       AwesomeDialog(
-                        context: context,
-                        title: "Log Out",
-                        dialogType: DialogType.warning,
-                        body: Text(
-                          "Are you sure you want to log out?",
-                          style: TextStyle(fontSize: 17),
-                        ),
-                        animType: AnimType.rightSlide,
-                        btnOkColor: Colors.red,
-                        btnCancelOnPress: () {},
-                        btnOkText: "Log Out",
-                        btnCancelColor: Colors.grey,
-
-                        // titleTextStyle: TextStyle(fontSize: 22),
-                        btnOkOnPress: () {
-                          MainCubit.get(context).logout(context);
-                          Provider.of<ThemeProvide>(context, listen: false)
-                              .temp = false;
-                          Provider.of<ThemeProvide>(context, listen: false)
-                              .notifyListeners();
-                        },
-                      ).show();
+                          context: context,
+                          title: "Log Out",
+                          dialogType: DialogType.warning,
+                          body: Text(
+                            "Are you sure you want to log out?",
+                            style: TextStyle(fontSize: 17),
+                          ),
+                          animType: AnimType.rightSlide,
+                          btnOkColor: Colors.red,
+                          btnCancelOnPress: () {},
+                          btnOkText: "Log Out",
+                          btnCancelColor: Colors.grey,
+                    
+                          // titleTextStyle: TextStyle(fontSize: 22),
+                          btnOkOnPress: () {
+                            MainCubit.get(context).logout(context);
+                            Provider.of<ThemeProvide>(context, listen: false)
+                                .temp = false;
+                            Provider.of<ThemeProvide>(context, listen: false)
+                                .notifyListeners();
+                          },
+                        ).show();
                     },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                    const Icon(Icons.logout, color: Colors.white,size: 24,),
+                    SizedBox(width: 10,),
+                       const Text(
+                        "Log out",
+                        style: TextStyle(color: Colors.white,fontSize: 17),
+                      ),
+                      ]
+                       
+                    
+                    ),
+                  ):GestureDetector(
+                    onTap: () => navigate(context,LoginScreen()),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                      const Icon(Icons.login, color: Colors.white,size: 24,),
+                      SizedBox(width: 10,),
+                         const Text(
+                          "Log in",
+                          style: TextStyle(color: Colors.white,fontSize: 17),
+                        ),
+                        ]
+                         
+                      
+                      ),
                   ),
+                ),
               ],
             ),
           )),

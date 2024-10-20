@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -261,10 +262,32 @@ class Requests extends StatelessWidget {
                     ),
                     MaterialButton(
                       onPressed: () {
-                        MainCubit.get(context).deleteMaterial(
+
+  AwesomeDialog(
+                          context: context,
+                          title: "Delete",
+                          dialogType: DialogType.warning,
+                          body: Text(
+                            "Are you sure you want to Delete the request?",
+                            style: TextStyle(fontSize: 17),
+                          ),
+                          animType: AnimType.rightSlide,
+                          btnOkColor: Colors.red,
+                          btnCancelOnPress: () {},
+                          btnOkText: "Delete",
+                          btnCancelColor: Colors.grey,
+                    
+                          // titleTextStyle: TextStyle(fontSize: 22),
+                          btnOkOnPress: () {
+                            MainCubit.get(context).deleteMaterial(
                           MainCubit.get(context).requests![index].id!,
                           MainCubit.get(context).profileModel!.semester,
                         );
+                          },
+                        ).show();
+
+
+                      
                       },
                       color: Colors.red,
                       shape: RoundedRectangleBorder(

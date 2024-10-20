@@ -82,6 +82,7 @@ class AdminPanel extends StatelessWidget {
                         ),
                         ElevatedButton(
                           onPressed: () {
+                            if(mainCubit.profileModel!=null)
                             navigate(
                                 context,
                                 AddAnnouncement(

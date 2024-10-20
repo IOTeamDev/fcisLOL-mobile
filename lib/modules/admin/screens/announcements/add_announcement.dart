@@ -42,17 +42,10 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => MainCubit()..getProfileInfo(),
-        ),
-        BlocProvider(
-          create: (context) => AdminCubit()
-            ..getAnnouncements(widget.semester)
-            ..getFcmTokens(),
-        ),
-      ],
+    return BlocProvider(
+      create: (context) => AdminCubit()
+        ..getAnnouncements(widget.semester)
+        ..getFcmTokens(),
       child: BlocConsumer<AdminCubit, AdminCubitStates>(
         listener: (context, state) {
           if (state is AdminSaveAnnouncementSuccessState) {
@@ -82,6 +75,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
           return Scaffold(
             backgroundColor: HexColor('#23252A'),
             body: Container(
+              padding: EdgeInsets.all(5),
               margin: const EdgeInsetsDirectional.only(top: 90),
               width: double.infinity,
               child: SingleChildScrollView(
@@ -459,9 +453,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                                         context)
                                                                 .AnnouncementImagePath,
                                                             currentSemester:
-                                                                MainCubit.get(
-                                                                        context)
-                                                                    .profileModel!
+                                                                widget
                                                                     .semester);
                                                         setState(() {
                                                           _titleController
