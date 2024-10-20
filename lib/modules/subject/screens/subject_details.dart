@@ -110,8 +110,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                             color: Colors.white,
                             size: 30,
                           )),
-                      SizedBox(
-                        width: screenWidth(context) / 1.3,
+                      Expanded(
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 8),
