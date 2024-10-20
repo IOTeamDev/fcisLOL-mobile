@@ -1,3 +1,4 @@
+
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,17 +49,19 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
   String? dueDateFormatted;
 
   final _formKey = GlobalKey<FormState>();
-
   @override
   void initState() {
     super.initState();
     // Initialize controllers with existing values
     titleController = TextEditingController(text: widget.title);
     contentController = TextEditingController(text: widget.content);
-    _dateController = TextEditingController(
-        text: widget.date == 'No Due Date' ? 'Due Date' : widget.date);
+    _dateController = TextEditingController(text: widget.date == 'No Due Date' ? 'Due Date' : DateFormat('dd/MM/yyyy').format(DateTime.parse(widget.date)));
     selectedItem = widget.selectedItem;
     id = widget.id;
+    print('date controller: ${_dateController.text}');
+    print('widget date: ${widget.date}');
+    dueDateFormatted = widget.date;
+    print('due Date: $dueDateFormatted');
   }
 
   @override
@@ -74,23 +77,27 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-            create: (context) => MainCubit()
-              ..getProfileInfo()
-              ..getAnnouncements(widget.semester)),
+        BlocProvider(create: (context) => MainCubit()..getProfileInfo()..getAnnouncements(widget.semester)),
       ],
       child: BlocConsumer<MainCubit, MainCubitStates>(
         listener: (context, state) {
-          if (state is GetAnnouncementImageSuccess) {
-            setState(() {
+          if(state is GetProfileSuccess)
+          {
+            if(widget.imageName != null)
+            {
+              MainCubit.get(context).imageName = widget.imageName!;
+              MainCubit.get(context).pickerIcon = Icons.clear;
+            }
+            else
+            {
               MainCubit.get(context).imageName = 'Select Image';
-              MainCubit.get(context).AnnouncementImageFile = null;
               MainCubit.get(context).pickerIcon = Icons.image;
-            });
+            }
+            print(MainCubit.get(context).imageName);
           }
-          if (state is AdminUpdateAnnouncementSuccessState) {
+          if (state is UpdateAnnouncementsSuccessState) {
             showToastMessage(
-                message: 'Material Updated Successfully!!',
+                message: 'Announcement Updated Successfully!!',
                 states: ToastStates.SUCCESS);
             Navigator.pop(context, 'refresh');
           }
@@ -162,13 +169,7 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                               TextFormField(
                                 controller: contentController,
                                 minLines: 5,
-                                maxLines: 12,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Description must not be empty';
-                                  }
-                                  return null;
-                                },
+                                maxLines: 10,
                                 decoration: InputDecoration(
                                   hintText: 'Description',
                                   hintStyle: TextStyle(
@@ -181,70 +182,36 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                 children: [
                                   // DatePicker Text Field
                                   Expanded(
-                                    // child: TextFormField(
-                                    //   controller: dateController,
-                                    //   keyboardType: TextInputType.datetime,
-                                    //   onTap: () => showDatePicker(
-                                    //     context: context,
-                                    //     initialDate: DateTime.now(),
-                                    //     firstDate: DateTime.now(),
-                                    //     lastDate:
-                                    //         DateTime.parse('2027-12-31'),
-                                    //   ).then((value) {
-                                    //     if (value != null) {
-                                    //       setState(() {
-                                    //         dateController.text = value.toIso8601String();
-                                    //       });
-                                    //     }
-                                    //   }),
-                                    //   decoration: InputDecoration(
-                                    //     suffixIcon: const Icon(
-                                    //       Icons.date_range,
-                                    //       color: Colors.grey,
-                                    //     ),
-                                    //     hintText: 'Due Date',
-                                    //     hintStyle: TextStyle(
-                                    //         fontSize: 16,
-                                    //         color: Colors.grey[400]),
-                                    //     border: InputBorder.none,
-                                    //   ),
-                                    //   style: const TextStyle(
-                                    //       color: Colors.white),
-                                    // ),
                                     child: GestureDetector(
                                       onTap: () => showDatePicker(
                                         context: context,
                                         initialDate: DateTime.now(),
                                         firstDate: DateTime.now(),
-                                        lastDate: DateTime.parse('2027-11-31'),
+                                        lastDate: DateTime.parse('2027-11-30'),
                                       ).then((value) {
                                         if (value != null) {
                                           //print(DateFormat.YEAR_MONTH_DAY);
-                                          _dateController.text =
-                                              value.toUtc().toIso8601String();
-                                          dueDateFormatted =
-                                              _dateController.text;
-                                          _dateController.text =
-                                              DateFormat('dd/MM/yyyy')
-                                                  .format(value);
-                                          print(dueDateFormatted);
-                                          print(_dateController.text);
+                                          setState(() {
+                                            DateTime selectedDate = DateTime(value.year, value.month, value.day);
+                                            dueDateFormatted = DateTime.utc(selectedDate.year, selectedDate.month, selectedDate.day).toIso8601String();
+                                            print(dueDateFormatted);
+                                            _dateController.text = DateFormat('dd/MM/yyyy').format(value);
+                                          });
+                                          // print(dueDateFormatted);
+                                          // print(_dateController.text);
                                         }
                                       }),
                                       child: Container(
                                         decoration: BoxDecoration(
                                             color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        padding:
-                                            EdgeInsetsDirectional.symmetric(
-                                                horizontal: 20),
+                                            borderRadius: BorderRadius.circular(10)),
+                                        padding: EdgeInsetsDirectional.symmetric(horizontal: 10),
                                         child: AbsorbPointer(
                                           child: TextFormField(
                                             controller: _dateController,
                                             keyboardType: TextInputType.none,
                                             decoration: InputDecoration(
-                                              suffixIcon: const Icon(
+                                              suffixIcon: Icon(
                                                 Icons.date_range,
                                                 color: Colors.black,
                                               ),
@@ -265,7 +232,7 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                     ),
                                   ),
                                   SizedBox(
-                                    width: width / 10,
+                                    width: width / 12,
                                   ),
                                   // Announcement Type Dropdown
                                   DropdownButton<String>(
@@ -330,73 +297,37 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                         cubit.getAnnouncementImage();
                                       }
                                     },
-                                    child: ConditionalBuilder(
-                                        condition:
-                                            cubit.AnnouncementImageFile != null,
-                                        builder: (context) => Row(
-                                              children: [
-                                                ConstrainedBox(
-                                                    constraints: BoxConstraints(
-                                                        maxWidth: width / 4),
-                                                    child: Text(
-                                                      cubit.imageName,
-                                                      style: TextStyle(
-                                                          color: Colors.black),
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      maxLines: 1,
-                                                    )),
-                                                SizedBox(
-                                                  width: 5,
-                                                ),
-                                                IconButton(
-                                                    icon: Icon(
-                                                      cubit.pickerIcon,
-                                                      color: Colors.black,
-                                                    ),
-                                                    onPressed: () {
-                                                      if (cubit
-                                                              .AnnouncementImageFile ==
-                                                          null) {
-                                                        cubit
-                                                            .getAnnouncementImage();
-                                                      } else {
-                                                        setState(() {
-                                                          cubit.AnnouncementImageFile =
-                                                              null;
-                                                          cubit.pickerIcon =
-                                                              Icons.image;
-                                                          cubit.imageName =
-                                                              'Select Image';
-                                                        });
-                                                      }
-                                                    }),
-                                              ],
+                                    child: Row(
+                                          children: [
+                                            ConstrainedBox(
+                                                constraints: BoxConstraints(maxWidth: width / 4),
+                                                child: Text(
+                                                  cubit.imageName!,
+                                                  style: TextStyle(color: Colors.black),
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                )),
+                                            SizedBox(
+                                              width: 5,
                                             ),
-                                        fallback: (context) => Row(
-                                              children: [
-                                                ConstrainedBox(
-                                                    constraints: BoxConstraints(
-                                                        maxWidth: width / 4),
-                                                    child: Text(
-                                                      'Select Image',
-                                                      style: TextStyle(
-                                                          color: Colors.black),
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      maxLines: 1,
-                                                    )),
-                                                SizedBox(
-                                                  width: 5,
+                                            IconButton(
+                                                icon: Icon(
+                                                  cubit.pickerIcon,
+                                                  color: Colors.black,
                                                 ),
-                                                IconButton(
-                                                    icon: Icon(
-                                                      Icons.image,
-                                                      color: Colors.black,
-                                                    ),
-                                                    onPressed: () {}),
-                                              ],
-                                            )),
+                                                onPressed: () {
+                                                  if (cubit.AnnouncementImageFile == null && widget.imageLink == null) {
+                                                    cubit.getAnnouncementImage();
+                                                  } else {
+                                                    setState(() {
+                                                      cubit.AnnouncementImageFile = null;
+                                                      cubit.pickerIcon = Icons.image;
+                                                      cubit.imageName = 'Select Image';
+                                                    });
+                                                  }
+                                                }),
+                                          ],
+                                        ),
                                   )),
                               const Spacer(),
                               divider(),
@@ -409,43 +340,42 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                       onPressed: () {
                                         Navigator.pop(context, 'nigga');
                                       },
-                                      style: ElevatedButton.styleFrom(
-                                        padding: const EdgeInsetsDirectional
-                                            .symmetric(horizontal: 25),
+                                      style:
+                                      ElevatedButton.styleFrom(
+                                        shape:
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                            BorderRadius
+                                                .circular(
+                                                13)),
+                                        padding:
+                                        const EdgeInsetsDirectional
+                                            .symmetric(
+                                            horizontal: 35),
                                         backgroundColor:
-                                            HexColor('D9D9D9').withOpacity(0.2),
-                                        foregroundColor: Colors.white,
-                                        textStyle:
-                                            const TextStyle(fontSize: 15),
+                                        Colors.white,
+                                        textStyle: TextStyle(
+                                            fontSize: width / 17),
                                       ),
                                       child: const Text(
                                         'Cancel',
                                         style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
+                                            color: Colors.black),
                                       ),
                                     ),
                                     const Spacer(),
                                     ElevatedButton(
                                       onPressed: () async {
-                                        if (_formKey.currentState!.validate() &&
-                                            selectedItem != null) {
-                                          await cubit.UploadPImage(
-                                              isUserProfile: false,
-                                              image:
-                                                  cubit.AnnouncementImageFile);
-                                          cubit.updateAnnouncement(
-                                              cubit
-                                                  .announcements![int.parse(id)]
-                                                  .id
-                                                  .toString(),
-                                              title: titleController.text,
-                                              content: contentController.text,
-                                              dueDate: _dateController.text,
-                                              type: selectedItem!,
-                                              image:
-                                                  cubit.AnnouncementImagePath,
-                                              currentSemester: widget.semester);
+                                        if (_formKey.currentState!.validate() && selectedItem != null) {
+                                            await cubit.UploadPImage(isUserProfile: false, image: cubit.AnnouncementImageFile);
+                                            cubit.updateAnnouncement(
+                                                cubit.announcements![int.parse(id)].id.toString(),
+                                                title: titleController.text,
+                                                content: contentController.text,
+                                                dueDate: dueDateFormatted,
+                                                type: selectedItem!,
+                                                image: cubit.AnnouncementImagePath??widget.imageLink??'',
+                                                currentSemester: widget.semester);
                                         } else {
                                           // Show error if validation fails
                                           showToastMessage(
@@ -455,20 +385,26 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                           );
                                         }
                                       },
-                                      style: ElevatedButton.styleFrom(
-                                          padding: const EdgeInsetsDirectional
-                                              .symmetric(horizontal: 30),
-                                          backgroundColor: HexColor('AB29E8')
-                                              .withOpacity(0.5),
-                                          foregroundColor: Colors.white,
-                                          textStyle:
-                                              const TextStyle(fontSize: 15)),
-                                      child: const Text(
-                                        'Accept',
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
-                                      ),
+                                        style: ElevatedButton
+                                            .styleFrom(
+                                          shape:
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                              BorderRadius
+                                                  .circular(13)),
+                                          padding:
+                                          const EdgeInsetsDirectional
+                                              .symmetric(
+                                              horizontal: 35),
+                                          backgroundColor:
+                                          HexColor('#4764C5'),
+                                          foregroundColor:
+                                          Colors.white,
+                                          textStyle: TextStyle(
+                                              fontSize: width / 17),
+                                        ),
+                                        child:
+                                        const Text('Submit')
                                     ),
                                   ],
                                 ),
@@ -490,4 +426,6 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
       ),
     );
   }
+
+
 }

@@ -70,8 +70,8 @@ class MainCubit extends Cubit<MainCubitStates> {
 
   File? AnnouncementImageFile;
   String? AnnouncementImagePath;
-  IconData pickerIcon = Icons.image;
-  String imageName = 'Select Image';
+  IconData? pickerIcon;
+  String? imageName;
   getAnnouncementImage() async {
     emit(GetAnnouncementImageLoading());
 
@@ -104,7 +104,7 @@ class MainCubit extends Cubit<MainCubitStates> {
 
 
 
-  Future<void> UploadPImage({AnnouncementImagePath, File? image, bool isUserProfile = true}) async {
+  Future<void> UploadPImage({File? image, bool isUserProfile = true}) async {
     AnnouncementImagePath = null;
     emit(UploadImageLoading());
     if (image == null) return;
@@ -240,8 +240,6 @@ class MainCubit extends Cubit<MainCubitStates> {
         }
       }
       emit(UpdateAnnouncementsSuccessState());
-    }).catchError((error) {
-      emit(UpdateAnnouncementsErrorState());
     });
   }
 

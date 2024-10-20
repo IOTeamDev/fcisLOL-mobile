@@ -187,18 +187,11 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                     if (value != null) {
                                                       //print(DateFormat.YEAR_MONTH_DAY);
                                                       _dateController.text =
-                                                          value
-                                                              .toUtc()
-                                                              .toIso8601String();
-                                                      dueDateFormatted =
-                                                          _dateController.text;
-                                                      _dateController.text =
-                                                          DateFormat(
-                                                                  'dd/MM/yyyy')
-                                                              .format(value);
+                                                          value.toUtc().toIso8601String();
+                                                      dueDateFormatted = _dateController.text;
+                                                      _dateController.text = DateFormat('dd/MM/yyyy').format(value);
                                                       print(dueDateFormatted);
-                                                      print(
-                                                          _dateController.text);
+                                                      print(_dateController.text);
                                                     }
                                                   }),
                                                   child: Container(
@@ -622,6 +615,8 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                             date: cubit.dueDate,
                             id: ID.toString(),
                             selectedItem: cubit.type,
+                            imageName: cubit.image.split('?').first.split('%').elementAt(1),
+                            imageLink: cubit.image,
                           )),
                 );
 
