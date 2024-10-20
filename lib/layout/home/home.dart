@@ -18,7 +18,7 @@ import 'package:lol/modules/auth/bloc/login_cubit.dart';
 import 'package:lol/modules/auth/screens/login.dart';
 import 'package:lol/modules/leaderboard/leaderboard_screen.dart';
 import 'package:lol/modules/subject/cubit/subject_cubit.dart';
-import 'package:lol/modules/subject/subject_details.dart';
+import 'package:lol/modules/subject/screens/subject_details.dart';
 import 'package:lol/modules/support_and_about_us/about_us.dart';
 import 'package:lol/modules/support_and_about_us/user_advices/feedback_screen.dart';
 import 'package:lol/modules/support_and_about_us/user_advices/report_bug.dart';

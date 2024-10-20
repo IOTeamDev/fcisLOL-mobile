@@ -14,7 +14,7 @@ import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
 import 'package:lol/layout/admin_panel/admin_panal.dart';
 import 'package:lol/modules/admin/screens/Announcements/add_announcement.dart';
 import 'package:lol/modules/admin/screens/announcements/announcements_list.dart';
-import 'package:lol/modules/subject/subject_details.dart';
+import 'package:lol/modules/subject/screens/subject_details.dart';
 import 'package:lol/modules/support_and_about_us/about_us.dart';
 import 'package:lol/modules/support_and_about_us/user_advices/feedback_screen.dart';
 import 'package:lol/shared/network/local/shared_prefrence.dart';
@@ -152,7 +152,7 @@ class App extends StatelessWidget {
         child: Consumer<ThemeProvide>(builder: (context, value, child) {
           // AdminCubit.get(context).getFcmTokens();
           return MaterialApp(
-            home: SubjectDetails(subjectName: 'Physics'),
+            home: Home(),
             debugShowCheckedModeBanner: false,
             theme: isDark ? ThemeData.dark() : ThemeData.light(),
           );
