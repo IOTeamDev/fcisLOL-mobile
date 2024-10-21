@@ -142,6 +142,15 @@ class LoginScreen extends StatelessWidget {
                           ),
                           // const SizedBox(height: 5,),
                           defaultTextField(
+                              onFieldSubmitted: (valu) {
+                                if (formKey.currentState!.validate()) {
+// update fcm token
+
+                                  loginCubit.login(
+                                      email: emailController.text.toLowerCase(),
+                                      password: passwordController.text);
+                                }
+                              },
                               suffFunc: () {
                                 loginCubit.togglePassword();
                               },
@@ -172,9 +181,7 @@ class LoginScreen extends StatelessWidget {
                           : defaultButton(
                               buttonFunc: () {
                                 if (formKey.currentState!.validate()) {
-
 // update fcm token
-
 
                                   loginCubit.login(
                                       email: emailController.text.toLowerCase(),

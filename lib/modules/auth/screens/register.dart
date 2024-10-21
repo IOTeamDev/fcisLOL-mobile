@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+// import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:lol/shared/components/default_button.dart';
 import 'package:lol/shared/components/default_text_button.dart';
 import 'package:lol/shared/components/default_text_field.dart';
@@ -251,6 +251,21 @@ class Registerscreen extends StatelessWidget {
                                 height: 5,
                               ),
                               defaultTextField(
+                                  onFieldSubmitted: (val) {
+                                    if (formKey.currentState!.validate()) {
+                                      UserInfo userInfo = UserInfo(
+                                          name: nameController.text,
+                                          email: emailController.text
+                                              .toLowerCase(),
+                                          password: passwordController.text,
+                                          phone: phoneController.text);
+                                      navigate(
+                                          context,
+                                          SelectImage(
+                                            userInfo: userInfo,
+                                          ));
+                                    }
+                                  },
                                   validateor: (Value) {
                                     if (Value!.isEmpty) {
                                       return "Field cannot be empty";

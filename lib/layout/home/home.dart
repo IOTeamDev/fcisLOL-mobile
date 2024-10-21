@@ -187,6 +187,7 @@ class Home extends StatelessWidget {
                                               ))),
                                       SizedBox(
                                         width: 25,
+                                        
                                       ),
                                     ],
                                   ),
@@ -225,6 +226,7 @@ class Home extends StatelessWidget {
                                                       Alignment.bottomCenter,
                                                   children: [
                                                     Container(
+                                                      margin:EdgeInsets.only(top:5),
                                                       clipBehavior:
                                                           Clip.antiAlias,
                                                       // margin: const EdgeInsets.all(6.0),
@@ -243,7 +245,8 @@ class Home extends StatelessWidget {
                                                       child: Image.network(
                                                         anonuncments.image,
                                                         width: 400,
-                                                        fit: BoxFit.cover,
+                                                        height:250,
+                                                        fit: BoxFit.fitWidth,
                                                       ),
                                                     ),
                                                     Container(
@@ -307,7 +310,7 @@ class Home extends StatelessWidget {
                                                 ? false
                                                 : true,
                                         autoPlayInterval:
-                                            const Duration(seconds: 10),
+                                            const Duration(seconds: 4),
                                         autoPlayAnimationDuration:
                                             const Duration(milliseconds: 800),
                                         viewportFraction: 0.8,
@@ -384,7 +387,8 @@ Widget CustomDrawer(context) {
                   IconButton(
                       onPressed: () {
                         print(isDark);
-                        Navigator.pop(context);
+                        // Navigator.pop(context);
+                        navigatReplace(context, Home());
                         Provider.of<ThemeProvide>(context, listen: false)
                             .changeMode();
                       },
@@ -626,7 +630,7 @@ Widget CustomDrawer(context) {
                     "images/mingcute_drive-fill.png",
                     width: 25,
                     height: 25,
-                    color: !isDark ? Colors.black : null,
+                    color: !isDark ? Colors.black : Colors.white70,
                   ),
                   title: const Text("Drive"),
                   children: [
@@ -637,7 +641,8 @@ Widget CustomDrawer(context) {
                             'https://drive.google.com/drive/folders/1TOj0c-vFblz4guLuRa4VQ56rq4kIuvDQ?fbclid=IwZXh0bgNhZW0CMTAAAR1l30on7Dhr4yV7aM4wyoAsCKsXqHWlJlhG1220oij8ae5SIy3vYLdogPY_aem_gjZq7IZHltbC53_jmnI7KQ');
                         await onOpen(context, url);
                       },
-                    ),ListTile(
+                    ),
+                    ListTile(
                       title: const Text("2027"),
                       onTap: () async {
                         LinkableElement url = LinkableElement('drive',
@@ -712,62 +717,74 @@ Widget CustomDrawer(context) {
                   height: 50,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color:TOKEN!=null? Colors.red:Colors.green),
-                  child: TOKEN!=null? GestureDetector(
-                    onTap: () {
-                      AwesomeDialog(
-                          context: context,
-                          title: "Log Out",
-                          dialogType: DialogType.warning,
-                          body: Text(
-                            "Are you sure you want to log out?",
-                            style: TextStyle(fontSize: 17),
-                          ),
-                          animType: AnimType.rightSlide,
-                          btnOkColor: Colors.red,
-                          btnCancelOnPress: () {},
-                          btnOkText: "Log Out",
-                          btnCancelColor: Colors.grey,
-                    
-                          // titleTextStyle: TextStyle(fontSize: 22),
-                          btnOkOnPress: () {
-                            MainCubit.get(context).logout(context);
-                            Provider.of<ThemeProvide>(context, listen: false)
-                                .temp = false;
-                            Provider.of<ThemeProvide>(context, listen: false)
-                                .notifyListeners();
+                      color: TOKEN != null ? Colors.red : Colors.green),
+                  child: TOKEN != null
+                      ? GestureDetector(
+                          onTap: () {
+                            AwesomeDialog(
+                              context: context,
+                              title: "Log Out",
+                              dialogType: DialogType.warning,
+                              body: Text(
+                                "Are you sure you want to log out?",
+                                style: TextStyle(fontSize: 17),
+                              ),
+                              animType: AnimType.rightSlide,
+                              btnOkColor: Colors.red,
+                              btnCancelOnPress: () {},
+                              btnOkText: "Log Out",
+                              btnCancelColor: Colors.grey,
+
+                              // titleTextStyle: TextStyle(fontSize: 22),
+                              btnOkOnPress: () {
+                                MainCubit.get(context).logout(context);
+                                Provider.of<ThemeProvide>(context,
+                                        listen: false)
+                                    .temp = false;
+                                Provider.of<ThemeProvide>(context,
+                                        listen: false)
+                                    .notifyListeners();
+                              },
+                            ).show();
                           },
-                        ).show();
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                    const Icon(Icons.logout, color: Colors.white,size: 24,),
-                    SizedBox(width: 10,),
-                       const Text(
-                        "Log out",
-                        style: TextStyle(color: Colors.white,fontSize: 17),
-                      ),
-                      ]
-                       
-                    
-                    ),
-                  ):GestureDetector(
-                    onTap: () => navigate(context,LoginScreen()),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                      const Icon(Icons.login, color: Colors.white,size: 24,),
-                      SizedBox(width: 10,),
-                         const Text(
-                          "Log in",
-                          style: TextStyle(color: Colors.white,fontSize: 17),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.logout,
+                                  color: Colors.white,
+                                  size: 24,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                const Text(
+                                  "Log out",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 17),
+                                ),
+                              ]),
+                        )
+                      : GestureDetector(
+                          onTap: () => navigate(context, LoginScreen()),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.login,
+                                  color: Colors.white,
+                                  size: 24,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                const Text(
+                                  "Log in",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 17),
+                                ),
+                              ]),
                         ),
-                        ]
-                         
-                      
-                      ),
-                  ),
                 ),
               ],
             ),

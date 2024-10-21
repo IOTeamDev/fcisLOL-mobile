@@ -25,6 +25,7 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^8.1.6
   flutter_fortune_wheel: ^1.3.1
+  flutter_launcher_icons: ^0.14.1
   flutter_linkify: ^6.0.0
   flutter_vector_icons: ^2.0.0
   fluttertoast: ^8.2.8
@@ -47,7 +48,6 @@ dependencies:
   webview_flutter: ^4.9.0
 
 dev_dependencies:
-
   flutter_lints: ^5.0.0
   flutter_test:
     sdk: flutter
@@ -58,11 +58,14 @@ flutter:
   assets:
     - images/
     - images/mage_dashboard-fill-1.png
+    - images/mage_dashboard-fill-1.png
     - images/Ethics.png
     - images/Electronics.png
     - images/mingcute_drive-fill.png
     - images/mage_dashboard-fill.png
     - images/profile.png
+    - images/7.png
+    - images\SP (2).png
 
     - images/admin/
     # - images/default-avatar-icon-of-social-media-user-vector.jpg
@@ -73,3 +76,8 @@ flutter:
     # - images/ethics.png
     # - images/structuredprogramming.png
     - images/admin/
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "images/logo.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
