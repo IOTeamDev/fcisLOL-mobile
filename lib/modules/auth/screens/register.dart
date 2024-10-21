@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hexcolor/hexcolor.dart';
 // import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:lol/shared/components/default_button.dart';
 import 'package:lol/shared/components/default_text_button.dart';
@@ -15,6 +16,8 @@ import 'package:lol/layout/home/home.dart';
 import 'package:lol/shared/components/navigation.dart';
 import 'package:lol/shared/network/local/shared_prefrence.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
+import '../../../main.dart';
 
 class UserInfo {
   late String name;
@@ -74,265 +77,352 @@ class Registerscreen extends StatelessWidget {
           return Scaffold(
             body: Builder(builder: (context) {
               return SafeArea(
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 30, vertical: 25),
-                  child: Form(
-                    key: formKey,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 10,
-                          ),
-                          const Text(
-                            "Create you account",
-                            style: TextStyle(
-                                // letterSpacing: 3,
-                                // color: Additional2,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          const Text(
-                              "Welcome! Please fill in the details to get started"),
-                          const SizedBox(
-                            height: 20,
-                          ),
+                child: Center(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+                    child: Form(
+                      key: formKey,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            // SizedBox(
+                            //   height: 10,
+                            // ),
+                             Text(
+                              "Sign UP",
+                              style: TextStyle(
+                                  // letterSpacing: 3,
+                                  // color: Additional2,
+                                  fontSize: screenWidth(context)/10,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            // const Text(
+                            //     "Welcome! Please fill in the details to get started"),
+                            // const SizedBox(
+                            //   height: 20,
+                            // ),
+                            //
+                            // const SizedBox(
+                            //   width: 10,
+                            // ),
+                            // const SizedBox(
+                            //   height: 10,
+                            // ),
+                            // const Row(
+                            //   mainAxisAlignment: MainAxisAlignment.start,
+                            //   children: [
+                            //     Expanded(child: Divider()),
 
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          // const Row(
-                          //   mainAxisAlignment: MainAxisAlignment.start,
-                          //   children: [
-                          //     Expanded(child: Divider()),
-
-                          //     Text(
-                          //       "   or  ",
-                          //       style: TextStyle(fontSize: 17),
-                          //     ),
-                          //     Expanded(child: Divider()),
-                          //     // Expanded(child: HalfDivider(context)),
-                          //   ],
-                          // ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Column(
-                            children: [
-                              const Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  "Name",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600),
+                            //     Text(
+                            //       "   or  ",
+                            //       style: TextStyle(fontSize: 17),
+                            //     ),
+                            //     Expanded(child: Divider()),
+                            //     // Expanded(child: HalfDivider(context)),
+                            //   ],
+                            // ),
+                            // const SizedBox(
+                            //   height: 5,
+                            // ),
+                            Column(
+                              children: [
+                                // const Align(
+                                //   alignment: Alignment.topLeft,
+                                //   child: Text(
+                                //     "Name",
+                                //     style: TextStyle(
+                                //         fontSize: 16,
+                                //         fontWeight: FontWeight.w600),
+                                //   ),
+                                // ),
+                                // const SizedBox(
+                                //   height: 5,
+                                // ),
+                                // defaultTextField(
+                                //     validateor: (value) {
+                                //       if (value!.isEmpty) {
+                                //         return "Field cannot be empty";
+                                //       } else {
+                                //         return null; // Form is valid.
+                                //       }
+                                //     },
+                                //     controller: nameController),
+                                const SizedBox(
+                                  height: 30,
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              defaultTextField(
-                                  validateor: (value) {
+                                TextFormField(
+                                  controller: nameController,
+                                  keyboardType: TextInputType.name,
+                                  validator: (value) {
                                     if (value!.isEmpty) {
                                       return "Field cannot be empty";
                                     } else {
                                       return null; // Form is valid.
                                     }
                                   },
-                                  controller: nameController),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          Column(
-                            children: [
-                              const Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  "Email address",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              defaultTextField(
-                                  validateor: (value) {
-                                    if (value!.isEmpty) {
-                                      return "Field cannot be empty";
-                                    }
-                                    if (!emailRegExp.hasMatch(value)) {
-                                      return "Invalid email format";
-                                    } else {
-                                      return null; // Form is valid.
-                                    }
-                                  },
-                                  controller: emailController,
-                                  type: TextInputType.emailAddress),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Row(
-                                children: [
-                                  const Text(
-                                    "Phone number",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600),
+                                  style: TextStyle(color: isDark? Colors.white: Colors.black),
+                                  decoration: InputDecoration(
+                                      hintText: 'Full Name',
+                                      hintStyle: TextStyle(color: isDark? Colors.grey: Colors.grey[600]),
+                                      filled: true,
+                                      fillColor: isDark? Colors.white:Colors.grey[350],
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(20),
+                                          borderSide: BorderSide.none
+                                      )
                                   ),
-                                  const Spacer(),
-                                  Text(
-                                    "Optional",
-                                    style: TextStyle(color: Colors.grey[700]),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              defaultTextField(
-
-                                  // label: "Phone",
-                                  controller: phoneController),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          Column(
-                            children: [
-                              const Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  "Password",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              defaultTextField(
-                                  validateor: (Value) {
-                                    return null;
-                                  },
-                                  controller: passwordController,
-                                  obscure: true),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          Column(
-                            children: [
-                              const Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  "Confirm Password",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              defaultTextField(
-                                  onFieldSubmitted: (val) {
-                                    if (formKey.currentState!.validate()) {
-                                      UserInfo userInfo = UserInfo(
-                                          name: nameController.text,
-                                          email: emailController.text
-                                              .toLowerCase(),
-                                          password: passwordController.text,
-                                          phone: phoneController.text);
-                                      navigate(
-                                          context,
-                                          SelectImage(
-                                            userInfo: userInfo,
-                                          ));
-                                    }
-                                  },
-                                  validateor: (Value) {
-                                    if (Value!.isEmpty) {
-                                      return "Field cannot be empty";
-                                    } else if (Value !=
-                                        passwordController.text) {
-                                      return "Passwords doesn't matched";
-                                    } else {
-                                      return null; // Form is valid.
-                                    }
-                                  },
-                                  controller: confirimPassword,
-                                  obscure: true),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          state is RegisterLoading
-                              ? const Center(
-                                  child: CircularProgressIndicator(),
                                 )
-                              : defaultButton(
-                                  buttonFunc: () {
-                                    if (formKey.currentState!.validate()) {
-                                      UserInfo userInfo = UserInfo(
-                                          name: nameController.text,
-                                          email: emailController.text
-                                              .toLowerCase(),
-                                          password: passwordController.text,
-                                          phone: phoneController.text);
-                                      navigate(
-                                          context,
-                                          SelectImage(
-                                            userInfo: userInfo,
-                                          ));
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Column(
+                              children: [
+                                // const Align(
+                                //   alignment: Alignment.topLeft,
+                                //   child: Text(
+                                //     "Email address",
+                                //     style: TextStyle(
+                                //         fontSize: 16,
+                                //         fontWeight: FontWeight.w600),
+                                //   ),
+                                // ),
+                                // const SizedBox(
+                                //   height: 5,
+                                // ),
+                                // defaultTextField(
+                                //     validateor: (value) {
+                                //       if (value!.isEmpty) {
+                                //         return "Field cannot be empty";
+                                //       }
+                                //       if (!emailRegExp.hasMatch(value)) {
+                                //         return "Invalid email format";
+                                //       } else {
+                                //         return null; // Form is valid.
+                                //       }
+                                //     },
+                                //     controller: emailController,
+                                //     type: TextInputType.emailAddress),
+                                TextFormField(
+                                  controller: emailController,
+                                  keyboardType: TextInputType.emailAddress,
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return "Field cannot be empty";
                                     }
-                                    // LoginCubit.get(context).register(
-                                    //     name: nameController.text,
-                                    //     email: emailController.text,
-                                    //     phone: phoneController.text,
-                                    //     photo:
-                                    //         "https://upload.wikimedia.org/wikipedia/en/c/ce/Walter_White_Jr_S5B.png",
-                                    //     password: passwordController.text,
-                                    //     semester: "Four");
+                                    if(!emailRegExp.hasMatch(value))
+                                    {
+                                      return 'Invalid Email format';
+                                    } else {
+                                      return null; // Form is valid.
+                                    }
                                   },
-                                  buttonWidth: 300,
-                                  title: "NEXT"),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text(
-                                "Already have account?",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                              defaultTextButton(
-                                onPressed: () => navigatReplace(
-                                    context, const LoginScreen()),
-                                text: "Login",
-                              ),
-                            ],
-                          ),
-                        ],
+                                  style: TextStyle(color: isDark? Colors.white: Colors.black),
+                                  decoration: InputDecoration(
+                                      hintText: 'Email Address',
+                                      hintStyle: TextStyle(color: isDark? Colors.grey: Colors.grey[600]),
+                                      filled: true,
+                                      fillColor: isDark? Colors.white:Colors.grey[350],
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(20),
+                                          borderSide: BorderSide.none
+                                      )
+                                  ),
+                                )
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Column(
+  children: [
+    // Uncomment and customize as needed
+    // Row(
+    //   children: [
+    //     const Text(
+    //       "Phone number",
+    //       style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+    //     ),
+    //     const Spacer(),
+    //     Text(
+    //       "Optional",
+    //       style: TextStyle(color: Colors.grey),
+    //     ),
+    //   ],
+    // ),
+    const SizedBox(height: 5),
+    TextFormField(
+      controller: phoneController,
+      keyboardType: TextInputType.phone,
+      style: TextStyle(color: isDark ? Colors.white : Colors.black),
+      decoration: InputDecoration(
+        hintText: 'Phone number (Optional)',
+        hintStyle: TextStyle(color: isDark ? Colors.grey : Colors.grey[600]),
+        filled: true,
+        fillColor: isDark ? Colors.white : Colors.grey[350],
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide.none,
+        ),
+      ),
+    ),
+    const SizedBox(height: 15),
+    Column(
+      children: [
+        // Uncomment and customize as needed
+        // const Align(
+        //   alignment: Alignment.topLeft,
+        //   child: Text(
+        //     "Password",
+        //     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        //   ),
+        // ),
+        // const SizedBox(height: 5),
+        TextFormField(
+          controller: passwordController,
+          obscureText: LoginCubit.get(context).hiddenPassword,
+          keyboardType: TextInputType.visiblePassword,
+          validator: (value) {
+            return null;
+          },
+          style: TextStyle(color: isDark ? Colors.white : Colors.black),
+          decoration: InputDecoration(
+            hintText: 'Password',
+            hintStyle: TextStyle(color: isDark ? Colors.grey : Colors.grey[600]),
+            filled: true,
+            suffixIcon: IconButton(
+              icon: Icon(
+                Icons.remove_red_eye,
+                color: LoginCubit.get(context).hiddenPassword ? (isDark ? Colors.grey : null) : Colors.blue,
+              ),
+              onPressed: () {
+                LoginCubit.get(context).togglePassword();
+              },
+            ),
+            fillColor: isDark ? Colors.white : Colors.grey[350],
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: BorderSide.none,
+            ),
+          ),
+        ),
+        const SizedBox(height: 5),
+        TextFormField(
+          controller: confirimPassword, // Make sure to declare this controller
+          obscureText: true,
+          onFieldSubmitted: (val) {
+            if (formKey.currentState!.validate()) {
+              UserInfo userInfo = UserInfo(
+                name: nameController.text,
+                email: emailController.text.toLowerCase(),
+                password: passwordController.text,
+                phone: phoneController.text,
+              );
+              navigate(
+                context,
+                SelectImage(userInfo: userInfo),
+              );
+            }
+          },
+          validator: (value) {
+            if (value!.isEmpty) {
+              return "Field cannot be empty";
+            } else if (value != passwordController.text) {
+              return "Passwords don't match";
+            } else {
+              return null; // Form is valid
+            }
+          },
+          style: TextStyle(color: isDark ? Colors.white : Colors.black),
+          decoration: InputDecoration(
+            hintText: 'Confirm Password',
+            hintStyle: TextStyle(color: isDark ? Colors.grey : Colors.grey[600]),
+            filled: true,
+            fillColor: isDark ? Colors.white : Colors.grey[350],
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: BorderSide.none,
+            ),
+          ),
+        ),
+      ],
+    ),
+  ],
+),
+
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            state is RegisterLoading
+                                ? const Center(
+                                    child: CircularProgressIndicator(),
+                                  )
+                                 :
+                                //defaultButton(
+                                //     buttonFunc: () {
+                                //       if (formKey.currentState!.validate()) {
+                                //         UserInfo userInfo = UserInfo(
+                                //             name: nameController.text,
+                                //             email: emailController.text
+                                //                 .toLowerCase(),
+                                //             password: passwordController.text,
+                                //             phone: phoneController.text);
+                                //         navigate(
+                                //             context,
+                                //             SelectImage(
+                                //               userInfo: userInfo,
+                                //             ));
+                                //       }
+                                //       // LoginCubit.get(context).register(
+                                //       //     name: nameController.text,
+                                //       //     email: emailController.text,
+                                //       //     phone: phoneController.text,
+                                //       //     photo:
+                                //       //         "https://upload.wikimedia.org/wikipedia/en/c/ce/Walter_White_Jr_S5B.png",
+                                //       //     password: passwordController.text,
+                                //       //     semester: "Four");
+                                //     },
+                                //     buttonWidth: 300,
+                                //     title: "NEXT"),
+                            MaterialButton(
+                              onPressed: () {
+                                if (formKey.currentState!.validate()) {
+                                  UserInfo userInfo = UserInfo(
+                                      name: nameController.text,
+                                      email: emailController.text.toLowerCase(),
+                                      password: passwordController.text,
+                                      phone: phoneController.text);
+                                  navigate(context, SelectImage(userInfo: userInfo,));
+                                }
+                              },
+                              padding: EdgeInsetsDirectional.symmetric(vertical: 12),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                              color: HexColor('#4764C5'),
+                              minWidth: double.infinity,
+                              child: Text('NEXT', style: TextStyle(fontSize: screenWidth(context)/15, color: Colors.white),),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  "Already have account?",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400),
+                                ),
+                                // defaultTextButton(
+                                //   onPressed: () => navigatReplace(
+                                //       context, const LoginScreen()),
+                                //   text: "Login",
+                                // ),
+                                TextButton(onPressed: () => navigatReplace(context, const LoginScreen()), child: Text('Register'))
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

@@ -5,6 +5,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:lol/layout/home/bloc/main_cubit.dart';
 import 'package:lol/layout/home/bloc/main_cubit_states.dart';
+import 'package:lol/main.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
 
 import 'package:lol/shared/components/constants.dart';
@@ -78,20 +79,20 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
       ],
       child: BlocConsumer<MainCubit, MainCubitStates>(
         listener: (context, state) {
-          if(state is GetProfileSuccess)
-          {
-            if(widget.imageLink != null)
-            {
-              MainCubit.get(context).imageName = 'Select Image';
-              MainCubit.get(context).pickerIcon = Icons.clear;
-            }
-            else
-            {
-              MainCubit.get(context).imageName = 'Select Image';
-              MainCubit.get(context).pickerIcon = Icons.image;
-            }
-            print(MainCubit.get(context).imageName);
-          }
+          // if(state is GetProfileSuccess)
+          // {
+          //   if(widget.imageLink != null)
+          //   {
+          //     MainCubit.get(context).imageName = 'Select Image';
+          //     MainCubit.get(context).pickerIcon = Icons.clear;
+          //   }
+          //   else
+          //   {
+          //     MainCubit.get(context).imageName = 'Select Image';
+          //     MainCubit.get(context).pickerIcon = Icons.image;
+          //   }
+          //   print(MainCubit.get(context).imageName);
+          // }
           if (state is UpdateAnnouncementsSuccessState) {
             showToastMessage(
                 message: 'Announcement Updated Successfully!!',
@@ -104,7 +105,7 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
           double height = screenHeight(context);
           var cubit = MainCubit.get(context);
           return Scaffold(
-            backgroundColor: HexColor('#23252A'),
+            //backgroundColor: HexColor('#23252A'),
             body: Container(
               margin: const EdgeInsetsDirectional.only(top: 90),
               width: double.infinity,
@@ -126,7 +127,7 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                               child: Text(
                             'Edit',
                             style: TextStyle(
-                                fontSize: width / 10, color: Colors.white),
+                                fontSize: width / 10,),
                             textAlign: TextAlign.center,
                           )),
                         ],
@@ -135,10 +136,10 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                         margin: const EdgeInsetsDirectional.symmetric(
                             horizontal: 15, vertical: 20),
                         padding: const EdgeInsets.all(15),
-                        height: screenHeight(context) / 1.35,
+                        height: screenHeight(context) / 1.45,
                         width: double.infinity,
                         decoration: BoxDecoration(
-                            color: HexColor('#3B3B3B'),
+                            color: isDark? HexColor('#3B3B3B'):HexColor('#757575'),
                             borderRadius: BorderRadius.circular(20)),
                         child: Form(
                           key: _formKey,
@@ -156,8 +157,8 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                 },
                                 decoration: InputDecoration(
                                   hintText: 'Title',
-                                  hintStyle: TextStyle(
-                                      fontSize: 20, color: Colors.grey[400]),
+                                  hintStyle: TextStyle(fontSize: 20, color: Colors.grey[400]),
+                                  enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: isDark? HexColor('#848484'):HexColor('#FFFFFF'))),
                                 ),
                                 style: const TextStyle(color: Colors.white),
                               ),
@@ -166,11 +167,11 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                               TextFormField(
                                 controller: contentController,
                                 minLines: 5,
-                                maxLines: 10,
+                                maxLines: 12,
                                 decoration: InputDecoration(
                                   hintText: 'Description',
-                                  hintStyle: TextStyle(
-                                      fontSize: 20, color: Colors.grey[400]),
+                                  hintStyle: TextStyle(fontSize: 20, color: Colors.grey[400]),
+                                  enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: isDark? HexColor('#848484'):HexColor('#FFFFFF'))),
                                 ),
                                 style: const TextStyle(color: Colors.white),
                               ),
@@ -279,58 +280,58 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                 height: 10,
                               ),
                               //Upload Image button
-                              Container(
-                                  padding: EdgeInsetsDirectional.symmetric(horizontal: 15),
-                                  width: width / 2.1,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      if (cubit.AnnouncementImageFile == null) {
-                                        cubit.getAnnouncementImage();
-                                      }
-                                    },
-                                    child: Row(
-                                          children: [
-                                            ConstrainedBox(
-                                                constraints: BoxConstraints(maxWidth: width / 4),
-                                                child: Text(
-                                                  cubit.imageName!,
-                                                  style: TextStyle(color: Colors.black),
-                                                  overflow: TextOverflow.ellipsis,
-                                                  maxLines: 1,
-                                                )),
-                                            SizedBox(
-                                              width: 5,
-                                            ),
-                                            IconButton(
-                                                icon: Icon(
-                                                  cubit.pickerIcon,
-                                                  color: Colors.black,
-                                                ),
-                                                onPressed: () {
-                                                  if (cubit.AnnouncementImageFile == null && widget.imageLink == null) {
-                                                    cubit.getAnnouncementImage();
-                                                  } else {
-                                                    setState(() {
-                                                      cubit.AnnouncementImageFile = null;
-                                                      cubit.pickerIcon = Icons.image;
-                                                      cubit.imageName = 'Select Image';
-                                                    });
-                                                  }
-                                                }),
-                                          ],
-                                        ),
-                                  )
-                              ),
-                              SizedBox(height: 10,),
-                              ConstrainedBox(
-                                constraints: BoxConstraints(maxWidth: width/1.1),
-                                child: Text('keep it if you don\'t to change the photo!!', style: TextStyle(color: Colors.grey[400]),)
-                              ),
+                              // Container(
+                              //     padding: EdgeInsetsDirectional.symmetric(horizontal: 15),
+                              //     width: width / 2.1,
+                              //     height: 50,
+                              //     decoration: BoxDecoration(
+                              //       color: Colors.white,
+                              //       borderRadius: BorderRadius.circular(10),
+                              //     ),
+                              //     child: GestureDetector(
+                              //       onTap: () {
+                              //         if (cubit.AnnouncementImageFile == null) {
+                              //           cubit.getAnnouncementImage();
+                              //         }
+                              //       },
+                              //       child: Row(
+                              //             children: [
+                              //               ConstrainedBox(
+                              //                   constraints: BoxConstraints(maxWidth: width / 4),
+                              //                   child: Text(
+                              //                     cubit.imageName!,
+                              //                     style: TextStyle(color: Colors.black),
+                              //                     overflow: TextOverflow.ellipsis,
+                              //                     maxLines: 1,
+                              //                   )),
+                              //               SizedBox(
+                              //                 width: 5,
+                              //               ),
+                              //               IconButton(
+                              //                   icon: Icon(
+                              //                     cubit.pickerIcon,
+                              //                     color: Colors.black,
+                              //                   ),
+                              //                   onPressed: () {
+                              //                     if (cubit.AnnouncementImageFile == null && widget.imageLink == null) {
+                              //                       cubit.getAnnouncementImage();
+                              //                     } else {
+                              //                       setState(() {
+                              //                         cubit.AnnouncementImageFile = null;
+                              //                         cubit.pickerIcon = Icons.image;
+                              //                         cubit.imageName = 'Select Image';
+                              //                       });
+                              //                     }
+                              //                   }),
+                              //             ],
+                              //           ),
+                              //     )
+                              // ),
+                              // SizedBox(height: 10,),
+                              // ConstrainedBox(
+                              //   constraints: BoxConstraints(maxWidth: width/1.1),
+                              //   child: Text('keep it if you don\'t to change the photo!!', style: TextStyle(color: Colors.grey[400]),)
+                              // ),
                               const Spacer(),
                               divider(),
                               // Cancel and Accept Buttons
@@ -350,10 +351,7 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                             BorderRadius
                                                 .circular(
                                                 13)),
-                                        padding:
-                                        const EdgeInsetsDirectional
-                                            .symmetric(
-                                            horizontal: 35),
+                                        padding: EdgeInsetsDirectional.symmetric(horizontal: width /11),
                                         backgroundColor:
                                         Colors.white,
                                         textStyle: TextStyle(
@@ -369,7 +367,7 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                     ElevatedButton(
                                       onPressed: () async {
                                         if (_formKey.currentState!.validate() && selectedItem != null) {
-                                            await cubit.UploadPImage(isUserProfile: false, image: cubit.AnnouncementImageFile);
+                                           // await cubit.UploadPImage(isUserProfile: false, image: cubit.AnnouncementImageFile);
                                             cubit.updateAnnouncement(
                                                 cubit.announcements![int.parse(id)].id.toString(),
                                                 title: titleController.text,
@@ -381,8 +379,7 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                         } else {
                                           // Show error if validation fails
                                           showToastMessage(
-                                            message:
-                                                'Please fill all fields correctly.',
+                                            message: 'Please fill all fields correctly.',
                                             states: ToastStates.ERROR,
                                           );
                                         }
@@ -394,10 +391,7 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                               borderRadius:
                                               BorderRadius
                                                   .circular(13)),
-                                          padding:
-                                          const EdgeInsetsDirectional
-                                              .symmetric(
-                                              horizontal: 35),
+                                          padding: EdgeInsetsDirectional.symmetric(horizontal: width/11 ),
                                           backgroundColor:
                                           HexColor('#4764C5'),
                                           foregroundColor:

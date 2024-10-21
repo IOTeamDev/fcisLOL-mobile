@@ -12,6 +12,7 @@ import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/constants.dart';
 
 import '../../../../layout/home/bloc/main_cubit.dart';
+import '../../../../main.dart';
 
 class RequestsDetails extends StatelessWidget {
   int id;
@@ -62,7 +63,7 @@ class RequestsDetails extends StatelessWidget {
         builder: (context, state) {
           var cubit = MainCubit.get(context);
           return Scaffold(
-            backgroundColor: HexColor('#23252A'),
+            //backgroundColor: HexColor('#23252A'),
             body: Container(
                 margin: const EdgeInsetsDirectional.only(top: 90),
                 width: double.infinity,
@@ -79,7 +80,7 @@ class RequestsDetails extends StatelessWidget {
                               child: Text(
                             'Request Details',
                             style: TextStyle(
-                                fontSize: width / 12, color: Colors.white),
+                                fontSize: width / 12,),
                             textAlign: TextAlign.center,
                           )),
                         ],
@@ -92,7 +93,7 @@ class RequestsDetails extends StatelessWidget {
                         height: screenHeight(context) / 1.4,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
-                          color: HexColor('#3B3B3B'),
+                          color: isDark? HexColor('#3B3B3B') : HexColor('#757575'),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

@@ -70,13 +70,13 @@ class Profile extends StatelessWidget {
                             children: [
                               Positioned(
                                 left: 0,
-                                child: backButton(context),
+                                child: backButton(context,),
                               ),
                               Center(
                                   child: Text(
                                     'Profile',
                                     style: TextStyle(
-                                        fontSize: width / 11, color: Colors.white),
+                                        fontSize: width / 11,),
                                     textAlign: TextAlign.center,
                                   )),
                             ],

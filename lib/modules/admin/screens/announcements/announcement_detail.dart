@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:linkify/linkify.dart';
+import 'package:lol/main.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
 import 'package:lol/modules/admin/screens/announcements/announcement_detail.dart';
 import 'package:lol/shared/components/constants.dart';
@@ -48,7 +49,7 @@ class AnnouncementDetail extends StatelessWidget {
           double width = screenWidth(context);
           double height = screenHeight(context);
           return Scaffold(
-            backgroundColor: HexColor('#23252A'),
+            //backgroundColor: HexColor('#23252A'),
             body: Container(
               margin: const EdgeInsetsDirectional.only(top: 90),
               width: double.infinity,
@@ -65,7 +66,7 @@ class AnnouncementDetail extends StatelessWidget {
                           child: Text(
                         'Announcement',
                         style: TextStyle(
-                            fontSize: width / 12, color: Colors.white),
+                            fontSize: width / 12,),
                         textAlign: TextAlign.center,
                       )),
                     ],
@@ -77,7 +78,7 @@ class AnnouncementDetail extends StatelessWidget {
                     width: double.infinity,
                     height: screenHeight(context) / 1.4,
                     decoration: BoxDecoration(
-                        color: HexColor('#3B3B3B'),
+                        color: isDark? HexColor('#3B3B3B'): HexColor('#4764C5'),
                         borderRadius: BorderRadius.circular(20)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
