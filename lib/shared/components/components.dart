@@ -164,7 +164,6 @@ Widget backButton(context, {double bottomPadding = 8}) {
           padding: EdgeInsets.zero,
           child: const Icon(
             Icons.arrow_back,
-            color: Colors.white,
             size: 30,
           ),
         ),

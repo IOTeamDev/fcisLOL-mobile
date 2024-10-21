@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:lol/main.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/default_button.dart';
 import 'package:lol/shared/components/default_text_button.dart';
@@ -49,154 +51,179 @@ class LoginScreen extends StatelessWidget {
           var loginCubit = LoginCubit.get(context);
 
           return Scaffold(
-            appBar: AppBar(),
-            body: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Form(
-                key: formKey,
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.android,
-                            color: additional2,
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          const Text(
-                            "temp",
+           // appBar: AppBar(),
+            body: Center(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Form(
+                  key: formKey,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: Text(
+                            "Login ",
                             style: TextStyle(
-                                fontSize: 20,
-                                letterSpacing: 2,
-                                color: Colors.black),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 50,
-                      ),
-                      const Text(
-                        "Login ",
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const Text("Continue Your Success Journey with temp !"),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      Column(
-                        children: [
-                          const Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "Email address",
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w600),
+                              fontSize: screenWidth(context)/7,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          defaultTextField(
-                              validateor: (value) {
+                        ),
+                        //const Text("Continue Your Success Journey with temp !"),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Column(
+                          children: [
+                            // const Align(
+                            //   alignment: Alignment.topLeft,
+                            //   child: Text(
+                            //     "Email address",
+                            //     style: TextStyle(
+                            //         fontSize: 16, fontWeight: FontWeight.w600),
+                            //   ),
+                            // ),
+                            // const SizedBox(
+                            //   height: 5,
+                            // ),
+                            // defaultTextField(
+                            //     validateor: (value) {
+                            //       if (value!.isEmpty) {
+                            //         return "Field cannot be empty";
+                            //       } else {
+                            //         return null; // Form is valid.
+                            //       }
+                            //     },
+                            //     controller: emailController,
+                            //     type: TextInputType.emailAddress),
+                            TextFormField(
+                              controller: emailController,
+                              keyboardType: TextInputType.emailAddress,
+                              validator: (value) {
                                 if (value!.isEmpty) {
                                   return "Field cannot be empty";
                                 } else {
                                   return null; // Form is valid.
                                 }
                               },
-                              controller: emailController,
-                              type: TextInputType.emailAddress),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Text(
-                                "Password",
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w600),
+                              style: TextStyle(color: isDark? Colors.black: Colors.white),
+                              decoration: InputDecoration(
+                                hintText: 'Email Address',
+                                hintStyle: TextStyle(color: isDark? Colors.grey: Colors.grey[600]),
+                                filled: true,
+                                fillColor: isDark? Colors.white:Colors.grey[350],
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  borderSide: BorderSide.none
+                                )
                               ),
-                              const Spacer(),
-                              TextButton(
-                                style: TextButton.styleFrom(
-                                    padding: const EdgeInsets.all(0)),
-                                child: const Text(
-                                  "Forgot Password ?",
-                                  textAlign: TextAlign.end,
-                                ),
-                                onPressed: () {},
-                              ),
-                            ],
-                          ),
-                          // const SizedBox(height: 5,),
-                          defaultTextField(
-                              suffFunc: () {
-                                loginCubit.togglePassword();
-                              },
-                              dtaSufIcon: Icon(
-                                Icons.remove_red_eye,
-                                color: loginCubit.hiddenPassword
-                                    ? null
-                                    : Colors.blue,
-                              ),
-                              wantMargin: false,
-                              validateor: (value) {
+                            )
+                          ],
+                        ),
+                        SizedBox(height: screenHeight(context)/40,),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // const Text(
+                            //   "Password",
+                            //   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                            // ),
+                            // SizedBox(height: 10,),
+                            // Row(
+                            //   mainAxisSize: MainAxisSize.min,
+                            //   children: [
+                            //
+                                //const Spacer(),
+                                // TextButton(
+                                //   style: TextButton.styleFrom(
+                                //       padding: const EdgeInsets.all(0)),
+                                //   child: const Text(
+                                //     "Forgot Password ?",
+                                //     textAlign: TextAlign.end,
+                                //   ),
+                                //   onPressed: () {},
+                                // ),
+                            //   ],
+                            // ),
+                            // const SizedBox(height: 5,),
+                            // defaultTextField(
+                            //     suffFunc: () {
+                            //       loginCubit.togglePassword();
+                            //     },
+                            //     dtaSufIcon: Icon(
+                            //       Icons.remove_red_eye,
+                            //       color: loginCubit.hiddenPassword
+                            //           ? null
+                            //           : Colors.blue,
+                            //     ),
+                            //     wantMargin: false,
+                            //     validateor: (value) {
+                            //       return null;
+                            //     },
+                            //     controller: passwordController,
+                            //     obscure: loginCubit.hiddenPassword),
+
+                            TextFormField(
+                              controller: passwordController,
+                              obscureText: loginCubit.hiddenPassword,
+                              keyboardType: TextInputType.visiblePassword,
+                              validator: (value) {
                                 return null;
                               },
-                              controller: passwordController,
-                              obscure: loginCubit.hiddenPassword),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      const SizedBox(
-                        height: 50,
-                      ),
-                      state is LoginLoading
-                          ? const Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : defaultButton(
-                              buttonFunc: () {
-                                if (formKey.currentState!.validate()) {
-
-// update fcm token
-
-
-                                  loginCubit.login(
-                                      email: emailController.text.toLowerCase(),
-                                      password: passwordController.text);
-                                }
-                              },
-                              buttonWidth: 400,
-                              title: "Log in"),
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text("Not a member yet ?"),
-                          defaultTextButton(
-                            onPressed: () {
-                              navigatReplace(context, Registerscreen());
-                            },
-                            text: "Register",
-                          )
-                        ],
-                      )
-                    ],
+                              style: TextStyle(color: isDark? Colors.black: Colors.white),
+                              decoration: InputDecoration(
+                                hintText: 'Password',
+                                hintStyle: TextStyle(color: isDark? Colors.grey: Colors.grey[600]),
+                                filled: true,
+                                suffixIcon: IconButton(icon: Icon(Icons.remove_red_eye, color: loginCubit.hiddenPassword? isDark? Colors.grey: null: Colors.blue),onPressed: (){loginCubit.togglePassword();},),
+                                fillColor: isDark? Colors.white:Colors.grey[350],
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  borderSide: BorderSide.none
+                                )
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 50,
+                        ),
+                        state is LoginLoading
+                            ? const Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : MaterialButton(
+                                onPressed: () {
+                                  if (formKey.currentState!.validate()) {
+                                    // update fcm token
+                                    loginCubit.login(
+                                        email: emailController.text.toLowerCase(),
+                                        password: passwordController.text);
+                                  }
+                                },
+                                padding: EdgeInsetsDirectional.symmetric(vertical: 10),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                color: HexColor('#4764C5'),
+                                minWidth: double.infinity,
+                                child: Text('Log in', style: TextStyle(fontSize: screenWidth(context)/15, color: Colors.white)),
+                                ),
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text("Not a member yet ?"),
+                            // defaultTextButton(
+                            //   onPressed: () {
+                            //     navigatReplace(context, Registerscreen());
+                            //   },
+                            //   text: "Register",
+                            // ),
+                            TextButton(onPressed: (){ navigatReplace(context, Registerscreen());}, child: Text('Register'))
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),

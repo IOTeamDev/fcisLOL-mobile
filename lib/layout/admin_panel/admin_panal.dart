@@ -5,6 +5,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/layout/home/bloc/main_cubit.dart';
 import 'package:lol/layout/home/bloc/main_cubit_states.dart';
+import 'package:lol/main.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
 import 'package:lol/modules/admin/screens/announcements/add_announcement.dart';
@@ -35,7 +36,7 @@ class AdminPanel extends StatelessWidget {
           double height = screenHeight(context);
           var mainCubit = MainCubit.get(context);
           return Scaffold(
-            backgroundColor: HexColor('#23252A'),
+            //backgroundColor: HexColor('#23252A'),
             body: Container(
               margin: const EdgeInsetsDirectional.only(top: 90),
               width: double.infinity,
@@ -53,7 +54,7 @@ class AdminPanel extends StatelessWidget {
                           child: Text(
                         'Admin',
                         style: TextStyle(
-                            fontSize: width / 10, color: Colors.white),
+                            fontSize: width / 10, ),
                         textAlign: TextAlign.center,
                       )),
                     ],
@@ -77,7 +78,7 @@ class AdminPanel extends StatelessWidget {
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(40),
                                 topRight: Radius.circular(40)),
-                            color: Colors.white,
+                            color: isDark? Colors.white:HexColor('#3B3B3B'),
                           ),
                         ),
                         ElevatedButton(
@@ -90,7 +91,7 @@ class AdminPanel extends StatelessWidget {
                                 ));
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: HexColor('#3B3B3B'),
+                            backgroundColor: isDark? HexColor('#3B3B3B'):HexColor('#757575'),
                             padding: EdgeInsets.zero, // Remove default padding
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
@@ -118,7 +119,7 @@ class AdminPanel extends StatelessWidget {
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(40),
                                 topRight: Radius.circular(40)),
-                            color: Colors.white,
+                            color: isDark? Colors.white:HexColor('#3B3B3B'),
                           ),
                         ),
                         ElevatedButton(

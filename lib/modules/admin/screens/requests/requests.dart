@@ -8,6 +8,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/layout/home/bloc/main_cubit.dart';
 import 'package:lol/layout/home/bloc/main_cubit_states.dart';
+import 'package:lol/main.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
 import 'package:lol/modules/admin/screens/announcements/announcement_detail.dart';
@@ -41,7 +42,7 @@ class Requests extends StatelessWidget {
 
           return Scaffold(
             key: scaffoldKey,
-            backgroundColor: HexColor('#23252A'),
+            //backgroundColor: HexColor('#23252A'),
             body: Stack(
               children: [
                 Container(
@@ -59,7 +60,7 @@ class Requests extends StatelessWidget {
                               child: Text(
                             'Requests',
                             style: TextStyle(
-                                fontSize: width / 10, color: Colors.white),
+                                fontSize: width / 10,),
                             textAlign: TextAlign.center,
                           )),
                         ],
@@ -106,7 +107,6 @@ class Requests extends StatelessWidget {
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 24,
-                                      color: Colors.white,
                                     ),
                                   ),
                                 );
@@ -154,7 +154,7 @@ class Requests extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: HexColor('#3B3B3B').withOpacity(0.45),
+          color: isDark? HexColor('#3B3B3B'): HexColor('#757575'),
           borderRadius: BorderRadius.circular(20),
         ),
         margin: const EdgeInsetsDirectional.symmetric(horizontal: 10),

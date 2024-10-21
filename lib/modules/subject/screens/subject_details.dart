@@ -93,7 +93,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
             child: Scaffold(
               floatingActionButton: buildFloatingActionButton(),
               key: scaffoldKey,
-              backgroundColor: isDark ? HexColor('#23252A') : Colors.white,
+              //backgroundColor: isDark ? HexColor('#23252A') : Colors.white,
               body: Column(
                 children: [
                   const SizedBox(
@@ -152,6 +152,11 @@ class _MaterialDetailsState extends State<SubjectDetails>
                           ),
                           contentPadding: const EdgeInsets.all(10.0),
                           border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide.none,
                             borderRadius: BorderRadius.circular(50),
                           ),
                           hintText: 'Search for Videos, Documents',
@@ -210,7 +215,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                 builder: (context) => buildBottomSheet());
           }
         },
-        shape: OutlineInputBorder(
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50),
         ),
         backgroundColor:
@@ -420,7 +425,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
           current is DeleteMaterialSuccess,
       builder: (context, state) {
         return MaterialButton(
-          shape: OutlineInputBorder(
+          shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
           minWidth: 30,
@@ -645,7 +650,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 10),
                                     minWidth: screenWidth(context) / 3,
-                                    shape: OutlineInputBorder(
+                                    shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(15)),
                                     color: Colors.white,
@@ -668,7 +673,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 10),
                                       minWidth: screenWidth(context) / 3,
-                                      shape: OutlineInputBorder(
+                                      shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(15)),
                                       color: Color.fromRGBO(71, 100, 197, 1),

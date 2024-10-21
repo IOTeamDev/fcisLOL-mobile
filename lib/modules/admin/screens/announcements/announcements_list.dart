@@ -29,7 +29,7 @@ class AnnouncementsList extends StatelessWidget {
           double height = screenHeight(context);
           var cubit = AdminCubit.get(context);
           return Scaffold(
-            backgroundColor: HexColor('#23252A'),
+            //backgroundColor: HexColor('#23252A'),
             body: Container(
               margin: const EdgeInsetsDirectional.only(top: 90),
               width: double.infinity,
@@ -45,8 +45,7 @@ class AnnouncementsList extends StatelessWidget {
                         Center(
                             child: Text(
                           'Announcements',
-                          style: TextStyle(
-                              fontSize: width / 12, color: Colors.white),
+                          style: TextStyle(fontSize: width / 12,),
                           textAlign: TextAlign.center,
                         )),
                       ],
@@ -118,7 +117,7 @@ class AnnouncementsList extends StatelessWidget {
       },
       child: Container(
         margin: EdgeInsetsDirectional.symmetric(horizontal: 10),
-        padding: EdgeInsetsDirectional.symmetric(horizontal: 20, vertical: 10),
+        padding: EdgeInsetsDirectional.symmetric(horizontal: 20, vertical: 15),
         width: double.infinity,
         height: 150,
         decoration: BoxDecoration(

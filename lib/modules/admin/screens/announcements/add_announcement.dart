@@ -16,6 +16,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:lol/shared/styles/colors.dart';
 
 import '../../../../layout/home/bloc/main_cubit.dart';
+import '../../../../main.dart';
 import '../../../../shared/components/components.dart';
 import '../../bloc/admin_cubit.dart';
 
@@ -73,7 +74,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
           double height = screenHeight(context);
           var cubit = AdminCubit.get(context);
           return Scaffold(
-            backgroundColor: HexColor('#23252A'),
+            //backgroundColor: HexColor('#23252A'),
             body: Container(
               padding: EdgeInsets.all(5),
               margin: const EdgeInsetsDirectional.only(top: 90),
@@ -92,7 +93,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                             child: Text(
                           'Announcements',
                           style: TextStyle(
-                              fontSize: width / 13, color: Colors.white),
+                              fontSize: width / 13, ),
                           textAlign: TextAlign.center,
                         )),
                       ],
@@ -117,7 +118,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                         height: _height,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
-                            color: HexColor('#3B3B3B')),
+                            color: isDark? HexColor('#3B3B3B'):HexColor('#757575')),
                         curve: Curves.fastEaseInToSlowEaseOut,
                         child: _isExpanded && _showContent
                             ? Padding(
@@ -147,9 +148,10 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                               hintText: 'Title',
                                               hintStyle: TextStyle(
                                                   fontSize: 20,
-                                                  color: Colors.grey[400]),
+                                                  color: isDark? Colors.grey[400]:Colors.grey[100]),
+                                              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: isDark? HexColor('#848484'):HexColor('#FFFFFF'))),
                                             ),
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                                 color: Colors.white),
                                           ),
                                           const SizedBox(
@@ -164,10 +166,10 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                               hintText: 'Description',
                                               hintStyle: TextStyle(
                                                   fontSize: 20,
-                                                  color: Colors.grey[400]),
+                                                  color: isDark? Colors.grey[400]:Colors.grey[100]),
+                                              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: isDark? HexColor('#848484'):HexColor('#FFFFFF'))),
                                             ),
-                                            style: const TextStyle(
-                                                color: Colors.white),
+                                            style: const TextStyle(color: Colors.white),
                                           ),
                                           const SizedBox(
                                             height: 10,
@@ -338,19 +340,14 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                           color: Colors.black,
                                                         ),
                                                         onPressed: () {
-                                                          if (cubit
-                                                                  .AnnouncementImageFile ==
-                                                              null) {
-                                                            cubit
-                                                                .getAnnouncementImage();
+                                                          if (cubit.AnnouncementImageFile == null) {
+                                                            cubit.getAnnouncementImage();
+                                                            showToastMessage(message: 'Be careful when You choose image because it cna\'t be changed', states: ToastStates.WARNING,);
                                                           } else {
                                                             setState(() {
-                                                              cubit.AnnouncementImageFile =
-                                                                  null;
-                                                              cubit.pickerIcon =
-                                                                  Icons.image;
-                                                              cubit.imageName =
-                                                                  'Select Image';
+                                                              cubit.AnnouncementImageFile = null;
+                                                              cubit.pickerIcon = Icons.image;
+                                                              cubit.imageName = 'Select Image';
                                                             });
                                                           }
                                                         }),
@@ -395,10 +392,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                                 BorderRadius
                                                                     .circular(
                                                                         13)),
-                                                    padding:
-                                                        const EdgeInsetsDirectional
-                                                            .symmetric(
-                                                            horizontal: 35),
+                                                    padding: EdgeInsetsDirectional.symmetric(horizontal: width/10 ),
                                                     backgroundColor:
                                                         Colors.white,
                                                     textStyle: TextStyle(
@@ -475,10 +469,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                                   BorderRadius
                                                                       .circular(
                                                                           13)),
-                                                      padding:
-                                                          const EdgeInsetsDirectional
-                                                              .symmetric(
-                                                              horizontal: 40),
+                                                      padding: EdgeInsetsDirectional.symmetric(horizontal: width/10 ),
                                                       backgroundColor:
                                                           HexColor('#4764C5'),
                                                       foregroundColor:
@@ -595,7 +586,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
             ConstrainedBox(
               constraints: BoxConstraints(maxWidth: screenWidth(context) - 150),
               child: Text(
-                '$title',
+                title,
                 style: const TextStyle(fontSize: 18, color: Colors.white),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
