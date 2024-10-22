@@ -56,6 +56,12 @@ class GetRequestsSuccessState extends MainCubitStates{}
 
 class GetRequestsErrorState extends MainCubitStates{}
 
+class GetMaterialLoadingState extends MainCubitStates{}
+
+class GetMaterialSuccessState extends MainCubitStates{}
+
+class GetMaterialErrorState extends MainCubitStates{}
+
 class DeleteMaterialLoadingState extends MainCubitStates{}
 
 class DeleteMaterialSuccessState extends MainCubitStates{}

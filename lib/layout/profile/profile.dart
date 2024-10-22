@@ -12,6 +12,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/main.dart';
 import 'package:lol/models/profile/profile_materila_model.dart';
+import 'package:lol/modules/subject/cubit/subject_cubit.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/default_button.dart';
 import 'package:lol/shared/components/default_text_field.dart';
@@ -37,8 +38,7 @@ class Profile extends StatelessWidget {
       child: BlocConsumer<MainCubit, MainCubitStates>(
         builder: (context, state) {
           if (state is GetProfileSuccess) {
-            BlocProvider.of<MainCubit>(context)
-                .getLeaderboard(MainCubit.get(context).profileModel!.semester);
+            BlocProvider.of<MainCubit>(context).getLeaderboard(MainCubit.get(context).profileModel!.semester);
           }
           var mainCubit = MainCubit.get(context);
           if (mainCubit.profileModel != null) {
@@ -218,92 +218,51 @@ class Profile extends StatelessWidget {
                             ),
                           ],
                         ),
-                        TabBar(
-                            dividerColor: isDark ? HexColor('3B3B3B') : Colors.black,
-                            tabs: [
-                              Tab(
-                                // icon: Icon(Icons.nat),
-                                text: "Contributions",
-                              )
-                            ])
-                        // i wanna make two navigations taps here
-                        ,
+                        SizedBox(height: 15,),
+                        Center(child: Text("Contributions", style: TextStyle(fontSize: screenWidth(context)/18),)),
+                        divider(),
                         Expanded(
-                          child: MainCubit.get(context).profileModel == null
-                              ? Center(
-                                  child: CircularProgressIndicator(
-                                    color:
-                                        isDark ? Colors.white : Colors.black,
-                                  ),
-                                )
-                              : TabBarView(
-                                  physics: const BouncingScrollPhysics(),
+                          child: ConditionalBuilder(
+                              condition:  MainCubit.get(context).profileModel!.materials.isNotEmpty && state is! GetRequestsLoadingState,
+                              builder: (context) => Padding(
+                                padding: const EdgeInsetsDirectional.symmetric(horizontal: 10.0),
+                                child: Column(
                                   children: [
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional.symmetric(horizontal: 10.0),
-                                        child: Column(
-                                          children: [
-                                            Expanded(
-                                              child: ListView.separated(
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    var materials =
-                                                        MainCubit.get(context)
-                                                            .profileModel!
-                                                            .materials;
-                                                    var mainCubit =
-                                                        MainCubit.get(context);
-                                                    return Container(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8),
-                                                      decoration: BoxDecoration(
-                                                        color: isDark
-                                                            ? Color.fromRGBO(
-                                                                59, 59, 59, 1)
-                                                            : HexColor(
-                                                                '#4764C5'),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(15),
-                                                      ),
-                                                      child: materialBuilder(
-                                                        index,
-                                                        context,
-                                                        title: mainCubit
-                                                            .profileModel!
-                                                            .materials[index]
-                                                            .title,
-                                                        description: mainCubit
-                                                            .profileModel!
-                                                            .materials[index]
-                                                            .description,
-                                                        type: mainCubit
-                                                            .profileModel!
-                                                            .materials[index]
-                                                            .type,
-                                                        link: mainCubit
-                                                            .profileModel!
-                                                            .materials[index]
-                                                            .link,
-                                                        subjectName: mainCubit
-                                                            .profileModel!
-                                                            .materials[index]
-                                                            .subject,
-                                                      ),
-                                                    );
-                                                  },
-                                                  separatorBuilder:
-                                                      (context, index) =>
-                                                          SizedBox(
-                                                            height: 15,
-                                                          ),
-                                                  itemCount: mainCubit.profileModel!.materials.length),
+                                    Expanded(
+                                      child: ListView.separated(
+                                        physics: BouncingScrollPhysics(),
+                                        itemBuilder: (context, index) {
+                                          var materials = MainCubit.get(context).profileModel!.materials;
+                                          var mainCubit = MainCubit.get(context);
+                                          return Container(
+                                            padding: const EdgeInsets.all(8),
+                                            decoration: BoxDecoration(
+                                              color: isDark ? Color.fromRGBO(59, 59, 59, 1) : HexColor('#4764C5'),
+                                              borderRadius: BorderRadius.circular(15),
                                             ),
-                                          ],
-                                        ),
+                                            child: materialBuilder(
+                                              index,
+                                              context,
+                                              title: mainCubit.profileModel!.materials[index].title,
+                                              description: mainCubit.profileModel!.materials[index].description,
+                                              type: mainCubit.profileModel!.materials[index].type,
+                                              link: mainCubit.profileModel!.materials[index].link,
+                                              subjectName: mainCubit.profileModel!.materials[index].subject,
+                                            ),
+                                          );
+                                        },
+                                        separatorBuilder: (context, index) => SizedBox(height: 15,),
+                                        itemCount: mainCubit.profileModel!.materials.length
                                       ),
-                                    ]),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              fallback: (context) => Center(
+                                child: CircularProgressIndicator(
+                                  color: isDark ? Colors.white : Colors.black,
+                                ),
+                              )),
                         )
                       ],
                     ),
@@ -311,7 +270,12 @@ class Profile extends StatelessWidget {
             ),
           );
         },
-        listener: (context, state) {},
+        listener: (context, state) {
+          if(state is DeleteMaterialSuccessState)
+            {
+              MainCubit.get(context).getProfileInfo();
+            }
+        },
       ),
     );
   }
@@ -355,7 +319,7 @@ Widget materialBuilder(index, context,
                     title: "Delete",
                     dialogType: DialogType.warning,
                     body: Text(
-                      "Are you sure you want to Delete the request?",
+                      "Are you sure you want to Delete the Material?",
                       style: TextStyle(fontSize: 17),
                     ),
                     animType: AnimType.rightSlide,
@@ -366,9 +330,12 @@ Widget materialBuilder(index, context,
 
                     // titleTextStyle: TextStyle(fontSize: 22),
                     btnOkOnPress: () {
+                      print(MainCubit.get(context).profileModel!.materials[index].id!);
+                      print(MainCubit.get(context).profileModel!.semester);
                       MainCubit.get(context).deleteMaterial(
-                        MainCubit.get(context).requests![index].id!,
+                        MainCubit.get(context).profileModel!.materials[index].id!,
                         MainCubit.get(context).profileModel!.semester,
+                        isMaterial: true,
                       );
                     },
                   ).show();
@@ -404,7 +371,7 @@ Widget materialBuilder(index, context,
                   Icon(Icons.link, color: HexColor('#B7B7B7')),
                   const SizedBox(width: 5),
                   ConstrainedBox(
-                    constraints: BoxConstraints(maxWidth: constraints.maxWidth - 50),
+                    constraints: BoxConstraints(maxWidth: constraints.maxWidth - 120),
                     child: GestureDetector(
                       onTap: () async {
                         final linkElement = LinkableElement(link, link);
@@ -422,6 +389,8 @@ Widget materialBuilder(index, context,
                       ),
                     ),
                   ),
+                  Spacer(),
+                  Text(MainCubit.get(context).profileModel!.materials[index].accepted!? 'Accepted':'Pending', style: TextStyle(color: MainCubit.get(context).profileModel!.materials[index].accepted!? Colors.green:Colors.amber),),
                 ],
               );
             },
