@@ -7,6 +7,7 @@ import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:googleapis/admin/directory_v1.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/layout/home/semester_navigate.dart';
 import 'package:lol/models/admin/announcement_model.dart';
 import 'package:lol/models/subjects/semster_model.dart';
@@ -411,7 +412,7 @@ Widget CustomDrawer(context, semester) {
                         color: !isDark ? Colors.black : Colors.white,
                       ))
                 ],
-                decoration: const BoxDecoration(color: Color(0xff4763C4)),
+                decoration: BoxDecoration(color: HexColor('#4764C5')),
                 accountName: Row(
                   children: [
                     Text(
@@ -462,7 +463,7 @@ Widget CustomDrawer(context, semester) {
                 // ],
               )
             : UserAccountsDrawerHeader(
-                decoration: const BoxDecoration(color: Color(0xff4763C4)),
+                decoration: BoxDecoration(color: HexColor('#4764C5')),
                 // accountName: Text(""),
                 // accountEmail: Text("2nd year "),
                 accountName: const Text("Guest"),
@@ -533,6 +534,17 @@ Widget CustomDrawer(context, semester) {
                                   .profileModel!
                                   .semester));
                     }
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.leaderboard),
+                  title: const Text('Leaderboard'),
+                  onTap: () {
+                    navigate(
+                        context,
+                        LeaderboardScreen(
+                          semester: semester,
+                        ));
                   },
                 ),
                 ExpansionTile(
@@ -713,18 +725,6 @@ Widget CustomDrawer(context, semester) {
                   title: const Text("About Us"),
                   onTap: () {
                     navigate(context, AboutUs());
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.leaderboard),
-                  title: const Text('Leaderboard'),
-                  onTap: () {
-// print("s")
-                    navigate(
-                        context,
-                        LeaderboardScreen(
-                          semester: semester,
-                        ));
                   },
                 ),
                 SizedBox(
