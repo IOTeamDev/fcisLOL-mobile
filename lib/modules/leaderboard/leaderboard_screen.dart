@@ -70,9 +70,11 @@ class LeaderboardScreen extends StatelessWidget {
                     padding: const EdgeInsetsDirectional.symmetric(horizontal: 10.0),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Column(
                           children: [
+                            if(MainCubit.get(context).notAdminLeaderboardModel![1].name != null)
                             ConstrainedBox(constraints: BoxConstraints(maxWidth: width/3.5),child: Text(MainCubit.get(context).notAdminLeaderboardModel![1].name.toString(), style: TextStyle(fontSize: width/19),overflow: TextOverflow.ellipsis, maxLines: 2, textAlign: TextAlign.center,)),
                             SizedBox(height: 10,),
                             Container(
@@ -83,13 +85,14 @@ class LeaderboardScreen extends StatelessWidget {
                               ),
                               height: 170,
                               width: width/3.2,
-                              child: Column(
+
+                              child: MainCubit.get(context).notAdminLeaderboardModel![1].name != null? Column(
                                 children: [
                                   Container(height: 35, width: 35, child: Center(child: Text('2', style: TextStyle(color: Colors.black, fontSize: width/20),)), decoration: BoxDecoration(color: HexColor('#C0C0C0'), borderRadius: BorderRadius.circular(10)),),
                                   SizedBox(height: 10,),
                                   Text('${MainCubit.get(context).notAdminLeaderboardModel![1].score??'-'} pts', style: TextStyle(fontSize: width/17),),
                                 ],
-                              ),
+                              ): Container(),
                             ),
                           ],
                         ),
@@ -117,6 +120,7 @@ class LeaderboardScreen extends StatelessWidget {
                         ),
                         Column(
                           children: [
+                            if(MainCubit.get(context).notAdminLeaderboardModel![2].name != null)
                             ConstrainedBox(constraints: BoxConstraints(maxWidth: width/3.5),child: Text(MainCubit.get(context).notAdminLeaderboardModel![2].name.toString(), style: TextStyle(fontSize: width/19),overflow: TextOverflow.ellipsis, maxLines: 2, textAlign: TextAlign.center,)),
                             SizedBox(height: 10,),
                             Container(
@@ -127,13 +131,13 @@ class LeaderboardScreen extends StatelessWidget {
                               ),
                               height: 130,
                               width: width/3.2,
-                              child: Column(
+                              child: MainCubit.get(context).notAdminLeaderboardModel![1].name != null? Column(
                                 children: [
                                   Container(height: 30, width: 30, decoration: BoxDecoration(color: HexColor('#CD7F32'), borderRadius: BorderRadius.circular(10)), child: Center(child: Text('3', style: TextStyle(color: Colors.black, fontSize: width/20),)),),
                                   SizedBox(height: 10,),
                                   Text('${MainCubit.get(context).notAdminLeaderboardModel![2].score} pts', style: TextStyle(fontSize: width/19),),
                                 ],
-                              ),
+                              ): Container(),
                             ),
                           ],
                         ),
@@ -163,7 +167,12 @@ class LeaderboardScreen extends StatelessWidget {
                     ),
                 ],
               ),
-              fallback: (context) => Center(child: CircularProgressIndicator(),),
+              fallback: (context) {
+                if(state is GetLeaderboardLoadingState)
+                return Center(child: CircularProgressIndicator(),);
+                else
+                  return Center(child: Text('You LeaderBorad Yet!!!'),);
+              },
             ),
           ),
         );
