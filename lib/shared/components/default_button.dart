@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 Widget defaultButton(
+
     {required buttonFunc,
     required String title,
     buttonIcon,
-    required double buttonWidth}) {
+    required double buttonWidth, required Color color}) {
   return buttonWidth == 0
       ? MaterialButton(
           minWidth: 0,
@@ -15,7 +16,7 @@ Widget defaultButton(
           ))
       : Container(
           decoration: BoxDecoration(
-              color: const Color(0xff191C3B),
+              color: color,
               borderRadius: BorderRadius.circular(0)),
           height: 50,
           width: buttonWidth,

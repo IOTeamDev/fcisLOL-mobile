@@ -127,7 +127,11 @@ class Home extends StatelessWidget {
             : Scaffold(
                 key: scaffoldKey,
                 // backgroundColor: Color(0xffE1E1E1),
-                drawer: CustomDrawer(context),
+                drawer: CustomDrawer(
+                    context,
+                    TOKEN == null
+                        ? SelectedSemester
+                        : MainCubit.get(context).profileModel!.semester),
                 body: profile == null && TOKEN != null
                     ? const Center(
                         child: CircularProgressIndicator(),
@@ -172,28 +176,30 @@ class Home extends StatelessWidget {
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
                                                 children: [
-                                                  const Icon(Icons.apple),
-                                                  const SizedBox(width: 10),
+                                                  const SizedBox(width: 15),
+                                                  Image.asset(
+                                                    "images/l.png",
+                                                    width: 45,
+                                                    height: 45,
+                                                  ),
                                                   Text(
                                                     "UniNotes",
-                                                    style:
-                                                        GoogleFonts.montserrat(
-                                                            fontSize: 23,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
+                                                    style: GoogleFonts.abel(
+                                                        fontSize: 28,
+                                                        fontWeight:
+                                                            FontWeight.w500),
                                                   ),
                                                 ],
                                               ))),
                                       SizedBox(
                                         width: 25,
-                                        
                                       ),
                                     ],
                                   ),
                                 ),
                                 Container(
-                                    margin: EdgeInsets.only(left: 40),
+                                    margin:
+                                        EdgeInsets.only(left: 40, bottom: 20),
                                     child: Text(
                                       "Announcements",
                                       style: TextStyle(
@@ -214,10 +220,16 @@ class Home extends StatelessWidget {
                                       items: anonuncmentsss!.isEmpty
                                           ? [
                                               Container(
-                                                child: Image.network(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15.0),
+                                                ),
+                                                child: Image.asset(
+                                                    height: 600,
                                                     width: double.infinity,
                                                     fit: BoxFit.cover,
-                                                    "https://static.rfstat.com/logo-presets/3632/thumbnail_2af106485690_1x.webp"),
+                                                    "images/th.png"),
                                               )
                                             ]
                                           : anonuncmentsss.map((anonuncments) {
@@ -226,7 +238,8 @@ class Home extends StatelessWidget {
                                                       Alignment.bottomCenter,
                                                   children: [
                                                     Container(
-                                                      margin:EdgeInsets.only(top:5),
+                                                      margin: EdgeInsets.only(
+                                                          top: 5),
                                                       clipBehavior:
                                                           Clip.antiAlias,
                                                       // margin: const EdgeInsets.all(6.0),
@@ -234,7 +247,7 @@ class Home extends StatelessWidget {
                                                       decoration: BoxDecoration(
                                                         borderRadius:
                                                             BorderRadius
-                                                                .circular(10.0),
+                                                                .circular(15.0),
                                                         // image: DecorationImage(
                                                         //   image: AssetImage(
                                                         //     carsor.image ?? "images/llogo.jfif",
@@ -245,7 +258,7 @@ class Home extends StatelessWidget {
                                                       child: Image.network(
                                                         anonuncments.image,
                                                         width: 400,
-                                                        height:250,
+                                                        height: 250,
                                                         fit: BoxFit.fitWidth,
                                                       ),
                                                     ),
@@ -306,14 +319,15 @@ class Home extends StatelessWidget {
                                         aspectRatio: 16 / 9,
                                         autoPlayCurve: Curves.fastOutSlowIn,
                                         enableInfiniteScroll:
-                                            anonuncmentsss.isEmpty
+                                            anonuncmentsss.length < 5
                                                 ? false
                                                 : true,
                                         autoPlayInterval:
                                             const Duration(seconds: 4),
                                         autoPlayAnimationDuration:
                                             const Duration(milliseconds: 800),
-                                        viewportFraction: 0.8,
+                                        viewportFraction:
+                                            anonuncmentsss.isEmpty ? 1 : 0.8,
                                       ),
                                     );
                                   }
@@ -368,7 +382,7 @@ class Home extends StatelessWidget {
   }
 }
 
-Widget CustomDrawer(context) {
+Widget CustomDrawer(context, semester) {
   // final SelectedSemester = "Three";
   // print(SelectedSemester.toString() + "Drawer ");
   ProfileModel? profileModel;
@@ -705,7 +719,12 @@ Widget CustomDrawer(context) {
                   leading: const Icon(Icons.leaderboard),
                   title: const Text('Leaderboard'),
                   onTap: () {
-                    navigate(context, LeaderboardScreen());
+// print("s")
+                    navigate(
+                        context,
+                        LeaderboardScreen(
+                          semester: semester,
+                        ));
                   },
                 ),
                 SizedBox(
@@ -719,7 +738,7 @@ Widget CustomDrawer(context) {
                       borderRadius: BorderRadius.circular(20),
                       color: TOKEN != null ? Colors.red : Colors.green),
                   child: TOKEN != null
-                      ? GestureDetector(
+                      ? InkWell(
                           onTap: () {
                             AwesomeDialog(
                               context: context,
@@ -740,7 +759,7 @@ Widget CustomDrawer(context) {
                                 MainCubit.get(context).logout(context);
                                 Provider.of<ThemeProvide>(context,
                                         listen: false)
-                                    .temp = false;
+                                    .changeMode(dontWannaDark: true);
                                 Provider.of<ThemeProvide>(context,
                                         listen: false)
                                     .notifyListeners();
@@ -799,15 +818,15 @@ String Level(String semester) {
   switch (semester) {
     case "One":
     case "Two":
-      return "Freshman";
+      return "First Level";
 
     case "Three":
     case "Four":
-      return "Sophomore";
+      return "Second Level";
 
     case "Five":
     case "Six":
-      return "Junior";
+      return "Third Level";
 
     case "Seven":
     case "Eight":

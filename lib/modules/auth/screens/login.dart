@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hexcolor/hexcolor.dart';
-import 'package:lol/main.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/default_button.dart';
 import 'package:lol/shared/components/default_text_button.dart';
@@ -16,6 +14,7 @@ import 'package:lol/layout/home/home.dart';
 import 'package:lol/layout/profile/profile.dart';
 import 'package:lol/shared/components/navigation.dart';
 import 'package:lol/shared/network/local/shared_prefrence.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -51,187 +50,218 @@ class LoginScreen extends StatelessWidget {
           var loginCubit = LoginCubit.get(context);
 
           return Scaffold(
-           // appBar: AppBar(),
-            body: Center(
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Form(
-                  key: formKey,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Center(
-                          child: Text(
-                            "Login ",
+            appBar: AppBar(),
+            body: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Form(
+                key: formKey,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Image.asset(
+                            "images/l.png",
+                            width: 35,
+                            height: 35,
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          const Text(
+                            "UniNotes",
                             style: TextStyle(
-                              fontSize: screenWidth(context)/7,
-                              fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                letterSpacing: 2,
+                                color: Colors.black),
+                          ),
+
+                          // SizedBox(width:70)
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 50,
+                      ),
+                      const Text(
+                        "Login ",
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const Text(
+                          "Continue Your Success Journey with UNINOTES !"),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Column(
+                        children: [
+                          const Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              "Email address",
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w600),
                             ),
                           ),
-                        ),
-                        //const Text("Continue Your Success Journey with temp !"),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        Column(
-                          children: [
-                            // const Align(
-                            //   alignment: Alignment.topLeft,
-                            //   child: Text(
-                            //     "Email address",
-                            //     style: TextStyle(
-                            //         fontSize: 16, fontWeight: FontWeight.w600),
-                            //   ),
-                            // ),
-                            // const SizedBox(
-                            //   height: 5,
-                            // ),
-                            // defaultTextField(
-                            //     validateor: (value) {
-                            //       if (value!.isEmpty) {
-                            //         return "Field cannot be empty";
-                            //       } else {
-                            //         return null; // Form is valid.
-                            //       }
-                            //     },
-                            //     controller: emailController,
-                            //     type: TextInputType.emailAddress),
-                            TextFormField(
-                              controller: emailController,
-                              keyboardType: TextInputType.emailAddress,
-                              validator: (value) {
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          defaultTextField(
+                              validateor: (value) {
                                 if (value!.isEmpty) {
                                   return "Field cannot be empty";
                                 } else {
                                   return null; // Form is valid.
                                 }
                               },
-                              style: TextStyle(color: isDark? Colors.black: Colors.white),
-                              decoration: InputDecoration(
-                                hintText: 'Email Address',
-                                hintStyle: TextStyle(color: isDark? Colors.grey: Colors.grey[600]),
-                                filled: true,
-                                fillColor: isDark? Colors.white:Colors.grey[350],
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                  borderSide: BorderSide.none
-                                )
+                              controller: emailController,
+                              type: TextInputType.emailAddress),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text(
+                                "Password",
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w600),
                               ),
-                            )
-                          ],
-                        ),
-                        SizedBox(height: screenHeight(context)/40,),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // const Text(
-                            //   "Password",
-                            //   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                            // ),
-                            // SizedBox(height: 10,),
-                            // Row(
-                            //   mainAxisSize: MainAxisSize.min,
-                            //   children: [
-                            //
-                                //const Spacer(),
-                                // TextButton(
-                                //   style: TextButton.styleFrom(
-                                //       padding: const EdgeInsets.all(0)),
-                                //   child: const Text(
-                                //     "Forgot Password ?",
-                                //     textAlign: TextAlign.end,
-                                //   ),
-                                //   onPressed: () {},
-                                // ),
-                            //   ],
-                            // ),
-                            // const SizedBox(height: 5,),
-                            // defaultTextField(
-                            //     suffFunc: () {
-                            //       loginCubit.togglePassword();
-                            //     },
-                            //     dtaSufIcon: Icon(
-                            //       Icons.remove_red_eye,
-                            //       color: loginCubit.hiddenPassword
-                            //           ? null
-                            //           : Colors.blue,
-                            //     ),
-                            //     wantMargin: false,
-                            //     validateor: (value) {
-                            //       return null;
-                            //     },
-                            //     controller: passwordController,
-                            //     obscure: loginCubit.hiddenPassword),
+                              const Spacer(),
+                              TextButton(
+                                style: TextButton.styleFrom(
+                                    padding: const EdgeInsets.all(0)),
+                                child: const Text(
+                                  "Forgot Password ?",
+                                  textAlign: TextAlign.end,
+                                ),
+                                onPressed: () {
+showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      title: const Text('Forgot Password'),
+                                      content: Form(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            TextFormField(
+                                              controller: emailController,
+                                              keyboardType:TextInputType.emailAddress,
+                                              decoration: const InputDecoration(
+                                                labelText: 'Enter your email',
+                                              ),
+                                            
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text('Cancel'),
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                          
+                                              String email =
+                                                  emailController.text.trim();
+                                              forgetPassword(email: email);
+                                              Navigator.of(context).pop();
+                                          },
+                                          child: const Text('Submit'),
+                                        )
+                                        
+                                      ],
+                                    ),
+                                  );
+                                
+                            },
+                          ),
+                        
 
-                            TextFormField(
-                              onFieldSubmitted: (value) {
-                                  if (formKey.currentState!.validate()) {
-                                    // update fcm token
-                                    loginCubit.login(
-                                        email: emailController.text.toLowerCase(),
-                                        password: passwordController.text);
-                                  }
+                                
+                              
+                            ],
+                          ),
+                          // const SizedBox(height: 5,),
+                          defaultTextField(
+onFieldSubmitted: (val){
+
+if (formKey.currentState!.validate()) {
+// update fcm token
+
+                                  loginCubit.login(
+                                      email: emailController.text.toLowerCase(),
+                                      password: passwordController.text);
+                                }
+
+},
+
+
+                              suffFunc: () {
+                                loginCubit.togglePassword();
                               },
-                              controller: passwordController,
-                              obscureText: loginCubit.hiddenPassword,
-                              keyboardType: TextInputType.visiblePassword,
-                              validator: (value) {
+                              dtaSufIcon: Icon(
+                                Icons.remove_red_eye,
+                                color: loginCubit.hiddenPassword
+                                    ? null
+                                    : Colors.blue,
+                              ),
+                              wantMargin: false,
+                              validateor: (value) {
                                 return null;
                               },
-                              style: TextStyle(color: isDark? Colors.black: Colors.white),
-                              decoration: InputDecoration(
-                                hintText: 'Password',
-                                hintStyle: TextStyle(color: isDark? Colors.grey: Colors.grey[600]),
-                                filled: true,
-                                suffixIcon: IconButton(icon: Icon(Icons.remove_red_eye, color: loginCubit.hiddenPassword? isDark? Colors.grey: null: Colors.blue),onPressed: (){loginCubit.togglePassword();},),
-                                fillColor: isDark? Colors.white:Colors.grey[350],
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                  borderSide: BorderSide.none
-                                )
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 50,
-                        ),
-                        state is LoginLoading
-                            ? const Center(
-                                child: CircularProgressIndicator(),
-                              )
-                            : MaterialButton(
-                                onPressed: () {
-                                  if (formKey.currentState!.validate()) {
-                                    // update fcm token
-                                    loginCubit.login(
-                                        email: emailController.text.toLowerCase(),
-                                        password: passwordController.text);
-                                  }
-                                },
-                                padding: EdgeInsetsDirectional.symmetric(vertical: 10),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                color: HexColor('#4764C5'),
-                                minWidth: double.infinity,
-                                child: Text('Log in', style: TextStyle(fontSize: screenWidth(context)/15, color: Colors.white)),
-                                ),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text("Not a member yet ?"),
-                            // defaultTextButton(
-                            //   onPressed: () {
-                            //     navigatReplace(context, Registerscreen());
-                            //   },
-                            //   text: "Register",
-                            // ),
-                            TextButton(onPressed: (){ navigatReplace(context, Registerscreen());}, child: Text('Register'))
-                          ],
-                        )
-                      ],
-                    ),
+                              controller: passwordController,
+                              obscure: loginCubit.hiddenPassword),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      const SizedBox(
+                        height: 50,
+                      ),
+                      state is LoginLoading
+                          ? const Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : defaultButton(
+                              color: Color(0xff4763C4),
+                              buttonFunc: () {
+                                if (formKey.currentState!.validate()) {
+// update fcm token
+
+                                  loginCubit.login(
+                                      email: emailController.text.toLowerCase(),
+                                      password: passwordController.text);
+                                }
+                              },
+                              buttonWidth: 400,
+                              title: "Log in"),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text("Not a member yet ?"),
+                          defaultTextButton(
+                            onPressed: () {
+                              navigatReplace(context, Registerscreen());
+                            },
+                            text: "Register",
+                          )
+                        ],
+                      )
+                    ],
                   ),
                 ),
               ),
@@ -242,3 +272,17 @@ class LoginScreen extends StatelessWidget {
     );
   }
 }
+  Future<void> forgetPassword(
+      {required String email}) async {
+
+      final String subject = Uri.encodeComponent('Forgot Password');
+      final String body = Uri.encodeComponent(email);
+
+      final Uri emailUri = Uri(
+        scheme: 'mailto',
+        path: 'mahmoud2004saad@gmail.com',
+        query: 'subject=$subject&body=$body',
+      );
+      await launchUrl(emailUri);
+    
+  }

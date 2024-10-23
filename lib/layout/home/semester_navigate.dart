@@ -42,13 +42,19 @@ class SemesterNavigate extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(Icons.apple),
-                              const SizedBox(width: 10),
-                              Text(
-                                "UniNotes",
-                                style: GoogleFonts.montserrat(
-                                    fontSize: 23, fontWeight: FontWeight.w500),
-                              ),
+                              const SizedBox(width: 15),
+                                                  Image.asset(
+                                                    "images/l.png",
+                                                    width: 45,
+                                                    height: 45,
+                                                  ),
+                                                  Text(
+                                                    "UniNotes",
+                                                    style: GoogleFonts.abel(
+                                                        fontSize: 28,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  ),
                             ],
                           )),
                     ),

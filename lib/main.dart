@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lol/ch_ye.dart';
 import 'package:lol/drawer.dart';
 import 'package:lol/layout/home/bloc/main_cubit.dart';
 import 'package:lol/layout/home/bloc/main_cubit_states.dart';
@@ -119,10 +120,15 @@ main() async {
 class ThemeProvide extends ChangeNotifier {
   bool temp = false;
 
-  void changeMode() async {
-    temp = !temp;
-    await Cache.writeData(key: "mode", value: temp);
-    isDark = temp;
+  void changeMode({bool dontWannaDark = false}) async {
+    if (dontWannaDark) {
+      isDark = false;
+      await Cache.writeData(key: "mode", value: false);
+    } else {
+      temp = !temp;
+      await Cache.writeData(key: "mode", value: temp);
+      isDark = temp;
+    }
     print('Theme mode changed: $isDark'); // Debugging log
 
     // Notify listeners to rebuild widgets listening to this provider

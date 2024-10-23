@@ -22,7 +22,7 @@ class FeedbackScreen extends StatelessWidget {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          backgroundEffects(),
+          // backgroundEffects(),
           SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

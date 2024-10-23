@@ -28,62 +28,93 @@ class ChoosingYear extends StatelessWidget {
       value: loginCubit,
       child: BlocConsumer<LoginCubit, LoginStates>(
         builder: (context, state) => Scaffold(
-          backgroundColor: const Color(0xff1B262C),
-          appBar: AppBar(
-            actions: [
-              if(userInfo==null)
-              Container(
-                margin: const EdgeInsets.only(right: 10),
-                decoration: BoxDecoration(
-                    
-                    color:  Colors.grey,
-                    borderRadius: BorderRadius.circular(10)),
-                child: MaterialButton(
-                  onPressed: () {
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginScreen()),(route) => false,);
-                  },
-                  child: const Text(
-                    "Login",
-                    style: TextStyle(color: Colors.white),
+          backgroundColor: Colors.white,
+          body: Column(
+            children: [
+              // Content at the top of the body
+              if (userInfo == null)
+                Container(
+                  margin: EdgeInsets.only(top: 120),
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      OutlinedButton(
+                        onPressed: () {
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LoginScreen(),
+                              ),
+                              (route) => false);
+                        },
+                        child: Text(
+                          "Sign up with Email",
+                          style: TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 40,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(child: Divider()),
+                          Container(
+                              margin: EdgeInsets.symmetric(horizontal: 10),
+                              child: Text("OR")),
+                          Expanded(child: Divider()),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        "Continue as a guest",
+                        style: TextStyle(
+                          fontSize: 25,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-            ],
-            title: const Text("temp"),
-            centerTitle: true,
-            backgroundColor: const Color(0xff0F4C75),
-          ),
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Year(
-                    title: "Level 1",
-                    userInfo: userInfo,
-                  ),
-                  Year(
-                    title: "Level 2",
-                    userInfo: userInfo,
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Year(
-                    title: "Level 3",
-                    userInfo: userInfo,
-                  ),
-                  Year(
-                    title: "Level 4",
-                    userInfo: userInfo,
-                  ),
-                ],
+
+              // Spacer to push content to the center
+              Expanded(
+                child: Column(
+                  // crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment
+                      .center, // Center the Year widgets vertically
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment
+                          .center, // Center the rows horizontally
+                      children: [
+                        Year(
+                          title: "Level 1",
+                          userInfo: userInfo,
+                        ),
+                        Year(
+                          title: "Level 2",
+                          userInfo: userInfo,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment
+                          .center, // Center the rows horizontally
+                      children: [
+                        Year(
+                          title: "Level 3",
+                          userInfo: userInfo,
+                        ),
+                        Year(
+                          title: "Level 4",
+                          userInfo: userInfo,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -143,18 +174,31 @@ class YearState extends State<Year> {
               });
             }
           },
-          child: Container(
-            width: 100,
-            height: 100,
-            margin: const EdgeInsets.all(25),
+          child: AnimatedContainer(
+            margin: EdgeInsets.all(20),
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
             decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 197, 71, 25),
-              borderRadius: BorderRadius.circular(8.0),
+              color: Colors.blueAccent,
+              borderRadius: BorderRadius.circular(20.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  offset: Offset(0, 4),
+                  blurRadius: 8.0,
+                ),
+              ],
             ),
+            width: 150, // Fixed width for each card
+            height: 150, // Fixed height for each card
             child: Center(
               child: Text(
                 widget.title,
-                style: const TextStyle(color: Colors.white, fontSize: 18),
+                // 'Level $level',
+                style: TextStyle(
+                    fontSize: 24,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
               ),
             ),
           ),

@@ -19,7 +19,6 @@ class ReportBug extends StatelessWidget {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          backgroundEffects(),
           Container(
             width: double.infinity,
             margin: const EdgeInsetsDirectional.only(top: 50),
