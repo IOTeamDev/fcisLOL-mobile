@@ -95,16 +95,40 @@ class Profile extends StatelessWidget {
                                 children: [
                                   Align(
                                     child: CircleAvatar(
-                                      radius: width / 7.5,
+                                      radius: width / 8,
                                       backgroundImage: NetworkImage(
                                         mainCubit.profileModel!.photo,
                                       ),
                                     ),
                                   ),
-                                  Container(
-                                    width: width / 7.5,
-                                    child: Text("Top Contributor"),
-                                  )
+                                  if (mainCubit.score4User != null &&
+                                      mainCubit.profileModel != null)
+                                    if (mainCubit.profileModel!.role !=
+                                            "ADMIN" &&
+                                        mainCubit.score4User!.userRank! <= 3)
+                                      Container(
+                                        decoration: BoxDecoration(
+                                            color: Color(mainCubit
+                                                        .score4User!.userRank ==
+                                                    1
+                                                ? 0xffFFD700
+                                                : mainCubit.score4User!
+                                                            .userRank ==
+                                                        2
+                                                    ? 0xffC0C0C0
+                                                    : 0xffCD7F32),
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        // width: width / 7.5,
+                                        child: Text(
+                                            mainCubit.score4User!.userRank == 1
+                                                ? "Top Contributor"
+                                                : mainCubit.score4User!
+                                                            .userRank ==
+                                                        2
+                                                    ? "2nd Contributor"
+                                                    : "3rd Contributor"),
+                                      )
                                 ],
                               ),
                             ),
@@ -151,32 +175,35 @@ class Profile extends StatelessWidget {
                                     )
                                   ],
                                 ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Phone: ',
-                                      style: TextStyle(
-                                          color: isDark
-                                              ? Colors.white
-                                              : Colors.black,
-                                          fontSize: screenWidth(context) / 20),
-                                      maxLines: 2,
-                                    ),
-                                    SizedBox(
-                                      width: screenWidth(context) / 2.5,
-                                      child: Text(
-                                        '${mainCubit.profileModel!.phone}',
+                                if (mainCubit.profileModel?.phone != null &&
+                                    mainCubit.profileModel!.phone!.isNotEmpty)
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Phone: ',
                                         style: TextStyle(
                                             color: isDark
                                                 ? Colors.white
                                                 : Colors.black,
                                             fontSize:
-                                                screenWidth(context) / 25),
+                                                screenWidth(context) / 20),
                                         maxLines: 2,
                                       ),
-                                    )
-                                  ],
-                                ),
+                                      SizedBox(
+                                        width: screenWidth(context) / 2.5,
+                                        child: Text(
+                                          '${mainCubit.profileModel!.phone}',
+                                          style: TextStyle(
+                                              color: isDark
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                              fontSize:
+                                                  screenWidth(context) / 25),
+                                          maxLines: 2,
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 Builder(
                                   builder: (context) {
                                     if (MainCubit.get(context)
@@ -202,24 +229,20 @@ class Profile extends StatelessWidget {
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.bold),
                                             ),
-                                            if (false
-
-                                                // MainCubit.get(context)
-                                                //           .profileModel!
-                                                //           .role !=
-                                                //       "ADMIN" &&
-                                                //   score4User.score != 0
-
-                                                )
-                                              Column(
-                                                children: [
-                                                  Icon(Icons.looks_one),
-                                                  SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Text(score4User.userRank
-                                                      .toString())
-                                                ],
+                                            SizedBox(
+                                              width: 100,
+                                            ),
+                                            if (MainCubit.get(context)
+                                                        .profileModel!
+                                                        .role !=
+                                                    "ADMIN" &&
+                                                score4User.score != 0)
+                                              Text(
+                                                "Rank:${score4User.userRank}",
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w700),
                                               )
                                           ],
                                         );
@@ -247,13 +270,16 @@ class Profile extends StatelessWidget {
                           "My Uploads",
                           style: TextStyle(fontSize: screenWidth(context) / 18),
                         )),
+                        SizedBox(
+                          height: 10,
+                        ),
                         divider(),
                         Expanded(
                           child: ConditionalBuilder(
                               condition: MainCubit.get(context)
-                                      .profileModel!
-                                      .materials!=null
-                                      &&
+                                          .profileModel!
+                                          .materials !=
+                                      null &&
                                   state is! GetRequestsLoadingState,
                               builder: (context) => Padding(
                                     padding:

@@ -43,7 +43,7 @@ class ChoosingYear extends StatelessWidget {
                           Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => LoginScreen(),
+                                builder: (context) => Registerscreen(),
                               ),
                               (route) => false);
                         },

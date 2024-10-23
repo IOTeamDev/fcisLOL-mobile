@@ -43,18 +43,16 @@ class SemesterNavigate extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const SizedBox(width: 15),
-                                                  Image.asset(
-                                                    "images/l.png",
-                                                    width: 45,
-                                                    height: 45,
-                                                  ),
-                                                  Text(
-                                                    "UniNotes",
-                                                    style: GoogleFonts.abel(
-                                                        fontSize: 28,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  ),
+                              Image.asset(
+                                "images/l.png",
+                                width: 45,
+                                height: 45,
+                              ),
+                              Text(
+                                "UniNotes",
+                                style: GoogleFonts.abel(
+                                    fontSize: 28, fontWeight: FontWeight.w500),
+                              ),
                             ],
                           )),
                     ),
@@ -97,7 +95,8 @@ class SemesterNavigate extends StatelessWidget {
                         // subjectItemBuild(
                         //     semesters[semesterIndex!]
                         //         .subjects[index],context);
-                        subjectItemBuild(semesters[semesterIndex].subjects[index], context);
+                        subjectItemBuild(
+                            semesters[semesterIndex].subjects[index], context);
                   },
                 ),
               ],
