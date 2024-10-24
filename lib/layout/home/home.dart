@@ -214,8 +214,7 @@ class Home extends StatelessWidget {
                                     return Center(
                                         child: CircularProgressIndicator());
                                   } else {
-                                    var anonuncmentsss =
-                                        AdminCubit.get(context).announcements;
+                                    var anonuncmentsss = AdminCubit.get(context).announcements;
 
                                     return CarouselSlider(
                                       items: anonuncmentsss!.isEmpty

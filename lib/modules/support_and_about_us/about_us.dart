@@ -155,7 +155,7 @@ class AboutUs extends StatelessWidget {
                     children: [
                       CircleAvatar(radius: 30,backgroundImage: NetworkImage('https://media-hbe1-1.cdn.whatsapp.net/v/t61.24694-24/417357665_1165557908119538_5289593370887603831_n.jpg?ccb=11-4&oh=01_Q5AaIKErL2y34Y8sL0VDkTIiSARZcjxPB3C2rneJY3PKJtIy&oe=671F50A6&_nc_sid=5e03e0&_nc_cat=109'),),
                       SizedBox(width: 10,),
-                      ConstrainedBox(constraints: BoxConstraints(maxWidth: width/3.2), child: Text('Omar Hassan', style: TextStyle(fontSize: 20, color: Colors.white),overflow: TextOverflow.ellipsis,maxLines: 2,),),
+                      ConstrainedBox(constraints: BoxConstraints(maxWidth: width/3.2), child: Text('Omar M. Hasan', style: TextStyle(fontSize: 20, color: Colors.white),overflow: TextOverflow.ellipsis,maxLines: 2,),),
                       const Spacer(),
                       ElevatedButton(
                         onPressed: (){
