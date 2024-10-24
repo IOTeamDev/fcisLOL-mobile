@@ -516,7 +516,7 @@ Widget CustomDrawer(context, semester) {
                     leading: const Icon(Icons.admin_panel_settings),
                     title: const Text("Admin"),
                     onTap: () {
-                      navigate(context, AdminPanel());
+                      navigatReplace(context, AdminPanel());
                     },
                   ),
                 ListTile(

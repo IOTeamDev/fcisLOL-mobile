@@ -47,14 +47,25 @@ class AdminPanel extends StatelessWidget {
                   Stack(
                     children: [
                       Positioned(
-                        left: 0,
-                        child: backButton(context),
+                        left: 10,
+                        top: 5,
+                        child: IconButton(
+                          
+                          // padding: EdgeInsets.zero,
+                          // materialTapTargetSize:
+                          //     MaterialTapTargetSize.shrinkWrap,
+                          onPressed: () {
+                            navigatReplace(context, Home());
+                          },
+                          icon: Icon(Icons.arrow_back,size: 30,),
+                        ),
                       ),
                       Center(
                           child: Text(
                         'Admin',
                         style: TextStyle(
-                            fontSize: width / 10, ),
+                          fontSize: width / 10,
+                        ),
                         textAlign: TextAlign.center,
                       )),
                     ],
@@ -78,20 +89,22 @@ class AdminPanel extends StatelessWidget {
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(40),
                                 topRight: Radius.circular(40)),
-                            color: isDark? Colors.white:HexColor('#3B3B3B'),
+                            color: isDark ? Colors.white : HexColor('#3B3B3B'),
                           ),
                         ),
                         ElevatedButton(
                           onPressed: () {
-                            if(mainCubit.profileModel!=null)
-                            navigate(
-                                context,
-                                AddAnnouncement(
-                                  semester: mainCubit.profileModel!.semester,
-                                ));
+                            if (mainCubit.profileModel != null)
+                              navigate(
+                                  context,
+                                  AddAnnouncement(
+                                    semester: mainCubit.profileModel!.semester,
+                                  ));
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: isDark? HexColor('#3B3B3B'):HexColor('#757575'),
+                            backgroundColor: isDark
+                                ? HexColor('#3B3B3B')
+                                : HexColor('#757575'),
                             padding: EdgeInsets.zero, // Remove default padding
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
@@ -119,7 +132,7 @@ class AdminPanel extends StatelessWidget {
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(40),
                                 topRight: Radius.circular(40)),
-                            color: isDark? Colors.white:HexColor('#3B3B3B'),
+                            color: isDark ? Colors.white : HexColor('#3B3B3B'),
                           ),
                         ),
                         ElevatedButton(
