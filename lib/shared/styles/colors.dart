@@ -23,8 +23,10 @@ Color additional3 = const Color(0xff4EBF9E);
 HexColor remove = HexColor('F74C4C');
 
 List<HexColor> announcementsColorList = [
-  HexColor('#B7A130'),
-  HexColor('#4E2967'),
+  HexColor('#097458'),
+  HexColor('#683888'),
   HexColor('#B73030'),
-  HexColor('#405DA5'),
+  HexColor('#4764c5'),
+  HexColor('#3b3b3b'),
+  HexColor('#118ab2'),
 ];

@@ -40,7 +40,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     emit(CloseDrawerState());
   }
 
-  bool isDarkMode = false;
+  bool isDarkMode = true;
 
   File? userImageFile;
   String? userImagePath;

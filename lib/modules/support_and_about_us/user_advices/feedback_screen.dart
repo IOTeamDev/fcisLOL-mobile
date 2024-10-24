@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/constants.dart';
 import 'package:lol/shared/components/default_text_field.dart';
 import 'package:lol/shared/styles/colors.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../../main.dart';
 
 class FeedbackScreen extends StatelessWidget {
   FeedbackScreen({super.key});
@@ -15,58 +18,71 @@ class FeedbackScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double width = screenWidth(context);
+    double height = screenHeight(context);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       key: scaffoldKey,
       drawer: drawerBuilder(context),
-      backgroundColor: Colors.black,
-      body: Stack(
-        children: [
-          // backgroundEffects(),
-          SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 90,),
+            Stack(
               children: [
-                const SizedBox(
-                  height: 50,
+                Positioned(
+                  left: 0,
+                  child: backButton(context),
                 ),
-                backButton(context),
-                Padding(
-                  padding:
-                      const EdgeInsetsDirectional.symmetric(horizontal: 20.0),
+                Center(
                   child: Text(
-                    "Give Your Feedback",
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color: Colors.white, fontSize: 30),
-                    textAlign: TextAlign.start,
+                    'Feedback',
+                    style: TextStyle(fontSize: width / 10, ),
+                    textAlign: TextAlign.center,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: divider(),
-                ),
-                _buildFeedBackForm(context)
               ],
             ),
-          )
-        ],
+            SizedBox(height: 20,),
+            _buildFeedBackForm(context)
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildFeedBackForm(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
+    return Container(
+      decoration: BoxDecoration( color: isDark? HexColor('#3B3B3B'): HexColor('#757575'), borderRadius: BorderRadius.circular(15)),
+      margin: EdgeInsetsDirectional.symmetric(horizontal: 15, vertical: 30),
+      padding: const EdgeInsets.all(15.0),
       child: SingleChildScrollView(
         child: Form(
             key: _formKey,
             child: Column(
               children: [
-                customTextFormField(
-                  title: 'Your Feedback',
+                TextFormField(
+                  minLines: 12,
+                  maxLines: 15,
                   controller: _feedbackController,
-                  keyboardtype: TextInputType.multiline,
-                  maxLines: 8,
+                  keyboardType: TextInputType.multiline,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'This field must not be Empty';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                      hintText: 'Your feedback',
+                      hintStyle: TextStyle(
+                          fontSize: 20, color: Colors.grey[400]),
+                      border: UnderlineInputBorder(),
+                      enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                      focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white))
+                  ),
+                  style: const TextStyle(color: Colors.white),
+
                 ),
                 SizedBox(
                   height: 20,
@@ -74,43 +90,50 @@ class FeedbackScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    MaterialButton(
-                        minWidth: screenWidth(context) / 3,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        textColor: a,
-                        shape: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        color: additional1,
+                    ElevatedButton(
                         onPressed: () {
                           _feedbackController.text = '';
                           Navigator.of(context).pop();
                         },
-                        child: Text(
-                          'Cancel',
-                          style: TextStyle(fontSize: 25),
-                        )),
-                    MaterialButton(
-                      minWidth: screenWidth(context) / 3,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      textColor: a,
-                      shape: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      color: additional1,
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13)),
+                        padding: EdgeInsetsDirectional.symmetric(horizontal: screenWidth(context)/11 ),
+                        backgroundColor: Colors.white,
+                        textStyle: TextStyle(fontSize: screenWidth(context) / 17),
+                      ),
+                      child: const Text('Cancel',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    ElevatedButton(
                       onPressed: () {
                         sendBugReport(feedbackDescription: _feedbackController.text,);
                         _feedbackController.clear();
                       },
-                      child: Text(
-                        'Send',
-                        style: TextStyle(fontSize: 25),
-                      ),
+                        style: ElevatedButton
+                            .styleFrom(
+                          shape:
+                          RoundedRectangleBorder(
+                              borderRadius:
+                              BorderRadius
+                                  .circular(
+                                  13)),
+                          padding: EdgeInsetsDirectional.symmetric(horizontal: screenWidth(context)/11 ),
+                          backgroundColor:
+                          HexColor('#4764C5'),
+                          foregroundColor:
+                          Colors.white,
+                          textStyle: TextStyle(
+                              fontSize: screenWidth(context) / 17),
+                        ),
+                        child:
+                        const Text('Submit')
                     )
                   ],
                 )
               ],
-            )),
+            )
+        ),
       ),
     );
   }

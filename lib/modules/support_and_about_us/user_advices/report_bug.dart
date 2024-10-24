@@ -4,6 +4,8 @@ import 'package:lol/shared/components/components.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../layout/home/bloc/main_cubit.dart';
+import '../../../main.dart';
+import '../../../shared/components/constants.dart';
 
 class ReportBug extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -15,127 +17,159 @@ class ReportBug extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double width = screenWidth(context);
+    double height = screenHeight(context);
     return Scaffold(
-      backgroundColor: Colors.black,
-      body: Stack(
-        children: [
-          Container(
-            width: double.infinity,
-            margin: const EdgeInsetsDirectional.only(top: 50),
-            child: SingleChildScrollView(
-              child: Column(
+      body: Container(
+        width: double.infinity,
+        margin: const EdgeInsetsDirectional.only(top: 90),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Stack(
                 children: [
-                  backButton(context),
-                  adminTopTitleWithDrawerButton(
-                      title: 'Announcements', size: 32, hasDrawer: false),
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 10,
-                          ),
-                          TextFormField(
-                            controller: _titleController,
-                            keyboardType: TextInputType.text,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'This field must not be Empty';
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                              hintText: 'Bug title',
-                              hintStyle: TextStyle(
-                                  fontSize: 20, color: Colors.grey[400]),
-                              border: InputBorder.none,
-                            ),
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                          divider(),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          TextFormField(
-                            minLines: 5,
-                            maxLines: 5,
-                            controller: _descriptionController,
-                            keyboardType: TextInputType.multiline,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'This field must not be Empty';
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                              hintText: 'Bug description',
-                              hintStyle: TextStyle(
-                                  fontSize: 20, color: Colors.grey[400]),
-                              border: InputBorder.none,
-                            ),
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                          divider(),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Padding(
-                            padding: const EdgeInsetsDirectional.symmetric(
-                                horizontal: 10.0),
-                            child: Row(
-                              children: [
-                                //cancel button
-                                ElevatedButton(
-                                  onPressed: () {
-                                    _titleController.clear();
-                                    _descriptionController.clear();
-                                    Navigator.pop(context);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    padding:
-                                        const EdgeInsetsDirectional.symmetric(
-                                            horizontal: 35),
-                                    backgroundColor:
-                                        HexColor('D9D9D9').withOpacity(0.2),
-                                    foregroundColor: Colors.white,
-                                    textStyle: const TextStyle(fontSize: 15),
-                                  ),
-                                  child: const Text('Cancel'),
-                                ),
-                                const Spacer(),
-                                //submit button
-                                ElevatedButton(
-                                    onPressed: () async {
-                                      sendBugReport(
-                                          bugTitle: _titleController.text,
-                                          bugDescription:
-                                              _descriptionController.text,);
-                                      _descriptionController.clear();
-                                      _titleController.clear();
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      padding:
-                                          const EdgeInsetsDirectional.symmetric(
-                                              horizontal: 40),
-                                      backgroundColor: HexColor('B8A8F9'),
-                                      foregroundColor: Colors.white,
-                                      textStyle: const TextStyle(fontSize: 15),
-                                    ),
-                                    child: const Text('Submit')),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+                  Positioned(
+                    left: 0,
+                    child: backButton(context),
+                  ),
+                  Center(
+                    child: Text(
+                      'Report Bug',
+                      style: TextStyle(fontSize: width / 10, ),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 ],
               ),
-            ),
-          )
-        ],
+              SingleChildScrollView(
+                child: Container(
+                  decoration: BoxDecoration( color: isDark? HexColor('#3B3B3B'): HexColor('#757575'), borderRadius: BorderRadius.circular(15)),
+                  margin: EdgeInsetsDirectional.symmetric(horizontal: 15, vertical: 30),
+                  padding: const EdgeInsets.all(15.0),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+
+                        TextFormField(
+                          controller: _titleController,
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'This field must not be Empty';
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            hintText: 'Bug title',
+                            hintStyle: TextStyle(
+                                fontSize: 20, color: Colors.grey[400]),
+                            border: UnderlineInputBorder(),
+                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+                          ),
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextFormField(
+                          minLines: 5,
+                          maxLines: 10,
+                          controller: _descriptionController,
+                          keyboardType: TextInputType.multiline,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'This field must not be Empty';
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            hintText: 'Bug description',
+                            hintStyle: TextStyle(
+                                fontSize: 20, color: Colors.grey[400]),
+                              border: UnderlineInputBorder(),
+                              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white))
+                          ),
+                          style: const TextStyle(color: Colors.white),
+
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Padding(
+                          padding: const EdgeInsetsDirectional.symmetric(
+                              horizontal: 10.0),
+                          child: Row(
+                            children: [
+                              //cancel button
+                              ElevatedButton(
+                                onPressed: () {
+                                  _titleController.clear();
+                                  _descriptionController.clear();
+                                  Navigator.pop(context);
+                                },
+                                style:
+                                ElevatedButton.styleFrom(
+                                  shape:
+                                  RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius
+                                          .circular(
+                                          13)),
+                                  padding: EdgeInsetsDirectional.symmetric(horizontal: width/11 ),
+                                  backgroundColor:
+                                  Colors.white,
+                                  textStyle: TextStyle(
+                                      fontSize: width / 17),
+                                ),
+                                child: const Text(
+                                  'Cancel',
+                                  style: TextStyle(
+                                      color: Colors.black),
+                                ),
+                              ),
+                              const Spacer(),
+                              //submit button
+                              ElevatedButton(
+                                  onPressed: () async {
+                                    sendBugReport(
+                                        bugTitle: _titleController.text,
+                                        bugDescription:
+                                            _descriptionController.text,);
+                                    _descriptionController.clear();
+                                    _titleController.clear();
+                                  },
+                                  style: ElevatedButton
+                                      .styleFrom(
+                                    shape:
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                        BorderRadius
+                                            .circular(
+                                            13)),
+                                    padding: EdgeInsetsDirectional.symmetric(horizontal: width/11 ),
+                                    backgroundColor:
+                                    HexColor('#4764C5'),
+                                    foregroundColor:
+                                    Colors.white,
+                                    textStyle: TextStyle(
+                                        fontSize: width / 17),
+                                  ),
+                                  child:
+                                  const Text('Submit')),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
