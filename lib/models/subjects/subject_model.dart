@@ -10,7 +10,6 @@ class MaterialModel {
   String? type;
   AuthorModel? author;
 
-
   MaterialModel.fromJson(Map<String, dynamic> json) {
     id = json['id'] ?? 0;
     subject = json['subject'] ?? 'Unknown Subject';
@@ -22,15 +21,14 @@ class MaterialModel {
   }
 }
 
-class AuthorModel{
-
+class AuthorModel {
   String? authorName;
   String? authorPhoto;
 
-  AuthorModel.fromJson(Map<String, dynamic> json)
-  {
-    authorName = json['name'];
-    authorName = json['photo'];
-  }
+  AuthorModel({required this.authorName, required this.authorPhoto});
 
+  AuthorModel.fromJson(Map<String, dynamic> json) {
+    authorName = json['name'];
+    authorPhoto = json['photo'];
+  }
 }
