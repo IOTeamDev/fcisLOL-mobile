@@ -69,6 +69,7 @@ class SubjectCubit extends Cubit<SubjectState> {
     videos = filteredMaterials!
         .where((material) => material.type == 'VIDEO')
         .toList();
+
     documents = filteredMaterials!
         .where((material) => material.type == 'DOCUMENT')
         .toList();
@@ -81,7 +82,8 @@ class SubjectCubit extends Cubit<SubjectState> {
       required String type,
       required String semester,
       required String subjectName,
-      required String role}) {
+      required String role,
+      required AuthorModel author}) {
     emit(SaveMaterialLoading());
 
     DioHelp.postData(
@@ -93,6 +95,7 @@ class SubjectCubit extends Cubit<SubjectState> {
         'link': link,
         'type': type,
         'semester': semester,
+        'author': {'name': author.authorName, 'photo': author.authorPhoto}
       },
       token: TOKEN,
     ).then((response) {
@@ -101,8 +104,11 @@ class SubjectCubit extends Cubit<SubjectState> {
       } else {
         emit(SaveMaterialSuccessUser());
       }
+
       getMaterials(subject: subjectName);
-    });
+    }).catchError(
+        // ignore: invalid_return_type_for_catch_error
+        (e) => print('Error from posting material =/////////////////$e'));
   }
 
   void deleteMaterial({required String subjectName, required int id}) {

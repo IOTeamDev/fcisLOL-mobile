@@ -18,9 +18,9 @@ import 'package:lol/shared/network/remote/fcm_helper.dart';
 late String switchSemester;
 
 class ChoosingYear extends StatelessWidget {
-  UserInfo? userInfo;
+  final UserInfo? userInfo;
   final LoginCubit loginCubit;
-  ChoosingYear({super.key, this.userInfo, required this.loginCubit});
+  const ChoosingYear({super.key, this.userInfo, required this.loginCubit});
 
   @override
   Widget build(BuildContext context) {
@@ -80,40 +80,42 @@ class ChoosingYear extends StatelessWidget {
 
               // Spacer to push content to the center
               Expanded(
-                child: Column(
-                  // crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment
-                      .center, // Center the Year widgets vertically
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment
-                          .center, // Center the rows horizontally
-                      children: [
-                        Year(
-                          title: "Level 1",
-                          userInfo: userInfo,
-                        ),
-                        Year(
-                          title: "Level 2",
-                          userInfo: userInfo,
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment
-                          .center, // Center the rows horizontally
-                      children: [
-                        Year(
-                          title: "Level 3",
-                          userInfo: userInfo,
-                        ),
-                        Year(
-                          title: "Level 4",
-                          userInfo: userInfo,
-                        ),
-                      ],
-                    ),
-                  ],
+                child: SingleChildScrollView(
+                  child: Column(
+                    // crossAxisAlignment: CrossAxisAlignment.start,
+                    // mainAxisAlignment: MainAxisAlignment
+                    //     .center, // Center the Year widgets vertically
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment
+                            .center, // Center the rows horizontally
+                        children: [
+                          Year(
+                            title: "Level 1",
+                            userInfo: userInfo,
+                          ),
+                          Year(
+                            title: "Level 2",
+                            userInfo: userInfo,
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment
+                            .center, // Center the rows horizontally
+                        children: [
+                          Year(
+                            title: "Level 3",
+                            userInfo: userInfo,
+                          ),
+                          Year(
+                            title: "Level 4",
+                            userInfo: userInfo,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

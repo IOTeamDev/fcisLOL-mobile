@@ -343,15 +343,29 @@ class _MaterialDetailsState extends State<SubjectDetails>
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Text(
-                    video.title ?? '',
-                    style: TextStyle(
-                      fontSize: screenWidth(context) / 18,
-                      color: Colors.white,
-                    ),
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
+                  padding: const EdgeInsets.only(top: 5),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${video.title}',
+                        style: TextStyle(
+                          fontSize: screenWidth(context) / 18,
+                          color: Colors.white,
+                        ),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        'Shared by: ${video.author!.authorName}',
+                        style: TextStyle(
+                          fontSize: screenWidth(context) / 30,
+                          color: Colors.white,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -380,36 +394,52 @@ class _MaterialDetailsState extends State<SubjectDetails>
               : HexColor('#4764C5'),
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsetsDirectional.only(end: 10.0),
-                  child: Icon(
-                    Icons.folder_copy_sharp,
-                    size: screenWidth(context) / 10,
-                    color: Colors.white,
-                  ),
-                ),
-                Expanded(
-                  child: ConstrainedBox(
-                    constraints:
-                        BoxConstraints(maxWidth: screenWidth(context) - 180),
-                    child: Text(
-                      '${document.title}',
-                      style: TextStyle(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsetsDirectional.only(end: 10.0),
+                      child: Icon(
+                        Icons.folder_copy_sharp,
+                        size: screenWidth(context) / 10,
                         color: Colors.white,
-                        fontSize: screenWidth(context) / 20,
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.start,
                     ),
+                    Expanded(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                            maxWidth: screenWidth(context) - 180),
+                        child: Text(
+                          '${document.title}',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: screenWidth(context) / 20,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.start,
+                        ),
+                      ),
+                    ),
+                    if (MainCubit.get(context).profileModel?.role == 'ADMIN' &&
+                        TOKEN != null)
+                      removeButton(material: document),
+                  ],
+                ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Text(
+                    'Shared by: ${document.author!.authorName}',
+                    style: TextStyle(
+                      fontSize: screenWidth(context) / 30,
+                      color: Colors.white,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                if (MainCubit.get(context).profileModel?.role == 'ADMIN' &&
-                    TOKEN != null)
-                  removeButton(material: document),
               ],
             ),
           )),
@@ -679,6 +709,14 @@ class _MaterialDetailsState extends State<SubjectDetails>
                                       color: Color.fromRGBO(71, 100, 197, 1),
                                       onPressed: () {
                                         if (_formKey.currentState!.validate()) {
+                                          AuthorModel author = AuthorModel(
+                                              authorName: MainCubit.get(context)
+                                                  .profileModel
+                                                  ?.name,
+                                              authorPhoto:
+                                                  MainCubit.get(context)
+                                                      .profileModel
+                                                      ?.photo);
                                           BlocProvider.of<SubjectCubit>(context)
                                               .addMaterial(
                                                   title: _titleController.text,
@@ -695,7 +733,8 @@ class _MaterialDetailsState extends State<SubjectDetails>
                                                           .semester,
                                                   role: MainCubit.get(context)
                                                       .profileModel!
-                                                      .role);
+                                                      .role,
+                                                  author: author);
                                           Navigator.of(context).pop();
                                         }
                                       },

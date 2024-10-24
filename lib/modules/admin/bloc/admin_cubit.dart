@@ -119,7 +119,6 @@ class AdminCubit extends Cubit<AdminCubitStates> {
   List<AnnouncementModel>? announcements;
   void getAnnouncements(String semester) {
     announcements = null;
-    print(SelectedSemester.toString());
     emit(AdminGetAnnouncementLoadingState());
     DioHelp.getData(path: ANNOUNCEMENTS, query: {'semester': semester})
         .then((value) {
