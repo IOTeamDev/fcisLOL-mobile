@@ -274,12 +274,8 @@ class Home extends StatelessWidget {
                                                             Colors.transparent,
                                                             Colors.transparent,
                                                             Colors.transparent,
-                                                            Colors.black
-                                                                .withOpacity(
-                                                                    0.3),
-                                                            Colors.black
-                                                                .withOpacity(
-                                                                    0.6),
+                                                            Colors.black.withOpacity(0.3),
+                                                            Colors.black.withOpacity(0.6),
                                                           ],
                                                           begin: Alignment
                                                               .topCenter,
@@ -910,9 +906,7 @@ Widget subjectItemBuild(SubjectModel subject, context) {
       onTap: () {
         navigate(
             context,
-            SubjectDetails(
-              subjectName: subject.subjectName,
-            ));
+            SubjectDetails(subjectName: subject.subjectName,));
       },
       child: Card(
         
@@ -938,8 +932,7 @@ Widget subjectItemBuild(SubjectModel subject, context) {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset(subject.subjectImage,
-                  height: 70, color: Colors.white),
+              Image.asset(subject.subjectImage, height: 70, color: Colors.white),
               SizedBox(
                 height: 10,
               ),
@@ -949,7 +942,7 @@ Widget subjectItemBuild(SubjectModel subject, context) {
                 maxLines: 2,
                 style: GoogleFonts.montserrat(
                   color: Colors.white,
-                  fontSize: 18,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
                 overflow: TextOverflow.ellipsis,

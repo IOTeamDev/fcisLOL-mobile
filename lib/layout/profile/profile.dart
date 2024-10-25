@@ -419,7 +419,7 @@ Widget materialBuilder(index, context,
   return Container(
     padding: EdgeInsets.all(5),
     decoration: BoxDecoration(
-      color:  Color.fromARGB(255, 20, 130, 220),
+      color:  isDark? HexColor('#3B3B3B'):  Color.fromARGB(255, 20, 130, 220),
       borderRadius: BorderRadius.circular(20),
     ),
     height: 170,
@@ -524,9 +524,9 @@ Widget materialBuilder(index, context,
                       child: Text(
                         link,
                         style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.lightBlueAccent,
                           decoration: TextDecoration.underline,
-                          decorationColor: HexColor('#B7B7B7'),
+                          decorationColor:Colors.lightBlueAccent,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,

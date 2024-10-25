@@ -75,6 +75,9 @@ class LeaderboardScreen extends StatelessWidget {
                         Column(
                           children: [
                             if(MainCubit.get(context).notAdminLeaderboardModel![1].name != null)
+                              CircleAvatar(backgroundImage: NetworkImage(MainCubit.get(context).notAdminLeaderboardModel![1].photo!),radius: width/12,),
+                            SizedBox(height: 3,),
+                            if(MainCubit.get(context).notAdminLeaderboardModel![1].name != null)
                             ConstrainedBox(constraints: BoxConstraints(maxWidth: width/3.5),child: Text(MainCubit.get(context).notAdminLeaderboardModel![1].name.toString(), style: TextStyle(fontSize: width/19),overflow: TextOverflow.ellipsis, maxLines: 2, textAlign: TextAlign.center,)),
                             SizedBox(height: 10,),
                             Container(
@@ -98,6 +101,8 @@ class LeaderboardScreen extends StatelessWidget {
                         ),
                         Column(
                           children: [
+                            CircleAvatar(backgroundImage: NetworkImage(MainCubit.get(context).notAdminLeaderboardModel![0].photo!),radius: width/11,),
+                            SizedBox(height: 3,),
                             ConstrainedBox(constraints: BoxConstraints(maxWidth: width/3.5),child: Text(MainCubit.get(context).notAdminLeaderboardModel![0].name.toString(), style: TextStyle(fontSize: width/19),overflow: TextOverflow.ellipsis, maxLines: 2, textAlign: TextAlign.center,)),
                             SizedBox(height: 10,),
                             Container(
@@ -120,6 +125,9 @@ class LeaderboardScreen extends StatelessWidget {
                         ),
                         Column(
                           children: [
+                            if(MainCubit.get(context).notAdminLeaderboardModel![2].name != null)
+                              CircleAvatar(backgroundImage: NetworkImage(MainCubit.get(context).notAdminLeaderboardModel![1].photo!),radius: width/13,),
+                            SizedBox(height: 3,),
                             if(MainCubit.get(context).notAdminLeaderboardModel![2].name != null)
                             ConstrainedBox(constraints: BoxConstraints(maxWidth: width/3.5),child: Text(MainCubit.get(context).notAdminLeaderboardModel![2].name.toString(), style: TextStyle(fontSize: width/19),overflow: TextOverflow.ellipsis, maxLines: 2, textAlign: TextAlign.center,)),
                             SizedBox(height: 10,),
