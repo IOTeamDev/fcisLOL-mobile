@@ -126,6 +126,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
       value.data.forEach((element) {
         announcements!.add(AnnouncementModel.fromJson(element));
       });
+      announcements?.sort((a, b) => b.id.compareTo(a.id));
       emit(AdminGetAnnouncementSuccessState(announcements!));
     });
   }
