@@ -44,6 +44,8 @@ class SemesterNavigate extends StatelessWidget {
                             children: [
                               const SizedBox(width: 15),
                               Image.asset(
+                                                                                    color: isDark?Colors.white:null,
+
                                 "images/l.png",
                                 width: 45,
                                 height: 45,

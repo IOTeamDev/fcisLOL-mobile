@@ -915,12 +915,14 @@ Widget subjectItemBuild(SubjectModel subject, context) {
             ));
       },
       child: Card(
+        
         elevation: 12.0, // More elevation for depth
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16.0),
         ),
         clipBehavior: Clip.antiAlias,
         child: Container(
+          padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
               color: isDark ? Color(0xff5A5B5F) :  Color.fromARGB(255, 20, 130, 220)
               // image: DecorationImage(
