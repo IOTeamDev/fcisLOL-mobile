@@ -18,7 +18,7 @@ class EditAnnouncement extends StatefulWidget {
   final String title;
   final String content;
   final String date;
-  final String? selectedItem;
+  //final String? selectedItem;
   final String? imageLink;
 
   const EditAnnouncement({
@@ -27,7 +27,7 @@ class EditAnnouncement extends StatefulWidget {
     required this.title,
     required this.content,
     required this.date,
-    this.selectedItem,
+    //this.selectedItem,
     required this.semester,
     this.imageLink,
   });
@@ -37,8 +37,8 @@ class EditAnnouncement extends StatefulWidget {
 }
 
 class _EditAnnouncementState extends State<EditAnnouncement> {
-  String? selectedItem;
-  final List<String> _items = ['Quiz', 'Assignment', 'Other'];
+  // String? selectedItem;
+  // final List<String> _items = ['Quiz', 'Assignment', 'Other'];
 
   late TextEditingController titleController;
   late TextEditingController contentController;
@@ -54,7 +54,7 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
     titleController = TextEditingController(text: widget.title);
     contentController = TextEditingController(text: widget.content);
     _dateController = TextEditingController(text: widget.date == 'No Due Date' ? 'Due Date' : DateFormat('dd/MM/yyyy').format(DateTime.parse(widget.date)));
-    selectedItem = widget.selectedItem;
+    //selectedItem = widget.selectedItem;
     id = widget.id;
     print('date controller: ${_dateController.text}');
     print('widget date: ${widget.date}');
@@ -179,101 +179,100 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                               Row(
                                 children: [
                                   // DatePicker Text Field
-                                  Expanded(
-                                    child: GestureDetector(
-                                      onTap: () => showDatePicker(
-                                        context: context,
-                                        initialDate: DateTime.now(),
-                                        firstDate: DateTime.now(),
-                                        lastDate: DateTime.parse('2027-11-30'),
-                                      ).then((value) {
-                                        if (value != null) {
-                                          //print(DateFormat.YEAR_MONTH_DAY);
-                                          setState(() {
-                                            DateTime selectedDate = DateTime(value.year, value.month, value.day);
-                                            dueDateFormatted = DateTime.utc(selectedDate.year, selectedDate.month, selectedDate.day).toIso8601String();
-                                            print(dueDateFormatted);
-                                            _dateController.text = DateFormat('dd/MM/yyyy').format(value);
-                                          });
-                                          // print(dueDateFormatted);
-                                          // print(_dateController.text);
-                                        }
-                                      }),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.circular(10)),
-                                        padding: EdgeInsetsDirectional.symmetric(horizontal: 10),
-                                        child: AbsorbPointer(
-                                          child: TextFormField(
-                                            controller: _dateController,
-                                            keyboardType: TextInputType.none,
-                                            decoration: InputDecoration(
-                                              suffixIcon: Icon(
-                                                Icons.date_range,
-                                                color: Colors.black,
-                                              ),
-                                              hintText: 'Due Date',
-                                              hintStyle: TextStyle(
-                                                  fontSize: 14,
-                                                  color: Colors.black),
-                                              border: InputBorder.none,
-                                            ),
-                                            style: TextStyle(
+                                  GestureDetector(
+                                    onTap: () => showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now().add(Duration(days: 1)),
+                                      firstDate: DateTime.now().add(Duration(days: 1)),
+                                      lastDate: DateTime.parse('2027-11-30'),
+                                    ).then((value) {
+                                      if (value != null) {
+                                        //print(DateFormat.YEAR_MONTH_DAY);
+                                        setState(() {
+                                          DateTime selectedDate = DateTime(value.year, value.month, value.day);
+                                          dueDateFormatted = DateTime.utc(selectedDate.year, selectedDate.month, selectedDate.day).toIso8601String();
+                                          print(dueDateFormatted);
+                                          _dateController.text = DateFormat('dd/MM/yyyy').format(value);
+                                        });
+                                        // print(dueDateFormatted);
+                                        // print(_dateController.text);
+                                      }
+                                    }),
+                                    child: Container(
+                                      width: width/2.2,
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(10)),
+                                      padding: EdgeInsetsDirectional.symmetric(horizontal: 10),
+                                      child: AbsorbPointer(
+                                        child: TextFormField(
+                                          onTap: (){
+
+                                          },
+                                          controller: _dateController,
+                                          keyboardType: TextInputType.none,
+                                          decoration: InputDecoration(
+                                            suffixIcon: Icon(
+                                              Icons.date_range,
                                               color: Colors.black,
-                                              overflow: TextOverflow.ellipsis,
                                             ),
-                                            maxLines: 1,
+                                            hintText: 'Due Date',
+                                            hintStyle: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black),
+                                            border: InputBorder.none,
                                           ),
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          maxLines: 1,
                                         ),
                                       ),
                                     ),
                                   ),
-                                  SizedBox(
-                                    width: width / 12,
-                                  ),
                                   // Announcement Type Dropdown
-                                  DropdownButton<String>(
-                                    hint: const Text(
-                                      'Type',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    value: selectedItem,
-                                    dropdownColor: Colors.white,
-                                    iconEnabledColor: Colors.white,
-                                    style: const TextStyle(color: Colors.white),
-                                    items: _items.map((String item) {
-                                      return DropdownMenuItem<String>(
-                                        value: item,
-                                        child: Text(
-                                          item,
-                                          style: const TextStyle(
-                                              color: Colors.black),
-                                        ),
-                                      );
-                                    }).toList(),
-                                    onChanged: (String? newValue) {
-                                      setState(() {
-                                        selectedItem = newValue;
-                                      });
-                                    },
-                                    selectedItemBuilder:
-                                        (BuildContext context) {
-                                      // Ensuring the selected item has the same padding and alignment as the menu items
-                                      return _items.map((String item) {
-                                        return DropdownMenuItem<String>(
-                                          value: item,
-                                          child: Text(
-                                            item,
-                                            style: const TextStyle(
-                                              color: Colors
-                                                  .white, // White color for the selected item displayed outside
-                                            ),
-                                          ),
-                                        );
-                                      }).toList();
-                                    },
-                                  ),
+                                  // DropdownButton<String>(
+                                  //   hint: const Text(
+                                  //     'Type',
+                                  //     style: TextStyle(color: Colors.white),
+                                  //   ),
+                                  //   value: selectedItem,
+                                  //   dropdownColor: Colors.white,
+                                  //   iconEnabledColor: Colors.white,
+                                  //   style: const TextStyle(color: Colors.white),
+                                  //   items: _items.map((String item) {
+                                  //     return DropdownMenuItem<String>(
+                                  //       value: item,
+                                  //       child: Text(
+                                  //         item,
+                                  //         style: const TextStyle(
+                                  //             color: Colors.black),
+                                  //       ),
+                                  //     );
+                                  //   }).toList(),
+                                  //   onChanged: (String? newValue) {
+                                  //     setState(() {
+                                  //       selectedItem = newValue;
+                                  //     });
+                                  //   },
+                                  //   selectedItemBuilder:
+                                  //       (BuildContext context) {
+                                  //     // Ensuring the selected item has the same padding and alignment as the menu items
+                                  //     return _items.map((String item) {
+                                  //       return DropdownMenuItem<String>(
+                                  //         value: item,
+                                  //         child: Text(
+                                  //           item,
+                                  //           style: const TextStyle(
+                                  //             color: Colors
+                                  //                 .white, // White color for the selected item displayed outside
+                                  //           ),
+                                  //         ),
+                                  //       );
+                                  //     }).toList();
+                                  //   },
+                                  // ),
                                 ],
                               ),
                               SizedBox(
@@ -366,14 +365,14 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                     const Spacer(),
                                     ElevatedButton(
                                       onPressed: () async {
-                                        if (_formKey.currentState!.validate() && selectedItem != null) {
+                                        if (_formKey.currentState!.validate()) {
                                            // await cubit.UploadPImage(isUserProfile: false, image: cubit.AnnouncementImageFile);
                                             cubit.updateAnnouncement(
                                                 cubit.announcements![int.parse(id)].id.toString(),
                                                 title: titleController.text,
                                                 content: contentController.text,
                                                 dueDate: dueDateFormatted == 'No Due Date'? null:dueDateFormatted,
-                                                type: selectedItem!,
+                                                //type: selectedItem!,
                                                 image: cubit.AnnouncementImagePath??widget.imageLink??'',
                                                 currentSemester: widget.semester);
                                         } else {

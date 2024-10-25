@@ -429,9 +429,8 @@ class _MaterialDetailsState extends State<SubjectDetails>
                   ],
                 ),
                 Align(
-                  alignment: Alignment.bottomRight,
-                  child: Text(
-                    'Shared by: ${document.author!.authorName}',
+                  alignment: Alignment.bottomLeft,
+                  child: Text('Shared by: ${document.author!.authorName}',
                     style: TextStyle(
                       fontSize: screenWidth(context) / 30,
                       color: Colors.white,

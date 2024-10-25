@@ -354,7 +354,7 @@ class Profile extends StatelessWidget {
                                                     MainCubit.get(context);
                                                 return Container(
                                                   padding:
-                                                      const EdgeInsets.all(8),
+                                                      const EdgeInsetsDirectional.symmetric(horizontal: 3, vertical: 5),
                                                   decoration: BoxDecoration(
                                                   
                                                     borderRadius:
@@ -387,20 +387,15 @@ class Profile extends StatelessWidget {
                                                   ),
                                                 );
                                               },
-                                              separatorBuilder:
-                                                  (context, index) => SizedBox(
-                                                        height: 15,
-                                                      ),
-                                              itemCount: mainCubit.profileModel!
-                                                  .materials.length),
+                                              separatorBuilder: (context, index) => SizedBox(height: 0,),
+                                              itemCount: mainCubit.profileModel!.materials.length),
                                         ),
                                       ],
                                     ),
                                   ),
                               fallback: (context) => Center(
                                     child: CircularProgressIndicator(
-                                      color:
-                                          isDark ? Colors.white : Colors.black,
+                                      color: isDark ? Colors.white : Colors.black,
                                     ),
                                   )),
                         )
@@ -551,7 +546,7 @@ Widget materialBuilder(index, context,
                                 .profileModel!
                                 .materials[index]
                                 .accepted!
-                            ? Colors.green
+                            ? Colors.greenAccent
                             : Colors.amber),
                   ),
                 ],

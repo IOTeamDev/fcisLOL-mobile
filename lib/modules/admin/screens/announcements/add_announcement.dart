@@ -203,28 +203,15 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                 child: GestureDetector(
                                                   onTap: () => showDatePicker(
                                                     context: context,
-                                                    initialDate: DateTime.now()
-                                                        .add(Duration(days: 1)),
-                                                    firstDate: DateTime.now()
-                                                        .add(Duration(days: 1)),
-                                                    lastDate: DateTime.parse(
-                                                        '2027-12-31'),
+                                                    initialDate: DateTime.now().add(Duration(days: 1)),
+                                                    firstDate: DateTime.now().add(Duration(days: 1)),
+                                                    lastDate: DateTime.parse('2027-12-30'),
                                                   ).then((value) {
                                                     if (value != null) {
-                                                      //print(DateFormat.YEAR_MONTH_DAY);
-                                                      _dateController.text =
-                                                          value
-                                                              .toUtc()
-                                                              .toIso8601String();
-                                                      dueDateFormatted =
-                                                          _dateController.text;
-                                                      _dateController.text =
-                                                          DateFormat(
-                                                                  'dd/MM/yyyy')
-                                                              .format(value);
-                                                      print(dueDateFormatted);
-                                                      print(
-                                                          _dateController.text);
+                                                        DateTime selectedDate = DateTime(value.year, value.month, value.day);
+                                                        dueDateFormatted = DateTime.utc(selectedDate.year, selectedDate.month, selectedDate.day).toIso8601String();
+                                                        print(dueDateFormatted);
+                                                        _dateController.text = DateFormat('dd/MM/yyyy').format(value);
                                                     }
                                                   }),
                                                   child: Container(
@@ -621,6 +608,7 @@ else{
   Widget announcementBuilder(semester, String cubitId, context, title, ID,
       content, date, selectedItem) {
     var cubit = AdminCubit.get(context).announcements![ID];
+    print(cubit.type);
     return GestureDetector(
       onTap: () {
         navigate(
@@ -631,7 +619,6 @@ else{
               description: cubit.content,
               date: cubit.dueDate,
               id: ID,
-              selectedType: cubit.type,
             ));
       },
       child: Container(
@@ -665,7 +652,7 @@ else{
                             content: cubit.content,
                             date: cubit.dueDate,
                             id: ID.toString(),
-                            selectedItem: cubit.type,
+                            //selectedItem: cubit.type,
                             imageLink: cubit.image,
                           )),
                 );
@@ -674,8 +661,7 @@ else{
                   AdminCubit.get(context).getAnnouncements(semester);
                 }
               },
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               color: Colors.white,
               minWidth: 10,
               padding: const EdgeInsets.all(6),

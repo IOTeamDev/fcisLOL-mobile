@@ -113,7 +113,8 @@ class AnnouncementsList extends StatelessWidget {
                 description: content,
                 date: dueDate,
                 id: id,
-                selectedType: type));
+            )
+        );
       },
       child: Container(
         margin: EdgeInsetsDirectional.symmetric(horizontal: 10),

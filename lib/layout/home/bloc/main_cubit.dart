@@ -212,7 +212,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     String? title,
     String? content,
     dynamic dueDate,
-    String? type,
+   // String? type,
     required currentSemester,
     String? image,
   }) {
@@ -228,7 +228,7 @@ class MainCubit extends Cubit<MainCubitStates> {
           'title': title,
           'content': content??" ",
           'due_date': dueDate,
-          'type': type,
+          //'type': type,
           'semester': currentSemester,
           'image': image,
         },
