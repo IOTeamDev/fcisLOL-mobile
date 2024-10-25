@@ -356,14 +356,30 @@ class _MaterialDetailsState extends State<SubjectDetails>
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      Text(
-                        'Shared by: ${video.author!.authorName}',
-                        style: TextStyle(
-                          fontSize: screenWidth(context) / 30,
-                          color: Colors.white,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                      Row(
+                        children: [
+                          Text(
+                            'Shared by: ',
+                            style: TextStyle(
+                              fontSize: screenWidth(context) / 30,
+                              color: Colors.white,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          CircleAvatar(
+                            radius: 15,
+                            backgroundImage:
+                                NetworkImage(video.author!.authorPhoto!),
+                          ),
+                          SizedBox(width: 5,),
+                          Text(
+                            '${video.author!.authorName}',
+                            style: TextStyle(
+                              color: Colors.white,
+                            )
+                          )
+                        ],
                       ),
                     ],
                   ),
@@ -430,14 +446,30 @@ class _MaterialDetailsState extends State<SubjectDetails>
                 ),
                 Align(
                   alignment: Alignment.bottomRight,
-                  child: Text(
-                    'Shared by: ${document.author!.authorName}',
-                    style: TextStyle(
-                      fontSize: screenWidth(context) / 30,
-                      color: Colors.white,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                  child: Row(
+                    children: [
+                      Text(
+                            'Shared by: ',
+                            style: TextStyle(
+                              fontSize: screenWidth(context) / 30,
+                              color: Colors.white,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          CircleAvatar(
+                            radius: 10,
+                            backgroundImage:
+                                NetworkImage(document.author!.authorPhoto!),
+                          ),
+                          SizedBox(width: 5,),
+                          Text(
+                            '${document.author!.authorName}',
+                            style: TextStyle(
+                              color: Colors.white,
+                            )
+                          )
+                    ],
                   ),
                 ),
               ],
