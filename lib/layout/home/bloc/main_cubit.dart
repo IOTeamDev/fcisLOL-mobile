@@ -145,8 +145,6 @@ class MainCubit extends Cubit<MainCubitStates> {
   }
 
   void logout(context) {
-    TOKEN = null;
-    SelectedSemester = null;
     Cache.removeValue(key: "token");
     Cache.removeValue(key: "semester"); //SelectedSemester
     Navigator.pushAndRemoveUntil(
@@ -155,6 +153,11 @@ class MainCubit extends Cubit<MainCubitStates> {
           builder: (context) => ChoosingYear(loginCubit: LoginCubit()),
         ), //removing all background screens
         (route) => false);
+Future.delayed(Duration(seconds: 1), () { 
+  
+     TOKEN = null;
+    SelectedSemester = null;
+});
     emit(Logout());
   }
 
