@@ -60,184 +60,177 @@ class Profile extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(
-                          height: 60,
-                        ),
-                        Padding(
-                          padding:
-                              const EdgeInsetsDirectional.only(bottom: 15.0),
-                          child: Stack(
+                        Container(
+                          // color: HexColor('#4764C5'),
+                          child: Column(
                             children: [
-                              Positioned(
-                                left: 0,
-                                child: backButton(
-                                  context,
-                                ),
+                              const SizedBox(
+                                height: 55,
                               ),
-                              Center(
-                                  child: Text(
-                                'Profile',
-                                style: TextStyle(
-                                  fontSize: width / 11,
-                                ),
-                                textAlign: TextAlign.center,
-                              )),
-                            ],
-                          ),
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: screenWidth(context) / 3.2,
-                              child: Stack(
-                                alignment: Alignment.bottomCenter,
-                                children: [
-                                  Stack(
-                                    alignment: Alignment.bottomCenter,
-                                    children: [
-                                      Align(
-                                        child: CircleAvatar(
-                                          radius: width / 8,
-                                          backgroundImage: NetworkImage(
-                                            mainCubit.profileModel!.photo,
-                                          ),
-                                        ),
-                                      ),
-                                      if (mainCubit.score4User != null &&
-                                          mainCubit.profileModel != null)
-                                        if (mainCubit.profileModel!.role !=
-                                                "ADMIN" &&
-                                            mainCubit.score4User!.userRank! <=
-                                                3)
-                                          Column(
-                                            children: [
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                    color: Color(mainCubit
-                                                                .score4User!
-                                                                .userRank ==
-                                                            1
-                                                        ? 0xffFFD700
-                                                        : mainCubit.score4User!
-                                                                    .userRank ==
-                                                                2
-                                                            ? 0xffC0C0C0
-                                                            : 0xffCD7F32),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10)),
-                                                // width: width / 7.5,
-                                                child: Text(mainCubit
-                                                            .score4User!
-                                                            .userRank ==
-                                                        1
-                                                    ? "Top Contributor"
-                                                    : mainCubit.score4User!
-                                                                .userRank ==
-                                                            2
-                                                        ? "2nd Contributor"
-                                                        : "3rd Contributor"),
-                                              ),
-                                            ],
-                                          )
-                                    ],
-                                  ),
-                                  Text(
-                                    mainCubit.profileModel!.name,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  width: screenWidth(context) / 1.8,
-                                  child: Text(
-                                    mainCubit.profileModel!.name,
-                                    style: TextStyle(
-                                        color: isDark
-                                            ? Colors.white
-                                            : Colors.black,
-                                        fontSize: screenWidth(context) / 20),
-                                    maxLines: 2,
-                                  ),
-                                ),
-                                Row(
+                              Padding(
+                                padding:
+                                const EdgeInsetsDirectional.only(bottom: 15.0),
+                                child: Stack(
                                   children: [
-                                    Text(
-                                      'Email: ',
-                                      style: TextStyle(
-                                          color: isDark
-                                              ? Colors.white
-                                              : Colors.black,
-                                          fontSize: screenWidth(context) / 20),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    SizedBox(
-                                      width: screenWidth(context) / 2.5,
-                                      child: Text(
-                                        mainCubit.profileModel!.email,
-                                        style: TextStyle(
-                                            color: isDark
-                                                ? Colors.white
-                                                : Colors.black,
-                                            fontSize:
-                                                screenWidth(context) / 25),
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
+                                    Positioned(
+                                      left: 0,
+                                      child: backButton(
+                                        context,
                                       ),
-                                    )
+                                    ),
+                                    Center(
+                                        child: Text(
+                                          'Profile',
+                                          style: TextStyle(
+                                            fontSize: width / 15,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        )),
                                   ],
                                 ),
-                                if (mainCubit.profileModel?.phone != null &&
-                                    mainCubit.profileModel!.phone!.isNotEmpty)
-                                  Row(
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    width: screenWidth(context) / 3.2,
+                                    child: Stack(
+                                      alignment: Alignment.bottomCenter,
+                                      children: [
+                                        Align(
+                                          child: CircleAvatar(
+                                            radius: width / 7.5,
+                                            backgroundImage: NetworkImage(
+                                              mainCubit.profileModel!.photo,
+                                            ),
+                                          ),
+                                        ),
+                                        if (mainCubit.score4User != null &&
+                                            mainCubit.profileModel != null)
+                                          if (mainCubit.profileModel!.role !=
+                                              "ADMIN" &&
+                                              mainCubit.score4User!.userRank! <= 3)
+                                            Container(
+                                              padding: EdgeInsets.all(5),
+                                              decoration: BoxDecoration(
+                                                  color: Color(mainCubit
+                                                      .score4User!.userRank ==
+                                                      1
+                                                      ? 0xffFFD700
+                                                      : mainCubit.score4User!
+                                                      .userRank ==
+                                                      2
+                                                      ? 0xffC0C0C0
+                                                      : 0xffCD7F32),
+                                                  borderRadius:
+                                                  BorderRadius.circular(30)),
+                                              // width: width / 7.5,
+                                              child: Text(
+                                                style: TextStyle(color: Colors.black),
+                                                  mainCubit.score4User!.userRank == 1
+                                                      ? "Top Contributor"
+                                                      : mainCubit.score4User!
+                                                      .userRank ==
+                                                      2
+                                                      ? "2nd Contributor"
+                                                      : "3rd Contributor"),
+                                            )
+                                      ],
+                                    ),
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        'Phone: ',
-                                        style: TextStyle(
-                                            color: isDark
-                                                ? Colors.white
-                                                : Colors.black,
-                                            fontSize:
-                                                screenWidth(context) / 20),
-                                        maxLines: 2,
-                                      ),
-                                      SizedBox(
-                                        width: screenWidth(context) / 2.5,
+                                      ConstrainedBox(
+                                        constraints: BoxConstraints(maxWidth: screenWidth(context)/1.9),
                                         child: Text(
-                                          '${mainCubit.profileModel!.phone}',
+                                          mainCubit.profileModel!.name,
                                           style: TextStyle(
                                               color: isDark
                                                   ? Colors.white
                                                   : Colors.black,
-                                              fontSize:
-                                                  screenWidth(context) / 25),
+                                              fontSize: screenWidth(context) / 15,
+                                              fontWeight: FontWeight.bold),
                                           maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.center,
                                         ),
-                                      )
-                                    ],
-                                  ),
-                                Builder(
-                                  builder: (context) {
-                                    if (MainCubit.get(context)
-                                            .leaderboardModel !=
-                                        null) {
-                                      return Builder(builder: (context) {
-                                        MainCubit.get(context).getScore4User(
-                                            MainCubit.get(context)
-                                                .profileModel!
-                                                .id);
-                                        var score4User =
-                                            MainCubit.get(context).score4User;
-                                        return Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
+                                      ),
+                                      SizedBox(height: 4,),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Email: ',
+                                            style: TextStyle(
+                                                color: isDark
+                                                    ? Colors.white
+                                                    : Colors.black,
+                                                fontSize: screenWidth(context) / 20),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          SizedBox(
+                                            width: screenWidth(context) / 2.5,
+                                            child: Text(
+                                              mainCubit.profileModel!.email,
+                                              style: TextStyle(
+                                                  color: isDark
+                                                      ? Colors.white
+                                                      : Colors.black,
+                                                  fontSize:
+                                                  screenWidth(context) / 25),
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      if (mainCubit.profileModel?.phone != null &&
+                                          mainCubit.profileModel!.phone!.isNotEmpty)
+                                        Row(
                                           children: [
-                                            Text.rich(
+                                            Text(
+                                              'Phone: ',
+                                              style: TextStyle(
+                                                  color: isDark
+                                                      ? Colors.white
+                                                      : Colors.black,
+                                                  fontSize:
+                                                  screenWidth(context) / 20),
+                                              maxLines: 2,
+                                            ),
+                                            SizedBox(
+                                              width: screenWidth(context) / 2.5,
+                                              child: Text(
+                                                '${mainCubit.profileModel!.phone}',
+                                                style: TextStyle(
+                                                    color: isDark
+                                                        ? Colors.white
+                                                        : Colors.black,
+                                                    fontSize:
+                                                    screenWidth(context) / 25),
+                                                maxLines: 2,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      Builder(
+                                        builder: (context) {
+                                          if (MainCubit.get(context)
+                                              .leaderboardModel !=
+                                              null) {
+                                            return Builder(builder: (context) {
+                                              MainCubit.get(context).getScore4User(
+                                                  MainCubit.get(context)
+                                                      .profileModel!
+                                                      .id);
+                                              var score4User =
+                                                  MainCubit.get(context).score4User;
+                                              return Row(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                                children: [
+  Text.rich(
                                               TextSpan(
                                                 children: [
                                                   TextSpan(
@@ -257,41 +250,41 @@ class Profile extends StatelessWidget {
                                                   ),
                                                 ],
                                               ),
-                                            ),
-                                            SizedBox(
-                                              width: 100,
-                                            ),
-                                            if (MainCubit.get(context)
-                                                        .profileModel!
-                                                        .role !=
-                                                    "ADMIN" &&
-                                                score4User!.score != 0)
-                                              Row(
-                                                children: [
-                                                  Text.rich(
-                                                    TextSpan(
-                                                      children: [
-                                                        TextSpan(
-                                                          text: "Rank: ",
-                                                          style: TextStyle(
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400),
-                                                        ),
-                                                        TextSpan(
-                                                          text:
-                                                              "${score4User.userRank}",
-                                                          style: TextStyle(
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
-                                                      ],
-                                                    ),
+                                            ),                                                  SizedBox(
+                                                    width: 100,
                                                   ),
-                                                  if (score4User.userRank! <=
+                                                  if (MainCubit.get(context)
+                                                      .profileModel!
+                                                      .role !=
+                                                      "ADMIN" &&
+                                                      score4User.score != 0)
+                                                    Row(
+                                                      children: [
+                                                        Text.rich(
+                                                        TextSpan(
+                                                          children: [
+                                                            TextSpan(
+                                                              text: "Rank: ",
+                                                              style: TextStyle(
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400),
+                                                            ),
+                                                            TextSpan(
+                                                              text:
+                                                                  "${score4User.userRank}",
+                                                              style: TextStyle(
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+
+                                                            ),
+                                                          ],
+                                                        ),
+                                                                                                          ),
+                                                                                                            if (score4User.userRank! <=
                                                       10)
                                                     Container(
                                                         margin: EdgeInsets.only(
@@ -301,38 +294,41 @@ class Profile extends StatelessWidget {
                                                           width: 30,
                                                           height: 30,
                                                         ))
+                                                      ],
+                                                    ),
                                                 ],
-                                              )
-                                          ],
-                                        );
-                                      });
-                                    } else {
-                                      return Center(
-                                        child: CircularProgressIndicator(
-                                          color: isDark
-                                              ? Colors.white
-                                              : Colors.black,
-                                        ),
-                                      );
-                                    }
-                                  },
-                                ),
-                              ],
-                            ),
-                          ],
+                                              );
+                                            });
+                                          } else {
+                                            return Center(
+                                              child: CircularProgressIndicator(
+                                                color: isDark
+                                                    ? Colors.white
+                                                    : Colors.black,
+                                              ),
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Center(
+                                  child: Text(
+                                    "My Uploads",
+                                    style: TextStyle(fontSize: screenWidth(context) / 18),
+                                  )),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Divider(color: isDark? Colors.white: Colors.black, height: 0,),
+                            ],
+                          ),
                         ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Center(
-                            child: Text(
-                          "My Uploads",
-                          style: TextStyle(fontSize: screenWidth(context) / 18),
-                        )),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        divider(),
                         Expanded(
                           child: ConditionalBuilder(
                               condition: MainCubit.get(context)
@@ -360,10 +356,7 @@ class Profile extends StatelessWidget {
                                                   padding:
                                                       const EdgeInsets.all(8),
                                                   decoration: BoxDecoration(
-                                                    color: isDark
-                                                        ? Color.fromRGBO(
-                                                            59, 59, 59, 1)
-                                                        : HexColor('#4764C5'),
+                                                  
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             15),
@@ -429,8 +422,9 @@ class Profile extends StatelessWidget {
 Widget materialBuilder(index, context,
     {title, link, type, subjectName, description}) {
   return Container(
+    padding: EdgeInsets.all(5),
     decoration: BoxDecoration(
-      color: isDark ? Color.fromRGBO(59, 59, 59, 1) : HexColor('#4764C5'),
+      color:  Color.fromARGB(255, 20, 130, 220),
       borderRadius: BorderRadius.circular(20),
     ),
     height: 170,
@@ -535,7 +529,7 @@ Widget materialBuilder(index, context,
                       child: Text(
                         link,
                         style: TextStyle(
-                          color: Colors.blue,
+                          color: Colors.black,
                           decoration: TextDecoration.underline,
                           decorationColor: HexColor('#B7B7B7'),
                         ),

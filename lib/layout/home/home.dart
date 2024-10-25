@@ -182,6 +182,7 @@ class Home extends StatelessWidget {
                                                     "images/l.png",
                                                     width: 45,
                                                     height: 45,
+                                                    color: isDark?Colors.white:null,
                                                   ),
                                                   Text(
                                                     "UniNotes",
@@ -411,7 +412,7 @@ Widget CustomDrawer(context, semester) {
                         color: !isDark ? Colors.black : Colors.white,
                       ))
                 ],
-                decoration: BoxDecoration(color: HexColor('#4764C5')),
+                decoration: BoxDecoration(color: const Color.fromARGB(255, 20, 130, 220)),
                 accountName: Row(
                   children: [
                     Text(
@@ -921,7 +922,7 @@ Widget subjectItemBuild(SubjectModel subject, context) {
         clipBehavior: Clip.antiAlias,
         child: Container(
           decoration: BoxDecoration(
-              color: isDark ? Color(0xff5A5B5F) : Color(0xff4763C4)
+              color: isDark ? Color(0xff5A5B5F) :  Color.fromARGB(255, 20, 130, 220)
               // image: DecorationImage(
               //   colorFilter: const ColorFilter.mode(
               //       Color(0xfff39c12), BlendMode.dstIn),
