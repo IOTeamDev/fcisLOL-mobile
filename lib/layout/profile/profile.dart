@@ -93,42 +93,59 @@ class Profile extends StatelessWidget {
                               child: Stack(
                                 alignment: Alignment.bottomCenter,
                                 children: [
-                                  Align(
-                                    child: CircleAvatar(
-                                      radius: width / 8,
-                                      backgroundImage: NetworkImage(
-                                        mainCubit.profileModel!.photo,
+                                  Stack(
+                                    alignment: Alignment.bottomCenter,
+                                    children: [
+                                      Align(
+                                        child: CircleAvatar(
+                                          radius: width / 8,
+                                          backgroundImage: NetworkImage(
+                                            mainCubit.profileModel!.photo,
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                      if (mainCubit.score4User != null &&
+                                          mainCubit.profileModel != null)
+                                        if (mainCubit.profileModel!.role !=
+                                                "ADMIN" &&
+                                            mainCubit.score4User!.userRank! <=
+                                                3)
+                                          Column(
+                                            children: [
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                    color: Color(mainCubit
+                                                                .score4User!
+                                                                .userRank ==
+                                                            1
+                                                        ? 0xffFFD700
+                                                        : mainCubit.score4User!
+                                                                    .userRank ==
+                                                                2
+                                                            ? 0xffC0C0C0
+                                                            : 0xffCD7F32),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10)),
+                                                // width: width / 7.5,
+                                                child: Text(mainCubit
+                                                            .score4User!
+                                                            .userRank ==
+                                                        1
+                                                    ? "Top Contributor"
+                                                    : mainCubit.score4User!
+                                                                .userRank ==
+                                                            2
+                                                        ? "2nd Contributor"
+                                                        : "3rd Contributor"),
+                                              ),
+                                            ],
+                                          )
+                                    ],
                                   ),
-                                  if (mainCubit.score4User != null &&
-                                      mainCubit.profileModel != null)
-                                    if (mainCubit.profileModel!.role !=
-                                            "ADMIN" &&
-                                        mainCubit.score4User!.userRank! <= 3)
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            color: Color(mainCubit
-                                                        .score4User!.userRank ==
-                                                    1
-                                                ? 0xffFFD700
-                                                : mainCubit.score4User!
-                                                            .userRank ==
-                                                        2
-                                                    ? 0xffC0C0C0
-                                                    : 0xffCD7F32),
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        // width: width / 7.5,
-                                        child: Text(
-                                            mainCubit.score4User!.userRank == 1
-                                                ? "Top Contributor"
-                                                : mainCubit.score4User!
-                                                            .userRank ==
-                                                        2
-                                                    ? "2nd Contributor"
-                                                    : "3rd Contributor"),
-                                      )
+                                  Text(
+                                    mainCubit.profileModel!.name,
+                                  ),
                                 ],
                               ),
                             ),
@@ -220,14 +237,26 @@ class Profile extends StatelessWidget {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceEvenly,
                                           children: [
-                                            Text(
-                                              "Score: ${score4User!.score}",
-                                              style: TextStyle(
-                                                  color: isDark
-                                                      ? Colors.white
-                                                      : Colors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold),
+                                            Text.rich(
+                                              TextSpan(
+                                                children: [
+                                                  TextSpan(
+                                                    text: "Score: ",
+                                                    style: TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                  TextSpan(
+                                                    text:
+                                                        "${score4User!.score}",
+                                                    style: TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                             SizedBox(
                                               width: 100,
@@ -236,13 +265,43 @@ class Profile extends StatelessWidget {
                                                         .profileModel!
                                                         .role !=
                                                     "ADMIN" &&
-                                                score4User.score != 0)
-                                              Text(
-                                                "Rank:${score4User.userRank}",
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.w700),
+                                                score4User!.score != 0)
+                                              Row(
+                                                children: [
+                                                  Text.rich(
+                                                    TextSpan(
+                                                      children: [
+                                                        TextSpan(
+                                                          text: "Rank: ",
+                                                          style: TextStyle(
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400),
+                                                        ),
+                                                        TextSpan(
+                                                          text:
+                                                              "${score4User.userRank}",
+                                                          style: TextStyle(
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  if (score4User.userRank! <=
+                                                      10)
+                                                    Container(
+                                                        margin: EdgeInsets.only(
+                                                            left: 5),
+                                                        child: Image.asset(
+                                                          "images/top10.png",
+                                                          width: 30,
+                                                          height: 30,
+                                                        ))
+                                                ],
                                               )
                                           ],
                                         );
