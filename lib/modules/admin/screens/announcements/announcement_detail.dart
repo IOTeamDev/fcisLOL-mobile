@@ -50,7 +50,7 @@ class AnnouncementDetail extends StatelessWidget {
           return Scaffold(
             //backgroundColor: HexColor('#23252A'),
             body: Container(
-              margin: const EdgeInsetsDirectional.only(top: 90),
+              margin: EdgeInsetsDirectional.only(top: screenHeight(context)/10),
               width: double.infinity,
               child: Column(
                 children: [
@@ -70,13 +70,12 @@ class AnnouncementDetail extends StatelessWidget {
                       )),
                     ],
                   ),
-                  SingleChildScrollView(
+                  ConstrainedBox(
+                    constraints: BoxConstraints(maxHeight: screenHeight(context) / 1.4,),
                     child: Container(
-                      margin: const EdgeInsetsDirectional.symmetric(
-                          horizontal: 15, vertical: 20),
+                      margin: const EdgeInsetsDirectional.only(start: 15, end: 15, top: 20),
                       padding: const EdgeInsets.all(18),
                       width: double.infinity,
-                      height: screenHeight(context) / 1.4,
                       decoration: BoxDecoration(
                           color: isDark? HexColor('#3B3B3B'): HexColor('#4764C5'),
                           borderRadius: BorderRadius.circular(20)),
@@ -101,32 +100,41 @@ class AnnouncementDetail extends StatelessWidget {
                           const SizedBox(
                             height: 20,
                           ),
-                          Linkify(
-                            onOpen: (link) => onOpen(context, link),
-                            text:
-                                'content:\n${description == '' ? 'No content' : description}',
-                            style: const TextStyle(
-                              color: Colors.white,
-                            ),
-                            linkStyle:
-                                const TextStyle(color: Colors.blue),
-                            linkifiers: const [
-                              UrlLinkifier(),
-                              EmailLinkifier(),
-                              PhoneNumberLinkifier(),
-                            ],
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsetsDirectional.symmetric(
-                                    vertical: 25.0),
-                            child: Text(
-                              'DeadLine: ${date == 'No Due Date' ? date : DateFormat('dd/MM/yyyy').format(DateTime.parse(date)).toString()}',
-                              style: const TextStyle(
-                                color: Colors.white,
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Linkify(
+                                    onOpen: (link) => onOpen(context, link),
+                                    text:
+                                        'content:\n${description == '' ? 'No content' : description}',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                    linkStyle:
+                                        const TextStyle(color: Colors.blue),
+                                    linkifiers: const [
+                                      UrlLinkifier(),
+                                      EmailLinkifier(),
+                                      PhoneNumberLinkifier(),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding:
+                                    const EdgeInsetsDirectional.only(top: 40.0),
+                                    child: Text(
+                                      'DeadLine: ${date == 'No Due Date' ? date : DateFormat('dd/MM/yyyy').format(DateTime.parse(date)).toString()}',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
+
                         ],
                       ),
                     ),

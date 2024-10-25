@@ -25,28 +25,30 @@ class FeedbackScreen extends StatelessWidget {
       key: scaffoldKey,
       drawer: drawerBuilder(context),
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 90,),
-            Stack(
-              children: [
-                Positioned(
-                  left: 0,
-                  child: backButton(context),
-                ),
-                Center(
-                  child: Text(
-                    'Feedback',
-                    style: TextStyle(fontSize: width / 10, ),
-                    textAlign: TextAlign.center,
+        child: Container(
+          margin: EdgeInsetsDirectional.only(top: screenHeight(context)/10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Stack(
+                children: [
+                  Positioned(
+                    left: 0,
+                    child: backButton(context),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 20,),
-            _buildFeedBackForm(context)
-          ],
+                  Center(
+                    child: Text(
+                      'Feedback',
+                      style: TextStyle(fontSize: width / 10, ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20,),
+              _buildFeedBackForm(context)
+            ],
+          ),
         ),
       ),
     );

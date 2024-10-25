@@ -279,10 +279,8 @@ Future.delayed(Duration(seconds: 1), () {
     print(score4User!.score);
   }
 
-  int counter = 1;
   Future? getLeaderboard(currentSemester) {
     // getProfileInfo();
-    counter = 1;
     notAdminLeaderboardModel = null;
     leaderboardModel = null;
     emit(GetLeaderboardLoadingState());
@@ -293,10 +291,9 @@ Future.delayed(Duration(seconds: 1), () {
       value.data.forEach((element) {
         // exclude the admin
         leaderboardModel?.add(LeaderboardModel.fromJson(element)); //just to get the score of Admin
-        if(counter <= 15)
           if (element['role'] != "ADMIN") {
             notAdminLeaderboardModel?.add(LeaderboardModel.fromJson(element));
-            ++counter;
+
           }
 //role
       });
