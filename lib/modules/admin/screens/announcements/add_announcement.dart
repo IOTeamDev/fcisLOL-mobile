@@ -93,7 +93,8 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                             child: Text(
                           'Announcements',
                           style: TextStyle(
-                              fontSize: width / 13, ),
+                            fontSize: width / 13,
+                          ),
                           textAlign: TextAlign.center,
                         )),
                       ],
@@ -118,7 +119,9 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                         height: _height,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
-                            color: isDark? HexColor('#3B3B3B'):HexColor('#757575')),
+                            color: isDark
+                                ? HexColor('#3B3B3B')
+                                : HexColor('#757575')),
                         curve: Curves.fastEaseInToSlowEaseOut,
                         child: _isExpanded && _showContent
                             ? Padding(
@@ -148,11 +151,20 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                               hintText: 'Title',
                                               hintStyle: TextStyle(
                                                   fontSize: 20,
-                                                  color: isDark? Colors.grey[400]:Colors.grey[100]),
-                                              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: isDark? HexColor('#848484'):HexColor('#FFFFFF'))),
+                                                  color: isDark
+                                                      ? Colors.grey[400]
+                                                      : Colors.grey[100]),
+                                              enabledBorder:
+                                                  UnderlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color: isDark
+                                                              ? HexColor(
+                                                                  '#848484')
+                                                              : HexColor(
+                                                                  '#FFFFFF'))),
                                             ),
-                                            style: TextStyle(
-                                                color: Colors.white),
+                                            style:
+                                                TextStyle(color: Colors.white),
                                           ),
                                           const SizedBox(
                                             height: 10,
@@ -166,10 +178,20 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                               hintText: 'Description',
                                               hintStyle: TextStyle(
                                                   fontSize: 20,
-                                                  color: isDark? Colors.grey[400]:Colors.grey[100]),
-                                              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: isDark? HexColor('#848484'):HexColor('#FFFFFF'))),
+                                                  color: isDark
+                                                      ? Colors.grey[400]
+                                                      : Colors.grey[100]),
+                                              enabledBorder:
+                                                  UnderlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color: isDark
+                                                              ? HexColor(
+                                                                  '#848484')
+                                                              : HexColor(
+                                                                  '#FFFFFF'))),
                                             ),
-                                            style: const TextStyle(color: Colors.white),
+                                            style: const TextStyle(
+                                                color: Colors.white),
                                           ),
                                           const SizedBox(
                                             height: 10,
@@ -181,19 +203,28 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                 child: GestureDetector(
                                                   onTap: () => showDatePicker(
                                                     context: context,
-                                                    initialDate: DateTime.now(),
-                                                    firstDate: DateTime.now(),
+                                                    initialDate: DateTime.now()
+                                                        .add(Duration(days: 1)),
+                                                    firstDate: DateTime.now()
+                                                        .add(Duration(days: 1)),
                                                     lastDate: DateTime.parse(
                                                         '2027-12-31'),
                                                   ).then((value) {
                                                     if (value != null) {
                                                       //print(DateFormat.YEAR_MONTH_DAY);
                                                       _dateController.text =
-                                                          value.toUtc().toIso8601String();
-                                                      dueDateFormatted = _dateController.text;
-                                                      _dateController.text = DateFormat('dd/MM/yyyy').format(value);
+                                                          value
+                                                              .toUtc()
+                                                              .toIso8601String();
+                                                      dueDateFormatted =
+                                                          _dateController.text;
+                                                      _dateController.text =
+                                                          DateFormat(
+                                                                  'dd/MM/yyyy')
+                                                              .format(value);
                                                       print(dueDateFormatted);
-                                                      print(_dateController.text);
+                                                      print(
+                                                          _dateController.text);
                                                     }
                                                   }),
                                                   child: Container(
@@ -340,14 +371,26 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                           color: Colors.black,
                                                         ),
                                                         onPressed: () {
-                                                          if (cubit.AnnouncementImageFile == null) {
-                                                            cubit.getAnnouncementImage();
-                                                            showToastMessage(message: 'Be careful when You choose image because it cna\'t be changed', states: ToastStates.WARNING,);
+                                                          if (cubit
+                                                                  .AnnouncementImageFile ==
+                                                              null) {
+                                                            cubit
+                                                                .getAnnouncementImage();
+                                                            showToastMessage(
+                                                              message:
+                                                                  'Be careful when You choose image because it cna\'t be changed',
+                                                              states:
+                                                                  ToastStates
+                                                                      .WARNING,
+                                                            );
                                                           } else {
                                                             setState(() {
-                                                              cubit.AnnouncementImageFile = null;
-                                                              cubit.pickerIcon = Icons.image;
-                                                              cubit.imageName = 'Select Image';
+                                                              cubit.AnnouncementImageFile =
+                                                                  null;
+                                                              cubit.pickerIcon =
+                                                                  Icons.image;
+                                                              cubit.imageName =
+                                                                  'Select Image';
                                                             });
                                                           }
                                                         }),
@@ -392,7 +435,11 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                                 BorderRadius
                                                                     .circular(
                                                                         13)),
-                                                    padding: EdgeInsetsDirectional.symmetric(horizontal: width/10 ),
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .symmetric(
+                                                                horizontal:
+                                                                    width / 10),
                                                     backgroundColor:
                                                         Colors.white,
                                                     textStyle: TextStyle(
@@ -409,9 +456,16 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                 ElevatedButton(
                                                     onPressed: () async {
                                                       if (_formKey.currentState!
-                                                              .validate() &&
-                                                          _selectedItem !=
-                                                              null) {
+                                                              .validate() 
+                                                          ) {
+                                                                if(_selectedItem ==
+                                                              null)
+                                                        showToastMessage(textColor: Colors.black,
+                                                            message:
+                                                                "Please select the announcement type",
+                                                            states: ToastStates
+                                                                .WARNING);
+else{
                                                         setState(() {
                                                           _isExpanded = false;
                                                           _showContent = false;
@@ -435,10 +489,10 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                             description:
                                                                 _descriptionController
                                                                     .text,
-                                                            image: AdminCubit
-                                                                    .get(
+                                                            image: AdminCubit.get(
                                                                         context)
-                                                                .AnnouncementImagePath,
+                                                                    .AnnouncementImagePath ??
+                                                                "https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/140.jpg?alt=media&token=3e5a4144-20ca-44ce-ba14-57432e49914f",
                                                             currentSemester:
                                                                 widget
                                                                     .semester);
@@ -460,6 +514,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                               Icons.image;
                                                         });
                                                       }
+                                                    }
                                                     },
                                                     style: ElevatedButton
                                                         .styleFrom(
@@ -469,7 +524,12 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                                   BorderRadius
                                                                       .circular(
                                                                           13)),
-                                                      padding: EdgeInsetsDirectional.symmetric(horizontal: width/10 ),
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      width /
+                                                                          10),
                                                       backgroundColor:
                                                           HexColor('#4764C5'),
                                                       foregroundColor:

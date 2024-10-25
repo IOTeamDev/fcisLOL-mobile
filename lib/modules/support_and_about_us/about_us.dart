@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/main.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,7 +17,7 @@ class AboutUs extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          margin: const EdgeInsetsDirectional.only(top: 50),
+          margin: const EdgeInsetsDirectional.only(top: 30),
           width: double.infinity,
           child: SingleChildScrollView(
             child: Column(
@@ -50,7 +51,7 @@ class AboutUs extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 30,),
-                Text('Team LOL', style: TextStyle(fontSize: width/10, fontWeight: FontWeight.bold),),
+                Text('UniNotes', style: GoogleFonts.abhayaLibre(letterSpacing: 1.9,fontSize: width/8, fontWeight: FontWeight.bold),),
                 Text('“All In One”', style: TextStyle(fontSize: width/15, fontWeight: FontWeight.bold, color: Colors.grey),),
                 Padding(
                   padding: const EdgeInsetsDirectional.symmetric(horizontal: 13.0, vertical: 10),
@@ -61,6 +62,7 @@ class AboutUs extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      SizedBox(height: 100,),
                       Text('Meet The team', style: TextStyle(fontSize: width/13),),
                       divider(),
                     ],
@@ -104,7 +106,7 @@ class AboutUs extends StatelessWidget {
                     children: [
                       CircleAvatar(radius: 30,backgroundImage: NetworkImage('https://media-hbe1-1.cdn.whatsapp.net/v/t61.24694-24/454395666_917538720254082_5688042246178164073_n.jpg?ccb=11-4&oh=01_Q5AaIN9Vwc0UJUoBKTw74c6FoYmxyJyoP7g04iDHYKnHMBP0&oe=672565BA&_nc_sid=5e03e0&_nc_cat=105'),),
                       SizedBox(width: 10,),
-                      ConstrainedBox(constraints: BoxConstraints(maxWidth: width/3.2), child: Text('Mahmoud Sa\'ad', style: TextStyle(fontSize: 20, color: Colors.white),overflow: TextOverflow.ellipsis,maxLines: 2,),),
+                      ConstrainedBox(constraints: BoxConstraints(maxWidth: width/2.5), child: Text('Mahmoud Saad', style: TextStyle(fontSize: 20, color: Colors.white),overflow: TextOverflow.ellipsis,maxLines: 2,),),
                       const Spacer(),
                       ElevatedButton(
                         onPressed: (){
