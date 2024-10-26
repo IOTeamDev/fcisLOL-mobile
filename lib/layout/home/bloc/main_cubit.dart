@@ -310,4 +310,16 @@ class MainCubit extends Cubit<MainCubitStates> {
     });
     return null;
   }
+
+updateUserSemester(int userID){
+// DioHelp.putData(query: {}, path: path, data: data)
+
+
+
+
+
+}
+
+
+
 }

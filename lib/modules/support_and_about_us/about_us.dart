@@ -36,6 +36,7 @@ class AboutUs extends StatelessWidget {
                         style: TextStyle(fontSize: width / 9, ),
                         textAlign: TextAlign.center,
                       ),
+                      
                     ),
                   ],
                 ),
