@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/shared/components/components.dart';
@@ -144,7 +145,7 @@ class LoginScreen extends StatelessWidget {
                                   textAlign: TextAlign.end,
                                 ),
                                 onPressed: () {
-showDialog(
+                                  showDialog(
                                     context: context,
                                     builder: (context) => AlertDialog(
                                       title: const Text('Forgot Password'),
@@ -154,11 +155,11 @@ showDialog(
                                           children: [
                                             TextFormField(
                                               controller: emailController,
-                                              keyboardType:TextInputType.emailAddress,
+                                              keyboardType:
+                                                  TextInputType.emailAddress,
                                               decoration: const InputDecoration(
                                                 labelText: 'Enter your email',
                                               ),
-                                            
                                             ),
                                           ],
                                         ),
@@ -172,42 +173,31 @@ showDialog(
                                         ),
                                         ElevatedButton(
                                           onPressed: () {
-                                          
-                                              String email =
-                                                  emailController.text.trim();
-                                              forgetPassword(email: email);
-                                              Navigator.of(context).pop();
+                                            String email =
+                                                emailController.text.trim();
+                                            forgetPassword(email: email);
+                                            Navigator.of(context).pop();
                                           },
                                           child: const Text('Submit'),
                                         )
-                                        
                                       ],
                                     ),
                                   );
-                                
-                            },
-                          ),
-                        
-
-                                
-                              
+                                },
+                              ),
                             ],
                           ),
                           // const SizedBox(height: 5,),
                           defaultTextField(
-onFieldSubmitted: (val){
-
-if (formKey.currentState!.validate()) {
-// update fcm token
+                              onFieldSubmitted: (val) async {
+                                if (formKey.currentState!.validate()) {
+                              
 
                                   loginCubit.login(
                                       email: emailController.text.toLowerCase(),
                                       password: passwordController.text);
                                 }
-
-},
-
-
+                              },
                               suffFunc: () {
                                 loginCubit.togglePassword();
                               },
@@ -272,17 +262,15 @@ if (formKey.currentState!.validate()) {
     );
   }
 }
-  Future<void> forgetPassword(
-      {required String email}) async {
 
-      final String subject = Uri.encodeComponent('Forgot Password');
-      final String body = Uri.encodeComponent(email);
+Future<void> forgetPassword({required String email}) async {
+  final String subject = Uri.encodeComponent('Forgot Password');
+  final String body = Uri.encodeComponent(email);
 
-      final Uri emailUri = Uri(
-        scheme: 'mailto',
-        path: 'mahmoud2004saad@gmail.com',
-        query: 'subject=$subject&body=$body',
-      );
-      await launchUrl(emailUri);
-    
-  }
+  final Uri emailUri = Uri(
+    scheme: 'mailto',
+    path: 'mahmoud2004saad@gmail.com',
+    query: 'subject=$subject&body=$body',
+  );
+  await launchUrl(emailUri);
+}
