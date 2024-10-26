@@ -153,11 +153,10 @@ class MainCubit extends Cubit<MainCubitStates> {
           builder: (context) => ChoosingYear(loginCubit: LoginCubit()),
         ), //removing all background screens
         (route) => false);
-Future.delayed(Duration(seconds: 1), () { 
-  
-     TOKEN = null;
-    SelectedSemester = null;
-});
+    Future.delayed(Duration(seconds: 1), () {
+      TOKEN = null;
+      SelectedSemester = null;
+    });
     emit(Logout());
   }
 
@@ -176,12 +175,12 @@ Future.delayed(Duration(seconds: 1), () {
     });
   }
 
-  void deleteMaterial(int id, semester,{isMaterial = false}) {
+  void deleteMaterial(int id, semester, {isMaterial = false}) {
     emit(DeleteMaterialLoadingState());
     DioHelp.deleteData(path: MATERIAL, data: {'id': id}, token: TOKEN)
         .then((value) {
       emit(DeleteMaterialSuccessState());
-        getRequests(semester: semester, isAccepted: isMaterial);
+      getRequests(semester: semester, isAccepted: isMaterial);
     });
   }
 
@@ -215,21 +214,21 @@ Future.delayed(Duration(seconds: 1), () {
     String? title,
     String? content,
     dynamic dueDate,
-   // String? type,
+    // String? type,
     required currentSemester,
     String? image,
   }) {
-      print(title);
-      print(content);
-      print(dueDate);
-      print(currentSemester);
-      print(image);
+    print(title);
+    print(content);
+    print(dueDate);
+    print(currentSemester);
+    print(image);
     emit(UpdateAnnouncementsLoadingState());
     DioHelp.putData(
         path: ANNOUNCEMENTS,
         data: {
           'title': title,
-          'content': content??" ",
+          'content': content ?? " ",
           'due_date': dueDate,
           //'type': type,
           'semester': currentSemester,
@@ -237,7 +236,6 @@ Future.delayed(Duration(seconds: 1), () {
         },
         token: TOKEN,
         query: {'id': int.parse(id)}).then((value) {
-
       // Assuming the response returns the updated announcement
       AnnouncementModel updatedAnnouncement =
           AnnouncementModel.fromJson(value.data);
@@ -250,8 +248,7 @@ Future.delayed(Duration(seconds: 1), () {
         }
       }
       emit(UpdateAnnouncementsSuccessState());
-    }).catchError(
-        (onError) => print("$onError   EEEEEEEEEEEEEEEEEEEEE"));
+    }).catchError((onError) => print("$onError   EEEEEEEEEEEEEEEEEEEEE"));
   }
 
   List<LeaderboardModel>? leaderboardModel;
@@ -292,12 +289,12 @@ Future.delayed(Duration(seconds: 1), () {
       notAdminLeaderboardModel = [];
       value.data.forEach((element) {
         // exclude the admin
-        leaderboardModel?.add(LeaderboardModel.fromJson(element)); //just to get the score of Admin
-        if(counter <= 15)
-          if (element['role'] != "ADMIN") {
-            notAdminLeaderboardModel?.add(LeaderboardModel.fromJson(element));
-            ++counter;
-          }
+        leaderboardModel?.add(LeaderboardModel.fromJson(
+            element)); //just to get the score of Admin
+        if (counter <= 15) if (element['role'] != "ADMIN") {
+          notAdminLeaderboardModel?.add(LeaderboardModel.fromJson(element));
+          ++counter;
+        }
 //role
       });
       notAdminLeaderboardModel!.sort((a, b) => b.score!.compareTo(a.score!));
