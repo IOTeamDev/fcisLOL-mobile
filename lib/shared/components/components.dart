@@ -70,35 +70,6 @@ Widget adminTopTitleWithDrawerButton(
   );
 }
 
-Widget drawerBuilder(context) {
-  return Drawer(
-    width: screenWidth(context) / 1.5,
-    backgroundColor: Colors.cyan,
-    child: ListView(
-      padding: EdgeInsets.zero,
-      children: [
-        const SizedBox(
-          height: 70,
-        ),
-        ListTile(
-          leading: const Icon(Icons.home),
-          title: const Text('Option1'),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.settings),
-          title: const Text('Option2'),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
-      ],
-    ),
-  );
-}
-
 Widget backgroundEffects() {
   return Stack(
     children: [
