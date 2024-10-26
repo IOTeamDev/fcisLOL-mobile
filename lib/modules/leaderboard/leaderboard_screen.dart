@@ -150,30 +150,34 @@ class LeaderboardScreen extends StatelessWidget {
                       ),
                       Divider(height: 0,thickness: 2, color: isDark? Colors.white: Colors.black,),
                       //Other Contributors
-                      Expanded(
-                        child:  ListView.separated(
-                          itemCount: MainCubit.get(context).notAdminLeaderboardModel!.length >= 15? 12 : MainCubit.get(context).notAdminLeaderboardModel!.length - 3,
-                          itemBuilder: (context, index) {
-                            if(MainCubit.get(context).notAdminLeaderboardModel!.length > 3)
-                            return buildList(
-                                context,
-                                (index + 4),
-                                MainCubit.get(context).notAdminLeaderboardModel![index + 3].name,
-                                MainCubit.get(context).notAdminLeaderboardModel![index + 3].score);
-                            return Container();
-                          },
-                          separatorBuilder: (context, state) => Padding(
-                            padding: const EdgeInsetsDirectional.symmetric(vertical: 15.0, horizontal: 15),
-                            child: divider(),
+                      ConditionalBuilder(
+                        condition: MainCubit.get(context).notAdminLeaderboardModel!.length > 4,
+                        builder: (context) => Expanded(
+                          child:  ListView.separated(
+                            itemCount: MainCubit.get(context).notAdminLeaderboardModel!.length >= 15? 12 : MainCubit.get(context).notAdminLeaderboardModel!.length - 3,
+                            itemBuilder: (context, index) {
+                              if(MainCubit.get(context).notAdminLeaderboardModel!.length > 3)
+                              return buildList(
+                                  context,
+                                  (index + 4),
+                                  MainCubit.get(context).notAdminLeaderboardModel![index + 3].name,
+                                  MainCubit.get(context).notAdminLeaderboardModel![index + 3].score);
+                              return Container();
+                            },
+                            separatorBuilder: (context, state) => Padding(
+                              padding: const EdgeInsetsDirectional.symmetric(vertical: 15.0, horizontal: 15),
+                              child: divider(),
+                            ),
                           ),
                         ),
+                        fallback: (context) => SizedBox(height: height/1.3 ,child: Center(child: Text('No more Users!!!', style: TextStyle(fontSize: width/12),),)),
                       ),
                     ],
                   ),
                   fallback: (context) {
                     if(state is GetLeaderboardLoadingState)
                     return  SizedBox(height: height/1.3, child: Center(child: CircularProgressIndicator(),) );
-                      return SizedBox(height: height/1.3 ,child: Center(child: Text('No LeaderBorad Yet!!!', style: TextStyle(fontSize: width/12),),));
+                      return SizedBox(height: height/1.3 ,child: Center(child: Text('No Leaderboard Yet!!!', style: TextStyle(fontSize: width/12),),));
                   },
                 ),
               ],
