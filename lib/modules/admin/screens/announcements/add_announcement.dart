@@ -518,7 +518,7 @@ else{
                                                                       width /
                                                                           10),
                                                       backgroundColor:
-                                                          HexColor('#4764C5'),
+                                                      Color.fromARGB(255, 20, 130, 220),
                                                       foregroundColor:
                                                           Colors.white,
                                                       textStyle: TextStyle(
@@ -627,7 +627,7 @@ else{
         height: 80,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            color: HexColor('#4764C5')),
+            color: Color.fromARGB(255, 20, 130, 220)),
         child: Row(
           children: [
             ConstrainedBox(

@@ -100,7 +100,7 @@ class AboutUs extends StatelessWidget {
                           launchUrl(Uri.parse('https://linktr.ee/J3_Unknown'));
                         },
                         child: Text('Contacts', style: TextStyle(color: Colors.white),),
-                        style: ElevatedButton.styleFrom(backgroundColor: HexColor('#4764C5'), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)), padding: EdgeInsetsDirectional.symmetric(horizontal: 15)),
+                        style: ElevatedButton.styleFrom(backgroundColor: Color.fromARGB(255, 20, 130, 220), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)), padding: EdgeInsetsDirectional.symmetric(horizontal: 15)),
                       )
 
                     ],
@@ -124,7 +124,7 @@ class AboutUs extends StatelessWidget {
                           launchUrl(Uri.parse('https://linktr.ee/malik1307'));
                         },
                         child: Text('Contacts', style: TextStyle(color: Colors.white),),
-                        style: ElevatedButton.styleFrom(backgroundColor: HexColor('#4764C5'), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)), padding: EdgeInsetsDirectional.symmetric(horizontal: 15)),
+                        style: ElevatedButton.styleFrom(backgroundColor: Color.fromARGB(255, 20, 130, 220), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)), padding: EdgeInsetsDirectional.symmetric(horizontal: 15)),
                       )
 
                     ],
@@ -148,7 +148,7 @@ class AboutUs extends StatelessWidget {
                           launchUrl(Uri.parse('https://linktr.ee/Se_if?utm_source=linktree_profile_share'));
                         },
                         child: Text('Contacts', style: TextStyle(color: Colors.white),),
-                        style: ElevatedButton.styleFrom(backgroundColor: HexColor('#4764C5'), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)), padding: EdgeInsetsDirectional.symmetric(horizontal: 15)),
+                        style: ElevatedButton.styleFrom(backgroundColor: Color.fromARGB(255, 20, 130, 220), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)), padding: EdgeInsetsDirectional.symmetric(horizontal: 15)),
                       )
 
                     ],
@@ -175,7 +175,7 @@ class AboutUs extends StatelessWidget {
                           launchUrl(Uri.parse('https://0mr.me/who'));
                         },
                         child: Text('Contacts', style: TextStyle(color: Colors.white),),
-                        style: ElevatedButton.styleFrom(backgroundColor: HexColor('#4764C5'), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)), padding: EdgeInsetsDirectional.symmetric(horizontal: 15)),
+                        style: ElevatedButton.styleFrom(backgroundColor: Color.fromARGB(255, 20, 130, 220), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)), padding: EdgeInsetsDirectional.symmetric(horizontal: 15)),
                       )
                     ],
                   ),
@@ -201,7 +201,7 @@ class AboutUs extends StatelessWidget {
                           launchUrl(Uri.parse('https://linktr.ee/mahmoud588'));
                         },
                         child: Text('Contacts', style: TextStyle(color: Colors.white),),
-                        style: ElevatedButton.styleFrom(backgroundColor: HexColor('#4764C5'), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)), padding: EdgeInsetsDirectional.symmetric(horizontal: 15)),
+                        style: ElevatedButton.styleFrom(backgroundColor: Color.fromARGB(255, 20, 130, 220), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)), padding: EdgeInsetsDirectional.symmetric(horizontal: 15)),
                       )
                     ],
                   ),
@@ -227,7 +227,7 @@ class AboutUs extends StatelessWidget {
                           launchUrl(Uri.parse('http://Aboelsoud.vercel.app'));
                         },
                         child: Text('Contacts', style: TextStyle(color: Colors.white),),
-                        style: ElevatedButton.styleFrom(backgroundColor: HexColor('#4764C5'), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)), padding: EdgeInsetsDirectional.symmetric(horizontal: 15)),
+                        style: ElevatedButton.styleFrom(backgroundColor: Color.fromARGB(255, 20, 130, 220), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)), padding: EdgeInsetsDirectional.symmetric(horizontal: 15)),
                       )
                     ],
                   ),

@@ -347,12 +347,9 @@ class Home extends StatelessWidget {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 10),
                                   child: GridView.builder(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(), // Disable scrolling in the GridView
-                                    shrinkWrap:
-                                        true, // Shrink the GridView to fit its content
-                                    gridDelegate:
-                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                    physics: const NeverScrollableScrollPhysics(), // Disable scrolling in the GridView
+                                    shrinkWrap: true, // Shrink the GridView to fit its content
+                                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 2, // Two items per row
                                       crossAxisSpacing: 10,
                                       mainAxisSpacing: 10,
@@ -493,8 +490,7 @@ Widget CustomDrawer(context, semester) {
                       onPressed: () {
                         print(isDark);
                         Navigator.pop(context);
-                        Provider.of<ThemeProvide>(context, listen: false)
-                            .changeMode();
+                        Provider.of<ThemeProvide>(context, listen: false).changeMode();
                       },
                       icon: Icon(
                         isDark ? Icons.light_mode : Icons.dark_mode,

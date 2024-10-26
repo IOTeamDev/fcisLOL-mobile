@@ -64,10 +64,11 @@ class RequestsDetails extends StatelessWidget {
           var cubit = MainCubit.get(context);
           return Scaffold(
             //backgroundColor: HexColor('#23252A'),
-            body: Container(
-                margin: EdgeInsetsDirectional.only(top: screenHeight(context)/10),
-                width: double.infinity,
-                child: SingleChildScrollView(
+            body: ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: screenHeight(context) / 1.4,),
+              child: Container(
+                  margin: EdgeInsetsDirectional.only(top: screenHeight(context)/10),
+                  width: double.infinity,
                   child: Column(
                     children: [
                       Stack(
@@ -263,7 +264,7 @@ class RequestsDetails extends StatelessWidget {
                                                 BorderRadius.circular(13)),
                                         padding: const EdgeInsetsDirectional
                                             .symmetric(horizontal: 40),
-                                        backgroundColor: HexColor('#4764C5'),
+                                        backgroundColor: Color.fromARGB(255, 20, 130, 220),
                                         foregroundColor: Colors.white,
                                         textStyle:
                                             TextStyle(fontSize: width / 17),
@@ -276,8 +277,8 @@ class RequestsDetails extends StatelessWidget {
                         ),
                       ),
                     ],
-                  ),
-                )),
+                  )),
+            ),
           );
         },
       ),
