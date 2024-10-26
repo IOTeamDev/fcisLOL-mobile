@@ -103,7 +103,7 @@ class Profile extends StatelessWidget {
                                             ),
                                           ),
                                         ),
-                                        if (mainCubit.score4User != null &&
+                                        if (mainCubit.score4User != null &&mainCubit.score4User!.score!=0&&
                                             mainCubit.profileModel != null)
                                           if (mainCubit.profileModel!.role !=
                                               "ADMIN" &&

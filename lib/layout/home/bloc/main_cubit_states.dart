@@ -91,3 +91,7 @@ class UpdateAnnouncementsLoadingState extends MainCubitStates{}
 class UpdateAnnouncementsSuccessState extends MainCubitStates{}
 
 class UpdateAnnouncementsErrorState extends MainCubitStates{}
+
+class UpdateUserSuccessState extends MainCubitStates{}
+
+class UpdateUserErrorState extends MainCubitStates{}

@@ -359,11 +359,8 @@ class _MaterialDetailsState extends State<SubjectDetails>
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      video.author!.authorPhoto == null ||
-                              video.author!.authorPhoto ==
-                                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7mMNz8YCBvYmnr3BQUPX__YsC_WtDuAevwg&s' ||
-                              video.author!.authorPhoto ==
-                                  'https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg'
+                      video.author!.authorPhoto == null 
+                              
                           ? Align(
                               alignment: Alignment.bottomRight,
                               child: Text(

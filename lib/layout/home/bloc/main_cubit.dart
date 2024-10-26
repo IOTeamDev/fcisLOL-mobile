@@ -287,7 +287,8 @@ class MainCubit extends Cubit<MainCubitStates> {
       notAdminLeaderboardModel = [];
       value.data.forEach((element) {
         // exclude the admin
-        leaderboardModel?.add(LeaderboardModel.fromJson(element)); //just to get the score of Admin
+        leaderboardModel?.add(LeaderboardModel.fromJson(
+            element)); //just to get the score of Admin
         if (element['role'] != "ADMIN") {
           notAdminLeaderboardModel?.add(LeaderboardModel.fromJson(element));
           //print('leaderboard size ${notAdminLeaderboardModel!.first}');
@@ -308,5 +309,45 @@ class MainCubit extends Cubit<MainCubitStates> {
       emit(GetLeaderboardErrorState());
     });
     return null;
+  }
+
+  void updateSemester4all() {
+    DioHelp.getData(path: "users").then((onValue) {
+      onValue.data.forEach((element) {
+        if (element['semester'] == "One")
+          updateUser(userID: element['id'], semester: "Two");
+        if (element['semester'] == "Two")
+          updateUser(userID: element['id'], semester: "Three");
+        if (element['semester'] == "Three")
+          updateUser(userID: element['id'], semester: "Four");
+        if (element['semester'] == "Four")
+          updateUser(userID: element['id'], semester: "Five");
+        if (element['semester'] == "Five")
+          updateUser(userID: element['id'], semester: "Six");
+      });
+
+      emit(GetUserImageSuccess());
+    }).catchError((onError));
+  }
+
+  updateUser({
+    required int userID,
+    String? semester,
+    String? fcmToken,
+  }) {
+    DioHelp.putData(
+        token: TOKEN,
+        query: {'id': userID},
+        path: "users",
+        data: {
+          if (semester != null) 'semester': semester,
+          if (fcmToken != null) 'fcmToken': fcmToken
+        }).then((val) {
+      print(val.data['id']);
+      emit(UpdateUserSuccessState());
+    }).catchError((erro) {
+      print(erro.toString());
+      emit(UpdateUserErrorState());
+    });
   }
 }

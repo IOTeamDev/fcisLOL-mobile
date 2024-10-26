@@ -30,6 +30,8 @@ class ChoosingYear extends StatelessWidget {
         builder: (context, state) => Scaffold(
           backgroundColor: Colors.white,
           body: Column(
+            // mainAxisAlignment: userInfo==null?MainAxisAlignment.start:MainAxisAlignment.center,
+
             children: [
               // Content at the top of the body
               if (userInfo == null)
@@ -37,6 +39,7 @@ class ChoosingYear extends StatelessWidget {
                   margin: EdgeInsets.only(top: 120),
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
+
                     children: [
                       OutlinedButton(
                         onPressed: () {
@@ -83,9 +86,11 @@ class ChoosingYear extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: Column(
                     // crossAxisAlignment: CrossAxisAlignment.start,
-                    // mainAxisAlignment: MainAxisAlignment
+                    mainAxisAlignment: MainAxisAlignment.center,
                     //     .center, // Center the Year widgets vertically
                     children: [
+                      if(userInfo!=null)
+                      SizedBox(height: MediaQuery.of(context).size.height/3.5,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment
                             .center, // Center the rows horizontally

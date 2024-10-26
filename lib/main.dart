@@ -56,6 +56,8 @@ String? private_key;
 //     }
 //   }
 // }
+bool? changeSemester = false;
+String? fcmToken;
 bool isDark = false;
 Map<String, dynamic> fcisServiceMap = {};
 main() async {
@@ -63,8 +65,17 @@ main() async {
   await Cache.initialize();
   await DioHelp.initial();
   await Firebase.initializeApp();
-  String? fcmToken = await FirebaseMessaging.instance.getToken();
+  fcmToken = await FirebaseMessaging.instance.getToken();
   print(fcmToken);
+
+  FirebaseFirestore.instance
+      .collection("indicators")
+      .doc("constants")
+      .get()
+      .then((onValue) {
+    changeSemester = onValue.data()?["changeSemester"] ?? false;
+    print("$changeSemester seememmemememmem");
+  });
 
   await FirebaseFirestore.instance
       .collection("4notifications")

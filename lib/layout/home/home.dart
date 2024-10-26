@@ -10,6 +10,7 @@ import 'package:googleapis/admin/directory_v1.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/layout/home/semester_navigate.dart';
 import 'package:lol/models/admin/announcement_model.dart';
+import 'package:lol/models/fcm_model.dart';
 import 'package:lol/models/subjects/semster_model.dart';
 import 'package:lol/models/profile/profile_model.dart';
 import 'package:lol/models/subjects/subject_model.dart';
@@ -85,6 +86,12 @@ class Home extends StatelessWidget {
         } else {
           print("Announcements are null or empty");
         }
+        if (state is GetProfileSuccess) {
+          MainCubit.get(context).updateUser(
+              userID: MainCubit.get(context).profileModel!.id,
+              fcmToken: fcmToken);
+        }
+
         if ((state is GetProfileSuccess || TOKEN == null) &&
             wannaAnnouncements) {
           if (TOKEN == null) {
@@ -182,7 +189,9 @@ class Home extends StatelessWidget {
                                                     "images/l.png",
                                                     width: 45,
                                                     height: 45,
-                                                    color: isDark?Colors.white:null,
+                                                    color: isDark
+                                                        ? Colors.white
+                                                        : null,
                                                   ),
                                                   Text(
                                                     "UniNotes",
@@ -215,99 +224,137 @@ class Home extends StatelessWidget {
                                     return Center(
                                         child: CircularProgressIndicator());
                                   } else {
-                                    var anonuncmentsss = AdminCubit.get(context).announcements;
+                                    var anonuncmentsss =
+                                        AdminCubit.get(context).announcements;
 
                                     return CarouselSlider(
                                       items: anonuncmentsss!.isEmpty
                                           ? [
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15.0),
+                                              GestureDetector(
+                                                onDoubleTap: () {
+                                                  if (MainCubit.get(context)
+                                                              .profileModel
+                                                              ?.role ==
+                                                          "ADMIN" &&
+                                                      changeSemester!) {
+                                                    MainCubit.get(context)
+                                                        .updateSemester4all();
+                                                    changeSemester = false;
+                                                
+                                                  }
+                                                },
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15.0),
+                                                  ),
+                                                  child: Image.asset(
+                                                      height: 600,
+                                                      width: double.infinity,
+                                                      fit: BoxFit.cover,
+                                                      "images/th.png"),
                                                 ),
-                                                child: Image.asset(
-                                                    height: 600,
-                                                    width: double.infinity,
-                                                    fit: BoxFit.cover,
-                                                    "images/th.png"),
                                               )
                                             ]
                                           : anonuncmentsss.map((anonuncments) {
-                                              return Stack(
-                                                  alignment:
-                                                      Alignment.bottomCenter,
-                                                  children: [
-                                                    Container(
-                                                      margin: EdgeInsets.only(
-                                                          top: 5),
-                                                      clipBehavior:
-                                                          Clip.antiAlias,
-                                                      // margin: const EdgeInsets.all(6.0),
-                                                      // child: Image.asset("images/332573639_735780287983011_1562632886952931410_n.jpg",width: 400,height: 400,fit: BoxFit.cover,),
-                                                      decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(15.0),
-                                                        // image: DecorationImage(
-                                                        //   image: AssetImage(
-                                                        //     carsor.image ?? "images/llogo.jfif",
-                                                        //   ),
-                                                        //   fit: BoxFit.cover,
-                                                        // ),
-                                                      ),
-                                                      child: Image.network(
-                                                        anonuncments.image,
-                                                        width: 400,
-                                                        height: 250,
-                                                        fit: BoxFit.fitWidth,
-                                                      ),
-                                                    ),
-                                                    Container(
-                                                      width: double.infinity,
-                                                      height: double
-                                                          .infinity, // Adjust height as needed
-                                                      decoration: BoxDecoration(
-                                                        gradient:
-                                                            LinearGradient(
-                                                          colors: [
-                                                            Colors.transparent,
-                                                            Colors.transparent,
-                                                            Colors.transparent,
-                                                            Colors.black.withOpacity(0.3),
-                                                            Colors.black.withOpacity(0.6),
-                                                          ],
-                                                          begin: Alignment
-                                                              .topCenter,
-                                                          end: Alignment
-                                                              .bottomCenter,
+                                              return GestureDetector(
+                                                onDoubleTap: () {
+                                                  if (MainCubit.get(context)
+                                                              .profileModel
+                                                              ?.role ==
+                                                          "ADMIN" &&
+                                                      changeSemester!) {
+                                                    MainCubit.get(context)
+                                                        .updateSemester4all();
+                                                    changeSemester = false;
+                                                  }
+                                                },
+                                                child: Stack(
+                                                    alignment:
+                                                        Alignment.bottomCenter,
+                                                    children: [
+                                                      Container(
+                                                        margin: EdgeInsets.only(
+                                                            top: 5),
+                                                        clipBehavior:
+                                                            Clip.antiAlias,
+                                                        // margin: const EdgeInsets.all(6.0),
+                                                        // child: Image.asset("images/332573639_735780287983011_1562632886952931410_n.jpg",width: 400,height: 400,fit: BoxFit.cover,),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      15.0),
+                                                          // image: DecorationImage(
+                                                          //   image: AssetImage(
+                                                          //     carsor.image ?? "images/llogo.jfif",
+                                                          //   ),
+                                                          //   fit: BoxFit.cover,
+                                                          // ),
+                                                        ),
+                                                        child: Image.network(
+                                                          anonuncments.image,
+                                                          width: 400,
+                                                          height: 250,
+                                                          fit: BoxFit.fitWidth,
                                                         ),
                                                       ),
-                                                    ),
-                                                    Container(
-                                                      margin:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 30,
-                                                              vertical: 10),
-                                                      child: Align(
-                                                        alignment: Alignment
-                                                            .bottomLeft,
-                                                        child: Text(
-                                                          anonuncments.title,
-                                                          style: TextStyle(
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 20,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
+                                                      Container(
+                                                        width: double.infinity,
+                                                        height: double
+                                                            .infinity, // Adjust height as needed
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          gradient:
+                                                              LinearGradient(
+                                                            colors: [
+                                                              Colors
+                                                                  .transparent,
+                                                              Colors
+                                                                  .transparent,
+                                                              Colors
+                                                                  .transparent,
+                                                              Colors.black
+                                                                  .withOpacity(
+                                                                      0.3),
+                                                              Colors.black
+                                                                  .withOpacity(
+                                                                      0.6),
+                                                            ],
+                                                            begin: Alignment
+                                                                .topCenter,
+                                                            end: Alignment
+                                                                .bottomCenter,
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ]);
+                                                      Container(
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal: 30,
+                                                                vertical: 10),
+                                                        child: Align(
+                                                          alignment: Alignment
+                                                              .bottomLeft,
+                                                          child: Text(
+                                                            anonuncments.title,
+                                                            style: TextStyle(
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 20,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ]),
+                                              );
                                             }).toList(),
                                       options: CarouselOptions(
                                         height: 200.0,
@@ -347,9 +394,12 @@ class Home extends StatelessWidget {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 10),
                                   child: GridView.builder(
-                                    physics: const NeverScrollableScrollPhysics(), // Disable scrolling in the GridView
-                                    shrinkWrap: true, // Shrink the GridView to fit its content
-                                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(), // Disable scrolling in the GridView
+                                    shrinkWrap:
+                                        true, // Shrink the GridView to fit its content
+                                    gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 2, // Two items per row
                                       crossAxisSpacing: 10,
                                       mainAxisSpacing: 10,
@@ -495,7 +545,8 @@ Widget CustomDrawer(context, semester) {
                       onPressed: () {
                         print(isDark);
                         Navigator.pop(context);
-                        Provider.of<ThemeProvide>(context, listen: false).changeMode();
+                        Provider.of<ThemeProvide>(context, listen: false)
+                            .changeMode();
                       },
                       icon: Icon(
                         isDark ? Icons.light_mode : Icons.dark_mode,
@@ -907,10 +958,11 @@ Widget subjectItemBuild(SubjectModel subject, context) {
       onTap: () {
         navigate(
             context,
-            SubjectDetails(subjectName: subject.subjectName,));
+            SubjectDetails(
+              subjectName: subject.subjectName,
+            ));
       },
       child: Card(
-        
         elevation: 12.0, // More elevation for depth
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16.0),
@@ -919,7 +971,8 @@ Widget subjectItemBuild(SubjectModel subject, context) {
         child: Container(
           padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
-              color: isDark ? Color(0xff5A5B5F) :  Color.fromARGB(255, 20, 130, 220)
+              color:
+                  isDark ? Color(0xff5A5B5F) : Color.fromARGB(255, 20, 130, 220)
               // image: DecorationImage(
               //   colorFilter: const ColorFilter.mode(
               //       Color(0xfff39c12), BlendMode.dstIn),
@@ -933,7 +986,8 @@ Widget subjectItemBuild(SubjectModel subject, context) {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset(subject.subjectImage, height: 70, color: Colors.white),
+              Image.asset(subject.subjectImage,
+                  height: 70, color: Colors.white),
               SizedBox(
                 height: 10,
               ),
