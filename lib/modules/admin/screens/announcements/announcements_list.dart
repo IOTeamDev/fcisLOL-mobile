@@ -83,8 +83,7 @@ class AnnouncementsList extends StatelessWidget {
                                 'You have no announcements yet!!!',
                                 style: TextStyle(
                                     fontSize: 30,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
+                                    fontWeight: FontWeight.bold,),
                                 textAlign: TextAlign.center,
                               ),
                             ),

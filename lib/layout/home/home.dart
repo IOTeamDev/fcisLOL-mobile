@@ -470,8 +470,8 @@ Widget CustomDrawer(context, semester) {
                         ),
                       ),
                       const Spacer(),
-                      Text(Level(profileModel.semester), style: TextStyle(fontSize: screenWidth(context)/22),),
-                    ],
+                      Text(Level(profileModel.semester), style: TextStyle(fontSize: 14,),),
+                      ],
                   ),
                   // accountEmail: Text("2nd year "),
                   accountEmail: Container(
