@@ -722,7 +722,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                                       margin: const EdgeInsets.only(
                                           left: 0, top: 0, bottom: 0),
                                       padding: const EdgeInsets.all(10),
-                                      width: screenWidth(context) / 4,
+                                      width: screenWidth(context) / 3,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(20),
                                         color: Color.fromRGBO(71, 100, 197, 1),

@@ -74,7 +74,6 @@ class AboutUs extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: height/6,),
                       Text('Meet The team', style: TextStyle(fontSize: width/13),),
                       divider(),
                     ],
@@ -118,7 +117,7 @@ class AboutUs extends StatelessWidget {
                     children: [
                       CircleAvatar(radius: 30,backgroundImage: NetworkImage('https://media-hbe1-1.cdn.whatsapp.net/v/t61.24694-24/454395666_917538720254082_5688042246178164073_n.jpg?ccb=11-4&oh=01_Q5AaIN9Vwc0UJUoBKTw74c6FoYmxyJyoP7g04iDHYKnHMBP0&oe=672565BA&_nc_sid=5e03e0&_nc_cat=105'),),
                       SizedBox(width: 10,),
-                      ConstrainedBox(constraints: BoxConstraints(maxWidth: width/2.5), child: Text('Mahmoud Saad', style: TextStyle(fontSize: 20, color: Colors.white),overflow: TextOverflow.ellipsis,maxLines: 2,),),
+                      ConstrainedBox(constraints: BoxConstraints(maxWidth: width/3), child: Text('Mahmoud Saad', style: TextStyle(fontSize: 20, color: Colors.white),overflow: TextOverflow.ellipsis,maxLines: 2,),),
                       const Spacer(),
                       ElevatedButton(
                         onPressed: (){

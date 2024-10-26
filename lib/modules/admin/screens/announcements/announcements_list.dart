@@ -73,17 +73,20 @@ class AnnouncementsList extends StatelessWidget {
                       ),
                       fallback: (context) {
                         if (state is AdminGetAnnouncementLoadingState) {
-                          return const Center(
-                              child: CircularProgressIndicator());
+                          return
+                            SizedBox(height: height/1.3, child:Center(child: CircularProgressIndicator()) ,);
                         } else {
-                          return const Center(
-                            child: Text(
-                              'You have no announcements yet!!!',
-                              style: TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                              textAlign: TextAlign.center,
+                          return SizedBox(
+                            height: height/1.3,
+                            child: Center(
+                              child: Text(
+                                'You have no announcements yet!!!',
+                                style: TextStyle(
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                                textAlign: TextAlign.center,
+                              ),
                             ),
                           );
                         }

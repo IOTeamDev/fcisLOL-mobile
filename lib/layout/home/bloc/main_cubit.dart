@@ -287,11 +287,10 @@ class MainCubit extends Cubit<MainCubitStates> {
       notAdminLeaderboardModel = [];
       value.data.forEach((element) {
         // exclude the admin
-
-        leaderboardModel?.add(LeaderboardModel.fromJson(
-            element)); //just to get the score of Admin
+        leaderboardModel?.add(LeaderboardModel.fromJson(element)); //just to get the score of Admin
         if (element['role'] != "ADMIN") {
           notAdminLeaderboardModel?.add(LeaderboardModel.fromJson(element));
+          //print('leaderboard size ${notAdminLeaderboardModel!.first}');
         }
 //roll
       });
