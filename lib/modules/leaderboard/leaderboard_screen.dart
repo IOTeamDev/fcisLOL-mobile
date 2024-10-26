@@ -60,9 +60,8 @@ class LeaderboardScreen extends StatelessWidget {
                   ],
                 ),
                 ConditionalBuilder(
-                  condition: MainCubit.get(context).notAdminLeaderboardModel != null && state is! GetLeaderboardLoadingState && MainCubit.get(context).notAdminLeaderboardModel!.isNotEmpty,
+                  condition: MainCubit.get(context).notAdminLeaderboardModel != null && state is! GetLeaderboardLoadingState && MainCubit.get(context).notAdminLeaderboardModel!.length >= 3,
                   builder: (context) => Column(
-                    mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(height: height/30,),
@@ -75,10 +74,8 @@ class LeaderboardScreen extends StatelessWidget {
                           children: [
                             Column(
                               children: [
-                                if(MainCubit.get(context).notAdminLeaderboardModel![1].name != null)
                                   CircleAvatar(backgroundImage: NetworkImage(MainCubit.get(context).notAdminLeaderboardModel![1].photo!),radius: width/12,),
                                 SizedBox(height: 3,),
-                                if(MainCubit.get(context).notAdminLeaderboardModel![1].name != null)
                                 ConstrainedBox(constraints: BoxConstraints(maxWidth: width/3.5),child: Text(MainCubit.get(context).notAdminLeaderboardModel![1].name.toString(), style: TextStyle(fontSize: width/19),overflow: TextOverflow.ellipsis, maxLines: 2, textAlign: TextAlign.center,)),
                                 SizedBox(height: 10,),
                                 Container(
@@ -90,13 +87,13 @@ class LeaderboardScreen extends StatelessWidget {
                                   height: 170,
                                   width: width/3.2,
 
-                                  child: MainCubit.get(context).notAdminLeaderboardModel![1].name != null? Column(
+                                  child: Column(
                                     children: [
                                       Container(height: 35, width: 35, child: Center(child: Text('2', style: TextStyle(color: Colors.black, fontSize: width/20),)), decoration: BoxDecoration(color: HexColor('#C0C0C0'), borderRadius: BorderRadius.circular(10)),),
                                       SizedBox(height: 10,),
-                                      Text('${MainCubit.get(context).notAdminLeaderboardModel![1].score??'-'} pts', style: TextStyle(fontSize: width/17),),
+                                      Text('${MainCubit.get(context).notAdminLeaderboardModel![1].score} pts', style: TextStyle(fontSize: width/17),),
                                     ],
-                                  ): Container(),
+                                  ),
                                 ),
                               ],
                             ),
@@ -126,10 +123,8 @@ class LeaderboardScreen extends StatelessWidget {
                             ),
                             Column(
                               children: [
-                                if(MainCubit.get(context).notAdminLeaderboardModel![2].name != null)
                                   CircleAvatar(backgroundImage: NetworkImage(MainCubit.get(context).notAdminLeaderboardModel![1].photo!),radius: width/13,),
                                 SizedBox(height: 3,),
-                                if(MainCubit.get(context).notAdminLeaderboardModel![2].name != null)
                                 ConstrainedBox(constraints: BoxConstraints(maxWidth: width/3.5),child: Text(MainCubit.get(context).notAdminLeaderboardModel![2].name.toString(), style: TextStyle(fontSize: width/19),overflow: TextOverflow.ellipsis, maxLines: 2, textAlign: TextAlign.center,)),
                                 SizedBox(height: 10,),
                                 Container(
@@ -140,13 +135,13 @@ class LeaderboardScreen extends StatelessWidget {
                                   ),
                                   height: 130,
                                   width: width/3.2,
-                                  child: MainCubit.get(context).notAdminLeaderboardModel![1].name != null? Column(
+                                  child: Column(
                                     children: [
                                       Container(height: 30, width: 30, decoration: BoxDecoration(color: HexColor('#CD7F32'), borderRadius: BorderRadius.circular(10)), child: Center(child: Text('3', style: TextStyle(color: Colors.black, fontSize: width/20),)),),
                                       SizedBox(height: 10,),
                                       Text('${MainCubit.get(context).notAdminLeaderboardModel![2].score} pts', style: TextStyle(fontSize: width/19),),
                                     ],
-                                  ): Container(),
+                                  ),
                                 ),
                               ],
                             ),
@@ -157,17 +152,15 @@ class LeaderboardScreen extends StatelessWidget {
                       //Other Contributors
                       Expanded(
                         child:  ListView.separated(
-                          itemCount: MainCubit.get(context).notAdminLeaderboardModel!.length-3  >= 12? 12 : MainCubit.get(context).notAdminLeaderboardModel!.length - 3,
+                          itemCount: MainCubit.get(context).notAdminLeaderboardModel!.length >= 15? 12 : MainCubit.get(context).notAdminLeaderboardModel!.length - 3,
                           itemBuilder: (context, index) {
+                            if(MainCubit.get(context).notAdminLeaderboardModel!.length > 3)
                             return buildList(
                                 context,
                                 (index + 4),
-                                MainCubit.get(context)
-                                    .notAdminLeaderboardModel![index + 3]
-                                    .name,
-                                MainCubit.get(context)
-                                    .notAdminLeaderboardModel![index + 3]
-                                    .score);
+                                MainCubit.get(context).notAdminLeaderboardModel![index + 3].name,
+                                MainCubit.get(context).notAdminLeaderboardModel![index + 3].score);
+                            return Container();
                           },
                           separatorBuilder: (context, state) => Padding(
                             padding: const EdgeInsetsDirectional.symmetric(vertical: 15.0, horizontal: 15),
@@ -180,7 +173,6 @@ class LeaderboardScreen extends StatelessWidget {
                   fallback: (context) {
                     if(state is GetLeaderboardLoadingState)
                     return  SizedBox(height: height/1.3, child: Center(child: CircularProgressIndicator(),) );
-                    else
                       return SizedBox(height: height/1.3 ,child: Center(child: Text('No LeaderBorad Yet!!!', style: TextStyle(fontSize: width/12),),));
                   },
                 ),

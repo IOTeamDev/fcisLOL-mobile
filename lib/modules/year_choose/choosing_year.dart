@@ -191,8 +191,8 @@ class YearState extends State<Year> {
                 ),
               ],
             ),
-            width: 150, // Fixed width for each card
-            height: 150, // Fixed height for each card
+            width: screenWidth(context)/3, // Fixed width for each card
+            height: screenHeight(context)/5.5, // Fixed height for each card
             child: Center(
               child: Text(
                 widget.title,

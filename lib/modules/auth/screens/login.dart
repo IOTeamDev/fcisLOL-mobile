@@ -62,28 +62,30 @@ class LoginScreen extends StatelessWidget {
                       const SizedBox(
                         height: 40,
                       ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Image.asset(
-                            "images/l.png",
-                            width: 35,
-                            height: 35,
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          const Text(
-                            "UniNotes",
-                            style: TextStyle(
-                                fontSize: 20,
-                                letterSpacing: 2,
-                                color: Colors.black),
-                          ),
+                      Center(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              "images/l.png",
+                              width: 35,
+                              height: 35,
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            const Text(
+                              "UniNotes",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  letterSpacing: 2,
+                                  color: Colors.black),
+                            ),
 
-                          // SizedBox(width:70)
-                        ],
+                            // SizedBox(width:70)
+                          ],
+                        ),
                       ),
                       const SizedBox(
                         height: 50,

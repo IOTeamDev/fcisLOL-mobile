@@ -390,71 +390,76 @@ Widget CustomDrawer(context, semester) {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TOKEN != null
-            ? UserAccountsDrawerHeader(
-                otherAccountsPictures: [
-                  IconButton(
-                      onPressed: () {
-                        print(isDark);
-                        // Navigator.pop(context);
-                        navigatReplace(context, Home());
-                        Provider.of<ThemeProvide>(context, listen: false)
-                            .changeMode();
-                      },
-                      icon: Icon(
-                        isDark ? Icons.light_mode : Icons.dark_mode,
-                        color: !isDark ? Colors.black : Colors.white,
-                      ))
-                ],
-                decoration: BoxDecoration(color: const Color.fromARGB(255, 20, 130, 220)),
-                accountName: Row(
-                  children: [
-                    Text(
-                      profileModel!.name,
-                      style: const TextStyle(overflow: TextOverflow.ellipsis),
-                    ),
-                    const Spacer(),
-                    Text(Level(profileModel.semester)),
-                    const SizedBox(
-                      width: 10,
-                    )
+            ? Container(
+              height: screenHeight(context)/3.2,
+              child: UserAccountsDrawerHeader(
+                  otherAccountsPictures: [
+                    IconButton(
+                        onPressed: () {
+                          print(isDark);
+                          // Navigator.pop(context);
+                          navigatReplace(context, Home());
+                          Provider.of<ThemeProvide>(context, listen: false)
+                              .changeMode();
+                        },
+                        icon: Icon(
+                          isDark ? Icons.light_mode : Icons.dark_mode,
+                          color: !isDark ? Colors.black : Colors.white,
+                        ))
                   ],
-                ),
-                // accountEmail: Text("2nd year "),
-                accountEmail: Container(
-                  margin: EdgeInsets.zero, // Remove any margin
-                  padding: EdgeInsets.zero, // Remove any padding
-                  child: Container(
-                    margin: EdgeInsets.only(top: 5),
-                    child: GestureDetector(
-                      onTap: () => navigate(context, const Profile()),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Image.asset(
-                            "images/profile.png",
-                            width: 20,
-                            height: 20,
-                          ),
-                          SizedBox(width: 10),
-                          Text("Profile info"),
-                        ],
+                  decoration: BoxDecoration(color: const Color.fromARGB(255, 20, 130, 220), ),
+                  accountName: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ConstrainedBox(
+                        constraints: BoxConstraints(maxWidth: screenWidth(context)/1.5),
+                        child: Text(
+                          profileModel!.name,
+                          style: TextStyle(overflow: TextOverflow.ellipsis, fontWeight: FontWeight.bold),
+                          maxLines: 1,
+                        ),
+                      ),
+                      const Spacer(),
+                      Text(Level(profileModel.semester), style: TextStyle(fontSize: screenWidth(context)/22),),
+                    ],
+                  ),
+                  // accountEmail: Text("2nd year "),
+                  accountEmail: Container(
+                    margin: EdgeInsets.zero, // Remove any margin
+                    padding: EdgeInsets.zero, // Remove any padding
+                    child: Container(
+                      margin: EdgeInsets.only(top: 5),
+                      child: GestureDetector(
+                        onTap: () => navigate(context, const Profile()),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Image.asset(
+                              "images/profile.png",
+                              width: 20,
+                              height: 20,
+                            ),
+                            SizedBox(width: 10),
+                            Text("Profile info"),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                currentAccountPicture: ClipOval(
-                  child: Image.network(
-                    profileModel.photo,
-                    width: 30,
-                    height: 30,
-                    fit: BoxFit.cover,
+                  currentAccountPicture: ClipOval(
+                    child: Image.network(
+                      profileModel.photo,
+                      width: 10,
+                      height: 10,
+                      fit: BoxFit.cover,
+                    ),
+                    // backgroundImage: NetworkImage(profileModel.photo),
                   ),
-                  // backgroundImage: NetworkImage(profileModel.photo),
+                  // otherAccountsPictures: [
+                  //   Icon(Icons.info, color: Colors.white),
+                  // ],
                 ),
-                // otherAccountsPictures: [
-                //   Icon(Icons.info, color: Colors.white),
-                // ],
-              )
+            )
             : UserAccountsDrawerHeader(
                 decoration: BoxDecoration(color: HexColor('#4764C5')),
                 // accountName: Text(""),
