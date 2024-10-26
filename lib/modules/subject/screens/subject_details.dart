@@ -362,7 +362,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                       video.author!.authorPhoto == null 
                               
                           ? Align(
-                              alignment: Alignment.bottomRight,
+                              alignment: Alignment.bottomLeft,
                               child: Text(
                                 'Shared by: ${video.author!.authorName}',
                                 style: TextStyle(
@@ -374,7 +374,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                               ),
                             )
                           : Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Text(
                                   'Shared by:  ',
@@ -471,7 +471,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                         document.author!.authorPhoto ==
                             'https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg'
                     ? Align(
-                        alignment: Alignment.bottomRight,
+                        alignment: Alignment.bottomLeft,
                         child: Text(
                           'Shared by: ${document.author!.authorName}',
                           style: TextStyle(
@@ -483,7 +483,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                         ),
                       )
                     : Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
                             'Shared by:  ',
