@@ -61,12 +61,10 @@ class Profile extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
+                          margin: EdgeInsetsDirectional.only(top: screenHeight(context)/12),
                           // color: HexColor('#4764C5'),
                           child: Column(
                             children: [
-                              const SizedBox(
-                                height: 55,
-                              ),
                               Padding(
                                 padding:
                                 const EdgeInsetsDirectional.only(bottom: 15.0),

@@ -22,7 +22,7 @@ class ReportBug extends StatelessWidget {
     return Scaffold(
       body: Container(
         width: double.infinity,
-        margin: const EdgeInsetsDirectional.only(top: 90),
+        margin: EdgeInsetsDirectional.only(top:height/10),
         child: SingleChildScrollView(
           child: Column(
             children: [

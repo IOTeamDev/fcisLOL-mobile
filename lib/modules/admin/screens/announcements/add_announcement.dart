@@ -77,7 +77,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
             //backgroundColor: HexColor('#23252A'),
             body: Container(
               padding: EdgeInsets.all(5),
-              margin: const EdgeInsetsDirectional.only(top: 90),
+              margin: EdgeInsetsDirectional.only(top: screenHeight(context)/10),
               width: double.infinity,
               child: SingleChildScrollView(
                 child: Column(

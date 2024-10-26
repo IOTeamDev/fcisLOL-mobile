@@ -41,7 +41,7 @@ class LeaderboardScreen extends StatelessWidget {
           key: scaffoldKey,
           body: Container(
 
-            margin: const EdgeInsetsDirectional.only(top: 90),
+            margin: EdgeInsetsDirectional.only(top: screenHeight(context)/10),
             width: double.infinity,
             child: ConditionalBuilder(
               condition:
@@ -155,7 +155,7 @@ class LeaderboardScreen extends StatelessWidget {
                   Divider(height: 0,thickness: 2, color: isDark? Colors.white: Colors.black,),
                   Expanded(
                     child:  ListView.separated(
-                          itemCount: MainCubit.get(context).notAdminLeaderboardModel!.length - 3,
+                          itemCount: MainCubit.get(context).notAdminLeaderboardModel!.length-3  >= 12 ? 12 : MainCubit.get(context).notAdminLeaderboardModel!.length - 3,
                           itemBuilder: (context, index) {
                             return buildList(
                               context,

@@ -17,7 +17,7 @@ class AboutUs extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          margin: const EdgeInsetsDirectional.only(top: 30),
+          margin: EdgeInsetsDirectional.only(top: screenHeight(context)/20),
           width: double.infinity,
           child: SingleChildScrollView(
             child: Column(
@@ -68,14 +68,13 @@ class AboutUs extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(height: 120,),
 
                 Padding(
                   padding: const EdgeInsetsDirectional.symmetric(horizontal: 20.0, vertical: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 20,),
+                      SizedBox(height: height/6,),
                       Text('Meet The team', style: TextStyle(fontSize: width/13),),
                       divider(),
                     ],

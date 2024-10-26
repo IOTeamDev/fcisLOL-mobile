@@ -65,7 +65,7 @@ class RequestsDetails extends StatelessWidget {
           return Scaffold(
             //backgroundColor: HexColor('#23252A'),
             body: Container(
-                margin: const EdgeInsetsDirectional.only(top: 90),
+                margin: EdgeInsetsDirectional.only(top: screenHeight(context)/10),
                 width: double.infinity,
                 child: SingleChildScrollView(
                   child: Column(

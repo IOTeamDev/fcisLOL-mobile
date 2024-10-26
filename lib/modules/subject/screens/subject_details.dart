@@ -94,90 +94,90 @@ class _MaterialDetailsState extends State<SubjectDetails>
               floatingActionButton: buildFloatingActionButton(),
               key: scaffoldKey,
               //backgroundColor: isDark ? HexColor('#23252A') : Colors.white,
-              body: Column(
-                children: [
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          icon: Icon(
-                            Icons.arrow_back,
-                            color: isDark ? Colors.white : Colors.black,
-                            size: 30,
-                          )),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 8),
-                          child: Text(
-                            widget.subjectName
-                                .replaceAll('_', " ")
-                                .replaceAll("and", "&"),
-                            style: TextStyle(
-                                color: isDark ? Colors.white : Colors.black,
-                                fontSize: screenWidth(context) / 15),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
+              body: Container(
+                margin: EdgeInsetsDirectional.only(top: screenHeight(context)/15),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            icon: Icon(
+                              Icons.arrow_back,
+                              color: isDark ? Colors.white : Colors.black,
+                              size: 30,
+                            )),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
+                            child: Text(
+                              widget.subjectName
+                                  .replaceAll('_', " ")
+                                  .replaceAll("and", "&"),
+                              style: TextStyle(
+                                  color: isDark ? Colors.white : Colors.black,
+                                  fontSize: screenWidth(context) / 15),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 10),
-                    child: TextField(
-                      onChanged: (query) {
-                        cubit.runFilter(query: query);
-                      },
-                      style: TextStyle(
-                          color:
-                              isDark ? Color(0xff1B262C) : HexColor('#757575'),
-                          fontSize: 20),
-                      keyboardType: TextInputType.text,
-                      textInputAction: TextInputAction.search,
-                      decoration: InputDecoration(
-                          fillColor: HexColor('#CDCDCD'),
-                          filled: true,
-                          prefixIcon: Icon(
-                            Icons.search,
-                            size: 25,
-                            color: HexColor('#757575'),
-                          ),
-                          contentPadding: const EdgeInsets.all(10.0),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          hintText: 'Search for Videos, Documents',
-                          hintStyle: TextStyle(
-                            color: HexColor('#757575'),
-                            fontSize: 15,
-                          )),
+                      ],
                     ),
-                  ),
-                  customTabBar(
-                      tabController: _tabControllerOfShowingContent,
-                      title1: 'Videos',
-                      title2: 'Documents'),
-                  // const Padding(
-                  //   padding: EdgeInsets.symmetric(horizontal: 16),
-                  //   child: Divider(
-                  //       // color: Color.fromRGBO(255, 255, 255, 0.25),
-                  //       ),
-                  // ),
-                  Expanded(child: customTabBarView()),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 10),
+                      child: TextField(
+                        onChanged: (query) {
+                          cubit.runFilter(query: query);
+                        },
+                        style: TextStyle(
+                            color:
+                                isDark ? Color(0xff1B262C) : HexColor('#757575'),
+                            fontSize: 20),
+                        keyboardType: TextInputType.text,
+                        textInputAction: TextInputAction.search,
+                        decoration: InputDecoration(
+                            fillColor: HexColor('#CDCDCD'),
+                            filled: true,
+                            prefixIcon: Icon(
+                              Icons.search,
+                              size: 25,
+                              color: HexColor('#757575'),
+                            ),
+                            contentPadding: const EdgeInsets.all(10.0),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            hintText: 'Search for Videos, Documents',
+                            hintStyle: TextStyle(
+                              color: HexColor('#757575'),
+                              fontSize: 15,
+                            )),
+                      ),
+                    ),
+                    customTabBar(
+                        tabController: _tabControllerOfShowingContent,
+                        title1: 'Videos',
+                        title2: 'Documents'),
+                    // const Padding(
+                    //   padding: EdgeInsets.symmetric(horizontal: 16),
+                    //   child: Divider(
+                    //       // color: Color.fromRGBO(255, 255, 255, 0.25),
+                    //       ),
+                    // ),
+                    Expanded(child: customTabBarView()),
+                  ],
+                ),
               ),
             )));
   }
