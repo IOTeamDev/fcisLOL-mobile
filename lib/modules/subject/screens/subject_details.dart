@@ -95,7 +95,8 @@ class _MaterialDetailsState extends State<SubjectDetails>
               key: scaffoldKey,
               //backgroundColor: isDark ? HexColor('#23252A') : Colors.white,
               body: Container(
-                margin: EdgeInsetsDirectional.only(top: screenHeight(context)/15),
+                margin:
+                    EdgeInsetsDirectional.only(top: screenHeight(context) / 15),
                 child: Column(
                   children: [
                     Row(
@@ -136,8 +137,9 @@ class _MaterialDetailsState extends State<SubjectDetails>
                           cubit.runFilter(query: query);
                         },
                         style: TextStyle(
-                            color:
-                                isDark ? Color(0xff1B262C) : HexColor('#757575'),
+                            color: isDark
+                                ? Color(0xff1B262C)
+                                : HexColor('#757575'),
                             fontSize: 20),
                         keyboardType: TextInputType.text,
                         textInputAction: TextInputAction.search,
@@ -317,6 +319,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
   }
 
   Widget gridTileWidget({required MaterialModel video, rule}) {
+    print('************${video.author!.authorPhoto}///////////');
     return InkWell(
         onTap: () async {
           final linkableElement = LinkableElement(video.link, video.link!);
@@ -356,15 +359,51 @@ class _MaterialDetailsState extends State<SubjectDetails>
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      Text(
-                        'Shared by: ${video.author!.authorName}',
-                        style: TextStyle(
-                          fontSize: screenWidth(context) / 30,
-                          color: Colors.white,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                      video.author!.authorPhoto == null ||
+                              video.author!.authorPhoto ==
+                                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7mMNz8YCBvYmnr3BQUPX__YsC_WtDuAevwg&s' ||
+                              video.author!.authorPhoto ==
+                                  'https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg'
+                          ? Align(
+                              alignment: Alignment.bottomRight,
+                              child: Text(
+                                'Shared by: ${video.author!.authorName}',
+                                style: TextStyle(
+                                  fontSize: screenWidth(context) / 30,
+                                  color: Colors.white,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  'Shared by:  ',
+                                  style: TextStyle(
+                                    fontSize: screenWidth(context) / 30,
+                                    color: Colors.white,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                CircleAvatar(
+                                  radius: screenWidth(context) / 25,
+                                  backgroundImage: NetworkImage(
+                                      '${video.author!.authorPhoto}'),
+                                ),
+                                Text(
+                                  '  ${video.author!.authorName}',
+                                  style: TextStyle(
+                                    fontSize: screenWidth(context) / 30,
+                                    color: Colors.white,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
                     ],
                   ),
                 ),
@@ -393,7 +432,8 @@ class _MaterialDetailsState extends State<SubjectDetails>
               ? const Color.fromRGBO(59, 59, 59, 1)
               : HexColor('#4764C5'),
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
+            padding:
+                const EdgeInsets.only(left: 8, right: 8, top: 20, bottom: 8),
             child: Column(
               children: [
                 Row(
@@ -417,7 +457,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                             color: Colors.white,
                             fontSize: screenWidth(context) / 20,
                           ),
-                          maxLines: 1,
+                          maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.start,
                         ),
@@ -428,17 +468,63 @@ class _MaterialDetailsState extends State<SubjectDetails>
                       removeButton(material: document),
                   ],
                 ),
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Text('Shared by: ${document.author!.authorName}',
-                    style: TextStyle(
-                      fontSize: screenWidth(context) / 30,
-                      color: Colors.white,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
+                document.author!.authorPhoto == null ||
+                        document.author!.authorPhoto ==
+                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7mMNz8YCBvYmnr3BQUPX__YsC_WtDuAevwg&s' ||
+                        document.author!.authorPhoto ==
+                            'https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg'
+                    ? Align(
+                        alignment: Alignment.bottomRight,
+                        child: Text(
+                          'Shared by: ${document.author!.authorName}',
+                          style: TextStyle(
+                            fontSize: screenWidth(context) / 30,
+                            color: Colors.white,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            'Shared by:  ',
+                            style: TextStyle(
+                              fontSize: screenWidth(context) / 30,
+                              color: Colors.white,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          CircleAvatar(
+                            radius: screenWidth(context) / 25,
+                            backgroundImage:
+                                NetworkImage('${document.author!.authorPhoto}'),
+                          ),
+                          Text(
+                            '  ${document.author!.authorName}',
+                            style: TextStyle(
+                              fontSize: screenWidth(context) / 30,
+                              color: Colors.white,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                // Align(
+                //   alignment: Alignment.bottomLeft,
+                //   child: Text(
+                //     'Shared by: ${document.author!.authorName}',
+                //     style: TextStyle(
+                //       fontSize: screenWidth(context) / 30,
+                //       color: Colors.white,
+                //     ),
+                //     maxLines: 1,
+                //     overflow: TextOverflow.ellipsis,
+                //   ),
+                // ),
               ],
             ),
           )),
@@ -636,7 +722,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                                       margin: const EdgeInsets.only(
                                           left: 0, top: 0, bottom: 0),
                                       padding: const EdgeInsets.all(10),
-                                      width: screenWidth(context) / 4,
+                                      width: screenWidth(context) / 3,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(20),
                                         color: Color.fromRGBO(71, 100, 197, 1),

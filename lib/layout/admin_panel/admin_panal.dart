@@ -140,7 +140,7 @@ class AdminPanel extends StatelessWidget {
                               navigate(context, Requests());
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: HexColor('#4764C5'),
+                              backgroundColor: Color.fromARGB(255, 20, 130, 220),
                               padding:
                                   EdgeInsets.zero, // Remove default padding
                               shape: RoundedRectangleBorder(

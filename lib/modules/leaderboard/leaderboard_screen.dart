@@ -40,125 +40,127 @@ class LeaderboardScreen extends StatelessWidget {
           return Scaffold(
           key: scaffoldKey,
           body: Container(
-
             margin: EdgeInsetsDirectional.only(top: screenHeight(context)/10),
             width: double.infinity,
-            child: ConditionalBuilder(
-              condition:
-              MainCubit.get(context).notAdminLeaderboardModel !=
-              null &&
-              state is! GetLeaderboardLoadingState,
-              builder: (context) => Column(
-                children: [
-                  Stack(
-                    children: [
-                      Positioned(
-                        left: 0,
-                        child: backButton(context),
-                      ),
-                      Center(
-                        child: Text(
-                          'Leaderboard',
-                          style: TextStyle(fontSize: width / 11, ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: height/30,),
-                  Padding(
-                    padding: const EdgeInsetsDirectional.symmetric(horizontal: 10.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Column(
-                          children: [
-                            if(MainCubit.get(context).notAdminLeaderboardModel![1].name != null)
-                              CircleAvatar(backgroundImage: NetworkImage(MainCubit.get(context).notAdminLeaderboardModel![1].photo!),radius: width/12,),
-                            SizedBox(height: 3,),
-                            if(MainCubit.get(context).notAdminLeaderboardModel![1].name != null)
-                            ConstrainedBox(constraints: BoxConstraints(maxWidth: width/3.5),child: Text(MainCubit.get(context).notAdminLeaderboardModel![1].name.toString(), style: TextStyle(fontSize: width/19),overflow: TextOverflow.ellipsis, maxLines: 2, textAlign: TextAlign.center,)),
-                            SizedBox(height: 10,),
-                            Container(
-                              padding: EdgeInsetsDirectional.symmetric(vertical: 20),
-                              decoration: BoxDecoration(
-                                color: HexColor('#374C92'),
-                                borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
-                              ),
-                              height: 170,
-                              width: width/3.2,
-
-                              child: MainCubit.get(context).notAdminLeaderboardModel![1].name != null? Column(
-                                children: [
-                                  Container(height: 35, width: 35, child: Center(child: Text('2', style: TextStyle(color: Colors.black, fontSize: width/20),)), decoration: BoxDecoration(color: HexColor('#C0C0C0'), borderRadius: BorderRadius.circular(10)),),
-                                  SizedBox(height: 10,),
-                                  Text('${MainCubit.get(context).notAdminLeaderboardModel![1].score??'-'} pts', style: TextStyle(fontSize: width/17),),
-                                ],
-                              ): Container(),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            CircleAvatar(backgroundImage: NetworkImage(MainCubit.get(context).notAdminLeaderboardModel![0].photo!),radius: width/11,),
-                            SizedBox(height: 3,),
-                            ConstrainedBox(constraints: BoxConstraints(maxWidth: width/3.5),child: Text(MainCubit.get(context).notAdminLeaderboardModel![0].name.toString(), style: TextStyle(fontSize: width/19),overflow: TextOverflow.ellipsis, maxLines: 2, textAlign: TextAlign.center,)),
-                            SizedBox(height: 10,),
-                            Container(
-                              padding: EdgeInsetsDirectional.symmetric(vertical: 20),
-                              decoration: BoxDecoration(
-                                color: HexColor('#4764C5'),
-                                borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
-                              ),
-                              height: 230,
-                              width: width/3.2,
-                              child: Column(
-                                children: [
-                                  Container(height: 40, width: 40,child: Center(child: Text('1', style: TextStyle(color: Colors.black, fontSize: width/18),)), decoration: BoxDecoration(color: Colors.amber, borderRadius: BorderRadius.circular(10)),),
-                                  SizedBox(height: 10,),
-                                  Text('${MainCubit.get(context).notAdminLeaderboardModel![0].score} pts',  style: TextStyle(fontSize: width/15)),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            if(MainCubit.get(context).notAdminLeaderboardModel![2].name != null)
-                              CircleAvatar(backgroundImage: NetworkImage(MainCubit.get(context).notAdminLeaderboardModel![1].photo!),radius: width/13,),
-                            SizedBox(height: 3,),
-                            if(MainCubit.get(context).notAdminLeaderboardModel![2].name != null)
-                            ConstrainedBox(constraints: BoxConstraints(maxWidth: width/3.5),child: Text(MainCubit.get(context).notAdminLeaderboardModel![2].name.toString(), style: TextStyle(fontSize: width/19),overflow: TextOverflow.ellipsis, maxLines: 2, textAlign: TextAlign.center,)),
-                            SizedBox(height: 10,),
-                            Container(
-                              padding: EdgeInsetsDirectional.symmetric(vertical: 20),
-                              decoration: BoxDecoration(
-                                color: HexColor('#374C92'),
-                                borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
-                              ),
-                              height: 130,
-                              width: width/3.2,
-                              child: MainCubit.get(context).notAdminLeaderboardModel![1].name != null? Column(
-                                children: [
-                                  Container(height: 30, width: 30, decoration: BoxDecoration(color: HexColor('#CD7F32'), borderRadius: BorderRadius.circular(10)), child: Center(child: Text('3', style: TextStyle(color: Colors.black, fontSize: width/20),)),),
-                                  SizedBox(height: 10,),
-                                  Text('${MainCubit.get(context).notAdminLeaderboardModel![2].score} pts', style: TextStyle(fontSize: width/19),),
-                                ],
-                              ): Container(),
-                            ),
-                          ],
-                        ),
-                      ],
+            child: Column(
+              children: [
+                Stack(
+                  children: [
+                    Positioned(
+                      left: 0,
+                      child: backButton(context),
                     ),
-                  ),
-                  Divider(height: 0,thickness: 2, color: isDark? Colors.white: Colors.black,),
-                  Expanded(
-                    child:  ListView.separated(
-                          itemCount: MainCubit.get(context).notAdminLeaderboardModel!.length-3  >= 12 ? 12 : MainCubit.get(context).notAdminLeaderboardModel!.length - 3,
+                    Center(
+                      child: Text(
+                        'Leaderboard',
+                        style: TextStyle(fontSize: width / 11, ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                ),
+                ConditionalBuilder(
+                  condition: MainCubit.get(context).notAdminLeaderboardModel != null && state is! GetLeaderboardLoadingState && MainCubit.get(context).notAdminLeaderboardModel!.isNotEmpty,
+                  builder: (context) => Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(height: height/30,),
+                      //Top 3 Contributors Stages
+                      Padding(
+                        padding: const EdgeInsetsDirectional.symmetric(horizontal: 10.0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Column(
+                              children: [
+                                if(MainCubit.get(context).notAdminLeaderboardModel![1].name != null)
+                                  CircleAvatar(backgroundImage: NetworkImage(MainCubit.get(context).notAdminLeaderboardModel![1].photo!),radius: width/12,),
+                                SizedBox(height: 3,),
+                                if(MainCubit.get(context).notAdminLeaderboardModel![1].name != null)
+                                ConstrainedBox(constraints: BoxConstraints(maxWidth: width/3.5),child: Text(MainCubit.get(context).notAdminLeaderboardModel![1].name.toString(), style: TextStyle(fontSize: width/19),overflow: TextOverflow.ellipsis, maxLines: 2, textAlign: TextAlign.center,)),
+                                SizedBox(height: 10,),
+                                Container(
+                                  padding: EdgeInsetsDirectional.symmetric(vertical: 20),
+                                  decoration: BoxDecoration(
+                                    color: HexColor('#374C92'),
+                                    borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+                                  ),
+                                  height: 170,
+                                  width: width/3.2,
+
+                                  child: MainCubit.get(context).notAdminLeaderboardModel![1].name != null? Column(
+                                    children: [
+                                      Container(height: 35, width: 35, child: Center(child: Text('2', style: TextStyle(color: Colors.black, fontSize: width/20),)), decoration: BoxDecoration(color: HexColor('#C0C0C0'), borderRadius: BorderRadius.circular(10)),),
+                                      SizedBox(height: 10,),
+                                      Text('${MainCubit.get(context).notAdminLeaderboardModel![1].score??'-'} pts', style: TextStyle(fontSize: width/17),),
+                                    ],
+                                  ): Container(),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                CircleAvatar(backgroundImage: NetworkImage(MainCubit.get(context).notAdminLeaderboardModel![0].photo!),radius: width/11,),
+                                SizedBox(height: 3,),
+                                ConstrainedBox(constraints: BoxConstraints(maxWidth: width/3.5),child: Text(MainCubit.get(context).notAdminLeaderboardModel![0].name.toString(), style: TextStyle(fontSize: width/19),overflow: TextOverflow.ellipsis, maxLines: 2, textAlign: TextAlign.center,)),
+                                SizedBox(height: 10,),
+                                Container(
+                                  padding: EdgeInsetsDirectional.symmetric(vertical: 20),
+                                  decoration: BoxDecoration(
+                                    color: HexColor('#4764C5'),
+                                    borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+                                  ),
+                                  height: 230,
+                                  width: width/3.2,
+                                  child: Column(
+                                    children: [
+                                      Container(height: 40, width: 40,child: Center(child: Text('1', style: TextStyle(color: Colors.black, fontSize: width/18),)), decoration: BoxDecoration(color: Colors.amber, borderRadius: BorderRadius.circular(10)),),
+                                      SizedBox(height: 10,),
+                                      Text('${MainCubit.get(context).notAdminLeaderboardModel![0].score} pts',  style: TextStyle(fontSize: width/15)),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                if(MainCubit.get(context).notAdminLeaderboardModel![2].name != null)
+                                  CircleAvatar(backgroundImage: NetworkImage(MainCubit.get(context).notAdminLeaderboardModel![1].photo!),radius: width/13,),
+                                SizedBox(height: 3,),
+                                if(MainCubit.get(context).notAdminLeaderboardModel![2].name != null)
+                                ConstrainedBox(constraints: BoxConstraints(maxWidth: width/3.5),child: Text(MainCubit.get(context).notAdminLeaderboardModel![2].name.toString(), style: TextStyle(fontSize: width/19),overflow: TextOverflow.ellipsis, maxLines: 2, textAlign: TextAlign.center,)),
+                                SizedBox(height: 10,),
+                                Container(
+                                  padding: EdgeInsetsDirectional.symmetric(vertical: 20),
+                                  decoration: BoxDecoration(
+                                    color: HexColor('#374C92'),
+                                    borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+                                  ),
+                                  height: 130,
+                                  width: width/3.2,
+                                  child: MainCubit.get(context).notAdminLeaderboardModel![1].name != null? Column(
+                                    children: [
+                                      Container(height: 30, width: 30, decoration: BoxDecoration(color: HexColor('#CD7F32'), borderRadius: BorderRadius.circular(10)), child: Center(child: Text('3', style: TextStyle(color: Colors.black, fontSize: width/20),)),),
+                                      SizedBox(height: 10,),
+                                      Text('${MainCubit.get(context).notAdminLeaderboardModel![2].score} pts', style: TextStyle(fontSize: width/19),),
+                                    ],
+                                  ): Container(),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      Divider(height: 0,thickness: 2, color: isDark? Colors.white: Colors.black,),
+                      //Other Contributors
+                      Expanded(
+                        child:  ListView.separated(
+                          itemCount: MainCubit.get(context).notAdminLeaderboardModel!.length-3  >= 12? 12 : MainCubit.get(context).notAdminLeaderboardModel!.length - 3,
                           itemBuilder: (context, index) {
                             return buildList(
-                              context,
+                                context,
                                 (index + 4),
                                 MainCubit.get(context)
                                     .notAdminLeaderboardModel![index + 3]
@@ -171,16 +173,18 @@ class LeaderboardScreen extends StatelessWidget {
                             padding: const EdgeInsetsDirectional.symmetric(vertical: 15.0, horizontal: 15),
                             child: divider(),
                           ),
-                        )
-                    ),
-                ],
-              ),
-              fallback: (context) {
-                if(state is GetLeaderboardLoadingState)
-                return Center(child: CircularProgressIndicator(),);
-                else
-                  return Center(child: Text('You LeaderBorad Yet!!!'),);
-              },
+                        ),
+                      ),
+                    ],
+                  ),
+                  fallback: (context) {
+                    if(state is GetLeaderboardLoadingState)
+                    return  SizedBox(height: height/1.3, child: Center(child: CircularProgressIndicator(),) );
+                    else
+                      return SizedBox(height: height/1.3 ,child: Center(child: Text('No LeaderBorad Yet!!!', style: TextStyle(fontSize: width/12),),));
+                  },
+                ),
+              ],
             ),
           ),
         );

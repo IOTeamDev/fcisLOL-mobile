@@ -228,7 +228,7 @@ class Profile extends StatelessWidget {
                                                 mainAxisAlignment:
                                                 MainAxisAlignment.spaceEvenly,
                                                 children: [
-  Text.rich(
+                                              Text.rich(
                                               TextSpan(
                                                 children: [
                                                   TextSpan(
@@ -248,9 +248,8 @@ class Profile extends StatelessWidget {
                                                   ),
                                                 ],
                                               ),
-                                            ),                                                  SizedBox(
-                                                    width: 100,
-                                                  ),
+                                              ),
+                                                  SizedBox(width: 100,),
                                                   if (MainCubit.get(context)
                                                       .profileModel!
                                                       .role !=
@@ -281,9 +280,8 @@ class Profile extends StatelessWidget {
                                                             ),
                                                           ],
                                                         ),
-                                                                                                          ),
-                                                                                                            if (score4User.userRank! <=
-                                                      10)
+                                                        ),
+                                                        if (score4User.userRank! <= 10)
                                                     Container(
                                                         margin: EdgeInsets.only(
                                                             left: 5),
@@ -315,41 +313,28 @@ class Profile extends StatelessWidget {
                               SizedBox(
                                 height: 15,
                               ),
-                              Center(
-                                  child: Text(
+                              Center(child: Text(
                                     "My Uploads",
                                     style: TextStyle(fontSize: screenWidth(context) / 18),
                                   )),
-                              SizedBox(
-                                height: 10,
-                              ),
+                              SizedBox(height: 10,),
                               Divider(color: isDark? Colors.white: Colors.black, height: 0,),
                             ],
                           ),
                         ),
                         Expanded(
                           child: ConditionalBuilder(
-                              condition: MainCubit.get(context)
-                                          .profileModel!
-                                          .materials !=
-                                      null &&
-                                  state is! GetRequestsLoadingState,
+                              condition: MainCubit.get(context).profileModel!.materials.isNotEmpty && state is! GetRequestsLoadingState,
                               builder: (context) => Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.symmetric(
-                                            horizontal: 10.0),
+                                    padding: const EdgeInsetsDirectional.symmetric(horizontal: 10.0),
                                     child: Column(
                                       children: [
                                         Expanded(
                                           child: ListView.separated(
                                               physics: BouncingScrollPhysics(),
                                               itemBuilder: (context, index) {
-                                                var materials =
-                                                    MainCubit.get(context)
-                                                        .profileModel!
-                                                        .materials;
-                                                var mainCubit =
-                                                    MainCubit.get(context);
+                                                var materials = MainCubit.get(context).profileModel!.materials;
+                                                var mainCubit = MainCubit.get(context);
                                                 return Container(
                                                   padding:
                                                       const EdgeInsetsDirectional.symmetric(horizontal: 3, vertical: 5),
@@ -391,11 +376,12 @@ class Profile extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                              fallback: (context) => Center(
-                                    child: CircularProgressIndicator(
-                                      color: isDark ? Colors.white : Colors.black,
-                                    ),
-                                  )),
+                              fallback: (context) {
+                                if(state is GetRequestsLoadingState)
+                                  return  SizedBox(height: height/1.3, child: Center(child: CircularProgressIndicator(),) );
+                                return SizedBox(height: height/1.3 ,child: Center(child: Text('You Have No Contributions Yet!!!', style: TextStyle(fontSize: width/12), textAlign: TextAlign.center,),));
+                              }
+                          ),
                         )
                       ],
                     ),

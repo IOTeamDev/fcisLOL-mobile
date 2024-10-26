@@ -392,7 +392,7 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                                   .circular(13)),
                                           padding: EdgeInsetsDirectional.symmetric(horizontal: width/11 ),
                                           backgroundColor:
-                                          HexColor('#4764C5'),
+                                          Color.fromARGB(255, 20, 130, 220),
                                           foregroundColor:
                                           Colors.white,
                                           textStyle: TextStyle(
