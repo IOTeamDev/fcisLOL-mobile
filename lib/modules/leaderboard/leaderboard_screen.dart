@@ -170,7 +170,7 @@ class LeaderboardScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        fallback: (context) => SizedBox(height: height/1.3 ,child: Center(child: Text('No more Users!!!', style: TextStyle(fontSize: width/12),),)),
+                        fallback: (context) => SizedBox(height: height/3,child: Center(child: Text('No more Users!!!', style: TextStyle(fontSize: width/12),),)),
                       ),
                     ],
                   ),

@@ -215,30 +215,30 @@ class MainCubit extends Cubit<MainCubitStates> {
     String? content,
     dynamic dueDate,
     // String? type,
-    required currentSemester,
-    String? image,
+    //dynamic currentSemester,
+    //String? image,
   }) {
+    print(id);
     print(title);
     print(content);
     print(dueDate);
-    print(currentSemester);
-    print(image);
+    //print(currentSemester);
+    // print(image);
     emit(UpdateAnnouncementsLoadingState());
     DioHelp.putData(
         path: ANNOUNCEMENTS,
         data: {
-          'title': title,
-          'content': content ?? " ",
+          'title': title??"",
+          'content': content??"",
           'due_date': dueDate,
           //'type': type,
-          'semester': currentSemester,
-          'image': image,
+          //'semester': currentSemester,
+          //'image': image,
         },
         token: TOKEN,
         query: {'id': int.parse(id)}).then((value) {
       // Assuming the response returns the updated announcement
-      AnnouncementModel updatedAnnouncement =
-          AnnouncementModel.fromJson(value.data);
+      AnnouncementModel updatedAnnouncement = AnnouncementModel.fromJson(value.data);
 
       // Update the local announcements list
       if (announcements != null) {
@@ -248,7 +248,7 @@ class MainCubit extends Cubit<MainCubitStates> {
         }
       }
       emit(UpdateAnnouncementsSuccessState());
-    }).catchError((onError) => print("$onError   EEEEEEEEEEEEEEEEEEEEE"));
+    });
   }
 
   List<LeaderboardModel>? leaderboardModel;

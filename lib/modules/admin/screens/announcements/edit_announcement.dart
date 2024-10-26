@@ -366,6 +366,7 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                     ElevatedButton(
                                       onPressed: () async {
                                         if (_formKey.currentState!.validate()) {
+                                          //print(dueDateFormatted);
                                            // await cubit.UploadPImage(isUserProfile: false, image: cubit.AnnouncementImageFile);
                                             cubit.updateAnnouncement(
                                                 cubit.announcements![int.parse(id)].id.toString(),
@@ -373,8 +374,9 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                                 content: contentController.text,
                                                 dueDate: dueDateFormatted == 'No Due Date'? null:dueDateFormatted,
                                                 //type: selectedItem!,
-                                                image: cubit.AnnouncementImagePath??widget.imageLink??'',
-                                                currentSemester: widget.semester);
+                                                // image: cubit.AnnouncementImagePath??widget.imageLink??'',
+                                                //currentSemester: widget.semester
+                                            );
                                         } else {
                                           // Show error if validation fails
                                           showToastMessage(
