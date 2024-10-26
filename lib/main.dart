@@ -169,7 +169,7 @@ class App extends StatelessWidget {
         child: Consumer<ThemeProvide>(builder: (context, value, child) {
           // AdminCubit.get(context).getFcmTokens();
           return MaterialApp(
-            home: OnBoarding(),
+            home: startPage,
             debugShowCheckedModeBanner: false,
             theme: isDark ? ThemeData.dark() : ThemeData.light(),
           );

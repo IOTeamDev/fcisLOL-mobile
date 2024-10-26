@@ -457,7 +457,7 @@ Widget CustomDrawer(context, semester) {
                           color: !isDark ? Colors.black : Colors.white,
                         ))
                   ],
-                  decoration: BoxDecoration(color: const Color.fromARGB(255, 20, 130, 220), ),
+                  decoration: BoxDecoration(color:Color.fromARGB(255, 20, 130, 220) ),
                   accountName: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -511,7 +511,7 @@ Widget CustomDrawer(context, semester) {
                 ),
             )
             : UserAccountsDrawerHeader(
-                decoration: BoxDecoration(color: HexColor('#4764C5')),
+                decoration: BoxDecoration(color:Color.fromARGB(255, 20, 130, 220)),
                 // accountName: Text(""),
                 // accountEmail: Text("2nd year "),
                 accountName: const Text("Guest"),

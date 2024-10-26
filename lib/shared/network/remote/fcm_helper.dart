@@ -100,6 +100,11 @@ class FCMHelper {
         "android": {
           "notification": {
             "notification_priority": "PRIORITY_MAX",
+
+            "icon":
+                "play_store_512", // Replace with your actual icon name without the file extension
+
+            "notification_priority": "PRIORITY_MAX",
             "sound": "default",
           },
         },

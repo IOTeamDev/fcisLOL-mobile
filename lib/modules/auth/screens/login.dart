@@ -65,8 +65,8 @@ class LoginScreen extends StatelessWidget {
                       ),
                       Center(
                         child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          // mainAxisSize: MainAxisSize.min,a
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Image.asset(
                               "images/l.png",
