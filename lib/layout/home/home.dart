@@ -447,12 +447,13 @@ Widget CustomDrawer(context, semester) {
                         onPressed: () {
                           print(isDark);
                           // Navigator.pop(context);
-Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Home(),
-        ), //removing all background screens
-        (route) => false);                             Provider.of<ThemeProvide>(context, listen: false)
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Home(),
+                              ), //removing all background screens
+                              (route) => false);
+                          Provider.of<ThemeProvide>(context, listen: false)
                               .changeMode();
                         },
                         icon: Icon(
@@ -566,24 +567,22 @@ Navigator.pushAndRemoveUntil(
                   //       color: !isDark ? Colors.black : Colors.white,
                   //     ))
 
-
-  IconButton(
-                        onPressed: () {
-                          print(isDark.toString()+"d;flkgldk=");
-Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Home(),
-        ), //removing all background screens
-        (route) => false);                          // Navigator.pop(context);
-                          Provider.of<ThemeProvide>(context, listen: false)
-                              .changeMode();
-                        },
-                        icon: Icon(
-                          isDark ? Icons.light_mode : Icons.dark_mode,
-                          color: !isDark ? Colors.black : Colors.white,
-                        ))
-
+                  IconButton(
+                      onPressed: () {
+                        print(isDark.toString() + "d;flkgldk=");
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Home(),
+                            ), //removing all background screens
+                            (route) => false); // Navigator.pop(context);
+                        Provider.of<ThemeProvide>(context, listen: false)
+                            .changeMode();
+                      },
+                      icon: Icon(
+                        isDark ? Icons.light_mode : Icons.dark_mode,
+                        color: !isDark ? Colors.black : Colors.white,
+                      ))
                 ],
               ),
         Expanded(
@@ -870,12 +869,7 @@ Navigator.pushAndRemoveUntil(
                                 .changeMode(dontWannaDark: true);
                             Provider.of<ThemeProvide>(context, listen: false)
                                 .notifyListeners();
-                            Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => LoginScreen(),
-                                ), //removing all background screens
-                                (route) => false);
+                            navigate(context, LoginScreen());
                           },
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,

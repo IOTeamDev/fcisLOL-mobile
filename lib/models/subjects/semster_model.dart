@@ -28,7 +28,7 @@ List<SubjectModel> semesterOne = [
 List<SubjectModel> semesterTwo = [
   SubjectModel(
       subjectName: "Structured_Programming", subjectImage: "images/SP (2).png"),
-  SubjectModel(subjectName: "Ethics", subjectImage: "images/Ethics.png"),
+  SubjectModel(subjectName: "Ethics", subjectImage: "images/ethics.png"),
   SubjectModel(subjectName: "Physics_II", subjectImage: "images/physics2.png"),
   SubjectModel(
       subjectName: "Business", subjectImage: "images/bnussiness (2).png"),

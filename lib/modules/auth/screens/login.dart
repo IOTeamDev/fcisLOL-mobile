@@ -18,7 +18,8 @@ import 'package:lol/shared/network/local/shared_prefrence.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  final maybeHeStillWantToBeAGuest;
+  const LoginScreen({super.key, this.maybeHeStillWantToBeAGuest=false});
 
   @override
   Widget build(BuildContext context) {
@@ -193,8 +194,6 @@ class LoginScreen extends StatelessWidget {
                           defaultTextField(
                               onFieldSubmitted: (val) async {
                                 if (formKey.currentState!.validate()) {
-                              
-
                                   loginCubit.login(
                                       email: emailController.text.toLowerCase(),
                                       password: passwordController.text);
