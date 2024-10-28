@@ -71,32 +71,8 @@ class SelectImage extends StatelessWidget {
                         bottom: 0,
                         child: GestureDetector(
                           onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: const Text("Select the image source"),
-                                  actionsAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  actions: [
-                                    OptionWidget(
-                                        optionFunction: () async {
-                                          mainCubit.getUserImage(
-                                              fromGallery: false);
-                                          Navigator.pop(context);
-                                        },
-                                        optionTitle: "Camera"),
-                                    OptionWidget(
-                                        optionFunction: () async {
-                                          mainCubit.getUserImage(
+                          mainCubit.getUserImage(
                                               fromGallery: true);
-                                          Navigator.pop(context);
-                                        },
-                                        optionTitle: "Gallery"),
-                                  ],
-                                );
-                              },
-                            );
 
                             // Code to pick image
                           },
