@@ -23,7 +23,6 @@ class FeedbackScreen extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       key: scaffoldKey,
-      drawer: drawerBuilder(context),
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsetsDirectional.only(top: screenHeight(context)/10),

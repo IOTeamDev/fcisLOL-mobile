@@ -240,7 +240,6 @@ class Home extends StatelessWidget {
                                                     MainCubit.get(context)
                                                         .updateSemester4all();
                                                     changeSemester = false;
-                                                
                                                   }
                                                 },
                                                 child: Container(
@@ -441,15 +440,19 @@ Widget CustomDrawer(context, semester) {
       children: [
         TOKEN != null
             ? Container(
-              height: screenHeight(context)/3.2,
-              child: UserAccountsDrawerHeader(
+                height: screenHeight(context) / 3.2,
+                child: UserAccountsDrawerHeader(
                   otherAccountsPictures: [
                     IconButton(
                         onPressed: () {
                           print(isDark);
                           // Navigator.pop(context);
-                          navigatReplace(context, Home());
-                          Provider.of<ThemeProvide>(context, listen: false)
+Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Home(),
+        ), //removing all background screens
+        (route) => false);                             Provider.of<ThemeProvide>(context, listen: false)
                               .changeMode();
                         },
                         icon: Icon(
@@ -457,21 +460,30 @@ Widget CustomDrawer(context, semester) {
                           color: !isDark ? Colors.black : Colors.white,
                         ))
                   ],
-                  decoration: BoxDecoration(color:Color.fromARGB(255, 20, 130, 220) ),
+                  decoration:
+                      BoxDecoration(color: Color.fromARGB(255, 20, 130, 220)),
                   accountName: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ConstrainedBox(
-                        constraints: BoxConstraints(maxWidth: screenWidth(context)/1.5),
+                        constraints: BoxConstraints(
+                            maxWidth: screenWidth(context) / 1.5),
                         child: Text(
                           profileModel!.name,
-                          style: TextStyle(overflow: TextOverflow.ellipsis, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              overflow: TextOverflow.ellipsis,
+                              fontWeight: FontWeight.bold),
                           maxLines: 1,
                         ),
                       ),
                       const Spacer(),
-                      Text(Level(profileModel.semester), style: TextStyle(fontSize: 14,),),
-                      ],
+                      Text(
+                        Level(profileModel.semester),
+                        style: TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
                   ),
                   // accountEmail: Text("2nd year "),
                   accountEmail: Container(
@@ -509,9 +521,10 @@ Widget CustomDrawer(context, semester) {
                   //   Icon(Icons.info, color: Colors.white),
                   // ],
                 ),
-            )
+              )
             : UserAccountsDrawerHeader(
-                decoration: BoxDecoration(color:Color.fromARGB(255, 20, 130, 220)),
+                decoration:
+                    BoxDecoration(color: Color.fromARGB(255, 20, 130, 220)),
                 // accountName: Text(""),
                 // accountEmail: Text("2nd year "),
                 accountName: const Text("Guest"),
@@ -541,17 +554,36 @@ Widget CustomDrawer(context, semester) {
                       "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"),
                 ),
                 otherAccountsPictures: [
-                  IconButton(
-                      onPressed: () {
-                        print(isDark);
-                        Navigator.pop(context);
-                        Provider.of<ThemeProvide>(context, listen: false)
-                            .changeMode();
-                      },
-                      icon: Icon(
-                        isDark ? Icons.light_mode : Icons.dark_mode,
-                        color: !isDark ? Colors.black : Colors.white,
-                      ))
+                  // IconButton(
+                  //     onPressed: () {
+                  //       print(isDark);
+                  //       Navigator.pop(context);
+                  //       Provider.of<ThemeProvide>(context, listen: false)
+                  //           .changeMode();
+                  //     },
+                  //     icon: Icon(
+                  //       isDark ? Icons.light_mode : Icons.dark_mode,
+                  //       color: !isDark ? Colors.black : Colors.white,
+                  //     ))
+
+
+  IconButton(
+                        onPressed: () {
+                          print(isDark.toString()+"d;flkgldk=");
+Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Home(),
+        ), //removing all background screens
+        (route) => false);                          // Navigator.pop(context);
+                          Provider.of<ThemeProvide>(context, listen: false)
+                              .changeMode();
+                        },
+                        icon: Icon(
+                          isDark ? Icons.light_mode : Icons.dark_mode,
+                          color: !isDark ? Colors.black : Colors.white,
+                        ))
+
                 ],
               ),
         Expanded(
@@ -833,7 +865,18 @@ Widget CustomDrawer(context, semester) {
                               ]),
                         )
                       : GestureDetector(
-                          onTap: () => navigate(context, LoginScreen()),
+                          onTap: () {
+                            Provider.of<ThemeProvide>(context, listen: false)
+                                .changeMode(dontWannaDark: true);
+                            Provider.of<ThemeProvide>(context, listen: false)
+                                .notifyListeners();
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LoginScreen(),
+                                ), //removing all background screens
+                                (route) => false);
+                          },
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [

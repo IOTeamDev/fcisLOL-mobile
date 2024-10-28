@@ -64,29 +64,29 @@ class RequestsDetails extends StatelessWidget {
           var cubit = MainCubit.get(context);
           return Scaffold(
             //backgroundColor: HexColor('#23252A'),
-            body: ConstrainedBox(
-              constraints: BoxConstraints(maxHeight: screenHeight(context) / 1.4,),
-              child: Container(
-                  margin: EdgeInsetsDirectional.only(top: screenHeight(context)/10),
-                  width: double.infinity,
-                  child: Column(
-                    children: [
-                      Stack(
-                        children: [
-                          Positioned(
-                            left: 0,
-                            child: backButton(context),
-                          ),
-                          Center(
-                              child: Text(
-                            'Request Details',
-                            style: TextStyle(
-                                fontSize: width / 12,),
-                            textAlign: TextAlign.center,
-                          )),
-                        ],
-                      ),
-                      Container(
+            body: Container(
+                margin: EdgeInsetsDirectional.only(top: screenHeight(context)/10),
+                width: double.infinity,
+                child: Column(
+                  children: [
+                    Stack(
+                      children: [
+                        Positioned(
+                          left: 0,
+                          child: backButton(context),
+                        ),
+                        Center(
+                            child: Text(
+                          'Request Details',
+                          style: TextStyle(
+                              fontSize: width / 12,),
+                          textAlign: TextAlign.center,
+                        )),
+                      ],
+                    ),
+                    ConstrainedBox(
+                      constraints: BoxConstraints(maxHeight: height/1.4),
+                      child: Container(
                         margin: const EdgeInsetsDirectional.symmetric(
                             horizontal: 15, vertical: 20),
                         padding: const EdgeInsets.all(15),
@@ -120,7 +120,6 @@ class RequestsDetails extends StatelessWidget {
                             ),
                             Expanded(
                               child: SingleChildScrollView(
-                                physics: BouncingScrollPhysics(),
                                 child: Column(
                                   children: [
                                     Text(
@@ -276,9 +275,9 @@ class RequestsDetails extends StatelessWidget {
                           ],
                         ),
                       ),
-                    ],
-                  )),
-            ),
+                    ),
+                  ],
+                )),
           );
         },
       ),
