@@ -59,29 +59,8 @@ flutter:
 
   assets:
     - images/
-    - images/mage_dashboard-fill-1.png
-    - images/mage_dashboard-fill-1.png
-    - images/Ethics.png
-    - images/Electronics.png
-    - images/mingcute_drive-fill.png
-    - images/mage_dashboard-fill.png
-    - images/profile.png
-    - images/7.png
-    - images/SP (2).png
-    - images/icon/launcher_icon.png
-    - images/comp_arc.png
-    - images/l.png
-    - images/AI.png
-
-    - images/admin/
-    # - images/default-avatar-icon-of-social-media-user-vector.jpg
-    #- "D:/Downloadss/default-avatar-icon-of-social-media-user-vector.jpg"
-    # - images/332573639_735780287983011_1562632886952931410_n.jpg
-    # - images/338185486_3489006871419356_4868524435440167213_n.jpg
-    # - images/StructuredProgramming.png
-    # - images/ethics.png
-    # - images/structuredprogramming.png
-    - images/admin/
+    
+  
 flutter_launcher_icons:
   android: true
   ios: true

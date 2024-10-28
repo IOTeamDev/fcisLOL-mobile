@@ -71,8 +71,7 @@ class SelectImage extends StatelessWidget {
                         bottom: 0,
                         child: GestureDetector(
                           onTap: () {
-                          mainCubit.getUserImage(
-                                              fromGallery: true);
+                            mainCubit.getUserImage(fromGallery: true);
 
                             // Code to pick image
                           },
@@ -93,7 +92,6 @@ class SelectImage extends StatelessWidget {
                   const SizedBox(height: 20),
 
                   // Pick Image Button
-                
 
                   const Spacer(),
 
