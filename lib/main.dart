@@ -133,7 +133,8 @@ class ThemeProvide extends ChangeNotifier {
 
   void changeMode({bool dontWannaDark = false}) async {
     if (dontWannaDark) {
-      isDark = false;
+      temp = false;
+      isDark = temp;
       await Cache.writeData(key: "mode", value: false);
     } else {
       temp = !temp;
