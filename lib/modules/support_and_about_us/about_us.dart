@@ -157,8 +157,7 @@ class AboutUs extends StatelessWidget {
                       SizedBox(
                         width: 10,
                       ),
-                      ConstrainedBox(
-                        constraints: BoxConstraints(maxWidth: width / 3),
+                      Expanded(
                         child: Text(
                           'Omar Nasr',
                           style: TextStyle(fontSize: 19, color: Colors.white),
@@ -166,7 +165,7 @@ class AboutUs extends StatelessWidget {
                           maxLines: 2,
                         ),
                       ),
-                      const Spacer(),
+                      // const Spacer(),
                       ElevatedButton(
                         onPressed: () {
                           launchUrl(Uri.parse('https://linktr.ee/J3_Unknown'));
@@ -202,21 +201,20 @@ class AboutUs extends StatelessWidget {
                       CircleAvatar(
                         radius: 30,
                         backgroundImage: NetworkImage(
-                            'https://media-hbe1-1.cdn.whatsapp.net/v/t61.24694-24/454395666_917538720254082_5688042246178164073_n.jpg?ccb=11-4&oh=01_Q5AaIN9Vwc0UJUoBKTw74c6FoYmxyJyoP7g04iDHYKnHMBP0&oe=672565BA&_nc_sid=5e03e0&_nc_cat=105'),
+                            'https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/IMG_%D9%A2%D9%A0%D9%A2%D9%A4%D9%A1%D9%A0%D9%A2%D9%A9_%D9%A1%D9%A1%D9%A5%D9%A7%D9%A2%D9%A9.jpg?alt=media&token=82ce0fc2-001b-4a20-8f16-e8140ffe4042'),
                       ),
                       SizedBox(
                         width: 10,
                       ),
-                      ConstrainedBox(
-                        constraints: BoxConstraints(maxWidth: width / 3),
+                      Expanded(
                         child: Text(
                           'Mahmoud Saad',
-                          style: TextStyle(fontSize: 19, color: Colors.white),
+                          style: TextStyle(fontSize: 20, color: Colors.white),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
                         ),
                       ),
-                      const Spacer(),
+                      // const Spacer(),
                       ElevatedButton(
                         onPressed: () {
                           launchUrl(Uri.parse('https://linktr.ee/malik1307'));
@@ -257,8 +255,7 @@ class AboutUs extends StatelessWidget {
                       SizedBox(
                         width: 10,
                       ),
-                      ConstrainedBox(
-                        constraints: BoxConstraints(maxWidth: width / 3.2),
+                      Expanded(
                         child: Text(
                           'Saif Elnawawy',
                           style: TextStyle(fontSize: 19, color: Colors.white),
@@ -266,7 +263,7 @@ class AboutUs extends StatelessWidget {
                           maxLines: 2,
                         ),
                       ),
-                      const Spacer(),
+                      // const Spacer(),
                       ElevatedButton(
                         onPressed: () {
                           launchUrl(Uri.parse(
@@ -310,13 +307,13 @@ class AboutUs extends StatelessWidget {
                       CircleAvatar(
                         radius: 30,
                         backgroundImage: NetworkImage(
-                            'https://media-hbe1-1.cdn.whatsapp.net/v/t61.24694-24/417357665_1165557908119538_5289593370887603831_n.jpg?ccb=11-4&oh=01_Q5AaIKErL2y34Y8sL0VDkTIiSARZcjxPB3C2rneJY3PKJtIy&oe=671F50A6&_nc_sid=5e03e0&_nc_cat=109'),
+                            'https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/417357665_1165557908119538_5289593370887603831_n.jpg?alt=media&token=d112e3d8-3182-409a-a83e-0e8c581ccc4d'),
                       ),
                       SizedBox(
                         width: 10,
                       ),
-                      ConstrainedBox(
-                        constraints: BoxConstraints(maxWidth: width / 3.2),
+                      Expanded(
+                        // constraints: BoxConstraints(maxWidth: width / 3.2),
                         child: Text(
                           'Omar M. Hasan',
                           style: TextStyle(fontSize: 19, color: Colors.white),
@@ -324,7 +321,7 @@ class AboutUs extends StatelessWidget {
                           maxLines: 2,
                         ),
                       ),
-                      const Spacer(),
+                      // const Spacer(),
                       ElevatedButton(
                         onPressed: () {
                           launchUrl(Uri.parse('https://0mr.me/who'));
@@ -372,8 +369,8 @@ class AboutUs extends StatelessWidget {
                       SizedBox(
                         width: 10,
                       ),
-                      ConstrainedBox(
-                        constraints: BoxConstraints(maxWidth: width / 3.2),
+                      Expanded(
+                        // constraints: BoxConstraints(maxWidth: width / 3.2),
                         child: Text(
                           'Mahmoud Ahmed',
                           style: TextStyle(fontSize: 19, color: Colors.white),
@@ -381,7 +378,7 @@ class AboutUs extends StatelessWidget {
                           maxLines: 2,
                         ),
                       ),
-                      const Spacer(),
+                      // const Spacer(),
                       ElevatedButton(
                         onPressed: () {
                           launchUrl(Uri.parse('https://linktr.ee/mahmoud588'));
@@ -429,8 +426,8 @@ class AboutUs extends StatelessWidget {
                       SizedBox(
                         width: 10,
                       ),
-                      ConstrainedBox(
-                        constraints: BoxConstraints(maxWidth: width / 3.2),
+                      Expanded(
+                        // constraints: BoxConstraints(maxWidth: width / 3.2),
                         child: Text(
                           'Ibrahim Abo Elso\'ud',
                           style: TextStyle(fontSize: 19, color: Colors.white),
@@ -438,7 +435,7 @@ class AboutUs extends StatelessWidget {
                           maxLines: 2,
                         ),
                       ),
-                      const Spacer(),
+                      // const Spacer(),
                       ElevatedButton(
                         onPressed: () {
                           launchUrl(Uri.parse('http://Aboelsoud.vercel.app'));

@@ -23,6 +23,7 @@ import 'package:googleapis_auth/auth_io.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:provider/provider.dart';
 
 class SubjectDetails extends StatefulWidget {
   final String subjectName;
@@ -200,12 +201,18 @@ class _MaterialDetailsState extends State<SubjectDetails>
               btnOkText: "Sign in",
               btnCancelText: "Maybe later",
               btnCancelOnPress: () {},
-              btnOkOnPress: () => Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => LoginScreen(),
-                  ),
-                  (route) => false),
+              btnOkOnPress: () {
+                Provider.of<ThemeProvide>(context, listen: false)
+                    .changeMode(dontWannaDark: true);
+                Provider.of<ThemeProvide>(context, listen: false)
+                    .notifyListeners();
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LoginScreen(),
+                    ),
+                    (route) => false);
+              },
             ).show();
           } else {
             _titleController.text = '';
@@ -359,8 +366,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      video.author!.authorPhoto == null 
-                              
+                      video.author!.authorPhoto == null
                           ? Align(
                               alignment: Alignment.bottomLeft,
                               child: Text(
