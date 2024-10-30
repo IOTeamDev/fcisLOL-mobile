@@ -87,6 +87,13 @@ class Home extends StatelessWidget {
           print("Announcements are null or empty");
         }
         if (state is GetProfileSuccess) {
+          if (MainCubit.get(context).profileModel!.photo == null) {
+            print("null");
+            MainCubit.get(context).updateUser(
+                userID: MainCubit.get(context).profileModel!.id,
+                photo:
+                    "https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/images%2Fdefault-avatar-icon-of-social-media-user-vector.jpg?alt=media&token=5fc138d2-3919-4854-888e-2d8fec45d555");
+          }
           MainCubit.get(context).updateUser(
               userID: MainCubit.get(context).profileModel!.id,
               fcmToken: fcmToken);
@@ -336,19 +343,28 @@ class Home extends StatelessWidget {
                                                                 vertical: 10),
                                                         child: Align(
                                                           alignment: Alignment
-                                                              .bottomLeft,
-                                                          child: Text(
-                                                            anonuncments.title,
-                                                            style: TextStyle(
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 20,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500),
+                                                              .bottomCenter,
+                                                          child: Container(
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    bottom: 10),
+                                                            child: Text(
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              anonuncments
+                                                                  .title,
+                                                              style: TextStyle(
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 20,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500),
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
@@ -366,7 +382,7 @@ class Home extends StatelessWidget {
                                                 ? false
                                                 : true,
                                         autoPlayInterval:
-                                            const Duration(seconds: 4),
+                                            const Duration(seconds: 5),
                                         autoPlayAnimationDuration:
                                             const Duration(milliseconds: 800),
                                         viewportFraction:
@@ -511,7 +527,7 @@ Widget CustomDrawer(context, semester) {
                   ),
                   currentAccountPicture: ClipOval(
                     child: Image.network(
-                      profileModel.photo,
+                      profileModel.photo??"https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/images%2Fdefault-avatar-icon-of-social-media-user-vector.jpg?alt=media&token=5fc138d2-3919-4854-888e-2d8fec45d555",
                       width: 10,
                       height: 10,
                       fit: BoxFit.cover,
@@ -990,7 +1006,7 @@ Widget DarkLightModeToggle(context) {
 
 Widget subjectItemBuild(SubjectModel subject, context) {
   return BlocProvider(
-    create: (context) => SubjectCubit(),
+    create: (context) => SubjectCubit(AdminCubit()),
     child: GestureDetector(
       onTap: () {
         navigate(

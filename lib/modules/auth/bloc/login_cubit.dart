@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lol/modules/auth/bloc/login_cubit_states.dart';
@@ -29,7 +30,7 @@ class LoginCubit extends Cubit<LoginStates> {
     required String photo,
     required String password,
     required String semester,
-     String? fcmToken,
+    String? fcmToken,
   }) {
     emit(RegisterLoading());
     DioHelp.postData(path: "users", data: {
@@ -41,10 +42,12 @@ class LoginCubit extends Cubit<LoginStates> {
       "semester": semester,
       "fcmToken": fcmToken,
     }).then(
-      (value) {
+      (value) async {
         modelLogin = LoginModel.fromJson(value.data);
         print(modelLogin!.token);
         print(modelLogin!.user.fcmToken);
+        await FirebaseMessaging.instance.requestPermission();
+
         emit(RegisterSuccess(token: modelLogin!.token));
       },
     ).catchError((erro) => emit(RegisterFailed()));
@@ -56,8 +59,10 @@ class LoginCubit extends Cubit<LoginStates> {
       "email": email,
       "password": password,
     }).then(
-      (value) {
+      (value) async {
         modelLogin = LoginModel.fromJson(value.data);
+        await FirebaseMessaging.instance.requestPermission();
+
         // print(modelLogin!.token);
         emit(LoginSuccess(token: modelLogin!.token));
       },
@@ -71,12 +76,12 @@ class LoginCubit extends Cubit<LoginStates> {
 
   // pickProfileImage(bool isCamera) async{
   //   var tempImage =await picker.pickImage(
-  //       source: isCamera ? ImageSource.camera : ImageSource.gallery); 
+  //       source: isCamera ? ImageSource.camera : ImageSource.gallery);
 
   //   if (tempImage != null) {profileImage = File(tempImage.path);
-    
+
   //   emit(PickImageSuccess());
-    
+
   //   }
   //   else
 
@@ -84,8 +89,7 @@ class LoginCubit extends Cubit<LoginStates> {
 
   // }
 
-void uploadProfileImage(){}
-
+  void uploadProfileImage() {}
 
   void getData() {}
 

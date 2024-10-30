@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lol/main.dart';
 import 'package:lol/modules/auth/bloc/login_cubit.dart';
 import 'package:lol/modules/auth/bloc/login_cubit_states.dart';
 import 'package:lol/modules/auth/screens/register.dart';
@@ -35,6 +36,13 @@ class SelectImage extends StatelessWidget {
                     "Image size too large. Please select an image under 1MB.",
                 states: ToastStates.WARNING);
           }
+
+          if (state is GetUserImageNoMoreSpace) {
+            showToastMessage(
+                message: "no more space available :)",
+                states: ToastStates.WARNING);
+          }
+
           // if (state is RegisterSuccess) {
           //   // token=state.token;
           //   // Cache.writeData(key: "token", value: state.token);
@@ -71,6 +79,11 @@ class SelectImage extends StatelessWidget {
                         bottom: 0,
                         child: GestureDetector(
                           onTap: () {
+                            if(noMoreStorage!)
+                              showToastMessage(
+                message: "no more space available :)",
+                states: ToastStates.WARNING);
+                else
                             mainCubit.getUserImage(fromGallery: true);
 
                             // Code to pick image
@@ -105,7 +118,7 @@ class SelectImage extends StatelessWidget {
                         );
 
                         userInfo.photo = mainCubit.userImagePath ??
-                            "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg";
+                            "https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/images%2Fdefault-avatar-icon-of-social-media-user-vector.jpg?alt=media&token=5fc138d2-3919-4854-888e-2d8fec45d555";
                         print(userInfo.toString());
                         navigate(
                             context,

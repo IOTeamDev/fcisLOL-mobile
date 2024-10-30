@@ -19,7 +19,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends StatelessWidget {
   final maybeHeStillWantToBeAGuest;
-  const LoginScreen({super.key, this.maybeHeStillWantToBeAGuest=false});
+  const LoginScreen({super.key, this.maybeHeStillWantToBeAGuest = false});
 
   @override
   Widget build(BuildContext context) {
@@ -118,6 +118,7 @@ class LoginScreen extends StatelessWidget {
                             height: 5,
                           ),
                           defaultTextField(
+                            // textInputAction: TextInputAction.next,
                               validateor: (value) {
                                 if (value!.isEmpty) {
                                   return "Field cannot be empty";
@@ -141,6 +142,7 @@ class LoginScreen extends StatelessWidget {
                               ),
                               const Spacer(),
                               TextButton(
+                                
                                 style: TextButton.styleFrom(
                                     padding: const EdgeInsets.all(0)),
                                 child: const Text(
@@ -194,6 +196,7 @@ class LoginScreen extends StatelessWidget {
                           defaultTextField(
                               onFieldSubmitted: (val) async {
                                 if (formKey.currentState!.validate()) {
+                                  
                                   loginCubit.login(
                                       email: emailController.text.toLowerCase(),
                                       password: passwordController.text);

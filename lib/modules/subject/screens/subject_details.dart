@@ -471,11 +471,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                       removeButton(material: document),
                   ],
                 ),
-                document.author!.authorPhoto == null ||
-                        document.author!.authorPhoto ==
-                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7mMNz8YCBvYmnr3BQUPX__YsC_WtDuAevwg&s' ||
-                        document.author!.authorPhoto ==
-                            'https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg'
+                document.author!.authorPhoto == null
                     ? Align(
                         alignment: Alignment.bottomLeft,
                         child: Text(

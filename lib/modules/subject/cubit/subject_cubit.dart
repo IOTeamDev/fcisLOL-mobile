@@ -1,7 +1,11 @@
+import 'dart:math';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lol/models/fcm_model.dart';
 import 'package:lol/models/subjects/subject_model.dart';
+import 'package:lol/modules/admin/bloc/admin_cubit.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
 import 'package:lol/shared/components/constants.dart';
 import 'package:lol/shared/network/endpoints.dart';
@@ -11,10 +15,10 @@ import 'package:string_similarity/string_similarity.dart';
 part 'subject_state.dart';
 
 class SubjectCubit extends Cubit<SubjectState> {
-  SubjectCubit() : super(MaterialInitial());
+  SubjectCubit(this.adminCubit) : super(MaterialInitial());
 
   static SubjectCubit get(context) => BlocProvider.of(context);
-
+  final AdminCubit adminCubit;
   List<MaterialModel>? materials;
   List<MaterialModel>? videos;
 
@@ -75,6 +79,19 @@ class SubjectCubit extends Cubit<SubjectState> {
         .toList();
   }
 
+  List<FcmToken> get adminFCMTokens => adminCubit.adminFcmTokens;
+  List<String> notificationsMaterialTitle = [
+  "New Material! Check It Out, 🚀",
+"User Shared Content! Approve? 🎉",
+"Fresh Content! Give It the Green Light, 🌟",
+"Submission Pending Your Approval, 👍",
+"Exciting Update! Ready to Review?,",
+"User Submission! Time to Shine, 🌈",
+"New Content! Help It Grow, 🌱",
+"Awesome Upload! Approve?, 💪",
+"Fresh Upload! Tap to Approve, ✨",
+"Your Review Needed! Check It Out, 💼",
+  ];
   void addMaterial(
       {required String title,
       String description = '',
@@ -83,7 +100,12 @@ class SubjectCubit extends Cubit<SubjectState> {
       required String semester,
       required String subjectName,
       required String role,
-      required AuthorModel author}) {
+      required AuthorModel author}) async {
+    await adminCubit.getFcmTokens();
+    Random random = Random();
+
+    // Get a random index
+    int randomIndex = random.nextInt(notificationsMaterialTitle.length);
     emit(SaveMaterialLoading());
 
     DioHelp.postData(
@@ -102,6 +124,13 @@ class SubjectCubit extends Cubit<SubjectState> {
       if (role == 'ADMIN') {
         emit(SaveMaterialSuccessAdmin());
       } else {
+        adminCubit.sendNotificationToUsers(
+            sendToAdmin: true,
+            semester: semester,
+            title: notificationsMaterialTitle[randomIndex],
+            body:
+                "${author.authorName} wants to add a material in ${subjectName.replaceAll('_', " ").replaceAll("and", "&")} !");
+
         emit(SaveMaterialSuccessUser());
       }
 

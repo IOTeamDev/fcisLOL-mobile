@@ -101,6 +101,8 @@ class FCMHelper {
           "notification": {
             "notification_priority": "PRIORITY_MAX",
             "sound": "default",
+            "icon":
+                "notification_icon", // Add your icon name here without the extension
           },
         },
         "apns": {

@@ -47,6 +47,7 @@ class MainCubit extends Cubit<MainCubitStates> {
   var picker = ImagePicker();
   getUserImage({required bool fromGallery}) async {
     emit(GetUserImageLoading());
+    const int maxStorageLimit = 1000000000; // 1 GB in bytes
 
     var tempPostImage = await picker.pickImage(
         source: fromGallery ? ImageSource.gallery : ImageSource.camera);
@@ -110,10 +111,17 @@ class MainCubit extends Cubit<MainCubitStates> {
 
     showToastMessage(
         message: 'Uploading your photo', states: ToastStates.WARNING);
-    final uploadTask = await FirebaseStorage.instance
-        .ref()
-        .child("images/${Uri.file(image.path).pathSegments.last}")
-        .putFile(image);
+    final uploadTask;
+    if (isUserProfile)
+      uploadTask = await FirebaseStorage.instance
+          .ref()
+          .child("images/${Uri.file(image.path).pathSegments.last}")
+          .putFile(image);
+    else
+      uploadTask = await FirebaseStorage.instance
+          .ref()
+          .child("announcements/${Uri.file(image.path).pathSegments.last}")
+          .putFile(image);
 
     try {
       final imagePath = await uploadTask.ref.getDownloadURL();
@@ -228,8 +236,8 @@ class MainCubit extends Cubit<MainCubitStates> {
     DioHelp.putData(
         path: ANNOUNCEMENTS,
         data: {
-          'title': title??"",
-          'content': content??"",
+          'title': title ?? "",
+          'content': content ?? "",
           'due_date': dueDate,
           //'type': type,
           //'semester': currentSemester,
@@ -238,7 +246,8 @@ class MainCubit extends Cubit<MainCubitStates> {
         token: TOKEN,
         query: {'id': int.parse(id)}).then((value) {
       // Assuming the response returns the updated announcement
-      AnnouncementModel updatedAnnouncement = AnnouncementModel.fromJson(value.data);
+      AnnouncementModel updatedAnnouncement =
+          AnnouncementModel.fromJson(value.data);
 
       // Update the local announcements list
       if (announcements != null) {
@@ -334,6 +343,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     required int userID,
     String? semester,
     String? fcmToken,
+    String? photo,
   }) {
     DioHelp.putData(
         token: TOKEN,
@@ -341,7 +351,8 @@ class MainCubit extends Cubit<MainCubitStates> {
         path: "users",
         data: {
           if (semester != null) 'semester': semester,
-          if (fcmToken != null) 'fcmToken': fcmToken
+          if (fcmToken != null) 'fcmToken': fcmToken,
+          if (photo != null) 'photo': photo
         }).then((val) {
       print(val.data['id']);
       emit(UpdateUserSuccessState());

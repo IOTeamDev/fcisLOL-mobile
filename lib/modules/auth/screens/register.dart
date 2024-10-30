@@ -136,6 +136,7 @@ class Registerscreen extends StatelessWidget {
                                 height: 5,
                               ),
                               defaultTextField(
+                                  textInputAction: TextInputAction.next,
                                   validateor: (value) {
                                     if (value!.isEmpty) {
                                       return "field cannot be empty";
@@ -164,6 +165,7 @@ class Registerscreen extends StatelessWidget {
                                 height: 5,
                               ),
                               defaultTextField(
+                                  textInputAction: TextInputAction.next,
                                   validateor: (value) {
                                     if (value!.isEmpty) {
                                       return "field cannot be empty";
@@ -203,6 +205,7 @@ class Registerscreen extends StatelessWidget {
                                 height: 5,
                               ),
                               defaultTextField(
+                                  textInputAction: TextInputAction.next,
 
                                   // label: "Phone",
                                   controller: phoneController),
@@ -226,6 +229,7 @@ class Registerscreen extends StatelessWidget {
                                 height: 5,
                               ),
                               defaultTextField(
+                                  textInputAction: TextInputAction.next,
                                   validateor: (Value) {
                                     if (Value!.isEmpty)
                                       return "field cannot be empty";
@@ -252,8 +256,8 @@ class Registerscreen extends StatelessWidget {
                                 height: 5,
                               ),
                               defaultTextField(
-                                onFieldSubmitted: (v){
-if (formKey.currentState!.validate()) {
+                                  onFieldSubmitted: (v) {
+                                    if (formKey.currentState!.validate()) {
                                       UserInfo userInfo = UserInfo(
                                           name: nameController.text,
                                           email: emailController.text
@@ -266,11 +270,9 @@ if (formKey.currentState!.validate()) {
                                             userInfo: userInfo,
                                           ));
                                     }
-
-                                },
+                                  },
                                   validateor: (Value) {
-                                    if (Value !=
-                                        passwordController.text) {
+                                    if (Value != passwordController.text) {
                                       return "Passwords doesn't matched";
                                     } else {
                                       return null; // Form is valid.

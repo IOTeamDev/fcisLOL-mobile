@@ -41,364 +41,369 @@ class LeaderboardScreen extends StatelessWidget {
           double height = screenHeight(context);
           return Scaffold(
             key: scaffoldKey,
-            body: SingleChildScrollView(
-              child: Container(
-                margin:
-                    EdgeInsetsDirectional.only(top: screenHeight(context) / 13),
-                width: double.infinity,
-                child: Column(
-                  children: [
-                    Stack(
-                      children: [
-                        Positioned(
-                          left: 0,
-                          child: backButton(context),
-                        ),
-                        Center(
-                          child: Text(
-                            'Leaderboard',
-                            style: TextStyle(
-                              fontSize: width / 11,
-                            ),
-                            textAlign: TextAlign.center,
+            body: SafeArea(
+              child: SingleChildScrollView(
+                child: Container(
+                  margin:
+                      EdgeInsetsDirectional.only(top: 20),
+                  width: double.infinity,
+                  child: Column(
+                    children: [
+                      Stack(
+                        children: [
+                          Positioned(
+                            left: 0,
+                            child: backButton(context),
                           ),
-                        ),
-                      ],
-                    ),
-                    ConstrainedBox(
-                      constraints: BoxConstraints(maxHeight: height / 1.1),
-                      child: SingleChildScrollView(
-                        child: ConditionalBuilder(
-                          condition:
-                              MainCubit.get(context).notAdminLeaderboardModel !=
-                                      null &&
-                                  state is! GetLeaderboardLoadingState &&
-                                  (MainCubit.get(context)
-                                              .notAdminLeaderboardModel
-                                              ?.length ??
-                                          0) >=
-                                      3,
-                          builder: (context) => Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                height: height / 30,
+                          Center(
+                            child: Text(
+                              'Leaderboard',
+                              style: TextStyle(
+                                fontSize: 30,
                               ),
-                              //Top 3 Contributors Stages
-                              Padding(
-                                padding: const EdgeInsetsDirectional.symmetric(
-                                    horizontal: 10.0),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Column(
-                                      children: [
-                                        Column(
-                                          children: [
-                                            CircleAvatar(
-                                              backgroundImage: NetworkImage(
-                                                  MainCubit.get(context)
-                                                      .notAdminLeaderboardModel![
-                                                          1]
-                                                      .photo!),
-                                              radius: width / 12,
-                                            ),
-                                            SizedBox(
-                                              height: 3,
-                                            ),
-                                            ConstrainedBox(
-                                                constraints: BoxConstraints(
-                                                    maxWidth: width / 3.5),
-                                                child: Text(
-                                                  MainCubit.get(context)
-                                                      .notAdminLeaderboardModel![
-                                                          1]
-                                                      .name
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                      fontSize: width / 19),
-                                                  overflow: TextOverflow.ellipsis,
-                                                  maxLines: 2,
-                                                  textAlign: TextAlign.center,
-                                                )),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Container(
-                                              padding:
-                                                  EdgeInsetsDirectional.symmetric(
-                                                      vertical: 20),
-                                              decoration: BoxDecoration(
-                                                color: HexColor('#374C92'),
-                                                borderRadius: BorderRadius.only(
-                                                    topLeft: Radius.circular(15),
-                                                    topRight:
-                                                        Radius.circular(15)),
-                                              ),
-                                              height: height / 4,
-                                              width: width / 3.2,
-                                              child: Column(
-                                                children: [
-                                                  Container(
-                                                    height: 35,
-                                                    width: 35,
-                                                    child: Center(
-                                                        child: Text(
-                                                      '2',
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: width / 20),
-                                                    )),
-                                                    decoration: BoxDecoration(
-                                                        color:
-                                                            HexColor('#C0C0C0'),
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                10)),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Text(
-                                                    '${MainCubit.get(context).notAdminLeaderboardModel![1].score} pts',
-                                                    style: TextStyle(
-                                                        fontSize: width / 17),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        CircleAvatar(
-                                          backgroundImage: NetworkImage(
-                                              MainCubit.get(context)
-                                                  .notAdminLeaderboardModel![0]
-                                                  .photo!),
-                                          radius: width / 11,
-                                        ),
-                                        SizedBox(
-                                          height: 3,
-                                        ),
-                                        ConstrainedBox(
-                                            constraints: BoxConstraints(
-                                                maxWidth: width / 3.5),
-                                            child: Text(
-                                              MainCubit.get(context)
-                                                  .notAdminLeaderboardModel![0]
-                                                  .name
-                                                  .toString(),
-                                              style:
-                                                  TextStyle(fontSize: width / 19),
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 2,
-                                              textAlign: TextAlign.center,
-                                            )),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Container(
-                                          padding:
-                                              EdgeInsetsDirectional.symmetric(
-                                                  vertical: 20),
-                                          decoration: BoxDecoration(
-                                            color: HexColor('#4764C5'),
-                                            borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(15),
-                                                topRight: Radius.circular(15)),
-                                          ),
-                                          height: height / 3.2,
-                                          width: width / 3.2,
-                                          child: Column(
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ],
+                      ),
+                      ConstrainedBox(
+                        constraints: BoxConstraints(maxHeight: height / 1.1),
+                        child: SingleChildScrollView(
+                          child: ConditionalBuilder(
+                            condition:
+                                MainCubit.get(context).notAdminLeaderboardModel !=
+                                        null &&
+                                    state is! GetLeaderboardLoadingState &&
+                                    (MainCubit.get(context)
+                                                .notAdminLeaderboardModel
+                                                ?.length ??
+                                            0) >=
+                                        3,
+                            builder: (context) => Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  height: height / 30,
+                                ),
+                                //Top 3 Contributors Stages
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.symmetric(
+                                      horizontal: 10.0),
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Column(
                                             children: [
-                                              Container(
-                                                height: 40,
-                                                width: 40,
-                                                child: Center(
-                                                    child: Text(
-                                                  '1',
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: width / 18),
-                                                )),
-                                                decoration: BoxDecoration(
-                                                    color: Colors.amber,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10)),
+                                              CircleAvatar(
+                                                backgroundImage: NetworkImage(
+                                                    MainCubit.get(context)
+                                                        .notAdminLeaderboardModel![
+                                                            1]
+                                                        .photo!),
+                                                radius: width / 12,
                                               ),
+                                              SizedBox(
+                                                height: 3,
+                                              ),
+                                              ConstrainedBox(
+                                                  constraints: BoxConstraints(
+                                                      maxWidth: width / 3.5),
+                                                  child: Text(
+                                                    MainCubit.get(context)
+                                                        .notAdminLeaderboardModel![
+                                                            1]
+                                                        .name
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                        fontSize: width / 19),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines: 2,
+                                                    textAlign: TextAlign.center,
+                                                  )),
                                               SizedBox(
                                                 height: 10,
                                               ),
-                                              Text(
-                                                  '${MainCubit.get(context).notAdminLeaderboardModel![0].score} pts',
-                                                  style: TextStyle(
-                                                      fontSize: width / 15)),
+                                              Container(
+                                                padding: EdgeInsetsDirectional
+                                                    .symmetric(vertical: 20),
+                                                decoration: BoxDecoration(
+                                                  color: HexColor('#374C92'),
+                                                  borderRadius: BorderRadius.only(
+                                                      topLeft:
+                                                          Radius.circular(15),
+                                                      topRight:
+                                                          Radius.circular(15)),
+                                                ),
+                                                height: height / 4,
+                                                width: width / 3.2,
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      height: 35,
+                                                      width: 35,
+                                                      decoration: BoxDecoration(
+                                                          color:
+                                                              HexColor('#C0C0C0'),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10)),
+                                                      child: Center(
+                                                          child: Text(
+                                                        '2',
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: width / 20),
+                                                      )),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Text(
+                                                      '${MainCubit.get(context).notAdminLeaderboardModel![1].score} pts',
+                                                      style: TextStyle(
+                                                          fontSize: width / 17),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
                                             ],
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        CircleAvatar(
-                                          backgroundImage: NetworkImage(
-                                              MainCubit.get(context)
-                                                  .notAdminLeaderboardModel![1]
-                                                  .photo!),
-                                          radius: width / 13,
-                                        ),
-                                        SizedBox(
-                                          height: 3,
-                                        ),
-                                        ConstrainedBox(
-                                            constraints: BoxConstraints(
-                                                maxWidth: width / 3.5),
-                                            child: Text(
-                                              MainCubit.get(context)
-                                                  .notAdminLeaderboardModel![2]
-                                                  .name
-                                                  .toString(),
-                                              style:
-                                                  TextStyle(fontSize: width / 19),
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 2,
-                                              textAlign: TextAlign.center,
-                                            )),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Container(
-                                          padding:
-                                              EdgeInsetsDirectional.symmetric(
-                                                  vertical: 20),
-                                          decoration: BoxDecoration(
-                                            color: HexColor('#374C92'),
-                                            borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(15),
-                                                topRight: Radius.circular(15)),
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          CircleAvatar(
+                                            backgroundImage: NetworkImage(
+                                                MainCubit.get(context)
+                                                    .notAdminLeaderboardModel![0]
+                                                    .photo!),
+                                            radius: width / 11,
                                           ),
-                                          height: height / 5,
-                                          width: width / 3.2,
-                                          child: Column(
-                                            children: [
-                                              Container(
-                                                height: 30,
-                                                width: 30,
-                                                decoration: BoxDecoration(
-                                                    color: HexColor('#CD7F32'),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10)),
-                                                child: Center(
-                                                    child: Text(
-                                                  '3',
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: width / 20),
-                                                )),
-                                              ),
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                              Text(
-                                                '${MainCubit.get(context).notAdminLeaderboardModel![2].score} pts',
+                                          SizedBox(
+                                            height: 3,
+                                          ),
+                                          ConstrainedBox(
+                                              constraints: BoxConstraints(
+                                                  maxWidth: width / 3.5),
+                                              child: Text(
+                                                MainCubit.get(context)
+                                                    .notAdminLeaderboardModel![0]
+                                                    .name
+                                                    .toString(),
                                                 style: TextStyle(
                                                     fontSize: width / 19),
-                                              ),
-                                            ],
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 2,
+                                                textAlign: TextAlign.center,
+                                              )),
+                                          SizedBox(
+                                            height: 10,
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Divider(
-                                height: 0,
-                                thickness: 2,
-                                color: isDark ? Colors.white : Colors.black,
-                              ),
-                              //Other Contributors
-                              ConditionalBuilder(
-                                condition: MainCubit.get(context)
-                                        .notAdminLeaderboardModel!
-                                        .length >
-                                    4,
-                                builder: (context) => ListView.separated(
-                                  physics: NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: MainCubit.get(context)
-                                                  .notAdminLeaderboardModel
-                                                  ?.length !=
-                                              null &&
-                                          MainCubit.get(context)
-                                                  .notAdminLeaderboardModel!
-                                                  .length >=
-                                              4
-                                      ? (MainCubit.get(context)
-                                                  .notAdminLeaderboardModel!
-                                                  .length >=
-                                              15
-                                          ? 12
-                                          : MainCubit.get(context)
-                                                  .notAdminLeaderboardModel!
-                                                  .length -
-                                              3)
-                                      : 0,
-                                  itemBuilder: (context, index) {
-                                    return buildList(
-                                        context,
-                                        (index + 4),
-                                        MainCubit.get(context)
-                                            .notAdminLeaderboardModel![index + 3]
-                                            .name,
-                                        MainCubit.get(context)
-                                            .notAdminLeaderboardModel![index + 3]
-                                            .score);
-                                  },
-                                  separatorBuilder: (context, state) => Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.symmetric(
-                                            vertical: 15.0, horizontal: 15),
-                                    child: divider(),
+                                          Container(
+                                            padding:
+                                                EdgeInsetsDirectional.symmetric(
+                                                    vertical: 20),
+                                            decoration: BoxDecoration(
+                                              color: HexColor('#4764C5'),
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(15),
+                                                  topRight: Radius.circular(15)),
+                                            ),
+                                            height: height / 3.2,
+                                            width: width / 3.2,
+                                            child: Column(
+                                              children: [
+                                                Container(
+                                                  height: 40,
+                                                  width: 40,
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.amber,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10)),
+                                                  child: Center(
+                                                      child: Text(
+                                                    '1',
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: width / 18),
+                                                  )),
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Text(
+                                                    '${MainCubit.get(context).notAdminLeaderboardModel![0].score} pts',
+                                                    style: TextStyle(
+                                                        fontSize: width / 15)),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          CircleAvatar(
+                                            backgroundImage: NetworkImage(
+                                                MainCubit.get(context)
+                                                    .notAdminLeaderboardModel![1]
+                                                    .photo!),
+                                            radius: width / 13,
+                                          ),
+                                          SizedBox(
+                                            height: 3,
+                                          ),
+                                          ConstrainedBox(
+                                              constraints: BoxConstraints(
+                                                  maxWidth: width / 3.5),
+                                              child: Text(
+                                                MainCubit.get(context)
+                                                    .notAdminLeaderboardModel![2]
+                                                    .name
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    fontSize: width / 19),
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 2,
+                                                textAlign: TextAlign.center,
+                                              )),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Container(
+                                            padding:
+                                                EdgeInsetsDirectional.symmetric(
+                                                    vertical: 20),
+                                            decoration: BoxDecoration(
+                                              color: HexColor('#374C92'),
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(15),
+                                                  topRight: Radius.circular(15)),
+                                            ),
+                                            height: height / 5,
+                                            width: width / 3.2,
+                                            child: Column(
+                                              children: [
+                                                Container(
+                                                  height: 30,
+                                                  width: 30,
+                                                  decoration: BoxDecoration(
+                                                      color: HexColor('#CD7F32'),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10)),
+                                                  child: Center(
+                                                      child: Text(
+                                                    '3',
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: width / 20),
+                                                  )),
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Text(
+                                                  '${MainCubit.get(context).notAdminLeaderboardModel![2].score} pts',
+                                                  style: TextStyle(
+                                                      fontSize: width / 19),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                fallback: (context) => SizedBox(
-                                    height: height / 3,
+                                Divider(
+                                  height: 0,
+                                  thickness: 2,
+                                  color: isDark ? Colors.white : Colors.black,
+                                ),
+                                //Other Contributors
+                                ConditionalBuilder(
+                                  condition: MainCubit.get(context)
+                                          .notAdminLeaderboardModel!
+                                          .length >
+                                      4,
+                                  builder: (context) => ListView.separated(
+                                    physics: NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: MainCubit.get(context)
+                                                    .notAdminLeaderboardModel
+                                                    ?.length !=
+                                                null &&
+                                            MainCubit.get(context)
+                                                    .notAdminLeaderboardModel!
+                                                    .length >=
+                                                4
+                                        ? (MainCubit.get(context)
+                                                    .notAdminLeaderboardModel!
+                                                    .length >=
+                                                15
+                                            ? 12
+                                            : MainCubit.get(context)
+                                                    .notAdminLeaderboardModel!
+                                                    .length -
+                                                3)
+                                        : 0,
+                                    itemBuilder: (context, index) {
+                                      return buildList(
+                                          context,
+                                          (index + 4),
+                                          MainCubit.get(context)
+                                              .notAdminLeaderboardModel![
+                                                  index + 3]
+                                              .name,
+                                          MainCubit.get(context)
+                                              .notAdminLeaderboardModel![
+                                                  index + 3]
+                                              .score);
+                                    },
+                                    separatorBuilder: (context, state) => Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.symmetric(
+                                              vertical: 15.0, horizontal: 15),
+                                      child: divider(),
+                                    ),
+                                  ),
+                                  fallback: (context) => SizedBox(
+                                      height: height / 3,
+                                      child: Center(
+                                        child: Text(
+                                          'No more Users!!!',
+                                          style: TextStyle(fontSize: width / 12),
+                                        ),
+                                      )),
+                                ),
+                              ],
+                            ),
+                            fallback: (context) {
+                              if (state is GetLeaderboardLoadingState)
+                                return SizedBox(
+                                    height: height / 1.3,
                                     child: Center(
-                                      child: Text(
-                                        'No more Users!!!',
-                                        style: TextStyle(fontSize: width / 12),
-                                      ),
-                                    )),
-                              ),
-                            ],
-                          ),
-                          fallback: (context) {
-                            if (state is GetLeaderboardLoadingState)
+                                      child: CircularProgressIndicator(),
+                                    ));
                               return SizedBox(
                                   height: height / 1.3,
                                   child: Center(
-                                    child: CircularProgressIndicator(),
+                                    child: Text(
+                                      'No Leaderboard Yet!!!',
+                                      style: TextStyle(fontSize: width / 12),
+                                    ),
                                   ));
-                            return SizedBox(
-                                height: height / 1.3,
-                                child: Center(
-                                  child: Text(
-                                    'No Leaderboard Yet!!!',
-                                    style: TextStyle(fontSize: width / 12),
-                                  ),
-                                ));
-                          },
+                            },
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -428,7 +433,8 @@ class LeaderboardScreen extends StatelessWidget {
             ),
             Expanded(
               child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: screenWidth(context) / 1.2),
+                constraints:
+                    BoxConstraints(maxWidth: screenWidth(context) / 1.2),
                 child: Text(
                   name,
                   style: TextStyle(fontSize: 20),
@@ -437,7 +443,6 @@ class LeaderboardScreen extends StatelessWidget {
                 ),
               ),
             ),
-          
             Container(
               padding: EdgeInsetsDirectional.symmetric(horizontal: 10),
               decoration: BoxDecoration(

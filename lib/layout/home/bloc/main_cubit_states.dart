@@ -26,6 +26,8 @@ class GetAnnouncementImageLoading extends MainCubitStates {}
 
 class GetUserImageLimitExceed extends MainCubitStates{}
 
+class GetUserImageNoMoreSpace extends MainCubitStates{}
+
 class UploadImageSuccess extends MainCubitStates {}
 
 class UploadImageFailure extends MainCubitStates {}

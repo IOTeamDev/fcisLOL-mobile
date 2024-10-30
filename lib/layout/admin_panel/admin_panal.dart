@@ -64,7 +64,7 @@ class AdminPanel extends StatelessWidget {
                           child: Text(
                         'Admin',
                         style: TextStyle(
-                          fontSize: width / 10,
+                          fontSize: 30,
                         ),
                         textAlign: TextAlign.center,
                       )),

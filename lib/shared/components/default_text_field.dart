@@ -10,6 +10,7 @@ Widget defaultTextField(
     bool enabled = true,
     bool wantMargin = true,
     bool isDark = false,
+    TextInputAction? textInputAction,
     onChanged,
     suffFunc,
     controller,
@@ -19,6 +20,7 @@ Widget defaultTextField(
     height: 45,
     margin: EdgeInsets.symmetric(vertical: wantMargin ? 5 : 0),
     child: TextFormField(
+      textInputAction: textInputAction?? TextInputAction.none,
       enabled: enabled,
       onChanged: onChanged,
       keyboardType: type,

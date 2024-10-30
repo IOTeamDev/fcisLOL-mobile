@@ -40,6 +40,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
   static AdminCubit get(context) => BlocProvider.of(context);
 
   List<FcmToken> fcmTokens = [];
+  List<FcmToken> adminFcmTokens = [];
 //List of notifications messages
   Future? getFcmTokens() {
     print("object");
@@ -47,12 +48,15 @@ class AdminCubit extends Cubit<AdminCubitStates> {
       (value) {
         value.data.forEach((element) {
           fcmTokens.add(FcmToken.fromJson(element));
+          if (element['role'] == 'ADMIN')
+            adminFcmTokens.add(FcmToken.fromJson(element));
+
           // print(fcmTokens[1].semester);
         });
         // fcmTokens.forEach((element) {
         //   if (element.name == "phone") print(element.semester);
         // });
-        for (var action in fcmTokens) {
+        for (var action in adminFcmTokens) {
           // sendFCMNotification(
           //     title: "title",
           //     body: "body",
@@ -74,13 +78,16 @@ class AdminCubit extends Cubit<AdminCubitStates> {
 
   AnnouncementModel? announcementModel;
   List<String> notificationsTitles = [
-    "New update: Take a look!",
-    "Don't Miss That!!!",
-    "Take a look at what's new!",
-    "Something new is waiting for you!",
-    "Just added: Check it out!",
-    "We have something new for you! Take a look!",
-    "Be the First to Know!",
+    "New update: Take a look! 🔔",
+    "Don't Miss That!!! 🚨",
+    "Take a look at what's new! 👀",
+    "Something new is waiting for you! 🎉",
+    "Just added: Check it out! 🆕",
+    "We have something new for you! Take a look! 🌟",
+    "Be the First to Know! 🚀",
+    "Exciting Update! Tap to Explore 📰",
+    "A Little Surprise Just for You! 🎁",
+    "Get the Scoop! Fresh News Inside 📢",
   ];
   void addAnnouncement(
       {required title,
@@ -89,6 +96,8 @@ class AdminCubit extends Cubit<AdminCubitStates> {
       required type,
       image,
       required currentSemester}) {
+
+        
     Random random = Random();
 
     // Get a random index
@@ -188,16 +197,19 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     await fCMHelper.initNotifications();
     var serverKeyAuthorization = await fCMHelper.getAccessToken();
 
-    print("${serverKeyAuthorization}_________________________________________________________________________________");
+    print(
+        "${serverKeyAuthorization}_________________________________________________________________________________");
 
     // change your project id
-    const String urlEndPoint = "https://fcm.googleapis.com/v1/projects/fcis-da7f4/messages:send";
+    const String urlEndPoint =
+        "https://fcm.googleapis.com/v1/projects/fcis-da7f4/messages:send";
 
     Dio dio = Dio();
     dio.options.headers['Content-Type'] = 'application/json';
     dio.options.headers['Authorization'] = 'Bearer $serverKeyAuthorization';
 
-    dio.post(
+    dio
+        .post(
           urlEndPoint,
           data: fCMHelper.getBody(
             fcmToken: token,
@@ -220,38 +232,55 @@ class AdminCubit extends Cubit<AdminCubitStates> {
   }
 
   Future<void> sendNotificationToUsers({
+    bool sendToAdmin = false,
     required String semester,
     required String title,
     required String body,
   }) async {
-    await FirebaseMessaging.instance.requestPermission();
+    // await FirebaseMessaging.instance.requestPermission();
 
     // Wait for FCM tokens to be fetched
     // await getFcmTokens();
 
     // Ensure the tokens are fetched successfully and the list is populated
-    if (fcmTokens.isEmpty) {
-      print('No FCM tokens found');
-      // await getFcmTokens();
-    }
+    if (!sendToAdmin) {
+      if (fcmTokens.isEmpty) {
+        print('No FCM tokens found');
+        // await getFcmTokens();
+      }
 
-    print(fcmTokens.length); // Print the number of fetched tokens
+      print(fcmTokens.length); // Print the number of fetched tokens
 
-    // Filter users based on semester
-    List<FcmToken> filteredUsers =
-        fcmTokens.where((user) => user.semester == semester).toList();
+      // Filter users based on semester
+      List<FcmToken> filteredUsers =
+          fcmTokens.where((user) => user.semester == semester).toList();
 
-    if (filteredUsers.isEmpty) {
-      print('No users found for semester: $semester');
-      return; // Exit early if no users are found for the semester
-    }
+      if (filteredUsers.isEmpty) {
+        print('No users found for semester: $semester');
+        return; // Exit early if no users are found for the semester
+      }
 
-    // Send notifications to each user
-    for (var user in filteredUsers) {
-      if (user.fcmToken != null) {
-        print('${user.semester} - Sending notification to: ${user.fcmToken}');
-        await sendFCMNotification(
-            title: title, body: body, token: user.fcmToken!);
+      // Send notifications to each user
+      for (var user in filteredUsers) {
+        if (user.fcmToken != null) {
+          print('${user.semester} - Sending notification to: ${user.fcmToken}');
+          await sendFCMNotification(
+              title: title, body: body, token: user.fcmToken!);
+        }
+      }
+    } else {
+      List<FcmToken> filteredUsers =
+          adminFcmTokens.where((user) => user.semester == semester).toList();
+      if (filteredUsers.isEmpty) {
+        print('No users found for semester: $semester');
+        return; // Exit early if no users are found for the semester
+      }
+      for (var user in filteredUsers) {
+        if (user.fcmToken != null) {
+          print('${user.semester} - Sending notification to: ${user.name}================================================================');
+          await sendFCMNotification(
+              title: title, body: body, token: user.fcmToken!);
+        }
       }
     }
 

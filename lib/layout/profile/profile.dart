@@ -99,7 +99,7 @@ class Profile extends StatelessWidget {
                                           child: CircleAvatar(
                                             radius: width / 7.5,
                                             backgroundImage: NetworkImage(
-                                              mainCubit.profileModel!.photo,
+                                              mainCubit.profileModel!.photo!,
                                             ),
                                           ),
                                         ),

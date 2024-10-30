@@ -57,6 +57,7 @@ String? private_key;
 //   }
 // }
 bool? changeSemester = false;
+bool? noMoreStorage = false;
 String? fcmToken;
 bool isDark = false;
 Map<String, dynamic> fcisServiceMap = {};
@@ -74,6 +75,7 @@ main() async {
       .get()
       .then((onValue) {
     changeSemester = onValue.data()?["changeSemester"] ?? false;
+    noMoreStorage = onValue.data()?["noMoreStorage"] ?? false;
     print("$changeSemester seememmemememmem");
   });
 
@@ -163,7 +165,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-          BlocProvider(create: (BuildContext context) => SubjectCubit()),
+          BlocProvider(create: (BuildContext context) => SubjectCubit(AdminCubit())),
           BlocProvider(create: (BuildContext context) => MainCubit()),
           BlocProvider(create: (BuildContext context) => AdminCubit()),
         ],
