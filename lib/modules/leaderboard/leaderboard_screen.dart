@@ -44,8 +44,7 @@ class LeaderboardScreen extends StatelessWidget {
             body: SafeArea(
               child: SingleChildScrollView(
                 child: Container(
-                  margin:
-                      EdgeInsetsDirectional.only(top: 20),
+                  margin: EdgeInsetsDirectional.only(top: 20),
                   width: double.infinity,
                   child: Column(
                     children: [

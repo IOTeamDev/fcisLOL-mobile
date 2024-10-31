@@ -215,8 +215,7 @@ class AboutUs extends StatelessWidget {
   List<Map<String, String>> get teamMembers => [
         {
           'name': 'Omar Nasr',
-          'imagePath':
-              'https://media-hbe1-1.cdn.whatsapp.net/v/t61.24694-24/418597847_479782551230154_2590049062991285152_n.jpg?ccb=11-4&oh=01_Q5AaINF0vC0sqpFXAp_poEBqTycKLH8tBkJsI2ojOaOwhQRn&oe=67254439&_nc_sid=5e03e0&_nc_cat=110',
+          'imagePath': 'https://media-hbe1-1.cdn.whatsapp.net/v/t61.24694-24/418597847_479782551230154_2590049062991285152_n.jpg?ccb=11-4&oh=01_Q5AaINF0vC0sqpFXAp_poEBqTycKLH8tBkJsI2ojOaOwhQRn&oe=67254439&_nc_sid=5e03e0&_nc_cat=110',
           'role': 'Flutter Developer',
           'contactUrl': 'https://linktr.ee/J3_Unknown'
         },
