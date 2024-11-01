@@ -13,6 +13,7 @@ import 'package:lol/layout/home/home.dart';
 import 'package:lol/layout/profile/profile.dart';
 import 'package:lol/modules/admin/screens/announcements/announcements_list.dart';
 import 'package:lol/modules/auth/screens/login.dart';
+import 'package:lol/modules/error/error_screen.dart';
 import 'package:lol/shared/components/navigation.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'constants.dart';
@@ -209,20 +210,12 @@ String? getYouTubeThumbnail(String videoUrl) {
 Future<void> onOpen(BuildContext context, LinkableElement link) async {
   final url = link.url;
 
-  // Check if the link is a Facebook link
-  if (url.contains('facebook.com') ||
-      url.contains('drive.google.com') ||
-      url.contains('web.microsoftstream.com')) {
     // Open Facebook links directly using `url_launcher`
     if (await canLaunchUrl(Uri.parse(url))) {
       await launchUrl(Uri.parse(url));
-    } else {
-      navigate(context, WebviewScreen(url));
     }
-  } else {
-    // For other links, open them using WebView
-    navigate(context, WebviewScreen(url));
-
-    // launchUrl(Uri.parse(link.url));
-  }
+    else
+    {
+      navigate(context, ErrorScreen());
+    }
 }

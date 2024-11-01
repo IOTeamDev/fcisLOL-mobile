@@ -15,6 +15,7 @@ import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
 import 'package:lol/layout/admin_panel/admin_panal.dart';
 import 'package:lol/modules/admin/screens/Announcements/add_announcement.dart';
 import 'package:lol/modules/admin/screens/announcements/announcements_list.dart';
+import 'package:lol/modules/error/error_screen.dart';
 import 'package:lol/modules/subject/screens/subject_details.dart';
 import 'package:lol/modules/support_and_about_us/about_us.dart';
 import 'package:lol/modules/support_and_about_us/user_advices/feedback_screen.dart';

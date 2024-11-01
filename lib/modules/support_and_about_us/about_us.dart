@@ -15,7 +15,6 @@ class AboutUs extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
@@ -24,8 +23,6 @@ class AboutUs extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-
-
                 Row(
                   children: [
                     Positioned(
