@@ -210,12 +210,24 @@ String? getYouTubeThumbnail(String videoUrl) {
 Future<void> onOpen(BuildContext context, LinkableElement link) async {
   final url = link.url;
 
-    // Open Facebook links directly using `url_launcher`
+  if (url.contains('facebook.com') ||
+      url.contains('drive.google.com') ||
+      url.contains('web.microsoftstream.com')) {
+
     if (await canLaunchUrl(Uri.parse(url))) {
+      print('opening in webView');
       await launchUrl(Uri.parse(url));
     }
     else
     {
+      print('opening Error Screen');
       navigate(context, ErrorScreen());
     }
+  }
+  else
+  {
+    print('opening In');
+    await navigate(context, navigate(context, WebviewScreen(url)));
+  }
+
 }
