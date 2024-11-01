@@ -13,11 +13,12 @@ import 'package:lol/shared/components/components.dart';
 import '../../bloc/admin_cubit.dart';
 
 class EditAnnouncement extends StatefulWidget {
-  final String id;
+  final int id;
   final String semester;
   final String title;
   final String content;
   final String date;
+  final int index;
   //final String? selectedItem;
   final String? imageLink;
 
@@ -29,7 +30,7 @@ class EditAnnouncement extends StatefulWidget {
     required this.date,
     //this.selectedItem,
     required this.semester,
-    this.imageLink,
+    this.imageLink, required this.index,
   });
 
   @override
@@ -43,7 +44,7 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
   late TextEditingController titleController;
   late TextEditingController contentController;
   late TextEditingController _dateController;
-  late String id;
+  late int id;
   String? dueDateFormatted;
 
   final _formKey = GlobalKey<FormState>();
@@ -369,7 +370,7 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                           //print(dueDateFormatted);
                                            // await cubit.UploadPImage(isUserProfile: false, image: cubit.AnnouncementImageFile);
                                             cubit.updateAnnouncement(
-                                                cubit.announcements![int.parse(id)].id.toString(),
+                                                id,
                                                 title: titleController.text,
                                                 content: contentController.text,
                                                 dueDate: dueDateFormatted == 'No Due Date'? null:dueDateFormatted,
