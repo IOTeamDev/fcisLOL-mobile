@@ -25,10 +25,7 @@ class AboutUs extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Positioned(
-                      left: 0,
-                      child: backButton(context),
-                    ),
+                    backButton(context),
                     Center(
                       child: Text(
                         'About Us',

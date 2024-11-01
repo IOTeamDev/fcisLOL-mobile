@@ -200,22 +200,19 @@ String? getYouTubeThumbnail(String videoUrl) {
     videoId = uri.pathSegments.first;
   } else if (uri.queryParameters.containsKey('v')) {
     videoId = uri.queryParameters['v']!;
-  }
-  else {
+  } else {
     return null;
   }
   return 'https://img.youtube.com/vi/$videoId/hqdefault.jpg';
 }
 
-Future<void> onOpen(BuildContext context, LinkableElement link) async {
+Future<void> onOpen(BuildContext context, LinkableElement link) async { 
   final url = link.url;
 
-    // Open Facebook links directly using `url_launcher`
-    if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url));
-    }
-    else
-    {
-      navigate(context, ErrorScreen());
-    }
+  // Open Facebook links directly using `url_launcher`
+  if (await canLaunchUrl(Uri.parse(url))) {
+    await launchUrl(Uri.parse(url));
+  } else {
+    navigate(context, WebviewScreen( url));
+  }
 }

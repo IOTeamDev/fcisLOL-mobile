@@ -16,7 +16,7 @@ import 'package:lol/modules/webview/webview_screen.dart';
 import '../../bloc/admin_cubit.dart';
 
 class AnnouncementDetail extends StatelessWidget {
-  final int id;
+  // final int id;
   final String title;
   final String description;
   final dynamic date;
@@ -28,7 +28,7 @@ class AnnouncementDetail extends StatelessWidget {
       required this.title,
       required this.description,
       required this.date,
-      required this.id,
+      // required this.id,
       required this.semester});
 
   @override

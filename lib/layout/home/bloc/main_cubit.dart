@@ -218,7 +218,7 @@ class MainCubit extends Cubit<MainCubitStates> {
   }
 
   void updateAnnouncement(
-    final String id, {
+    final int id, {
     String? title,
     String? content,
     dynamic dueDate,
@@ -244,14 +244,14 @@ class MainCubit extends Cubit<MainCubitStates> {
           //'image': image,
         },
         token: TOKEN,
-        query: {'id': int.parse(id)}).then((value) {
+        query: {'id': id}).then((value) {
       // Assuming the response returns the updated announcement
       AnnouncementModel updatedAnnouncement =
           AnnouncementModel.fromJson(value.data);
 
       // Update the local announcements list
       if (announcements != null) {
-        int index = announcements!.indexWhere((ann) => ann.id.toString() == id);
+        int index = announcements!.indexWhere((ann) => ann.id == id);
         if (index != -1) {
           announcements![index] = updatedAnnouncement;
         }

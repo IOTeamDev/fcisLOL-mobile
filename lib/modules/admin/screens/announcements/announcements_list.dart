@@ -114,7 +114,7 @@ class AnnouncementsList extends StatelessWidget {
                 title: title,
                 description: content,
                 date: dueDate,
-                id: id,
+                // id: id,
             )
         );
       },

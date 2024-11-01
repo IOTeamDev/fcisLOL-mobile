@@ -565,10 +565,10 @@ else{
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) => announcementBuilder(
                             widget.semester,
-                            cubit.announcements![index].id.toString(),
+                            // cubit.announcements![index].id,
                             context,
-                            cubit.announcements![index].title,
                             index,
+                            cubit.announcements![index].title,
                             cubit.announcements![index].content,
                             cubit.announcements![index].dueDate,
                             cubit.announcements![index].type),
@@ -610,9 +610,9 @@ else{
     );
   }
 
-  Widget announcementBuilder(semester, String cubitId, context, title, ID,
+  Widget announcementBuilder(semester, context,index, title, 
       content, date, selectedItem) {
-    var cubit = AdminCubit.get(context).announcements![ID];
+    var cubit = AdminCubit.get(context).announcements![index];
     print(cubit.type);
     return GestureDetector(
       onTap: () {
@@ -623,7 +623,7 @@ else{
               title: cubit.title,
               description: cubit.content,
               date: cubit.dueDate,
-              id: ID,
+              // id: ID,
             ));
       },
       child: Container(
@@ -656,7 +656,8 @@ else{
                             title: cubit.title,
                             content: cubit.content,
                             date: cubit.dueDate,
-                            id: ID.toString(),
+                            id: cubit.id,
+                            index:index ,
                             //selectedItem: cubit.type,
                             imageLink: cubit.image,
                           )),
