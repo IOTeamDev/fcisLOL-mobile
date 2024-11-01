@@ -237,6 +237,8 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     required String title,
     required String body,
   }) async {
+
+    
     // await FirebaseMessaging.instance.requestPermission();
 
     // Wait for FCM tokens to be fetched
@@ -333,7 +335,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
         message: 'Uploading your photo', states: ToastStates.WARNING);
     final uploadTask = await FirebaseStorage.instance
         .ref()
-        .child("images/${Uri.file(image.path).pathSegments.last}")
+        .child("announcements/${Uri.file(image.path).pathSegments.last}")
         .putFile(image);
 
     try {
