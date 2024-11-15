@@ -16,6 +16,7 @@ import 'package:lol/models/profile/profile_model.dart';
 import 'package:lol/models/subjects/subject_model.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
+import 'package:lol/modules/admin/screens/announcements/announcement_detail.dart';
 import 'package:lol/modules/auth/bloc/login_cubit.dart';
 import 'package:lol/modules/auth/screens/login.dart';
 import 'package:lol/modules/leaderboard/leaderboard_screen.dart';
@@ -265,6 +266,25 @@ class Home extends StatelessWidget {
                                             ]
                                           : anonuncmentsss.map((anonuncments) {
                                               return GestureDetector(
+                                                onTap: () {
+                                                  navigate(
+                                                      context,
+                                                      AnnouncementDetail(
+                                                        title:
+                                                            anonuncments.title,
+                                                        date: anonuncments
+                                                            .dueDate,
+                                                        description:
+                                                            anonuncments
+                                                                .content,
+                                                        semester: TOKEN != null
+                                                            ? MainCubit.get(
+                                                                    context)
+                                                                .profileModel!
+                                                                .semester
+                                                            : SelectedSemester!,
+                                                      ));
+                                                },
                                                 onDoubleTap: () {
                                                   if (MainCubit.get(context)
                                                               .profileModel
@@ -426,7 +446,8 @@ class Home extends StatelessWidget {
                                       return subjectItemBuild(
                                           semesters[semesterIndex!]
                                               .subjects[index],
-                                          context);
+                                          context,
+                                          false);
                                     },
                                   ),
                                 ),
@@ -509,7 +530,7 @@ Widget CustomDrawer(context, semester) {
                     child: Container(
                       margin: EdgeInsets.only(top: 5),
                       child: GestureDetector(
-                        onTap: () => navigate(context, const Profile()),
+                        onTap: () => navigatReplace(context, const Profile()),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -527,7 +548,8 @@ Widget CustomDrawer(context, semester) {
                   ),
                   currentAccountPicture: ClipOval(
                     child: Image.network(
-                      profileModel.photo??"https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/images%2Fdefault-avatar-icon-of-social-media-user-vector.jpg?alt=media&token=5fc138d2-3919-4854-888e-2d8fec45d555",
+                      profileModel.photo ??
+                          "https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/images%2Fdefault-avatar-icon-of-social-media-user-vector.jpg?alt=media&token=5fc138d2-3919-4854-888e-2d8fec45d555",
                       width: 10,
                       height: 10,
                       fit: BoxFit.cover,
@@ -1004,7 +1026,7 @@ Widget DarkLightModeToggle(context) {
   );
 }
 
-Widget subjectItemBuild(SubjectModel subject, context) {
+Widget subjectItemBuild(SubjectModel subject, context, bool navigat) {
   return BlocProvider(
     create: (context) => SubjectCubit(AdminCubit()),
     child: GestureDetector(
@@ -1012,6 +1034,7 @@ Widget subjectItemBuild(SubjectModel subject, context) {
         navigate(
             context,
             SubjectDetails(
+              navigate: false,
               subjectName: subject.subjectName,
             ));
       },

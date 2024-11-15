@@ -19,6 +19,9 @@ dependencies:
   cupertino_icons: ^1.0.8
   dio: ^5.7.0
   file_picker: ^8.1.2
+  icon_broken: ^1.1.0
+  iconly: ^1.0.1
+
   firebase_auth: ^5.3.0
   firebase_core: ^3.5.0
   firebase_messaging: ^15.1.2
@@ -59,8 +62,7 @@ flutter:
 
   assets:
     - images/
-    
-  
+
 flutter_launcher_icons:
   android: true
   ios: true

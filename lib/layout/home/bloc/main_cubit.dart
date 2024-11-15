@@ -152,6 +152,20 @@ class MainCubit extends Cubit<MainCubitStates> {
     );
   }
 
+  ProfileModel? otherProfile;
+
+  getotherProfile(id) {
+    emit(GetProfileLoading());
+    otherProfile = null;
+    DioHelp.getData(path: USERS, query: {'id': id, 'haveMaterial': true}).then(
+      (value) {
+        otherProfile = ProfileModel.fromJson(value.data);
+
+        emit(GetProfileSuccess());
+      },
+    );
+  }
+
   void logout(context) {
     Cache.removeValue(key: "token");
     Cache.removeValue(key: "semester"); //SelectedSemester
@@ -265,7 +279,7 @@ class MainCubit extends Cubit<MainCubitStates> {
 
   LeaderboardModel? score4User;
 
-  void getScore4User(int userId) async {
+  Future<void> getScore4User(int userId) async {
     score4User = null;
     print("${leaderboardModel!.length}dsmksdjkl");
     for (int i = 0; i < leaderboardModel!.length; i++) {

@@ -7,10 +7,12 @@ import 'package:googleapis/admin/directory_v1.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/layout/home/bloc/main_cubit.dart';
+import 'package:lol/layout/profile/other_profile.dart';
 import 'package:lol/main.dart';
 import 'package:lol/models/profile/profile_model.dart';
 import 'package:lol/modules/auth/screens/login.dart';
 import 'package:lol/shared/components/default_text_field.dart';
+import 'package:lol/shared/components/navigation.dart';
 import 'package:lol/shared/network/endpoints.dart';
 import 'package:lol/shared/styles/colors.dart';
 import 'package:lol/shared/components/constants.dart';
@@ -27,7 +29,9 @@ import 'package:provider/provider.dart';
 
 class SubjectDetails extends StatefulWidget {
   final String subjectName;
-  const SubjectDetails({super.key, required this.subjectName});
+  final bool navigate;
+  const SubjectDetails(
+      {super.key, required this.subjectName, required this.navigate});
 
   @override
   State<SubjectDetails> createState() => _MaterialDetailsState();
@@ -340,17 +344,31 @@ class _MaterialDetailsState extends State<SubjectDetails>
                 ClipRRect(
                   borderRadius: BorderRadius.circular(15),
                   child: AspectRatio(
-                    aspectRatio: 16 / 9,
-                    child: getYouTubeThumbnail(video.link!) != null
-                        ? Image.network(
-                            getYouTubeThumbnail(video.link!)!,
-                            fit: BoxFit.cover,
-                          )
-                        : Image.network(
-                            'https://www.buffalotech.com/images/made/images/remote/https_i.ytimg.com/vi/06wIw-NdHIw/sddefault_300_225_s.jpg',
-                            fit: BoxFit.cover,
-                          ),
-                  ),
+                      aspectRatio: 16 / 9,
+                      child: FutureBuilder<String?>(
+                        future: getYouTubeThumbnail(video.link!,apiKey),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(
+                                child:
+                                    CircularProgressIndicator()); // Show a loading indicator while waiting
+                          } else if (snapshot.hasError) {
+                            return Text(
+                                'Error loading thumbnail'); // Display an error if one occurs
+                          } else if (snapshot.data != null) {
+                            return Image.network(
+                              snapshot.data!,
+                              fit: BoxFit.cover,
+                            ); // Display the thumbnail
+                          } else {
+                            return Image.network(
+                              'https://www.buffalotech.com/images/made/images/remote/https_i.ytimg.com/vi/06wIw-NdHIw/sddefault_300_225_s.jpg',
+                              fit: BoxFit.cover,
+                            ); // Handle null cases
+                          }
+                        },
+                      )),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 5),
@@ -379,33 +397,40 @@ class _MaterialDetailsState extends State<SubjectDetails>
                                 overflow: TextOverflow.ellipsis,
                               ),
                             )
-                          : Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Shared by:  ',
-                                  style: TextStyle(
-                                    fontSize: screenWidth(context) / 30,
-                                    color: Colors.white,
+                          : GestureDetector(
+                              onTap: () => navigate(
+                                  context,
+                                  OtherProfile(
+                                    id: 117,
+                                  )),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Shared by:  ',
+                                    style: TextStyle(
+                                      fontSize: screenWidth(context) / 30,
+                                      color: Colors.white,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                CircleAvatar(
-                                  radius: screenWidth(context) / 25,
-                                  backgroundImage: NetworkImage(
-                                      '${video.author!.authorPhoto}'),
-                                ),
-                                Text(
-                                  '  ${video.author!.authorName}',
-                                  style: TextStyle(
-                                    fontSize: screenWidth(context) / 30,
-                                    color: Colors.white,
+                                  CircleAvatar(
+                                    radius: screenWidth(context) / 25,
+                                    backgroundImage: NetworkImage(
+                                        '${video.author!.authorPhoto}'),
                                   ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
+                                  Text(
+                                    '  ${video.author!.authorName}',
+                                    style: TextStyle(
+                                      fontSize: screenWidth(context) / 30,
+                                      color: Colors.white,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
                             ),
                     ],
                   ),
@@ -484,33 +509,40 @@ class _MaterialDetailsState extends State<SubjectDetails>
                           overflow: TextOverflow.ellipsis,
                         ),
                       )
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Shared by:  ',
-                            style: TextStyle(
-                              fontSize: screenWidth(context) / 30,
-                              color: Colors.white,
+                    : GestureDetector(
+                        onTap: () => navigate(
+                            context,
+                            OtherProfile(
+                              id: 117,
+                            )),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Shared by:  ',
+                              style: TextStyle(
+                                fontSize: screenWidth(context) / 30,
+                                color: Colors.white,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          CircleAvatar(
-                            radius: screenWidth(context) / 25,
-                            backgroundImage:
-                                NetworkImage('${document.author!.authorPhoto}'),
-                          ),
-                          Text(
-                            '  ${document.author!.authorName}',
-                            style: TextStyle(
-                              fontSize: screenWidth(context) / 30,
-                              color: Colors.white,
+                            CircleAvatar(
+                              radius: screenWidth(context) / 25,
+                              backgroundImage: NetworkImage(
+                                  '${document.author!.authorPhoto}'),
                             ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
+                            Text(
+                              '  ${document.author!.authorName}',
+                              style: TextStyle(
+                                fontSize: screenWidth(context) / 30,
+                                color: Colors.white,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
                       ),
                 // Align(
                 //   alignment: Alignment.bottomLeft,

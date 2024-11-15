@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:ui';
+import 'package:http/http.dart' as http;
 
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
@@ -192,19 +194,60 @@ Color chooseToastColor(ToastStates states) {
   return color!;
 }
 
-String? getYouTubeThumbnail(String videoUrl) {
+
+
+Future<String?> getYouTubeThumbnail(String videoUrl,apiKey) async {
   final Uri uri = Uri.parse(videoUrl);
-  String videoId = "";
+  String? videoId;
 
   if (uri.host.contains('youtu.be')) {
+    // Shortened URL (e.g., https://youtu.be/VIDEO_ID)
     videoId = uri.pathSegments.first;
   } else if (uri.queryParameters.containsKey('v')) {
-    videoId = uri.queryParameters['v']!;
+    // Standard YouTube video URL (e.g., https://www.youtube.com/watch?v=VIDEO_ID)
+    videoId = uri.queryParameters['v'];
+  } else if (uri.queryParameters.containsKey('list')) {
+    // Playlist URL
+    final playlistUrl = videoUrl; // Use the playlist URL directly
+    try {
+      // Call getFirstVideoThumbnail function to get the thumbnail of the first video in the playlist
+      final thumbnailUrl = await getFirstVideoThumbnail(playlistUrl, apiKey);
+      return thumbnailUrl;
+    } catch (e) {
+      print('Error fetching playlist thumbnail: $e');
+      return null;
+    }
   } else {
-    return null;
+    return null; // Not a valid YouTube video or playlist URL
   }
-  return 'https://img.youtube.com/vi/$videoId/hqdefault.jpg';
+
+  // Return the thumbnail for the individual video
+  return videoId != null ? 'https://img.youtube.com/vi/$videoId/hqdefault.jpg' : null;
 }
+
+Future<String> getFirstVideoThumbnail(String playlistUrl, String apiKey) async {
+  // Extract playlist ID from the URL
+  final playlistId = playlistUrl.split("list=")[1];
+
+  // Build the API request URL
+  final url =
+      'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=1&playlistId=$playlistId&key=$apiKey';
+
+  // Send the HTTP request
+  final response = await http.get(Uri.parse(url));
+
+  if (response.statusCode == 200) {
+    // Parse the response body
+    final data = jsonDecode(response.body);
+    final firstVideo = data['items'][0]['snippet'];
+    final thumbnailUrl = firstVideo['thumbnails']['high']['url'];
+
+    return thumbnailUrl; // Return the URL of the first video's thumbnail
+  } else {
+    throw Exception('Failed to load playlist');
+  }
+}
+
 
 Future<void> onOpen(BuildContext context, LinkableElement link) async { 
   final url = link.url;
