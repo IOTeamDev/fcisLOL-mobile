@@ -250,6 +250,9 @@ class Home extends StatelessWidget {
                                                     changeSemester = false;
                                                   }
                                                 },
+                                                onTap: (){
+                                                  navigate(context, AnnouncementsList(semester: MainCubit.get(context).profileModel!.semester));
+                                                },
                                                 child: Container(
                                                   decoration: BoxDecoration(
                                                     borderRadius:
