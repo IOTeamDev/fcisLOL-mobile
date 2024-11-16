@@ -60,7 +60,7 @@ String? private_key;
 // }
 bool? changeSemester = false;
 bool? noMoreStorage = false;
-String? apiKey ;
+String? apiKey;
 String? fcmToken;
 bool isDark = false;
 Map<String, dynamic> fcisServiceMap = {};
@@ -128,14 +128,10 @@ main() async {
     }
   }
 
-  runApp(
-    ChangeNotifierProvider(
+  runApp(ChangeNotifierProvider(
     create: (context) => ThemeProvide()..loadMode(),
     child: App(startPage: startPage),
-  )
-  
-  
-  );
+  ));
 }
 
 class ThemeProvide extends ChangeNotifier {
@@ -173,7 +169,8 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-          BlocProvider(create: (BuildContext context) => SubjectCubit(AdminCubit())),
+          BlocProvider(
+              create: (BuildContext context) => SubjectCubit(AdminCubit())),
           BlocProvider(create: (BuildContext context) => MainCubit()),
           BlocProvider(create: (BuildContext context) => AdminCubit()),
         ],
