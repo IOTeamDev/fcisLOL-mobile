@@ -63,7 +63,7 @@ class SubjectCubit extends Cubit<SubjectState> {
       response.data.forEach((e) {
         materials!.add(MaterialModel.fromJson(e));
       });
-      filteredMaterials = materials;
+      filteredMaterials = materials!.reversed.toList();
       emit(GetMaterialSuccess(materials: filteredMaterials!));
       filterVideosAndDocuments();
     });
@@ -81,16 +81,16 @@ class SubjectCubit extends Cubit<SubjectState> {
 
   List<FcmToken> get adminFCMTokens => adminCubit.adminFcmTokens;
   List<String> notificationsMaterialTitle = [
-  "New Material! Check It Out, 🚀",
-"User Shared Content! Approve? 🎉",
-"Fresh Content! Give It the Green Light, 🌟",
-"Submission Pending Your Approval, 👍",
-"Exciting Update! Ready to Review?,",
-"User Submission! Time to Shine, 🌈",
-"New Content! Help It Grow, 🌱",
-"Awesome Upload! Approve?, 💪",
-"Fresh Upload! Tap to Approve, ✨",
-"Your Review Needed! Check It Out, 💼",
+    "New Material! Check It Out, 🚀",
+    "User Shared Content! Approve? 🎉",
+    "Fresh Content! Give It the Green Light, 🌟",
+    "Submission Pending Your Approval, 👍",
+    "Exciting Update! Ready to Review?,",
+    "User Submission! Time to Shine, 🌈",
+    "New Content! Help It Grow, 🌱",
+    "Awesome Upload! Approve?, 💪",
+    "Fresh Upload! Tap to Approve, ✨",
+    "Your Review Needed! Check It Out, 💼",
   ];
   void addMaterial(
       {required String title,

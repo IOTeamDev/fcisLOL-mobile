@@ -97,8 +97,8 @@ class SemesterNavigate extends StatelessWidget {
                         // subjectItemBuild(
                         //     semesters[semesterIndex!]
                         //         .subjects[index],context);
-                        subjectItemBuild(
-                            semesters[semesterIndex].subjects[index], context);
+                        subjectItemBuild( 
+                            semesters[semesterIndex].subjects[index], context,true);
                   },
                 ),
               ],

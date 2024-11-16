@@ -210,7 +210,7 @@ class AboutUs extends StatelessWidget {
         {
           'name': 'Omar Nasr',
           'imagePath':
-              'https://media-hbe1-1.cdn.whatsapp.net/v/t61.24694-24/418597847_479782551230154_2590049062991285152_n.jpg?ccb=11-4&oh=01_Q5AaINF0vC0sqpFXAp_poEBqTycKLH8tBkJsI2ojOaOwhQRn&oe=67254439&_nc_sid=5e03e0&_nc_cat=110',
+              'https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/images%2Ffile.jpg?alt=media&token=7f050ff7-8d8d-4ea4-84da-3d254c36c0c2',
           'role': 'Flutter Developer',
           'contactUrl': 'https://linktr.ee/J3_Unknown'
         },
@@ -224,7 +224,7 @@ class AboutUs extends StatelessWidget {
         {
           'name': 'Saif Elnawawy',
           'imagePath':
-              'https://media-hbe1-1.cdn.whatsapp.net/v/t61.24694-24/459111528_411397035091165_5639055007617670316_n.jpg?ccb=11-4&oh=01_Q5AaIHRNHZeglU-fDOb9eNSUDwWBWZWhgszeDirP6cXRei2Z&oe=672547A9&_nc_sid=5e03e0&_nc_cat=111',
+              'https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/images%2F459111528_411397035091165_5639055007617670316_n.jpg?alt=media&token=6ee42433-ee9f-449c-bef2-3abf21edd5b6',
           'role': 'Flutter Developer',
           'contactUrl':
               'https://linktr.ee/Se_if?utm_source=linktree_profile_share'
@@ -239,14 +239,14 @@ class AboutUs extends StatelessWidget {
         {
           'name': 'Mahmoud Ahmed',
           'imagePath':
-              'https://media-hbe1-1.cdn.whatsapp.net/v/t61.24694-24/461285944_2482003412008696_545038448751502366_n.jpg?ccb=11-4&oh=01_Q5AaIKBiateq3IHED5p5nDrkpNQDxSmfujiDHbFtI_b9lgp1&oe=672562B4&_nc_sid=5e03e0&_nc_cat=107',
+              'https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/images%2Ffile%20(4).jpg?alt=media&token=66fabec5-9958-4217-81cc-73bfe4cabdba',
           'role': 'UI/UX Designer',
           'contactUrl': 'https://linktr.ee/mahmoud588'
         },
         {
           'name': 'Ibrahim Abo Elso\'ud',
           'imagePath':
-              'https://media-hbe1-1.cdn.whatsapp.net/v/t61.24694-24/358107689_1530656884409433_3079936151263351192_n.jpg?ccb=11-4&oh=01_Q5AaIKIu6NdWccKAO1EXCyXqEL0lZwC8QQrPbtj9xuzWzRXU&oe=67254922&_nc_sid=5e03e0&_nc_cat=105',
+              'https://images-cdn.ubuy.co.in/64c7e79e11e2491d3f730794-flag-of-palestine-3x5-ft-flags-3-x-5.jpg',
           'role': 'Contributor',
           'contactUrl': 'http://Aboelsoud.vercel.app'
         },

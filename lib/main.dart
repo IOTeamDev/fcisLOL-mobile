@@ -9,6 +9,7 @@ import 'package:lol/drawer.dart';
 import 'package:lol/layout/home/bloc/main_cubit.dart';
 import 'package:lol/layout/home/bloc/main_cubit_states.dart';
 import 'package:lol/layout/home/semester_navigate.dart';
+import 'package:lol/layout/profile/other_profile.dart';
 import 'package:lol/models/login/login_model.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
@@ -59,6 +60,7 @@ String? private_key;
 // }
 bool? changeSemester = false;
 bool? noMoreStorage = false;
+String? apiKey ;
 String? fcmToken;
 bool isDark = false;
 Map<String, dynamic> fcisServiceMap = {};
@@ -77,6 +79,7 @@ main() async {
       .then((onValue) {
     changeSemester = onValue.data()?["changeSemester"] ?? false;
     noMoreStorage = onValue.data()?["noMoreStorage"] ?? false;
+    apiKey = onValue.data()?["apiKey"];
     print("$changeSemester seememmemememmem");
   });
 
@@ -125,10 +128,14 @@ main() async {
     }
   }
 
-  runApp(ChangeNotifierProvider(
+  runApp(
+    ChangeNotifierProvider(
     create: (context) => ThemeProvide()..loadMode(),
     child: App(startPage: startPage),
-  ));
+  )
+  
+  
+  );
 }
 
 class ThemeProvide extends ChangeNotifier {

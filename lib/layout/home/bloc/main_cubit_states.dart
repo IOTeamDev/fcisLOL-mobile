@@ -97,3 +97,8 @@ class UpdateAnnouncementsErrorState extends MainCubitStates{}
 class UpdateUserSuccessState extends MainCubitStates{}
 
 class UpdateUserErrorState extends MainCubitStates{}
+
+class DeleteimageSuccessState extends MainCubitStates{}
+
+class DeleteimageErrorState extends MainCubitStates{}
+
