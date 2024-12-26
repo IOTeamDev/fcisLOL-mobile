@@ -131,6 +131,5 @@ class GridTileWidget extends StatelessWidget {
               ),
           ],
         ));
-    ;
   }
 }

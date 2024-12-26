@@ -30,6 +30,5 @@ class CustomTabBar extends StatelessWidget {
         TabForCustomTabBar(title: title2)
       ],
     );
-    ;
   }
 }

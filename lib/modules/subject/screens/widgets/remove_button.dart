@@ -45,6 +45,5 @@ class RemoveButton extends StatelessWidget {
         );
       },
     );
-    ;
   }
 }

@@ -97,6 +97,5 @@ class CustomTabBarView extends StatelessWidget {
         ),
       ],
     );
-    ;
   }
 }

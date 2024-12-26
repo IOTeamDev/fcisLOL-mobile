@@ -60,7 +60,7 @@ class _BuildFloatingActionButtonState extends State<BuildFloatingActionButton> {
                 Provider.of<ThemeProvide>(context, listen: false)
                     .changeMode(dontWannaDark: true);
                 Provider.of<ThemeProvide>(context, listen: false)
-                    // ignore: invalid_use_of_protected_member
+                    // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
                     .notifyListeners();
                 Navigator.pushAndRemoveUntil(
                     context,

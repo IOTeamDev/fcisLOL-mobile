@@ -268,6 +268,5 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
             },
           )),
     );
-    ;
   }
 }
