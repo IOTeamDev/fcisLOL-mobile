@@ -13,7 +13,7 @@ import 'package:lol/modules/admin/bloc/admin_cubit.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
 import 'package:lol/modules/admin/screens/announcements/announcement_detail.dart';
 import 'package:lol/modules/admin/screens/requests/requests_details.dart';
-import 'package:lol/modules/subject/cubit/subject_cubit.dart';
+import 'package:lol/modules/subject/presentation/cubit/subject_cubit.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/navigation.dart';
 import 'package:lol/shared/components/constants.dart';
@@ -46,7 +46,8 @@ class Requests extends StatelessWidget {
             body: Stack(
               children: [
                 Container(
-                  margin: EdgeInsetsDirectional.only(top: screenHeight(context)/10),
+                  margin: EdgeInsetsDirectional.only(
+                      top: screenHeight(context) / 10),
                   width: double.infinity,
                   child: Column(
                     children: [
@@ -60,7 +61,8 @@ class Requests extends StatelessWidget {
                               child: Text(
                             'Requests',
                             style: TextStyle(
-                                fontSize: width / 10,),
+                              fontSize: width / 10,
+                            ),
                             textAlign: TextAlign.center,
                           )),
                         ],
@@ -154,7 +156,7 @@ class Requests extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: isDark? HexColor('#3B3B3B'): HexColor('#757575'),
+          color: isDark ? HexColor('#3B3B3B') : HexColor('#757575'),
           borderRadius: BorderRadius.circular(20),
         ),
         margin: const EdgeInsetsDirectional.symmetric(horizontal: 10),
@@ -275,18 +277,15 @@ class Requests extends StatelessWidget {
                           btnCancelOnPress: () {},
                           btnOkText: "Delete",
                           btnCancelColor: Colors.grey,
-                    
+
                           // titleTextStyle: TextStyle(fontSize: 22),
                           btnOkOnPress: () {
                             MainCubit.get(context).deleteMaterial(
-                          MainCubit.get(context).requests![index].id!,
-                          MainCubit.get(context).profileModel!.semester,
-                        );
+                              MainCubit.get(context).requests![index].id!,
+                              MainCubit.get(context).profileModel!.semester,
+                            );
                           },
                         ).show();
-
-
-                      
                       },
                       color: Colors.red,
                       shape: RoundedRectangleBorder(

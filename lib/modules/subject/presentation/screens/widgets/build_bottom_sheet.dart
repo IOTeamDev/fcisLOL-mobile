@@ -4,7 +4,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/layout/home/bloc/main_cubit.dart';
 import 'package:lol/main.dart';
 import 'package:lol/models/subjects/subject_model.dart';
-import 'package:lol/modules/subject/cubit/subject_cubit.dart';
+import 'package:lol/modules/subject/presentation/cubit/subject_cubit.dart';
 import 'package:lol/shared/components/constants.dart';
 
 class BuildBottomSheet extends StatefulWidget {

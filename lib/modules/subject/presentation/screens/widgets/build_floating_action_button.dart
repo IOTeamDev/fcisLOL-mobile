@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/main.dart';
 import 'package:lol/modules/auth/screens/login.dart';
-import 'package:lol/modules/subject/screens/widgets/build_bottom_sheet.dart';
+import 'package:lol/modules/subject/presentation/screens/widgets/build_bottom_sheet.dart';
 import 'package:lol/shared/components/constants.dart';
 import 'package:provider/provider.dart';
 

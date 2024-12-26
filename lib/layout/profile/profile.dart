@@ -15,7 +15,7 @@ import 'package:lol/main.dart';
 import 'package:lol/models/profile/profile_materila_model.dart';
 import 'package:icon_broken/icon_broken.dart';
 
-import 'package:lol/modules/subject/cubit/subject_cubit.dart';
+import 'package:lol/modules/subject/presentation/cubit/subject_cubit.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/default_button.dart';
 import 'package:lol/shared/components/default_text_field.dart';

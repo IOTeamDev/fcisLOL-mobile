@@ -4,7 +4,7 @@ import 'package:lol/layout/home/bloc/main_cubit.dart';
 import 'package:lol/layout/profile/other_profile.dart';
 import 'package:lol/main.dart';
 import 'package:lol/models/subjects/subject_model.dart';
-import 'package:lol/modules/subject/screens/widgets/remove_button.dart';
+import 'package:lol/modules/subject/presentation/screens/widgets/remove_button.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/constants.dart';
 import 'package:lol/shared/components/navigation.dart';

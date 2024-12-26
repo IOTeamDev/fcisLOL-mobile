@@ -2,7 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/models/subjects/subject_model.dart';
-import 'package:lol/modules/subject/cubit/subject_cubit.dart';
+import 'package:lol/modules/subject/presentation/cubit/subject_cubit.dart';
 
 class RemoveButton extends StatelessWidget {
   const RemoveButton({super.key, required this.material});

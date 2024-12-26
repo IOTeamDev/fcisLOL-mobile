@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/main.dart';
-import 'package:lol/modules/subject/screens/widgets/tab_for_custom_tab_bar.dart';
+import 'package:lol/modules/subject/presentation/screens/widgets/tab_for_custom_tab_bar.dart';
 
 class CustomTabBar extends StatelessWidget {
   const CustomTabBar(

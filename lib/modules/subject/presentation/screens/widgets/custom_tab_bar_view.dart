@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/main.dart';
-import 'package:lol/modules/subject/cubit/subject_cubit.dart';
-import 'package:lol/modules/subject/screens/widgets/documents_card.dart';
-import 'package:lol/modules/subject/screens/widgets/grid_tile_widget.dart';
+import 'package:lol/modules/subject/presentation/cubit/subject_cubit.dart';
+import 'package:lol/modules/subject/presentation/screens/widgets/documents_card.dart';
+import 'package:lol/modules/subject/presentation/screens/widgets/grid_tile_widget.dart';
 
 class CustomTabBarView extends StatelessWidget {
   const CustomTabBarView({super.key, required this.controller});

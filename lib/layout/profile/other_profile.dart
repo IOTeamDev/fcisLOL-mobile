@@ -11,7 +11,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/main.dart';
 import 'package:lol/models/profile/profile_materila_model.dart';
-import 'package:lol/modules/subject/cubit/subject_cubit.dart';
+import 'package:lol/modules/subject/presentation/cubit/subject_cubit.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/default_button.dart';
 import 'package:lol/shared/components/default_text_field.dart';
@@ -92,51 +92,62 @@ class OtherProfile extends StatelessWidget {
                                       mainCubit.otherProfile!.photo!,
                                     ),
                                   ),
-                                FutureBuilder(
-  future: MainCubit.get(context).getScore4User(id),
-  builder: (context, snapshot) {
-    if (snapshot.connectionState == ConnectionState.waiting) {
-      return CircularProgressIndicator(); // Add a loading indicator
-    }
-    if (snapshot.hasError) {
-      return Text(""); // Handle any errors
-    }
-    if (mainCubit.score4User != null &&
-        mainCubit.score4User!.score != 0 &&
-        mainCubit.otherProfile != null &&
-        mainCubit.otherProfile!.role != "ADMIN" &&
-        mainCubit.score4User!.userRank! <= 3) {
-      
-      // Define rank-specific properties
-      final color = mainCubit.score4User!.userRank == 1
-          ? Color(0xffFFD700)
-          : mainCubit.score4User!.userRank == 2
-              ? Color(0xffC0C0C0)
-              : Color(0xffCD7F32);
-      
-      final rankText = mainCubit.score4User!.userRank == 1
-          ? "Top Contributor"
-          : mainCubit.score4User!.userRank == 2
-              ? "2nd Contributor"
-              : "3rd Contributor";
+                                  FutureBuilder(
+                                    future: MainCubit.get(context)
+                                        .getScore4User(id),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return CircularProgressIndicator(); // Add a loading indicator
+                                      }
+                                      if (snapshot.hasError) {
+                                        return Text(""); // Handle any errors
+                                      }
+                                      if (mainCubit.score4User != null &&
+                                          mainCubit.score4User!.score != 0 &&
+                                          mainCubit.otherProfile != null &&
+                                          mainCubit.otherProfile!.role !=
+                                              "ADMIN" &&
+                                          mainCubit.score4User!.userRank! <=
+                                              3) {
+                                        // Define rank-specific properties
+                                        final color =
+                                            mainCubit.score4User!.userRank == 1
+                                                ? Color(0xffFFD700)
+                                                : mainCubit.score4User!
+                                                            .userRank ==
+                                                        2
+                                                    ? Color(0xffC0C0C0)
+                                                    : Color(0xffCD7F32);
 
-      return Container(
-        padding: EdgeInsets.all(5),
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: Text(
-          rankText,
-          style: TextStyle(color: Colors.black),
-        ),
-      );
-    } else {
-      return Text(""); // Show nothing if conditions aren't met
-    }
-  },
-)
+                                        final rankText =
+                                            mainCubit.score4User!.userRank == 1
+                                                ? "Top Contributor"
+                                                : mainCubit.score4User!
+                                                            .userRank ==
+                                                        2
+                                                    ? "2nd Contributor"
+                                                    : "3rd Contributor";
 
+                                        return Container(
+                                          padding: EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                            color: color,
+                                            borderRadius:
+                                                BorderRadius.circular(30),
+                                          ),
+                                          child: Text(
+                                            rankText,
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          ),
+                                        );
+                                      } else {
+                                        return Text(
+                                            ""); // Show nothing if conditions aren't met
+                                      }
+                                    },
+                                  )
                                 ],
                               ),
                             ),

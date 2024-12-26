@@ -7,7 +7,7 @@ import 'package:linkify/linkify.dart';
 import 'package:lol/layout/home/bloc/main_cubit_states.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
-import 'package:lol/modules/subject/cubit/subject_cubit.dart';
+import 'package:lol/modules/subject/presentation/cubit/subject_cubit.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/constants.dart';
 
@@ -65,7 +65,8 @@ class RequestsDetails extends StatelessWidget {
           return Scaffold(
             //backgroundColor: HexColor('#23252A'),
             body: Container(
-                margin: EdgeInsetsDirectional.only(top: screenHeight(context)/10),
+                margin:
+                    EdgeInsetsDirectional.only(top: screenHeight(context) / 10),
                 width: double.infinity,
                 child: Column(
                   children: [
@@ -79,13 +80,14 @@ class RequestsDetails extends StatelessWidget {
                             child: Text(
                           'Request Details',
                           style: TextStyle(
-                              fontSize: width / 12,),
+                            fontSize: width / 12,
+                          ),
                           textAlign: TextAlign.center,
                         )),
                       ],
                     ),
                     ConstrainedBox(
-                      constraints: BoxConstraints(maxHeight: height/1.4),
+                      constraints: BoxConstraints(maxHeight: height / 1.4),
                       child: Container(
                         margin: const EdgeInsetsDirectional.symmetric(
                             horizontal: 15, vertical: 20),
@@ -94,7 +96,9 @@ class RequestsDetails extends StatelessWidget {
                         height: screenHeight(context) / 1.4,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
-                          color: isDark? HexColor('#3B3B3B') : HexColor('#757575'),
+                          color: isDark
+                              ? HexColor('#3B3B3B')
+                              : HexColor('#757575'),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -263,7 +267,8 @@ class RequestsDetails extends StatelessWidget {
                                                 BorderRadius.circular(13)),
                                         padding: const EdgeInsetsDirectional
                                             .symmetric(horizontal: 40),
-                                        backgroundColor: Color.fromARGB(255, 20, 130, 220),
+                                        backgroundColor:
+                                            Color.fromARGB(255, 20, 130, 220),
                                         foregroundColor: Colors.white,
                                         textStyle:
                                             TextStyle(fontSize: width / 17),
