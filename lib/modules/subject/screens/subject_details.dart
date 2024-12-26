@@ -330,7 +330,6 @@ class _MaterialDetailsState extends State<SubjectDetails>
   }
 
   Widget gridTileWidget({required MaterialModel video, rule}) {
-    print('************${video.author!.authorPhoto}///////////');
     return InkWell(
         onTap: () async {
           final linkableElement = LinkableElement(video.link, video.link!);
@@ -346,7 +345,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                   child: AspectRatio(
                       aspectRatio: 16 / 9,
                       child: FutureBuilder<String?>(
-                        future: getYouTubeThumbnail(video.link!,apiKey),
+                        future: getYouTubeThumbnail(video.link!, apiKey),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {

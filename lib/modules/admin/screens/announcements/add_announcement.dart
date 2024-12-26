@@ -77,7 +77,8 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
             //backgroundColor: HexColor('#23252A'),
             body: Container(
               padding: EdgeInsets.all(5),
-              margin: EdgeInsetsDirectional.only(top: screenHeight(context)/10),
+              margin:
+                  EdgeInsetsDirectional.only(top: screenHeight(context) / 10),
               width: double.infinity,
               child: SingleChildScrollView(
                 child: Column(
@@ -203,15 +204,33 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                 child: GestureDetector(
                                                   onTap: () => showDatePicker(
                                                     context: context,
-                                                    initialDate: DateTime.now().add(Duration(days: 1)),
-                                                    firstDate: DateTime.now().add(Duration(days: 1)),
-                                                    lastDate: DateTime.parse('2027-12-30'),
+                                                    initialDate: DateTime.now()
+                                                        .add(Duration(days: 1)),
+                                                    firstDate: DateTime.now()
+                                                        .add(Duration(days: 1)),
+                                                    lastDate: DateTime.parse(
+                                                        '2027-12-30'),
                                                   ).then((value) {
                                                     if (value != null) {
-                                                        DateTime selectedDate = DateTime(value.year, value.month, value.day);
-                                                        dueDateFormatted = DateTime.utc(selectedDate.year, selectedDate.month, selectedDate.day).toIso8601String();
-                                                        print(dueDateFormatted);
-                                                        _dateController.text = DateFormat('dd/MM/yyyy').format(value);
+                                                      DateTime selectedDate =
+                                                          DateTime(
+                                                              value.year,
+                                                              value.month,
+                                                              value.day);
+                                                      dueDateFormatted =
+                                                          DateTime.utc(
+                                                                  selectedDate
+                                                                      .year,
+                                                                  selectedDate
+                                                                      .month,
+                                                                  selectedDate
+                                                                      .day)
+                                                              .toIso8601String();
+                                                      print(dueDateFormatted);
+                                                      _dateController.text =
+                                                          DateFormat(
+                                                                  'dd/MM/yyyy')
+                                                              .format(value);
                                                     }
                                                   }),
                                                   child: Container(
@@ -443,65 +462,70 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                 ElevatedButton(
                                                     onPressed: () async {
                                                       if (_formKey.currentState!
-                                                              .validate() 
-                                                          ) {
-                                                                if(_selectedItem ==
-                                                              null)
-                                                        showToastMessage(textColor: Colors.black,
-                                                            message:
-                                                                "Please select the announcement type",
-                                                            states: ToastStates
-                                                                .WARNING);
-else{
-                                                        setState(() {
-                                                          _isExpanded = false;
-                                                          _showContent = false;
-                                                          _height = 80;
-                                                        });
+                                                          .validate()) {
+                                                        if (_selectedItem ==
+                                                            null) {
+                                                          showToastMessage(
+                                                              textColor:
+                                                                  Colors.black,
+                                                              message:
+                                                                  "Please select the announcement type",
+                                                              states:
+                                                                  ToastStates
+                                                                      .WARNING);
+                                                        } else {
+                                                          setState(() {
+                                                            _isExpanded = false;
+                                                            _showContent =
+                                                                false;
+                                                            _height = 80;
+                                                          });
 
-                                                        print(_selectedItem);
-                                                        //print("${MainCubit.get(context).profileModel!.semester}sdsdaffsdkljkjkljkljklhjklhjk00");
-                                                        await AdminCubit.get(
-                                                                context)
-                                                            .UploadPImage(
-                                                                image: cubit
-                                                                    .AnnouncementImageFile);
-                                                        cubit.addAnnouncement(
-                                                            title:
-                                                                _titleController
-                                                                    .text,
-                                                            dueDate:
-                                                                dueDateFormatted,
-                                                            type: _selectedItem,
-                                                            description:
-                                                                _descriptionController
-                                                                    .text,
-                                                            image: AdminCubit.get(
-                                                                        context)
-                                                                    .AnnouncementImagePath ??
-                                                                "https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/140.jpg?alt=media&token=3e5a4144-20ca-44ce-ba14-57432e49914f",
-                                                            currentSemester:
-                                                                widget
-                                                                    .semester);
-                                                        setState(() {
-                                                          _titleController
-                                                              .clear();
-                                                          _descriptionController
-                                                              .clear();
-                                                          _dateController
-                                                              .clear();
-                                                          _selectedItem = null;
-                                                          dueDateFormatted =
-                                                              null;
-                                                          cubit.AnnouncementImageFile =
-                                                              null;
-                                                          cubit.imageName =
-                                                              'Select Image';
-                                                          cubit.pickerIcon =
-                                                              Icons.image;
-                                                        });
+                                                          print(_selectedItem);
+                                                          //print("${MainCubit.get(context).profileModel!.semester}sdsdaffsdkljkjkljkljklhjklhjk00");
+                                                          await AdminCubit.get(
+                                                                  context)
+                                                              .UploadPImage(
+                                                                  image: cubit
+                                                                      .AnnouncementImageFile);
+                                                          cubit.addAnnouncement(
+                                                              title:
+                                                                  _titleController
+                                                                      .text,
+                                                              dueDate:
+                                                                  dueDateFormatted,
+                                                              type:
+                                                                  _selectedItem,
+                                                              description:
+                                                                  _descriptionController
+                                                                      .text,
+                                                              image: AdminCubit.get(
+                                                                          context)
+                                                                      .AnnouncementImagePath ??
+                                                                  "https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/140.jpg?alt=media&token=3e5a4144-20ca-44ce-ba14-57432e49914f",
+                                                              currentSemester:
+                                                                  widget
+                                                                      .semester);
+                                                          setState(() {
+                                                            _titleController
+                                                                .clear();
+                                                            _descriptionController
+                                                                .clear();
+                                                            _dateController
+                                                                .clear();
+                                                            _selectedItem =
+                                                                null;
+                                                            dueDateFormatted =
+                                                                null;
+                                                            cubit.AnnouncementImageFile =
+                                                                null;
+                                                            cubit.imageName =
+                                                                'Select Image';
+                                                            cubit.pickerIcon =
+                                                                Icons.image;
+                                                          });
+                                                        }
                                                       }
-                                                    }
                                                     },
                                                     style: ElevatedButton
                                                         .styleFrom(
@@ -518,7 +542,8 @@ else{
                                                                       width /
                                                                           10),
                                                       backgroundColor:
-                                                      Color.fromARGB(255, 20, 130, 220),
+                                                          Color.fromARGB(255,
+                                                              20, 130, 220),
                                                       foregroundColor:
                                                           Colors.white,
                                                       textStyle: TextStyle(
@@ -580,19 +605,20 @@ else{
                       fallback: (context) {
                         if (state is AdminGetAnnouncementLoadingState) {
                           return SizedBox(
-                            height: height/1.5,
+                            height: height / 1.5,
                             child: const Center(
                                 child: CircularProgressIndicator()),
                           );
                         } else {
-                          return  SizedBox(
-                            height: height/1.5,
+                          return SizedBox(
+                            height: height / 1.5,
                             child: Center(
                               child: Text(
                                 'You have no announcements yet!!!',
                                 style: TextStyle(
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold,),
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                ),
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -610,8 +636,8 @@ else{
     );
   }
 
-  Widget announcementBuilder(semester, context,index, title, 
-      content, date, selectedItem) {
+  Widget announcementBuilder(
+      semester, context, index, title, content, date, selectedItem) {
     var cubit = AdminCubit.get(context).announcements![index];
     print(cubit.type);
     return GestureDetector(
@@ -657,7 +683,7 @@ else{
                             content: cubit.content,
                             date: cubit.dueDate,
                             id: cubit.id,
-                            index:index ,
+                            index: index,
                             //selectedItem: cubit.type,
                             imageLink: cubit.image,
                           )),
@@ -667,7 +693,8 @@ else{
                   AdminCubit.get(context).getAnnouncements(semester);
                 }
               },
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
               color: Colors.white,
               minWidth: 10,
               padding: const EdgeInsets.all(6),

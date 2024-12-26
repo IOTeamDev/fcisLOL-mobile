@@ -7,7 +7,7 @@ class ProfileModel {
   late String semester;
   late String role;
   String? phone;
-   String? photo;
+  String? photo;
   late int id;
   late List<ProfileMaterilaModel> materials = [];
 

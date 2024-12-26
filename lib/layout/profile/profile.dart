@@ -40,15 +40,16 @@ class Profile extends StatelessWidget {
       create: (context) => MainCubit()..getProfileInfo(),
       child: BlocConsumer<MainCubit, MainCubitStates>(
         builder: (context, state) {
-          if (state is UpdateUserSuccessState)
+          if (state is UpdateUserSuccessState) {
             showToastMessage(
                 message: "Updated Profile Success",
                 states: ToastStates.SUCCESS);
+          }
 
-                
-          if (state is UpdateUserErrorState)
+          if (state is UpdateUserErrorState) {
             showToastMessage(
                 message: "failed to update profile", states: ToastStates.ERROR);
+          }
 
           if (state is GetProfileSuccess) {
             BlocProvider.of<MainCubit>(context)
