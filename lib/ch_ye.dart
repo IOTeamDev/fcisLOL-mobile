@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:lol/shared/components/constants.dart';
 
 class LevelGridScreen extends StatelessWidget {
+  const LevelGridScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +21,8 @@ class LevelGridScreen extends StatelessWidget {
           children: <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(color: Colors.blue),
-              child: Text('Profile', style: TextStyle(color: Colors.white, fontSize: 24)),
+              child: Text('Profile',
+                  style: TextStyle(color: Colors.white, fontSize: 24)),
             ),
             ListTile(
               title: Text('Login'),
@@ -76,12 +79,13 @@ class LevelGridScreen extends StatelessWidget {
             ),
           ],
         ),
-        width: screenWidth(context)/3, // Fixed width for each card
+        width: screenWidth(context) / 3, // Fixed width for each card
         height: screenHeight(context) / 3, // Fixed height for each card
         child: Center(
           child: Text(
             'Level $level',
-            style: TextStyle(fontSize: 24, color: Colors.white, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                fontSize: 24, color: Colors.white, fontWeight: FontWeight.bold),
           ),
         ),
       ),
@@ -93,7 +97,8 @@ class LevelGridScreen extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Select Semester for Level $level', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          title: Text('Select Semester for Level $level',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [

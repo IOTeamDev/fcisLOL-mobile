@@ -41,18 +41,30 @@ class _MaterialDetailsState extends State<SubjectDetails>
     with TickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   late TabController _tabControllerOfShowingContent;
-  final _formKey = GlobalKey<FormState>();
-  final _titleController = TextEditingController();
-  final _descriptionController = TextEditingController();
-  final _linkController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  late TextEditingController _titleController;
+  late TextEditingController _descriptionController;
+  late TextEditingController _linkController;
 
   @override
   void initState() {
+    _titleController = TextEditingController();
+    _descriptionController = TextEditingController();
+    _linkController = TextEditingController();
     _tabControllerOfShowingContent = TabController(length: 2, vsync: this);
 
     SubjectCubit.get(context).getMaterials(subject: widget.subjectName);
     MainCubit.get(context).getProfileInfo();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _titleController.dispose();
+    _descriptionController.dispose();
+    _linkController.dispose();
+    _tabControllerOfShowingContent.dispose();
   }
 
   @override
