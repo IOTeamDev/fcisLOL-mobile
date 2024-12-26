@@ -20,6 +20,7 @@ import 'package:lol/modules/admin/screens/announcements/announcement_detail.dart
 import 'package:lol/modules/auth/bloc/login_cubit.dart';
 import 'package:lol/modules/auth/screens/login.dart';
 import 'package:lol/modules/leaderboard/leaderboard_screen.dart';
+import 'package:lol/modules/subject/data/repos/subject_repo_imp.dart';
 import 'package:lol/modules/subject/presentation/cubit/subject_cubit.dart';
 import 'package:lol/modules/subject/presentation/screens/subject_details.dart';
 import 'package:lol/modules/support_and_about_us/about_us.dart';
@@ -33,6 +34,7 @@ import 'package:lol/layout/home/bloc/main_cubit_states.dart';
 import 'package:lol/layout/profile/profile.dart';
 import 'package:lol/main.dart';
 import 'package:lol/shared/components/navigation.dart';
+import 'package:lol/shared/dependencies/subject_repo_dependency.dart';
 import 'package:lol/shared/network/local/shared_prefrence.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -1038,7 +1040,8 @@ Widget DarkLightModeToggle(context) {
 
 Widget subjectItemBuild(SubjectModel subject, context, bool navigat) {
   return BlocProvider(
-    create: (context) => SubjectCubit(AdminCubit()),
+    create: (context) =>
+        SubjectCubit(adminCubit: AdminCubit(), getIt.get<SubjectRepoImp>()),
     child: GestureDetector(
       onTap: () {
         navigate(

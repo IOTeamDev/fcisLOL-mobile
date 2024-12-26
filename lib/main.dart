@@ -17,9 +17,11 @@ import 'package:lol/layout/admin_panel/admin_panal.dart';
 import 'package:lol/modules/admin/screens/Announcements/add_announcement.dart';
 import 'package:lol/modules/admin/screens/announcements/announcements_list.dart';
 import 'package:lol/modules/error/error_screen.dart';
+import 'package:lol/modules/subject/data/repos/subject_repo_imp.dart';
 import 'package:lol/modules/subject/presentation/screens/subject_details.dart';
 import 'package:lol/modules/support_and_about_us/about_us.dart';
 import 'package:lol/modules/support_and_about_us/user_advices/feedback_screen.dart';
+import 'package:lol/shared/dependencies/subject_repo_dependency.dart';
 import 'package:lol/shared/network/local/shared_prefrence.dart';
 import 'package:lol/shared/network/remote/fcm_helper.dart';
 import 'package:provider/provider.dart';
@@ -65,6 +67,7 @@ String? fcmToken;
 bool isDark = false;
 Map<String, dynamic> fcisServiceMap = {};
 main() async {
+  setup();
   WidgetsFlutterBinding.ensureInitialized();
   await Cache.initialize();
   await DioHelp.initial();
@@ -170,7 +173,8 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider(
-              create: (BuildContext context) => SubjectCubit(AdminCubit())),
+              create: (BuildContext context) => SubjectCubit(
+                  adminCubit: AdminCubit(), getIt.get<SubjectRepoImp>())),
           BlocProvider(create: (BuildContext context) => MainCubit()),
           BlocProvider(create: (BuildContext context) => AdminCubit()),
         ],

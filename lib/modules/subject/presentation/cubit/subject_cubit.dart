@@ -7,6 +7,7 @@ import 'package:lol/models/fcm_model.dart';
 import 'package:lol/models/subjects/subject_model.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
+import 'package:lol/modules/subject/data/repos/subject_repo.dart';
 import 'package:lol/shared/components/constants.dart';
 import 'package:lol/shared/network/endpoints.dart';
 import 'package:lol/shared/network/remote/dio.dart';
@@ -15,7 +16,9 @@ import 'package:string_similarity/string_similarity.dart';
 part 'subject_state.dart';
 
 class SubjectCubit extends Cubit<SubjectState> {
-  SubjectCubit(this.adminCubit) : super(MaterialInitial());
+  SubjectCubit(this._subjectRepo, {required this.adminCubit})
+      : super(MaterialInitial());
+  final SubjectRepo _subjectRepo;
 
   static SubjectCubit get(context) => BlocProvider.of(context);
   final AdminCubit adminCubit;
@@ -49,24 +52,20 @@ class SubjectCubit extends Cubit<SubjectState> {
     filterVideosAndDocuments();
   }
 
-  void getMaterials({String? subject}) {
+  Future<void> getMaterials({String? subject}) async {
     emit(GetMaterialLoading());
 
-    DioHelp.getData(
-        path: MATERIAL,
-        query: {'subject': subject, 'accepted': true}).then((response) {
-      materials = [];
+    try {
+      materials = await _subjectRepo.getMaterials(subject: subject);
       videos = [];
       documents = [];
-      filteredMaterials = [];
-
-      response.data.forEach((e) {
-        materials!.add(MaterialModel.fromJson(e));
-      });
       filteredMaterials = materials!.reversed.toList();
+
       emit(GetMaterialSuccess(materials: filteredMaterials!));
       filterVideosAndDocuments();
-    });
+    } catch (error) {
+      emit(GetMaterialError(errorMessage: error.toString()));
+    }
   }
 
   void filterVideosAndDocuments() {
