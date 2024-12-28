@@ -7,6 +7,7 @@ import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:googleapis/admin/directory_v1.dart';
+import 'package:googleapis/mybusinessaccountmanagement/v1.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/layout/home/semester_navigate.dart';
 import 'package:lol/models/admin/announcement_model.dart';
@@ -1046,9 +1047,13 @@ Widget subjectItemBuild(SubjectModel subject, context, bool navigat) {
       onTap: () {
         navigate(
             context,
-            SubjectDetails(
-              navigate: false,
-              subjectName: subject.subjectName,
+            BlocProvider(
+              create: (context) => SubjectCubit(
+                  adminCubit: AdminCubit(), getIt.get<SubjectRepoImp>()),
+              child: SubjectDetails(
+                navigate: false,
+                subjectName: subject.subjectName,
+              ),
             ));
       },
       child: Card(
