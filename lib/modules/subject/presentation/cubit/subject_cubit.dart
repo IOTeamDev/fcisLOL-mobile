@@ -36,7 +36,7 @@ class SubjectCubit extends Cubit<SubjectState> {
       documents = [];
       filteredMaterials = materials!.reversed.toList();
 
-      emit(GetMaterialSuccess(materials: filteredMaterials!));
+      emit(GetMaterialSuccess());
       filterVideosAndDocuments();
     } catch (error) {
       emit(GetMaterialError(errorMessage: error.toString()));
@@ -120,7 +120,7 @@ class SubjectCubit extends Cubit<SubjectState> {
         return scoreB.compareTo(scoreA);
       });
     }
-    emit(GetMaterialSuccess(materials: filteredMaterials!));
+    emit(GetMaterialSuccess());
     filterVideosAndDocuments();
   }
 

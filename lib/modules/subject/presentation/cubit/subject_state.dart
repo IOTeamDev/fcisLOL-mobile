@@ -7,11 +7,7 @@ final class MaterialInitial extends SubjectState {}
 
 final class GetMaterialLoading extends SubjectState {}
 
-final class GetMaterialSuccess extends SubjectState {
-  final List<MaterialModel> materials;
-
-  GetMaterialSuccess({required this.materials});
-}
+final class GetMaterialSuccess extends SubjectState {}
 
 final class GetMaterialError extends SubjectState {
   final String errorMessage;
