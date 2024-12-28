@@ -27,31 +27,6 @@ class SubjectCubit extends Cubit<SubjectState> {
 
   List<MaterialModel>? documents;
   List<MaterialModel>? filteredMaterials;
-
-  void runFilter({required String query}) {
-    filteredMaterials = [];
-    if (query.isEmpty) {
-      filteredMaterials = materials!;
-    } else {
-      for (var material in materials!) {
-        if (material.title!.toLowerCase().contains(query.toLowerCase()) ||
-            material.title!.similarityTo(query) > 0.1 ||
-            material.description!.toLowerCase().contains(query.toLowerCase()) ||
-            material.description!.similarityTo(query) > 0.1) {
-          filteredMaterials!.add(material);
-        }
-      }
-      // sort filteredMaterials according to how well each material matches the search query
-      filteredMaterials!.sort((a, b) {
-        double scoreA = a.title!.similarityTo(query);
-        double scoreB = b.title!.similarityTo(query);
-        return scoreB.compareTo(scoreA);
-      });
-    }
-    emit(GetMaterialSuccess(materials: filteredMaterials!));
-    filterVideosAndDocuments();
-  }
-
   Future<void> getMaterials({String? subject}) async {
     emit(GetMaterialLoading());
 
@@ -68,29 +43,6 @@ class SubjectCubit extends Cubit<SubjectState> {
     }
   }
 
-  void filterVideosAndDocuments() {
-    videos = filteredMaterials!
-        .where((material) => material.type == 'VIDEO')
-        .toList();
-
-    documents = filteredMaterials!
-        .where((material) => material.type == 'DOCUMENT')
-        .toList();
-  }
-
-  List<FcmToken> get adminFCMTokens => adminCubit.adminFcmTokens;
-  List<String> notificationsMaterialTitle = [
-    "New Material! Check It Out, 🚀",
-    "User Shared Content! Approve? 🎉",
-    "Fresh Content! Give It the Green Light, 🌟",
-    "Submission Pending Your Approval, 👍",
-    "Exciting Update! Ready to Review?,",
-    "User Submission! Time to Shine, 🌈",
-    "New Content! Help It Grow, 🌱",
-    "Awesome Upload! Approve?, 💪",
-    "Fresh Upload! Tap to Approve, ✨",
-    "Your Review Needed! Check It Out, 💼",
-  ];
   void addMaterial(
       {required String title,
       String description = '',
@@ -147,6 +99,54 @@ class SubjectCubit extends Cubit<SubjectState> {
       emit(DeleteMaterialSuccess());
     });
   }
+
+  void runFilter({required String query}) {
+    filteredMaterials = [];
+    if (query.isEmpty) {
+      filteredMaterials = materials!;
+    } else {
+      for (var material in materials!) {
+        if (material.title!.toLowerCase().contains(query.toLowerCase()) ||
+            material.title!.similarityTo(query) > 0.1 ||
+            material.description!.toLowerCase().contains(query.toLowerCase()) ||
+            material.description!.similarityTo(query) > 0.1) {
+          filteredMaterials!.add(material);
+        }
+      }
+      // sort filteredMaterials according to how well each material matches the search query
+      filteredMaterials!.sort((a, b) {
+        double scoreA = a.title!.similarityTo(query);
+        double scoreB = b.title!.similarityTo(query);
+        return scoreB.compareTo(scoreA);
+      });
+    }
+    emit(GetMaterialSuccess(materials: filteredMaterials!));
+    filterVideosAndDocuments();
+  }
+
+  void filterVideosAndDocuments() {
+    videos = filteredMaterials!
+        .where((material) => material.type == 'VIDEO')
+        .toList();
+
+    documents = filteredMaterials!
+        .where((material) => material.type == 'DOCUMENT')
+        .toList();
+  }
+
+  List<FcmToken> get adminFCMTokens => adminCubit.adminFcmTokens;
+  List<String> notificationsMaterialTitle = [
+    "New Material! Check It Out, 🚀",
+    "User Shared Content! Approve? 🎉",
+    "Fresh Content! Give It the Green Light, 🌟",
+    "Submission Pending Your Approval, 👍",
+    "Exciting Update! Ready to Review?,",
+    "User Submission! Time to Shine, 🌈",
+    "New Content! Help It Grow, 🌱",
+    "Awesome Upload! Approve?, 💪",
+    "Fresh Upload! Tap to Approve, ✨",
+    "Your Review Needed! Check It Out, 💼",
+  ];
 
   // int selectedTabIndex = 0;
   // void changeTap({required int index}) {
