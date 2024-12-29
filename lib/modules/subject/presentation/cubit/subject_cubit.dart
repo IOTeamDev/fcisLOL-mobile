@@ -155,8 +155,8 @@ class SubjectCubit extends Cubit<SubjectState> {
   //   emit(TabChangedState(selectedIndex: selectedTabIndex));
   // }
 
-  String item1 = 'VIDEO';
-  String item2 = 'DOCUMENT';
+  final String item1 = 'VIDEO';
+  final String item2 = 'DOCUMENT';
   String selectedType = 'VIDEO';
 
   void changeType({required String type}) {

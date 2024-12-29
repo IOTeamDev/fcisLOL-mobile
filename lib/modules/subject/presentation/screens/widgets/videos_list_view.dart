@@ -20,7 +20,7 @@ class VideosListView extends StatelessWidget {
               color: isDark ? Colors.white : Colors.black,
             ),
           );
-        } else if (state is GetMaterialSuccess) {
+        } else if (state is GetMaterialSuccess || state is TypeChangedState) {
           return Padding(
             padding: const EdgeInsets.all(16.0),
             child: ListView.builder(
