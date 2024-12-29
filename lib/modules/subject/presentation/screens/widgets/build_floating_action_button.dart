@@ -1,10 +1,16 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:googleapis/mybusinessaccountmanagement/v1.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/main.dart';
+import 'package:lol/modules/admin/bloc/admin_cubit.dart';
 import 'package:lol/modules/auth/screens/login.dart';
+import 'package:lol/modules/subject/data/repos/subject_repo_imp.dart';
+import 'package:lol/modules/subject/presentation/cubit/subject_cubit.dart';
 import 'package:lol/modules/subject/presentation/screens/widgets/build_bottom_sheet.dart';
 import 'package:lol/shared/components/constants.dart';
+import 'package:lol/shared/dependencies/subject_repo_dependency.dart';
 import 'package:provider/provider.dart';
 
 class BuildFloatingActionButton extends StatefulWidget {
@@ -71,17 +77,21 @@ class _BuildFloatingActionButtonState extends State<BuildFloatingActionButton> {
               },
             ).show();
           } else {
+            SubjectCubit provide = BlocProvider.of<SubjectCubit>(context);
             _titleController.text = '';
             _descriptionController.text = '';
             _linkController.text = '';
             showModalBottomSheet(
                 isScrollControlled: true,
                 context: context,
-                builder: (context) => BuildBottomSheet(
-                    titleController: _titleController,
-                    descriptionController: _descriptionController,
-                    linkController: _linkController,
-                    subjectName: widget.subjectName));
+                builder: (context) => BlocProvider.value(
+                      value: provide,
+                      child: BuildBottomSheet(
+                          titleController: _titleController,
+                          descriptionController: _descriptionController,
+                          linkController: _linkController,
+                          subjectName: widget.subjectName),
+                    ));
           }
         },
         shape: RoundedRectangleBorder(

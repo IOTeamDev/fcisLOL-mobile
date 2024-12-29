@@ -1040,64 +1040,59 @@ Widget DarkLightModeToggle(context) {
 }
 
 Widget subjectItemBuild(SubjectModel subject, context, bool navigat) {
-  return BlocProvider(
-    create: (context) =>
-        SubjectCubit(adminCubit: AdminCubit(), getIt.get<SubjectRepoImp>()),
-    child: GestureDetector(
-      onTap: () {
-        navigate(
-            context,
-            BlocProvider(
-              create: (context) => SubjectCubit(
-                  adminCubit: AdminCubit(), getIt.get<SubjectRepoImp>()),
-              child: SubjectDetails(
-                navigate: false,
-                subjectName: subject.subjectName,
+  return GestureDetector(
+    onTap: () {
+      navigate(
+          context,
+          BlocProvider(
+            create: (context) => SubjectCubit(
+                adminCubit: AdminCubit(), getIt.get<SubjectRepoImp>()),
+            child: SubjectDetails(
+              navigate: false,
+              subjectName: subject.subjectName,
+            ),
+          ));
+    },
+    child: Card(
+      elevation: 12.0, // More elevation for depth
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.0),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Container(
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            color:
+                isDark ? Color(0xff5A5B5F) : Color.fromARGB(255, 20, 130, 220)
+            // image: DecorationImage(
+            //   colorFilter: const ColorFilter.mode(
+            //       Color(0xfff39c12), BlendMode.dstIn),
+            //   image: subject.subjectName == "Data Mining"
+            //       ? AssetImage("images/data-mining_cleanup.webp")
+            //       : NetworkImage(subject.subjectImage),
+            //   fit: BoxFit.cover,
+            // ),
+            ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(subject.subjectImage, height: 70, color: Colors.white),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              textAlign: TextAlign.center,
+              subject.subjectName.replaceAll('_', " ").replaceAll("and", "&"),
+              maxLines: 2,
+              style: GoogleFonts.montserrat(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
               ),
-            ));
-      },
-      child: Card(
-        elevation: 12.0, // More elevation for depth
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16.0),
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: Container(
-          padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-              color:
-                  isDark ? Color(0xff5A5B5F) : Color.fromARGB(255, 20, 130, 220)
-              // image: DecorationImage(
-              //   colorFilter: const ColorFilter.mode(
-              //       Color(0xfff39c12), BlendMode.dstIn),
-              //   image: subject.subjectName == "Data Mining"
-              //       ? AssetImage("images/data-mining_cleanup.webp")
-              //       : NetworkImage(subject.subjectImage),
-              //   fit: BoxFit.cover,
-              // ),
-              ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Image.asset(subject.subjectImage,
-                  height: 70, color: Colors.white),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                textAlign: TextAlign.center,
-                subject.subjectName.replaceAll('_', " ").replaceAll("and", "&"),
-                maxLines: 2,
-                style: GoogleFonts.montserrat(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-          ),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
         ),
       ),
     ),

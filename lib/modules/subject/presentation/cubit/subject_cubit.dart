@@ -8,6 +8,7 @@ import 'package:lol/models/subjects/subject_model.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
 import 'package:lol/modules/subject/data/repos/subject_repo.dart';
+import 'package:lol/modules/subject/data/repos/subject_repo_imp.dart';
 import 'package:lol/shared/components/constants.dart';
 import 'package:lol/shared/network/endpoints.dart';
 import 'package:lol/shared/network/remote/dio.dart';
@@ -16,9 +17,9 @@ import 'package:string_similarity/string_similarity.dart';
 part 'subject_state.dart';
 
 class SubjectCubit extends Cubit<SubjectState> {
-  SubjectCubit(this._subjectRepo, {required this.adminCubit})
+  SubjectCubit(this._subjectRepoImp, {required this.adminCubit})
       : super(MaterialInitial());
-  final SubjectRepo _subjectRepo;
+  final SubjectRepoImp _subjectRepoImp;
 
   static SubjectCubit get(context) => BlocProvider.of(context);
   final AdminCubit adminCubit;
@@ -31,7 +32,7 @@ class SubjectCubit extends Cubit<SubjectState> {
     emit(GetMaterialLoading());
 
     try {
-      materials = await _subjectRepo.getMaterials(subject: subject);
+      materials = await _subjectRepoImp.getMaterials(subject: subject);
       videos = [];
       documents = [];
       filteredMaterials = materials!.reversed.toList();
