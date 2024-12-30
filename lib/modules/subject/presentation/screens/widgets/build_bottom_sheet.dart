@@ -5,6 +5,7 @@ import 'package:lol/layout/home/bloc/main_cubit.dart';
 import 'package:lol/main.dart';
 import 'package:lol/models/subjects/subject_model.dart';
 import 'package:lol/modules/subject/presentation/cubit/subject_cubit.dart';
+import 'package:lol/modules/subject/presentation/screens/widgets/build_text_form_field.dart';
 import 'package:lol/shared/components/constants.dart';
 
 class BuildBottomSheet extends StatefulWidget {
@@ -60,82 +61,28 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 5),
-                                child: TextFormField(
-                                  textInputAction: TextInputAction.next,
-                                  keyboardType: TextInputType.text,
+                                child: BuildTextFormField(
                                   controller: widget.titleController,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'This field must not be Empty';
-                                    }
-                                    return null;
-                                  },
-                                  decoration: InputDecoration(
-                                    enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: isDark
-                                                ? HexColor('#848484')
-                                                : HexColor('#FFFFFF'))),
-                                    hintText: 'Title (e.g:chapter3)',
-                                    hintStyle: TextStyle(
-                                        fontSize: 20,
-                                        color: isDark
-                                            ? Color.fromRGBO(132, 132, 132, 1)
-                                            : Colors.white),
-                                  ),
-                                  style: const TextStyle(color: Colors.white),
+                                  hintText: 'Title (e.g:chapter3)',
+                                  canBeEmpty: false,
+                                ),
+                              ),
+
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                child: BuildTextFormField(
+                                  controller: widget.descriptionController,
+                                  hintText: 'Description (Optional)',
                                 ),
                               ),
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 10),
-                                child: TextFormField(
-                                  textInputAction: TextInputAction.next,
-                                  keyboardType: TextInputType.multiline,
+                                child: BuildTextFormField(
                                   controller: widget.descriptionController,
-                                  decoration: InputDecoration(
-                                    enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: isDark
-                                                ? HexColor('#848484')
-                                                : HexColor('#FFFFFF'))),
-                                    hintText: 'Description (Optional)',
-                                    hintStyle: TextStyle(
-                                        fontSize: 20,
-                                        color: isDark
-                                            ? Color.fromRGBO(132, 132, 132, 1)
-                                            : Colors.white),
-                                  ),
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 5),
-                                child: TextFormField(
-                                  textInputAction: TextInputAction.done,
-                                  keyboardType: TextInputType.url,
-                                  controller: widget.linkController,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'This field must not be Empty';
-                                    }
-                                    return null;
-                                  },
-                                  decoration: InputDecoration(
-                                    enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: isDark
-                                                ? HexColor('#848484')
-                                                : HexColor('#FFFFFF'))),
-                                    hintText: 'Material Link',
-                                    hintStyle: TextStyle(
-                                        fontSize: 20,
-                                        color: isDark
-                                            ? Color.fromRGBO(132, 132, 132, 1)
-                                            : Colors.white),
-                                  ),
-                                  style: const TextStyle(color: Colors.white),
+                                  hintText: 'Material Link',
+                                  canBeEmpty: false,
                                 ),
                               ),
 
