@@ -489,7 +489,7 @@ Widget CustomDrawer(context, semester) {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TOKEN != null
-            ? Container(
+            ? SizedBox(
                 height: screenHeight(context) / 3.2,
                 child: UserAccountsDrawerHeader(
                   otherAccountsPictures: [
@@ -620,7 +620,7 @@ Widget CustomDrawer(context, semester) {
 
                   IconButton(
                       onPressed: () {
-                        print(isDark.toString() + "d;flkgldk=");
+                        print("${isDark}d;flkgldk=");
                         Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(

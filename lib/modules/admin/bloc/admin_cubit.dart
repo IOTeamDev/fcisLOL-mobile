@@ -48,8 +48,9 @@ class AdminCubit extends Cubit<AdminCubitStates> {
       (value) {
         value.data.forEach((element) {
           fcmTokens.add(FcmToken.fromJson(element));
-          if (element['role'] == 'ADMIN')
+          if (element['role'] == 'ADMIN') {
             adminFcmTokens.add(FcmToken.fromJson(element));
+          }
 
           // print(fcmTokens[1].semester);
         });
@@ -96,8 +97,6 @@ class AdminCubit extends Cubit<AdminCubitStates> {
       required type,
       image,
       required currentSemester}) {
-
-        
     Random random = Random();
 
     // Get a random index
@@ -237,8 +236,6 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     required String title,
     required String body,
   }) async {
-
-    
     // await FirebaseMessaging.instance.requestPermission();
 
     // Wait for FCM tokens to be fetched
@@ -279,7 +276,8 @@ class AdminCubit extends Cubit<AdminCubitStates> {
       }
       for (var user in filteredUsers) {
         if (user.fcmToken != null) {
-          print('${user.semester} - Sending notification to: ${user.name}================================================================');
+          print(
+              '${user.semester} - Sending notification to: ${user.name}================================================================');
           await sendFCMNotification(
               title: title, body: body, token: user.fcmToken!);
         }

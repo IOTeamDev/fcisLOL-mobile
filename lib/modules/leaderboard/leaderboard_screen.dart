@@ -47,7 +47,6 @@ class LeaderboardScreen extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Container(
                   margin: EdgeInsetsDirectional.only(top: 20, bottom: 30),
-
                   width: double.infinity,
                   child: Column(
                     children: [
@@ -71,8 +70,7 @@ class LeaderboardScreen extends StatelessWidget {
                       ConstrainedBox(
                         constraints: BoxConstraints(maxHeight: height / 1.1),
                         child: SingleChildScrollView(
-                padding: EdgeInsets.only(bottom: 30),
-
+                          padding: EdgeInsets.only(bottom: 30),
                           child: ConditionalBuilder(
                             condition: MainCubit.get(context)
                                         .notAdminLeaderboardModel !=
@@ -101,10 +99,15 @@ class LeaderboardScreen extends StatelessWidget {
                                       Column(
                                         children: [
                                           GestureDetector(
-                                              onTap: () => navigate(context, OtherProfile(id: MainCubit.get(context)
-                                                      .notAdminLeaderboardModel![
-                                                          1].id,),
-                                        ),
+                                            onTap: () => navigate(
+                                              context,
+                                              OtherProfile(
+                                                id: MainCubit.get(context)
+                                                    .notAdminLeaderboardModel![
+                                                        1]
+                                                    .id,
+                                              ),
+                                            ),
                                             child: Column(
                                               children: [
                                                 CircleAvatar(
@@ -132,7 +135,8 @@ class LeaderboardScreen extends StatelessWidget {
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                       maxLines: 2,
-                                                      textAlign: TextAlign.center,
+                                                      textAlign:
+                                                          TextAlign.center,
                                                     )),
                                                 SizedBox(
                                                   height: 10,
@@ -144,9 +148,8 @@ class LeaderboardScreen extends StatelessWidget {
                                                     color: HexColor('#374C92'),
                                                     borderRadius:
                                                         BorderRadius.only(
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    15),
+                                                            topLeft: Radius
+                                                                .circular(15),
                                                             topRight:
                                                                 Radius.circular(
                                                                     15)),
@@ -169,7 +172,8 @@ class LeaderboardScreen extends StatelessWidget {
                                                             child: Text(
                                                           '2',
                                                           style: TextStyle(
-                                                              color: Colors.black,
+                                                              color:
+                                                                  Colors.black,
                                                               fontSize:
                                                                   width / 20),
                                                         )),
@@ -180,7 +184,8 @@ class LeaderboardScreen extends StatelessWidget {
                                                       Text(
                                                         '${MainCubit.get(context).notAdminLeaderboardModel![1].score} pts',
                                                         style: TextStyle(
-                                                            fontSize: width / 17),
+                                                            fontSize:
+                                                                width / 17),
                                                       ),
                                                     ],
                                                   ),
@@ -191,9 +196,13 @@ class LeaderboardScreen extends StatelessWidget {
                                         ],
                                       ),
                                       GestureDetector(
-                                        onTap: () => navigate(context, OtherProfile(id: MainCubit.get(context)
-                                                      .notAdminLeaderboardModel![
-                                                          0].id,),
+                                        onTap: () => navigate(
+                                          context,
+                                          OtherProfile(
+                                            id: MainCubit.get(context)
+                                                .notAdminLeaderboardModel![0]
+                                                .id,
+                                          ),
                                         ),
                                         child: Column(
                                           children: [
@@ -219,7 +228,8 @@ class LeaderboardScreen extends StatelessWidget {
                                                       .toString(),
                                                   style: TextStyle(
                                                       fontSize: width / 19),
-                                                  overflow: TextOverflow.ellipsis,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   maxLines: 2,
                                                   textAlign: TextAlign.center,
                                                 )),
@@ -227,13 +237,13 @@ class LeaderboardScreen extends StatelessWidget {
                                               height: 10,
                                             ),
                                             Container(
-                                              padding:
-                                                  EdgeInsetsDirectional.symmetric(
-                                                      vertical: 20),
+                                              padding: EdgeInsetsDirectional
+                                                  .symmetric(vertical: 20),
                                               decoration: BoxDecoration(
                                                 color: HexColor('#4764C5'),
                                                 borderRadius: BorderRadius.only(
-                                                    topLeft: Radius.circular(15),
+                                                    topLeft:
+                                                        Radius.circular(15),
                                                     topRight:
                                                         Radius.circular(15)),
                                               ),
@@ -247,8 +257,8 @@ class LeaderboardScreen extends StatelessWidget {
                                                     decoration: BoxDecoration(
                                                         color: Colors.amber,
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                10)),
+                                                            BorderRadius
+                                                                .circular(10)),
                                                     child: Center(
                                                         child: Text(
                                                       '1',
@@ -263,7 +273,8 @@ class LeaderboardScreen extends StatelessWidget {
                                                   Text(
                                                       '${MainCubit.get(context).notAdminLeaderboardModel![0].score} pts',
                                                       style: TextStyle(
-                                                          fontSize: width / 15)),
+                                                          fontSize:
+                                                              width / 15)),
                                                 ],
                                               ),
                                             ),
@@ -271,9 +282,13 @@ class LeaderboardScreen extends StatelessWidget {
                                         ),
                                       ),
                                       GestureDetector(
-                                          onTap: () => navigate(context, OtherProfile(id: MainCubit.get(context)
-                                                      .notAdminLeaderboardModel![
-                                                          2].id,),
+                                        onTap: () => navigate(
+                                          context,
+                                          OtherProfile(
+                                            id: MainCubit.get(context)
+                                                .notAdminLeaderboardModel![2]
+                                                .id,
+                                          ),
                                         ),
                                         child: Column(
                                           children: [
@@ -281,7 +296,7 @@ class LeaderboardScreen extends StatelessWidget {
                                               backgroundImage: NetworkImage(
                                                   MainCubit.get(context)
                                                       .notAdminLeaderboardModel![
-                                                        2]
+                                                          2]
                                                       .photo!),
                                               radius: width / 13,
                                             ),
@@ -299,7 +314,8 @@ class LeaderboardScreen extends StatelessWidget {
                                                       .toString(),
                                                   style: TextStyle(
                                                       fontSize: width / 19),
-                                                  overflow: TextOverflow.ellipsis,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   maxLines: 2,
                                                   textAlign: TextAlign.center,
                                                 )),
@@ -307,13 +323,13 @@ class LeaderboardScreen extends StatelessWidget {
                                               height: 10,
                                             ),
                                             Container(
-                                              padding:
-                                                  EdgeInsetsDirectional.symmetric(
-                                                      vertical: 20),
+                                              padding: EdgeInsetsDirectional
+                                                  .symmetric(vertical: 20),
                                               decoration: BoxDecoration(
                                                 color: HexColor('#374C92'),
                                                 borderRadius: BorderRadius.only(
-                                                    topLeft: Radius.circular(15),
+                                                    topLeft:
+                                                        Radius.circular(15),
                                                     topRight:
                                                         Radius.circular(15)),
                                               ),
@@ -328,8 +344,8 @@ class LeaderboardScreen extends StatelessWidget {
                                                         color:
                                                             HexColor('#CD7F32'),
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                10)),
+                                                            BorderRadius
+                                                                .circular(10)),
                                                     child: Center(
                                                         child: Text(
                                                       '3',
@@ -398,7 +414,11 @@ class LeaderboardScreen extends StatelessWidget {
                                           MainCubit.get(context)
                                               .notAdminLeaderboardModel![
                                                   index + 3]
-                                              .score,MainCubit.get(context).notAdminLeaderboardModel![index+3].id);
+                                              .score,
+                                          MainCubit.get(context)
+                                              .notAdminLeaderboardModel![
+                                                  index + 3]
+                                              .id);
                                     },
                                     separatorBuilder: (context, state) =>
                                         Padding(
@@ -421,12 +441,13 @@ class LeaderboardScreen extends StatelessWidget {
                               ],
                             ),
                             fallback: (context) {
-                              if (state is GetLeaderboardLoadingState)
+                              if (state is GetLeaderboardLoadingState) {
                                 return SizedBox(
                                     height: height / 1.3,
                                     child: Center(
                                       child: CircularProgressIndicator(),
                                     ));
+                              }
                               return SizedBox(
                                   height: height / 1.3,
                                   child: Center(
@@ -450,7 +471,7 @@ class LeaderboardScreen extends StatelessWidget {
     );
   }
 
-  Widget buildList(context, index, name, score,id) {
+  Widget buildList(context, index, name, score, id) {
     return Padding(
       padding: const EdgeInsetsDirectional.symmetric(horizontal: 15.0),
       child: SizedBox(
@@ -473,8 +494,12 @@ class LeaderboardScreen extends StatelessWidget {
                 constraints:
                     BoxConstraints(maxWidth: screenWidth(context) / 1.2),
                 child: GestureDetector(
-                    onTap: () => navigate(context, OtherProfile(id: id,),
-                                        ),
+                  onTap: () => navigate(
+                    context,
+                    OtherProfile(
+                      id: id,
+                    ),
+                  ),
                   child: Text(
                     name,
                     style: TextStyle(fontSize: 20),

@@ -31,111 +31,128 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
   @override
   Widget build(BuildContext context) {
     var cubit = SubjectCubit.get(context);
-    return Padding(
-      padding:
-          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-      child: Container(
-          decoration: BoxDecoration(
-            color: isDark ? Color.fromRGBO(59, 59, 59, 1) : HexColor('#757575'),
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-          ),
-          padding: const EdgeInsets.all(16),
-          width: screenWidth(context),
-          child: BlocBuilder<SubjectCubit, SubjectState>(
-            buildWhen: (previous, current) => current is TypeChangedState,
-            builder: (context, state) {
-              if (wannaProfileModel) {
-                MainCubit.get(context).getProfileInfo();
-                wannaProfileModel = false;
-              }
+    return Container(
+        decoration: BoxDecoration(
+          color: isDark ? Color.fromRGBO(59, 59, 59, 1) : HexColor('#757575'),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        padding: const EdgeInsets.all(16),
+        width: screenWidth(context),
+        child: BlocBuilder<SubjectCubit, SubjectState>(
+          buildWhen: (previous, current) => current is TypeChangedState,
+          builder: (context, state) {
+            if (wannaProfileModel) {
+              MainCubit.get(context).getProfileInfo();
+              wannaProfileModel = false;
+            }
 
-              return wannaProfileModel
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : SingleChildScrollView(
-                      child: Form(
-                          key: _formKey,
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 5),
-                                child: BuildTextFormField(
-                                  controller: widget.titleController,
-                                  hintText: 'Title (e.g:chapter3)',
-                                  canBeEmpty: false,
-                                ),
+            return wannaProfileModel
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : SingleChildScrollView(
+                    child: Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              child: BuildTextFormField(
+                                controller: widget.titleController,
+                                hintText: 'Title (e.g:chapter3)',
+                                canBeEmpty: false,
                               ),
+                            ),
 
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
-                                child: BuildTextFormField(
-                                  controller: widget.descriptionController,
-                                  hintText: 'Description (Optional)',
-                                ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child: BuildTextFormField(
+                                controller: widget.descriptionController,
+                                hintText: 'Description (Optional)',
                               ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
-                                child: BuildTextFormField(
-                                  controller: widget.descriptionController,
-                                  hintText: 'Material Link',
-                                  canBeEmpty: false,
-                                ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child: BuildTextFormField(
+                                controller: widget.linkController,
+                                hintText: 'Material Link',
+                                canBeEmpty: false,
+                                textInputAction: TextInputAction.done,
+                                textInputType: TextInputType.url,
                               ),
+                            ),
 
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 16),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.only(
-                                          left: 0, top: 0, bottom: 0),
-                                      padding: const EdgeInsets.all(10),
-                                      width: screenWidth(context) / 3,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        color: Color.fromRGBO(71, 100, 197, 1),
-                                      ),
-                                      child: Text(
-                                        cubit.selectedType.toLowerCase(),
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 16),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                    PopupMenuButton(
-                                        onSelected: (type) {
-                                          cubit.changeType(type: type);
-                                        },
-                                        iconColor: Colors.white,
-                                        itemBuilder: (context) {
-                                          return [
-                                            PopupMenuItem(
-                                              value: cubit.item1,
-                                              child: const Text('Video'),
-                                            ),
-                                            PopupMenuItem(
-                                              value: cubit.item2,
-                                              child: const Text(
-                                                'Document',
-                                              ),
-                                            )
-                                          ];
-                                        }),
-                                  ],
-                                ),
-                              ),
-                              //Cancel and submit buttons
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  //Cancel Button
+                                  Container(
+                                    margin: const EdgeInsets.only(
+                                        left: 0, top: 0, bottom: 0),
+                                    padding: const EdgeInsets.all(10),
+                                    width: screenWidth(context) / 3,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Color.fromRGBO(71, 100, 197, 1),
+                                    ),
+                                    child: Text(
+                                      cubit.selectedType.toLowerCase(),
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 16),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                  PopupMenuButton(
+                                      onSelected: (type) {
+                                        cubit.changeType(type: type);
+                                      },
+                                      iconColor: Colors.white,
+                                      itemBuilder: (context) {
+                                        return [
+                                          PopupMenuItem(
+                                            value: cubit.item1,
+                                            child: const Text('Video'),
+                                          ),
+                                          PopupMenuItem(
+                                            value: cubit.item2,
+                                            child: const Text(
+                                              'Document',
+                                            ),
+                                          )
+                                        ];
+                                      }),
+                                ],
+                              ),
+                            ),
+                            //Cancel and submit buttons
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                //Cancel Button
+                                MaterialButton(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  minWidth: screenWidth(context) / 3,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15)),
+                                  color: Colors.white,
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text(
+                                    'Cancel',
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(35, 37, 42, 1),
+                                        fontSize: 20),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                //Submit Button
+                                if (TOKEN != null)
                                   MaterialButton(
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 10),
@@ -143,77 +160,48 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(15)),
-                                    color: Colors.white,
+                                    color: Color.fromRGBO(71, 100, 197, 1),
                                     onPressed: () {
-                                      Navigator.of(context).pop();
+                                      if (_formKey.currentState!.validate()) {
+                                        AuthorModel author = AuthorModel(
+                                            authorName: MainCubit.get(context)
+                                                .profileModel
+                                                ?.name,
+                                            authorPhoto: MainCubit.get(context)
+                                                .profileModel
+                                                ?.photo);
+                                        BlocProvider.of<SubjectCubit>(context)
+                                            .addMaterial(
+                                                title: widget
+                                                    .titleController.text,
+                                                description: widget
+                                                    .descriptionController.text,
+                                                link:
+                                                    widget.linkController.text,
+                                                type: cubit.selectedType,
+                                                subjectName: widget.subjectName,
+                                                semester: MainCubit.get(context)
+                                                    .profileModel!
+                                                    .semester,
+                                                role: MainCubit.get(context)
+                                                    .profileModel!
+                                                    .role,
+                                                author: author);
+                                        Navigator.of(context).pop();
+                                      }
                                     },
                                     child: Text(
-                                      'Cancel',
+                                      'Submit',
                                       style: TextStyle(
-                                          color: Color.fromRGBO(35, 37, 42, 1),
-                                          fontSize: 20),
+                                          color: Colors.white, fontSize: 20),
                                     ),
                                   ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  //Submit Button
-                                  if (TOKEN != null)
-                                    MaterialButton(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 10),
-                                      minWidth: screenWidth(context) / 3,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
-                                      color: Color.fromRGBO(71, 100, 197, 1),
-                                      onPressed: () {
-                                        if (_formKey.currentState!.validate()) {
-                                          AuthorModel author = AuthorModel(
-                                              authorName: MainCubit.get(context)
-                                                  .profileModel
-                                                  ?.name,
-                                              authorPhoto:
-                                                  MainCubit.get(context)
-                                                      .profileModel
-                                                      ?.photo);
-                                          BlocProvider.of<SubjectCubit>(context)
-                                              .addMaterial(
-                                                  title: widget
-                                                      .titleController.text,
-                                                  description:
-                                                      widget
-                                                          .descriptionController
-                                                          .text,
-                                                  link: widget
-                                                      .linkController.text,
-                                                  type: cubit.selectedType,
-                                                  subjectName:
-                                                      widget.subjectName,
-                                                  semester:
-                                                      MainCubit.get(context)
-                                                          .profileModel!
-                                                          .semester,
-                                                  role: MainCubit.get(context)
-                                                      .profileModel!
-                                                      .role,
-                                                  author: author);
-                                          Navigator.of(context).pop();
-                                        }
-                                      },
-                                      child: Text(
-                                        'Submit',
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 20),
-                                      ),
-                                    ),
-                                ],
-                              )
-                            ],
-                          )),
-                    );
-            },
-          )),
-    );
+                              ],
+                            )
+                          ],
+                        )),
+                  );
+          },
+        ));
   }
 }

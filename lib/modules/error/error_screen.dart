@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/shared/components/constants.dart';
@@ -27,8 +26,20 @@ class ErrorScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    Center(child: Text('404', style: TextStyle(fontSize: width/4, color: HexColor('#FF6A71'), fontWeight: FontWeight.bold),),),
-                    Text('This link is Corrupted', style: TextStyle(fontSize: width/17, fontWeight: FontWeight.bold),),
+                    Center(
+                      child: Text(
+                        '404',
+                        style: TextStyle(
+                            fontSize: width / 4,
+                            color: HexColor('#FF6A71'),
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Text(
+                      'This link is Corrupted',
+                      style: TextStyle(
+                          fontSize: width / 17, fontWeight: FontWeight.bold),
+                    ),
                   ],
                 ),
               ),

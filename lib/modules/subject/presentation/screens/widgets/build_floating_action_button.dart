@@ -86,11 +86,15 @@ class _BuildFloatingActionButtonState extends State<BuildFloatingActionButton> {
                 context: context,
                 builder: (context) => BlocProvider.value(
                       value: provide,
-                      child: BuildBottomSheet(
-                          titleController: _titleController,
-                          descriptionController: _descriptionController,
-                          linkController: _linkController,
-                          subjectName: widget.subjectName),
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).viewInsets.bottom),
+                        child: BuildBottomSheet(
+                            titleController: _titleController,
+                            descriptionController: _descriptionController,
+                            linkController: _linkController,
+                            subjectName: widget.subjectName),
+                      ),
                     ));
           }
         },

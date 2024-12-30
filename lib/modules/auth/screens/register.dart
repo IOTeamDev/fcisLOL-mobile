@@ -231,8 +231,10 @@ class Registerscreen extends StatelessWidget {
                               defaultTextField(
                                   textInputAction: TextInputAction.next,
                                   validateor: (Value) {
-                                    if (Value!.isEmpty)
+                                    if (Value!.isEmpty) {
                                       return "field cannot be empty";
+                                      return null;
+                                    }
                                   },
                                   controller: passwordController,
                                   obscure: true),

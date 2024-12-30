@@ -38,7 +38,8 @@ class AdminPanel extends StatelessWidget {
           return Scaffold(
             //backgroundColor: HexColor('#23252A'),
             body: Container(
-              margin: EdgeInsetsDirectional.only(top: screenHeight(context)/10),
+              margin:
+                  EdgeInsetsDirectional.only(top: screenHeight(context) / 10),
               width: double.infinity,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -50,14 +51,16 @@ class AdminPanel extends StatelessWidget {
                         left: 10,
                         top: 5,
                         child: IconButton(
-                          
                           // padding: EdgeInsets.zero,
                           // materialTapTargetSize:
                           //     MaterialTapTargetSize.shrinkWrap,
                           onPressed: () {
                             navigatReplace(context, Home());
                           },
-                          icon: Icon(Icons.arrow_back,size: 30,),
+                          icon: Icon(
+                            Icons.arrow_back,
+                            size: 30,
+                          ),
                         ),
                       ),
                       Center(
@@ -94,12 +97,13 @@ class AdminPanel extends StatelessWidget {
                         ),
                         ElevatedButton(
                           onPressed: () {
-                            if (mainCubit.profileModel != null)
+                            if (mainCubit.profileModel != null) {
                               navigate(
                                   context,
                                   AddAnnouncement(
                                     semester: mainCubit.profileModel!.semester,
                                   ));
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: isDark
@@ -140,7 +144,8 @@ class AdminPanel extends StatelessWidget {
                               navigate(context, Requests());
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Color.fromARGB(255, 20, 130, 220),
+                              backgroundColor:
+                                  Color.fromARGB(255, 20, 130, 220),
                               padding:
                                   EdgeInsets.zero, // Remove default padding
                               shape: RoundedRectangleBorder(

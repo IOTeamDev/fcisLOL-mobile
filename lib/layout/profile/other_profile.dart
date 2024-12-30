@@ -330,12 +330,13 @@ class OtherProfile extends StatelessWidget {
                                     ),
                                   ),
                               fallback: (context) {
-                                if (state is GetRequestsLoadingState)
+                                if (state is GetRequestsLoadingState) {
                                   return SizedBox(
                                       height: height / 1.3,
                                       child: Center(
                                         child: CircularProgressIndicator(),
                                       ));
+                                }
                                 return SizedBox(
                                     height: height / 1.3,
                                     child: Center(

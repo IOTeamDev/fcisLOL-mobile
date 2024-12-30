@@ -111,17 +111,18 @@ class MainCubit extends Cubit<MainCubitStates> {
 
     showToastMessage(
         message: 'Uploading your photo', states: ToastStates.WARNING);
-    final uploadTask;
-    if (isUserProfile)
+    final TaskSnapshot uploadTask;
+    if (isUserProfile) {
       uploadTask = await FirebaseStorage.instance
           .ref()
           .child("images/${Uri.file(image.path).pathSegments.last}")
           .putFile(image);
-    else
+    } else {
       uploadTask = await FirebaseStorage.instance
           .ref()
           .child("announcements/${Uri.file(image.path).pathSegments.last}")
           .putFile(image);
+    }
 
     try {
       final imagePath = await uploadTask.ref.getDownloadURL();
@@ -337,16 +338,21 @@ class MainCubit extends Cubit<MainCubitStates> {
   void updateSemester4all() {
     DioHelp.getData(path: "users").then((onValue) {
       onValue.data.forEach((element) {
-        if (element['semester'] == "One")
+        if (element['semester'] == "One") {
           updateUser(userID: element['id'], semester: "Two");
-        if (element['semester'] == "Two")
+        }
+        if (element['semester'] == "Two") {
           updateUser(userID: element['id'], semester: "Three");
-        if (element['semester'] == "Three")
+        }
+        if (element['semester'] == "Three") {
           updateUser(userID: element['id'], semester: "Four");
-        if (element['semester'] == "Four")
+        }
+        if (element['semester'] == "Four") {
           updateUser(userID: element['id'], semester: "Five");
-        if (element['semester'] == "Five")
+        }
+        if (element['semester'] == "Five") {
           updateUser(userID: element['id'], semester: "Six");
+        }
       });
 
       emit(GetUserImageSuccess());

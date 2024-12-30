@@ -79,12 +79,13 @@ class SelectImage extends StatelessWidget {
                         bottom: 0,
                         child: GestureDetector(
                           onTap: () {
-                            if(noMoreStorage!)
+                            if (noMoreStorage!) {
                               showToastMessage(
-                message: "no more space available :)",
-                states: ToastStates.WARNING);
-                else
-                            mainCubit.getUserImage(fromGallery: true);
+                                  message: "no more space available :)",
+                                  states: ToastStates.WARNING);
+                            } else {
+                              mainCubit.getUserImage(fromGallery: true);
+                            }
 
                             // Code to pick image
                           },
