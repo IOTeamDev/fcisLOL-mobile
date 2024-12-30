@@ -22,6 +22,7 @@ import 'package:lol/modules/auth/bloc/login_cubit.dart';
 import 'package:lol/modules/auth/screens/login.dart';
 import 'package:lol/modules/leaderboard/leaderboard_screen.dart';
 import 'package:lol/modules/subject/data/repos/subject_repo_imp.dart';
+import 'package:lol/modules/subject/presentation/cubit/get_material_cubit/get_material_cubit_cubit.dart';
 import 'package:lol/modules/subject/presentation/cubit/subject_cubit.dart';
 import 'package:lol/modules/subject/presentation/screens/subject_details.dart';
 import 'package:lol/modules/support_and_about_us/about_us.dart';
@@ -1045,8 +1046,7 @@ Widget subjectItemBuild(SubjectModel subject, context, bool navigat) {
       navigate(
           context,
           BlocProvider(
-            create: (context) => SubjectCubit(
-                adminCubit: AdminCubit(), getIt.get<SubjectRepoImp>()),
+            create: (context) => GetMaterialCubit(getIt.get<SubjectRepoImp>()),
             child: SubjectDetails(
               navigate: false,
               subjectName: subject.subjectName,

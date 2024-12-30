@@ -7,7 +7,7 @@ import 'package:lol/main.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit.dart';
 import 'package:lol/modules/auth/screens/login.dart';
 import 'package:lol/modules/subject/data/repos/subject_repo_imp.dart';
-import 'package:lol/modules/subject/presentation/cubit/subject_cubit.dart';
+import 'package:lol/modules/subject/presentation/cubit/add_material_cubit/add_material_cubit.dart';
 import 'package:lol/modules/subject/presentation/screens/widgets/build_bottom_sheet.dart';
 import 'package:lol/shared/components/constants.dart';
 import 'package:lol/shared/dependencies/subject_repo_dependency.dart';
@@ -77,15 +77,15 @@ class _BuildFloatingActionButtonState extends State<BuildFloatingActionButton> {
               },
             ).show();
           } else {
-            SubjectCubit provide = BlocProvider.of<SubjectCubit>(context);
             _titleController.text = '';
             _descriptionController.text = '';
             _linkController.text = '';
             showModalBottomSheet(
                 isScrollControlled: true,
                 context: context,
-                builder: (context) => BlocProvider.value(
-                      value: provide,
+                builder: (context) => BlocProvider(
+                      create: (context) => AddMaterialCubit(
+                          getIt.get<SubjectRepoImp>(), AdminCubit()),
                       child: Padding(
                         padding: EdgeInsets.only(
                             bottom: MediaQuery.of(context).viewInsets.bottom),

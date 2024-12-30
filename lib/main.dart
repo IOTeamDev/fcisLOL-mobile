@@ -68,13 +68,15 @@ bool isDark = false;
 Map<String, dynamic> fcisServiceMap = {};
 main() async {
   setup();
+
   WidgetsFlutterBinding.ensureInitialized();
   await Cache.initialize();
   await DioHelp.initial();
   await Firebase.initializeApp();
   fcmToken = await FirebaseMessaging.instance.getToken();
   print(fcmToken);
-
+  
+  
   FirebaseFirestore.instance
       .collection("indicators")
       .doc("constants")
