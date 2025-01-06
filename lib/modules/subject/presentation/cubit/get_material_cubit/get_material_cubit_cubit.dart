@@ -1,13 +1,18 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/models/subjects/subject_model.dart';
 import 'package:lol/modules/subject/data/repos/subject_repo_imp.dart';
+import 'package:lol/modules/subject/presentation/cubit/add_material_cubit/add_material_cubit.dart';
 import 'package:meta/meta.dart';
 import 'package:string_similarity/string_similarity.dart';
 
 part 'get_material_state.dart';
 
 class GetMaterialCubit extends Cubit<GetMaterialState> {
-  GetMaterialCubit(this._subjectRepoImp) : super(GetMaterialCubitInitial());
+  GetMaterialCubit(
+    this._subjectRepoImp,
+  ) : super(GetMaterialCubitInitial());
 
   final SubjectRepoImp _subjectRepoImp;
 

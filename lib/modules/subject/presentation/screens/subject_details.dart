@@ -19,7 +19,7 @@ import 'package:lol/modules/subject/presentation/screens/widgets/custom_tab_bar.
 import 'package:lol/modules/subject/presentation/screens/widgets/custom_tab_bar_view.dart';
 import 'package:lol/shared/components/default_text_field.dart';
 import 'package:lol/shared/components/navigation.dart';
-import 'package:lol/shared/dependencies/subject_repo_dependency.dart';
+import 'package:lol/shared/dependencies/dependencies_helper.dart';
 import 'package:lol/shared/network/endpoints.dart';
 import 'package:lol/shared/styles/colors.dart';
 import 'package:lol/shared/components/constants.dart';
@@ -162,24 +162,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
 }
 
 
-// if (state is SaveMaterialSuccessUser) {
-//                 showToastMessage(
-//                     message:
-//                         'The request has been sent to the Admin, and waiting for approval...',
-//                     states: ToastStates.SUCCESS);
-//               } else if (state is SaveMaterialSuccessAdmin) {
-//                 showToastMessage(
-//                     message: 'Material Added Successfully',
-//                     states: ToastStates.SUCCESS);
-//               } else if (state is SaveMaterialError) {
-//                 showToastMessage(
-//                     message: 'error while uploading Material',
-//                     states: ToastStates.ERROR);
-//               } else if (state is SaveMaterialLoading) {
-//                 showToastMessage(
-//                     message: 'Uploading Material........',
-//                     states: ToastStates.WARNING);
-//               } else if (state is DeleteMaterialLoading) {
+//  if (state is DeleteMaterialLoading) {
 //                 showToastMessage(
 //                     message: 'Deleting Material........',
 //                     states: ToastStates.WARNING);

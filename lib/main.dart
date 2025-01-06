@@ -21,7 +21,7 @@ import 'package:lol/modules/subject/data/repos/subject_repo_imp.dart';
 import 'package:lol/modules/subject/presentation/screens/subject_details.dart';
 import 'package:lol/modules/support_and_about_us/about_us.dart';
 import 'package:lol/modules/support_and_about_us/user_advices/feedback_screen.dart';
-import 'package:lol/shared/dependencies/subject_repo_dependency.dart';
+import 'package:lol/shared/dependencies/dependencies_helper.dart';
 import 'package:lol/shared/network/local/shared_prefrence.dart';
 import 'package:lol/shared/network/remote/fcm_helper.dart';
 import 'package:provider/provider.dart';
@@ -75,8 +75,7 @@ main() async {
   await Firebase.initializeApp();
   fcmToken = await FirebaseMessaging.instance.getToken();
   print(fcmToken);
-  
-  
+
   FirebaseFirestore.instance
       .collection("indicators")
       .doc("constants")

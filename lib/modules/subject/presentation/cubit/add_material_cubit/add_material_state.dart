@@ -16,3 +16,9 @@ final class AddMaterialError extends AddMaterialState {
 
   AddMaterialError({required this.errorMessage});
 }
+
+final class TypeChangedState extends AddMaterialState {
+  final String selectedType;
+
+  TypeChangedState({required this.selectedType});
+}

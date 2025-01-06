@@ -10,7 +10,7 @@ import 'package:lol/modules/subject/data/repos/subject_repo_imp.dart';
 import 'package:lol/modules/subject/presentation/cubit/add_material_cubit/add_material_cubit.dart';
 import 'package:lol/modules/subject/presentation/screens/widgets/build_bottom_sheet.dart';
 import 'package:lol/shared/components/constants.dart';
-import 'package:lol/shared/dependencies/subject_repo_dependency.dart';
+import 'package:lol/shared/dependencies/dependencies_helper.dart';
 import 'package:provider/provider.dart';
 
 class BuildFloatingActionButton extends StatefulWidget {
@@ -84,8 +84,7 @@ class _BuildFloatingActionButtonState extends State<BuildFloatingActionButton> {
                 isScrollControlled: true,
                 context: context,
                 builder: (context) => BlocProvider(
-                      create: (context) => AddMaterialCubit(
-                          getIt.get<SubjectRepoImp>(), AdminCubit()),
+                      create: (context) => getIt.get<AddMaterialCubit>(),
                       child: Padding(
                         padding: EdgeInsets.only(
                             bottom: MediaQuery.of(context).viewInsets.bottom),

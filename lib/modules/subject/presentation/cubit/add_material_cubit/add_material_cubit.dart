@@ -9,14 +9,12 @@ import 'package:lol/shared/components/constants.dart';
 import 'package:lol/shared/network/endpoints.dart';
 import 'package:lol/shared/network/remote/dio.dart';
 import 'package:meta/meta.dart';
-
 part 'add_material_state.dart';
 
 class AddMaterialCubit extends Cubit<AddMaterialState> {
-  AddMaterialCubit(this._subjectRepoImp, this.adminCubit)
-      : super(AddMaterialInitial());
+  AddMaterialCubit(this.adminCubit) : super(AddMaterialInitial());
 
-  final SubjectRepoImp _subjectRepoImp;
+  // final SubjectRepoImp _subjectRepoImp;
   final AdminCubit adminCubit;
 
   static AddMaterialCubit get(context) => BlocProvider.of(context);
@@ -82,4 +80,13 @@ class AddMaterialCubit extends Cubit<AddMaterialState> {
     "Fresh Upload! Tap to Approve, ✨",
     "Your Review Needed! Check It Out, 💼",
   ];
+
+  final String item1 = 'VIDEO';
+  final String item2 = 'DOCUMENT';
+  String selectedType = 'VIDEO';
+
+  void changeType({required String type}) {
+    selectedType = type;
+    emit(TypeChangedState(selectedType: selectedType));
+  }
 }
