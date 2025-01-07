@@ -8,6 +8,7 @@ import 'package:lol/modules/admin/bloc/admin_cubit.dart';
 import 'package:lol/modules/auth/screens/login.dart';
 import 'package:lol/modules/subject/data/repos/subject_repo_imp.dart';
 import 'package:lol/modules/subject/presentation/cubit/add_material_cubit/add_material_cubit.dart';
+import 'package:lol/modules/subject/presentation/cubit/get_material_cubit/get_material_cubit_cubit.dart';
 import 'package:lol/modules/subject/presentation/screens/widgets/build_bottom_sheet.dart';
 import 'package:lol/shared/components/constants.dart';
 import 'package:lol/shared/dependencies/dependencies_helper.dart';
@@ -17,8 +18,10 @@ class BuildFloatingActionButton extends StatefulWidget {
   const BuildFloatingActionButton({
     super.key,
     required this.subjectName,
+    required this.getMaterialCubit,
   });
   final String subjectName;
+  final GetMaterialCubit getMaterialCubit;
 
   @override
   State<BuildFloatingActionButton> createState() =>
@@ -83,8 +86,13 @@ class _BuildFloatingActionButtonState extends State<BuildFloatingActionButton> {
             showModalBottomSheet(
                 isScrollControlled: true,
                 context: context,
-                builder: (context) => BlocProvider(
-                      create: (context) => getIt.get<AddMaterialCubit>(),
+                builder: (context) => MultiBlocProvider(
+                      providers: [
+                        BlocProvider(
+                          create: (context) => AddMaterialCubit(AdminCubit()),
+                        ),
+                        BlocProvider.value(value: widget.getMaterialCubit),
+                      ],
                       child: Padding(
                         padding: EdgeInsets.only(
                             bottom: MediaQuery.of(context).viewInsets.bottom),

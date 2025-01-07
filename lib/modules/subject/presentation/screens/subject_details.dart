@@ -73,8 +73,10 @@ class _MaterialDetailsState extends State<SubjectDetails>
           BlocProvider(create: (context) => MainCubit()),
         ],
         child: Scaffold(
-          floatingActionButton:
-              BuildFloatingActionButton(subjectName: widget.subjectName),
+          floatingActionButton: BuildFloatingActionButton(
+            subjectName: widget.subjectName,
+            getMaterialCubit: cubit,
+          ),
           key: scaffoldKey,
           //backgroundColor: isDark ? HexColor('#23252A') : Colors.white,
           body: Container(

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -5,6 +7,7 @@ import 'package:lol/layout/home/bloc/main_cubit.dart';
 import 'package:lol/main.dart';
 import 'package:lol/models/subjects/subject_model.dart';
 import 'package:lol/modules/subject/presentation/cubit/add_material_cubit/add_material_cubit.dart';
+import 'package:lol/modules/subject/presentation/cubit/get_material_cubit/get_material_cubit_cubit.dart';
 import 'package:lol/modules/subject/presentation/screens/widgets/build_text_form_field.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/constants.dart';
@@ -41,7 +44,8 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
               states: ToastStates.SUCCESS);
           Navigator.of(context).pop();
         }
-        if (state.runtimeType == AddMaterialSuccessAdmin) {
+        if (state is AddMaterialSuccessAdmin) {
+          getMaterials(context);
           showToastMessage(
               message: 'Material Added Successfully',
               states: ToastStates.SUCCESS);
@@ -211,5 +215,16 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
                 )),
           )),
     );
+  }
+
+  void getMaterials(BuildContext context) async {
+    try {
+      await context
+          .read<GetMaterialCubit>()
+          .getMaterials(subject: widget.subjectName);
+      log('excuted get materials from addMaterialCubit');
+    } catch (e) {
+      log('error while getting materials from addMaterialCubit $e');
+    }
   }
 }
