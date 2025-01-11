@@ -45,7 +45,7 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
           Navigator.of(context).pop();
         }
         if (state is AddMaterialSuccessAdmin) {
-          getMaterials(context);
+          _getMaterials(context);
           showToastMessage(
               message: 'Material Added Successfully',
               states: ToastStates.SUCCESS);
@@ -217,12 +217,11 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
     );
   }
 
-  void getMaterials(BuildContext context) async {
+  void _getMaterials(BuildContext context) async {
     try {
       await context
           .read<GetMaterialCubit>()
           .getMaterials(subject: widget.subjectName);
-      log('excuted get materials from addMaterialCubit');
     } catch (e) {
       log('error while getting materials from addMaterialCubit $e');
     }

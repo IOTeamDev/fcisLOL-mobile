@@ -15,6 +15,7 @@ class GetMaterialCubit extends Cubit<GetMaterialState> {
   ) : super(GetMaterialCubitInitial());
 
   final SubjectRepoImp _subjectRepoImp;
+  String subjectName = '';
 
   static GetMaterialCubit get(context) => BlocProvider.of(context);
   List<MaterialModel>? materials;

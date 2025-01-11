@@ -110,18 +110,6 @@ class DocumentsCard extends StatelessWidget {
                           ],
                         ),
                       ),
-                // Align(
-                //   alignment: Alignment.bottomLeft,
-                //   child: Text(
-                //     'Shared by: ${document.author!.authorName}',
-                //     style: TextStyle(
-                //       fontSize: screenWidth(context) / 30,
-                //       color: Colors.white,
-                //     ),
-                //     maxLines: 1,
-                //     overflow: TextOverflow.ellipsis,
-                //   ),
-                // ),
               ],
             ),
           )),
