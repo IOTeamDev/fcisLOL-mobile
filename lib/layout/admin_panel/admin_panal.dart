@@ -99,10 +99,9 @@ class AdminPanel extends StatelessWidget {
                           onPressed: () {
                             if (mainCubit.profileModel != null) {
                               navigate(
-                                  context,
-                                  AddAnnouncement(
-                                    semester: mainCubit.profileModel!.semester,
-                                  ));
+                                context,
+                                AddAnnouncement(semester: mainCubit.profileModel!.semester)
+                              );
                             }
                           },
                           style: ElevatedButton.styleFrom(
@@ -110,9 +109,7 @@ class AdminPanel extends StatelessWidget {
                                 ? HexColor('#3B3B3B')
                                 : HexColor('#757575'),
                             padding: EdgeInsets.zero, // Remove default padding
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),),
                             minimumSize: Size(width - 40, height / 4.5),
                           ),
                           child: Column(
