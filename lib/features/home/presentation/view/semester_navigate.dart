@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lol/features/home/presentation/view_model/main_cubit/main_cubit.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/main.dart';
-import 'package:lol/models/subjects/semster_model.dart';
+import 'package:lol/features/home/data/models/semster_model.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/constants.dart';
 import 'package:lol/shared/components/navigation.dart';

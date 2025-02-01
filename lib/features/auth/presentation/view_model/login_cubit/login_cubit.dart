@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:lol/modules/auth/bloc/login_cubit_states.dart';
+import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit_states.dart';
 import 'package:lol/models/login/login_model.dart';
 import 'package:lol/shared/network/remote/dio.dart';
 

@@ -15,7 +15,7 @@ import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/navigation.dart';
 
 import '../../modules/admin/screens/announcements/announcements_list.dart';
-import '../../modules/auth/screens/login.dart';
+import '../../features/auth/presentation/view/login.dart';
 import '../../features/home/presentation/view/home.dart';
 import '../profile/profile.dart';
 

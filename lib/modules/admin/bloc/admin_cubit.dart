@@ -30,7 +30,7 @@ import '../../../shared/components/constants.dart';
 import '../../../shared/components/navigation.dart';
 import '../../../shared/network/local/shared_prefrence.dart';
 import '../../../shared/network/remote/fcm_helper.dart';
-import '../../auth/bloc/login_cubit.dart';
+import '../../../features/auth/presentation/view_model/login_cubit/login_cubit.dart';
 import '../../year_choose/choosing_year.dart';
 
 //uid null?

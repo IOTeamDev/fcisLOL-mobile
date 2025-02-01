@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/main.dart';
-import 'package:lol/modules/auth/bloc/login_cubit.dart';
-import 'package:lol/modules/auth/bloc/login_cubit_states.dart';
-import 'package:lol/modules/auth/screens/register.dart';
+import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit.dart';
+import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit_states.dart';
+import 'package:lol/features/auth/presentation/view/register.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/snack.dart';
 import 'package:lol/features/home/presentation/view_model/main_cubit/main_cubit.dart';
