@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:linkify/linkify.dart';
-import 'package:lol/features/home/presentation/view_model/main_cubit/main_cubit.dart';
+import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/layout/profile/other_profile.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/subject/data/models/material_model.dart';

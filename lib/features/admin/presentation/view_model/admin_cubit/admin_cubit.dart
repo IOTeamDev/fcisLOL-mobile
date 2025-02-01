@@ -30,7 +30,7 @@ import '../../../../../shared/components/navigation.dart';
 import '../../../../../shared/network/local/shared_prefrence.dart';
 import '../../../../../shared/network/remote/fcm_helper.dart';
 import '../../../../auth/presentation/view_model/login_cubit/login_cubit.dart';
-import '../../../../../modules/year_choose/choosing_year.dart';
+import '../../../../auth/presentation/view/choosing_year.dart';
 
 //uid null?
 class AdminCubit extends Cubit<AdminCubitStates> {

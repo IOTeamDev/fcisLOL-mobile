@@ -6,9 +6,9 @@ import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubi
 import 'package:lol/features/auth/presentation/view/register.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/snack.dart';
-import 'package:lol/features/home/presentation/view_model/main_cubit/main_cubit.dart';
-import 'package:lol/features/home/presentation/view_model/main_cubit/main_cubit_states.dart';
-import 'package:lol/modules/year_choose/choosing_year.dart';
+import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
+import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
+import 'package:lol/features/auth/presentation/view/choosing_year.dart';
 import 'package:lol/shared/components/navigation.dart';
 
 class SelectImage extends StatelessWidget {

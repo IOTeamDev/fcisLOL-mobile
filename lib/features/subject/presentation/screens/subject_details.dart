@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:lol/features/home/presentation/view_model/main_cubit/main_cubit.dart';
+import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit_cubit.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/build_floating_action_button.dart';

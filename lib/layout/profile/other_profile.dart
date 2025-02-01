@@ -17,8 +17,8 @@ import 'package:lol/shared/components/default_button.dart';
 import 'package:lol/shared/components/default_text_field.dart';
 import 'package:lol/shared/styles/colors.dart';
 import 'package:lol/shared/components/constants.dart';
-import 'package:lol/features/home/presentation/view_model/main_cubit/main_cubit.dart';
-import 'package:lol/features/home/presentation/view_model/main_cubit/main_cubit_states.dart';
+import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
+import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/shared/components/navigation.dart';
 

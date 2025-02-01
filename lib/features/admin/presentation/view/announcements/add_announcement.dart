@@ -10,7 +10,7 @@ import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cub
 import 'package:lol/features/admin/presentation/view/announcements/announcement_detail.dart';
 import 'package:lol/features/admin/presentation/view/announcements/edit_announcement.dart';
 import 'package:lol/shared/components/constants.dart';
-import 'package:lol/modules/webview/webview_screen.dart';
+import 'package:lol/core/utils/webview_screen.dart';
 import 'package:lol/shared/components/navigation.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:lol/shared/styles/colors.dart';

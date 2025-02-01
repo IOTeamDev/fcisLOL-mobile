@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lol/features/home/presentation/view_model/main_cubit/main_cubit.dart';
+import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/home/data/models/semster_model.dart';

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../../../features/home/presentation/view_model/main_cubit/main_cubit.dart';
 import '../../../main.dart';
 import '../../../shared/components/constants.dart';
 

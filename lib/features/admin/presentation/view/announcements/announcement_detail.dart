@@ -12,7 +12,7 @@ import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:lol/shared/components/navigation.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:lol/modules/webview/webview_screen.dart';
+import 'package:lol/core/utils/webview_screen.dart';
 import '../../view_model/admin_cubit/admin_cubit.dart';
 
 class AnnouncementDetail extends StatelessWidget {

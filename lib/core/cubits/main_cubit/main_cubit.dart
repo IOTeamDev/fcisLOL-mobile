@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lol/models/current_user/current_user_model.dart';
 import 'package:lol/models/leaderboard/leaderboard_model.dart';
@@ -10,17 +9,15 @@ import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubi
 import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit_states.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/constants.dart';
-import 'package:lol/features/home/presentation/view_model/main_cubit/main_cubit_states.dart';
+import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/models/profile/profile_model.dart';
-import 'package:lol/modules/year_choose/choosing_year.dart';
+import 'package:lol/features/auth/presentation/view/choosing_year.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/shared/network/endpoints.dart';
 import 'package:lol/shared/network/remote/dio.dart';
 import 'package:lol/shared/components/navigation.dart';
 import 'package:lol/shared/network/local/shared_prefrence.dart';
-
 import 'package:lol/models/admin/requests_model.dart';
-
 import 'package:lol/models/admin/announcement_model.dart';
 
 //uid null?
