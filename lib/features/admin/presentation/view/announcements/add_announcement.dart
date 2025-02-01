@@ -4,19 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
+import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
+import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit_states.dart';
 
-import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
-import 'package:lol/modules/admin/screens/announcements/announcement_detail.dart';
-import 'package:lol/modules/admin/screens/announcements/edit_announcement.dart';
+import 'package:lol/features/admin/presentation/view/announcements/announcement_detail.dart';
+import 'package:lol/features/admin/presentation/view/announcements/edit_announcement.dart';
 import 'package:lol/shared/components/constants.dart';
 import 'package:lol/modules/webview/webview_screen.dart';
 import 'package:lol/shared/components/navigation.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:lol/shared/styles/colors.dart';
 
-import '../../../../main.dart';
-import '../../../../shared/components/components.dart';
-import '../../bloc/admin_cubit.dart';
+import '../../../../../main.dart';
+import '../../../../../shared/components/components.dart';
 
 class AddAnnouncement extends StatefulWidget {
   final String semester;

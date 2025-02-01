@@ -5,14 +5,12 @@ import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/features/home/presentation/view_model/main_cubit/main_cubit_states.dart';
-import 'package:lol/modules/admin/bloc/admin_cubit.dart';
-import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
-import 'package:lol/features/subject/presentation/cubit/subject_cubit.dart';
+import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit_states.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/constants.dart';
 
-import '../../../../features/home/presentation/view_model/main_cubit/main_cubit.dart';
-import '../../../../main.dart';
+import '../../../../home/presentation/view_model/main_cubit/main_cubit.dart';
+import '../../../../../main.dart';
 
 class RequestsDetails extends StatelessWidget {
   int id;

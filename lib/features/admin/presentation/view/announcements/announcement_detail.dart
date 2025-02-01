@@ -4,8 +4,8 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/main.dart';
-import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
-import 'package:lol/modules/admin/screens/announcements/announcement_detail.dart';
+import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit_states.dart';
+import 'package:lol/features/admin/presentation/view/announcements/announcement_detail.dart';
 import 'package:lol/shared/components/constants.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
@@ -13,7 +13,7 @@ import 'package:lol/shared/components/navigation.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:lol/modules/webview/webview_screen.dart';
-import '../../bloc/admin_cubit.dart';
+import '../../view_model/admin_cubit/admin_cubit.dart';
 
 class AnnouncementDetail extends StatelessWidget {
   // final int id;
@@ -50,7 +50,8 @@ class AnnouncementDetail extends StatelessWidget {
           return Scaffold(
             //backgroundColor: HexColor('#23252A'),
             body: Container(
-              margin: EdgeInsetsDirectional.only(top: screenHeight(context)/10),
+              margin:
+                  EdgeInsetsDirectional.only(top: screenHeight(context) / 10),
               width: double.infinity,
               child: Column(
                 children: [
@@ -65,19 +66,25 @@ class AnnouncementDetail extends StatelessWidget {
                           child: Text(
                         'Announcement',
                         style: TextStyle(
-                            fontSize: width / 12,),
+                          fontSize: width / 12,
+                        ),
                         textAlign: TextAlign.center,
                       )),
                     ],
                   ),
                   ConstrainedBox(
-                    constraints: BoxConstraints(maxHeight: screenHeight(context) / 1.4,),
+                    constraints: BoxConstraints(
+                      maxHeight: screenHeight(context) / 1.4,
+                    ),
                     child: Container(
-                      margin: const EdgeInsetsDirectional.only(start: 15, end: 15, top: 20),
+                      margin: const EdgeInsetsDirectional.only(
+                          start: 15, end: 15, top: 20),
                       padding: const EdgeInsets.all(18),
                       width: double.infinity,
                       decoration: BoxDecoration(
-                          color: isDark? HexColor('#3B3B3B'): HexColor('#4764C5'),
+                          color: isDark
+                              ? HexColor('#3B3B3B')
+                              : HexColor('#4764C5'),
                           borderRadius: BorderRadius.circular(20)),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,8 +128,8 @@ class AnnouncementDetail extends StatelessWidget {
                                     ],
                                   ),
                                   Padding(
-                                    padding:
-                                    const EdgeInsetsDirectional.only(top: 40.0),
+                                    padding: const EdgeInsetsDirectional.only(
+                                        top: 40.0),
                                     child: Text(
                                       'DeadLine: ${date == 'No Due Date' ? date : DateFormat('dd/MM/yyyy').format(DateTime.parse(date)).toString()}',
                                       style: const TextStyle(
@@ -134,7 +141,6 @@ class AnnouncementDetail extends StatelessWidget {
                               ),
                             ),
                           ),
-
                         ],
                       ),
                     ),

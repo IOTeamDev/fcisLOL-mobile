@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
-import 'package:lol/modules/admin/bloc/admin_cubit.dart';
-import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
-import 'package:lol/modules/admin/screens/announcements/announcement_detail.dart';
+import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
+import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit_states.dart';
+import 'package:lol/features/admin/presentation/view/announcements/announcement_detail.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/navigation.dart';
 import 'package:lol/shared/styles/colors.dart';
 
-import '../../../../shared/components/constants.dart';
+import '../../../../../shared/components/constants.dart';
 
 class AnnouncementsList extends StatelessWidget {
   final String semester;
@@ -31,7 +31,8 @@ class AnnouncementsList extends StatelessWidget {
           return Scaffold(
             //backgroundColor: HexColor('#23252A'),
             body: Container(
-              margin: EdgeInsetsDirectional.only(top: screenHeight(context)/10),
+              margin:
+                  EdgeInsetsDirectional.only(top: screenHeight(context) / 10),
               width: double.infinity,
               child: SingleChildScrollView(
                 child: Column(
@@ -45,7 +46,9 @@ class AnnouncementsList extends StatelessWidget {
                         Center(
                             child: Text(
                           'Announcements',
-                          style: TextStyle(fontSize: width / 12,),
+                          style: TextStyle(
+                            fontSize: width / 12,
+                          ),
                           textAlign: TextAlign.center,
                         )),
                       ],
@@ -73,17 +76,20 @@ class AnnouncementsList extends StatelessWidget {
                       ),
                       fallback: (context) {
                         if (state is AdminGetAnnouncementLoadingState) {
-                          return
-                            SizedBox(height: height/1.3, child:Center(child: CircularProgressIndicator()) ,);
+                          return SizedBox(
+                            height: height / 1.3,
+                            child: Center(child: CircularProgressIndicator()),
+                          );
                         } else {
                           return SizedBox(
-                            height: height/1.3,
+                            height: height / 1.3,
                             child: Center(
                               child: Text(
                                 'You have no announcements yet!!!',
                                 style: TextStyle(
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold,),
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                ),
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -110,13 +116,12 @@ class AnnouncementsList extends StatelessWidget {
         navigate(
             context,
             AnnouncementDetail(
-                semester: semester, //
-                title: title,
-                description: content,
-                date: dueDate,
-                // id: id,
-            )
-        );
+              semester: semester, //
+              title: title,
+              description: content,
+              date: dueDate,
+              // id: id,
+            ));
       },
       child: Container(
         margin: EdgeInsetsDirectional.symmetric(horizontal: 10),

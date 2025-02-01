@@ -13,9 +13,9 @@ import 'package:lol/features/home/presentation/view/semester_navigate.dart';
 import 'package:lol/models/admin/announcement_model.dart';
 import 'package:lol/features/home/data/models/semster_model.dart';
 import 'package:lol/models/profile/profile_model.dart';
-import 'package:lol/modules/admin/bloc/admin_cubit.dart';
-import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
-import 'package:lol/modules/admin/screens/announcements/announcement_detail.dart';
+import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
+import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit_states.dart';
+import 'package:lol/features/admin/presentation/view/announcements/announcement_detail.dart';
 import 'package:lol/features/auth/presentation/view/login.dart';
 import 'package:lol/modules/leaderboard/leaderboard_screen.dart';
 import 'package:lol/features/subject/data/repos/subject_repo_imp.dart';
@@ -37,7 +37,7 @@ import 'package:lol/shared/network/local/shared_prefrence.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../../modules/admin/screens/announcements/announcements_list.dart';
+import '../../../admin/presentation/view/announcements/announcements_list.dart';
 import '../../../../layout/admin_panel/admin_panal.dart';
 
 class Home extends StatelessWidget {

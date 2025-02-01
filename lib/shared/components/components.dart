@@ -13,7 +13,7 @@ import 'package:lol/features/home/presentation/view_model/main_cubit/main_cubit.
 import 'package:lol/features/home/presentation/view_model/main_cubit/main_cubit_states.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/layout/profile/profile.dart';
-import 'package:lol/modules/admin/screens/announcements/announcements_list.dart';
+import 'package:lol/features/admin/presentation/view/announcements/announcements_list.dart';
 import 'package:lol/features/auth/presentation/view/login.dart';
 import 'package:lol/modules/error/error_screen.dart';
 import 'package:lol/shared/components/navigation.dart';

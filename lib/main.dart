@@ -11,11 +11,10 @@ import 'package:lol/features/home/presentation/view_model/main_cubit/main_cubit_
 import 'package:lol/features/home/presentation/view/semester_navigate.dart';
 import 'package:lol/layout/profile/other_profile.dart';
 import 'package:lol/models/login/login_model.dart';
-import 'package:lol/modules/admin/bloc/admin_cubit.dart';
-import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
+import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
+import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit_states.dart';
 import 'package:lol/layout/admin_panel/admin_panal.dart';
-import 'package:lol/modules/admin/screens/Announcements/add_announcement.dart';
-import 'package:lol/modules/admin/screens/announcements/announcements_list.dart';
+import 'package:lol/features/admin/presentation/view/announcements/announcements_list.dart';
 import 'package:lol/modules/error/error_screen.dart';
 import 'package:lol/features/subject/data/repos/subject_repo_imp.dart';
 import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit_cubit.dart';
