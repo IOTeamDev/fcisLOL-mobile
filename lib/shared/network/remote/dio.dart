@@ -10,7 +10,6 @@ class DioHelp {
           baseUrl: "https://fcislol.netlify.app/api/",
           receiveDataWhenStatusError: true,
           // headers: {"Content-Type": "application/json"}
-          
           ),
     );
   }
