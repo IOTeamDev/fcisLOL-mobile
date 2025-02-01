@@ -10,7 +10,7 @@ import 'package:lol/modules/auth/screens/login.dart';
 import 'package:lol/modules/auth/screens/register.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/constants.dart';
-import 'package:lol/layout/home/home.dart';
+import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/shared/components/navigation.dart';
 import 'package:lol/shared/network/local/shared_prefrence.dart';
 import 'package:lol/shared/network/remote/fcm_helper.dart';
@@ -39,7 +39,6 @@ class ChoosingYear extends StatelessWidget {
                   margin: EdgeInsets.only(top: 120),
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
-
                     children: [
                       OutlinedButton(
                         onPressed: () {
@@ -89,8 +88,10 @@ class ChoosingYear extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     //     .center, // Center the Year widgets vertically
                     children: [
-                      if(userInfo!=null)
-                      SizedBox(height: MediaQuery.of(context).size.height/3.5,),
+                      if (userInfo != null)
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height / 3.5,
+                        ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment
                             .center, // Center the rows horizontally
@@ -196,8 +197,8 @@ class YearState extends State<Year> {
                 ),
               ],
             ),
-            width: screenWidth(context)/3, // Fixed width for each card
-            height: screenHeight(context)/5.5, // Fixed height for each card
+            width: screenWidth(context) / 3, // Fixed width for each card
+            height: screenHeight(context) / 5.5, // Fixed height for each card
             child: Center(
               child: Text(
                 widget.title,

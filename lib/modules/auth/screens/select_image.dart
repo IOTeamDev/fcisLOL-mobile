@@ -6,8 +6,8 @@ import 'package:lol/modules/auth/bloc/login_cubit_states.dart';
 import 'package:lol/modules/auth/screens/register.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:lol/shared/components/snack.dart';
-import 'package:lol/layout/home/bloc/main_cubit.dart';
-import 'package:lol/layout/home/bloc/main_cubit_states.dart';
+import 'package:lol/features/home/presentation/view_model/main_cubit/main_cubit.dart';
+import 'package:lol/features/home/presentation/view_model/main_cubit/main_cubit_states.dart';
 import 'package:lol/modules/year_choose/choosing_year.dart';
 import 'package:lol/shared/components/navigation.dart';
 

@@ -3,7 +3,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/shared/components/components.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../layout/home/bloc/main_cubit.dart';
+import '../../../features/home/presentation/view_model/main_cubit/main_cubit.dart';
 import '../../../main.dart';
 import '../../../shared/components/constants.dart';
 
@@ -22,7 +22,7 @@ class ReportBug extends StatelessWidget {
     return Scaffold(
       body: Container(
         width: double.infinity,
-        margin: EdgeInsetsDirectional.only(top:height/10),
+        margin: EdgeInsetsDirectional.only(top: height / 10),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -35,7 +35,9 @@ class ReportBug extends StatelessWidget {
                   Center(
                     child: Text(
                       'Report Bug',
-                      style: TextStyle(fontSize: width / 10, ),
+                      style: TextStyle(
+                        fontSize: width / 10,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -43,14 +45,16 @@ class ReportBug extends StatelessWidget {
               ),
               SingleChildScrollView(
                 child: Container(
-                  decoration: BoxDecoration( color: isDark? HexColor('#3B3B3B'): HexColor('#757575'), borderRadius: BorderRadius.circular(15)),
-                  margin: EdgeInsetsDirectional.symmetric(horizontal: 15, vertical: 30),
+                  decoration: BoxDecoration(
+                      color: isDark ? HexColor('#3B3B3B') : HexColor('#757575'),
+                      borderRadius: BorderRadius.circular(15)),
+                  margin: EdgeInsetsDirectional.symmetric(
+                      horizontal: 15, vertical: 30),
                   padding: const EdgeInsets.all(15.0),
                   child: Form(
                     key: _formKey,
                     child: Column(
                       children: [
-
                         TextFormField(
                           controller: _titleController,
                           keyboardType: TextInputType.text,
@@ -65,8 +69,10 @@ class ReportBug extends StatelessWidget {
                             hintStyle: TextStyle(
                                 fontSize: 20, color: Colors.grey[400]),
                             border: UnderlineInputBorder(),
-                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+                            enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey)),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white)),
                           ),
                           style: const TextStyle(color: Colors.white),
                         ),
@@ -85,15 +91,15 @@ class ReportBug extends StatelessWidget {
                             return null;
                           },
                           decoration: InputDecoration(
-                            hintText: 'Bug description',
-                            hintStyle: TextStyle(
-                                fontSize: 20, color: Colors.grey[400]),
+                              hintText: 'Bug description',
+                              hintStyle: TextStyle(
+                                  fontSize: 20, color: Colors.grey[400]),
                               border: UnderlineInputBorder(),
-                              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-                              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white))
-                          ),
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey)),
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white))),
                           style: const TextStyle(color: Colors.white),
-
                         ),
                         SizedBox(
                           height: 10,
@@ -110,24 +116,17 @@ class ReportBug extends StatelessWidget {
                                   _descriptionController.clear();
                                   Navigator.pop(context);
                                 },
-                                style:
-                                ElevatedButton.styleFrom(
-                                  shape:
-                                  RoundedRectangleBorder(
-                                      borderRadius:
-                                      BorderRadius
-                                          .circular(
-                                          13)),
-                                  padding: EdgeInsetsDirectional.symmetric(horizontal: width/11 ),
-                                  backgroundColor:
-                                  Colors.white,
-                                  textStyle: TextStyle(
-                                      fontSize: width / 17),
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(13)),
+                                  padding: EdgeInsetsDirectional.symmetric(
+                                      horizontal: width / 11),
+                                  backgroundColor: Colors.white,
+                                  textStyle: TextStyle(fontSize: width / 17),
                                 ),
                                 child: const Text(
                                   'Cancel',
-                                  style: TextStyle(
-                                      color: Colors.black),
+                                  style: TextStyle(color: Colors.black),
                                 ),
                               ),
                               const Spacer(),
@@ -135,30 +134,25 @@ class ReportBug extends StatelessWidget {
                               ElevatedButton(
                                   onPressed: () async {
                                     sendBugReport(
-                                        bugTitle: _titleController.text,
-                                        bugDescription:
-                                            _descriptionController.text,);
+                                      bugTitle: _titleController.text,
+                                      bugDescription:
+                                          _descriptionController.text,
+                                    );
                                     _descriptionController.clear();
                                     _titleController.clear();
                                   },
-                                  style: ElevatedButton
-                                      .styleFrom(
-                                    shape:
-                                    RoundedRectangleBorder(
+                                  style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
                                         borderRadius:
-                                        BorderRadius
-                                            .circular(
-                                            13)),
-                                    padding: EdgeInsetsDirectional.symmetric(horizontal: width/11 ),
+                                            BorderRadius.circular(13)),
+                                    padding: EdgeInsetsDirectional.symmetric(
+                                        horizontal: width / 11),
                                     backgroundColor:
-                                    Color.fromARGB(255, 20, 130, 220),
-                                    foregroundColor:
-                                    Colors.white,
-                                    textStyle: TextStyle(
-                                        fontSize: width / 17),
+                                        Color.fromARGB(255, 20, 130, 220),
+                                    foregroundColor: Colors.white,
+                                    textStyle: TextStyle(fontSize: width / 17),
                                   ),
-                                  child:
-                                  const Text('Submit')),
+                                  child: const Text('Submit')),
                             ],
                           ),
                         ),

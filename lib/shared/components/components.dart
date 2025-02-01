@@ -9,9 +9,9 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/layout/admin_panel/admin_panal.dart';
-import 'package:lol/layout/home/bloc/main_cubit.dart';
-import 'package:lol/layout/home/bloc/main_cubit_states.dart';
-import 'package:lol/layout/home/home.dart';
+import 'package:lol/features/home/presentation/view_model/main_cubit/main_cubit.dart';
+import 'package:lol/features/home/presentation/view_model/main_cubit/main_cubit_states.dart';
+import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/layout/profile/profile.dart';
 import 'package:lol/modules/admin/screens/announcements/announcements_list.dart';
 import 'package:lol/modules/auth/screens/login.dart';
@@ -194,9 +194,7 @@ Color chooseToastColor(ToastStates states) {
   return color!;
 }
 
-
-
-Future<String?> getYouTubeThumbnail(String videoUrl,apiKey) async {
+Future<String?> getYouTubeThumbnail(String videoUrl, apiKey) async {
   final Uri uri = Uri.parse(videoUrl);
   String? videoId;
 
@@ -222,7 +220,9 @@ Future<String?> getYouTubeThumbnail(String videoUrl,apiKey) async {
   }
 
   // Return the thumbnail for the individual video
-  return videoId != null ? 'https://img.youtube.com/vi/$videoId/hqdefault.jpg' : null;
+  return videoId != null
+      ? 'https://img.youtube.com/vi/$videoId/hqdefault.jpg'
+      : null;
 }
 
 Future<String> getFirstVideoThumbnail(String playlistUrl, String apiKey) async {
@@ -248,14 +248,13 @@ Future<String> getFirstVideoThumbnail(String playlistUrl, String apiKey) async {
   }
 }
 
-
-Future<void> onOpen(BuildContext context, LinkableElement link) async { 
+Future<void> onOpen(BuildContext context, LinkableElement link) async {
   final url = link.url;
 
   // Open Facebook links directly using `url_launcher`
   if (await canLaunchUrl(Uri.parse(url))) {
     await launchUrl(Uri.parse(url));
   } else {
-    navigate(context, WebviewScreen( url));
+    navigate(context, WebviewScreen(url));
   }
 }

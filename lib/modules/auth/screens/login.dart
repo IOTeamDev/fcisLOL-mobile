@@ -11,7 +11,7 @@ import 'package:lol/modules/auth/bloc/login_cubit.dart';
 import 'package:lol/modules/auth/bloc/login_cubit_states.dart';
 import 'package:lol/modules/auth/screens/register.dart';
 import 'package:lol/shared/components/constants.dart';
-import 'package:lol/layout/home/home.dart';
+import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/layout/profile/profile.dart';
 import 'package:lol/shared/components/navigation.dart';
 import 'package:lol/shared/network/local/shared_prefrence.dart';
@@ -118,7 +118,7 @@ class LoginScreen extends StatelessWidget {
                             height: 5,
                           ),
                           defaultTextField(
-                            // textInputAction: TextInputAction.next,
+                              // textInputAction: TextInputAction.next,
                               validateor: (value) {
                                 if (value!.isEmpty) {
                                   return "Field cannot be empty";
@@ -142,7 +142,6 @@ class LoginScreen extends StatelessWidget {
                               ),
                               const Spacer(),
                               TextButton(
-                                
                                 style: TextButton.styleFrom(
                                     padding: const EdgeInsets.all(0)),
                                 child: const Text(
@@ -196,7 +195,6 @@ class LoginScreen extends StatelessWidget {
                           defaultTextField(
                               onFieldSubmitted: (val) async {
                                 if (formKey.currentState!.validate()) {
-                                  
                                   loginCubit.login(
                                       email: emailController.text.toLowerCase(),
                                       password: passwordController.text);

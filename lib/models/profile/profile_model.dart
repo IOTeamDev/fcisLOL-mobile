@@ -1,5 +1,4 @@
 import 'package:lol/models/profile/profile_materila_model.dart';
-import 'package:lol/models/subjects/subject_model.dart';
 
 class ProfileModel {
   late String name;

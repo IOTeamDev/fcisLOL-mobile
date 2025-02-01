@@ -11,7 +11,7 @@ import 'package:lol/modules/auth/bloc/login_cubit_states.dart';
 import 'package:lol/modules/auth/screens/login.dart';
 import 'package:lol/modules/auth/screens/select_image.dart';
 import 'package:lol/shared/components/constants.dart';
-import 'package:lol/layout/home/home.dart';
+import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/shared/components/navigation.dart';
 import 'package:lol/shared/network/local/shared_prefrence.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';

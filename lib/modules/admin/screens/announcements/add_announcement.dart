@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
-import 'package:lol/layout/home/bloc/main_cubit_states.dart';
-import 'package:lol/layout/home/home.dart';
+
 import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
 import 'package:lol/modules/admin/screens/announcements/announcement_detail.dart';
 import 'package:lol/modules/admin/screens/announcements/edit_announcement.dart';
@@ -15,7 +14,6 @@ import 'package:lol/shared/components/navigation.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:lol/shared/styles/colors.dart';
 
-import '../../../../layout/home/bloc/main_cubit.dart';
 import '../../../../main.dart';
 import '../../../../shared/components/components.dart';
 import '../../bloc/admin_cubit.dart';

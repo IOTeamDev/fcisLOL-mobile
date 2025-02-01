@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
-import 'package:lol/layout/home/bloc/main_cubit.dart';
-import 'package:lol/layout/home/bloc/main_cubit_states.dart';
+import 'package:lol/features/home/presentation/view_model/main_cubit/main_cubit.dart';
+import 'package:lol/features/home/presentation/view_model/main_cubit/main_cubit_states.dart';
 import 'package:lol/main.dart';
 import 'package:lol/modules/admin/bloc/admin_cubit_states.dart';
 
@@ -30,7 +30,8 @@ class EditAnnouncement extends StatefulWidget {
     required this.date,
     //this.selectedItem,
     required this.semester,
-    this.imageLink, required this.index,
+    this.imageLink,
+    required this.index,
   });
 
   @override
@@ -54,7 +55,10 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
     // Initialize controllers with existing values
     titleController = TextEditingController(text: widget.title);
     contentController = TextEditingController(text: widget.content);
-    _dateController = TextEditingController(text: widget.date == 'No Due Date' ? 'Due Date' : DateFormat('dd/MM/yyyy').format(DateTime.parse(widget.date)));
+    _dateController = TextEditingController(
+        text: widget.date == 'No Due Date'
+            ? 'Due Date'
+            : DateFormat('dd/MM/yyyy').format(DateTime.parse(widget.date)));
     //selectedItem = widget.selectedItem;
     id = widget.id;
     print('date controller: ${_dateController.text}');
@@ -76,7 +80,10 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => MainCubit()..getProfileInfo()..getAnnouncements(widget.semester)),
+        BlocProvider(
+            create: (context) => MainCubit()
+              ..getProfileInfo()
+              ..getAnnouncements(widget.semester)),
       ],
       child: BlocConsumer<MainCubit, MainCubitStates>(
         listener: (context, state) {
@@ -108,7 +115,8 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
           return Scaffold(
             //backgroundColor: HexColor('#23252A'),
             body: Container(
-              margin: EdgeInsetsDirectional.only(top: screenHeight(context)/10),
+              margin:
+                  EdgeInsetsDirectional.only(top: screenHeight(context) / 10),
               width: double.infinity,
               child: ConditionalBuilder(
                 condition: MainCubit.get(context).profileModel != null &&
@@ -128,7 +136,8 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                               child: Text(
                             'Edit',
                             style: TextStyle(
-                                fontSize: width / 10,),
+                              fontSize: width / 10,
+                            ),
                             textAlign: TextAlign.center,
                           )),
                         ],
@@ -140,7 +149,9 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                         height: screenHeight(context) / 1.45,
                         width: double.infinity,
                         decoration: BoxDecoration(
-                            color: isDark? HexColor('#3B3B3B'):HexColor('#757575'),
+                            color: isDark
+                                ? HexColor('#3B3B3B')
+                                : HexColor('#757575'),
                             borderRadius: BorderRadius.circular(20)),
                         child: Form(
                           key: _formKey,
@@ -158,8 +169,13 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                 },
                                 decoration: InputDecoration(
                                   hintText: 'Title',
-                                  hintStyle: TextStyle(fontSize: 20, color: Colors.grey[400]),
-                                  enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: isDark? HexColor('#848484'):HexColor('#FFFFFF'))),
+                                  hintStyle: TextStyle(
+                                      fontSize: 20, color: Colors.grey[400]),
+                                  enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: isDark
+                                              ? HexColor('#848484')
+                                              : HexColor('#FFFFFF'))),
                                 ),
                                 style: const TextStyle(color: Colors.white),
                               ),
@@ -171,8 +187,13 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                 maxLines: 12,
                                 decoration: InputDecoration(
                                   hintText: 'Description',
-                                  hintStyle: TextStyle(fontSize: 20, color: Colors.grey[400]),
-                                  enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: isDark? HexColor('#848484'):HexColor('#FFFFFF'))),
+                                  hintStyle: TextStyle(
+                                      fontSize: 20, color: Colors.grey[400]),
+                                  enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: isDark
+                                              ? HexColor('#848484')
+                                              : HexColor('#FFFFFF'))),
                                 ),
                                 style: const TextStyle(color: Colors.white),
                               ),
@@ -183,33 +204,44 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                   GestureDetector(
                                     onTap: () => showDatePicker(
                                       context: context,
-                                      initialDate: DateTime.now().add(Duration(days: 1)),
-                                      firstDate: DateTime.now().add(Duration(days: 1)),
+                                      initialDate:
+                                          DateTime.now().add(Duration(days: 1)),
+                                      firstDate:
+                                          DateTime.now().add(Duration(days: 1)),
                                       lastDate: DateTime.parse('2027-11-30'),
                                     ).then((value) {
                                       if (value != null) {
                                         //print(DateFormat.YEAR_MONTH_DAY);
                                         setState(() {
-                                          DateTime selectedDate = DateTime(value.year, value.month, value.day);
-                                          dueDateFormatted = DateTime.utc(selectedDate.year, selectedDate.month, selectedDate.day).toIso8601String();
+                                          DateTime selectedDate = DateTime(
+                                              value.year,
+                                              value.month,
+                                              value.day);
+                                          dueDateFormatted = DateTime.utc(
+                                                  selectedDate.year,
+                                                  selectedDate.month,
+                                                  selectedDate.day)
+                                              .toIso8601String();
                                           print(dueDateFormatted);
-                                          _dateController.text = DateFormat('dd/MM/yyyy').format(value);
+                                          _dateController.text =
+                                              DateFormat('dd/MM/yyyy')
+                                                  .format(value);
                                         });
                                         // print(dueDateFormatted);
                                         // print(_dateController.text);
                                       }
                                     }),
                                     child: Container(
-                                      width: width/2.2,
+                                      width: width / 2.2,
                                       decoration: BoxDecoration(
                                           color: Colors.white,
-                                          borderRadius: BorderRadius.circular(10)),
-                                      padding: EdgeInsetsDirectional.symmetric(horizontal: 10),
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      padding: EdgeInsetsDirectional.symmetric(
+                                          horizontal: 10),
                                       child: AbsorbPointer(
                                         child: TextFormField(
-                                          onTap: (){
-
-                                          },
+                                          onTap: () {},
                                           controller: _dateController,
                                           keyboardType: TextInputType.none,
                                           decoration: InputDecoration(
@@ -343,67 +375,64 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                       onPressed: () {
                                         Navigator.pop(context, 'nigga');
                                       },
-                                      style:
-                                      ElevatedButton.styleFrom(
-                                        shape:
-                                        RoundedRectangleBorder(
+                                      style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
                                             borderRadius:
-                                            BorderRadius
-                                                .circular(
-                                                13)),
-                                        padding: EdgeInsetsDirectional.symmetric(horizontal: width /11),
-                                        backgroundColor:
-                                        Colors.white,
-                                        textStyle: TextStyle(
-                                            fontSize: width / 17),
+                                                BorderRadius.circular(13)),
+                                        padding:
+                                            EdgeInsetsDirectional.symmetric(
+                                                horizontal: width / 11),
+                                        backgroundColor: Colors.white,
+                                        textStyle:
+                                            TextStyle(fontSize: width / 17),
                                       ),
                                       child: const Text(
                                         'Cancel',
-                                        style: TextStyle(
-                                            color: Colors.black),
+                                        style: TextStyle(color: Colors.black),
                                       ),
                                     ),
                                     const Spacer(),
                                     ElevatedButton(
-                                      onPressed: () async {
-                                        if (_formKey.currentState!.validate()) {
-                                          //print(dueDateFormatted);
-                                           // await cubit.UploadPImage(isUserProfile: false, image: cubit.AnnouncementImageFile);
+                                        onPressed: () async {
+                                          if (_formKey.currentState!
+                                              .validate()) {
+                                            //print(dueDateFormatted);
+                                            // await cubit.UploadPImage(isUserProfile: false, image: cubit.AnnouncementImageFile);
                                             cubit.updateAnnouncement(
-                                                id,
-                                                title: titleController.text,
-                                                content: contentController.text,
-                                                dueDate: dueDateFormatted == 'No Due Date'? null:dueDateFormatted,
-                                                //type: selectedItem!,
-                                                // image: cubit.AnnouncementImagePath??widget.imageLink??'',
-                                                //currentSemester: widget.semester
+                                              id,
+                                              title: titleController.text,
+                                              content: contentController.text,
+                                              dueDate: dueDateFormatted ==
+                                                      'No Due Date'
+                                                  ? null
+                                                  : dueDateFormatted,
+                                              //type: selectedItem!,
+                                              // image: cubit.AnnouncementImagePath??widget.imageLink??'',
+                                              //currentSemester: widget.semester
                                             );
-                                        } else {
-                                          // Show error if validation fails
-                                          showToastMessage(
-                                            message: 'Please fill all fields correctly.',
-                                            states: ToastStates.ERROR,
-                                          );
-                                        }
-                                      },
-                                        style: ElevatedButton
-                                            .styleFrom(
-                                          shape:
-                                          RoundedRectangleBorder(
+                                          } else {
+                                            // Show error if validation fails
+                                            showToastMessage(
+                                              message:
+                                                  'Please fill all fields correctly.',
+                                              states: ToastStates.ERROR,
+                                            );
+                                          }
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
                                               borderRadius:
-                                              BorderRadius
-                                                  .circular(13)),
-                                          padding: EdgeInsetsDirectional.symmetric(horizontal: width/11 ),
+                                                  BorderRadius.circular(13)),
+                                          padding:
+                                              EdgeInsetsDirectional.symmetric(
+                                                  horizontal: width / 11),
                                           backgroundColor:
-                                          Color.fromARGB(255, 20, 130, 220),
-                                          foregroundColor:
-                                          Colors.white,
-                                          textStyle: TextStyle(
-                                              fontSize: width / 17),
+                                              Color.fromARGB(255, 20, 130, 220),
+                                          foregroundColor: Colors.white,
+                                          textStyle:
+                                              TextStyle(fontSize: width / 17),
                                         ),
-                                        child:
-                                        const Text('Submit')
-                                    ),
+                                        child: const Text('Submit')),
                                   ],
                                 ),
                               ),
@@ -424,6 +453,4 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
       ),
     );
   }
-
-
 }
