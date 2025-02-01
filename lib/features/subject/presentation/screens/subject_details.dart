@@ -7,7 +7,7 @@ import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_m
 import 'package:lol/features/subject/presentation/screens/widgets/build_floating_action_button.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/custom_tab_bar.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/custom_tab_bar_view.dart';
-import 'package:lol/shared/components/constants.dart';
+import 'package:lol/core/utils/constants.dart';
 
 class SubjectDetails extends StatefulWidget {
   final String subjectName;

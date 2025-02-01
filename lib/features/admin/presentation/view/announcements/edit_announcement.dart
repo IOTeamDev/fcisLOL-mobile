@@ -7,8 +7,8 @@ import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit_states.dart';
-import 'package:lol/shared/components/constants.dart';
-import 'package:lol/shared/components/components.dart';
+import 'package:lol/core/utils/constants.dart';
+import 'package:lol/core/utils/components.dart';
 
 class EditAnnouncement extends StatefulWidget {
   final int id;

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:lol/shared/components/constants.dart';
+import 'package:lol/core/utils/constants.dart';
 
-import '../../shared/components/components.dart';
+import '../utils/components.dart';
 
 class ErrorScreen extends StatelessWidget {
   const ErrorScreen({super.key});

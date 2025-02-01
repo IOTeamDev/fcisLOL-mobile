@@ -8,7 +8,7 @@ import 'package:lol/features/auth/presentation/view/login.dart';
 import 'package:lol/features/subject/presentation/cubit/add_material_cubit/add_material_cubit.dart';
 import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit_cubit.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/build_bottom_sheet.dart';
-import 'package:lol/shared/components/constants.dart';
+import 'package:lol/core/utils/constants.dart';
 import 'package:provider/provider.dart';
 
 class BuildFloatingActionButton extends StatefulWidget {

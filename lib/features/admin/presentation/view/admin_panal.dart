@@ -10,14 +10,14 @@ import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cub
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit_states.dart';
 import 'package:lol/features/admin/presentation/view/announcements/add_announcement.dart';
 import 'package:lol/features/admin/presentation/view/requests/requests.dart';
-import 'package:lol/shared/components/constants.dart';
-import 'package:lol/shared/components/components.dart';
-import 'package:lol/shared/components/navigation.dart';
+import 'package:lol/core/utils/constants.dart';
+import 'package:lol/core/utils/components.dart';
+import 'package:lol/core/utils/navigation.dart';
 
-import '../../features/admin/presentation/view/announcements/announcements_list.dart';
-import '../../features/auth/presentation/view/login.dart';
-import '../../features/home/presentation/view/home.dart';
-import '../profile/profile.dart';
+import 'announcements/announcements_list.dart';
+import '../../../auth/presentation/view/login.dart';
+import '../../../home/presentation/view/home.dart';
+import '../../../profile/view/profile.dart';
 
 class AdminPanel extends StatelessWidget {
   const AdminPanel({super.key});

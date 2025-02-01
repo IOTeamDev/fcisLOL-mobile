@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit.dart';
 import 'package:lol/features/auth/presentation/view/choosing_year.dart';
-import 'package:lol/shared/components/navigation.dart';
-import 'package:lol/shared/network/local/shared_prefrence.dart';
+import 'package:lol/core/utils/navigation.dart';
+import 'package:lol/core/network/local/shared_prefrence.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnBoarding extends StatefulWidget {

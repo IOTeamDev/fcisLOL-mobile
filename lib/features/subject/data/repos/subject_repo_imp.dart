@@ -2,9 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:lol/features/subject/data/models/author_model.dart';
 import 'package:lol/features/subject/data/models/material_model.dart';
 import 'package:lol/features/subject/data/repos/subject_repo.dart';
-import 'package:lol/shared/components/constants.dart';
-import 'package:lol/shared/network/endpoints.dart';
-import 'package:lol/shared/network/remote/dio.dart';
+import 'package:lol/core/utils/constants.dart';
+import 'package:lol/core/network/endpoints.dart';
+import 'package:lol/core/network/remote/dio.dart';
 
 class SubjectRepoImp implements SubjectRepo {
   @override

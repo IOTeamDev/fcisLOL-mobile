@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lol/shared/styles/colors.dart';
+import 'package:lol/core/utils/colors.dart';
 
 Widget defaultTextField(
     {String? Function(String?)? validateor,
@@ -20,7 +20,7 @@ Widget defaultTextField(
     height: 45,
     margin: EdgeInsets.symmetric(vertical: wantMargin ? 5 : 0),
     child: TextFormField(
-      textInputAction: textInputAction?? TextInputAction.none,
+      textInputAction: textInputAction ?? TextInputAction.none,
       enabled: enabled,
       onChanged: onChanged,
       keyboardType: type,

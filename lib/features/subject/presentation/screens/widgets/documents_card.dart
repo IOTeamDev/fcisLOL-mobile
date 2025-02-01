@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
-import 'package:lol/layout/profile/other_profile.dart';
+import 'package:lol/features/profile/view/other_profile.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/subject/data/models/material_model.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/remove_button.dart';
-import 'package:lol/shared/components/components.dart';
-import 'package:lol/shared/components/constants.dart';
-import 'package:lol/shared/components/navigation.dart';
+import 'package:lol/core/utils/components.dart';
+import 'package:lol/core/utils/constants.dart';
+import 'package:lol/core/utils/navigation.dart';
 
 class DocumentsCard extends StatelessWidget {
   const DocumentsCard({super.key, required this.document});

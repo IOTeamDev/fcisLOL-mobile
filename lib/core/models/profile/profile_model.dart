@@ -1,4 +1,4 @@
-import 'package:lol/models/profile/profile_materila_model.dart';
+import 'package:lol/core/models/profile/profile_materila_model.dart';
 
 class ProfileModel {
   late String name;

@@ -4,11 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
-import 'package:lol/layout/profile/other_profile.dart';
+import 'package:lol/features/profile/view/other_profile.dart';
 import 'package:lol/main.dart';
-import 'package:lol/shared/components/components.dart';
-import 'package:lol/shared/components/constants.dart';
-import 'package:lol/shared/components/navigation.dart';
+import 'package:lol/core/utils/components.dart';
+import 'package:lol/core/utils/constants.dart';
+import 'package:lol/core/utils/navigation.dart';
 
 class LeaderboardScreen extends StatelessWidget {
   final String semester;

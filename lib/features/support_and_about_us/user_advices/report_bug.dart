@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:lol/shared/components/components.dart';
+import 'package:lol/core/utils/components.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../main.dart';
-import '../../../shared/components/constants.dart';
+import '../../../core/utils/constants.dart';
 
 class ReportBug extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();

@@ -11,17 +11,15 @@ import 'package:googleapis/mybusinessaccountmanagement/v1.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/main.dart';
-import 'package:lol/models/profile/profile_materila_model.dart';
-import 'package:lol/features/subject/presentation/cubit/subject_cubit.dart';
-import 'package:lol/shared/components/components.dart';
-import 'package:lol/shared/components/default_button.dart';
-import 'package:lol/shared/components/default_text_field.dart';
-import 'package:lol/shared/styles/colors.dart';
-import 'package:lol/shared/components/constants.dart';
+import 'package:lol/core/utils/components.dart';
+import 'package:lol/core/widgets/default_button.dart';
+import 'package:lol/core/widgets/default_text_field.dart';
+import 'package:lol/core/utils/colors.dart';
+import 'package:lol/core/utils/constants.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
-import 'package:lol/shared/components/navigation.dart';
+import 'package:lol/core/utils/navigation.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});

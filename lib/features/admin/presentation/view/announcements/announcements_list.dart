@@ -8,11 +8,11 @@ import 'package:intl/intl.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit_states.dart';
 import 'package:lol/features/admin/presentation/view/announcements/announcement_detail.dart';
-import 'package:lol/shared/components/components.dart';
-import 'package:lol/shared/components/navigation.dart';
-import 'package:lol/shared/styles/colors.dart';
+import 'package:lol/core/utils/components.dart';
+import 'package:lol/core/utils/navigation.dart';
+import 'package:lol/core/utils/colors.dart';
 
-import '../../../../../shared/components/constants.dart';
+import '../../../../../core/utils/constants.dart';
 
 class AnnouncementsList extends StatelessWidget {
   final String semester;

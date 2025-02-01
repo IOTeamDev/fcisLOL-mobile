@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/main.dart';
-import 'package:lol/shared/components/components.dart';
-import 'package:lol/shared/components/constants.dart';
+import 'package:lol/core/utils/components.dart';
+import 'package:lol/core/utils/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutUs extends StatelessWidget {

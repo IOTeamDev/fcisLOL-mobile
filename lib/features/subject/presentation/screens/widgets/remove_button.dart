@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/features/subject/data/models/material_model.dart';
 import 'package:lol/features/subject/presentation/cubit/delete_material_cubit/delete_material_cubit.dart';
 import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit_cubit.dart';
-import 'package:lol/shared/components/components.dart';
+import 'package:lol/core/utils/components.dart';
 
 class RemoveButton extends StatelessWidget {
   const RemoveButton({super.key, required this.material});

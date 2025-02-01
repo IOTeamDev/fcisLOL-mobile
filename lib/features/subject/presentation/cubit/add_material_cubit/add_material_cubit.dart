@@ -1,14 +1,14 @@
 import 'dart:math';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lol/models/fcm_model.dart';
+import 'package:lol/core/models/fcm_model.dart';
 import 'package:lol/features/subject/data/models/author_model.dart';
 import 'package:lol/features/subject/data/models/material_model.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
 import 'package:lol/features/subject/data/repos/subject_repo_imp.dart';
-import 'package:lol/shared/components/constants.dart';
-import 'package:lol/shared/network/endpoints.dart';
-import 'package:lol/shared/network/remote/dio.dart';
+import 'package:lol/core/utils/constants.dart';
+import 'package:lol/core/network/endpoints.dart';
+import 'package:lol/core/network/remote/dio.dart';
 import 'package:meta/meta.dart';
 part 'add_material_state.dart';
 

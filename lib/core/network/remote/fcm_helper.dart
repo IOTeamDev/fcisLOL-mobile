@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:googleapis_auth/auth_io.dart' as auth;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:lol/main.dart';
-import 'package:lol/shared/components/components.dart';
+import 'package:lol/core/utils/components.dart';
 
 class FCMHelper {
   // creat instance of fbm

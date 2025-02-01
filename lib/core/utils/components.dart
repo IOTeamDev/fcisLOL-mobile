@@ -8,18 +8,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:linkify/linkify.dart';
-import 'package:lol/layout/admin_panel/admin_panal.dart';
+import 'package:lol/features/admin/presentation/view/admin_panal.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
-import 'package:lol/layout/profile/profile.dart';
+import 'package:lol/features/profile/view/profile.dart';
 import 'package:lol/features/admin/presentation/view/announcements/announcements_list.dart';
 import 'package:lol/features/auth/presentation/view/login.dart';
 import 'package:lol/core/error/error_screen.dart';
-import 'package:lol/shared/components/navigation.dart';
+import 'package:lol/core/utils/navigation.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'constants.dart';
-import '../../core/utils/webview_screen.dart';
+import 'webview_screen.dart';
 
 Widget adminTopTitleWithDrawerButton(
     {scaffoldKey,

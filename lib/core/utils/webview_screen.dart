@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:lol/shared/components/components.dart';
+import 'package:lol/core/utils/components.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -18,14 +18,18 @@ class WebviewScreen extends StatelessWidget {
         onNavigationRequest: (NavigationRequest request) async {
           final uri = Uri.parse(request.url);
           if (request.url.startsWith('whatsapp://')) {
-            launchUrl(Uri.parse(request.url)); // Opens the URL with an external app
-            return NavigationDecision.prevent; // Prevent WebView from handling it
+            launchUrl(
+                Uri.parse(request.url)); // Opens the URL with an external app
+            return NavigationDecision
+                .prevent; // Prevent WebView from handling it
           }
           if (request.url.startsWith('https://www.youtube.com') ||
               request.url.startsWith('https://youtu.be')) {
             print('Opening youtube');
-            await launchUrl(Uri.parse(request.url)); // Opens the URL with an external app
-            return NavigationDecision.prevent; // Prevent WebView from handling it
+            await launchUrl(
+                Uri.parse(request.url)); // Opens the URL with an external app
+            return NavigationDecision
+                .prevent; // Prevent WebView from handling it
           }
 
           // Check if the URL uses a scheme other than http or https
@@ -35,12 +39,15 @@ class WebviewScreen extends StatelessWidget {
               if (await canLaunchUrl(uri)) {
                 await launchUrl(uri);
               } else {
-                showToastMessage(message: 'Cannot open link: ${uri.scheme} not supported', states: ToastStates.INFO);
+                showToastMessage(
+                    message: 'Cannot open link: ${uri.scheme} not supported',
+                    states: ToastStates.INFO);
               }
             } catch (e) {
               print("Error launching $uri: $e");
             }
-            return NavigationDecision.prevent; // Prevent WebView from handling it
+            return NavigationDecision
+                .prevent; // Prevent WebView from handling it
           }
 
           // Allow WebView to load http/https links as usual

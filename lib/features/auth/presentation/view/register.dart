@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:lol/shared/components/default_button.dart';
-import 'package:lol/shared/components/default_text_button.dart';
-import 'package:lol/shared/components/default_text_field.dart';
-import 'package:lol/shared/components/snack.dart';
-import 'package:lol/shared/styles/colors.dart';
+import 'package:lol/core/widgets/default_button.dart';
+import 'package:lol/core/widgets/default_text_button.dart';
+import 'package:lol/core/widgets/default_text_field.dart';
+import 'package:lol/core/widgets/snack.dart';
+import 'package:lol/core/utils/colors.dart';
 import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit.dart';
 import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit_states.dart';
 import 'package:lol/features/auth/presentation/view/login.dart';
 import 'package:lol/features/auth/presentation/view/select_image.dart';
-import 'package:lol/shared/components/constants.dart';
+import 'package:lol/core/utils/constants.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
-import 'package:lol/shared/components/navigation.dart';
-import 'package:lol/shared/network/local/shared_prefrence.dart';
+import 'package:lol/core/utils/navigation.dart';
+import 'package:lol/core/network/local/shared_prefrence.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class UserInfo {
