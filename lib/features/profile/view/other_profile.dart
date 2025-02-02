@@ -32,7 +32,7 @@ class OtherProfile extends StatelessWidget {
     var nameController = TextEditingController();
     var emailController = TextEditingController();
     return BlocProvider(
-      create: (context) => MainCubit()..getotherProfile(id),
+      create: (context) => MainCubit()..getOtherProfile(id),
       child: BlocConsumer<MainCubit, MainCubitStates>(
         builder: (context, state) {
           if (state is GetProfileSuccess) {

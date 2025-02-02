@@ -22,6 +22,7 @@ import 'package:lol/core/network/local/shared_prefrence.dart';
 import 'package:lol/core/models/admin/requests_model.dart';
 import 'package:lol/core/models/admin/announcement_model.dart';
 
+import '../../utils/resources/icons_manager.dart';
 import '../../utils/resources/values_manager.dart';
 
 //uid null?
@@ -78,14 +79,14 @@ class MainCubit extends Cubit<MainCubitStates> {
     var tempPostImage = await picker.pickImage(source: ImageSource.gallery);
     if (tempPostImage != null) {
       announcementImageFile = File(tempPostImage.path);
-      pickerIcon = Icons.close;
+      pickerIcon = IconsManager.closeIcon;
       imageName = tempPostImage.path.split(StringsManager.forwardSlash).last;
       final int sizeInBytes = await announcementImageFile!.length();
       final int sizeInMB = sizeInBytes ~/ sqrt(AppSizes.s1024);
       print(sizeInBytes);
       print(sizeInMB);
       if (sizeInMB <= AppSizes.s1) {
-        pickerIcon = Icons.clear;
+        pickerIcon = IconsManager.closeIcon;
         showToastMessage(
             message: StringsManager.imgPickedSuccessfully, states: ToastStates.SUCCESS);
         emit(GetAnnouncementImageSuccess());
@@ -93,12 +94,12 @@ class MainCubit extends Cubit<MainCubitStates> {
         showToastMessage(
             message: StringsManager.imgLimitExceeded, states: ToastStates.WARNING);
         imageName = StringsManager.selectImage;
-        pickerIcon = Icons.image;
+        pickerIcon = IconsManager.imageIcon;
         announcementImageFile = null;
         emit(GetAnnouncementLimitExceed());
       }
     } else {
-      pickerIcon = Icons.image;
+      pickerIcon = IconsManager.imageIcon;
       imageName = StringsManager.selectImage;
       emit(GetAnnouncementImageFailure());
     }
@@ -155,7 +156,7 @@ class MainCubit extends Cubit<MainCubitStates> {
 
   ProfileModel? otherProfile;
 
-  getotherProfile(id) {
+  getOtherProfile(id) {
     emit(GetProfileLoading());
     otherProfile = null;
     DioHelp.getData(path: USERS, query: {KeysManager.id: id, KeysManager.haveMaterial: true}).then(
@@ -376,8 +377,8 @@ class MainCubit extends Cubit<MainCubitStates> {
         }).then((val) {
       print(val.data[KeysManager.id]);
       emit(UpdateUserSuccessState());
-    }).catchError((erro) {
-      print(erro.toString());
+    }).catchError((error) {
+      print(error.toString());
       emit(UpdateUserErrorState());
     });
   }
