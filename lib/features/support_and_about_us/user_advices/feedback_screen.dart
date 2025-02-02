@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/widgets/default_text_field.dart';
-import 'package:lol/core/utils/colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/utils/resources/constants_manager.dart';

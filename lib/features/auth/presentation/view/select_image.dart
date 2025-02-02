@@ -114,7 +114,7 @@ class SelectImage extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () async {
-                        await MainCubit.get(context).UploadPImage(
+                        await MainCubit.get(context).uploadPImage(
                           image: MainCubit.get(context).userImageFile,
                         );
 

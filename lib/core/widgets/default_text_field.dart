@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lol/core/utils/colors.dart';
 
 import '../utils/resources/colors_manager.dart';
 

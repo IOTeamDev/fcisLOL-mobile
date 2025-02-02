@@ -15,7 +15,6 @@ import 'package:lol/features/subject/presentation/cubit/subject_cubit.dart';
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/widgets/default_button.dart';
 import 'package:lol/core/widgets/default_text_field.dart';
-import 'package:lol/core/utils/colors.dart';
 import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';

@@ -6,7 +6,6 @@ import 'package:lol/core/widgets/default_button.dart';
 import 'package:lol/core/widgets/default_text_button.dart';
 import 'package:lol/core/widgets/default_text_field.dart';
 import 'package:lol/core/widgets/snack.dart';
-import 'package:lol/core/utils/colors.dart';
 import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit.dart';
 import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit_states.dart';
 import 'package:lol/features/auth/presentation/view/register.dart';

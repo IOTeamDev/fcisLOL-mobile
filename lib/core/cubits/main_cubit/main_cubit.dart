@@ -1,10 +1,12 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lol/core/models/current_user/current_user_model.dart';
 import 'package:lol/core/models/leaderboard/leaderboard_model.dart';
+import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit.dart';
 import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit_states.dart';
 import 'package:lol/core/utils/components.dart';
@@ -19,6 +21,8 @@ import 'package:lol/core/utils/navigation.dart';
 import 'package:lol/core/network/local/shared_prefrence.dart';
 import 'package:lol/core/models/admin/requests_model.dart';
 import 'package:lol/core/models/admin/announcement_model.dart';
+
+import '../../utils/resources/values_manager.dart';
 
 //uid null?
 class MainCubit extends Cubit<MainCubitStates> {
@@ -43,17 +47,17 @@ class MainCubit extends Cubit<MainCubitStates> {
   var picker = ImagePicker();
   getUserImage({required bool fromGallery}) async {
     emit(GetUserImageLoading());
-    const int maxStorageLimit = 1000000000; // 1 GB in bytes
+    //const int maxStorageLimit = 1000000000; // 1 GB in bytes
 
     var tempPostImage = await picker.pickImage(
         source: fromGallery ? ImageSource.gallery : ImageSource.camera);
     if (tempPostImage != null) {
       userImageFile = File(tempPostImage.path);
       final int sizeInBytes = await userImageFile!.length();
-      final int sizeInMB = sizeInBytes ~/ (1024 * 1024);
+      final int sizeInMB = sizeInBytes ~/ sqrt(AppSizes.s1024);
       print(sizeInBytes);
       print(sizeInMB);
-      if (sizeInMB <= 1) {
+      if (sizeInMB <= AppSizes.s1) {
         emit(GetUserImageSuccess());
       } else {
         userImageFile = null;
@@ -64,8 +68,8 @@ class MainCubit extends Cubit<MainCubitStates> {
     }
   }
 
-  File? AnnouncementImageFile;
-  String? AnnouncementImagePath;
+  File? announcementImageFile;
+  String? announcementImagePath;
   IconData? pickerIcon;
   String? imageName;
   getAnnouncementImage() async {
@@ -73,40 +77,40 @@ class MainCubit extends Cubit<MainCubitStates> {
 
     var tempPostImage = await picker.pickImage(source: ImageSource.gallery);
     if (tempPostImage != null) {
-      AnnouncementImageFile = File(tempPostImage.path);
+      announcementImageFile = File(tempPostImage.path);
       pickerIcon = Icons.close;
-      imageName = tempPostImage.path.split('/').last;
-      final int sizeInBytes = await AnnouncementImageFile!.length();
-      final int sizeInMB = sizeInBytes ~/ (1024 * 1024);
+      imageName = tempPostImage.path.split(StringsManager.forwardSlash).last;
+      final int sizeInBytes = await announcementImageFile!.length();
+      final int sizeInMB = sizeInBytes ~/ sqrt(AppSizes.s1024);
       print(sizeInBytes);
       print(sizeInMB);
-      if (sizeInMB <= 1) {
+      if (sizeInMB <= AppSizes.s1) {
         pickerIcon = Icons.clear;
         showToastMessage(
-            message: 'Imaged Picked Successfully', states: ToastStates.SUCCESS);
+            message: StringsManager.imgPickedSuccessfully, states: ToastStates.SUCCESS);
         emit(GetAnnouncementImageSuccess());
       } else {
         showToastMessage(
-            message: 'Image Limit Exceeded', states: ToastStates.WARNING);
-        imageName = 'Select Image';
+            message: StringsManager.imgLimitExceeded, states: ToastStates.WARNING);
+        imageName = StringsManager.selectImage;
         pickerIcon = Icons.image;
-        AnnouncementImageFile = null;
+        announcementImageFile = null;
         emit(GetAnnouncementLimitExceed());
       }
     } else {
       pickerIcon = Icons.image;
-      imageName = 'Select Image';
+      imageName = StringsManager.selectImage;
       emit(GetAnnouncementImageFailure());
     }
   }
 
-  Future<void> UploadPImage({File? image, bool isUserProfile = true}) async {
-    AnnouncementImagePath = null;
+  Future<void> uploadPImage({File? image, bool isUserProfile = true}) async {
+    announcementImagePath = null;
     emit(UploadImageLoading());
     if (image == null) return;
 
     showToastMessage(
-        message: 'Uploading your photo', states: ToastStates.WARNING);
+        message: StringsManager.uploadImage, states: ToastStates.WARNING);
     final TaskSnapshot uploadTask;
     if (isUserProfile) {
       uploadTask = await FirebaseStorage.instance
@@ -125,7 +129,7 @@ class MainCubit extends Cubit<MainCubitStates> {
       if (isUserProfile) {
         userImagePath = imagePath;
       } else {
-        AnnouncementImagePath = imagePath;
+        announcementImagePath = imagePath;
       }
       emit(UploadImageSuccess());
     } on Exception {
@@ -154,7 +158,7 @@ class MainCubit extends Cubit<MainCubitStates> {
   getotherProfile(id) {
     emit(GetProfileLoading());
     otherProfile = null;
-    DioHelp.getData(path: USERS, query: {'id': id, 'haveMaterial': true}).then(
+    DioHelp.getData(path: USERS, query: {KeysManager.id: id, KeysManager.haveMaterial: true}).then(
       (value) {
         otherProfile = ProfileModel.fromJson(value.data);
 
@@ -164,15 +168,15 @@ class MainCubit extends Cubit<MainCubitStates> {
   }
 
   void logout(context) {
-    Cache.removeValue(key: "token");
-    Cache.removeValue(key: "semester"); //SelectedSemester
+    Cache.removeValue(key: KeysManager.token);
+    Cache.removeValue(key: KeysManager.semester); //SelectedSemester
     Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
           builder: (context) => ChoosingYear(loginCubit: LoginCubit()),
         ), //removing all background screens
         (route) => false);
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(Duration(seconds: AppSizes.s1), () {
       AppConstants.TOKEN = null;
       AppConstants.SelectedSemester = null;
     });
@@ -184,7 +188,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     emit(GetRequestsLoadingState());
     DioHelp.getData(
         path: MATERIAL,
-        query: {'semester': semester, 'accepted': isAccepted}).then((value) {
+        query: {KeysManager.semester: semester, KeysManager.accepted: isAccepted}).then((value) {
       requests = [];
       value.data.forEach((element) {
         requests!.add(RequestsModel.fromJson(element));
@@ -196,7 +200,7 @@ class MainCubit extends Cubit<MainCubitStates> {
 
   void deleteMaterial(int id, semester, {isMaterial = false}) {
     emit(DeleteMaterialLoadingState());
-    DioHelp.deleteData(path: MATERIAL, data: {'id': id}, token: AppConstants.TOKEN)
+    DioHelp.deleteData(path: MATERIAL, data: {KeysManager.id: id}, token: AppConstants.TOKEN)
         .then((value) {
       emit(DeleteMaterialSuccessState());
       getRequests(semester: semester, isAccepted: isMaterial);
@@ -206,7 +210,7 @@ class MainCubit extends Cubit<MainCubitStates> {
   void acceptRequest(int id, semester) {
     emit(AcceptRequestLoadingState());
     DioHelp.getData(
-            path: ACCEPT, query: {'id': id, 'accepted': true}, token: AppConstants.TOKEN)
+            path: ACCEPT, query: {KeysManager.id: id, KeysManager.accepted: true}, token: AppConstants.TOKEN)
         .then((value) {
       emit(AcceptRequestSuccessState());
       getRequests(semester: semester);
@@ -218,7 +222,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     announcements = null;
     print(AppConstants.SelectedSemester.toString());
     emit(GetAnnouncementsLoadingState());
-    DioHelp.getData(path: ANNOUNCEMENTS, query: {'semester': semester})
+    DioHelp.getData(path: ANNOUNCEMENTS, query: {KeysManager.semester: semester})
         .then((value) {
       announcements = [];
       value.data.forEach((element) {
@@ -247,15 +251,15 @@ class MainCubit extends Cubit<MainCubitStates> {
     DioHelp.putData(
         path: ANNOUNCEMENTS,
         data: {
-          'title': title ?? "",
-          'content': content ?? "",
-          'due_date': dueDate,
+          StringsManager.title : title ?? "",
+          StringsManager.content : content ?? "",
+          StringsManager.dueDate : dueDate,
           //'type': type,
           //'semester': currentSemester,
           //'image': image,
         },
         token: AppConstants.TOKEN,
-        query: {'id': id}).then((value) {
+        query: {KeysManager.id: id}).then((value) {
       // Assuming the response returns the updated announcement
       AnnouncementModel updatedAnnouncement =
           AnnouncementModel.fromJson(value.data);
@@ -263,7 +267,7 @@ class MainCubit extends Cubit<MainCubitStates> {
       // Update the local announcements list
       if (announcements != null) {
         int index = announcements!.indexWhere((ann) => ann.id == id);
-        if (index != -1) {
+        if (index != AppSizes.s1N) {
           announcements![index] = updatedAnnouncement;
         }
       }
@@ -278,7 +282,7 @@ class MainCubit extends Cubit<MainCubitStates> {
 
   Future<void> getScore4User(int userId) async {
     score4User = null;
-    print("${leaderboardModel!.length}dsmksdjkl");
+    //print("${leaderboardModel!.length}dsmksdjkl");
     for (int i = 0; i < leaderboardModel!.length; i++) {
       if (leaderboardModel![i].id == userId) {
         score4User = leaderboardModel![i];
@@ -301,7 +305,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     notAdminLeaderboardModel = null;
     leaderboardModel = null;
     emit(GetLeaderboardLoadingState());
-    DioHelp.getData(path: LEADERBOARD, query: {'semester': currentSemester})
+    DioHelp.getData(path: LEADERBOARD, query: {KeysManager.semester: currentSemester})
         .then((value) {
       leaderboardModel = [];
       notAdminLeaderboardModel = [];
@@ -309,7 +313,7 @@ class MainCubit extends Cubit<MainCubitStates> {
         // exclude the admin
         leaderboardModel?.add(LeaderboardModel.fromJson(
             element)); //just to get the score of Admin
-        if (element['role'] != "ADMIN") {
+        if (element[StringsManager.role] != StringsManager.ADMIN) {
           notAdminLeaderboardModel?.add(LeaderboardModel.fromJson(element));
           //print('leaderboard size ${notAdminLeaderboardModel!.first}');
         }
@@ -320,7 +324,7 @@ class MainCubit extends Cubit<MainCubitStates> {
       if (profileModel != null) {
         getScore4User(profileModel!.id);
       } else {
-        print("object");
+       // print("object");
       }
       emit(GetLeaderboardSuccessState());
     }).catchError((onError) {
@@ -332,22 +336,22 @@ class MainCubit extends Cubit<MainCubitStates> {
   }
 
   void updateSemester4all() {
-    DioHelp.getData(path: "users").then((onValue) {
+    DioHelp.getData(path: KeysManager.users).then((onValue) {
       onValue.data.forEach((element) {
-        if (element['semester'] == "One") {
-          updateUser(userID: element['id'], semester: "Two");
+        if (element[KeysManager.semester] == StringsManager.one) {
+          updateUser(userID: element[KeysManager.id], semester: StringsManager.two);
         }
-        if (element['semester'] == "Two") {
-          updateUser(userID: element['id'], semester: "Three");
+        if (element[KeysManager.semester] == StringsManager.two) {
+          updateUser(userID: element[KeysManager.id], semester: StringsManager.three);
         }
-        if (element['semester'] == "Three") {
-          updateUser(userID: element['id'], semester: "Four");
+        if (element[KeysManager.semester] == StringsManager.three) {
+          updateUser(userID: element[KeysManager.id], semester:StringsManager.four);
         }
-        if (element['semester'] == "Four") {
-          updateUser(userID: element['id'], semester: "Five");
+        if (element[KeysManager.semester] == StringsManager.four) {
+          updateUser(userID: element[KeysManager.id], semester: StringsManager.five);
         }
-        if (element['semester'] == "Five") {
-          updateUser(userID: element['id'], semester: "Six");
+        if (element[KeysManager.semester] == StringsManager.five) {
+          updateUser(userID: element[KeysManager.id], semester: StringsManager.six);
         }
       });
 
@@ -363,14 +367,14 @@ class MainCubit extends Cubit<MainCubitStates> {
   }) {
     DioHelp.putData(
         token: AppConstants.TOKEN,
-        query: {'id': userID},
-        path: "users",
+        query: {KeysManager.id: userID},
+        path: KeysManager.users,
         data: {
-          if (semester != null) 'semester': semester,
-          if (fcmToken != null) 'fcmToken': fcmToken,
-          if (photo != null) 'photo': photo
+          if (semester != null) KeysManager.semester: semester,
+          if (fcmToken != null) KeysManager.fcmToken: fcmToken,
+          if (photo != null) KeysManager.photo: photo
         }).then((val) {
-      print(val.data['id']);
+      print(val.data[KeysManager.id]);
       emit(UpdateUserSuccessState());
     }).catchError((erro) {
       print(erro.toString());
