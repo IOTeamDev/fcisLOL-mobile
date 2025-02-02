@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
+import 'package:lol/core/utils/resources/strings_manager.dart';
+import 'package:lol/core/utils/resources/values_manager.dart';
 import '../utils/components.dart';
+import '../utils/resources/colors_manager.dart';
 import '../utils/resources/constants_manager.dart';
 
 class ErrorScreen extends StatelessWidget {
@@ -11,12 +13,12 @@ class ErrorScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          padding: EdgeInsets.only(top: 20),
+          padding: EdgeInsets.only(top: AppSizesDouble.s20),
           child: Column(
             children: [
               Positioned(
-                left: 0,
-                top: 0,
+                left: AppSizesDouble.s0,
+                top: AppSizesDouble.s0,
                 child: backButton(context),
               ),
               Expanded(
@@ -26,15 +28,15 @@ class ErrorScreen extends StatelessWidget {
                   children: [
                     Center(
                       child: Text(
-                        '404',
+                        StringsManager.notFoundErrorCode,
                         style: TextStyle(
-                            fontSize: AppQueries.screenWidth(context) / 4,
-                            color: HexColor('#FF6A71'),
+                            fontSize: AppQueries.screenWidth(context) / AppSizes.s4,
+                            color: ColorsManager.imperialRed,
                             fontWeight: FontWeight.bold),
                       ),
                     ),
                     Text(
-                      'This link is Corrupted',
+                      StringsManager.thisLinkIsCorrupted,
                       style: TextStyle(
                           fontSize: AppQueries.screenWidth(context) / 17, fontWeight: FontWeight.bold),
                     ),

@@ -135,7 +135,6 @@ class MainCubit extends Cubit<MainCubitStates> {
       emit(UploadImageSuccess());
     } on Exception {
       emit(UploadImageFailure());
-      // // TODO
     }
   }
 
@@ -283,7 +282,7 @@ class MainCubit extends Cubit<MainCubitStates> {
 
   Future<void> getScore4User(int userId) async {
     score4User = null;
-    //print("${leaderboardModel!.length}dsmksdjkl");
+    //print("${leaderboardModel!.length}");
     for (int i = 0; i < leaderboardModel!.length; i++) {
       if (leaderboardModel![i].id == userId) {
         score4User = leaderboardModel![i];
@@ -357,7 +356,7 @@ class MainCubit extends Cubit<MainCubitStates> {
       });
 
       emit(GetUserImageSuccess());
-    }).catchError((onError));
+    });
   }
 
   updateUser({

@@ -15,6 +15,8 @@ class StringsManager{
   static const String four = 'Four';
   static const String five = 'Five';
   static const String six = 'Six';
+  static const String notFoundErrorCode = '404';
+  static const String thisLinkIsCorrupted = 'This link is Corrupted';
 }
 
 class KeysManager{
