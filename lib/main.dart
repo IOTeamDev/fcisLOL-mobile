@@ -6,6 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
+import 'package:lol/features/admin/presentation/view/announcements/add_announcement.dart';
 import 'package:lol/features/home/presentation/view/semester_navigate.dart';
 import 'package:lol/features/profile/view/other_profile.dart';
 import 'package:lol/features/auth/data/models/login_model.dart';
@@ -20,7 +21,7 @@ import 'package:lol/features/subject/presentation/screens/subject_details.dart';
 import 'package:lol/features/support_and_about_us/about_us.dart';
 import 'package:lol/features/support_and_about_us/user_advices/feedback_screen.dart';
 import 'package:lol/core/utils/dependencies_helper.dart';
-import 'package:lol/core/network/local/shared_prefrence.dart';
+import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:lol/core/network/remote/fcm_helper.dart';
 import 'package:provider/provider.dart';
 import 'features/auth/presentation/view_model/login_cubit/login_cubit.dart';
@@ -82,7 +83,7 @@ main() async {
     changeSemester = onValue.data()?["changeSemester"] ?? false;
     noMoreStorage = onValue.data()?["noMoreStorage"] ?? false;
     apiKey = onValue.data()?["apiKey"];
-    print("$changeSemester seememmemememmem");
+    print("$changeSemester");
   });
 
   await FirebaseFirestore.instance
@@ -113,8 +114,7 @@ main() async {
   AppConstants.TOKEN = await Cache.readData(key: "token");
   //print('token=>>>>>>>>>>>>>>>>>>>>>>>>$TOKEN');
   AppConstants.SelectedSemester = await Cache.readData(key: "semester");
-  bool isOnBoardFinished =
-      await Cache.readData(key: "FinishedOnBoard") ?? false;
+  bool isOnBoardFinished = await Cache.readData(key: "FinishedOnBoard") ?? false;
 
   // TOKEN = null;//
   final Widget startPage;
@@ -177,7 +177,7 @@ class App extends StatelessWidget {
         child: Consumer<ThemeProvide>(builder: (context, value, child) {
           // AdminCubit.get(context).getFcmTokens();
           return MaterialApp(
-            home: startPage,
+            home: AddAnnouncement(semester: AppConstants.SelectedSemester??'Three'),
             debugShowCheckedModeBanner: false,
             theme: isDark ? ThemeData.dark() : ThemeData.light(),
           );

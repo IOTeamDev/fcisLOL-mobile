@@ -13,7 +13,7 @@ import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/features/profile/view/profile.dart';
 import 'package:lol/core/utils/navigation.dart';
-import 'package:lol/core/network/local/shared_prefrence.dart';
+import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends StatelessWidget {

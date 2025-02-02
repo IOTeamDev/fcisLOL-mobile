@@ -33,7 +33,7 @@ import 'package:lol/features/profile/view/profile.dart';
 import 'package:lol/main.dart';
 import 'package:lol/core/utils/navigation.dart';
 import 'package:lol/core/utils/dependencies_helper.dart';
-import 'package:lol/core/network/local/shared_prefrence.dart';
+import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -66,125 +66,120 @@ class Home extends StatelessWidget {
         ),
       ],
       child:
-          BlocConsumer<MainCubit, MainCubitStates>(listener: (context, state) {
-        if (state is Logout) {
-          showToastMessage(
-            message: "Logout Successfully",
-            // context: context,
-            states: ToastStates.SUCCESS,
-            // titleWidget: const
-          );
-        }
-      }, builder: (context, state) {
-        bool wannaAnnouncements = true;
-        print('$wannaAnnouncements wanna announcement ');
+          BlocConsumer<MainCubit, MainCubitStates>(
+            listener: (context, state) {
+              if (state is Logout) {
+                showToastMessage(
+                  message: "Logout Successfully",
+                  // context: context,
+                  states: ToastStates.SUCCESS,
+                  // titleWidget: const
+                );
+              }
+            },
+            builder: (context, state) {
+              bool wannaAnnouncements = true;
+              print('$wannaAnnouncements wanna announcement ');
 
-        List<AnnouncementModel>? announcements =
-            AdminCubit.get(context).announcements;
+              List<AnnouncementModel>? announcements =
+              AdminCubit.get(context).announcements;
 
-        if (announcements != null && announcements.isNotEmpty) {
-          print("${announcements[0].title} dfggdfghghfdfgh");
-        } else {
-          print("Announcements are null or empty");
-        }
-        if (state is GetProfileSuccess) {
-          if (MainCubit.get(context).profileModel!.photo == null) {
-            print("null");
-            MainCubit.get(context).updateUser(
+              if (announcements != null && announcements.isNotEmpty) {
+                print("${announcements[0].title} dfggdfghghfdfgh");
+              } else {
+                print("Announcements are null or empty");
+              }
+            if (state is GetProfileSuccess) {
+              if (MainCubit.get(context).profileModel!.photo == null) {
+                print("null");
+                MainCubit.get(context).updateUser(
+                  userID: MainCubit.get(context).profileModel!.id,
+                  photo:
+                  "https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/images%2Fdefault-avatar-icon-of-social-media-user-vector.jpg?alt=media&token=5fc138d2-3919-4854-888e-2d8fec45d555");
+              }
+              MainCubit.get(context).updateUser(
                 userID: MainCubit.get(context).profileModel!.id,
-                photo:
-                    "https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/images%2Fdefault-avatar-icon-of-social-media-user-vector.jpg?alt=media&token=5fc138d2-3919-4854-888e-2d8fec45d555");
-          }
-          MainCubit.get(context).updateUser(
-              userID: MainCubit.get(context).profileModel!.id,
-              fcmToken: fcmToken);
-        }
+                fcmToken: fcmToken
+              );
+            }
 
-        if ((state is GetProfileSuccess || AppConstants.TOKEN == null) &&
-            wannaAnnouncements) {
-          if (AppConstants.TOKEN == null) {
-            BlocProvider.of<AdminCubit>(context)
-                .getAnnouncements(AppConstants.SelectedSemester!);
-          } else {
-            BlocProvider.of<AdminCubit>(context).getAnnouncements(
-                MainCubit.get(context).profileModel!.semester);
-          }
-          wannaAnnouncements = false;
+            if ((state is GetProfileSuccess || AppConstants.TOKEN == null) &&
+                wannaAnnouncements) {
+              if (AppConstants.TOKEN == null) {
+                BlocProvider.of<AdminCubit>(context)
+                    .getAnnouncements(AppConstants.SelectedSemester!);
+              } else {
+                BlocProvider.of<AdminCubit>(context).getAnnouncements(
+                    MainCubit.get(context).profileModel!.semester);
+              }
+              wannaAnnouncements = false;
 
-          if (announcements != null && announcements.isNotEmpty) {
-            print(announcements[0].title);
-          } else {
-            print("Announcements are null");
-          }
-        }
-        print('$wannaAnnouncements wanna announcement ');
+              if (announcements != null && announcements.isNotEmpty) {
+                print(announcements[0].title);
+              } else {
+                print("Announcements are null");
+              }
+            }
+            print('$wannaAnnouncements wanna announcement ');
 
-        ProfileModel? profile;
-        int? semesterIndex;
+            ProfileModel? profile;
+            int? semesterIndex;
 
-        // SelectedSemester = "Two";
-        if (MainCubit.get(context).profileModel != null) {
-          profile = MainCubit.get(context).profileModel!;
-          print(profile.name);
-        }
+            // SelectedSemester = "Two";
+            if (MainCubit.get(context).profileModel != null) {
+              profile = MainCubit.get(context).profileModel!;
+              print(profile.name);
+            }
 
-        if (profile != null) {
-          semesterIndex = semsesterIndex(profile.semester);
-        } else if (AppConstants.TOKEN == null) {
-          semesterIndex = semsesterIndex(AppConstants.SelectedSemester!);
-        }
+            if (profile != null) {
+              semesterIndex = semsesterIndex(profile.semester);
+            } else if (AppConstants.TOKEN == null) {
+              semesterIndex = semsesterIndex(AppConstants.SelectedSemester!);
+            }
 
-        // print("$semesterIndex index");
-        return profile == null && AppConstants.TOKEN != null
+            return profile == null && AppConstants.TOKEN != null
             ? const Scaffold(
-                //backgroundColor: Color(0xff1B262C),
-                body: Center(child: CircularProgressIndicator()),
+              body: Center(child: CircularProgressIndicator()),
               )
             : Scaffold(
                 key: scaffoldKey,
-                // backgroundColor: Color(0xffE1E1E1),
-                drawer: CustomDrawer(
-                    context,
-                    AppConstants.TOKEN == null
-                        ? AppConstants.SelectedSemester
-                        : MainCubit.get(context).profileModel!.semester),
-                body: profile == null && AppConstants.TOKEN != null
-                    ? const Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : SingleChildScrollView(
-                        child: SafeArea(
-                          child: Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+              drawer: CustomDrawer(
+                context,
+                AppConstants.TOKEN == null ?
+                  AppConstants.SelectedSemester :
+                  MainCubit.get(context).profileModel!.semester),
+              body: profile == null && AppConstants.TOKEN != null ?
+                const Center(child: CircularProgressIndicator(),) :
+                SingleChildScrollView(
+                  child: SafeArea(
+                    child: Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Row(
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(20),
-                                  child: Row(
-                                    children: [
-                                      MaterialButton(
-                                          padding: EdgeInsets.zero,
-                                          minWidth: 0,
-                                          materialTapTargetSize:
-                                              MaterialTapTargetSize.shrinkWrap,
-                                          onPressed: () {
-                                            // MainCubit.get(context).openDrawerState();
-                                            if ((AppConstants.TOKEN != null &&
-                                                    profile != null) ||
-                                                AppConstants.TOKEN == null) {
-                                              scaffoldKey.currentState!
-                                                  .openDrawer(); // Use key to open the drawer
-                                            }
-                                          },
-                                          child: Image.asset(
-                                            !isDark
-                                                ? "images/mage_dashboard-fill-1.png"
-                                                : "images/mage_dashboard-fill.png",
-                                            width: 25,
-                                            height: 25,
-                                          )),
-                                      Expanded(
+                                MaterialButton(
+                                  padding: EdgeInsets.zero,
+                                  minWidth: 0,
+                                  materialTapTargetSize:
+                                  MaterialTapTargetSize.shrinkWrap,
+                                  onPressed: () {
+                                    if ((AppConstants.TOKEN != null &&
+                                        profile != null) ||
+                                        AppConstants.TOKEN == null) {
+                                        scaffoldKey.currentState!.openDrawer(); // Use key to open the drawer
+                                    }
+                                  },
+                                  child: Image.asset(
+                                    !isDark ? "images/mage_dashboard-fill-1.png" : "images/mage_dashboard-fill.png",
+                                    width: 25,
+                                    height: 25,
+                                  )
+                                ),
+                                Expanded(
                                           child: GestureDetector(
                                               onTap: () => navigatReplace(
                                                   context, const Home()),

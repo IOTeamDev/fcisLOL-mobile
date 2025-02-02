@@ -12,7 +12,7 @@ import 'package:lol/features/auth/presentation/view/select_image.dart';
 import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/core/utils/navigation.dart';
-import 'package:lol/core/network/local/shared_prefrence.dart';
+import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class UserInfo {

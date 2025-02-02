@@ -18,7 +18,7 @@ import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/core/network/endpoints.dart';
 import 'package:lol/core/network/remote/dio.dart';
 import 'package:lol/core/utils/navigation.dart';
-import 'package:lol/core/network/local/shared_prefrence.dart';
+import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:lol/core/models/admin/requests_model.dart';
 import 'package:lol/core/models/admin/announcement_model.dart';
 

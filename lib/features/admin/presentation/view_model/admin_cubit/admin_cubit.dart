@@ -21,7 +21,7 @@ import 'package:lol/core/network/remote/fcm_helper.dart';
 import '../../../../../core/models/profile/profile_model.dart';
 import '../../../../../core/utils/resources/constants_manager.dart';
 import '../../../../../core/utils/navigation.dart';
-import '../../../../../core/network/local/shared_prefrence.dart';
+import '../../../../../core/network/local/shared_preference.dart';
 import '../../../../auth/presentation/view_model/login_cubit/login_cubit.dart';
 import '../../../../auth/presentation/view/choosing_year.dart';
 

@@ -11,40 +11,35 @@ class ErrorScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(StringsManager.error),
+        centerTitle: true,
+      ),
       body: SafeArea(
-        child: Container(
-          padding: EdgeInsets.only(top: AppSizesDouble.s20),
-          child: Column(
-            children: [
-              Positioned(
-                left: AppSizesDouble.s0,
-                top: AppSizesDouble.s0,
-                child: backButton(context),
-              ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Center(
-                      child: Text(
-                        StringsManager.notFoundErrorCode,
-                        style: TextStyle(
-                            fontSize: AppQueries.screenWidth(context) / AppSizes.s4,
-                            color: ColorsManager.imperialRed,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Text(
-                      StringsManager.thisLinkIsCorrupted,
+        child: Column(
+          children: [
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Center(
+                    child: Text(
+                      StringsManager.notFoundErrorCode,
                       style: TextStyle(
-                          fontSize: AppQueries.screenWidth(context) / 17, fontWeight: FontWeight.bold),
+                          fontSize: AppQueries.screenWidth(context) / AppSizes.s4,
+                          color: ColorsManager.imperialRed,
+                          fontWeight: FontWeight.bold),
                     ),
-                  ],
-                ),
+                  ),
+                  Text(
+                    StringsManager.thisLinkIsCorrupted,
+                    style: TextStyle(fontSize: AppQueries.screenWidth(context) / AppSizes.s17, fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

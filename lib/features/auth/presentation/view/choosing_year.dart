@@ -11,7 +11,7 @@ import 'package:lol/features/auth/presentation/view/register.dart';
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/core/utils/navigation.dart';
-import 'package:lol/core/network/local/shared_prefrence.dart';
+import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:lol/core/network/remote/fcm_helper.dart';
 
 import '../../../../core/utils/resources/constants_manager.dart';
@@ -316,8 +316,7 @@ class YearState extends State<Year> {
                           );
                         } else {
                           AppConstants.SelectedSemester = switchSemester;
-                          Cache.writeData(
-                              key: "semester", value: AppConstants.SelectedSemester);
+                          Cache.writeData(key: "semester", value: AppConstants.SelectedSemester);
 
                           navigatReplace(context, const Home());
                         }
