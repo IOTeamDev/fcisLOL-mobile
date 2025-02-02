@@ -6,8 +6,9 @@ import 'package:lol/main.dart';
 import 'package:lol/features/subject/data/models/material_model.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/remove_button.dart';
 import 'package:lol/core/utils/components.dart';
-import 'package:lol/core/utils/constants.dart';
 import 'package:lol/core/utils/navigation.dart';
+
+import '../../../../../core/utils/resources/constants_manager.dart';
 
 class GridTileWidget extends StatelessWidget {
   const GridTileWidget({super.key, required this.video});
@@ -62,7 +63,7 @@ class GridTileWidget extends StatelessWidget {
                       Text(
                         '${video.title}',
                         style: TextStyle(
-                          fontSize: screenWidth(context) / 18,
+                          fontSize: AppQueries.screenWidth(context) / 18,
                           color: Colors.white,
                         ),
                         maxLines: 3,
@@ -74,7 +75,7 @@ class GridTileWidget extends StatelessWidget {
                               child: Text(
                                 'Shared by: ${video.author!.authorName}',
                                 style: TextStyle(
-                                  fontSize: screenWidth(context) / 30,
+                                  fontSize: AppQueries.screenWidth(context) / 30,
                                   color: Colors.white,
                                 ),
                                 maxLines: 1,
@@ -93,21 +94,21 @@ class GridTileWidget extends StatelessWidget {
                                   Text(
                                     'Shared by:  ',
                                     style: TextStyle(
-                                      fontSize: screenWidth(context) / 30,
+                                      fontSize: AppQueries.screenWidth(context) / 30,
                                       color: Colors.white,
                                     ),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   CircleAvatar(
-                                    radius: screenWidth(context) / 25,
+                                    radius: AppQueries.screenWidth(context) / 25,
                                     backgroundImage: NetworkImage(
                                         '${video.author!.authorPhoto}'),
                                   ),
                                   Text(
                                     '  ${video.author!.authorName}',
                                     style: TextStyle(
-                                      fontSize: screenWidth(context) / 30,
+                                      fontSize: AppQueries.screenWidth(context) / 30,
                                       color: Colors.white,
                                     ),
                                     maxLines: 1,
@@ -122,7 +123,7 @@ class GridTileWidget extends StatelessWidget {
               ],
             ),
             if (MainCubit.get(context).profileModel?.role == 'ADMIN' &&
-                TOKEN != null)
+                AppConstants.TOKEN != null)
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Align(

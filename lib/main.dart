@@ -29,7 +29,7 @@ import 'features/auth/presentation/view/onboarding.dart';
 import 'features/auth/presentation/view/register.dart';
 import 'features/auth/presentation/view/select_image.dart';
 import 'features/leaderboard/presentation/view/leaderboard_view.dart';
-import 'core/utils/constants.dart';
+import 'core/utils/resources/constants_manager.dart';
 import 'features/auth/presentation/view/choosing_year.dart';
 import 'features/profile/view/profile.dart';
 import 'features/subject/presentation/cubit/subject_cubit.dart';
@@ -110,9 +110,9 @@ main() async {
   Bloc.observer = MyBlocObserver();
   isDark = await Cache.readData(key: "mode") ?? false;
 
-  TOKEN = await Cache.readData(key: "token");
-  print('token=>>>>>>>>>>>>>>>>>>>>>>>>$TOKEN');
-  SelectedSemester = await Cache.readData(key: "semester");
+  AppConstants.TOKEN = await Cache.readData(key: "token");
+  //print('token=>>>>>>>>>>>>>>>>>>>>>>>>$TOKEN');
+  AppConstants.SelectedSemester = await Cache.readData(key: "semester");
   bool isOnBoardFinished =
       await Cache.readData(key: "FinishedOnBoard") ?? false;
 
@@ -121,7 +121,7 @@ main() async {
   if (!isOnBoardFinished) {
     startPage = const OnBoarding();
   } else {
-    if (SelectedSemester == null && TOKEN == null) {
+    if (AppConstants.SelectedSemester == null && AppConstants.TOKEN == null) {
       startPage = ChoosingYear(
         loginCubit: LoginCubit(),
       );
@@ -171,7 +171,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-          BlocProvider(create: (BuildContext context) => MainCubit()),
+          BlocProvider(create: (BuildContext context) => MainCubit()..getProfileInfo()),
           BlocProvider(create: (BuildContext context) => AdminCubit()),
         ],
         child: Consumer<ThemeProvide>(builder: (context, value, child) {

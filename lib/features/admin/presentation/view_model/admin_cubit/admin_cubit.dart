@@ -19,7 +19,7 @@ import 'package:lol/core/network/endpoints.dart';
 import 'package:lol/core/network/remote/dio.dart';
 import 'package:lol/core/network/remote/fcm_helper.dart';
 import '../../../../../core/models/profile/profile_model.dart';
-import '../../../../../core/utils/constants.dart';
+import '../../../../../core/utils/resources/constants_manager.dart';
 import '../../../../../core/utils/navigation.dart';
 import '../../../../../core/network/local/shared_prefrence.dart';
 import '../../../../auth/presentation/view_model/login_cubit/login_cubit.dart';
@@ -105,7 +105,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
               'semester': currentSemester,
               'image': image
             },
-            token: TOKEN)
+            token: AppConstants.TOKEN)
         .then((value) {
       sendNotificationToUsers(
           semester: currentSemester,
@@ -147,7 +147,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
           'type': type,
           'semester': currentSemester
         },
-        token: TOKEN,
+        token: AppConstants.TOKEN,
         query: {'id': int.parse(id)}).then((value) {
       print(value.data);
       // Assuming the response returns the updated announcement
@@ -169,7 +169,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
 
   void deleteAnnouncement(int id, semester) {
     emit(AdminDeleteAnnouncementLoadingState());
-    DioHelp.deleteData(path: ANNOUNCEMENTS, token: TOKEN, query: {'id': id})
+    DioHelp.deleteData(path: ANNOUNCEMENTS, token: AppConstants.TOKEN, query: {'id': id})
         .then((value) {
       emit(AdminDeleteAnnouncementSuccessState());
       getAnnouncements(semester);

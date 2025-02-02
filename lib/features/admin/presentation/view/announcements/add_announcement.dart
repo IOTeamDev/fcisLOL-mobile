@@ -9,7 +9,7 @@ import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cub
 
 import 'package:lol/features/admin/presentation/view/announcements/announcement_detail.dart';
 import 'package:lol/features/admin/presentation/view/announcements/edit_announcement.dart';
-import 'package:lol/core/utils/constants.dart';
+import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/core/utils/webview_screen.dart';
 import 'package:lol/core/utils/navigation.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
@@ -68,15 +68,13 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
           }
         },
         builder: (context, state) {
-          double width = screenWidth(context);
-          double height = screenHeight(context);
           var cubit = AdminCubit.get(context);
           return Scaffold(
             //backgroundColor: HexColor('#23252A'),
             body: Container(
               padding: EdgeInsets.all(5),
               margin:
-                  EdgeInsetsDirectional.only(top: screenHeight(context) / 10),
+                  EdgeInsetsDirectional.only(top: AppQueries.screenHeight(context) / 10),
               width: double.infinity,
               child: SingleChildScrollView(
                 child: Column(
@@ -92,7 +90,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                             child: Text(
                           'Announcements',
                           style: TextStyle(
-                            fontSize: width / 13,
+                            fontSize: AppQueries.screenWidth(context) / 13,
                           ),
                           textAlign: TextAlign.center,
                         )),
@@ -271,7 +269,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                 ),
                                               ),
                                               SizedBox(
-                                                width: width / 10,
+                                                width: AppQueries.screenWidth(context) / 10,
                                               ),
                                               //Announcement type Drop Down menu
                                               DropdownButton<String>(
@@ -334,7 +332,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                           Container(
                                               padding: EdgeInsetsDirectional
                                                   .symmetric(horizontal: 15),
-                                              width: width / 2,
+                                              width: AppQueries.screenWidth(context) / 2,
                                               height: 50,
                                               decoration: BoxDecoration(
                                                 color: Colors.white,
@@ -356,7 +354,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                         constraints:
                                                             BoxConstraints(
                                                                 maxWidth:
-                                                                    width / 4),
+                                                                AppQueries.screenWidth(context) / 4),
                                                         child: Text(
                                                           cubit.imageName,
                                                           style: TextStyle(
@@ -443,11 +441,11 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                         EdgeInsetsDirectional
                                                             .symmetric(
                                                                 horizontal:
-                                                                    width / 10),
+                                                                AppQueries.screenWidth(context) / 10),
                                                     backgroundColor:
                                                         Colors.white,
                                                     textStyle: TextStyle(
-                                                        fontSize: width / 17),
+                                                        fontSize: AppQueries.screenWidth(context) / 17),
                                                   ),
                                                   child: const Text(
                                                     'Cancel',
@@ -537,7 +535,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                           EdgeInsetsDirectional
                                                               .symmetric(
                                                                   horizontal:
-                                                                      width /
+                                                                  AppQueries.screenWidth(context) /
                                                                           10),
                                                       backgroundColor:
                                                           Color.fromARGB(255,
@@ -545,7 +543,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                       foregroundColor:
                                                           Colors.white,
                                                       textStyle: TextStyle(
-                                                          fontSize: width / 17),
+                                                          fontSize: AppQueries.screenWidth(context) / 17),
                                                     ),
                                                     child:
                                                         const Text('Submit')),
@@ -603,13 +601,13 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                       fallback: (context) {
                         if (state is AdminGetAnnouncementLoadingState) {
                           return SizedBox(
-                            height: height / 1.5,
+                            height: AppQueries.screenHeight(context) / 1.5,
                             child: const Center(
                                 child: CircularProgressIndicator()),
                           );
                         } else {
                           return SizedBox(
-                            height: height / 1.5,
+                            height: AppQueries.screenHeight(context) / 1.5,
                             child: Center(
                               child: Text(
                                 'You have no announcements yet!!!',
@@ -660,7 +658,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
         child: Row(
           children: [
             ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: screenWidth(context) - 150),
+              constraints: BoxConstraints(maxWidth: AppQueries.screenWidth(context) - 150),
               child: Text(
                 title,
                 style: const TextStyle(fontSize: 18, color: Colors.white),

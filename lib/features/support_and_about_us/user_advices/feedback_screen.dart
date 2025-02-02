@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/core/utils/components.dart';
-import 'package:lol/core/utils/constants.dart';
 import 'package:lol/core/widgets/default_text_field.dart';
 import 'package:lol/core/utils/colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../core/utils/resources/constants_manager.dart';
 import '../../../main.dart';
 
 class FeedbackScreen extends StatelessWidget {
@@ -18,14 +18,12 @@ class FeedbackScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = screenWidth(context);
-    double height = screenHeight(context);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       key: scaffoldKey,
       body: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsetsDirectional.only(top: screenHeight(context) / 10),
+          margin: EdgeInsetsDirectional.only(top: AppQueries.screenHeight(context) / 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -39,7 +37,7 @@ class FeedbackScreen extends StatelessWidget {
                     child: Text(
                       'Feedback',
                       style: TextStyle(
-                        fontSize: width / 10,
+                        fontSize: AppQueries.screenWidth(context) / 10,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -106,10 +104,10 @@ class FeedbackScreen extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(13)),
                         padding: EdgeInsetsDirectional.symmetric(
-                            horizontal: screenWidth(context) / 11),
+                            horizontal: AppQueries.screenWidth(context) / 11),
                         backgroundColor: Colors.white,
                         textStyle:
-                            TextStyle(fontSize: screenWidth(context) / 17),
+                            TextStyle(fontSize: AppQueries.screenWidth(context) / 17),
                       ),
                       child: const Text(
                         'Cancel',
@@ -127,11 +125,11 @@ class FeedbackScreen extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(13)),
                           padding: EdgeInsetsDirectional.symmetric(
-                              horizontal: screenWidth(context) / 11),
+                              horizontal: AppQueries.screenWidth(context) / 11),
                           backgroundColor: Color.fromARGB(255, 20, 130, 220),
                           foregroundColor: Colors.white,
                           textStyle:
-                              TextStyle(fontSize: screenWidth(context) / 17),
+                              TextStyle(fontSize: AppQueries.screenWidth(context) / 17),
                         ),
                         child: const Text('Submit'))
                   ],

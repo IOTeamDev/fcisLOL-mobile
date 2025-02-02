@@ -10,9 +10,8 @@ import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cub
 import 'package:lol/features/admin/presentation/view/announcements/announcement_detail.dart';
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/navigation.dart';
-import 'package:lol/core/utils/colors.dart';
-
-import '../../../../../core/utils/constants.dart';
+import '../../../../../core/utils/resources/colors_manager.dart';
+import '../../../../../core/utils/resources/constants_manager.dart';
 
 class AnnouncementsList extends StatelessWidget {
   final String semester;
@@ -25,14 +24,12 @@ class AnnouncementsList extends StatelessWidget {
       child: BlocConsumer<AdminCubit, AdminCubitStates>(
         listener: (context, state) {},
         builder: (context, state) {
-          double width = screenWidth(context);
-          double height = screenHeight(context);
           var cubit = AdminCubit.get(context);
           return Scaffold(
             //backgroundColor: HexColor('#23252A'),
             body: Container(
               margin:
-                  EdgeInsetsDirectional.only(top: screenHeight(context) / 10),
+                  EdgeInsetsDirectional.only(top: AppQueries.screenHeight(context) / 10),
               width: double.infinity,
               child: SingleChildScrollView(
                 child: Column(
@@ -47,7 +44,7 @@ class AnnouncementsList extends StatelessWidget {
                             child: Text(
                           'Announcements',
                           style: TextStyle(
-                            fontSize: width / 12,
+                            fontSize: AppQueries.screenWidth(context) / 12,
                           ),
                           textAlign: TextAlign.center,
                         )),
@@ -77,12 +74,12 @@ class AnnouncementsList extends StatelessWidget {
                       fallback: (context) {
                         if (state is AdminGetAnnouncementLoadingState) {
                           return SizedBox(
-                            height: height / 1.3,
+                            height: AppQueries.screenHeight(context) / 1.3,
                             child: Center(child: CircularProgressIndicator()),
                           );
                         } else {
                           return SizedBox(
-                            height: height / 1.3,
+                            height: AppQueries.screenHeight(context) / 1.3,
                             child: Center(
                               child: Text(
                                 'You have no announcements yet!!!',
@@ -110,7 +107,7 @@ class AnnouncementsList extends StatelessWidget {
   Widget announcementBuilder(int id, BuildContext context, String title,
       int index, String content, dueDate, type) {
     var random = Random();
-    int rand = random.nextInt(announcementsColorList.length);
+    int rand = random.nextInt(ColorsManager.announcementsColorList.length);
     return GestureDetector(
       onTap: () {
         navigate(
@@ -130,7 +127,7 @@ class AnnouncementsList extends StatelessWidget {
         height: 150,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            color: announcementsColorList[rand]),
+            color: ColorsManager.announcementsColorList[rand]),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lol/core/utils/colors.dart';
 
+import '../utils/resources/colors_manager.dart';
+
 Widget defaultTextField(
     {String? Function(String?)? validateor,
     IconData? dtaPrefIcon,
@@ -73,7 +75,7 @@ Widget customTextFormField(
       }
       return null;
     },
-    style: TextStyle(color: a, fontSize: 20),
+    style: TextStyle(color: ColorsManager.lightCyan, fontSize: 20),
     controller: controller,
     decoration: InputDecoration(
         fillColor: const Color.fromRGBO(217, 217, 217, 0.25),

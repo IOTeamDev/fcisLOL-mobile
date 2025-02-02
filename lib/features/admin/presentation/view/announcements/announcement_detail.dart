@@ -6,7 +6,7 @@ import 'package:linkify/linkify.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit_states.dart';
 import 'package:lol/features/admin/presentation/view/announcements/announcement_detail.dart';
-import 'package:lol/core/utils/constants.dart';
+import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/core/utils/components.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:lol/core/utils/navigation.dart';
@@ -45,13 +45,11 @@ class AnnouncementDetail extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          double width = screenWidth(context);
-          double height = screenHeight(context);
           return Scaffold(
             //backgroundColor: HexColor('#23252A'),
             body: Container(
               margin:
-                  EdgeInsetsDirectional.only(top: screenHeight(context) / 10),
+                  EdgeInsetsDirectional.only(top: AppQueries.screenHeight(context) / 10),
               width: double.infinity,
               child: Column(
                 children: [
@@ -66,7 +64,7 @@ class AnnouncementDetail extends StatelessWidget {
                           child: Text(
                         'Announcement',
                         style: TextStyle(
-                          fontSize: width / 12,
+                          fontSize: AppQueries.screenWidth(context) / 12,
                         ),
                         textAlign: TextAlign.center,
                       )),
@@ -74,7 +72,7 @@ class AnnouncementDetail extends StatelessWidget {
                   ),
                   ConstrainedBox(
                     constraints: BoxConstraints(
-                      maxHeight: screenHeight(context) / 1.4,
+                      maxHeight: AppQueries.screenHeight(context) / 1.4,
                     ),
                     child: Container(
                       margin: const EdgeInsetsDirectional.only(
@@ -93,7 +91,7 @@ class AnnouncementDetail extends StatelessWidget {
                             title,
                             style: TextStyle(
                                 color: Colors.white,
-                                fontSize: width / 13,
+                                fontSize: AppQueries.screenWidth(context) / 13,
                                 fontWeight: FontWeight.bold),
                           ),
                           SizedBox(

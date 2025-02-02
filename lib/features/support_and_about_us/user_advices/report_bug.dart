@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/core/utils/components.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../core/utils/resources/constants_manager.dart';
 import '../../../main.dart';
-import '../../../core/utils/constants.dart';
 
 class ReportBug extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -15,12 +15,10 @@ class ReportBug extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = screenWidth(context);
-    double height = screenHeight(context);
     return Scaffold(
       body: Container(
         width: double.infinity,
-        margin: EdgeInsetsDirectional.only(top: height / 10),
+        margin: EdgeInsetsDirectional.only(top: AppQueries.screenHeight(context) / 10),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -34,7 +32,7 @@ class ReportBug extends StatelessWidget {
                     child: Text(
                       'Report Bug',
                       style: TextStyle(
-                        fontSize: width / 10,
+                        fontSize: AppQueries.screenWidth(context) / 10,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -118,9 +116,9 @@ class ReportBug extends StatelessWidget {
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(13)),
                                   padding: EdgeInsetsDirectional.symmetric(
-                                      horizontal: width / 11),
+                                      horizontal: AppQueries.screenWidth(context) / 11),
                                   backgroundColor: Colors.white,
-                                  textStyle: TextStyle(fontSize: width / 17),
+                                  textStyle: TextStyle(fontSize: AppQueries.screenWidth(context) / 17),
                                 ),
                                 child: const Text(
                                   'Cancel',
@@ -144,11 +142,11 @@ class ReportBug extends StatelessWidget {
                                         borderRadius:
                                             BorderRadius.circular(13)),
                                     padding: EdgeInsetsDirectional.symmetric(
-                                        horizontal: width / 11),
+                                        horizontal: AppQueries.screenWidth(context) / 11),
                                     backgroundColor:
                                         Color.fromARGB(255, 20, 130, 220),
                                     foregroundColor: Colors.white,
-                                    textStyle: TextStyle(fontSize: width / 17),
+                                    textStyle: TextStyle(fontSize: AppQueries.screenWidth(context) / 17),
                                   ),
                                   child: const Text('Submit')),
                             ],

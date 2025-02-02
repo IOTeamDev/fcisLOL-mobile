@@ -7,7 +7,7 @@ import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit_states.dart';
-import 'package:lol/core/utils/constants.dart';
+import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/core/utils/components.dart';
 
 class EditAnnouncement extends StatefulWidget {
@@ -107,14 +107,12 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
           }
         },
         builder: (context, state) {
-          double width = screenWidth(context);
-          double height = screenHeight(context);
           var cubit = MainCubit.get(context);
           return Scaffold(
             //backgroundColor: HexColor('#23252A'),
             body: Container(
               margin:
-                  EdgeInsetsDirectional.only(top: screenHeight(context) / 10),
+                  EdgeInsetsDirectional.only(top: AppQueries.screenHeight(context) / 10),
               width: double.infinity,
               child: ConditionalBuilder(
                 condition: MainCubit.get(context).profileModel != null &&
@@ -134,7 +132,7 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                               child: Text(
                             'Edit',
                             style: TextStyle(
-                              fontSize: width / 10,
+                              fontSize: AppQueries.screenWidth(context) / 10,
                             ),
                             textAlign: TextAlign.center,
                           )),
@@ -144,7 +142,7 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                         margin: const EdgeInsetsDirectional.symmetric(
                             horizontal: 15, vertical: 20),
                         padding: const EdgeInsets.all(15),
-                        height: screenHeight(context) / 1.45,
+                        height: AppQueries.screenHeight(context) / 1.45,
                         width: double.infinity,
                         decoration: BoxDecoration(
                             color: isDark
@@ -230,7 +228,7 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                       }
                                     }),
                                     child: Container(
-                                      width: width / 2.2,
+                                      width: AppQueries.screenWidth(context) / 2.2,
                                       decoration: BoxDecoration(
                                           color: Colors.white,
                                           borderRadius:
@@ -379,10 +377,10 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                                 BorderRadius.circular(13)),
                                         padding:
                                             EdgeInsetsDirectional.symmetric(
-                                                horizontal: width / 11),
+                                                horizontal: AppQueries.screenWidth(context) / 11),
                                         backgroundColor: Colors.white,
                                         textStyle:
-                                            TextStyle(fontSize: width / 17),
+                                            TextStyle(fontSize: AppQueries.screenWidth(context) / 17),
                                       ),
                                       child: const Text(
                                         'Cancel',
@@ -423,12 +421,12 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                                   BorderRadius.circular(13)),
                                           padding:
                                               EdgeInsetsDirectional.symmetric(
-                                                  horizontal: width / 11),
+                                                  horizontal: AppQueries.screenWidth(context) / 11),
                                           backgroundColor:
                                               Color.fromARGB(255, 20, 130, 220),
                                           foregroundColor: Colors.white,
                                           textStyle:
-                                              TextStyle(fontSize: width / 17),
+                                              TextStyle(fontSize: AppQueries.screenWidth(context) / 17),
                                         ),
                                         child: const Text('Submit')),
                                   ],

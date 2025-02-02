@@ -18,18 +18,14 @@ class WebviewScreen extends StatelessWidget {
         onNavigationRequest: (NavigationRequest request) async {
           final uri = Uri.parse(request.url);
           if (request.url.startsWith('whatsapp://')) {
-            launchUrl(
-                Uri.parse(request.url)); // Opens the URL with an external app
-            return NavigationDecision
-                .prevent; // Prevent WebView from handling it
+            launchUrl(Uri.parse(request.url)); // Opens the URL with an external app
+            return NavigationDecision.prevent; // Prevent WebView from handling it
           }
           if (request.url.startsWith('https://www.youtube.com') ||
               request.url.startsWith('https://youtu.be')) {
-            print('Opening youtube');
-            await launchUrl(
-                Uri.parse(request.url)); // Opens the URL with an external app
-            return NavigationDecision
-                .prevent; // Prevent WebView from handling it
+            //print('Opening youtube');
+            await launchUrl(Uri.parse(request.url)); // Opens the URL with an external app
+            return NavigationDecision.prevent; // Prevent WebView from handling it
           }
 
           // Check if the URL uses a scheme other than http or https

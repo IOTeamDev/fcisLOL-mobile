@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lol/core/utils/constants.dart';
+import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/core/network/endpoints.dart';
 import 'package:lol/core/network/remote/dio.dart';
 import 'package:meta/meta.dart';
@@ -14,7 +14,7 @@ class DeleteMaterialCubit extends Cubit<DeleteMaterialState> {
 
   void deleteMaterial({required String subjectName, required int id}) {
     emit(DeleteMaterialLoading());
-    DioHelp.deleteData(path: MATERIAL, token: TOKEN, data: {'id': id})
+    DioHelp.deleteData(path: MATERIAL, token: AppConstants.TOKEN, data: {'id': id})
         .then((response) {
       emit(DeleteMaterialSuccess());
     }).catchError((error) {

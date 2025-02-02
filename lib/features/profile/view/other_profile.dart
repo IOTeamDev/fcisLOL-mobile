@@ -16,7 +16,7 @@ import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/widgets/default_button.dart';
 import 'package:lol/core/widgets/default_text_field.dart';
 import 'package:lol/core/utils/colors.dart';
-import 'package:lol/core/utils/constants.dart';
+import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
@@ -32,8 +32,6 @@ class OtherProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     var nameController = TextEditingController();
     var emailController = TextEditingController();
-    double height = screenHeight(context);
-    double width = screenWidth(context);
     return BlocProvider(
       create: (context) => MainCubit()..getotherProfile(id),
       child: BlocConsumer<MainCubit, MainCubitStates>(
@@ -57,7 +55,7 @@ class OtherProfile extends StatelessWidget {
                       mainCubit.otherProfile!.name,
                       style: GoogleFonts.playfairDisplay(
                         color: isDark ? Colors.white : Colors.black,
-                        fontSize: screenWidth(context) / 15,
+                        fontSize: AppQueries.screenWidth(context) / 15,
                         fontWeight: FontWeight.bold,
                       ),
                       maxLines: 2,
@@ -82,12 +80,12 @@ class OtherProfile extends StatelessWidget {
                               height: 30,
                             ),
                             SizedBox(
-                              width: screenWidth(context) / 3.2,
+                              width: AppQueries.screenWidth(context) / 3.2,
                               child: Stack(
                                 alignment: Alignment.bottomCenter,
                                 children: [
                                   CircleAvatar(
-                                    radius: width / 7.5,
+                                    radius: AppQueries.screenWidth(context) / 7.5,
                                     backgroundImage: NetworkImage(
                                       mainCubit.otherProfile!.photo!,
                                     ),
@@ -250,7 +248,7 @@ class OtherProfile extends StatelessWidget {
                         Center(
                             child: Text(
                           "Uploads",
-                          style: TextStyle(fontSize: screenWidth(context) / 18),
+                          style: TextStyle(fontSize: AppQueries.screenWidth(context) / 18),
                         )),
                         SizedBox(
                           height: 10,
@@ -332,17 +330,17 @@ class OtherProfile extends StatelessWidget {
                               fallback: (context) {
                                 if (state is GetRequestsLoadingState) {
                                   return SizedBox(
-                                      height: height / 1.3,
+                                      height: AppQueries.screenHeight(context) / 1.3,
                                       child: Center(
                                         child: CircularProgressIndicator(),
                                       ));
                                 }
                                 return SizedBox(
-                                    height: height / 1.3,
+                                    height: AppQueries.screenHeight(context) / 1.3,
                                     child: Center(
                                       child: Text(
                                         'You Have No Contributions Yet!!!',
-                                        style: TextStyle(fontSize: width / 12),
+                                        style: TextStyle(fontSize: AppQueries.screenWidth(context) / 12),
                                         textAlign: TextAlign.center,
                                       ),
                                     ));
@@ -445,7 +443,7 @@ Widget materialBuilder(index, context,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                  fontSize: screenWidth(context) / 17, color: Colors.white),
+                  fontSize: AppQueries.screenWidth(context) / 17, color: Colors.white),
             ),
           ),
           // SizedBox(height: 5,),

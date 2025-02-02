@@ -6,7 +6,7 @@ import 'package:lol/features/subject/data/models/author_model.dart';
 import 'package:lol/features/subject/data/models/material_model.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
 import 'package:lol/features/subject/data/repos/subject_repo_imp.dart';
-import 'package:lol/core/utils/constants.dart';
+import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/core/network/endpoints.dart';
 import 'package:lol/core/network/remote/dio.dart';
 import 'package:meta/meta.dart';
@@ -47,7 +47,7 @@ class AddMaterialCubit extends Cubit<AddMaterialState> {
         'semester': semester,
         'author': {'name': author.authorName, 'photo': author.authorPhoto}
       },
-      token: TOKEN,
+      token: AppConstants.TOKEN,
     ).then((response) {
       if (role == 'ADMIN') {
         emit(AddMaterialSuccessAdmin());

@@ -7,8 +7,8 @@ import 'package:lol/main.dart';
 import 'package:lol/features/subject/data/models/material_model.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/remove_button.dart';
 import 'package:lol/core/utils/components.dart';
-import 'package:lol/core/utils/constants.dart';
 import 'package:lol/core/utils/navigation.dart';
+import '../../../../../core/utils/resources/constants_manager.dart';
 
 class DocumentsCard extends StatelessWidget {
   const DocumentsCard({super.key, required this.document});
@@ -37,19 +37,19 @@ class DocumentsCard extends StatelessWidget {
                       padding: const EdgeInsetsDirectional.only(end: 10.0),
                       child: Icon(
                         Icons.folder_copy_sharp,
-                        size: screenWidth(context) / 10,
+                        size: AppQueries.screenWidth(context) / 10,
                         color: Colors.white,
                       ),
                     ),
                     Expanded(
                       child: ConstrainedBox(
                         constraints: BoxConstraints(
-                            maxWidth: screenWidth(context) - 180),
+                            maxWidth: AppQueries.screenWidth(context) - 180),
                         child: Text(
                           '${document.title}',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: screenWidth(context) / 20,
+                            fontSize: AppQueries.screenWidth(context) / 20,
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -58,7 +58,7 @@ class DocumentsCard extends StatelessWidget {
                       ),
                     ),
                     if (MainCubit.get(context).profileModel?.role == 'ADMIN' &&
-                        TOKEN != null)
+                        AppConstants.TOKEN != null)
                       RemoveButton(material: document),
                   ],
                 ),
@@ -68,7 +68,7 @@ class DocumentsCard extends StatelessWidget {
                         child: Text(
                           'Shared by: ${document.author!.authorName}',
                           style: TextStyle(
-                            fontSize: screenWidth(context) / 30,
+                            fontSize: AppQueries.screenWidth(context) / 30,
                             color: Colors.white,
                           ),
                           maxLines: 1,
@@ -87,21 +87,21 @@ class DocumentsCard extends StatelessWidget {
                             Text(
                               'Shared by:  ',
                               style: TextStyle(
-                                fontSize: screenWidth(context) / 30,
+                                fontSize: AppQueries.screenWidth(context) / 30,
                                 color: Colors.white,
                               ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
                             CircleAvatar(
-                              radius: screenWidth(context) / 25,
+                              radius: AppQueries.screenWidth(context) / 25,
                               backgroundImage: NetworkImage(
                                   '${document.author!.authorPhoto}'),
                             ),
                             Text(
                               '  ${document.author!.authorName}',
                               style: TextStyle(
-                                fontSize: screenWidth(context) / 30,
+                                fontSize: AppQueries.screenWidth(context) / 30,
                                 color: Colors.white,
                               ),
                               maxLines: 1,

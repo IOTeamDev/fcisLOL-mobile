@@ -7,7 +7,8 @@ import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_m
 import 'package:lol/features/subject/presentation/screens/widgets/build_floating_action_button.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/custom_tab_bar.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/custom_tab_bar_view.dart';
-import 'package:lol/core/utils/constants.dart';
+
+import '../../../../core/utils/resources/constants_manager.dart';
 
 class SubjectDetails extends StatefulWidget {
   final String subjectName;
@@ -53,7 +54,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
       key: scaffoldKey,
       //backgroundColor: isDark ? HexColor('#23252A') : Colors.white,
       body: Container(
-        margin: EdgeInsetsDirectional.only(top: screenHeight(context) / 15),
+        margin: EdgeInsetsDirectional.only(top: AppQueries.screenHeight(context) / 15),
         child: Column(
           children: [
             Row(
@@ -78,7 +79,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                           .replaceAll("and", "&"),
                       style: TextStyle(
                           color: isDark ? Colors.white : Colors.black,
-                          fontSize: screenWidth(context) / 15),
+                          fontSize: AppQueries.screenWidth(context) / 15),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),

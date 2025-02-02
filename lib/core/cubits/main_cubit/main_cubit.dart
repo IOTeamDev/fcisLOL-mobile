@@ -8,7 +8,7 @@ import 'package:lol/core/models/leaderboard/leaderboard_model.dart';
 import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit.dart';
 import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit_states.dart';
 import 'package:lol/core/utils/components.dart';
-import 'package:lol/core/utils/constants.dart';
+import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/core/models/profile/profile_model.dart';
 import 'package:lol/features/auth/presentation/view/choosing_year.dart';
@@ -25,14 +25,14 @@ class MainCubit extends Cubit<MainCubitStates> {
   MainCubit() : super(InitialMainState());
   static MainCubit get(context) => BlocProvider.of(context);
 
-  bool opendedDrawer = false;
+  bool openedDrawer = false;
   void openDrawerState() {
-    opendedDrawer = true;
+    openedDrawer = true;
     emit(OpenDrawerState());
   }
 
   void closeDrawerState() {
-    opendedDrawer = false;
+    openedDrawer = false;
     emit(CloseDrawerState());
   }
 
@@ -136,11 +136,11 @@ class MainCubit extends Cubit<MainCubitStates> {
 
   ProfileModel? profileModel;
   getProfileInfo() {
-    if (TOKEN == null) return;
+    if (AppConstants.TOKEN == null) return;
 
     emit(GetProfileLoading());
     profileModel = null;
-    DioHelp.getData(path: CURRENTUSER, token: TOKEN).then(
+    DioHelp.getData(path: CURRENTUSER, token: AppConstants.TOKEN).then(
       (value) {
         profileModel = ProfileModel.fromJson(value.data);
 
@@ -173,8 +173,8 @@ class MainCubit extends Cubit<MainCubitStates> {
         ), //removing all background screens
         (route) => false);
     Future.delayed(Duration(seconds: 1), () {
-      TOKEN = null;
-      SelectedSemester = null;
+      AppConstants.TOKEN = null;
+      AppConstants.SelectedSemester = null;
     });
     emit(Logout());
   }
@@ -196,7 +196,7 @@ class MainCubit extends Cubit<MainCubitStates> {
 
   void deleteMaterial(int id, semester, {isMaterial = false}) {
     emit(DeleteMaterialLoadingState());
-    DioHelp.deleteData(path: MATERIAL, data: {'id': id}, token: TOKEN)
+    DioHelp.deleteData(path: MATERIAL, data: {'id': id}, token: AppConstants.TOKEN)
         .then((value) {
       emit(DeleteMaterialSuccessState());
       getRequests(semester: semester, isAccepted: isMaterial);
@@ -206,7 +206,7 @@ class MainCubit extends Cubit<MainCubitStates> {
   void acceptRequest(int id, semester) {
     emit(AcceptRequestLoadingState());
     DioHelp.getData(
-            path: ACCEPT, query: {'id': id, 'accepted': true}, token: TOKEN)
+            path: ACCEPT, query: {'id': id, 'accepted': true}, token: AppConstants.TOKEN)
         .then((value) {
       emit(AcceptRequestSuccessState());
       getRequests(semester: semester);
@@ -216,7 +216,7 @@ class MainCubit extends Cubit<MainCubitStates> {
   List<AnnouncementModel>? announcements;
   void getAnnouncements(String semester) {
     announcements = null;
-    print(SelectedSemester.toString());
+    print(AppConstants.SelectedSemester.toString());
     emit(GetAnnouncementsLoadingState());
     DioHelp.getData(path: ANNOUNCEMENTS, query: {'semester': semester})
         .then((value) {
@@ -254,7 +254,7 @@ class MainCubit extends Cubit<MainCubitStates> {
           //'semester': currentSemester,
           //'image': image,
         },
-        token: TOKEN,
+        token: AppConstants.TOKEN,
         query: {'id': id}).then((value) {
       // Assuming the response returns the updated announcement
       AnnouncementModel updatedAnnouncement =
@@ -362,7 +362,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     String? photo,
   }) {
     DioHelp.putData(
-        token: TOKEN,
+        token: AppConstants.TOKEN,
         query: {'id': userID},
         path: "users",
         data: {

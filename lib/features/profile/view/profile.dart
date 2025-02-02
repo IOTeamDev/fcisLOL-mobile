@@ -15,11 +15,13 @@ import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/widgets/default_button.dart';
 import 'package:lol/core/widgets/default_text_field.dart';
 import 'package:lol/core/utils/colors.dart';
-import 'package:lol/core/utils/constants.dart';
+import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/core/utils/navigation.dart';
+
+import 'package:lol/core/utils/resources/colors_manager.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});
@@ -29,8 +31,7 @@ class Profile extends StatelessWidget {
     var phoneController = TextEditingController();
     var nameController = TextEditingController();
     var emailController = TextEditingController();
-    double height = screenHeight(context);
-    double width = screenWidth(context);
+
     return BlocProvider(
       create: (context) => MainCubit()..getProfileInfo(),
       child: BlocConsumer<MainCubit, MainCubitStates>(
@@ -109,7 +110,7 @@ class Profile extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 SizedBox(
-                                  width: screenWidth(context) / 3.2,
+                                  width: AppQueries.screenWidth(context) / 3.2,
                                   child: Stack(
                                     alignment: Alignment.bottomCenter,
                                     children: [
@@ -118,7 +119,7 @@ class Profile extends StatelessWidget {
                                           alignment: Alignment.bottomRight,
                                           children: [
                                             CircleAvatar(
-                                              radius: width / 7.5,
+                                              radius: AppQueries.screenWidth(context) / 7.5,
                                               backgroundImage:
                                                   MainCubit.get(context)
                                                               .userImageFile !=
@@ -200,14 +201,14 @@ class Profile extends StatelessWidget {
                                   children: [
                                     ConstrainedBox(
                                       constraints: BoxConstraints(
-                                          maxWidth: screenWidth(context) / 1.9),
+                                          maxWidth: AppQueries.screenWidth(context) / 1.9),
                                       child: Text(
                                         mainCubit.profileModel!.name,
                                         style: TextStyle(
                                             color: isDark
                                                 ? Colors.white
                                                 : Colors.black,
-                                            fontSize: screenWidth(context) / 15,
+                                            fontSize: AppQueries.screenWidth(context) / 15,
                                             fontWeight: FontWeight.bold),
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
@@ -226,12 +227,12 @@ class Profile extends StatelessWidget {
                                                   ? Colors.white
                                                   : Colors.black,
                                               fontSize:
-                                                  screenWidth(context) / 20),
+                                              AppQueries.screenWidth(context) / 20),
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                         SizedBox(
-                                          width: screenWidth(context) / 2.5,
+                                          width: AppQueries.screenWidth(context) / 2.5,
                                           child: Text(
                                             mainCubit.profileModel!.email,
                                             style: TextStyle(
@@ -239,7 +240,7 @@ class Profile extends StatelessWidget {
                                                     ? Colors.white
                                                     : Colors.black,
                                                 fontSize:
-                                                    screenWidth(context) / 25),
+                                                AppQueries.screenWidth(context) / 25),
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                           ),
@@ -258,11 +259,11 @@ class Profile extends StatelessWidget {
                                                     ? Colors.white
                                                     : Colors.black,
                                                 fontSize:
-                                                    screenWidth(context) / 20),
+                                                AppQueries.screenWidth(context) / 20),
                                             maxLines: 2,
                                           ),
                                           SizedBox(
-                                            width: screenWidth(context) / 2.5,
+                                            width: AppQueries.screenWidth(context) / 2.5,
                                             child: Text(
                                               '${mainCubit.profileModel!.phone}',
                                               style: TextStyle(
@@ -270,7 +271,7 @@ class Profile extends StatelessWidget {
                                                       ? Colors.white
                                                       : Colors.black,
                                                   fontSize:
-                                                      screenWidth(context) /
+                                                  AppQueries.screenWidth(context) /
                                                           25),
                                               maxLines: 2,
                                             ),
@@ -390,7 +391,7 @@ class Profile extends StatelessWidget {
                                 child: Text(
                               "My Uploads",
                               style: TextStyle(
-                                  fontSize: screenWidth(context) / 18),
+                                  fontSize: AppQueries.screenWidth(context) / 18),
                             )),
                             SizedBox(
                               height: 10,
@@ -418,10 +419,6 @@ class Profile extends StatelessWidget {
                                           child: ListView.separated(
                                               physics: BouncingScrollPhysics(),
                                               itemBuilder: (context, index) {
-                                                var materials =
-                                                    MainCubit.get(context)
-                                                        .profileModel!
-                                                        .materials;
                                                 var mainCubit =
                                                     MainCubit.get(context);
                                                 return Container(
@@ -474,17 +471,17 @@ class Profile extends StatelessWidget {
                               fallback: (context) {
                                 if (state is GetRequestsLoadingState) {
                                   return SizedBox(
-                                      height: height / 1.3,
+                                      height: AppQueries.screenHeight(context) / 1.3,
                                       child: Center(
                                         child: CircularProgressIndicator(),
                                       ));
                                 }
                                 return SizedBox(
-                                    height: height / 1.3,
+                                    height: AppQueries.screenHeight(context) / 1.3,
                                     child: Center(
                                       child: Text(
                                         'You Have No Contributions Yet!!!',
-                                        style: TextStyle(fontSize: width / 12),
+                                        style: TextStyle(fontSize: AppQueries.screenWidth(context) / 12),
                                         textAlign: TextAlign.center,
                                       ),
                                     ));
@@ -587,7 +584,7 @@ Widget materialBuilder(index, context,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                  fontSize: screenWidth(context) / 17, color: Colors.white),
+                  fontSize: AppQueries.screenWidth(context) / 17, color: ColorsManager.white),
             ),
           ),
           // SizedBox(height: 5,),

@@ -10,7 +10,7 @@ import 'package:lol/core/utils/colors.dart';
 import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit.dart';
 import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit_states.dart';
 import 'package:lol/features/auth/presentation/view/register.dart';
-import 'package:lol/core/utils/constants.dart';
+import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/features/profile/view/profile.dart';
 import 'package:lol/core/utils/navigation.dart';
@@ -31,7 +31,7 @@ class LoginScreen extends StatelessWidget {
       child: BlocConsumer<LoginCubit, LoginStates>(
         listener: (context, state) {
           if (state is LoginSuccess) {
-            TOKEN = state.token;
+            AppConstants.TOKEN = state.token;
             Cache.writeData(key: "token", value: state.token);
             print("${state.token}Token");
             showToastMessage(

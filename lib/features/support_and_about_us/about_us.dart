@@ -3,8 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/main.dart';
 import 'package:lol/core/utils/components.dart';
-import 'package:lol/core/utils/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../core/utils/resources/constants_manager.dart';
 
 class AboutUs extends StatelessWidget {
   const AboutUs({super.key});
@@ -18,7 +19,7 @@ class AboutUs extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            margin: EdgeInsetsDirectional.only(top: screenHeight(context) / 30),
+            margin: EdgeInsetsDirectional.only(top: AppQueries.screenHeight(context) / 30),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -128,7 +129,7 @@ class AboutUs extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: screenHeight(context),
+                  height: AppQueries.screenHeight(context),
                   child: GridView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:ui';
 import 'package:http/http.dart' as http;
-
+import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,7 +18,7 @@ import 'package:lol/features/auth/presentation/view/login.dart';
 import 'package:lol/core/error/error_screen.dart';
 import 'package:lol/core/utils/navigation.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'constants.dart';
+import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'webview_screen.dart';
 
 Widget adminTopTitleWithDrawerButton(
@@ -73,57 +73,10 @@ Widget adminTopTitleWithDrawerButton(
   );
 }
 
-Widget backgroundEffects() {
-  return Stack(
-    children: [
-      Positioned(
-        top: -30,
-        left: -100,
-        child: Container(
-          width: 400,
-          height: 400,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            gradient: RadialGradient(
-              colors: [
-                HexColor('9F53B9').withOpacity(0.45),
-                HexColor('AB29E8').withOpacity(0.15),
-                Colors.black.withOpacity(0.05)
-              ],
-              radius: 0.85,
-              center: const Alignment(-0.3, -0.3),
-            ),
-          ),
-        ),
-      ),
-      //Bottom Right circle
-      Positioned(
-        bottom: -150,
-        right: -100,
-        child: Container(
-          width: 400,
-          height: 400,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            gradient: RadialGradient(
-              colors: [
-                Colors.purpleAccent.withOpacity(0.6),
-                Colors.black.withOpacity(0.2),
-              ],
-              radius: 0.75,
-              center: const Alignment(0.2, 0.2),
-            ),
-          ),
-        ),
-      ),
-      BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-        child: Container(
-          color: Colors.black.withOpacity(0), // Transparent layer for blur
-        ),
-      ),
-    ],
-  );
+RefreshIndicator swipeRefreshIndicator(
+    {dynamic child, required Future<void> Function() onRefresh, Color indicatorColor = ColorsManager.white})
+{
+  return RefreshIndicator(child: child, onRefresh: onRefresh, color: indicatorColor,);
 }
 
 Widget backButton(context, {double bottomPadding = 8}) {

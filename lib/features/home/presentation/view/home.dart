@@ -26,7 +26,7 @@ import 'package:lol/features/support_and_about_us/user_advices/feedback_screen.d
 import 'package:lol/features/support_and_about_us/user_advices/report_bug.dart';
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/widgets/snack.dart';
-import 'package:lol/core/utils/constants.dart';
+import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/features/profile/view/profile.dart';
@@ -100,11 +100,11 @@ class Home extends StatelessWidget {
               fcmToken: fcmToken);
         }
 
-        if ((state is GetProfileSuccess || TOKEN == null) &&
+        if ((state is GetProfileSuccess || AppConstants.TOKEN == null) &&
             wannaAnnouncements) {
-          if (TOKEN == null) {
+          if (AppConstants.TOKEN == null) {
             BlocProvider.of<AdminCubit>(context)
-                .getAnnouncements(SelectedSemester!);
+                .getAnnouncements(AppConstants.SelectedSemester!);
           } else {
             BlocProvider.of<AdminCubit>(context).getAnnouncements(
                 MainCubit.get(context).profileModel!.semester);
@@ -130,12 +130,12 @@ class Home extends StatelessWidget {
 
         if (profile != null) {
           semesterIndex = semsesterIndex(profile.semester);
-        } else if (TOKEN == null) {
-          semesterIndex = semsesterIndex(SelectedSemester!);
+        } else if (AppConstants.TOKEN == null) {
+          semesterIndex = semsesterIndex(AppConstants.SelectedSemester!);
         }
 
         // print("$semesterIndex index");
-        return profile == null && TOKEN != null
+        return profile == null && AppConstants.TOKEN != null
             ? const Scaffold(
                 //backgroundColor: Color(0xff1B262C),
                 body: Center(child: CircularProgressIndicator()),
@@ -145,10 +145,10 @@ class Home extends StatelessWidget {
                 // backgroundColor: Color(0xffE1E1E1),
                 drawer: CustomDrawer(
                     context,
-                    TOKEN == null
-                        ? SelectedSemester
+                    AppConstants.TOKEN == null
+                        ? AppConstants.SelectedSemester
                         : MainCubit.get(context).profileModel!.semester),
-                body: profile == null && TOKEN != null
+                body: profile == null && AppConstants.TOKEN != null
                     ? const Center(
                         child: CircularProgressIndicator(),
                       )
@@ -170,9 +170,9 @@ class Home extends StatelessWidget {
                                               MaterialTapTargetSize.shrinkWrap,
                                           onPressed: () {
                                             // MainCubit.get(context).openDrawerState();
-                                            if ((TOKEN != null &&
+                                            if ((AppConstants.TOKEN != null &&
                                                     profile != null) ||
-                                                TOKEN == null) {
+                                                AppConstants.TOKEN == null) {
                                               scaffoldKey.currentState!
                                                   .openDrawer(); // Use key to open the drawer
                                             }
@@ -287,12 +287,12 @@ class Home extends StatelessWidget {
                                                         description:
                                                             anonuncments
                                                                 .content,
-                                                        semester: TOKEN != null
+                                                        semester: AppConstants.TOKEN != null
                                                             ? MainCubit.get(
                                                                     context)
                                                                 .profileModel!
                                                                 .semester
-                                                            : SelectedSemester!,
+                                                            : AppConstants.SelectedSemester!,
                                                       ));
                                                 },
                                                 onDoubleTap: () {
@@ -476,18 +476,17 @@ Widget CustomDrawer(context, semester) {
   // final SelectedSemester = "Three";
   // print(SelectedSemester.toString() + "Drawer ");
   ProfileModel? profileModel;
-  double width = screenWidth(context);
-  if (TOKEN != null) profileModel = MainCubit.get(context).profileModel;
+  if (AppConstants.TOKEN != null) profileModel = MainCubit.get(context).profileModel;
 
   return Drawer(
     backgroundColor: isDark ? Colors.black : Colors.white,
-    width: width < 600 ? width / 1.5 : width / 2.5,
+    width: AppQueries.screenWidth(context) < 600 ? AppQueries.screenWidth(context) / 1.5 : AppQueries.screenWidth(context) / 2.5,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TOKEN != null
+        AppConstants.TOKEN != null
             ? SizedBox(
-                height: screenHeight(context) / 3.2,
+                height: AppQueries.screenHeight(context) / 3.2,
                 child: UserAccountsDrawerHeader(
                   otherAccountsPictures: [
                     IconButton(
@@ -515,7 +514,7 @@ Widget CustomDrawer(context, semester) {
                     children: [
                       ConstrainedBox(
                         constraints: BoxConstraints(
-                            maxWidth: screenWidth(context) / 1.5),
+                            maxWidth: AppQueries.screenWidth(context) / 1.5),
                         child: Text(
                           profileModel!.name,
                           style: TextStyle(
@@ -578,7 +577,7 @@ Widget CustomDrawer(context, semester) {
                 // accountEmail: Text("2nd year "),
                 accountName: const Text("Guest"),
                 accountEmail: Text(
-                  Level(SelectedSemester!),
+                  Level(AppConstants.SelectedSemester!),
                   style: const TextStyle(fontSize: 20),
                 ),
                 // accountEmail:InkWell(
@@ -650,9 +649,9 @@ Widget CustomDrawer(context, semester) {
                   leading: Icon(Icons.announcement),
                   title: Text("Announcements"),
                   onTap: () {
-                    if (TOKEN == null) {
+                    if (AppConstants.TOKEN == null) {
                       navigate(context,
-                          AnnouncementsList(semester: SelectedSemester!));
+                          AnnouncementsList(semester: AppConstants.SelectedSemester!));
                     } else {
                       navigate(
                           context,
@@ -863,8 +862,8 @@ Widget CustomDrawer(context, semester) {
                   height: 50,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color: TOKEN != null ? Colors.red : Colors.green),
-                  child: TOKEN != null
+                      color: AppConstants.TOKEN != null ? Colors.red : Colors.green),
+                  child: AppConstants.TOKEN != null
                       ? InkWell(
                           onTap: () {
                             AwesomeDialog(

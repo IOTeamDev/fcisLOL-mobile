@@ -15,7 +15,8 @@ import 'package:lol/features/admin/presentation/view/announcements/announcement_
 import 'package:lol/features/admin/presentation/view/requests/requests_details.dart';
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/navigation.dart';
-import 'package:lol/core/utils/constants.dart';
+
+import '../../../../../core/utils/resources/constants_manager.dart';
 
 class Requests extends StatelessWidget {
   var scaffoldKey = GlobalKey<ScaffoldState>();
@@ -23,30 +24,22 @@ class Requests extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => MainCubit()..getProfileInfo()),
-      ],
-      child: BlocConsumer<MainCubit, MainCubitStates>(
+    return BlocConsumer<MainCubit, MainCubitStates>(
         listener: (context, state) {
           if (state is GetProfileSuccess) {
-            MainCubit.get(context).getRequests(
-                semester: MainCubit.get(context).profileModel!.semester);
+            MainCubit.get(context).getRequests(semester: MainCubit.get(context).profileModel!.semester);
           }
         },
         builder: (context, mainState) {
-          double width = screenWidth(context);
-          double height = screenHeight(context);
           var cubit = MainCubit.get(context);
 
           return Scaffold(
             key: scaffoldKey,
-            //backgroundColor: HexColor('#23252A'),
             body: Stack(
               children: [
                 Container(
                   margin: EdgeInsetsDirectional.only(
-                      top: screenHeight(context) / 10),
+                      top: AppQueries.screenHeight(context) / 10),
                   width: double.infinity,
                   child: Column(
                     children: [
@@ -60,7 +53,7 @@ class Requests extends StatelessWidget {
                               child: Text(
                             'Requests',
                             style: TextStyle(
-                              fontSize: width / 10,
+                              fontSize: AppQueries.screenWidth(context) / 10,
                             ),
                             textAlign: TextAlign.center,
                           )),
@@ -121,8 +114,7 @@ class Requests extends StatelessWidget {
             ),
           );
         },
-      ),
-    );
+      );
   }
 
   Widget requestedMaterialBuilder(index, context,
@@ -176,7 +168,7 @@ class Requests extends StatelessWidget {
                   const SizedBox(width: 10),
                   ConstrainedBox(
                     constraints:
-                        BoxConstraints(maxWidth: screenWidth(context) / 2),
+                        BoxConstraints(maxWidth: AppQueries.screenWidth(context) / 2),
                     child: Text(
                       authorName.toString(),
                       style: TextStyle(fontSize: 18, color: Colors.grey[300]),

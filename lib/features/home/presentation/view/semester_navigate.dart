@@ -5,7 +5,7 @@ import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/home/data/models/semster_model.dart';
 import 'package:lol/core/utils/components.dart';
-import 'package:lol/core/utils/constants.dart';
+import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/core/utils/navigation.dart';
 
 class SemesterNavigate extends StatelessWidget {

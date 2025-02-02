@@ -10,10 +10,11 @@ import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cub
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit_states.dart';
 import 'package:lol/features/admin/presentation/view/announcements/add_announcement.dart';
 import 'package:lol/features/admin/presentation/view/requests/requests.dart';
-import 'package:lol/core/utils/constants.dart';
+
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/navigation.dart';
 
+import '../../../../core/utils/resources/constants_manager.dart';
 import 'announcements/announcements_list.dart';
 import '../../../auth/presentation/view/login.dart';
 import '../../../home/presentation/view/home.dart';
@@ -32,14 +33,12 @@ class AdminPanel extends StatelessWidget {
       child: BlocConsumer<MainCubit, MainCubitStates>(
         listener: (context, state) {},
         builder: (context, state) {
-          double width = screenWidth(context);
-          double height = screenHeight(context);
           var mainCubit = MainCubit.get(context);
           return Scaffold(
             //backgroundColor: HexColor('#23252A'),
             body: Container(
               margin:
-                  EdgeInsetsDirectional.only(top: screenHeight(context) / 10),
+                  EdgeInsetsDirectional.only(top: AppQueries.screenHeight(context) / 10),
               width: double.infinity,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -87,7 +86,7 @@ class AdminPanel extends StatelessWidget {
                       children: [
                         Container(
                           height: 13,
-                          width: width - 70,
+                          width: AppQueries.screenWidth(context) - 70,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(40),
@@ -113,15 +112,15 @@ class AdminPanel extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            minimumSize: Size(width - 40, height / 4.5),
+                            minimumSize: Size(AppQueries.screenWidth(context) - 40, AppQueries.screenHeight(context) / 4.5),
                           ),
                           child: Column(
                             children: [
                               Icon(Icons.campaign,
-                                  color: Colors.white, size: width / 4),
+                                  color: Colors.white, size: AppQueries.screenWidth(context) / 4),
                               Text('Announcements',
                                   style: TextStyle(
-                                      fontSize: width / 15,
+                                      fontSize: AppQueries.screenWidth(context) / 15,
                                       color: Colors.white)),
                             ],
                           ),
@@ -131,7 +130,7 @@ class AdminPanel extends StatelessWidget {
                         ),
                         Container(
                           height: 13,
-                          width: width - 70,
+                          width: AppQueries.screenWidth(context) - 70,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(40),
@@ -151,16 +150,16 @@ class AdminPanel extends StatelessWidget {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
                               ),
-                              minimumSize: Size(width - 40, height / 4.5),
+                              minimumSize: Size(AppQueries.screenWidth(context) - 40, AppQueries.screenHeight(context) / 4.5),
                             ),
                             child: Column(
                               children: [
                                 Icon(Icons.email,
-                                    color: Colors.white, size: width / 4),
+                                    color: Colors.white, size: AppQueries.screenWidth(context) / 4),
                                 Text(
                                   'Requests',
                                   style: TextStyle(
-                                      fontSize: width / 15,
+                                      fontSize: AppQueries.screenWidth(context) / 15,
                                       color: Colors.white),
                                 )
                               ],

@@ -11,7 +11,7 @@ import 'package:lol/features/subject/presentation/cubit/add_material_cubit/add_m
 import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit_cubit.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/build_text_form_field.dart';
 import 'package:lol/core/utils/components.dart';
-import 'package:lol/core/utils/constants.dart';
+import 'package:lol/core/utils/resources/constants_manager.dart';
 
 class BuildBottomSheet extends StatefulWidget {
   const BuildBottomSheet(
@@ -70,7 +70,7 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           ),
           padding: const EdgeInsets.all(16),
-          width: screenWidth(context),
+          width: AppQueries.screenWidth(context),
           child: SingleChildScrollView(
             child: Form(
                 key: _formKey,
@@ -112,7 +112,7 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
                             margin: const EdgeInsets.only(
                                 left: 0, top: 0, bottom: 0),
                             padding: const EdgeInsets.all(10),
-                            width: screenWidth(context) / 3,
+                            width: AppQueries.screenWidth(context) / 3,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               color: Color.fromRGBO(71, 100, 197, 1),
@@ -153,7 +153,7 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
                         //Cancel Button
                         MaterialButton(
                           padding: const EdgeInsets.symmetric(vertical: 10),
-                          minWidth: screenWidth(context) / 3,
+                          minWidth: AppQueries.screenWidth(context) / 3,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15)),
                           color: Colors.white,
@@ -171,10 +171,10 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
                           width: 10,
                         ),
                         //Submit Button
-                        if (TOKEN != null)
+                        if (AppConstants.TOKEN != null)
                           MaterialButton(
                             padding: const EdgeInsets.symmetric(vertical: 10),
-                            minWidth: screenWidth(context) / 3,
+                            minWidth: AppQueries.screenWidth(context) / 3,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15)),
                             color: Color.fromRGBO(71, 100, 197, 1),
