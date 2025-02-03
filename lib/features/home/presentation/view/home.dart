@@ -153,7 +153,7 @@ class Home extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: AppPaddings.p20, vertical: AppPaddings.p10),
                           child: Text(
                             StringsManager.announcements,
-                            style: Theme.of(context).textTheme.displayLarge
+                            style: Theme.of(context).textTheme.headlineLarge
                           ),
                         ), //Announcements Text
                         BlocBuilder<AdminCubit, AdminCubitStates>(
@@ -307,7 +307,7 @@ class Home extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: AppPaddings.p20),
                           child: Text(
                             StringsManager.subject,
-                            style: Theme.of(context).textTheme.displayLarge
+                            style: Theme.of(context).textTheme.headlineLarge
                           ),
                         ), // Subjects Text
                         Padding(
@@ -385,7 +385,7 @@ Widget _customDrawer(context, semester) {
                         constraints: BoxConstraints(maxWidth: AppQueries.screenWidth(context) / AppSizesDouble.s1_5),
                         child: Text(
                           profileModel!.name,
-                          style: Theme.of(context).textTheme.displayLarge,
+                          style: Theme.of(context).textTheme.titleLarge,
                           maxLines: AppSizes.s1,
                         ),
                       ),

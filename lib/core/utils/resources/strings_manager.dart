@@ -24,6 +24,7 @@ class StringsManager{
   static const String thisLinkIsCorrupted = 'This link is Corrupted';
   static const String error = 'Error';
   static const String announcements = 'Announcements';
+  static const String requests = 'Requests';
   static const String description = 'Description';
   static const String endDate = '2027-12-30';
   static const String dateFormat = 'dd/MM/yyyy';

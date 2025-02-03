@@ -17,4 +17,6 @@ class IconsManager{
   static const IconData groupIcon = Icons.group;
   static const IconData logOutIcon = Icons.logout;
   static const IconData logInIcon = Icons.login;
+  static const IconData campaignIcon = Icons.campaign;
+  static const IconData emailIcon = Icons.email;
 }

@@ -389,7 +389,7 @@ class MainCubit extends Cubit<MainCubitStates> {
         this.isDark = isDark;
         appTheme = isDark ? ThemeMode.dark : ThemeMode.light;
       }
-      print('================================= the cached dark theme is ============> $isDark');
+      //print('================================= the cached dark theme is ============> $isDark');
       emit(ChangeAppModeState()); // Emit state after setting theme
   }
 
@@ -398,7 +398,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     appTheme = isDark ? ThemeMode.dark : ThemeMode.light;
 
     Cache.writeData(key: KeysManager.isDark, value: isDark).then((_) {
-      print('Theme changed to: ${isDark ? "Dark" : "Light"}');
+      //print('Theme changed to: ${isDark ? "Dark" : "Light"}');
       emit(ChangeAppModeState()); // Emit state after cache update
     }).catchError((error) {
       print('Error updating theme preference: $error');
