@@ -15,11 +15,16 @@ class VideosListView extends StatelessWidget {
   Widget build(BuildContext context) {
     var cubit = GetMaterialCubit.get(context);
     return BlocBuilder<GetMaterialCubit, GetMaterialState>(
+      buildWhen: (previous, current) =>
+          current is GetMaterialLoading ||
+          current is GetMaterialSuccess ||
+          current is GetMaterialError,
       builder: (context, state) {
         if (state is GetMaterialLoading) {
           return Center(
             child: CircularProgressIndicator(
-              color: MainCubit.get(context).isDark ? Colors.white : Colors.black,
+              color:
+                  MainCubit.get(context).isDark ? Colors.white : Colors.black,
             ),
           );
         } else if (state is GetMaterialSuccess) {
@@ -42,13 +47,18 @@ class VideosListView extends StatelessWidget {
               },
             ),
           );
-        } else {
+        } else if (state is GetMaterialError) {
           return Center(
             child: Text(
-              'Materials Appear here',
-              style: TextStyle(color: MainCubit.get(context).isDark ? Colors.white : Colors.black),
+              'Oops! Something went wrong',
+              style: TextStyle(
+                  color: MainCubit.get(context).isDark
+                      ? Colors.white
+                      : Colors.black),
             ),
           );
+        } else {
+          return const SizedBox();
         }
       },
     );

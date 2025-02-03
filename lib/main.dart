@@ -35,7 +35,6 @@ import 'features/leaderboard/presentation/view/leaderboard_view.dart';
 import 'core/utils/resources/constants_manager.dart';
 import 'features/auth/presentation/view/choosing_year.dart';
 import 'features/profile/view/profile.dart';
-import 'features/subject/presentation/cubit/subject_cubit.dart';
 import 'core/network/remote/dio.dart';
 import 'core/observer.dart';
 import 'package:flutter/material.dart';
@@ -114,8 +113,10 @@ main() async {
   //isDark = await Cache.readData(key: "mode") ?? false;
 
   AppConstants.TOKEN = await Cache.readData(key: KeysManager.token);
-  AppConstants.SelectedSemester = await Cache.readData(key: KeysManager.semester);
-  bool isOnBoardFinished = await Cache.readData(key: KeysManager.finishedOnBoard) ?? false;
+  AppConstants.SelectedSemester =
+      await Cache.readData(key: KeysManager.semester);
+  bool isOnBoardFinished =
+      await Cache.readData(key: KeysManager.finishedOnBoard) ?? false;
 
   // TOKEN = null;//
   final Widget startPage;
@@ -131,8 +132,12 @@ main() async {
     }
   }
   bool? isDarkTheme = await Cache.readData(key: KeysManager.isDark) ?? false;
-  print('the cached dark theme value is: ===> ${await Cache.readData(key: KeysManager.isDark)}');
-  runApp(App(startPage: startPage, isDarkTheme: isDarkTheme,));
+  print(
+      'the cached dark theme value is: ===> ${await Cache.readData(key: KeysManager.isDark)}');
+  runApp(App(
+    startPage: startPage,
+    isDarkTheme: isDarkTheme,
+  ));
   // runApp(ChangeNotifierProvider(
   //   //create: (context) => ThemeProvide()..loadMode(),
   //   child: App(startPage: startPage, isDarkTheme: isDarkTheme,),
@@ -174,23 +179,31 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (BuildContext context) => MainCubit()..getProfileInfo()..getAppMode(isDarkTheme)),
-        BlocProvider(create: (BuildContext context) => AdminCubit()..getAnnouncements(MainCubit.get(context).profileModel != null? MainCubit.get(context).profileModel!.semester: KeysManager.semester)),
-      ],
-      child: BlocConsumer<MainCubit, MainCubitStates>(
-        listener: (context, state){},
-        builder: (context, state) {
-        // AdminCubit.get(context).getFcmTokens();
-        return MaterialApp(
-          home: startPage,
-          debugShowCheckedModeBanner: false,
-          darkTheme: darkTheme(),
-          theme: lightTheme(),
-          themeMode: MainCubit.get(context).isDark? ThemeMode.dark: ThemeMode.light,
-          //theme: isDark ? ThemeData.dark() : ThemeData.light(),
-        );
-      })
-    );
+        providers: [
+          BlocProvider(
+              create: (BuildContext context) => MainCubit()
+                ..getProfileInfo()
+                ..getAppMode(isDarkTheme)),
+          BlocProvider(
+              create: (BuildContext context) => AdminCubit()
+                ..getAnnouncements(MainCubit.get(context).profileModel != null
+                    ? MainCubit.get(context).profileModel!.semester
+                    : KeysManager.semester)),
+        ],
+        child: BlocConsumer<MainCubit, MainCubitStates>(
+            listener: (context, state) {},
+            builder: (context, state) {
+              // AdminCubit.get(context).getFcmTokens();
+              return MaterialApp(
+                home: startPage,
+                debugShowCheckedModeBanner: false,
+                darkTheme: darkTheme(),
+                theme: lightTheme(),
+                themeMode: MainCubit.get(context).isDark
+                    ? ThemeMode.dark
+                    : ThemeMode.light,
+                //theme: isDark ? ThemeData.dark() : ThemeData.light(),
+              );
+            }));
   }
 }

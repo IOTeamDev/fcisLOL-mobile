@@ -1,6 +1,10 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lol/core/network/endpoints.dart';
+import 'package:lol/core/network/remote/dio.dart';
+import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/features/subject/data/models/material_model.dart';
 import 'package:lol/features/subject/data/repos/subject_repo_imp.dart';
 import 'package:lol/features/subject/presentation/cubit/add_material_cubit/add_material_cubit.dart';
@@ -12,7 +16,7 @@ part 'get_material_state.dart';
 class GetMaterialCubit extends Cubit<GetMaterialState> {
   GetMaterialCubit(
     this._subjectRepoImp,
-  ) : super(GetMaterialCubitInitial());
+  ) : super(GetMaterialInitial());
 
   final SubjectRepoImp _subjectRepoImp;
   String subjectName = '';
@@ -72,5 +76,19 @@ class GetMaterialCubit extends Cubit<GetMaterialState> {
     }
     emit(GetMaterialSuccess());
     filterVideosAndDocuments();
+  }
+
+  void deleteMaterial({required String subjectName, required int id}) {
+    emit(DeleteMaterialLoading());
+    DioHelp.deleteData(
+        path: MATERIAL,
+        token: AppConstants.TOKEN,
+        data: {'id': id}).then((response) {
+      emit(DeleteMaterialSuccess());
+      getMaterials(subject: subjectName);
+    }).catchError((error) {
+      emit(DeleteMaterialError(error: error.toString()));
+      log('error from deleting material $error');
+    });
   }
 }
