@@ -53,7 +53,6 @@ class SelectImage extends StatelessWidget {
           // }
         },
         builder: (context, state) {
-          var loginCubit = LoginCubit.get(context);
           var mainCubit = MainCubit.get(context);
 
           return Scaffold(
@@ -155,7 +154,7 @@ class SelectImage extends StatelessWidget {
   }
 }
 
-Widget OptionWidget({
+Widget optionWidget({
   required VoidCallback optionFunction,
   required String optionTitle,
 }) {

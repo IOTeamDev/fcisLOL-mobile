@@ -169,8 +169,10 @@ class AdminCubit extends Cubit<AdminCubitStates> {
 
   void deleteAnnouncement(int id, semester) {
     emit(AdminDeleteAnnouncementLoadingState());
-    DioHelp.deleteData(path: ANNOUNCEMENTS, token: AppConstants.TOKEN, query: {'id': id})
-        .then((value) {
+    DioHelp.deleteData(
+        path: ANNOUNCEMENTS,
+        token: AppConstants.TOKEN,
+        query: {'id': id}).then((value) {
       emit(AdminDeleteAnnouncementSuccessState());
       getAnnouncements(semester);
     });
@@ -279,8 +281,8 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     // print('Notifications sent successfully');
   }
 
-  File? AnnouncementImageFile;
-  String? AnnouncementImagePath;
+  File? announcementImageFile;
+  String? announcementImagePath;
   IconData pickerIcon = Icons.image;
   String imageName = 'Select Image';
   var picker = ImagePicker();
@@ -289,10 +291,10 @@ class AdminCubit extends Cubit<AdminCubitStates> {
 
     var tempPostImage = await picker.pickImage(source: ImageSource.gallery);
     if (tempPostImage != null) {
-      AnnouncementImageFile = File(tempPostImage.path);
+      announcementImageFile = File(tempPostImage.path);
       pickerIcon = Icons.close;
       imageName = tempPostImage.path.split('/').last;
-      final int sizeInBytes = await AnnouncementImageFile!.length();
+      final int sizeInBytes = await announcementImageFile!.length();
       final int sizeInMB = sizeInBytes ~/ (1024 * 1024);
       print(sizeInBytes);
       print(sizeInMB);
@@ -306,7 +308,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
             message: 'Image Limit Exceeded', states: ToastStates.WARNING);
         imageName = 'Select Image';
         pickerIcon = Icons.image;
-        AnnouncementImageFile = null;
+        announcementImageFile = null;
         emit(ImagePickingExceedState());
       }
     } else {
@@ -316,8 +318,8 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     }
   }
 
-  Future<void> UploadPImage({File? image}) async {
-    AnnouncementImagePath = null;
+  Future<void> uploadPImage({File? image}) async {
+    announcementImagePath = null;
     emit(UploadImageLoadingState());
     if (image == null) return;
 
@@ -330,11 +332,11 @@ class AdminCubit extends Cubit<AdminCubitStates> {
 
     try {
       final imagePath = await uploadTask.ref.getDownloadURL();
-      AnnouncementImagePath = imagePath;
+      announcementImagePath = imagePath;
       emit(UploadImageSuccessState());
     } on Exception {
       emit(UploadImageErrorState());
-      // // TODO
+      // TODO
     }
   }
 }

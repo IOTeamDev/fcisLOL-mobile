@@ -17,8 +17,7 @@ import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends StatelessWidget {
-  final maybeHeStillWantToBeAGuest;
-  const LoginScreen({super.key, this.maybeHeStillWantToBeAGuest = false});
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

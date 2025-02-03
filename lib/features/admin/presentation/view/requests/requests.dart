@@ -17,103 +17,109 @@ import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/navigation.dart';
 import '../../../../../core/utils/resources/constants_manager.dart';
 
-class Requests extends StatelessWidget {
+class Requests extends StatefulWidget {
+  const Requests({super.key});
+
+  @override
+  State<Requests> createState() => _RequestsState();
+}
+
+class _RequestsState extends State<Requests> {
   var scaffoldKey = GlobalKey<ScaffoldState>();
-  Requests({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<MainCubit, MainCubitStates>(
-        listener: (context, state) {
-          if (state is GetProfileSuccess) {
-            MainCubit.get(context).getRequests(semester: MainCubit.get(context).profileModel!.semester);
-          }
-        },
-        builder: (context, mainState) {
-          var cubit = MainCubit.get(context);
+      listener: (context, state) {
+        if (state is GetProfileSuccess) {
+          MainCubit.get(context).getRequests(
+              semester: MainCubit.get(context).profileModel!.semester);
+        }
+      },
+      builder: (context, mainState) {
+        var cubit = MainCubit.get(context);
 
-          return Scaffold(
-            key: scaffoldKey,
-            body: Stack(
-              children: [
-                Container(
-                  margin: EdgeInsetsDirectional.only(
-                      top: AppQueries.screenHeight(context) / 10),
-                  width: double.infinity,
-                  child: Column(
-                    children: [
-                      Stack(
-                        children: [
-                          Positioned(
-                            left: 0,
-                            child: backButton(context),
+        return Scaffold(
+          key: scaffoldKey,
+          body: Stack(
+            children: [
+              Container(
+                margin: EdgeInsetsDirectional.only(
+                    top: AppQueries.screenHeight(context) / 10),
+                width: double.infinity,
+                child: Column(
+                  children: [
+                    Stack(
+                      children: [
+                        Positioned(
+                          left: 0,
+                          child: backButton(context),
+                        ),
+                        Center(
+                            child: Text(
+                          'Requests',
+                          style: TextStyle(
+                            fontSize: AppQueries.screenWidth(context) / 10,
                           ),
-                          Center(
-                              child: Text(
-                            'Requests',
-                            style: TextStyle(
-                              fontSize: AppQueries.screenWidth(context) / 10,
-                            ),
-                            textAlign: TextAlign.center,
-                          )),
-                        ],
-                      ),
-                      Expanded(
-                        child: ConditionalBuilder(
-                            condition: cubit.requests != null &&
-                                cubit.requests!.isNotEmpty &&
-                                mainState is! GetRequestsLoadingState &&
-                                mainState is! GetProfileLoading,
-                            builder: (context) => ListView.separated(
-                                  physics: const BouncingScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    return requestedMaterialBuilder(
-                                        index, context,
-                                        title: cubit.requests![index].title,
-                                        type: cubit.requests![index].type,
-                                        pfp: cubit
-                                            .requests![index].author?.photo,
-                                        authorName:
-                                            cubit.requests![index].author?.name,
-                                        link: cubit.requests![index].link,
-                                        subjectName: cubit.requests![index]
-                                            .subject, // Use proper subject if available
-                                        description:
-                                            cubit.requests![index].description,
-                                        semester: cubit.profileModel!.semester);
-                                  },
-                                  separatorBuilder: (context, index) =>
-                                      const Padding(
-                                    padding: EdgeInsetsDirectional.all(5),
-                                  ),
-                                  itemCount: cubit.requests!.length,
+                          textAlign: TextAlign.center,
+                        )),
+                      ],
+                    ),
+                    Expanded(
+                      child: ConditionalBuilder(
+                          condition: cubit.requests != null &&
+                              cubit.requests!.isNotEmpty &&
+                              mainState is! GetRequestsLoadingState &&
+                              mainState is! GetProfileLoading,
+                          builder: (context) => ListView.separated(
+                                physics: const BouncingScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  return requestedMaterialBuilder(
+                                      index, context,
+                                      title: cubit.requests![index].title,
+                                      type: cubit.requests![index].type,
+                                      pfp: cubit.requests![index].author?.photo,
+                                      authorName:
+                                          cubit.requests![index].author?.name,
+                                      link: cubit.requests![index].link,
+                                      subjectName: cubit.requests![index]
+                                          .subject, // Use proper subject if available
+                                      description:
+                                          cubit.requests![index].description,
+                                      semester: cubit.profileModel!.semester);
+                                },
+                                separatorBuilder: (context, index) =>
+                                    const Padding(
+                                  padding: EdgeInsetsDirectional.all(5),
                                 ),
-                            fallback: (context) {
-                              if (mainState is GetRequestsLoadingState) {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              } else {
-                                return const Center(
-                                  child: Text(
-                                    'No requests available',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 24,
-                                    ),
+                                itemCount: cubit.requests!.length,
+                              ),
+                          fallback: (context) {
+                            if (mainState is GetRequestsLoadingState) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            } else {
+                              return const Center(
+                                child: Text(
+                                  'No requests available',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 24,
                                   ),
-                                );
-                              }
-                            }),
-                      )
-                    ],
-                  ),
+                                ),
+                              );
+                            }
+                          }),
+                    )
+                  ],
                 ),
-              ],
-            ),
-          );
-        },
-      );
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   Widget requestedMaterialBuilder(index, context,
@@ -146,7 +152,9 @@ class Requests extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: MainCubit.get(context).isDark ? HexColor('#3B3B3B') : HexColor('#757575'),
+          color: MainCubit.get(context).isDark
+              ? HexColor('#3B3B3B')
+              : HexColor('#757575'),
           borderRadius: BorderRadius.circular(20),
         ),
         margin: const EdgeInsetsDirectional.symmetric(horizontal: 10),
@@ -166,8 +174,8 @@ class Requests extends StatelessWidget {
                   ),
                   const SizedBox(width: 10),
                   ConstrainedBox(
-                    constraints:
-                        BoxConstraints(maxWidth: AppQueries.screenWidth(context) / 2),
+                    constraints: BoxConstraints(
+                        maxWidth: AppQueries.screenWidth(context) / 2),
                     child: Text(
                       authorName.toString(),
                       style: TextStyle(fontSize: 18, color: Colors.grey[300]),

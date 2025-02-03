@@ -8,23 +8,22 @@ import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit_states.dart';
 import 'package:lol/core/utils/components.dart';
 
-
 import '../../../../../core/cubits/main_cubit/main_cubit.dart';
 import '../../../../../core/utils/resources/constants_manager.dart';
 import '../../../../../main.dart';
 
 class RequestsDetails extends StatelessWidget {
-  int id;
-  String title;
-  String description;
-  String subjectName;
-  String link;
-  String pfp;
-  String type;
-  String authorName;
-  String semester;
+  final int id;
+  final String title;
+  final String description;
+  final String subjectName;
+  final String link;
+  final String pfp;
+  final String type;
+  final String authorName;
+  final String semester;
 
-  RequestsDetails(
+  const RequestsDetails(
       {super.key,
       required this.authorName,
       required this.type,
@@ -38,7 +37,6 @@ class RequestsDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return BlocProvider(
       create: (context) => MainCubit()
         ..getProfileInfo()
@@ -63,8 +61,8 @@ class RequestsDetails extends StatelessWidget {
           return Scaffold(
             //backgroundColor: HexColor('#23252A'),
             body: Container(
-                margin:
-                    EdgeInsetsDirectional.only(top: AppQueries.screenHeight(context) / 10),
+                margin: EdgeInsetsDirectional.only(
+                    top: AppQueries.screenHeight(context) / 10),
                 width: double.infinity,
                 child: Column(
                   children: [
@@ -85,7 +83,8 @@ class RequestsDetails extends StatelessWidget {
                       ],
                     ),
                     ConstrainedBox(
-                      constraints: BoxConstraints(maxHeight: AppQueries.screenHeight(context) / 1.4),
+                      constraints: BoxConstraints(
+                          maxHeight: AppQueries.screenHeight(context) / 1.4),
                       child: Container(
                         margin: const EdgeInsetsDirectional.symmetric(
                             horizontal: 15, vertical: 20),
@@ -163,7 +162,9 @@ class RequestsDetails extends StatelessWidget {
                               children: [
                                 ConstrainedBox(
                                   constraints: BoxConstraints(
-                                      maxWidth: AppQueries.screenWidth(context) / 1.7),
+                                      maxWidth:
+                                          AppQueries.screenWidth(context) /
+                                              1.7),
                                   child: Text(
                                     subjectName,
                                     style: TextStyle(
@@ -244,8 +245,10 @@ class RequestsDetails extends StatelessWidget {
                                           const EdgeInsetsDirectional.symmetric(
                                               horizontal: 40),
                                       backgroundColor: Colors.white,
-                                      textStyle:
-                                          TextStyle(fontSize: AppQueries.screenWidth(context) / 17),
+                                      textStyle: TextStyle(
+                                          fontSize:
+                                              AppQueries.screenWidth(context) /
+                                                  17),
                                     ),
                                     child: const Text(
                                       'Reject',
@@ -268,8 +271,10 @@ class RequestsDetails extends StatelessWidget {
                                         backgroundColor:
                                             Color.fromARGB(255, 20, 130, 220),
                                         foregroundColor: Colors.white,
-                                        textStyle:
-                                            TextStyle(fontSize: AppQueries.screenWidth(context) / 17),
+                                        textStyle: TextStyle(
+                                            fontSize: AppQueries.screenWidth(
+                                                    context) /
+                                                17),
                                       ),
                                       child: const Text('Accept')),
                                 ],

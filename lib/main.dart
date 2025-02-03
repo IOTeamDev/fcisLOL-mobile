@@ -40,8 +40,8 @@ import 'core/observer.dart';
 import 'package:flutter/material.dart';
 import 'features/home/presentation/view/home.dart';
 
-String? private_key_id;
-String? private_key;
+String? privateKeyId;
+String? privateKey;
 // Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 //   await Firebase.initializeApp();
 //   // If you're going to use other Firebase services in the background, such as Firestore,
@@ -93,9 +93,9 @@ main() async {
       .get()
       .then((value) {
     fcisServiceMap = value.data()?["fcisServiceMap"];
-    private_key = value.data()?["private_key"];
-    private_key_id = value.data()?["private_key_id"];
-    private_key = private_key!.replaceAll(r'\n', '\n').trim();
+    privateKey = value.data()?["private_key"];
+    privateKeyId = value.data()?["private_key_id"];
+    privateKey = privateKey!.replaceAll(r'\n', '\n').trim();
 
     print(
         "${fcisServiceMap["project_id"]}+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");

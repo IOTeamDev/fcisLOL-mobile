@@ -282,11 +282,13 @@ class Home extends StatelessWidget {
                                                                     Colors
                                                                         .transparent,
                                                                     Colors.black
-                                                                        .withOpacity(
-                                                                            AppSizesDouble.s0_3),
+                                                                        .withValues(
+                                                                            alpha:
+                                                                                AppSizesDouble.s0_3),
                                                                     Colors.black
-                                                                        .withOpacity(
-                                                                            AppSizesDouble.s0_6),
+                                                                        .withValues(
+                                                                            alpha:
+                                                                                AppSizesDouble.s0_6),
                                                                   ],
                                                                   begin: Alignment
                                                                       .topCenter,
@@ -443,8 +445,9 @@ Future<void> _onRefresh(context, semester) async {
 Widget _customDrawer(context, semester) {
   var cubit = MainCubit.get(context);
   ProfileModel? profileModel;
-  if (AppConstants.TOKEN != null)
+  if (AppConstants.TOKEN != null) {
     profileModel = MainCubit.get(context).profileModel;
+  }
 
   return Drawer(
     //backgroundColor: isDark ? Colors.black : Colors.white,
@@ -971,7 +974,7 @@ Widget _customDrawer(context, semester) {
                         dialogType: DialogType.warning,
                         dismissOnTouchOutside: true,
                         barrierColor: ColorsManager.black
-                            .withOpacity(AppSizesDouble.s0_7),
+                            .withValues(alpha: AppSizesDouble.s0_7),
                         body: Text(
                           StringsManager.logOutWarningMessage,
                           style: Theme.of(context)

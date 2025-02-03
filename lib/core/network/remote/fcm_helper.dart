@@ -22,14 +22,14 @@ class FCMHelper {
   }
 
   Future<String?> getAccessToken() async {
-    print("$private_key_id---------");
-    print(private_key);
+    print("$privateKeyId---------");
+    print(privateKey);
 
     final serviceAccountJson = {
       "type": "service_account",
       "project_id": "fcis-da7f4",
-      "private_key_id": private_key_id,
-      "private_key": private_key,
+      "private_key_id": privateKeyId,
+      "private_key": privateKey,
       "client_email":
           "firebase-adminsdk-7wunf@fcis-da7f4.iam.gserviceaccount.com",
       "client_id": "114518216051661235216",

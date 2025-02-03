@@ -229,11 +229,11 @@ class Registerscreen extends StatelessWidget {
                               ),
                               defaultTextField(
                                   textInputAction: TextInputAction.next,
-                                  validateor: (Value) {
-                                    if (Value!.isEmpty) {
+                                  validateor: (value) {
+                                    if (value!.isEmpty) {
                                       return "field cannot be empty";
-                                      return null;
                                     }
+                                    return null;
                                   },
                                   controller: passwordController,
                                   obscure: true),
@@ -272,8 +272,8 @@ class Registerscreen extends StatelessWidget {
                                           ));
                                     }
                                   },
-                                  validateor: (Value) {
-                                    if (Value != passwordController.text) {
+                                  validateor: (value) {
+                                    if (value != passwordController.text) {
                                       return "Passwords doesn't matched";
                                     } else {
                                       return null; // Form is valid.

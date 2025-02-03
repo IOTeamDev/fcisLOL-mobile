@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ui';
 import 'package:http/http.dart' as http;
 import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
@@ -75,9 +74,14 @@ Widget adminTopTitleWithDrawerButton(
 }
 
 RefreshIndicator swipeRefreshIndicator(
-    {dynamic child, required Future<void> Function() onRefresh, Color indicatorColor = ColorsManager.white})
-{
-  return RefreshIndicator(child: child, onRefresh: onRefresh, color: indicatorColor,);
+    {dynamic child,
+    required Future<void> Function() onRefresh,
+    Color indicatorColor = ColorsManager.white}) {
+  return RefreshIndicator(
+    child: child,
+    onRefresh: onRefresh,
+    color: indicatorColor,
+  );
 }
 
 Widget backButton(context, {double bottomPadding = 8}) {
@@ -104,13 +108,12 @@ Widget divider({
   Color color = ColorsManager.white,
   double height = AppSizesDouble.s1,
   double thickness = AppSizesDouble.s1,
-})
-=> Divider(
-  color: color,
-  height: height,
-  thickness: thickness,
-
-);
+}) =>
+    Divider(
+      color: color,
+      height: height,
+      thickness: thickness,
+    );
 
 void showToastMessage({
   required String message,
@@ -131,6 +134,7 @@ void showToastMessage({
       fontSize: fontSize,
     );
 
+// ignore: constant_identifier_names
 enum ToastStates { SUCCESS, ERROR, WARNING, INFO }
 
 Color chooseToastColor(ToastStates states) {

@@ -23,6 +23,7 @@ import 'package:lol/core/utils/navigation.dart';
 bool refreshing = false;
 
 class OtherProfile extends StatelessWidget {
+  // ignore: prefer_typing_uninitialized_variables
   final id;
   const OtherProfile({super.key, this.id});
 
@@ -277,10 +278,6 @@ class OtherProfile extends StatelessWidget {
                                           child: ListView.separated(
                                               physics: BouncingScrollPhysics(),
                                               itemBuilder: (context, index) {
-                                                var materials =
-                                                    MainCubit.get(context)
-                                                        .otherProfile!
-                                                        .materials;
                                                 var mainCubit =
                                                     MainCubit.get(context);
                                                 return Container(
