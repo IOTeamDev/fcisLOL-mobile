@@ -25,6 +25,7 @@ import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cub
 import 'package:lol/features/admin/presentation/view/announcements/announcement_detail.dart';
 import 'package:lol/features/auth/presentation/view/login.dart';
 import 'package:lol/features/leaderboard/presentation/view/leaderboard_view.dart';
+import 'package:lol/features/previous_exams/previous_exams.dart';
 import 'package:lol/features/subject/data/repos/subject_repo_imp.dart';
 import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit_cubit.dart';
 import 'package:lol/features/subject/presentation/screens/subject_details.dart';
@@ -37,6 +38,7 @@ import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/features/profile/view/profile.dart';
+import 'package:lol/features/useful_links/useful_links.dart';
 import 'package:lol/main.dart';
 import 'package:lol/core/utils/navigation.dart';
 import 'package:lol/core/utils/dependencies_helper.dart';
@@ -389,7 +391,9 @@ class Home extends StatelessWidget {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: AppPaddings.p20,
                                       vertical: AppPaddings.p20),
-                                  child: divider(),
+                                  child: divider(
+                                    color: MainCubit.get(context).isDark? ColorsManager.white: ColorsManager.black
+                                  ),
                                 ), //divider
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
@@ -677,8 +681,7 @@ Widget _customDrawer(context, semester) {
                             borderRadius: BorderRadius
                                 .zero), // Removes divider when expanded
                         onTap: () {
-                          navigate(context,
-                              SemesterNavigate(semester: StringsManager.one));
+                          navigate(context, SemesterNavigate(semester: StringsManager.one));
                         },
                       ),
                       ListTile(
@@ -686,12 +689,9 @@ Widget _customDrawer(context, semester) {
                           StringsManager.secondSemester,
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius
-                                .zero), // Removes divider when expanded
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero), // Removes divider when expanded
                         onTap: () {
-                          navigate(context,
-                              SemesterNavigate(semester: StringsManager.two));
+                          navigate(context, SemesterNavigate(semester: StringsManager.two));
                         },
                       ),
                     ],
@@ -719,8 +719,7 @@ Widget _customDrawer(context, semester) {
                             borderRadius: BorderRadius
                                 .zero), // Removes divider when expanded
                         onTap: () {
-                          navigate(context,
-                              SemesterNavigate(semester: StringsManager.three));
+                          navigate(context, SemesterNavigate(semester: StringsManager.three));
                         },
                       ),
                       ListTile(
@@ -732,8 +731,7 @@ Widget _customDrawer(context, semester) {
                             borderRadius: BorderRadius
                                 .zero), // Removes divider when expanded
                         onTap: () {
-                          navigate(context,
-                              SemesterNavigate(semester: StringsManager.four));
+                          navigate(context, SemesterNavigate(semester: StringsManager.four));
                         },
                       ),
                     ],
@@ -770,20 +768,20 @@ Widget _customDrawer(context, semester) {
                           StringsManager.secondSemester,
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius
-                                .zero), // Removes divider when expanded
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero), // Removes divider when expanded
                         onTap: () {
                           navigate(context,
-                              SemesterNavigate(semester: StringsManager.six));
+                            SemesterNavigate(semester: StringsManager.six)
+                          );
                         },
                       ),
                     ],
                   ),
                   InkWell(
                     onTap: () => showToastMessage(
-                        message: StringsManager.currentlyUpdating,
-                        states: ToastStates.INFO),
+                      message: StringsManager.currentlyUpdating,
+                      states: ToastStates.INFO
+                    ),
                     child: ExpansionTile(
                       enabled: false,
                       title: Text(
@@ -791,26 +789,26 @@ Widget _customDrawer(context, semester) {
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                       //currently Not Used
-                      children: [
-                        ListTile(
-                          title: const Text("First Semester"),
-                          onTap: () {
-                            // MainCubit.get(context).profileModel = null;
-                            // TOKEN = null;
-                            navigate(context,
-                                const SemesterNavigate(semester: "One"));
-                          },
-                        ),
-                        ListTile(
-                          title: const Text("Second Semester"),
-                          onTap: () {
-                            // MainCubit.get(context).profileModel = null;
-                            // TOKEN = null;
-                            navigate(context,
-                                const SemesterNavigate(semester: "Two"));
-                          },
-                        ),
-                      ],
+                      // children: [
+                      //   ListTile(
+                      //     title: const Text("First Semester"),
+                      //     onTap: () {
+                      //       // MainCubit.get(context).profileModel = null;
+                      //       // TOKEN = null;
+                      //       navigate(context,
+                      //           const SemesterNavigate(semester: "One"));
+                      //     },
+                      //   ),
+                      //   ListTile(
+                      //     title: const Text("Second Semester"),
+                      //     onTap: () {
+                      //       // MainCubit.get(context).profileModel = null;
+                      //       // TOKEN = null;
+                      //       navigate(context,
+                      //           const SemesterNavigate(semester: "Two"));
+                      //     },
+                      //   ),
+                      // ],
                     ),
                   ),
                 ],
@@ -896,6 +894,16 @@ Widget _customDrawer(context, semester) {
                     },
                   ),
                 ],
+              ),
+              ListTile(
+                leading: Icon(IconsManager.linkIcon, color: Theme.of(context).iconTheme.color,),
+                title: Text(StringsManager.links, style: Theme.of(context).textTheme.bodyLarge,),
+                onTap: () => navigate(context, UsefulLinks()),
+              ),
+              ListTile(
+                leading: Icon(IconsManager.paperIcon, color: Theme.of(context).iconTheme.color,),
+                title: Text(StringsManager.exams, style: Theme.of(context).textTheme.bodyLarge,),
+                onTap: () => navigate(context, PreviousExams()),
               ),
               ExpansionTile(
                 leading: Icon(
@@ -1024,83 +1032,6 @@ Widget _customDrawer(context, semester) {
             ),
           ),
         ),
-        // Container(
-        //   width: 150,
-        //   height: 50,
-        //   decoration: BoxDecoration(
-        //     borderRadius: BorderRadius.circular(20),
-        //     color: AppConstants.TOKEN != null ? Colors.red : Colors.green
-        //   ),
-        //   child: AppConstants.TOKEN != null
-        //     ? InkWell(
-        //       onTap: () {
-        //         AwesomeDialog(
-        //           context: context,
-        //           title: StringsManager.logOut,
-        //           dialogType: DialogType.warning,
-        //           dismissOnTouchOutside: true,
-        //           barrierColor: ColorsManager.black.withOpacity(AppSizesDouble.s0_7),
-        //           body: Text(
-        //             StringsManager.logOutWarningMessage,
-        //             style: Theme.of(context).textTheme.displayLarge!.copyWith(color: ColorsManager.black),
-        //             textAlign: TextAlign.center,
-        //           ),
-        //           animType: AnimType.scale,
-        //           btnOkColor: ColorsManager.imperialRed,
-        //           btnCancelOnPress: () {},
-        //           btnOkText: StringsManager.logOut,
-        //           btnCancelColor: ColorsManager.grey,
-        //
-        //           btnOkOnPress: () {
-        //             MainCubit.get(context).logout(context);
-        //             Cache.writeData(key: KeysManager.isDark, value: false);
-        //           },
-        //         ).show();
-        //       },
-        //       child: Row(
-        //           mainAxisAlignment: MainAxisAlignment.center,
-        //           children: [
-        //             const Icon(
-        //               Icons.logout,
-        //               color: Colors.white,
-        //               size: 24,
-        //             ),
-        //             SizedBox(
-        //               width: 10,
-        //             ),
-        //             const Text(
-        //               "Log out",
-        //               style: TextStyle(
-        //                   color: Colors.white, fontSize: 17),
-        //             ),
-        //           ]
-        //       ),
-        //   ) :
-        //   GestureDetector(
-        //     onTap: () {
-        //       Cache.writeData(key: KeysManager.isDark, value: false);
-        //       navigate(context, LoginScreen());
-        //     },
-        //     child: Row(
-        //       mainAxisAlignment: MainAxisAlignment.center,
-        //       children: [
-        //         const Icon(
-        //           Icons.login,
-        //           color: Colors.white,
-        //           size: 24,
-        //         ),
-        //         SizedBox(
-        //           width: 10,
-        //         ),
-        //         const Text(
-        //           "Log in",
-        //           style: TextStyle(
-        //               color: Colors.white, fontSize: 17),
-        //         ),
-        //       ]
-        //     ),
-        //   ),
-        // ),
       ],
     ),
   );
@@ -1149,7 +1080,7 @@ Widget subjectItemBuild(SubjectModel subject, context, bool navigation) {
               style: Theme.of(context)
                   .textTheme
                   .titleLarge!
-                  .copyWith(fontWeight: FontWeightManager.semiBold),
+                  .copyWith(fontWeight: FontWeightManager.semiBold, color: ColorsManager.white),
               overflow: TextOverflow.ellipsis,
             ),
           ],

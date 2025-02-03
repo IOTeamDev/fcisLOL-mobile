@@ -19,4 +19,6 @@ class IconsManager{
   static const IconData logInIcon = Icons.login;
   static const IconData campaignIcon = Icons.campaign;
   static const IconData emailIcon = Icons.email;
+  static const IconData linkIcon = Icons.link;
+  static const IconData paperIcon = Icons.add_alarm_outlined;
 }

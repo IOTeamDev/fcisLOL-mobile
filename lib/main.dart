@@ -152,9 +152,10 @@ class App extends StatelessWidget {
         BlocProvider(
           create: (BuildContext context) => AdminCubit()
           ..getAnnouncements(
-          MainCubit.get(context).profileModel != null ?
-          MainCubit.get(context).profileModel!.semester :
-          KeysManager.semester)
+            MainCubit.get(context).profileModel != null ?
+            MainCubit.get(context).profileModel!.semester :
+            AppConstants.SelectedSemester!
+          )
           ..getFcmTokens()
         ),
       ],

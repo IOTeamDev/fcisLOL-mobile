@@ -64,6 +64,8 @@ class StringsManager{
   static const String logOutWarningMessage = 'Are you sure you want to log out?';
   static const String logOutSuccessfully = 'Logout Successfully';
   static const String logIn = 'Log In';
+  static const String links = 'Links';
+  static const String exams = 'Exams';
 }
 
 class KeysManager{

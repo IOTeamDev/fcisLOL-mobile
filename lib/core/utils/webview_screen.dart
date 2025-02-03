@@ -23,15 +23,12 @@ class WebviewScreen extends StatelessWidget {
           }
           if (request.url.startsWith('https://www.youtube.com') ||
               request.url.startsWith('https://youtu.be')) {
-            //print('Opening youtube');
             await launchUrl(Uri.parse(request.url)); // Opens the URL with an external app
             return NavigationDecision.prevent; // Prevent WebView from handling it
           }
 
-          // Check if the URL uses a scheme other than http or https
           if (uri.scheme != 'http' && uri.scheme != 'https') {
             try {
-              // Attempt to open the URL in an external app
               if (await canLaunchUrl(uri)) {
                 await launchUrl(uri);
               } else {

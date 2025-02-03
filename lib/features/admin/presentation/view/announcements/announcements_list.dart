@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
+import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit_states.dart';
 import 'package:lol/features/admin/presentation/view/announcements/announcement_detail.dart';
@@ -12,6 +13,7 @@ import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/navigation.dart';
 import '../../../../../core/utils/resources/colors_manager.dart';
 import '../../../../../core/utils/resources/constants_manager.dart';
+import '../../../../../core/utils/resources/values_manager.dart';
 
 class AnnouncementsList extends StatelessWidget {
   final String semester;
@@ -19,42 +21,23 @@ class AnnouncementsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AdminCubit()..getAnnouncements(semester),
-      child: BlocConsumer<AdminCubit, AdminCubitStates>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          var cubit = AdminCubit.get(context);
-          return Scaffold(
-            //backgroundColor: HexColor('#23252A'),
-            body: Container(
-              margin:
-                  EdgeInsetsDirectional.only(top: AppQueries.screenHeight(context) / 10),
-              width: double.infinity,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Stack(
-                      children: [
-                        Positioned(
-                          left: 0,
-                          child: backButton(context),
-                        ),
-                        Center(
-                            child: Text(
-                          'Announcements',
-                          style: TextStyle(
-                            fontSize: AppQueries.screenWidth(context) / 12,
-                          ),
-                          textAlign: TextAlign.center,
-                        )),
-                      ],
-                    ),
-                    ConditionalBuilder(
-                      condition: state is! AdminGetAnnouncementLoadingState &&
-                          cubit.announcements != null &&
-                          cubit.announcements!.isNotEmpty,
-                      builder: (context) => ListView.separated(
+    return BlocConsumer<AdminCubit, AdminCubitStates>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        var cubit = AdminCubit.get(context);
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(StringsManager.announcements, style: Theme.of(context).textTheme.displayMedium,),
+          ),
+          body: SafeArea(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: AppPaddings.p20),
+              child: RefreshIndicator(
+                onRefresh: () => _onRefresh(context),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ListView.separated(
                         shrinkWrap: true,
                         physics: const BouncingScrollPhysics(),
                         itemBuilder: (context, index) => announcementBuilder(
@@ -65,45 +48,23 @@ class AnnouncementsList extends StatelessWidget {
                             cubit.announcements![index].content,
                             cubit.announcements![index].dueDate,
                             cubit.announcements![index].type),
-                        separatorBuilder: (context, index) => const SizedBox(
-                          height: 10,
-                        ),
+                        separatorBuilder: (context, index) => const SizedBox(height: AppSizesDouble.s10,),
                         itemCount: cubit.announcements!.length,
                         //cubit.announcements!.length
                       ),
-                      fallback: (context) {
-                        if (state is AdminGetAnnouncementLoadingState) {
-                          return SizedBox(
-                            height: AppQueries.screenHeight(context) / 1.3,
-                            child: Center(child: CircularProgressIndicator()),
-                          );
-                        } else {
-                          return SizedBox(
-                            height: AppQueries.screenHeight(context) / 1.3,
-                            child: Center(
-                              child: Text(
-                                'You have no announcements yet!!!',
-                                style: TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          );
-                        }
-                      },
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
-
+  _onRefresh(context){
+    AdminCubit.get(context).getAnnouncements(semester);
+  }
   Widget announcementBuilder(int id, BuildContext context, String title,
       int index, String content, dueDate, type) {
     var random = Random();
@@ -111,14 +72,13 @@ class AnnouncementsList extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         navigate(
-            context,
-            AnnouncementDetail(
-              semester: semester, //
-              title: title,
-              description: content,
-              date: dueDate,
-              // id: id,
-            ));
+          context,
+          AnnouncementDetail(
+            semester: semester, //
+            title: title,
+            description: content,
+            date: dueDate,
+          ));
       },
       child: Container(
         margin: EdgeInsetsDirectional.symmetric(horizontal: 10),

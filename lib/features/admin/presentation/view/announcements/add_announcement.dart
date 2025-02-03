@@ -67,7 +67,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
         var cubit = AdminCubit.get(context);
         return Scaffold(
           appBar: AppBar(
-            title: Text(StringsManager.announcements),
+            title: Text(StringsManager.announcements, style: Theme.of(context).textTheme.displayMedium,),
             centerTitle: true,
           ),
           body: Container(
