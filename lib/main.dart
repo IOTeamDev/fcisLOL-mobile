@@ -143,25 +143,30 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-        providers: [
-          BlocProvider(
-              create: (BuildContext context) => MainCubit()
-                ..getProfileInfo()
-                ..themeData),
-          BlocProvider(
-              create: (BuildContext context) => AdminCubit()
-                ..getAnnouncements(MainCubit.get(context).profileModel != null
-                    ? MainCubit.get(context).profileModel!.semester
-                    : KeysManager.semester)),
-        ],
-        child:
-            BlocBuilder<MainCubit, MainCubitStates>(builder: (context, state) {
-          // AdminCubit.get(context).getFcmTokens();
+      providers: [
+        BlocProvider(
+          create: (BuildContext context) => MainCubit()
+          ..getProfileInfo()
+          ..themeData
+        ),
+        BlocProvider(
+          create: (BuildContext context) => AdminCubit()
+          ..getAnnouncements(
+          MainCubit.get(context).profileModel != null ?
+          MainCubit.get(context).profileModel!.semester :
+          KeysManager.semester)
+          ..getFcmTokens()
+        ),
+      ],
+      child: BlocBuilder<MainCubit, MainCubitStates>(
+        builder: (context, state) {
           return MaterialApp(
             home: startPage,
             debugShowCheckedModeBanner: false,
             theme: MainCubit.get(context).themeData,
           );
-        }));
+        }
+      )
+    );
   }
 }

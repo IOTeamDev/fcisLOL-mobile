@@ -55,6 +55,7 @@ class WebviewScreen extends StatelessWidget {
       appBar: AppBar(),
       body: WebViewWidget(
         controller: controller,
+
       ),
     );
   }

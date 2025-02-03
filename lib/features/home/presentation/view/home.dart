@@ -124,7 +124,7 @@ class Home extends StatelessWidget {
                   StringsManager.home,
                   style: Theme.of(context)
                       .textTheme
-                      .titleLarge!
+                      .displayMedium!
                       .copyWith(fontWeight: FontWeightManager.semiBold),
                 ),
               ),

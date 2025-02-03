@@ -31,7 +31,6 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
   double _height = AppSizesDouble.s80;
   bool _isExpanded = false;
   bool _showContent = false;
-
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _dateController = TextEditingController();
@@ -42,459 +41,457 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AdminCubit()
-        ..getAnnouncements(widget.semester)
-        ..getFcmTokens(),
-      child: BlocConsumer<AdminCubit, AdminCubitStates>(
-        listener: (context, state) {
-          if (state is AdminSaveAnnouncementSuccessState) {
-            showToastMessage(
-                message: 'Announcement Added Successfully',
-                states: ToastStates.SUCCESS);
-          } else if (state is AdminSaveAnnouncementsErrorState) {
-            showToastMessage(
-                message: 'An Error Occurred: ${state.error}',
-                states: ToastStates.ERROR);
-          }
+    return BlocConsumer<AdminCubit, AdminCubitStates>(
+      listener: (context, state) {
+        if (state is AdminSaveAnnouncementSuccessState) {
+          showToastMessage(
+              message: 'Announcement Added Successfully',
+              states: ToastStates.SUCCESS);
+        } else if (state is AdminSaveAnnouncementsErrorState) {
+          showToastMessage(
+              message: 'An Error Occurred: ${state.error}',
+              states: ToastStates.ERROR);
+        }
 
-          if (state is AdminDeleteAnnouncementSuccessState) {
-            showToastMessage(
-                message: 'Announcement Deleted', states: ToastStates.WARNING);
-          }
-          if (state is AdminDeleteAnnouncementErrorState) {
-            showToastMessage(
-                message: 'Error Occurred: ${state.error}',
-                states: ToastStates.ERROR);
-          }
-        },
-        builder: (context, state) {
-          var cubit = AdminCubit.get(context);
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(StringsManager.announcements),
-              centerTitle: true,
+        if (state is AdminDeleteAnnouncementSuccessState) {
+          showToastMessage(
+              message: 'Announcement Deleted', states: ToastStates.WARNING);
+        }
+        if (state is AdminDeleteAnnouncementErrorState) {
+          showToastMessage(
+              message: 'Error Occurred: ${state.error}',
+              states: ToastStates.ERROR);
+        }
+      },
+      builder: (context, state) {
+        var cubit = AdminCubit.get(context);
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(
+              StringsManager.announcements,
+              style: Theme.of(context).textTheme.displayMedium,
             ),
-            body: Container(
-              padding: EdgeInsets.symmetric(horizontal: AppSizesDouble.s5),
-              //margin: EdgeInsetsDirectional.only(top: AppQueries.screenHeight(context) / 10),
-              width: double.infinity,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
+            centerTitle: true,
+          ),
+          body: Container(
+            padding: EdgeInsets.symmetric(horizontal: AppSizesDouble.s5),
+            //margin: EdgeInsetsDirectional.only(top: AppQueries.screenHeight(context) / 10),
+            width: double.infinity,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _isExpanded = true; // Toggle the expansion
+                        _height = AppSizesDouble.s430;
+                      });
+                      Future.delayed(const Duration(milliseconds: AppSizes.s350), () {
                         setState(() {
-                          _isExpanded = true; // Toggle the expansion
-                          _height = AppSizesDouble.s430;
+                          _showContent = true;
                         });
-                        Future.delayed(const Duration(milliseconds: AppSizes.s350), () {
-                          setState(() {
-                            _showContent = true;
-                          });
-                        });
-                      },
-                      child: AnimatedContainer(
-                        margin: const EdgeInsets.symmetric(vertical: AppSizesDouble.s30, horizontal: AppSizesDouble.s10),
-                        duration: const Duration(milliseconds: AppSizes.s380),
-                        width: double.infinity,
-                        height: _height,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(AppSizesDouble.s20),
-                          color: MainCubit.get(context).isDark ?
-                          ColorsManager.darkPrimary :
-                          ColorsManager.lightGrey
-                        ),
-                        curve: Curves.fastEaseInToSlowEaseOut,
-                        child: _isExpanded && _showContent ?
-                        Padding(
-                          padding: const EdgeInsets.all(AppSizesDouble.s10),
-                          child: Form(
-                            key: _formKey,
-                            //child: AnimatedSwitcher(duration: Duration(milliseconds: AppSizes.s380), child: ,),
-                            child: AnimatedOpacity(
-                              opacity: _isExpanded ? AppSizesDouble.s1 : AppSizesDouble.s0,
-                              duration: const Duration(milliseconds: AppSizes.s380),
-                              curve: Curves.easeInOut,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  //Title Text Input
-                                  TextFormField(
-                                    controller: _titleController,
-                                    validator: _titleValidator,
-                                    decoration: InputDecoration(
-                                      hintText: StringsManager.title[AppSizes.s0].toUpperCase() + StringsManager.title.substring(AppSizes.s1),
-                                      hintStyle: TextStyle(
-                                        fontSize: AppSizesDouble.s20,
-                                        color: MainCubit.get(context).isDark ?
-                                        ColorsManager.lightGrey1 :
-                                        ColorsManager.lightGrey2
-                                      ),
-                                      enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: MainCubit.get(context).isDark ?
-                                          ColorsManager.grey :
-                                          ColorsManager.white
-                                        )
-                                      ),
+                      });
+                    },
+                    child: AnimatedContainer(
+                      margin: const EdgeInsets.symmetric(vertical: AppSizesDouble.s30, horizontal: AppSizesDouble.s10),
+                      duration: const Duration(milliseconds: AppSizes.s380),
+                      width: double.infinity,
+                      height: _height,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(AppSizesDouble.s20),
+                        color: MainCubit.get(context).isDark ?
+                        ColorsManager.darkPrimary :
+                        ColorsManager.lightGrey
+                      ),
+                      curve: Curves.fastEaseInToSlowEaseOut,
+                      child: _isExpanded && _showContent ?
+                      Padding(
+                        padding: const EdgeInsets.all(AppSizesDouble.s10),
+                        child: Form(
+                          key: _formKey,
+                          //child: AnimatedSwitcher(duration: Duration(milliseconds: AppSizes.s380), child: ,),
+                          child: AnimatedOpacity(
+                            opacity: _isExpanded ? AppSizesDouble.s1 : AppSizesDouble.s0,
+                            duration: const Duration(milliseconds: AppSizes.s380),
+                            curve: Curves.easeInOut,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                //Title Text Input
+                                TextFormField(
+                                  controller: _titleController,
+                                  validator: _titleValidator,
+                                  decoration: InputDecoration(
+                                    hintText: StringsManager.title[AppSizes.s0].toUpperCase() + StringsManager.title.substring(AppSizes.s1),
+                                    hintStyle: TextStyle(
+                                      fontSize: AppSizesDouble.s20,
+                                      color: MainCubit.get(context).isDark ?
+                                      ColorsManager.lightGrey1 :
+                                      ColorsManager.lightGrey2
                                     ),
-                                    style: TextStyle(color: ColorsManager.white),
-                                  ),
-                                  const SizedBox(height: AppSizesDouble.s10,),
-                                  //Description Input text Field
-                                  TextFormField(
-                                    controller: _descriptionController,
-                                    minLines: AppSizes.s5,
-                                    maxLines: AppSizes.s5,
-                                    decoration: InputDecoration(
-                                      hintText: StringsManager.description,
-                                      hintStyle: TextStyle(
-                                        fontSize: AppSizesDouble.s20,
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
                                         color: MainCubit.get(context).isDark ?
-                                        ColorsManager.lightGrey1
-                                        : ColorsManager.lightGrey2
-                                      ),
-                                      enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: MainCubit.get(context).isDark?
-                                          ColorsManager.grey :
-                                          ColorsManager.white
-                                        )
-                                      ),
+                                        ColorsManager.grey :
+                                        ColorsManager.white
+                                      )
                                     ),
-                                    style: const TextStyle(color: ColorsManager.white),
                                   ),
-                                  const SizedBox(
-                                    height: AppSizesDouble.s10,
+                                  style: TextStyle(color: ColorsManager.white),
+                                ),
+                                const SizedBox(height: AppSizesDouble.s10,),
+                                //Description Input text Field
+                                TextFormField(
+                                  controller: _descriptionController,
+                                  minLines: AppSizes.s5,
+                                  maxLines: AppSizes.s5,
+                                  decoration: InputDecoration(
+                                    hintText: StringsManager.description,
+                                    hintStyle: TextStyle(
+                                      fontSize: AppSizesDouble.s20,
+                                      color: MainCubit.get(context).isDark ?
+                                      ColorsManager.lightGrey1
+                                      : ColorsManager.lightGrey2
+                                    ),
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: MainCubit.get(context).isDark?
+                                        ColorsManager.grey :
+                                        ColorsManager.white
+                                      )
+                                    ),
                                   ),
-                                  Row(
-                                    children: [
-                                      //DatePicker Input text Field
-                                      Expanded(
-                                        child: GestureDetector(
-                                          onTap: () => _datePicker(),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              color: ColorsManager.white,
-                                              borderRadius:
-                                              BorderRadius
-                                              .circular(AppSizesDouble.s10)
-                                            ),
-                                            padding:
-                                            EdgeInsetsDirectional.symmetric(
-                                              horizontal: AppSizesDouble.s20
-                                            ),
-                                            child: AbsorbPointer(
-                                              child: TextFormField(
-                                                controller: _dateController,
-                                                keyboardType: TextInputType.none,
-                                                decoration: InputDecoration(
-                                                  suffixIcon: const Icon(
-                                                    IconsManager.datePickerIcon,
-                                                    color: ColorsManager.black,
-                                                  ),
-                                                  hintText: StringsManager.dueDate.split(StringsManager.dash).join(StringsManager.space),
-                                                  hintStyle: TextStyle(
-                                                    fontSize: FontSize.size14,
-                                                    color: ColorsManager.black
-                                                  ),
-                                                  border: InputBorder.none,
+                                  style: const TextStyle(color: ColorsManager.white),
+                                ),
+                                const SizedBox(
+                                  height: AppSizesDouble.s10,
+                                ),
+                                Row(
+                                  children: [
+                                    //DatePicker Input text Field
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () => _datePicker(),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: ColorsManager.white,
+                                            borderRadius:
+                                            BorderRadius
+                                            .circular(AppSizesDouble.s10)
+                                          ),
+                                          padding:
+                                          EdgeInsetsDirectional.symmetric(
+                                            horizontal: AppSizesDouble.s20
+                                          ),
+                                          child: AbsorbPointer(
+                                            child: TextFormField(
+                                              controller: _dateController,
+                                              keyboardType: TextInputType.none,
+                                              decoration: InputDecoration(
+                                                suffixIcon: const Icon(
+                                                  IconsManager.datePickerIcon,
+                                                  color: ColorsManager.black,
                                                 ),
-                                                style: const TextStyle(
+                                                hintText: StringsManager.dueDate.split(StringsManager.dash).join(StringsManager.space),
+                                                hintStyle: TextStyle(
+                                                  fontSize: FontSize.size14,
                                                   color: ColorsManager.black
                                                 ),
+                                                border: InputBorder.none,
+                                              ),
+                                              style: const TextStyle(
+                                                color: ColorsManager.black
                                               ),
                                             ),
                                           ),
                                         ),
                                       ),
-                                      SizedBox(
-                                        width: AppQueries.screenWidth(context) / AppSizes.s10,
+                                    ),
+                                    SizedBox(
+                                      width: AppQueries.screenWidth(context) / AppSizes.s10,
+                                    ),
+                                    //Announcement type Drop Down menu
+                                    DropdownButton<String>(
+                                      hint: const Text(
+                                        StringsManager.type,
+                                        style: TextStyle(color: ColorsManager.white),
                                       ),
-                                      //Announcement type Drop Down menu
-                                      DropdownButton<String>(
-                                        hint: const Text(
-                                          StringsManager.type,
-                                          style: TextStyle(color: ColorsManager.white),
-                                        ),
-                                        value: _selectedItem,
-                                        dropdownColor: ColorsManager.white, // Background color for the dropdown list
-                                        iconEnabledColor: ColorsManager.white, // Color of the dropdown icon
-                                        style: const TextStyle(color: ColorsManager.white), // Style for the selected item outside the list
-                                        items: _items.map((String item) {
+                                      value: _selectedItem,
+                                      dropdownColor: ColorsManager.white, // Background color for the dropdown list
+                                      iconEnabledColor: ColorsManager.white, // Color of the dropdown icon
+                                      style: const TextStyle(color: ColorsManager.white), // Style for the selected item outside the list
+                                      items: _items.map((String item) {
+                                        return DropdownMenuItem<String>(
+                                          value: item,
+                                          child: Text(
+                                            item,
+                                            style: const TextStyle(
+                                              color: ColorsManager.black
+                                            ), // Always black for the list items
+                                          ),
+                                        );
+                                      }).toList(),
+                                      onChanged: (String? newValue) {
+                                        setState(() {
+                                          _selectedItem = newValue;
+                                        });
+                                      },
+                                      selectedItemBuilder: (BuildContext context) {
+                                        // Ensuring the selected item has the same padding and alignment as the menu items
+                                        return _items.map((String item) {
                                           return DropdownMenuItem<String>(
                                             value: item,
                                             child: Text(
                                               item,
                                               style: const TextStyle(
-                                                color: ColorsManager.black
-                                              ), // Always black for the list items
+                                                color: ColorsManager.white, // White color for the selected item displayed outside
+                                              ),
                                             ),
                                           );
-                                        }).toList(),
-                                        onChanged: (String? newValue) {
-                                          setState(() {
-                                            _selectedItem = newValue;
-                                          });
-                                        },
-                                        selectedItemBuilder: (BuildContext context) {
-                                          // Ensuring the selected item has the same padding and alignment as the menu items
-                                          return _items.map((String item) {
-                                            return DropdownMenuItem<String>(
-                                              value: item,
-                                              child: Text(
-                                                item,
-                                                style: const TextStyle(
-                                                  color: ColorsManager.white, // White color for the selected item displayed outside
-                                                ),
-                                              ),
-                                            );
-                                          }).toList();
-                                        },
-                                      )
-                                    ],
-                                  ),
-                                  SizedBox(height: AppSizesDouble.s10,),
-                                  //Upload Image button
-                                  Container(
-                                    padding: EdgeInsetsDirectional.symmetric(horizontal: AppSizesDouble.s15),
-                                    width: AppQueries.screenWidth(context) / AppSizes.s2,
-                                    height: AppSizesDouble.s50,
-                                    decoration: BoxDecoration(
-                                      color: ColorsManager.white,
-                                      borderRadius: BorderRadius.circular(AppSizesDouble.s10),
-                                    ),
-                                    child: GestureDetector(
-                                      onTap: () => _getAnnouncementImage(cubit),
-                                      child: Row(
-                                        children: [
-                                          ConstrainedBox(
-                                            constraints: BoxConstraints(
-                                            maxWidth:
-                                            AppQueries.screenWidth(context) / AppSizes.s4),
-                                            child: Text(
-                                              cubit.imageName,
-                                              style: TextStyle(
-                                                color: ColorsManager.black
-                                              ),
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                            )
-                                          ),
-                                          SizedBox(width: AppSizesDouble.s5,),
-                                          IconButton(
-                                            icon: Icon(
-                                              cubit.pickerIcon,
-                                              color: ColorsManager.black,
-                                            ),
-                                            onPressed: () {
-                                              if (cubit.AnnouncementImageFile == null) {
-                                                showToastMessage(
-                                                  message: StringsManager.imagePickingWarning,
-                                                  states: ToastStates.WARNING,
-                                                );
-                                                cubit.getAnnouncementImage();
-                                              } else {
-                                                setState(() {
-                                                  cubit.AnnouncementImageFile = null;
-                                                  cubit.pickerIcon = IconsManager.imageIcon;
-                                                  cubit.imageName = StringsManager.selectImage;
-                                                });
-                                              }
-                                            }
-                                          ),
-                                        ],
-                                      ),
+                                        }).toList();
+                                      },
                                     )
+                                  ],
+                                ),
+                                SizedBox(height: AppSizesDouble.s10,),
+                                //Upload Image button
+                                Container(
+                                  padding: EdgeInsetsDirectional.symmetric(horizontal: AppSizesDouble.s15),
+                                  width: AppQueries.screenWidth(context) / AppSizes.s2,
+                                  height: AppSizesDouble.s50,
+                                  decoration: BoxDecoration(
+                                    color: ColorsManager.white,
+                                    borderRadius: BorderRadius.circular(AppSizesDouble.s10),
                                   ),
-                                  const Spacer(),
-                                  divider(),
-                                  //Cancel and Submit buttons
-                                  Padding(
-                                    padding: const EdgeInsets.all(AppSizesDouble.s10),
+                                  child: GestureDetector(
+                                    onTap: () => _getAnnouncementImage(cubit),
                                     child: Row(
                                       children: [
-                                        //cancel button
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              _titleController.clear();
-                                              _dateController.clear();
-                                              _descriptionController.clear();
-                                              _isExpanded = false; // Toggle the expansion
-                                              _height = 80;
-                                              _showContent = false;
-                                              dueDateFormatted = null;
-                                              cubit.AnnouncementImageFile = null;
-                                              cubit.imageName = StringsManager.selectImage;
-                                              cubit.pickerIcon = IconsManager.imageIcon;
-                                            });
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(AppSizesDouble.s13)),
-                                            padding: EdgeInsetsDirectional.symmetric(
-                                              horizontal: AppQueries.screenWidth(context) / AppSizes.s10
-                                            ),
-                                            backgroundColor: ColorsManager.white,
-                                            textStyle: TextStyle(fontSize: AppQueries.screenWidth(context) / AppSizes.s17),
-                                          ),
-                                          child: const Text(
-                                            StringsManager.cancel,
+                                        ConstrainedBox(
+                                          constraints: BoxConstraints(
+                                          maxWidth:
+                                          AppQueries.screenWidth(context) / AppSizes.s4),
+                                          child: Text(
+                                            cubit.imageName,
                                             style: TextStyle(
                                               color: ColorsManager.black
                                             ),
-                                          ),
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                          )
                                         ),
-                                        const Spacer(),
-                                        //submit button
-                                        ElevatedButton(
-                                          onPressed: () async {
-                                            if (_formKey.currentState!.validate()) {
-                                              if (_selectedItem == null) {
-                                                showToastMessage(
-                                                  textColor: Colors.black,
-                                                  message: StringsManager.selectAnnouncementTypeWarning,
-                                                  states: ToastStates.WARNING
-                                                );
-                                              } else {
-                                                setState(() {
-                                                  _isExpanded = false;
-                                                  _showContent = false;
-                                                  _height = AppSizesDouble.s80;
-                                                });
-                                                //print(_selectedItem);
-                                                //print("${MainCubit.get(context).profileModel!.semester}");
-                                                await AdminCubit.get(context).UploadPImage(
-                                                  image: cubit.AnnouncementImageFile
-                                                );
-                                                cubit.addAnnouncement(
-                                                  title: _titleController.text,
-                                                  dueDate: dueDateFormatted,
-                                                  type: _selectedItem,
-                                                  description: _descriptionController.text,
-                                                  image: AdminCubit.get(context).AnnouncementImagePath ?? AppConstants.defaultImage,
-                                                  currentSemester: widget.semester
-                                                );
-                                                setState(() {
-                                                  _titleController.clear();
-                                                  _descriptionController.clear();
-                                                  _dateController.clear();
-                                                  _selectedItem = null;
-                                                  dueDateFormatted = null;
-                                                  cubit.AnnouncementImageFile = null;
-                                                  cubit.imageName = StringsManager.selectImage;
-                                                  cubit.pickerIcon = IconsManager.imageIcon;
-                                                });
-                                              }
-                                            }
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(AppSizesDouble.s13)
-                                            ),
-                                            padding: EdgeInsetsDirectional.symmetric(
-                                              horizontal: AppQueries.screenWidth(context) / AppSizes.s10),
-                                            backgroundColor:
-                                            ColorsManager.dodgerBlue,
-                                            foregroundColor: ColorsManager.white,
-                                            textStyle: TextStyle(
-                                              fontSize: AppQueries.screenWidth(context) / AppSizes.s17
-                                            ),
+                                        SizedBox(width: AppSizesDouble.s5,),
+                                        IconButton(
+                                          icon: Icon(
+                                            cubit.pickerIcon,
+                                            color: ColorsManager.black,
                                           ),
-                                          child: const Text(StringsManager.submit)),
+                                          onPressed: () {
+                                            if (cubit.AnnouncementImageFile == null) {
+                                              showToastMessage(
+                                                message: StringsManager.imagePickingWarning,
+                                                states: ToastStates.WARNING,
+                                              );
+                                              cubit.getAnnouncementImage();
+                                            } else {
+                                              setState(() {
+                                                cubit.AnnouncementImageFile = null;
+                                                cubit.pickerIcon = IconsManager.imageIcon;
+                                                cubit.imageName = StringsManager.selectImage;
+                                              });
+                                            }
+                                          }
+                                        ),
                                       ],
                                     ),
+                                  )
+                                ),
+                                const Spacer(),
+                                divider(),
+                                //Cancel and Submit buttons
+                                Padding(
+                                  padding: const EdgeInsets.all(AppSizesDouble.s10),
+                                  child: Row(
+                                    children: [
+                                      //cancel button
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            _titleController.clear();
+                                            _dateController.clear();
+                                            _descriptionController.clear();
+                                            _isExpanded = false; // Toggle the expansion
+                                            _height = 80;
+                                            _showContent = false;
+                                            dueDateFormatted = null;
+                                            cubit.AnnouncementImageFile = null;
+                                            cubit.imageName = StringsManager.selectImage;
+                                            cubit.pickerIcon = IconsManager.imageIcon;
+                                          });
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(AppSizesDouble.s13)),
+                                          padding: EdgeInsetsDirectional.symmetric(
+                                            horizontal: AppQueries.screenWidth(context) / AppSizes.s10
+                                          ),
+                                          backgroundColor: ColorsManager.white,
+                                          textStyle: TextStyle(fontSize: AppQueries.screenWidth(context) / AppSizes.s17),
+                                        ),
+                                        child: const Text(
+                                          StringsManager.cancel,
+                                          style: TextStyle(
+                                            color: ColorsManager.black
+                                          ),
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                      //submit button
+                                      ElevatedButton(
+                                        onPressed: () async {
+                                          if (_formKey.currentState!.validate()) {
+                                            if (_selectedItem == null) {
+                                              showToastMessage(
+                                                textColor: Colors.black,
+                                                message: StringsManager.selectAnnouncementTypeWarning,
+                                                states: ToastStates.WARNING
+                                              );
+                                            } else {
+                                              setState(() {
+                                                _isExpanded = false;
+                                                _showContent = false;
+                                                _height = AppSizesDouble.s80;
+                                              });
+                                              //print(_selectedItem);
+                                              //print("${MainCubit.get(context).profileModel!.semester}");
+                                              await AdminCubit.get(context).UploadPImage(
+                                                image: cubit.AnnouncementImageFile
+                                              );
+                                              cubit.addAnnouncement(
+                                                title: _titleController.text,
+                                                dueDate: dueDateFormatted,
+                                                type: _selectedItem,
+                                                description: _descriptionController.text,
+                                                image: AdminCubit.get(context).AnnouncementImagePath ?? AppConstants.defaultImage,
+                                                currentSemester: widget.semester
+                                              );
+                                              setState(() {
+                                                _titleController.clear();
+                                                _descriptionController.clear();
+                                                _dateController.clear();
+                                                _selectedItem = null;
+                                                dueDateFormatted = null;
+                                                cubit.AnnouncementImageFile = null;
+                                                cubit.imageName = StringsManager.selectImage;
+                                                cubit.pickerIcon = IconsManager.imageIcon;
+                                              });
+                                            }
+                                          }
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(AppSizesDouble.s13)
+                                          ),
+                                          padding: EdgeInsetsDirectional.symmetric(
+                                            horizontal: AppQueries.screenWidth(context) / AppSizes.s10),
+                                          backgroundColor:
+                                          ColorsManager.dodgerBlue,
+                                          foregroundColor: ColorsManager.white,
+                                          textStyle: TextStyle(
+                                            fontSize: AppQueries.screenWidth(context) / AppSizes.s17
+                                          ),
+                                        ),
+                                        child: const Text(StringsManager.submit)),
+                                    ],
                                   ),
-                                ]
-                              ),
-                            ),
-                          )
-                        ) :
-                        !_isExpanded ?
-                        Padding(
-                          padding: EdgeInsetsDirectional.symmetric(vertical: AppSizesDouble.s10, horizontal: AppSizesDouble.s15),
-                          child: Row(
-                            children: [
-                              Text(
-                                StringsManager.addNew,
-                                style: TextStyle(
-                                  fontSize: FontSize.size30,
-                                  color: ColorsManager.white
                                 ),
-                              ),
-                              Spacer(),
-                              Icon(
-                                IconsManager.addIcon,
-                                color: ColorsManager.white,
-                                size: AppSizesDouble.s40,
-                              ),
-                            ],
+                              ]
+                            ),
                           ),
-                        ) : null,
-                      ),
-                    ),
-                    ConditionalBuilder(
-                      condition: state is! AdminGetAnnouncementLoadingState &&
-                          cubit.announcements != null &&
-                          cubit.announcements!.isNotEmpty,
-                      builder: (context) => ListView.separated(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) => announcementBuilder(
-                            widget.semester,
-                            // cubit.announcements![index].id,
-                            context,
-                            index,
-                            cubit.announcements![index].title,
-                            cubit.announcements![index].content,
-                            cubit.announcements![index].dueDate,
-                            cubit.announcements![index].type),
-                        separatorBuilder: (context, index) => const SizedBox(
-                          height: AppSizesDouble.s10,
-                        ),
-                        itemCount: cubit.announcements!.length,
-                      ),
-                      fallback: (context) {
-                        if (state is AdminGetAnnouncementLoadingState) {
-                          return SizedBox(
-                            height: AppQueries.screenHeight(context) / AppSizesDouble.s1_5,
-                            child: const Center(child: CircularProgressIndicator()),
-                          );
-                        } else {
-                          return SizedBox(
-                            height: AppQueries.screenHeight(context) / AppSizesDouble.s1_5,
-                            child: Center(
-                              child: Text(
-                                StringsManager.noAnnouncementsYet,
-                                style: TextStyle(
-                                  fontSize: AppSizesDouble.s30,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                textAlign: TextAlign.center,
+                        )
+                      ) :
+                      !_isExpanded ?
+                      Padding(
+                        padding: EdgeInsetsDirectional.symmetric(vertical: AppSizesDouble.s10, horizontal: AppSizesDouble.s15),
+                        child: Row(
+                          children: [
+                            Text(
+                              StringsManager.addNew,
+                              style: TextStyle(
+                                fontSize: FontSize.size30,
+                                color: ColorsManager.white
                               ),
                             ),
-                          );
-                        }
-                      },
+                            Spacer(),
+                            Icon(
+                              IconsManager.addIcon,
+                              color: ColorsManager.white,
+                              size: AppSizesDouble.s40,
+                            ),
+                          ],
+                        ),
+                      ) : null,
                     ),
-                  ],
-                ),
+                  ),
+                  ConditionalBuilder(
+                    condition: state is! AdminGetAnnouncementLoadingState &&
+                        cubit.announcements != null &&
+                        cubit.announcements!.isNotEmpty,
+                    builder: (context) => ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) => announcementBuilder(
+                          widget.semester,
+                          // cubit.announcements![index].id,
+                          context,
+                          index,
+                          cubit.announcements![index].title,
+                          cubit.announcements![index].content,
+                          cubit.announcements![index].dueDate,
+                          cubit.announcements![index].type),
+                      separatorBuilder: (context, index) => const SizedBox(
+                        height: AppSizesDouble.s10,
+                      ),
+                      itemCount: cubit.announcements!.length,
+                    ),
+                    fallback: (context) {
+                      if (state is AdminGetAnnouncementLoadingState) {
+                        return SizedBox(
+                          height: AppQueries.screenHeight(context) / AppSizesDouble.s1_5,
+                          child: const Center(child: CircularProgressIndicator()),
+                        );
+                      } else {
+                        return SizedBox(
+                          height: AppQueries.screenHeight(context) / AppSizesDouble.s1_5,
+                          child: Center(
+                            child: Text(
+                              StringsManager.noAnnouncementsYet,
+                              style: TextStyle(
+                                fontSize: AppSizesDouble.s30,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ],
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
   String? _titleValidator(value) {
-  if (value == null ||
-  value.isEmpty) {
-  return StringsManager.emptyFieldWarning;
-  }
-  return null;
+    if (value == null ||
+    value.isEmpty) {
+      return StringsManager.emptyFieldWarning;
+    }
+    return null;
   }
 
   _datePicker() => showDatePicker(
