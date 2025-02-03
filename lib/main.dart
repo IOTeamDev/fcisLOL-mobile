@@ -136,34 +136,6 @@ main() async {
   ));
 }
 
-// class ThemeProvide extends ChangeNotifier {
-//   bool temp = false;
-//
-//   void changeMode({bool dontWannaDark = false}) async {
-//     if (dontWannaDark) {
-//       temp = false;
-//       isDark = temp;
-//       await Cache.writeData(key: "mode", value: false);
-//     } else {
-//       temp = !temp;
-//       await Cache.writeData(key: "mode", value: temp);
-//       isDark = temp;
-//     }
-//     print('Theme mode changed: $isDark'); // Debugging log
-//
-//     // Notify listeners to rebuild widgets listening to this provider
-//     notifyListeners();
-//   }
-//
-//   Future<void> loadMode() async {
-//     // Load the dark mode from shared preferences
-//     isDark = await Cache.readData(key: "mode") ?? false;
-//
-//     // Notify listeners to rebuild widgets with the loaded theme
-//     notifyListeners();
-//   }
-// }
-
 class App extends StatelessWidget {
   final Widget startPage;
 
