@@ -115,6 +115,7 @@ class Home extends StatelessWidget {
                             .openDrawer(); // Use key to open the drawer
                       }
                     },
+<<<<<<< HEAD
                     icon: Icon(
                       IconsManager.filledGridIcon,
                       color: Theme.of(context).appBarTheme.iconTheme!.color,
@@ -126,6 +127,218 @@ class Home extends StatelessWidget {
                       .textTheme
                       .titleLarge!
                       .copyWith(fontWeight: FontWeightManager.semiBold),
+=======
+                    icon: Icon(IconsManager.filledGridIcon, color: Theme.of(context).appBarTheme.iconTheme!.color,)
+                ),//drawer icon
+              centerTitle: true,
+              title: Text(
+                StringsManager.home,
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeightManager.semiBold),
+              ),
+            ),
+            drawer: _customDrawer(
+              context,
+              AppConstants.TOKEN == null ?
+              AppConstants.SelectedSemester :
+              MainCubit.get(context).profileModel!.semester
+            ),
+            body: profile == null && AppConstants.TOKEN != null ?
+            const Center(child: CircularProgressIndicator(),) :
+            RefreshIndicator(
+              onRefresh: () => _onRefresh(context, profile != null? profile.semester: AppConstants.SelectedSemester),
+              child: SingleChildScrollView(
+                child: SafeArea(
+                  child: Padding(
+                    padding: EdgeInsets.all(AppPaddings.p8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: AppPaddings.p20, vertical: AppPaddings.p10),
+                          child: Text(
+                            StringsManager.announcements,
+                            style: Theme.of(context).textTheme.headlineLarge
+                          ),
+                        ), //Announcements Text
+                        BlocBuilder<AdminCubit, AdminCubitStates>(
+                          builder: (context, state) {
+                            if (AdminCubit.get(context).announcements == null) {
+                              return Center(child: CircularProgressIndicator());
+                            } else {
+                              var announcements = AdminCubit.get(context).announcements;
+                              return CarouselSlider(
+                                items: announcements!.isEmpty ? [
+                                  GestureDetector(
+                                    onDoubleTap: () {
+                                      if (MainCubit.get(context).profileModel?.role == KeysManager.admin && changeSemester!) {
+                                        MainCubit.get(context).updateSemester4all();
+                                        changeSemester = false;
+                                      }
+                                    },
+                                    onTap: () {
+                                      navigate(
+                                        context,
+                                        AnnouncementsList(
+                                          semester: MainCubit.get(context).profileModel!.semester
+                                        )
+                                      );
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(AppSizesDouble.s15),
+                                      ),
+                                      child: Image.asset(
+                                        height: AppSizesDouble.s600,
+                                        width: double.infinity,
+                                        fit: BoxFit.cover,
+                                        AssetsManager.noAnnouncements
+                                      ),
+                                    ),
+                                  )
+                                ] :
+                                announcements.map((announc) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      navigate(
+                                        context,
+                                        AnnouncementDetail(
+                                          title: announc.title,
+                                          date: announc.dueDate,
+                                          description: announc.content,
+                                          semester: AppConstants.TOKEN != null ?
+                                          MainCubit.get(context).profileModel!.semester :
+                                          AppConstants.SelectedSemester!,
+                                        )
+                                      );
+                                    },
+                                    onDoubleTap: () {
+                                      if(MainCubit.get(context).profileModel?.role == KeysManager.admin && changeSemester!) {
+                                        MainCubit.get(context).updateSemester4all();
+                                        changeSemester = false;
+                                      }
+                                    },
+                                    child: Stack(
+                                      alignment: Alignment.bottomCenter,
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(top: AppMargins.m5),
+                                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(AppSizesDouble.s15),
+                                          ),
+                                          child: Image.network(
+                                            announc.image,
+                                            width: AppSizesDouble.s400,
+                                            height: AppSizesDouble.s250,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ), //image
+                                        Container(
+                                          width: double.infinity,
+                                          height: double.infinity, // Adjust height as needed
+                                          decoration:
+                                          BoxDecoration(
+                                            gradient:
+                                              LinearGradient(
+                                                colors: [
+                                                  Colors.transparent,
+                                                  Colors.transparent,
+                                                  Colors.transparent,
+                                                  Colors.black.withOpacity(AppSizesDouble.s0_3),
+                                                  Colors.black.withOpacity(AppSizesDouble.s0_6),
+                                                ],
+                                              begin: Alignment.topCenter,
+                                              end: Alignment.bottomCenter,
+                                            ),
+                                            borderRadius: BorderRadius.circular(AppSizesDouble.s15)
+                                          ),
+                                        ), //gradient
+                                        Align(
+                                          alignment: Alignment.bottomCenter,
+                                          child: Padding(
+                                            padding: EdgeInsets.symmetric(vertical: AppMargins.m20, horizontal: AppMargins.m15),
+                                            child: Stack(
+                                              children: [
+                                                Text(
+                                                  announc.title,
+                                                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                                    foreground: Paint()
+                                                    ..style = PaintingStyle.stroke
+                                                    ..strokeWidth = AppSizesDouble.s1_8
+                                                    ..color = ColorsManager.black
+                                                  ),
+                                                  textAlign: TextAlign.center,
+                                                  maxLines: AppSizes.s1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                                Text(
+                                                  announc.title,
+                                                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                                    color: ColorsManager.white,
+                                                  ),
+                                                  textAlign: TextAlign.center,
+                                                  maxLines: AppSizes.s1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                              ]
+                                            ),
+                                          ),
+                                        ), //title
+                                      ]
+                                    ),
+                                  );
+                                }).toList(),
+                                options: CarouselOptions(
+                                  height: AppSizesDouble.s200,
+                                  autoPlay: true,
+                                  enlargeCenterPage: true,
+                                  aspectRatio: AppSizes.s16 / AppSizes.s9,
+                                  autoPlayCurve: Curves.fastOutSlowIn,
+                                  enableInfiniteScroll: announcements.length < AppSizes.s5 ? false : true,
+                                  autoPlayInterval: const Duration(seconds: AppSizes.s5),
+                                  autoPlayAnimationDuration: const Duration(milliseconds: AppSizes.s800),
+                                  viewportFraction: announcements.isEmpty ? AppSizesDouble.s1 : AppSizesDouble.s0_8,
+                                ),
+                              );
+                            }
+                          }
+                        ), //Announcements Carousel Slider
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: AppPaddings.p20, vertical: AppPaddings.p20),
+                          child: divider(),
+                        ), //divider
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: AppPaddings.p20),
+                          child: Text(
+                            StringsManager.subject,
+                            style: Theme.of(context).textTheme.headlineLarge
+                          ),
+                        ), // Subjects Text
+                        Padding(
+                          padding: const EdgeInsets.all(AppPaddings.p10),
+                          child: GridView.builder(
+                            physics: const NeverScrollableScrollPhysics(), // Disable scrolling in the GridView
+                            shrinkWrap: true, // Shrink the GridView to fit its content
+                            gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: AppSizes.s2, // Two items per row
+                              crossAxisSpacing: AppSizesDouble.s10,
+                              mainAxisSpacing: AppSizesDouble.s10,
+                            ),
+                            itemCount: semesters[semesterIndex!].subjects.length,
+                            itemBuilder: (context, index) {
+                              return subjectItemBuild(
+                                semesters[semesterIndex!].subjects[index],
+                                context,
+                                false
+                              );
+                            },
+                          ),
+                        ), //Subjects Grid
+                      ],
+                    ),
+                  ),
+>>>>>>> 2f56fdbb686d8ba253ad7c950a8fa9144b55eba6
                 ),
               ),
               drawer: _customDrawer(
@@ -483,7 +696,7 @@ Widget _customDrawer(context, semester) {
                                 AppSizesDouble.s1_5),
                         child: Text(
                           profileModel!.name,
-                          style: Theme.of(context).textTheme.displayLarge,
+                          style: Theme.of(context).textTheme.titleLarge,
                           maxLines: AppSizes.s1,
                         ),
                       ),

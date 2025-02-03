@@ -400,6 +400,26 @@ class MainCubit extends Cubit<MainCubitStates> {
   late bool isDark;
   ThemeData _appTheme = lightTheme;
 
+  ThemeData get themeData {
+    if (Cache.sharedpref!.getBool('isDarkMode') == true) {
+      isDark = true;
+      return darkTheme;
+    } else {
+      isDark = false;
+      return lightTheme;
+    }
+  }
+
+  void toggleDarkMode() {
+    _appTheme = _appTheme == darkTheme ? lightTheme : darkTheme;
+    isDark = !isDark;
+    Cache.sharedpref!.setBool("isDarkMode", _appTheme == darkTheme);
+    emit(ChangeAppModeState());
+  }
+}
+
+
+
   // void getAppMode(isDark) {
   //   if (isDark != null) {
   //     this.isDark = isDark;
@@ -421,20 +441,3 @@ class MainCubit extends Cubit<MainCubitStates> {
   //     print('Error updating theme preference: $error');
   //   });
   // }
-  ThemeData get themeData {
-    if (Cache.sharedpref!.getBool('isDarkMode') == true) {
-      isDark = true;
-      return darkTheme;
-    } else {
-      isDark = false;
-      return lightTheme;
-    }
-  }
-
-  void toggleDarkMode() {
-    _appTheme = _appTheme == darkTheme ? lightTheme : darkTheme;
-    isDark = !isDark;
-    Cache.sharedpref!.setBool("isDarkMode", _appTheme == darkTheme);
-    emit(ChangeAppModeState());
-  }
-}
