@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lol/features/subject/presentation/cubit/delete_material_cubit/delete_material_cubit.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/documents_list_view.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/videos_list_view.dart';
 
@@ -10,15 +9,12 @@ class CustomTabBarView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => DeleteMaterialCubit(),
-      child: TabBarView(
-        controller: controller,
-        children: [
-          VideosListView(),
-          DocumentsListView(),
-        ],
-      ),
+    return TabBarView(
+      controller: controller,
+      children: [
+        VideosListView(),
+        DocumentsListView(),
+      ],
     );
   }
 }

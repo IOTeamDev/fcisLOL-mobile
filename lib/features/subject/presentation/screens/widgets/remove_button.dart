@@ -4,7 +4,6 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/features/subject/data/models/material_model.dart';
-import 'package:lol/features/subject/presentation/cubit/delete_material_cubit/delete_material_cubit.dart';
 import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit_cubit.dart';
 import 'package:lol/core/utils/components.dart';
 
@@ -13,15 +12,10 @@ class RemoveButton extends StatelessWidget {
   final MaterialModel material;
   @override
   Widget build(BuildContext context) {
-    var cubit = DeleteMaterialCubit.get(context);
-    return BlocListener<DeleteMaterialCubit, DeleteMaterialState>(
+    var cubit = GetMaterialCubit.get(context);
+    return BlocListener<GetMaterialCubit, GetMaterialState>(
       listener: (context, state) {
-        if (state is DeleteMaterialLoading) {
-          showToastMessage(
-              message: 'Deleting Material........',
-              states: ToastStates.WARNING);
-        } else if (state is DeleteMaterialSuccess) {
-          _getMaterials(context);
+        if (state is DeleteMaterialSuccess) {
           showToastMessage(
               message: 'Material Deleted', states: ToastStates.SUCCESS);
         } else if (state is DeleteMaterialError) {
@@ -58,14 +52,5 @@ class RemoveButton extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void _getMaterials(BuildContext context) async {
-    try {
-      await GetMaterialCubit.get(context)
-          .getMaterials(subject: GetMaterialCubit.get(context).subjectName);
-    } catch (e) {
-      log('error while getting materials from addMaterialCubit $e');
-    }
   }
 }

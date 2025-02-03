@@ -11,7 +11,6 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/main.dart';
 import 'package:lol/core/models/profile/profile_materila_model.dart';
-import 'package:lol/features/subject/presentation/cubit/subject_cubit.dart';
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/widgets/default_button.dart';
 import 'package:lol/core/widgets/default_text_field.dart';
@@ -47,7 +46,8 @@ class OtherProfile extends StatelessWidget {
           }
           return Scaffold(
             appBar: AppBar(
-              backgroundColor: cubit.isDark ? HexColor('#23252A') : Colors.white,
+              backgroundColor:
+                  cubit.isDark ? HexColor('#23252A') : Colors.white,
               centerTitle: true,
               title: mainCubit.otherProfile == null
                   ? Text("")
@@ -85,7 +85,8 @@ class OtherProfile extends StatelessWidget {
                                 alignment: Alignment.bottomCenter,
                                 children: [
                                   CircleAvatar(
-                                    radius: AppQueries.screenWidth(context) / 7.5,
+                                    radius:
+                                        AppQueries.screenWidth(context) / 7.5,
                                     backgroundImage: NetworkImage(
                                       mainCubit.otherProfile!.photo!,
                                     ),
@@ -233,8 +234,9 @@ class OtherProfile extends StatelessWidget {
                                 } else {
                                   return Center(
                                     child: CircularProgressIndicator(
-                                      color:
-                                          cubit.isDark ? Colors.white : Colors.black,
+                                      color: cubit.isDark
+                                          ? Colors.white
+                                          : Colors.black,
                                     ),
                                   );
                                 }
@@ -248,7 +250,8 @@ class OtherProfile extends StatelessWidget {
                         Center(
                             child: Text(
                           "Uploads",
-                          style: TextStyle(fontSize: AppQueries.screenWidth(context) / 18),
+                          style: TextStyle(
+                              fontSize: AppQueries.screenWidth(context) / 18),
                         )),
                         SizedBox(
                           height: 10,
@@ -330,17 +333,22 @@ class OtherProfile extends StatelessWidget {
                               fallback: (context) {
                                 if (state is GetRequestsLoadingState) {
                                   return SizedBox(
-                                      height: AppQueries.screenHeight(context) / 1.3,
+                                      height: AppQueries.screenHeight(context) /
+                                          1.3,
                                       child: Center(
                                         child: CircularProgressIndicator(),
                                       ));
                                 }
                                 return SizedBox(
-                                    height: AppQueries.screenHeight(context) / 1.3,
+                                    height:
+                                        AppQueries.screenHeight(context) / 1.3,
                                     child: Center(
                                       child: Text(
                                         'You Have No Contributions Yet!!!',
-                                        style: TextStyle(fontSize: AppQueries.screenWidth(context) / 12),
+                                        style: TextStyle(
+                                            fontSize: AppQueries.screenWidth(
+                                                    context) /
+                                                12),
                                         textAlign: TextAlign.center,
                                       ),
                                     ));
@@ -366,7 +374,9 @@ Widget materialBuilder(index, context,
   return Container(
     padding: EdgeInsets.all(5),
     decoration: BoxDecoration(
-      color: MainCubit.get(context).isDark ? HexColor('#3B3B3B') : Color.fromARGB(255, 20, 130, 220),
+      color: MainCubit.get(context).isDark
+          ? HexColor('#3B3B3B')
+          : Color.fromARGB(255, 20, 130, 220),
       borderRadius: BorderRadius.circular(20),
     ),
     height: 170,
@@ -443,7 +453,8 @@ Widget materialBuilder(index, context,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                  fontSize: AppQueries.screenWidth(context) / 17, color: Colors.white),
+                  fontSize: AppQueries.screenWidth(context) / 17,
+                  color: Colors.white),
             ),
           ),
           // SizedBox(height: 5,),
