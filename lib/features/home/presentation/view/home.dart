@@ -67,26 +67,16 @@ class Home extends StatelessWidget {
         listener: (context, state) {
           if (state is Logout) {
             showToastMessage(
-              message: "Logout Successfully",
-              // context: context,
+              message: StringsManager.logOutSuccessfully,
               states: ToastStates.SUCCESS,
-              // titleWidget: const
             );
           }
         },
         builder: (context, state) {
           bool wannaAnnouncements = true;
-          print('$wannaAnnouncements wanna announcement ');
-          List<AnnouncementModel>? announcements = AdminCubit.get(context).announcements;
 
-          if (announcements != null && announcements.isNotEmpty) {
-            print(announcements[0].title);
-          } else {
-            print("Announcements are null or empty");
-          }
           if (state is GetProfileSuccess) {
             if (MainCubit.get(context).profileModel!.photo == null) {
-              print("null");
               MainCubit.get(context).updateUser(
                 userID: MainCubit.get(context).profileModel!.id,
                 photo: AppConstants.defaultProfileImage
@@ -105,19 +95,10 @@ class Home extends StatelessWidget {
               BlocProvider.of<AdminCubit>(context).getAnnouncements(MainCubit.get(context).profileModel!.semester);
             }
             wannaAnnouncements = false;
-
-            if (announcements != null && announcements.isNotEmpty) {
-              print(announcements[0].title);
-            } else {
-              print("Announcements are null");
-            }
           }
-          print('$wannaAnnouncements wanna announcement ');
 
           ProfileModel? profile;
           int? semesterIndex;
-
-          // SelectedSemester = "Two";
           if (MainCubit.get(context).profileModel != null) {
             profile = MainCubit.get(context).profileModel!;
             print(profile.name);
@@ -144,14 +125,14 @@ class Home extends StatelessWidget {
                       }
                     },
                     icon: Icon(IconsManager.filledGridIcon, color: Theme.of(context).appBarTheme.iconTheme!.color,)
-                ),
+                ),//drawer icon
               centerTitle: true,
               title: Text(
                 StringsManager.home,
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeightManager.semiBold),
               ),
             ),
-            drawer: CustomDrawer(
+            drawer: _customDrawer(
               context,
               AppConstants.TOKEN == null ?
               AppConstants.SelectedSemester :
@@ -164,7 +145,7 @@ class Home extends StatelessWidget {
               child: SingleChildScrollView(
                 child: SafeArea(
                   child: Padding(
-                    padding: EdgeInsets.all(8),
+                    padding: EdgeInsets.all(AppPaddings.p8),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -174,248 +155,191 @@ class Home extends StatelessWidget {
                             StringsManager.announcements,
                             style: Theme.of(context).textTheme.displayLarge
                           ),
-                        ),
+                        ), //Announcements Text
                         BlocBuilder<AdminCubit, AdminCubitStates>(
-                                      builder: (context, state) {
-                                    if (AdminCubit.get(context).announcements ==
-                                        null) {
-                                      return Center(
-                                          child: CircularProgressIndicator());
-                                    } else {
-                                      var anonuncmentsss =
-                                          AdminCubit.get(context).announcements;
-
-                                      return CarouselSlider(
-                                        items: anonuncmentsss!.isEmpty
-                                            ? [
-                                                GestureDetector(
-                                                  onDoubleTap: () {
-                                                    if (MainCubit.get(context)
-                                                                .profileModel
-                                                                ?.role ==
-                                                            "ADMIN" &&
-                                                        changeSemester!) {
-                                                      MainCubit.get(context)
-                                                          .updateSemester4all();
-                                                      changeSemester = false;
-                                                    }
-                                                  },
-                                                  onTap: () {
-                                                    navigate(
-                                                        context,
-                                                        AnnouncementsList(
-                                                            semester:
-                                                                MainCubit.get(
-                                                                        context)
-                                                                    .profileModel!
-                                                                    .semester));
-                                                  },
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15.0),
-                                                    ),
-                                                    child: Image.asset(
-                                                        height: 600,
-                                                        width: double.infinity,
-                                                        fit: BoxFit.cover,
-                                                        "images/th.png"),
-                                                  ),
-                                                )
-                                              ]
-                                            : anonuncmentsss.map((anonuncments) {
-                                                return GestureDetector(
-                                                  onTap: () {
-                                                    navigate(
-                                                        context,
-                                                        AnnouncementDetail(
-                                                          title:
-                                                              anonuncments.title,
-                                                          date: anonuncments
-                                                              .dueDate,
-                                                          description:
-                                                              anonuncments
-                                                                  .content,
-                                                          semester: AppConstants.TOKEN != null
-                                                              ? MainCubit.get(
-                                                                      context)
-                                                                  .profileModel!
-                                                                  .semester
-                                                              : AppConstants.SelectedSemester!,
-                                                        ));
-                                                  },
-                                                  onDoubleTap: () {
-                                                    if (MainCubit.get(context)
-                                                                .profileModel
-                                                                ?.role ==
-                                                            "ADMIN" &&
-                                                        changeSemester!) {
-                                                      MainCubit.get(context)
-                                                          .updateSemester4all();
-                                                      changeSemester = false;
-                                                    }
-                                                  },
-                                                  child: Stack(
-                                                      alignment:
-                                                          Alignment.bottomCenter,
-                                                      children: [
-                                                        Container(
-                                                          margin: EdgeInsets.only(
-                                                              top: 5),
-                                                          clipBehavior:
-                                                              Clip.antiAlias,
-                                                          // margin: const EdgeInsets.all(6.0),
-                                                          // child: Image.asset("images/332573639_735780287983011_1562632886952931410_n.jpg",width: 400,height: 400,fit: BoxFit.cover,),
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        15.0),
-                                                            // image: DecorationImage(
-                                                            //   image: AssetImage(
-                                                            //     carsor.image ?? "images/llogo.jfif",
-                                                            //   ),
-                                                            //   fit: BoxFit.cover,
-                                                            // ),
-                                                          ),
-                                                          child: Image.network(
-                                                            anonuncments.image,
-                                                            width: 400,
-                                                            height: 250,
-                                                            fit: BoxFit.fitWidth,
-                                                          ),
-                                                        ),
-                                                        Container(
-                                                          width: double.infinity,
-                                                          height: double
-                                                              .infinity, // Adjust height as needed
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            gradient:
-                                                                LinearGradient(
-                                                              colors: [
-                                                                Colors
-                                                                    .transparent,
-                                                                Colors
-                                                                    .transparent,
-                                                                Colors
-                                                                    .transparent,
-                                                                Colors.black
-                                                                    .withOpacity(
-                                                                        0.3),
-                                                                Colors.black
-                                                                    .withOpacity(
-                                                                        0.6),
-                                                              ],
-                                                              begin: Alignment
-                                                                  .topCenter,
-                                                              end: Alignment
-                                                                  .bottomCenter,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Container(
-                                                          margin: EdgeInsets
-                                                              .symmetric(
-                                                                  horizontal: 30,
-                                                                  vertical: 10),
-                                                          child: Align(
-                                                            alignment: Alignment
-                                                                .bottomCenter,
-                                                            child: Container(
-                                                              margin:
-                                                                  EdgeInsets.only(
-                                                                      bottom: 10),
-                                                              child: Text(
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                anonuncments
-                                                                    .title,
-                                                                style: TextStyle(
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize: 20,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ]),
-                                                );
-                                              }).toList(),
-                                        options: CarouselOptions(
-                                          height: 200.0,
-                                          autoPlay: true,
-                                          enlargeCenterPage: true,
-                                          aspectRatio: 16 / 9,
-                                          autoPlayCurve: Curves.fastOutSlowIn,
-                                          enableInfiniteScroll:
-                                              anonuncmentsss.length < 5
-                                                  ? false
-                                                  : true,
-                                          autoPlayInterval:
-                                              const Duration(seconds: 5),
-                                          autoPlayAnimationDuration:
-                                              const Duration(milliseconds: 800),
-                                          viewportFraction:
-                                              anonuncmentsss.isEmpty ? 1 : 0.8,
-                                        ),
+                          builder: (context, state) {
+                            if (AdminCubit.get(context).announcements == null) {
+                              return Center(child: CircularProgressIndicator());
+                            } else {
+                              var announcements = AdminCubit.get(context).announcements;
+                              return CarouselSlider(
+                                items: announcements!.isEmpty ? [
+                                  GestureDetector(
+                                    onDoubleTap: () {
+                                      if (MainCubit.get(context).profileModel?.role == KeysManager.admin && changeSemester!) {
+                                        MainCubit.get(context).updateSemester4all();
+                                        changeSemester = false;
+                                      }
+                                    },
+                                    onTap: () {
+                                      navigate(
+                                        context,
+                                        AnnouncementsList(
+                                          semester: MainCubit.get(context).profileModel!.semester
+                                        )
                                       );
-                                    }
-                                  }),
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(AppSizesDouble.s15),
+                                      ),
+                                      child: Image.asset(
+                                        height: AppSizesDouble.s600,
+                                        width: double.infinity,
+                                        fit: BoxFit.cover,
+                                        AssetsManager.noAnnouncements
+                                      ),
+                                    ),
+                                  )
+                                ] :
+                                announcements.map((announc) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      navigate(
+                                        context,
+                                        AnnouncementDetail(
+                                          title: announc.title,
+                                          date: announc.dueDate,
+                                          description: announc.content,
+                                          semester: AppConstants.TOKEN != null ?
+                                          MainCubit.get(context).profileModel!.semester :
+                                          AppConstants.SelectedSemester!,
+                                        )
+                                      );
+                                    },
+                                    onDoubleTap: () {
+                                      if(MainCubit.get(context).profileModel?.role == KeysManager.admin && changeSemester!) {
+                                        MainCubit.get(context).updateSemester4all();
+                                        changeSemester = false;
+                                      }
+                                    },
+                                    child: Stack(
+                                      alignment: Alignment.bottomCenter,
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(top: AppMargins.m5),
+                                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(AppSizesDouble.s15),
+                                          ),
+                                          child: Image.network(
+                                            announc.image,
+                                            width: AppSizesDouble.s400,
+                                            height: AppSizesDouble.s250,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ), //image
+                                        Container(
+                                          width: double.infinity,
+                                          height: double.infinity, // Adjust height as needed
+                                          decoration:
+                                          BoxDecoration(
+                                            gradient:
+                                              LinearGradient(
+                                                colors: [
+                                                  Colors.transparent,
+                                                  Colors.transparent,
+                                                  Colors.transparent,
+                                                  Colors.black.withOpacity(AppSizesDouble.s0_3),
+                                                  Colors.black.withOpacity(AppSizesDouble.s0_6),
+                                                ],
+                                              begin: Alignment.topCenter,
+                                              end: Alignment.bottomCenter,
+                                            ),
+                                            borderRadius: BorderRadius.circular(AppSizesDouble.s15)
+                                          ),
+                                        ), //gradient
+                                        Align(
+                                          alignment: Alignment.bottomCenter,
+                                          child: Padding(
+                                            padding: EdgeInsets.symmetric(vertical: AppMargins.m20, horizontal: AppMargins.m15),
+                                            child: Stack(
+                                              children: [
+                                                Text(
+                                                  announc.title,
+                                                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                                    foreground: Paint()
+                                                    ..style = PaintingStyle.stroke
+                                                    ..strokeWidth = AppSizesDouble.s1_8
+                                                    ..color = ColorsManager.black
+                                                  ),
+                                                  textAlign: TextAlign.center,
+                                                  maxLines: AppSizes.s1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                                Text(
+                                                  announc.title,
+                                                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                                    color: ColorsManager.white,
+                                                  ),
+                                                  textAlign: TextAlign.center,
+                                                  maxLines: AppSizes.s1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                              ]
+                                            ),
+                                          ),
+                                        ), //title
+                                      ]
+                                    ),
+                                  );
+                                }).toList(),
+                                options: CarouselOptions(
+                                  height: AppSizesDouble.s200,
+                                  autoPlay: true,
+                                  enlargeCenterPage: true,
+                                  aspectRatio: AppSizes.s16 / AppSizes.s9,
+                                  autoPlayCurve: Curves.fastOutSlowIn,
+                                  enableInfiniteScroll: announcements.length < AppSizes.s5 ? false : true,
+                                  autoPlayInterval: const Duration(seconds: AppSizes.s5),
+                                  autoPlayAnimationDuration: const Duration(milliseconds: AppSizes.s800),
+                                  viewportFraction: announcements.isEmpty ? AppSizesDouble.s1 : AppSizesDouble.s0_8,
+                                ),
+                              );
+                            }
+                          }
+                        ), //Announcements Carousel Slider
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: AppPaddings.p20, vertical: AppPaddings.p20),
                           child: divider(),
-                        ),
+                        ), //divider
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: AppPaddings.p20),
                           child: Text(
                             StringsManager.subject,
                             style: Theme.of(context).textTheme.displayLarge
                           ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 10),
+                        ), // Subjects Text
+                        Padding(
+                          padding: const EdgeInsets.all(AppPaddings.p10),
                           child: GridView.builder(
-                                      physics:
-                                          const NeverScrollableScrollPhysics(), // Disable scrolling in the GridView
-                                      shrinkWrap:
-                                          true, // Shrink the GridView to fit its content
-                                      gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2, // Two items per row
-                                        crossAxisSpacing: 10,
-                                        mainAxisSpacing: 10,
-                                      ),
-                                      itemCount: semesters[semesterIndex!]
-                                          .subjects
-                                          .length,
-                                      itemBuilder: (context, index) {
-                                        return subjectItemBuild(
-                                            semesters[semesterIndex!]
-                                                .subjects[index],
-                                            context,
-                                            false);
-                                      },
-                                    ),
-                        ),
-                      ],
-                              ),
+                            physics: const NeverScrollableScrollPhysics(), // Disable scrolling in the GridView
+                            shrinkWrap: true, // Shrink the GridView to fit its content
+                            gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: AppSizes.s2, // Two items per row
+                              crossAxisSpacing: AppSizesDouble.s10,
+                              mainAxisSpacing: AppSizesDouble.s10,
                             ),
+                            itemCount: semesters[semesterIndex!].subjects.length,
+                            itemBuilder: (context, index) {
+                              return subjectItemBuild(
+                                semesters[semesterIndex!].subjects[index],
+                                context,
+                                false
+                              );
+                            },
                           ),
-                        ),
+                        ), //Subjects Grid
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ),
-              );
-      }),
+          );
+        }
+      ),
     );
   }
 }
@@ -425,7 +349,7 @@ Future<void> _onRefresh(context, semester) async{
   return Future.value();
 }
 
-Widget CustomDrawer(context, semester) {
+Widget _customDrawer(context, semester) {
   var cubit = MainCubit.get(context);
   ProfileModel? profileModel;
   if (AppConstants.TOKEN != null) profileModel = MainCubit.get(context).profileModel;
@@ -1020,43 +944,40 @@ Widget subjectItemBuild(SubjectModel subject, context, bool navigation) {
   return GestureDetector(
     onTap: () {
       navigate(
-          context,
-          BlocProvider(
-            create: (context) => GetMaterialCubit(getIt.get<SubjectRepoImp>()),
-            child: SubjectDetails(
-              navigate: false,
-              subjectName: subject.subjectName,
-            ),
-          ));
+        context,
+        BlocProvider(
+          create: (context) => GetMaterialCubit(getIt.get<SubjectRepoImp>()),
+          child: SubjectDetails(
+            navigate: false,
+            subjectName: subject.subjectName,
+          ),
+        )
+      );
     },
     child: Card(
-      elevation: 12.0, // More elevation for depth
+      elevation: AppSizesDouble.s12, // More elevation for depth
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.0),
+        borderRadius: BorderRadius.circular(AppSizesDouble.s16),
       ),
-      clipBehavior: Clip.antiAlias,
+      clipBehavior: Clip.antiAliasWithSaveLayer,
       child: Container(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.all(AppPaddings.p10),
         decoration: BoxDecoration(
-          color: MainCubit.get(context).isDark ? Color(0xff5A5B5F) : Color.fromARGB(255, 20, 130, 220)
+          color: MainCubit.get(context).isDark ? ColorsManager.grey1 : ColorsManager.lightPrimary
             ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset(subject.subjectImage, height: 70, color: Colors.white),
+            Image.asset(subject.subjectImage, height: AppSizesDouble.s70, color: Colors.white),
             SizedBox(
-              height: 10,
+              height: AppSizesDouble.s10,
             ),
             Text(
               textAlign: TextAlign.center,
-              subject.subjectName.replaceAll('_', " ").replaceAll("and", "&"),
-              maxLines: 2,
-              style: GoogleFonts.montserrat(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
+              subject.subjectName.replaceAll(StringsManager.underScore, StringsManager.space).replaceAll(StringsManager.andWord, StringsManager.andSymbol),
+              maxLines: AppSizes.s2,
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeightManager.semiBold),
               overflow: TextOverflow.ellipsis,
             ),
           ],

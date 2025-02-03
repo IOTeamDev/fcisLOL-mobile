@@ -4,6 +4,7 @@ class ColorsManager{
   static const Color lightPrimary = Color(0xff4764c5);
   static const Color darkPrimary = Color(0xff3b3b3b);
   static const Color grey = Color(0xff848484);
+  static const Color grey1 = Color(0xff5A5B5F); // used for subject builder
   static const Color lightGrey = Color(0xff757575); //grey[300]
   static const Color lightGrey1 = Color(0xffbdbdbd); //grey[400]
   static const Color lightGrey2 = Color(0xfff5f5f5); //grey[100]

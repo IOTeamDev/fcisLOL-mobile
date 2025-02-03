@@ -1,7 +1,10 @@
 class StringsManager{
   static const String forwardSlash = '/';
   static const String dash = '-';
+  static const String underScore = '_';
   static const String space = ' ';
+  static const String andWord = 'and';
+  static const String andSymbol = '&';
   static const String imgPickedSuccessfully = 'Imaged Picked Successfully';
   static const String imgLimitExceeded = 'Image Limit Exceeded';
   static const String selectImage = 'Select Image';
@@ -58,6 +61,7 @@ class StringsManager{
   static const String aboutUs = 'About Us';
   static const String logOut = 'Log Out';
   static const String logOutWarningMessage = 'Are you sure you want to log out?';
+  static const String logOutSuccessfully = 'Logout Successfully';
   static const String logIn = 'Log In';
 }
 
