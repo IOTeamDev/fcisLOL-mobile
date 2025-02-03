@@ -397,7 +397,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     });
   }
 
-  late bool isDark;
+  bool isDark = Cache.sharedpref!.getBool('isDarkMode')!;
   ThemeData _appTheme = lightTheme;
 
   ThemeData get themeData {
