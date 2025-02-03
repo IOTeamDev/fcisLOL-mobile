@@ -110,7 +110,6 @@ main() async {
 // await initNotifation();
 
   Bloc.observer = MyBlocObserver();
-  //isDark = await Cache.readData(key: "mode") ?? false;
 
   AppConstants.TOKEN = await Cache.readData(key: KeysManager.token);
   AppConstants.SelectedSemester =
@@ -131,17 +130,10 @@ main() async {
       startPage = const Home();
     }
   }
-  bool? isDarkTheme = await Cache.readData(key: KeysManager.isDark) ?? false;
-  print(
-      'the cached dark theme value is: ===> ${await Cache.readData(key: KeysManager.isDark)}');
+
   runApp(App(
     startPage: startPage,
-    isDarkTheme: isDarkTheme,
   ));
-  // runApp(ChangeNotifierProvider(
-  //   //create: (context) => ThemeProvide()..loadMode(),
-  //   child: App(startPage: startPage, isDarkTheme: isDarkTheme,),
-  // ));
 }
 
 // class ThemeProvide extends ChangeNotifier {
@@ -174,8 +166,8 @@ main() async {
 
 class App extends StatelessWidget {
   final Widget startPage;
-  final bool? isDarkTheme;
-  const App({super.key, required this.startPage, required this.isDarkTheme});
+
+  const App({super.key, required this.startPage});
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -183,27 +175,21 @@ class App extends StatelessWidget {
           BlocProvider(
               create: (BuildContext context) => MainCubit()
                 ..getProfileInfo()
-                ..getAppMode(isDarkTheme)),
+                ..themeData),
           BlocProvider(
               create: (BuildContext context) => AdminCubit()
                 ..getAnnouncements(MainCubit.get(context).profileModel != null
                     ? MainCubit.get(context).profileModel!.semester
                     : KeysManager.semester)),
         ],
-        child: BlocConsumer<MainCubit, MainCubitStates>(
-            listener: (context, state) {},
-            builder: (context, state) {
-              // AdminCubit.get(context).getFcmTokens();
-              return MaterialApp(
-                home: startPage,
-                debugShowCheckedModeBanner: false,
-                darkTheme: darkTheme(),
-                theme: lightTheme(),
-                themeMode: MainCubit.get(context).isDark
-                    ? ThemeMode.dark
-                    : ThemeMode.light,
-                //theme: isDark ? ThemeData.dark() : ThemeData.light(),
-              );
-            }));
+        child:
+            BlocBuilder<MainCubit, MainCubitStates>(builder: (context, state) {
+          // AdminCubit.get(context).getFcmTokens();
+          return MaterialApp(
+            home: startPage,
+            debugShowCheckedModeBanner: false,
+            theme: MainCubit.get(context).themeData,
+          );
+        }));
   }
 }
