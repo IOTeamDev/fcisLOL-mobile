@@ -29,6 +29,7 @@ class OtherProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var cubit = MainCubit.get(context);
     var nameController = TextEditingController();
     var emailController = TextEditingController();
     return BlocProvider(
@@ -46,14 +47,14 @@ class OtherProfile extends StatelessWidget {
           }
           return Scaffold(
             appBar: AppBar(
-              backgroundColor: isDark ? HexColor('#23252A') : Colors.white,
+              backgroundColor: cubit.isDark ? HexColor('#23252A') : Colors.white,
               centerTitle: true,
               title: mainCubit.otherProfile == null
                   ? Text("")
                   : Text(
                       mainCubit.otherProfile!.name,
                       style: GoogleFonts.playfairDisplay(
-                        color: isDark ? Colors.white : Colors.black,
+                        color: cubit.isDark ? Colors.white : Colors.black,
                         fontSize: AppQueries.screenWidth(context) / 15,
                         fontWeight: FontWeight.bold,
                       ),
@@ -62,7 +63,7 @@ class OtherProfile extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
             ),
-            backgroundColor: isDark ? HexColor('#23252A') : Colors.white,
+            backgroundColor: cubit.isDark ? HexColor('#23252A') : Colors.white,
             body: mainCubit.otherProfile == null
                 ? const Center(
                     child: CircularProgressIndicator(),
@@ -233,7 +234,7 @@ class OtherProfile extends StatelessWidget {
                                   return Center(
                                     child: CircularProgressIndicator(
                                       color:
-                                          isDark ? Colors.white : Colors.black,
+                                          cubit.isDark ? Colors.white : Colors.black,
                                     ),
                                   );
                                 }
@@ -253,7 +254,7 @@ class OtherProfile extends StatelessWidget {
                           height: 10,
                         ),
                         Divider(
-                          color: isDark ? Colors.white : Colors.black,
+                          color: cubit.isDark ? Colors.white : Colors.black,
                           height: 20,
                         ),
                         Expanded(
@@ -365,7 +366,7 @@ Widget materialBuilder(index, context,
   return Container(
     padding: EdgeInsets.all(5),
     decoration: BoxDecoration(
-      color: isDark ? HexColor('#3B3B3B') : Color.fromARGB(255, 20, 130, 220),
+      color: MainCubit.get(context).isDark ? HexColor('#3B3B3B') : Color.fromARGB(255, 20, 130, 220),
       borderRadius: BorderRadius.circular(20),
     ),
     height: 170,

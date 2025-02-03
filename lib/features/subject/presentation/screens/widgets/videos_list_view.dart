@@ -6,6 +6,8 @@ import 'package:lol/main.dart';
 import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit_cubit.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/grid_tile_widget.dart';
 
+import '../../../../../core/cubits/main_cubit/main_cubit.dart';
+
 class VideosListView extends StatelessWidget {
   const VideosListView({super.key});
 
@@ -17,7 +19,7 @@ class VideosListView extends StatelessWidget {
         if (state is GetMaterialLoading) {
           return Center(
             child: CircularProgressIndicator(
-              color: isDark ? Colors.white : Colors.black,
+              color: MainCubit.get(context).isDark ? Colors.white : Colors.black,
             ),
           );
         } else if (state is GetMaterialSuccess) {
@@ -30,7 +32,7 @@ class VideosListView extends StatelessWidget {
                   margin: EdgeInsets.only(bottom: 16.0),
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: isDark
+                    color: MainCubit.get(context).isDark
                         ? Color.fromRGBO(59, 59, 59, 1)
                         : HexColor('#4764C5'),
                     borderRadius: BorderRadius.circular(15),
@@ -44,7 +46,7 @@ class VideosListView extends StatelessWidget {
           return Center(
             child: Text(
               'Materials Appear here',
-              style: TextStyle(color: isDark ? Colors.white : Colors.black),
+              style: TextStyle(color: MainCubit.get(context).isDark ? Colors.white : Colors.black),
             ),
           );
         }

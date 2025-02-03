@@ -5,6 +5,8 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
+import 'package:lol/core/utils/resources/fonts_manager.dart';
+import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit_states.dart';
@@ -35,46 +37,16 @@ class AdminPanel extends StatelessWidget {
         builder: (context, state) {
           var mainCubit = MainCubit.get(context);
           return Scaffold(
-            //backgroundColor: HexColor('#23252A'),
+            appBar: AppBar(
+              title: Text(StringsManager.admin, style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeightManager.semiBold),),
+              centerTitle: true,
+            ),
             body: Container(
-              margin:
-                  EdgeInsetsDirectional.only(top: AppQueries.screenHeight(context) / 10),
+              margin: EdgeInsetsDirectional.only(top: AppQueries.screenHeight(context) / 10),
               width: double.infinity,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // Back Button
-                  Stack(
-                    children: [
-                      Positioned(
-                        left: 10,
-                        top: 5,
-                        child: IconButton(
-                          // padding: EdgeInsets.zero,
-                          // materialTapTargetSize:
-                          //     MaterialTapTargetSize.shrinkWrap,
-                          onPressed: () {
-                            navigatReplace(context, Home());
-                          },
-                          icon: Icon(
-                            Icons.arrow_back,
-                            size: 30,
-                          ),
-                        ),
-                      ),
-                      Center(
-                          child: Text(
-                        'Admin',
-                        style: TextStyle(
-                          fontSize: 30,
-                        ),
-                        textAlign: TextAlign.center,
-                      )),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 50,
-                  ),
                   // Buttons
                   ConditionalBuilder(
                     condition: MainCubit.get(context).profileModel != null &&
@@ -91,7 +63,7 @@ class AdminPanel extends StatelessWidget {
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(40),
                                 topRight: Radius.circular(40)),
-                            color: isDark ? Colors.white : HexColor('#3B3B3B'),
+                            color: MainCubit.get(context).isDark ? Colors.white : HexColor('#3B3B3B'),
                           ),
                         ),
                         ElevatedButton(
@@ -105,7 +77,7 @@ class AdminPanel extends StatelessWidget {
                             }
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: isDark
+                            backgroundColor: MainCubit.get(context).isDark
                                 ? HexColor('#3B3B3B')
                                 : HexColor('#757575'),
                             padding: EdgeInsets.zero, // Remove default padding
@@ -135,7 +107,7 @@ class AdminPanel extends StatelessWidget {
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(40),
                                 topRight: Radius.circular(40)),
-                            color: isDark ? Colors.white : HexColor('#3B3B3B'),
+                            color: MainCubit.get(context).isDark ? Colors.white : HexColor('#3B3B3B'),
                           ),
                         ),
                         ElevatedButton(

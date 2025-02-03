@@ -14,6 +14,7 @@ class SemesterNavigate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var cubit = MainCubit.get(context);
     int semesterIndex = semsesterIndex(semester);
     return Scaffold(
       body: SafeArea(
@@ -44,7 +45,7 @@ class SemesterNavigate extends StatelessWidget {
                             children: [
                               const SizedBox(width: 15),
                               Image.asset(
-                                color: isDark ? Colors.white : null,
+                                color: cubit.isDark ? Colors.white : null,
                                 "images/l.png",
                                 width: 45,
                                 height: 45,
@@ -71,7 +72,7 @@ class SemesterNavigate extends StatelessWidget {
                     "Semester $semester",
                     style: GoogleFonts.montserrat(
                         fontSize: 30,
-                        color: isDark ? Color(0xff4763C4) : Colors.black, //
+                        color: cubit.isDark ? Color(0xff4763C4) : Colors.black, //
                         fontWeight: FontWeight.bold,
                         letterSpacing: 1.2),
                   ),

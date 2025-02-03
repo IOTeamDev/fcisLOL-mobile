@@ -6,6 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
+import 'package:lol/core/utils/resources/themes_manager.dart';
 import 'package:lol/features/admin/presentation/view/announcements/add_announcement.dart';
 import 'package:lol/features/home/presentation/view/semester_navigate.dart';
 import 'package:lol/features/profile/view/other_profile.dart';
@@ -24,6 +25,7 @@ import 'package:lol/core/utils/dependencies_helper.dart';
 import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:lol/core/network/remote/fcm_helper.dart';
 import 'package:provider/provider.dart';
+import 'core/utils/resources/strings_manager.dart';
 import 'features/auth/presentation/view_model/login_cubit/login_cubit.dart';
 import 'features/auth/presentation/view/login.dart';
 import 'features/auth/presentation/view/onboarding.dart';
@@ -63,7 +65,7 @@ bool? changeSemester = false;
 bool? noMoreStorage = false;
 String? apiKey;
 String? fcmToken;
-bool isDark = false;
+// bool isDark = false;
 Map<String, dynamic> fcisServiceMap = {};
 main() async {
   setup();
@@ -106,15 +108,14 @@ main() async {
 //   title: "Test Notification",
 //   body: "This is a test notification.",
 // );
+// await initNotifation();
 
-  // await initNotifation();
   Bloc.observer = MyBlocObserver();
-  isDark = await Cache.readData(key: "mode") ?? false;
+  //isDark = await Cache.readData(key: "mode") ?? false;
 
-  AppConstants.TOKEN = await Cache.readData(key: "token");
-  //print('token=>>>>>>>>>>>>>>>>>>>>>>>>$TOKEN');
-  AppConstants.SelectedSemester = await Cache.readData(key: "semester");
-  bool isOnBoardFinished = await Cache.readData(key: "FinishedOnBoard") ?? false;
+  AppConstants.TOKEN = await Cache.readData(key: KeysManager.token);
+  AppConstants.SelectedSemester = await Cache.readData(key: KeysManager.semester);
+  bool isOnBoardFinished = await Cache.readData(key: KeysManager.finishedOnBoard) ?? false;
 
   // TOKEN = null;//
   final Widget startPage;
@@ -129,58 +130,67 @@ main() async {
       startPage = const Home();
     }
   }
-
-  runApp(ChangeNotifierProvider(
-    create: (context) => ThemeProvide()..loadMode(),
-    child: App(startPage: startPage),
-  ));
+  bool? isDarkTheme = await Cache.readData(key: KeysManager.isDark) ?? false;
+  print('the cached dark theme value is: ===> ${await Cache.readData(key: KeysManager.isDark)}');
+  runApp(App(startPage: startPage, isDarkTheme: isDarkTheme,));
+  // runApp(ChangeNotifierProvider(
+  //   //create: (context) => ThemeProvide()..loadMode(),
+  //   child: App(startPage: startPage, isDarkTheme: isDarkTheme,),
+  // ));
 }
 
-class ThemeProvide extends ChangeNotifier {
-  bool temp = false;
-
-  void changeMode({bool dontWannaDark = false}) async {
-    if (dontWannaDark) {
-      temp = false;
-      isDark = temp;
-      await Cache.writeData(key: "mode", value: false);
-    } else {
-      temp = !temp;
-      await Cache.writeData(key: "mode", value: temp);
-      isDark = temp;
-    }
-    print('Theme mode changed: $isDark'); // Debugging log
-
-    // Notify listeners to rebuild widgets listening to this provider
-    notifyListeners();
-  }
-
-  Future<void> loadMode() async {
-    // Load the dark mode from shared preferences
-    isDark = await Cache.readData(key: "mode") ?? false;
-
-    // Notify listeners to rebuild widgets with the loaded theme
-    notifyListeners();
-  }
-}
+// class ThemeProvide extends ChangeNotifier {
+//   bool temp = false;
+//
+//   void changeMode({bool dontWannaDark = false}) async {
+//     if (dontWannaDark) {
+//       temp = false;
+//       isDark = temp;
+//       await Cache.writeData(key: "mode", value: false);
+//     } else {
+//       temp = !temp;
+//       await Cache.writeData(key: "mode", value: temp);
+//       isDark = temp;
+//     }
+//     print('Theme mode changed: $isDark'); // Debugging log
+//
+//     // Notify listeners to rebuild widgets listening to this provider
+//     notifyListeners();
+//   }
+//
+//   Future<void> loadMode() async {
+//     // Load the dark mode from shared preferences
+//     isDark = await Cache.readData(key: "mode") ?? false;
+//
+//     // Notify listeners to rebuild widgets with the loaded theme
+//     notifyListeners();
+//   }
+// }
 
 class App extends StatelessWidget {
   final Widget startPage;
-  const App({super.key, required this.startPage});
+  final bool? isDarkTheme;
+  const App({super.key, required this.startPage, required this.isDarkTheme});
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-        providers: [
-          BlocProvider(create: (BuildContext context) => MainCubit()..getProfileInfo()),
-          BlocProvider(create: (BuildContext context) => AdminCubit()),
-        ],
-        child: Consumer<ThemeProvide>(builder: (context, value, child) {
-          // AdminCubit.get(context).getFcmTokens();
-          return MaterialApp(
-            home: AddAnnouncement(semester: AppConstants.SelectedSemester??'Three'),
-            debugShowCheckedModeBanner: false,
-            theme: isDark ? ThemeData.dark() : ThemeData.light(),
-          );
-        }));
+      providers: [
+        BlocProvider(create: (BuildContext context) => MainCubit()..getProfileInfo()..getAppMode(isDarkTheme)),
+        BlocProvider(create: (BuildContext context) => AdminCubit()..getAnnouncements(MainCubit.get(context).profileModel != null? MainCubit.get(context).profileModel!.semester: KeysManager.semester)),
+      ],
+      child: BlocConsumer<MainCubit, MainCubitStates>(
+        listener: (context, state){},
+        builder: (context, state) {
+        // AdminCubit.get(context).getFcmTokens();
+        return MaterialApp(
+          home: startPage,
+          debugShowCheckedModeBanner: false,
+          darkTheme: darkTheme(),
+          theme: lightTheme(),
+          themeMode: MainCubit.get(context).isDark? ThemeMode.dark: ThemeMode.light,
+          //theme: isDark ? ThemeData.dark() : ThemeData.light(),
+        );
+      })
+    );
   }
 }

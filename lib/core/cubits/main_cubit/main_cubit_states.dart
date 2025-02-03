@@ -100,3 +100,5 @@ class UpdateUserErrorState extends MainCubitStates {}
 class DeleteimageSuccessState extends MainCubitStates {}
 
 class DeleteimageErrorState extends MainCubitStates {}
+
+class ChangeAppModeState extends MainCubitStates {}

@@ -372,7 +372,7 @@ class LeaderboardScreen extends StatelessWidget {
                                 Divider(
                                   height: 0,
                                   thickness: 2,
-                                  color: isDark ? Colors.white : Colors.black,
+                                  color: MainCubit.get(context).isDark ? Colors.white : Colors.black,
                                 ),
                                 //Other Contributors
                                 ConditionalBuilder(

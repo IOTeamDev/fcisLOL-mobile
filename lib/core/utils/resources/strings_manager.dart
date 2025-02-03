@@ -32,6 +32,33 @@ class StringsManager{
   static const String selectAnnouncementTypeWarning = 'Please select the announcement type';
   static const String noAnnouncementsYet = 'You have no announcements yet!!!';
   static const String addNew = 'Add New';
+  static const String subject = 'Subjects';
+  static const String home = 'Home';
+  static const String profileInfo = 'Profile info';
+  static const String guest = 'Guest';
+  static const String admin = 'Admin';
+  static const String leaderboard = 'Leaderboard';
+  static const String years = 'Years';
+  static const String firstYear = 'First Year';
+  static const String secondYear = 'Second Year';
+  static const String thirdYear = 'third Year';
+  static const String seniors = 'seniors';
+  static const String firstSemester = 'First Semester';
+  static const String secondSemester = 'Second Semester';
+  static const String currentlyUpdating = 'Currently Updating ...';
+  static const String drive = 'Drive';
+  static const String year28 = '2028';
+  static const String year27 = '2027';
+  static const String year26 = '2026';
+  static const String year25 = '2025';
+  static const String year24 = '2024';
+  static const String support = 'Support';
+  static const String reportBug = 'Report Bug';
+  static const String feedback = 'Feedback';
+  static const String aboutUs = 'About Us';
+  static const String logOut = 'Log Out';
+  static const String logOutWarningMessage = 'Are you sure you want to log out?';
+  static const String logIn = 'Log In';
 }
 
 class KeysManager{
@@ -43,4 +70,7 @@ class KeysManager{
   static const String photo = 'photo';
   static const String accepted = 'accepted';
   static const String haveMaterial = 'haveMaterial';
+  static const String isDark = 'isDark';
+  static const String finishedOnBoard = 'FinishedOnBoard';
+  static const String admin = 'ADMIN';
 }

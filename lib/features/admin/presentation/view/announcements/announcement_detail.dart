@@ -13,6 +13,7 @@ import 'package:lol/core/utils/navigation.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:lol/core/utils/webview_screen.dart';
+import '../../../../../core/cubits/main_cubit/main_cubit.dart';
 import '../../view_model/admin_cubit/admin_cubit.dart';
 
 class AnnouncementDetail extends StatelessWidget {
@@ -80,7 +81,7 @@ class AnnouncementDetail extends StatelessWidget {
                       padding: const EdgeInsets.all(18),
                       width: double.infinity,
                       decoration: BoxDecoration(
-                          color: isDark
+                          color: MainCubit.get(context).isDark
                               ? HexColor('#3B3B3B')
                               : HexColor('#4764C5'),
                           borderRadius: BorderRadius.circular(20)),

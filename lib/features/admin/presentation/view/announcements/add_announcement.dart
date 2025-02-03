@@ -12,6 +12,7 @@ import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/core/utils/webview_screen.dart';
 import 'package:lol/core/utils/navigation.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import '../../../../../core/cubits/main_cubit/main_cubit.dart';
 import '../../../../../core/utils/resources/colors_manager.dart';
 import '../../../../../core/utils/resources/strings_manager.dart';
 import '../../../../../core/utils/resources/values_manager.dart';
@@ -100,7 +101,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                         height: _height,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(AppSizesDouble.s20),
-                          color: isDark ?
+                          color: MainCubit.get(context).isDark ?
                           ColorsManager.darkPrimary :
                           ColorsManager.lightGrey
                         ),
@@ -126,13 +127,13 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                       hintText: StringsManager.title[AppSizes.s0].toUpperCase() + StringsManager.title.substring(AppSizes.s1),
                                       hintStyle: TextStyle(
                                         fontSize: AppSizesDouble.s20,
-                                        color: isDark ?
+                                        color: MainCubit.get(context).isDark ?
                                         ColorsManager.lightGrey1 :
                                         ColorsManager.lightGrey2
                                       ),
                                       enabledBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(
-                                          color: isDark ?
+                                          color: MainCubit.get(context).isDark ?
                                           ColorsManager.grey :
                                           ColorsManager.white
                                         )
@@ -150,13 +151,13 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                       hintText: StringsManager.description,
                                       hintStyle: TextStyle(
                                         fontSize: AppSizesDouble.s20,
-                                        color: isDark ?
+                                        color: MainCubit.get(context).isDark ?
                                         ColorsManager.lightGrey1
                                         : ColorsManager.lightGrey2
                                       ),
                                       enabledBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(
-                                          color: isDark?
+                                          color: MainCubit.get(context).isDark?
                                           ColorsManager.grey :
                                           ColorsManager.white
                                         )

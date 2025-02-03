@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:linkify/linkify.dart';
+import 'package:lol/core/utils/resources/values_manager.dart';
 import 'package:lol/features/admin/presentation/view/admin_panal.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
@@ -99,13 +100,17 @@ Widget backButton(context, {double bottomPadding = 8}) {
   );
 }
 
-Widget divider() {
-  return Container(
-    height: 1,
-    width: double.infinity,
-    color: Colors.grey,
-  );
-}
+Widget divider({
+  Color color = ColorsManager.white,
+  double height = AppSizesDouble.s1,
+  double thickness = AppSizesDouble.s1,
+})
+=> Divider(
+  color: color,
+  height: height,
+  thickness: thickness,
+
+);
 
 void showToastMessage({
   required String message,

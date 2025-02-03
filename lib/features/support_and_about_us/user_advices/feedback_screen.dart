@@ -4,6 +4,7 @@ import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/widgets/default_text_field.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../core/cubits/main_cubit/main_cubit.dart';
 import '../../../core/utils/resources/constants_manager.dart';
 import '../../../main.dart';
 
@@ -57,7 +58,7 @@ class FeedbackScreen extends StatelessWidget {
   Widget _buildFeedBackForm(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: isDark ? HexColor('#3B3B3B') : HexColor('#757575'),
+          color: MainCubit.get(context).isDark ? HexColor('#3B3B3B') : HexColor('#757575'),
           borderRadius: BorderRadius.circular(15)),
       margin: EdgeInsetsDirectional.symmetric(horizontal: 15, vertical: 30),
       padding: const EdgeInsets.all(15.0),

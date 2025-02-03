@@ -22,7 +22,7 @@ class DocumentsCard extends StatelessWidget {
         await onOpen(context, linkElement);
       },
       child: Card(
-          color: isDark
+          color: MainCubit.get(context).isDark
               ? const Color.fromRGBO(59, 59, 59, 1)
               : HexColor('#4764C5'),
           child: Container(

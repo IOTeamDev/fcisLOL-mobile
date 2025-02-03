@@ -66,7 +66,7 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
       },
       child: Container(
           decoration: BoxDecoration(
-            color: isDark ? Color.fromRGBO(59, 59, 59, 1) : HexColor('#757575'),
+            color: MainCubit.get(context).isDark ? Color.fromRGBO(59, 59, 59, 1) : HexColor('#757575'),
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           ),
           padding: const EdgeInsets.all(16),

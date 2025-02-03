@@ -146,7 +146,7 @@ class Requests extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: isDark ? HexColor('#3B3B3B') : HexColor('#757575'),
+          color: MainCubit.get(context).isDark ? HexColor('#3B3B3B') : HexColor('#757575'),
           borderRadius: BorderRadius.circular(20),
         ),
         margin: const EdgeInsetsDirectional.symmetric(horizontal: 10),

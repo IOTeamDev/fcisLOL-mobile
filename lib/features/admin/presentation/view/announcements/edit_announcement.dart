@@ -145,7 +145,7 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                         height: AppQueries.screenHeight(context) / 1.45,
                         width: double.infinity,
                         decoration: BoxDecoration(
-                            color: isDark
+                            color: MainCubit.get(context).isDark
                                 ? HexColor('#3B3B3B')
                                 : HexColor('#757575'),
                             borderRadius: BorderRadius.circular(20)),
@@ -169,7 +169,7 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                       fontSize: 20, color: Colors.grey[400]),
                                   enabledBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
-                                          color: isDark
+                                          color: MainCubit.get(context).isDark
                                               ? HexColor('#848484')
                                               : HexColor('#FFFFFF'))),
                                 ),
@@ -187,7 +187,7 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                       fontSize: 20, color: Colors.grey[400]),
                                   enabledBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
-                                          color: isDark
+                                          color: MainCubit.get(context).isDark
                                               ? HexColor('#848484')
                                               : HexColor('#FFFFFF'))),
                                 ),

@@ -2,6 +2,9 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
+import 'package:lol/core/network/local/shared_preference.dart';
+import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
 import 'package:lol/features/auth/presentation/view/login.dart';
@@ -63,11 +66,13 @@ class _BuildFloatingActionButtonState extends State<BuildFloatingActionButton> {
               btnCancelText: "Maybe later",
               btnCancelOnPress: () {},
               btnOkOnPress: () {
-                Provider.of<ThemeProvide>(context, listen: false)
-                    .changeMode(dontWannaDark: true);
-                Provider.of<ThemeProvide>(context, listen: false)
-                    // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
-                    .notifyListeners();
+                // Provider.of<ThemeProvide>(context, listen: false)
+                //     .changeMode(dontWannaDark: true);
+                //
+                // Provider.of<ThemeProvide>(context, listen: false)
+                //     // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
+                //     .notifyListeners();
+                Cache.writeData(key: KeysManager.isDark, value: false);
                 Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
@@ -106,7 +111,7 @@ class _BuildFloatingActionButtonState extends State<BuildFloatingActionButton> {
           borderRadius: BorderRadius.circular(50),
         ),
         backgroundColor:
-            isDark ? Color.fromRGBO(71, 100, 197, 1) : HexColor('#757575'),
+            MainCubit.get(context).isDark ? Color.fromRGBO(71, 100, 197, 1) : HexColor('#757575'),
         child: Icon(
           Icons.add,
           color: Colors.white,

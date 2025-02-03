@@ -11,3 +11,10 @@ navigate(context, targetPage) {
     builder: (context) => targetPage,
   ));
 }
+
+navigatePushNamed(context, routes){
+  Navigator.pushReplacementNamed(
+    context,
+    routes
+  );
+}

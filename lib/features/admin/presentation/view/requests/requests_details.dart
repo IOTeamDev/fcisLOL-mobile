@@ -94,7 +94,7 @@ class RequestsDetails extends StatelessWidget {
                         height: AppQueries.screenHeight(context) / 1.4,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
-                          color: isDark
+                          color: MainCubit.get(context).isDark
                               ? HexColor('#3B3B3B')
                               : HexColor('#757575'),
                         ),

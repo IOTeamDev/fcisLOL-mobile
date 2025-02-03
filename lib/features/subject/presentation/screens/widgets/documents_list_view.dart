@@ -6,6 +6,8 @@ import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_m
 
 import 'package:lol/features/subject/presentation/screens/widgets/documents_card.dart';
 
+import '../../../../../core/cubits/main_cubit/main_cubit.dart';
+
 class DocumentsListView extends StatelessWidget {
   const DocumentsListView({
     super.key,
@@ -19,7 +21,7 @@ class DocumentsListView extends StatelessWidget {
         if (state is GetMaterialLoading) {
           return Center(
             child: CircularProgressIndicator(
-                color: isDark ? Colors.white : Colors.black),
+                color: MainCubit.get(context).isDark ? Colors.white : Colors.black),
           );
         } else if (state is GetMaterialSuccess) {
           return Padding(
@@ -35,7 +37,7 @@ class DocumentsListView extends StatelessWidget {
           return Center(
             child: Text(
               'Materials Appear here',
-              style: TextStyle(color: isDark ? Colors.white : Colors.black),
+              style: TextStyle(color: MainCubit.get(context).isDark ? Colors.white : Colors.black),
             ),
           );
         }

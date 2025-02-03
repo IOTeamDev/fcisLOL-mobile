@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/core/utils/components.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../core/cubits/main_cubit/main_cubit.dart';
 import '../../../core/utils/resources/constants_manager.dart';
 import '../../../main.dart';
 
@@ -42,7 +43,7 @@ class ReportBug extends StatelessWidget {
               SingleChildScrollView(
                 child: Container(
                   decoration: BoxDecoration(
-                      color: isDark ? HexColor('#3B3B3B') : HexColor('#757575'),
+                      color: MainCubit.get(context).isDark ? HexColor('#3B3B3B') : HexColor('#757575'),
                       borderRadius: BorderRadius.circular(15)),
                   margin: EdgeInsetsDirectional.symmetric(
                       horizontal: 15, vertical: 30),

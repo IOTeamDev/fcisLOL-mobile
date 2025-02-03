@@ -66,7 +66,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                     },
                     icon: Icon(
                       Icons.arrow_back,
-                      color: isDark ? Colors.white : Colors.black,
+                      color: MainCubit.get(context).isDark ? Colors.white : Colors.black,
                       size: 30,
                     )),
                 Expanded(
@@ -78,7 +78,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                           .replaceAll('_', " ")
                           .replaceAll("and", "&"),
                       style: TextStyle(
-                          color: isDark ? Colors.white : Colors.black,
+                          color: MainCubit.get(context).isDark ? Colors.white : Colors.black,
                           fontSize: AppQueries.screenWidth(context) / 15),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -95,7 +95,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                   cubit.runFilter(query: query);
                 },
                 style: TextStyle(
-                    color: isDark ? Color(0xff1B262C) : HexColor('#757575'),
+                    color: MainCubit.get(context).isDark ? Color(0xff1B262C) : HexColor('#757575'),
                     fontSize: 20),
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.search,

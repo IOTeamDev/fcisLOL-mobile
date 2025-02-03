@@ -29,7 +29,8 @@ import '../../utils/resources/values_manager.dart';
 class MainCubit extends Cubit<MainCubitStates> {
   MainCubit() : super(InitialMainState());
   static MainCubit get(context) => BlocProvider.of(context);
-
+  bool isDark = false;
+  ThemeMode appTheme = ThemeMode.light;
   bool openedDrawer = false;
   void openDrawerState() {
     openedDrawer = true;
@@ -154,7 +155,6 @@ class MainCubit extends Cubit<MainCubitStates> {
   }
 
   ProfileModel? otherProfile;
-
   getOtherProfile(id) {
     emit(GetProfileLoading());
     otherProfile = null;
@@ -240,7 +240,8 @@ class MainCubit extends Cubit<MainCubitStates> {
     // String? type,
     //dynamic currentSemester,
     //String? image,
-  }) {
+  })
+  {
     print(id);
     print(title);
     print(content);
@@ -364,7 +365,8 @@ class MainCubit extends Cubit<MainCubitStates> {
     String? semester,
     String? fcmToken,
     String? photo,
-  }) {
+  })
+  {
     DioHelp.putData(
         token: AppConstants.TOKEN,
         query: {KeysManager.id: userID},
@@ -381,4 +383,26 @@ class MainCubit extends Cubit<MainCubitStates> {
       emit(UpdateUserErrorState());
     });
   }
+
+  void getAppMode(isDark) {
+      if (isDark != null) {
+        this.isDark = isDark;
+        appTheme = isDark ? ThemeMode.dark : ThemeMode.light;
+      }
+      print('================================= the cached dark theme is ============> $isDark');
+      emit(ChangeAppModeState()); // Emit state after setting theme
+  }
+
+  void changeAppMode() {
+    isDark = !isDark;
+    appTheme = isDark ? ThemeMode.dark : ThemeMode.light;
+
+    Cache.writeData(key: KeysManager.isDark, value: isDark).then((_) {
+      print('Theme changed to: ${isDark ? "Dark" : "Light"}');
+      emit(ChangeAppModeState()); // Emit state after cache update
+    }).catchError((error) {
+      print('Error updating theme preference: $error');
+    });
+  }
 }
+
