@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
+import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit_states.dart';
@@ -28,31 +29,30 @@ class AnnouncementsList extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: Text(StringsManager.announcements, style: Theme.of(context).textTheme.displayMedium,),
+            centerTitle: true,
           ),
           body: SafeArea(
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: AppPaddings.p20),
               child: RefreshIndicator(
                 onRefresh: () => _onRefresh(context),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      ListView.separated(
-                        shrinkWrap: true,
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, index) => announcementBuilder(
-                            cubit.announcements![index].id,
-                            context,
-                            cubit.announcements![index].title,
-                            index,
-                            cubit.announcements![index].content,
-                            cubit.announcements![index].dueDate,
-                            cubit.announcements![index].type),
-                        separatorBuilder: (context, index) => const SizedBox(height: AppSizesDouble.s10,),
-                        itemCount: cubit.announcements!.length,
-                        //cubit.announcements!.length
-                      ),
-                    ],
+                child: ConditionalBuilder(
+                  condition: cubit.announcements != null && state is !AdminGetAnnouncementLoadingState,
+                  fallback: (context) => Center(child: CircularProgressIndicator(),),
+                  builder: (context)=> ListView.separated(
+                    //shrinkWrap: true,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    itemBuilder: (context, index) => announcementBuilder(
+                        cubit.announcements![index].id,
+                        context,
+                        cubit.announcements![index].title,
+                        index,
+                        cubit.announcements![index].content,
+                        cubit.announcements![index].dueDate,
+                        cubit.announcements![index].type),
+                    separatorBuilder: (context, index) => const SizedBox(height: AppSizesDouble.s10,),
+                    itemCount: cubit.announcements!.length,
+                    //cubit.announcements!.length
                   ),
                 ),
               ),
@@ -62,59 +62,68 @@ class AnnouncementsList extends StatelessWidget {
       },
     );
   }
-  _onRefresh(context){
+  Future<void> _onRefresh(context)async {
     AdminCubit.get(context).getAnnouncements(semester);
+    return Future.value();
   }
+
   Widget announcementBuilder(int id, BuildContext context, String title,
       int index, String content, dueDate, type) {
-    var random = Random();
-    int rand = random.nextInt(ColorsManager.announcementsColorList.length);
     return GestureDetector(
       onTap: () {
         navigate(
           context,
           AnnouncementDetail(
-            semester: semester, //
+            semester: semester,
             title: title,
             description: content,
             date: dueDate,
           ));
       },
       child: Container(
-        margin: EdgeInsetsDirectional.symmetric(horizontal: 10),
-        padding: EdgeInsetsDirectional.symmetric(horizontal: 20, vertical: 15),
+        margin: EdgeInsetsDirectional.symmetric(horizontal: AppMargins.m10),
+        padding: EdgeInsetsDirectional.symmetric(horizontal: AppPaddings.p20, vertical: AppPaddings.p10),
+        constraints: BoxConstraints(
+          maxHeight: AppQueries.screenHeight(context) / AppSizes.s4,
+          minHeight: AppSizesDouble.s100,
+        ),
         width: double.infinity,
-        height: 150,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: ColorsManager.announcementsColorList[rand]),
+          borderRadius: BorderRadius.circular(AppSizesDouble.s20),
+          color: MainCubit.get(context).isDark? ColorsManager.darkPrimary : ColorsManager.lightPrimary
+        ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               title,
-              style: TextStyle(color: Colors.white, fontSize: 20),
+              style: Theme.of(context).textTheme.headlineMedium,
+              maxLines: AppSizes.s2,
+              overflow: TextOverflow.ellipsis,
             ),
             SizedBox(
-              height: 10,
+              height: AppSizesDouble.s10,
             ),
             Text(
               content,
-              style: TextStyle(color: Colors.grey[300], fontSize: 14),
-              maxLines: 2,
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: ColorsManager.grey2),
+              maxLines: AppSizes.s3,
               overflow: TextOverflow.ellipsis,
             ),
-            Spacer(),
+            SizedBox(
+              height: AppSizesDouble.s10,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  dueDate == 'No Due Date'
+                  dueDate == StringsManager.noDueDate
                       ? dueDate
-                      : DateFormat('dd/MM/yyyy')
+                      : DateFormat(StringsManager.dateFormat)
                           .format(DateTime.parse(dueDate))
                           .toString(),
-                  style: TextStyle(color: Colors.white, fontSize: 14),
+                  style: Theme.of(context).textTheme.bodyLarge,
                 )
               ],
             )

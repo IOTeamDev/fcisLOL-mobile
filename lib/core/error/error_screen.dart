@@ -26,15 +26,17 @@ class ErrorScreen extends StatelessWidget {
                   Center(
                     child: Text(
                       StringsManager.notFoundErrorCode,
-                      style: TextStyle(
-                          fontSize: AppQueries.screenWidth(context) / AppSizes.s4,
-                          color: ColorsManager.imperialRed,
-                          fontWeight: FontWeight.bold),
+                      style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                        fontSize: AppQueries.screenWidth(context) / AppSizes.s4,
+                        color: ColorsManager.imperialRed,
+                      ),
                     ),
                   ),
                   Text(
                     StringsManager.thisLinkIsCorrupted,
-                    style: TextStyle(fontSize: AppQueries.screenWidth(context) / AppSizes.s17, fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                      fontSize: AppQueries.screenWidth(context) / AppSizes.s17
+                    ),
                   ),
                 ],
               ),

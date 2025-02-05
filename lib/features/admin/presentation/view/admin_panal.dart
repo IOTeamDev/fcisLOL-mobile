@@ -73,8 +73,7 @@ class AdminPanel extends StatelessWidget {
                             ColorsManager.lightGrey,
                             IconsManager.campaignIcon,
                             StringsManager.announcements,
-                            AddAnnouncement(
-                                semester: mainCubit.profileModel!.semester)),
+                            AddAnnouncement(semester: mainCubit.profileModel!.semester)),
 
                         SizedBox(
                           height: AppSizesDouble.s30,

@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 class ColorsManager{
   static const Color lightPrimary = Color(0xff4764c5);
+  static const Color darkLightPrimary = Color(0xff374C92);
   static const Color darkPrimary = Color(0xff3b3b3b);
   static const Color grey = Color(0xff848484);
   static const Color grey1 = Color(0xff5A5B5F); // used for subject builder
+  static const Color grey2 = Color(0xffd9d3d3);
   static const Color lightGrey = Color(0xff757575); //grey[300]
   static const Color lightGrey1 = Color(0xffbdbdbd); //grey[400]
   static const Color lightGrey2 = Color(0xfff5f5f5); //grey[100]
@@ -33,14 +35,9 @@ class ColorsManager{
   static const Color persianGreen = Color(0xff4EBF9E); // green
   static const Color green = Color(0xff3cb043); // green
   static const Color imperialRed = Color(0xfff74c4c); // red (for Remove button)
-  static const List<Color> announcementsColorList = [
-    darkPrimary,
-    lightPrimary,
-    Color(0xff097458),
-    Color(0xff683888),
-    Color(0xffB73030),
-    Color(0xff118ab2),
-  ];
+  static const Color gold = Color(0xffFFD700);
+  static const Color bronze = Color(0xffCD7F32);
+  static const Color silver = Color(0xffC0C0C0);
 }
 
 

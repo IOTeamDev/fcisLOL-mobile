@@ -397,11 +397,11 @@ class MainCubit extends Cubit<MainCubitStates> {
     });
   }
 
-  bool isDark = Cache.sharedpref!.getBool('isDarkMode')!;
+  bool isDark = Cache.sharedpref!.getBool(KeysManager.isDarkMode)!;
   ThemeData _appTheme = lightTheme;
 
   ThemeData get themeData {
-    if (Cache.sharedpref!.getBool('isDarkMode') == true) {
+    if (Cache.sharedpref!.getBool(KeysManager.isDarkMode) == true) {
       isDark = true;
       return darkTheme;
     } else {
@@ -413,31 +413,7 @@ class MainCubit extends Cubit<MainCubitStates> {
   void toggleDarkMode() {
     _appTheme = _appTheme == darkTheme ? lightTheme : darkTheme;
     isDark = !isDark;
-    Cache.sharedpref!.setBool("isDarkMode", _appTheme == darkTheme);
+    Cache.sharedpref!.setBool(KeysManager.isDarkMode, _appTheme == darkTheme);
     emit(ChangeAppModeState());
   }
 }
-
-
-
-  // void getAppMode(isDark) {
-  //   if (isDark != null) {
-  //     this.isDark = isDark;
-  //     appTheme = isDark ? darkTheme : lightTheme;
-  //   }
-  //   print(
-  //       '================================= the cached dark theme is ============> $isDark');
-  //   emit(ChangeAppModeState()); // Emit state after setting theme
-  // }
-
-  // void changeAppMode() {
-  //   isDark = !isDark;
-  //   appTheme = appTheme == darkTheme ? lightTheme : darkTheme;
-
-  //   Cache.writeData(key: KeysManager.isDark, value: isDark).then((_) {
-  //     print('Theme changed to: ${isDark ? "Dark" : "Light"}');
-  //     emit(ChangeAppModeState()); // Emit state after cache update
-  //   }).catchError((error) {
-  //     print('Error updating theme preference: $error');
-  //   });
-  // }

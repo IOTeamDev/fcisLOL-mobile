@@ -112,8 +112,8 @@ main() async {
   Bloc.observer = MyBlocObserver();
 
   AppConstants.TOKEN = await Cache.readData(key: KeysManager.token);
-  AppConstants.SelectedSemester =
-      await Cache.readData(key: KeysManager.semester);
+  AppConstants.SelectedSemester = await Cache.readData(key: KeysManager.semester);
+  print(AppConstants.SelectedSemester);
   bool isOnBoardFinished =
       await Cache.readData(key: KeysManager.finishedOnBoard) ?? false;
 
@@ -148,6 +148,7 @@ class App extends StatelessWidget {
           create: (BuildContext context) => MainCubit()
           ..getProfileInfo()
           ..themeData
+          ..getRequests(semester: AppConstants.SelectedSemester)
         ),
         BlocProvider(
           create: (BuildContext context) => AdminCubit()

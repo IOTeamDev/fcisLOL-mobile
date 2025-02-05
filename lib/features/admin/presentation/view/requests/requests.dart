@@ -8,6 +8,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
+import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit_states.dart';
@@ -23,114 +24,74 @@ class Requests extends StatefulWidget {
   @override
   State<Requests> createState() => _RequestsState();
 }
-
 class _RequestsState extends State<Requests> {
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<MainCubit, MainCubitStates>(
-      listener: (context, state) {
-        if (state is GetProfileSuccess) {
-          MainCubit.get(context).getRequests(
-              semester: MainCubit.get(context).profileModel!.semester);
-        }
-      },
-      builder: (context, mainState) {
-        var cubit = MainCubit.get(context);
-
-        return Scaffold(
-          key: scaffoldKey,
-          body: Stack(
-            children: [
-              Container(
-                margin: EdgeInsetsDirectional.only(
-                    top: AppQueries.screenHeight(context) / 10),
-                width: double.infinity,
-                child: Column(
-                  children: [
-                    Stack(
-                      children: [
-                        Positioned(
-                          left: 0,
-                          child: backButton(context),
-                        ),
-                        Center(
-                            child: Text(
-                          'Requests',
-                          style: TextStyle(
-                            fontSize: AppQueries.screenWidth(context) / 10,
-                          ),
-                          textAlign: TextAlign.center,
-                        )),
-                      ],
+    return BlocProvider(
+      create: (context) => MainCubit()..getRequests(semester: AppConstants.SelectedSemester),
+      child: BlocConsumer<MainCubit, MainCubitStates>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          var cubit = MainCubit.get(context);
+          return Scaffold(
+            key: scaffoldKey,
+            appBar: AppBar(
+              title: Text(StringsManager.requests, style: Theme.of(context).textTheme.displayMedium,),
+              centerTitle: true,
+            ),
+            body: Column(
+              children: [
+                ConditionalBuilder(
+                  condition: cubit.requests != null && cubit.requests!.isNotEmpty && state is AdminGetRequestsLoadingState,
+                  fallback: (context) {
+                    if(state is AdminGetRequestsLoadingState) {
+                      return Center(child: CircularProgressIndicator(),);
+                    }
+                    return Center(child: Text('No Requests Available', style: Theme.of(context).textTheme.headlineMedium,));
+                  },
+                  builder: (context) => Expanded(
+                    child: ListView.separated(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return requestedMaterialBuilder(
+                          index, context,
+                          title: cubit.requests![index].title,
+                          type: cubit.requests![index].type,
+                          pfp: cubit.requests![index].author?.photo,
+                          authorName:
+                              cubit.requests![index].author?.name,
+                          link: cubit.requests![index].link,
+                          subjectName: cubit.requests![index]
+                              .subject, // Use proper subject if available
+                          description:
+                              cubit.requests![index].description,
+                          semester: cubit.profileModel!.semester
+                        );
+                      },
+                      separatorBuilder: (context, index) => const Padding(padding: EdgeInsetsDirectional.all(5),),
+                      itemCount: cubit.requests!.length,
                     ),
-                    Expanded(
-                      child: ConditionalBuilder(
-                          condition: cubit.requests != null &&
-                              cubit.requests!.isNotEmpty &&
-                              mainState is! GetRequestsLoadingState &&
-                              mainState is! GetProfileLoading,
-                          builder: (context) => ListView.separated(
-                                physics: const BouncingScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  return requestedMaterialBuilder(
-                                      index, context,
-                                      title: cubit.requests![index].title,
-                                      type: cubit.requests![index].type,
-                                      pfp: cubit.requests![index].author?.photo,
-                                      authorName:
-                                          cubit.requests![index].author?.name,
-                                      link: cubit.requests![index].link,
-                                      subjectName: cubit.requests![index]
-                                          .subject, // Use proper subject if available
-                                      description:
-                                          cubit.requests![index].description,
-                                      semester: cubit.profileModel!.semester);
-                                },
-                                separatorBuilder: (context, index) =>
-                                    const Padding(
-                                  padding: EdgeInsetsDirectional.all(5),
-                                ),
-                                itemCount: cubit.requests!.length,
-                              ),
-                          fallback: (context) {
-                            if (mainState is GetRequestsLoadingState) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            } else {
-                              return const Center(
-                                child: Text(
-                                  'No requests available',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 24,
-                                  ),
-                                ),
-                              );
-                            }
-                          }),
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
-        );
-      },
+                  ),
+                )
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 
   Widget requestedMaterialBuilder(index, context,
-      {title,
-      link,
-      type,
-      authorName,
-      pfp,
-      subjectName,
-      description,
-      semester}) {
+    {title,
+    link,
+    type,
+    authorName,
+    pfp,
+    subjectName,
+    description,
+    semester}) {
     return InkWell(
       onTap: () async {
         String refresh = await Navigator.of(context).push(MaterialPageRoute(

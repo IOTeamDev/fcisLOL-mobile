@@ -2,21 +2,28 @@ class StringsManager{
   static const String forwardSlash = '/';
   static const String dash = '-';
   static const String underScore = '_';
+  static const String colon = ':';
   static const String space = ' ';
   static const String andWord = 'and';
   static const String andSymbol = '&';
+  static const String pts = 'pts';
   static const String imgPickedSuccessfully = 'Imaged Picked Successfully';
   static const String imgLimitExceeded = 'Image Limit Exceeded';
   static const String selectImage = 'Select Image';
   static const String uploadImage = 'Uploading your photo';
   static const String title = 'title';
   static const String content = 'content';
+  static const String noContent = 'No content';
+  static const String deadLine = 'DeadLine';
   static const String dueDate = 'due_date';
   static const String ADMIN = 'ADMIN';
   static const String role = 'role';
   static const String one = 'One';
+  static const String oneNum = '1';
   static const String two = 'Two';
+  static const String twoNum = '2';
   static const String three = 'Three';
+  static const String threeNum = '3';
   static const String four = 'Four';
   static const String five = 'Five';
   static const String six = 'Six';
@@ -35,6 +42,7 @@ class StringsManager{
   static const String submit = 'Submit';
   static const String selectAnnouncementTypeWarning = 'Please select the announcement type';
   static const String noAnnouncementsYet = 'You have no announcements yet!!!';
+  static const String noLeaderBoard = 'No Leaderboard Yet!!!';
   static const String addNew = 'Add New';
   static const String subject = 'Subjects';
   static const String home = 'Home';
@@ -66,6 +74,9 @@ class StringsManager{
   static const String logIn = 'Log In';
   static const String links = 'Links';
   static const String exams = 'Exams';
+  static const String noDueDate = 'No Due Date';
+  static const String noMoreUsers = 'No more Users!!!';
+  static const String refresh = 'refresh';
 }
 
 class KeysManager{
@@ -80,4 +91,5 @@ class KeysManager{
   static const String isDark = 'isDark';
   static const String finishedOnBoard = 'FinishedOnBoard';
   static const String admin = 'ADMIN';
+  static const String isDarkMode = 'isDarkMode';
 }
