@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
@@ -54,6 +56,7 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log('++${MainCubit.get(context).isDark.toString()}');
     var scaffoldKey = GlobalKey<ScaffoldState>();
     return BlocConsumer<MainCubit, MainCubitStates>(listener: (context, state) {
       if (state is Logout) {
@@ -392,8 +395,9 @@ class Home extends StatelessWidget {
                                       horizontal: AppPaddings.p20,
                                       vertical: AppPaddings.p20),
                                   child: divider(
-                                    color: MainCubit.get(context).isDark? ColorsManager.white: ColorsManager.black
-                                  ),
+                                      color: MainCubit.get(context).isDark
+                                          ? ColorsManager.white
+                                          : ColorsManager.black),
                                 ), //divider
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
@@ -563,7 +567,7 @@ Widget _customDrawer(context, semester) {
                 otherAccountsPictures: [
                   IconButton(
                       onPressed: () {
-                        MainCubit.get(context).toggleDarkMode();
+                        cubit.toggleDarkMode();
                       },
                       icon: Icon(
                         cubit.isDark
@@ -681,7 +685,8 @@ Widget _customDrawer(context, semester) {
                             borderRadius: BorderRadius
                                 .zero), // Removes divider when expanded
                         onTap: () {
-                          navigate(context, SemesterNavigate(semester: StringsManager.one));
+                          navigate(context,
+                              SemesterNavigate(semester: StringsManager.one));
                         },
                       ),
                       ListTile(
@@ -689,9 +694,12 @@ Widget _customDrawer(context, semester) {
                           StringsManager.secondSemester,
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero), // Removes divider when expanded
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius
+                                .zero), // Removes divider when expanded
                         onTap: () {
-                          navigate(context, SemesterNavigate(semester: StringsManager.two));
+                          navigate(context,
+                              SemesterNavigate(semester: StringsManager.two));
                         },
                       ),
                     ],
@@ -719,7 +727,8 @@ Widget _customDrawer(context, semester) {
                             borderRadius: BorderRadius
                                 .zero), // Removes divider when expanded
                         onTap: () {
-                          navigate(context, SemesterNavigate(semester: StringsManager.three));
+                          navigate(context,
+                              SemesterNavigate(semester: StringsManager.three));
                         },
                       ),
                       ListTile(
@@ -731,7 +740,8 @@ Widget _customDrawer(context, semester) {
                             borderRadius: BorderRadius
                                 .zero), // Removes divider when expanded
                         onTap: () {
-                          navigate(context, SemesterNavigate(semester: StringsManager.four));
+                          navigate(context,
+                              SemesterNavigate(semester: StringsManager.four));
                         },
                       ),
                     ],
@@ -768,20 +778,20 @@ Widget _customDrawer(context, semester) {
                           StringsManager.secondSemester,
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero), // Removes divider when expanded
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius
+                                .zero), // Removes divider when expanded
                         onTap: () {
                           navigate(context,
-                            SemesterNavigate(semester: StringsManager.six)
-                          );
+                              SemesterNavigate(semester: StringsManager.six));
                         },
                       ),
                     ],
                   ),
                   InkWell(
                     onTap: () => showToastMessage(
-                      message: StringsManager.currentlyUpdating,
-                      states: ToastStates.INFO
-                    ),
+                        message: StringsManager.currentlyUpdating,
+                        states: ToastStates.INFO),
                     child: ExpansionTile(
                       enabled: false,
                       title: Text(
@@ -896,13 +906,25 @@ Widget _customDrawer(context, semester) {
                 ],
               ),
               ListTile(
-                leading: Icon(IconsManager.linkIcon, color: Theme.of(context).iconTheme.color,),
-                title: Text(StringsManager.links, style: Theme.of(context).textTheme.bodyLarge,),
+                leading: Icon(
+                  IconsManager.linkIcon,
+                  color: Theme.of(context).iconTheme.color,
+                ),
+                title: Text(
+                  StringsManager.links,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
                 onTap: () => navigate(context, UsefulLinks()),
               ),
               ListTile(
-                leading: Icon(IconsManager.paperIcon, color: Theme.of(context).iconTheme.color,),
-                title: Text(StringsManager.exams, style: Theme.of(context).textTheme.bodyLarge,),
+                leading: Icon(
+                  IconsManager.paperIcon,
+                  color: Theme.of(context).iconTheme.color,
+                ),
+                title: Text(
+                  StringsManager.exams,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
                 onTap: () => navigate(context, PreviousExams()),
               ),
               ExpansionTile(
@@ -1077,10 +1099,9 @@ Widget subjectItemBuild(SubjectModel subject, context, bool navigation) {
                   .replaceAll(StringsManager.underScore, StringsManager.space)
                   .replaceAll(StringsManager.andWord, StringsManager.andSymbol),
               maxLines: AppSizes.s2,
-              style: Theme.of(context)
-                  .textTheme
-                  .titleLarge!
-                  .copyWith(fontWeight: FontWeightManager.semiBold, color: ColorsManager.white),
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  fontWeight: FontWeightManager.semiBold,
+                  color: ColorsManager.white),
               overflow: TextOverflow.ellipsis,
             ),
           ],

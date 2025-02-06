@@ -398,7 +398,9 @@ class MainCubit extends Cubit<MainCubitStates> {
   }
 
   bool isDark = Cache.sharedpref!.getBool(KeysManager.isDarkMode)!;
-  ThemeData _appTheme = lightTheme;
+  ThemeData _appTheme = Cache.sharedpref!.getBool(KeysManager.isDarkMode)!
+      ? darkTheme
+      : lightTheme;
 
   ThemeData get themeData {
     if (Cache.sharedpref!.getBool(KeysManager.isDarkMode) == true) {
@@ -411,8 +413,15 @@ class MainCubit extends Cubit<MainCubitStates> {
   }
 
   void toggleDarkMode() {
-    _appTheme = _appTheme == darkTheme ? lightTheme : darkTheme;
-    isDark = !isDark;
+    if (_appTheme == darkTheme) {
+      _appTheme = lightTheme;
+      isDark = false;
+    } else {
+      _appTheme = darkTheme;
+      isDark = true;
+    }
+
+    print('toggle dark mode $isDark----------------------------');
     Cache.sharedpref!.setBool(KeysManager.isDarkMode, _appTheme == darkTheme);
     emit(ChangeAppModeState());
   }
