@@ -143,7 +143,8 @@ class App extends StatelessWidget {
               create: (BuildContext context) => MainCubit()
                 ..getProfileInfo()
                 ..themeData
-                ..getRequests(semester: AppConstants.SelectedSemester)),
+                ..getRequests(
+                    semester: AppConstants.SelectedSemester ?? "One")),
           BlocProvider(
               create: (BuildContext context) => AdminCubit()
                 ..getAnnouncements(MainCubit.get(context).profileModel != null

@@ -1,5 +1,6 @@
 import 'package:lol/core/models/admin/announcement_model.dart';
 import 'package:lol/core/models/admin/requests_model.dart';
+import 'package:lol/features/subject/data/models/material_model.dart';
 
 abstract class AdminCubitStates {}
 
@@ -51,7 +52,7 @@ class AdminUpdateAnnouncementErrorState extends AdminCubitStates {
 class AdminGetRequestsLoadingState extends AdminCubitStates {}
 
 class AdminGetRequestsSuccessState extends AdminCubitStates {
-  final List<RequestsModel> requests;
+  final List<MaterialModel> requests;
 
   AdminGetRequestsSuccessState(this.requests);
 }

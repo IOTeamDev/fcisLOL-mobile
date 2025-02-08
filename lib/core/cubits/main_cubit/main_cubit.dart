@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,7 +23,8 @@ import 'package:lol/core/utils/navigation.dart';
 import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:lol/core/models/admin/requests_model.dart';
 import 'package:lol/core/models/admin/announcement_model.dart';
-
+import 'package:lol/features/subject/data/models/material_model.dart';
+import 'dart:developer' as dev;
 import '../../utils/resources/icons_manager.dart';
 import '../../utils/resources/values_manager.dart';
 
@@ -185,20 +187,25 @@ class MainCubit extends Cubit<MainCubitStates> {
     emit(Logout());
   }
 
-  List<RequestsModel>? requests;
-  void getRequests({required semester, isAccepted = false}) {
+  List<MaterialModel>? requests;
+  void getRequests({required String semester, bool isAccepted = false}) async {
     emit(GetRequestsLoadingState());
-    DioHelp.getData(path: MATERIAL, query: {
-      KeysManager.semester: semester,
-      KeysManager.accepted: isAccepted
-    }).then((value) {
-      requests = [];
-      value.data.forEach((element) {
-        requests!.add(RequestsModel.fromJson(element));
-      });
 
+    try {
+      final response = await DioHelp.getData(
+        path: MATERIAL,
+        query: {'semester': semester, 'accepted': false},
+      );
+      requests = [];
+      response.data.forEach((element) {
+        requests!.add(MaterialModel.fromJson(element));
+      });
+      dev.log('requests from semester $semester => ${requests!.length}');
       emit(GetRequestsSuccessState());
-    });
+    } catch (e) {
+      dev.log('erro from getting request => ${e.toString()}');
+      emit(GetRequestsErrorState());
+    }
   }
 
   void deleteMaterial(int id, semester, {isMaterial = false}) {

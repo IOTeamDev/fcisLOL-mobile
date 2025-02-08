@@ -24,74 +24,81 @@ class Requests extends StatefulWidget {
   @override
   State<Requests> createState() => _RequestsState();
 }
+
 class _RequestsState extends State<Requests> {
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => MainCubit()..getRequests(semester: AppConstants.SelectedSemester),
-      child: BlocConsumer<MainCubit, MainCubitStates>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          var cubit = MainCubit.get(context);
-          return Scaffold(
-            key: scaffoldKey,
-            appBar: AppBar(
-              title: Text(StringsManager.requests, style: Theme.of(context).textTheme.displayMedium,),
-              centerTitle: true,
+    return BlocConsumer<MainCubit, MainCubitStates>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        var cubit = MainCubit.get(context);
+        return Scaffold(
+          key: scaffoldKey,
+          appBar: AppBar(
+            title: Text(
+              StringsManager.requests,
+              style: Theme.of(context).textTheme.displayMedium,
             ),
-            body: Column(
-              children: [
-                ConditionalBuilder(
-                  condition: cubit.requests != null && cubit.requests!.isNotEmpty && state is AdminGetRequestsLoadingState,
-                  fallback: (context) {
-                    if(state is AdminGetRequestsLoadingState) {
-                      return Center(child: CircularProgressIndicator(),);
-                    }
-                    return Center(child: Text('No Requests Available', style: Theme.of(context).textTheme.headlineMedium,));
-                  },
-                  builder: (context) => Expanded(
-                    child: ListView.separated(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        return requestedMaterialBuilder(
-                          index, context,
+            centerTitle: true,
+          ),
+          body: Column(
+            children: [
+              ConditionalBuilder(
+                condition: cubit.requests != null &&
+                    cubit.requests!.isNotEmpty &&
+                    state is AdminGetRequestsLoadingState,
+                fallback: (context) {
+                  if (state is AdminGetRequestsLoadingState) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return Center(
+                      child: Text(
+                    'No Requests Available',
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ));
+                },
+                builder: (context) => Expanded(
+                  child: ListView.separated(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return requestedMaterialBuilder(index, context,
                           title: cubit.requests![index].title,
                           type: cubit.requests![index].type,
-                          pfp: cubit.requests![index].author?.photo,
-                          authorName:
-                              cubit.requests![index].author?.name,
+                          pfp: cubit.requests![index].author?.authorPhoto,
+                          authorName: cubit.requests![index].author?.authorName,
                           link: cubit.requests![index].link,
                           subjectName: cubit.requests![index]
                               .subject, // Use proper subject if available
-                          description:
-                              cubit.requests![index].description,
-                          semester: cubit.profileModel!.semester
-                        );
-                      },
-                      separatorBuilder: (context, index) => const Padding(padding: EdgeInsetsDirectional.all(5),),
-                      itemCount: cubit.requests!.length,
+                          description: cubit.requests![index].description,
+                          semester: cubit.profileModel!.semester);
+                    },
+                    separatorBuilder: (context, index) => const Padding(
+                      padding: EdgeInsetsDirectional.all(5),
                     ),
+                    itemCount: cubit.requests!.length,
                   ),
-                )
-              ],
-            ),
-          );
-        },
-      ),
+                ),
+              )
+            ],
+          ),
+        );
+      },
     );
   }
 
   Widget requestedMaterialBuilder(index, context,
-    {title,
-    link,
-    type,
-    authorName,
-    pfp,
-    subjectName,
-    description,
-    semester}) {
+      {title,
+      link,
+      type,
+      authorName,
+      pfp,
+      subjectName,
+      description,
+      semester}) {
     return InkWell(
       onTap: () async {
         String refresh = await Navigator.of(context).push(MaterialPageRoute(

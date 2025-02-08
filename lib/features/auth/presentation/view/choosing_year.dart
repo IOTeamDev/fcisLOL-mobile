@@ -198,8 +198,10 @@ class YearState extends State<Year> {
                 ),
               ],
             ),
-            width: AppQueries.screenWidth(context) / 3, // Fixed width for each card
-            height: AppQueries.screenHeight(context) / 5.5, // Fixed height for each card
+            width: AppQueries.screenWidth(context) /
+                3, // Fixed width for each card
+            height: AppQueries.screenHeight(context) /
+                5.5, // Fixed height for each card
             child: Center(
               child: Text(
                 widget.title,
@@ -265,7 +267,8 @@ class YearState extends State<Year> {
                         } else {
                           AppConstants.SelectedSemester = switchSemester;
                           Cache.writeData(
-                              key: "semester", value: AppConstants.SelectedSemester);
+                              key: "semester",
+                              value: AppConstants.SelectedSemester);
 
                           navigatReplace(context, const Home());
                         }
@@ -316,7 +319,9 @@ class YearState extends State<Year> {
                           );
                         } else {
                           AppConstants.SelectedSemester = switchSemester;
-                          Cache.writeData(key: "semester", value: AppConstants.SelectedSemester);
+                          Cache.writeData(
+                              key: "semester",
+                              value: AppConstants.SelectedSemester);
 
                           navigatReplace(context, const Home());
                         }
