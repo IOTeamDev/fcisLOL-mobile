@@ -56,7 +56,6 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log('++${MainCubit.get(context).isDark.toString()}');
     var scaffoldKey = GlobalKey<ScaffoldState>();
     return BlocConsumer<MainCubit, MainCubitStates>(listener: (context, state) {
       if (state is Logout) {

@@ -421,7 +421,6 @@ class MainCubit extends Cubit<MainCubitStates> {
       isDark = true;
     }
 
-    print('toggle dark mode $isDark----------------------------');
     Cache.sharedpref!.setBool(KeysManager.isDarkMode, _appTheme == darkTheme);
     emit(ChangeAppModeState());
   }

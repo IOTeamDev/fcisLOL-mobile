@@ -33,6 +33,7 @@ ThemeData lightTheme = ThemeData(
 );
 
 ThemeData darkTheme = ThemeData(
+  colorScheme: ColorScheme.dark(),
   scaffoldBackgroundColor: ColorsManager.darkGrey,
   primaryColor: ColorsManager.darkPrimary,
   appBarTheme: AppBarTheme(

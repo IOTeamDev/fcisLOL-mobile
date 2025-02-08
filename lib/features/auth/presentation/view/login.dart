@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/widgets/default_button.dart';
 import 'package:lol/core/widgets/default_text_button.dart';
@@ -71,6 +72,9 @@ class LoginScreen extends StatelessWidget {
                               "images/l.png",
                               width: 35,
                               height: 35,
+                              color: MainCubit.get(context).isDark
+                                  ? Colors.white
+                                  : Colors.black,
                             ),
                             const SizedBox(
                               width: 5,
@@ -78,9 +82,9 @@ class LoginScreen extends StatelessWidget {
                             const Text(
                               "UniNotes",
                               style: TextStyle(
-                                  fontSize: 20,
-                                  letterSpacing: 2,
-                                  color: Colors.black),
+                                fontSize: 20,
+                                letterSpacing: 2,
+                              ),
                             ),
 
                             // SizedBox(width:70)
@@ -244,11 +248,11 @@ class LoginScreen extends StatelessWidget {
                         children: [
                           const Text("Not a member yet ?"),
                           defaultTextButton(
-                            onPressed: () {
-                              navigatReplace(context, Registerscreen());
-                            },
-                            text: "Register",
-                          )
+                              onPressed: () {
+                                navigatReplace(context, Registerscreen());
+                              },
+                              text: "Register",
+                              color: Colors.blue)
                         ],
                       )
                     ],

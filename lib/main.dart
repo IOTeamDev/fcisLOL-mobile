@@ -74,7 +74,6 @@ main() async {
   await DioHelp.initial();
   await Firebase.initializeApp();
   fcmToken = await FirebaseMessaging.instance.getToken();
-  print(fcmToken);
 
   FirebaseFirestore.instance
       .collection("indicators")
@@ -84,7 +83,6 @@ main() async {
     changeSemester = onValue.data()?["changeSemester"] ?? false;
     noMoreStorage = onValue.data()?["noMoreStorage"] ?? false;
     apiKey = onValue.data()?["apiKey"];
-    print("$changeSemester");
   });
 
   await FirebaseFirestore.instance
@@ -96,9 +94,6 @@ main() async {
     privateKey = value.data()?["private_key"];
     privateKeyId = value.data()?["private_key_id"];
     privateKey = privateKey!.replaceAll(r'\n', '\n').trim();
-
-    print(
-        "${fcisServiceMap["project_id"]}+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
   });
 // fCMHelper.initNotifications();
 
@@ -112,8 +107,8 @@ main() async {
   Bloc.observer = MyBlocObserver();
 
   AppConstants.TOKEN = await Cache.readData(key: KeysManager.token);
-  AppConstants.SelectedSemester = await Cache.readData(key: KeysManager.semester);
-  print(AppConstants.SelectedSemester);
+  AppConstants.SelectedSemester =
+      await Cache.readData(key: KeysManager.semester);
   bool isOnBoardFinished =
       await Cache.readData(key: KeysManager.finishedOnBoard) ?? false;
 
@@ -143,32 +138,26 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (BuildContext context) => MainCubit()
-          ..getProfileInfo()
-          ..themeData
-          ..getRequests(semester: AppConstants.SelectedSemester)
-        ),
-        BlocProvider(
-          create: (BuildContext context) => AdminCubit()
-          ..getAnnouncements(
-            MainCubit.get(context).profileModel != null ?
-            MainCubit.get(context).profileModel!.semester :
-            AppConstants.SelectedSemester!
-          )
-          ..getFcmTokens()
-        ),
-      ],
-      child: BlocBuilder<MainCubit, MainCubitStates>(
-        builder: (context, state) {
+        providers: [
+          BlocProvider(
+              create: (BuildContext context) => MainCubit()
+                ..getProfileInfo()
+                ..themeData
+                ..getRequests(semester: AppConstants.SelectedSemester)),
+          BlocProvider(
+              create: (BuildContext context) => AdminCubit()
+                ..getAnnouncements(MainCubit.get(context).profileModel != null
+                    ? MainCubit.get(context).profileModel!.semester
+                    : AppConstants.SelectedSemester!)
+                ..getFcmTokens()),
+        ],
+        child:
+            BlocBuilder<MainCubit, MainCubitStates>(builder: (context, state) {
           return MaterialApp(
             home: startPage,
             debugShowCheckedModeBanner: false,
             theme: MainCubit.get(context).themeData,
           );
-        }
-      )
-    );
+        }));
   }
 }

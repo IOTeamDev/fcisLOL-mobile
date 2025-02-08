@@ -325,15 +325,13 @@ class Registerscreen extends StatelessWidget {
                             children: [
                               const Text(
                                 "Already have account?",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w400),
+                                style: TextStyle(fontWeight: FontWeight.w400),
                               ),
                               defaultTextButton(
-                                onPressed: () => navigatReplace(
-                                    context, const LoginScreen()),
-                                text: "Login",
-                              ),
+                                  onPressed: () => navigatReplace(
+                                      context, const LoginScreen()),
+                                  text: "Login",
+                                  color: Colors.blue),
                             ],
                           ),
                         ],
