@@ -107,10 +107,8 @@ main() async {
   Bloc.observer = MyBlocObserver();
 
   AppConstants.TOKEN = await Cache.readData(key: KeysManager.token);
-  AppConstants.SelectedSemester =
-      await Cache.readData(key: KeysManager.semester);
-  bool isOnBoardFinished =
-      await Cache.readData(key: KeysManager.finishedOnBoard) ?? false;
+  AppConstants.SelectedSemester = await Cache.readData(key: KeysManager.semester);
+  bool isOnBoardFinished = await Cache.readData(key: KeysManager.finishedOnBoard) ?? false;
 
   // TOKEN = null;//
   final Widget startPage;
@@ -126,9 +124,7 @@ main() async {
     }
   }
 
-  runApp(App(
-    startPage: startPage,
-  ));
+  runApp(App(startPage: startPage,));
 }
 
 class App extends StatelessWidget {
@@ -138,27 +134,32 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-        providers: [
-          BlocProvider(
-              create: (BuildContext context) => MainCubit()
-                ..getProfileInfo()
-                ..themeData
-                ..getRequests(
-                    semester: AppConstants.SelectedSemester ?? "One")),
-          BlocProvider(
-              create: (BuildContext context) => AdminCubit()
-                ..getAnnouncements(MainCubit.get(context).profileModel != null
-                    ? MainCubit.get(context).profileModel!.semester
-                    : AppConstants.SelectedSemester!)
-                ..getFcmTokens()),
-        ],
-        child:
-            BlocBuilder<MainCubit, MainCubitStates>(builder: (context, state) {
-          return MaterialApp(
-            home: startPage,
-            debugShowCheckedModeBanner: false,
-            theme: MainCubit.get(context).themeData,
-          );
-        }));
+      providers: [
+        BlocProvider(
+          create: (BuildContext context) => MainCubit()
+            ..getProfileInfo()
+            ..themeData
+        ),
+        BlocProvider(
+          create: (BuildContext context) => AdminCubit()
+            ..getAnnouncements(MainCubit.get(context).profileModel != null
+              ? MainCubit.get(context).profileModel!.semester
+              : AppConstants.SelectedSemester!)
+            ..getFcmTokens()
+        ),
+      ],
+      child: BlocConsumer<MainCubit, MainCubitStates>(
+        listener: (context, state) {
+          if(state is GetProfileSuccess){
+            MainCubit().getRequests(semester: MainCubit.get(context).profileModel!.semester);
+          }
+        },
+        builder: (context, state) => MaterialApp(
+          home: startPage,
+          debugShowCheckedModeBanner: false,
+          theme: MainCubit.get(context).themeData,
+        )
+      )
+    );
   }
 }

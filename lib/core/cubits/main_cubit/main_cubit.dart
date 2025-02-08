@@ -113,18 +113,17 @@ class MainCubit extends Cubit<MainCubitStates> {
     emit(UploadImageLoading());
     if (image == null) return;
 
-    showToastMessage(
-        message: StringsManager.uploadImage, states: ToastStates.WARNING);
+    showToastMessage(message: StringsManager.uploadImage, states: ToastStates.WARNING);
     final TaskSnapshot uploadTask;
     if (isUserProfile) {
       uploadTask = await FirebaseStorage.instance
           .ref()
-          .child("images/${Uri.file(image.path).pathSegments.last}")
+          .child(StringsManager.image.toLowerCase() + StringsManager.forwardSlash + Uri.file(image.path).pathSegments.last)
           .putFile(image);
     } else {
       uploadTask = await FirebaseStorage.instance
           .ref()
-          .child("announcements/${Uri.file(image.path).pathSegments.last}")
+          .child(StringsManager.announcements.toLowerCase() + StringsManager.forwardSlash + Uri.file(image.path).pathSegments.last)
           .putFile(image);
     }
 
@@ -161,14 +160,13 @@ class MainCubit extends Cubit<MainCubitStates> {
     emit(GetProfileLoading());
     otherProfile = null;
     DioHelp.getData(
-        path: USERS,
-        query: {KeysManager.id: id, KeysManager.haveMaterial: true}).then(
-      (value) {
+      path: USERS,
+      query: {KeysManager.id: id, KeysManager.haveMaterial: true}
+    )
+    .then((value) {
         otherProfile = ProfileModel.fromJson(value.data);
-
         emit(GetProfileSuccess());
-      },
-    );
+    },);
   }
 
   void logout(context) {
@@ -194,7 +192,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     try {
       final response = await DioHelp.getData(
         path: MATERIAL,
-        query: {'semester': semester, 'accepted': false},
+        query: {KeysManager.semester: semester, KeysManager.accepted: false},
       );
       requests = [];
       response.data.forEach((element) {

@@ -57,37 +57,36 @@ class AdminPanel extends StatelessWidget {
                 children: [
                   // Buttons
                   ConditionalBuilder(
-                    condition: MainCubit.get(context).profileModel != null &&
-                        state is! GetProfileLoading,
-                    fallback: (context) =>
-                        const Center(child: CircularProgressIndicator()),
+                    condition: MainCubit.get(context).profileModel != null && state is! GetProfileLoading,
+                    fallback: (context) => const Center(child: CircularProgressIndicator()),
                     builder: (context) => Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         buttonBuilder(
-                            context,
-                            mainCubit,
-                            ColorsManager.white,
-                            ColorsManager.lightGrey1,
-                            ColorsManager.darkPrimary,
-                            ColorsManager.lightGrey,
-                            IconsManager.campaignIcon,
-                            StringsManager.announcements,
-                            AddAnnouncement(semester: mainCubit.profileModel!.semester)),
-
+                          context,
+                          mainCubit,
+                          ColorsManager.white,
+                          ColorsManager.lightGrey1,
+                          ColorsManager.darkPrimary,
+                          ColorsManager.lightGrey,
+                          IconsManager.campaignIcon,
+                          StringsManager.announcements,
+                          AddAnnouncement(semester: mainCubit.profileModel!.semester)
+                        ),
                         SizedBox(
                           height: AppSizesDouble.s30,
                         ),
                         buttonBuilder(
-                            context,
-                            mainCubit,
-                            ColorsManager.white,
-                            ColorsManager.lightGrey1,
-                            ColorsManager.lightPrimary,
-                            ColorsManager.lightPrimary,
-                            IconsManager.emailIcon,
-                            StringsManager.requests,
-                            Requests()),
+                          context,
+                          mainCubit,
+                          ColorsManager.white,
+                          ColorsManager.lightGrey1,
+                          ColorsManager.lightPrimary,
+                          ColorsManager.lightPrimary,
+                          IconsManager.emailIcon,
+                          StringsManager.requests,
+                          Requests()
+                        ),
                       ],
                     ),
                   ),

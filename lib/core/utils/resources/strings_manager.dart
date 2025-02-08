@@ -10,6 +10,7 @@ class StringsManager{
   static const String imgPickedSuccessfully = 'Imaged Picked Successfully';
   static const String imgLimitExceeded = 'Image Limit Exceeded';
   static const String selectImage = 'Select Image';
+  static const String image = 'Image';
   static const String uploadImage = 'Uploading your photo';
   static const String title = 'title';
   static const String content = 'content';
@@ -43,6 +44,7 @@ class StringsManager{
   static const String selectAnnouncementTypeWarning = 'Please select the announcement type';
   static const String noAnnouncementsYet = 'You have no announcements yet!!!';
   static const String noLeaderBoard = 'No Leaderboard Yet!!!';
+  static const String noRequests = 'No Requests Available';
   static const String addNew = 'Add New';
   static const String subject = 'Subjects';
   static const String home = 'Home';
@@ -70,6 +72,7 @@ class StringsManager{
   static const String aboutUs = 'About Us';
   static const String logOut = 'Log Out';
   static const String logOutWarningMessage = 'Are you sure you want to log out?';
+  static const String deleteRequestMessage = 'Are you sure you want to Delete the request?';
   static const String logOutSuccessfully = 'Logout Successfully';
   static const String logIn = 'Log In';
   static const String links = 'Links';
@@ -77,12 +80,15 @@ class StringsManager{
   static const String noDueDate = 'No Due Date';
   static const String noMoreUsers = 'No more Users!!!';
   static const String refresh = 'refresh';
+  static const String accept = 'Accept';
+  static const String reject = 'Reject';
+  static const String delete = 'Delete';
 }
 
 class KeysManager{
   static const String token = 'token';
   static const String semester = 'semester';
-  static const String id = 'semester';
+  static const String id = 'id';
   static const String users = 'users';
   static const String fcmToken = 'fcmToken';
   static const String photo = 'photo';

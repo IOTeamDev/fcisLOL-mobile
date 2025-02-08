@@ -107,7 +107,7 @@ class _AnnouncementDetailState extends State<AnnouncementDetail> {
                                     style: const TextStyle(
                                       color: ColorsManager.white,
                                     ),
-                                    linkStyle: const TextStyle(color: Colors.blue, decorationColor: ColorsManager.dodgerBlue),
+                                    linkStyle: const TextStyle(color: ColorsManager.dodgerBlue, decorationColor: ColorsManager.dodgerBlue),
                                     linkifiers: const [
                                       UrlLinkifier(),
                                       EmailLinkifier(),
