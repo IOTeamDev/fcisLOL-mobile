@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/features/subject/data/models/material_model.dart';
 import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit_cubit.dart';
 import 'package:lol/core/utils/components.dart';
@@ -30,7 +31,7 @@ class RemoveButton extends StatelessWidget {
         ),
         minWidth: 30,
         height: 50,
-        color: Colors.white,
+        color: ColorsManager.white,
         onPressed: () {
           AwesomeDialog(
             context: context,
@@ -47,7 +48,7 @@ class RemoveButton extends StatelessWidget {
         },
         child: Icon(
           Icons.delete,
-          color: Color.fromRGBO(206, 58, 60, 1),
+          color: Color(0xffCE3A3C),
           size: 25,
         ),
       ),

@@ -1,9 +1,9 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/network/local/shared_preference.dart';
+import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
@@ -110,8 +110,9 @@ class _BuildFloatingActionButtonState extends State<BuildFloatingActionButton> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50),
         ),
-        backgroundColor:
-            MainCubit.get(context).isDark ? Color.fromRGBO(71, 100, 197, 1) : HexColor('#757575'),
+        backgroundColor: MainCubit.get(context).isDark
+            ? ColorsManager.lightPrimary
+            : ColorsManager.lightGrey,
         child: Icon(
           Icons.add,
           color: Colors.white,

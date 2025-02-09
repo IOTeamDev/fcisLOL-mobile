@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
+import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/main.dart';
 
 class BuildTextFormField extends StatelessWidget {
@@ -35,11 +35,15 @@ class BuildTextFormField extends StatelessWidget {
       decoration: InputDecoration(
         enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(
-                color: MainCubit.get(context).isDark ? HexColor('#848484') : HexColor('#FFFFFF'))),
+                color: MainCubit.get(context).isDark
+                    ? ColorsManager.grey
+                    : ColorsManager.white)),
         hintText: hintText,
         hintStyle: TextStyle(
             fontSize: 20,
-            color: MainCubit.get(context).isDark ? Color.fromRGBO(132, 132, 132, 1) : Colors.white),
+            color: MainCubit.get(context).isDark
+                ? ColorsManager.grey
+                : ColorsManager.white),
       ),
       style: const TextStyle(color: Colors.white),
     );

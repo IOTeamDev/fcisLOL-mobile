@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit_cubit.dart';
 
@@ -26,8 +27,8 @@ class DocumentsListView extends StatelessWidget {
           return Center(
             child: CircularProgressIndicator(
                 color: MainCubit.get(context).isDark
-                    ? Colors.white
-                    : Colors.black),
+                    ? ColorsManager.white
+                    : ColorsManager.black),
           );
         } else if (state is GetMaterialSuccess) {
           return Padding(
@@ -45,8 +46,8 @@ class DocumentsListView extends StatelessWidget {
               'Oops! Something went wrong',
               style: TextStyle(
                   color: MainCubit.get(context).isDark
-                      ? Colors.white
-                      : Colors.black),
+                      ? ColorsManager.white
+                      : ColorsManager.black),
             ),
           );
         } else {

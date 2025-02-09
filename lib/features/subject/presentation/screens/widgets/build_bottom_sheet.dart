@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
+import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/subject/data/models/author_model.dart';
 import 'package:lol/features/subject/data/models/material_model.dart';
@@ -66,7 +66,9 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
       },
       child: Container(
           decoration: BoxDecoration(
-            color: MainCubit.get(context).isDark ? Color.fromRGBO(59, 59, 59, 1) : HexColor('#757575'),
+            color: MainCubit.get(context).isDark
+                ? ColorsManager.darkPrimary
+                : ColorsManager.lightGrey,
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           ),
           padding: const EdgeInsets.all(16),
@@ -125,6 +127,9 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
                             ),
                           ),
                           PopupMenuButton(
+                              color: MainCubit.get(context).isDark
+                                  ? ColorsManager.darkPrimary
+                                  : Colors.white,
                               onSelected: (type) {
                                 cubit.changeType(type: type);
                               },

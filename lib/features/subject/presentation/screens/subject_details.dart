@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
+import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit_cubit.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/build_floating_action_button.dart';
@@ -52,7 +53,6 @@ class _MaterialDetailsState extends State<SubjectDetails>
         getMaterialCubit: cubit,
       ),
       key: scaffoldKey,
-      //backgroundColor: isDark ? HexColor('#23252A') : Colors.white,
       body: Container(
         margin: EdgeInsetsDirectional.only(
             top: AppQueries.screenHeight(context) / 15),
@@ -68,8 +68,8 @@ class _MaterialDetailsState extends State<SubjectDetails>
                     icon: Icon(
                       Icons.arrow_back,
                       color: MainCubit.get(context).isDark
-                          ? Colors.white
-                          : Colors.black,
+                          ? ColorsManager.white
+                          : ColorsManager.black,
                       size: 30,
                     )),
                 Expanded(
@@ -82,8 +82,8 @@ class _MaterialDetailsState extends State<SubjectDetails>
                           .replaceAll("and", "&"),
                       style: TextStyle(
                           color: MainCubit.get(context).isDark
-                              ? Colors.white
-                              : Colors.black,
+                              ? ColorsManager.white
+                              : ColorsManager.black,
                           fontSize: AppQueries.screenWidth(context) / 15),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -102,17 +102,17 @@ class _MaterialDetailsState extends State<SubjectDetails>
                 style: TextStyle(
                     color: MainCubit.get(context).isDark
                         ? Color(0xff1B262C)
-                        : HexColor('#757575'),
+                        : ColorsManager.lightGrey,
                     fontSize: 20),
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.search,
                 decoration: InputDecoration(
-                    fillColor: HexColor('#CDCDCD'),
+                    fillColor: Color(0xffCDCDCD),
                     filled: true,
                     prefixIcon: Icon(
                       Icons.search,
                       size: 25,
-                      color: HexColor('#757575'),
+                      color: ColorsManager.lightGrey,
                     ),
                     contentPadding: const EdgeInsets.all(10.0),
                     border: OutlineInputBorder(
@@ -125,7 +125,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                     ),
                     hintText: 'Search for Videos, Documents',
                     hintStyle: TextStyle(
-                      color: HexColor('#757575'),
+                      color: ColorsManager.lightGrey,
                       fontSize: 15,
                     )),
               ),

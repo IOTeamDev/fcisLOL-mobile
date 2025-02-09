@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
+import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/features/profile/view/other_profile.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/subject/data/models/material_model.dart';
@@ -64,7 +65,7 @@ class GridTileWidget extends StatelessWidget {
                         '${video.title}',
                         style: TextStyle(
                           fontSize: AppQueries.screenWidth(context) / 18,
-                          color: Colors.white,
+                          color: ColorsManager.white,
                         ),
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
@@ -75,8 +76,9 @@ class GridTileWidget extends StatelessWidget {
                               child: Text(
                                 'Shared by: ${video.author!.authorName}',
                                 style: TextStyle(
-                                  fontSize: AppQueries.screenWidth(context) / 30,
-                                  color: Colors.white,
+                                  fontSize:
+                                      AppQueries.screenWidth(context) / 30,
+                                  color: ColorsManager.white,
                                 ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -94,22 +96,25 @@ class GridTileWidget extends StatelessWidget {
                                   Text(
                                     'Shared by:  ',
                                     style: TextStyle(
-                                      fontSize: AppQueries.screenWidth(context) / 30,
-                                      color: Colors.white,
+                                      fontSize:
+                                          AppQueries.screenWidth(context) / 30,
+                                      color: ColorsManager.white,
                                     ),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   CircleAvatar(
-                                    radius: AppQueries.screenWidth(context) / 25,
+                                    radius:
+                                        AppQueries.screenWidth(context) / 25,
                                     backgroundImage: NetworkImage(
                                         '${video.author!.authorPhoto}'),
                                   ),
                                   Text(
                                     '  ${video.author!.authorName}',
                                     style: TextStyle(
-                                      fontSize: AppQueries.screenWidth(context) / 30,
-                                      color: Colors.white,
+                                      fontSize:
+                                          AppQueries.screenWidth(context) / 30,
+                                      color: ColorsManager.white,
                                     ),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,

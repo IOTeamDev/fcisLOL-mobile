@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ColorsManager{
+abstract class ColorsManager {
   static const Color lightPrimary = Color(0xff4764c5);
   static const Color darkLightPrimary = Color(0xff374C92);
   static const Color darkPrimary = Color(0xff3b3b3b);
@@ -12,7 +12,8 @@ class ColorsManager{
   static const Color lightGrey = Color(0xff757575); //grey[600]
   static const Color lightGrey1 = Color(0xffbdbdbd); //grey[400]
   static const Color lightGrey2 = Color(0xfff5f5f5); //grey[100]
-  static const Color darkGrey = Color(0xff23252A); //background Color in dark theme
+  static const Color darkGrey =
+      Color(0xff23252A); //background Color in dark theme
   static const Color white = Color(0xffffffff); //white
   static const Color black = Color(0xff000000); //black
   static const Color cyan = Color(0xff00ffff); //blue
@@ -21,7 +22,7 @@ class ColorsManager{
   static const Color spruce = Color(0xff3B485E); //blue
   static const Color slateGrey = Color(0xff626380); // white
   static const Color blush = Color(0x0fff7d9f); // purple transparency = 6%
-  static const Color darkGrape = Color(0xff3B2531);// pink
+  static const Color darkGrape = Color(0xff3B2531); // pink
   static const Color beige = Color(0x0ff1f1e6); // white transparency = 6%
   static const Color darkCinnamon = Color(0xff6A312B); // brown
   static const Color stone = Color(0xff8BAFCE); // blue
@@ -41,6 +42,3 @@ class ColorsManager{
   static const Color bronze = Color(0xffCD7F32);
   static const Color silver = Color(0xffC0C0C0);
 }
-
-
-

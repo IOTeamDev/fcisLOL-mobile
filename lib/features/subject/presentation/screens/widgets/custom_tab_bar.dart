@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
+import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/tab_for_custom_tab_bar.dart';
 
@@ -17,12 +17,17 @@ class CustomTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TabBar(
-      indicatorColor: MainCubit.get(context).isDark ? Colors.white : HexColor('#4764C5'),
+      indicatorColor: MainCubit.get(context).isDark
+          ? ColorsManager.white
+          : ColorsManager.lightPrimary,
       indicatorWeight: 1.0,
-      labelColor: MainCubit.get(context).isDark ? Colors.white : HexColor('#4764C5'),
-      dividerColor: Color.fromRGBO(96, 96, 96, 1),
-      unselectedLabelColor:
-      MainCubit.get(context).isDark ? Color.fromRGBO(59, 59, 59, 1) : HexColor('#757575'),
+      labelColor: MainCubit.get(context).isDark
+          ? ColorsManager.white
+          : ColorsManager.lightPrimary,
+      dividerColor: ColorsManager.darkPrimary,
+      unselectedLabelColor: MainCubit.get(context).isDark
+          ? ColorsManager.darkPrimary
+          : ColorsManager.lightGrey,
       controller: tabController,
       tabs: [
         TabForCustomTabBar(

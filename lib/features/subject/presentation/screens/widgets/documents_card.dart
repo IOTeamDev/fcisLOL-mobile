@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
+import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/features/profile/view/other_profile.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/subject/data/models/material_model.dart';
@@ -23,8 +23,8 @@ class DocumentsCard extends StatelessWidget {
       },
       child: Card(
           color: MainCubit.get(context).isDark
-              ? const Color.fromRGBO(59, 59, 59, 1)
-              : HexColor('#4764C5'),
+              ? ColorsManager.darkPrimary
+              : ColorsManager.lightPrimary,
           child: Container(
             padding:
                 const EdgeInsets.only(left: 8, right: 8, top: 20, bottom: 8),
@@ -38,7 +38,7 @@ class DocumentsCard extends StatelessWidget {
                       child: Icon(
                         Icons.folder_copy_sharp,
                         size: AppQueries.screenWidth(context) / 10,
-                        color: Colors.white,
+                        color: ColorsManager.white,
                       ),
                     ),
                     Expanded(
@@ -48,7 +48,7 @@ class DocumentsCard extends StatelessWidget {
                         child: Text(
                           '${document.title}',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: ColorsManager.white,
                             fontSize: AppQueries.screenWidth(context) / 20,
                           ),
                           maxLines: 2,
@@ -69,7 +69,7 @@ class DocumentsCard extends StatelessWidget {
                           'Shared by: ${document.author!.authorName}',
                           style: TextStyle(
                             fontSize: AppQueries.screenWidth(context) / 30,
-                            color: Colors.white,
+                            color: ColorsManager.white,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -88,7 +88,7 @@ class DocumentsCard extends StatelessWidget {
                               'Shared by:  ',
                               style: TextStyle(
                                 fontSize: AppQueries.screenWidth(context) / 30,
-                                color: Colors.white,
+                                color: ColorsManager.white,
                               ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -102,7 +102,7 @@ class DocumentsCard extends StatelessWidget {
                               '  ${document.author!.authorName}',
                               style: TextStyle(
                                 fontSize: AppQueries.screenWidth(context) / 30,
-                                color: Colors.white,
+                                color: ColorsManager.white,
                               ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
