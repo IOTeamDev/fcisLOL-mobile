@@ -81,6 +81,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                           .replaceAll('_', " ")
                           .replaceAll("and", "&"),
                       style: TextStyle(
+                          fontWeight: FontWeight.bold,
                           color: MainCubit.get(context).isDark
                               ? ColorsManager.white
                               : ColorsManager.black,

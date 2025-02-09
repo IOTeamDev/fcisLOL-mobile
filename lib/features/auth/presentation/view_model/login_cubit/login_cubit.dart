@@ -19,9 +19,6 @@ class LoginCubit extends Cubit<LoginStates> {
     emit(TogglePassword());
   }
 
-  // RegisterModel?
-  //     registerModel; //maybe delete in the future if it seems that we don't need it
-
   LoginModel? modelLogin;
   void register({
     required String name,
@@ -53,7 +50,7 @@ class LoginCubit extends Cubit<LoginStates> {
     ).catchError((erro) => emit(RegisterFailed()));
   }
 
-  void login({required email, required password}) async {
+  void login({required String email, required String password}) async {
     emit(LoginLoading());
     DioHelp.postData(path: "login", data: {
       "email": email,

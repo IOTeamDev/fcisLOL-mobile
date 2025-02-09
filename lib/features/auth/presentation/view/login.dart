@@ -120,7 +120,7 @@ class LoginScreen extends StatelessWidget {
                             height: 5,
                           ),
                           defaultTextField(
-                              // textInputAction: TextInputAction.next,
+                              textInputAction: TextInputAction.next,
                               validateor: (value) {
                                 if (value!.isEmpty) {
                                   return "Field cannot be empty";
@@ -193,9 +193,8 @@ class LoginScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          // const SizedBox(height: 5,),
                           defaultTextField(
-                              onFieldSubmitted: (val) async {
+                              onFieldSubmitted: (val) {
                                 if (formKey.currentState!.validate()) {
                                   loginCubit.login(
                                       email: emailController.text.toLowerCase(),

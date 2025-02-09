@@ -12,16 +12,16 @@ Widget defaultTextField(
     bool wantMargin = true,
     bool isDark = false,
     TextInputAction? textInputAction,
-    onChanged,
-    suffFunc,
-    controller,
-    onFieldSubmitted,
+    void Function(String)? onChanged,
+    void Function()? suffFunc,
+    TextEditingController? controller,
+    void Function(String)? onFieldSubmitted,
     type}) {
   return Container(
     height: 45,
     margin: EdgeInsets.symmetric(vertical: wantMargin ? 5 : 0),
     child: TextFormField(
-      textInputAction: textInputAction ?? TextInputAction.none,
+      textInputAction: textInputAction,
       enabled: enabled,
       onChanged: onChanged,
       keyboardType: type,

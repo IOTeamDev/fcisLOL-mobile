@@ -14,7 +14,6 @@ class LoginSuccess extends LoginStates {
 
 class LoginFailed extends LoginStates {}
 
-
 class RegisterLoading extends LoginStates {}
 
 class RegisterSuccess extends LoginStates {
@@ -23,12 +22,8 @@ class RegisterSuccess extends LoginStates {
   RegisterSuccess({required this.token});
 }
 
-
-
-
 class RegisterFailed extends LoginStates {}
 
-class PickImageSuccess extends LoginStates{}
+class PickImageSuccess extends LoginStates {}
 
-class PickImageFailed extends LoginStates{}
-
+class PickImageFailed extends LoginStates {}

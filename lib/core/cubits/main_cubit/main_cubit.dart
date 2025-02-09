@@ -24,7 +24,6 @@ import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:lol/core/models/admin/requests_model.dart';
 import 'package:lol/core/models/admin/announcement_model.dart';
 import 'package:lol/features/subject/data/models/material_model.dart';
-import 'dart:developer' as dev;
 import '../../utils/resources/icons_manager.dart';
 import '../../utils/resources/values_manager.dart';
 
@@ -113,17 +112,22 @@ class MainCubit extends Cubit<MainCubitStates> {
     emit(UploadImageLoading());
     if (image == null) return;
 
-    showToastMessage(message: StringsManager.uploadImage, states: ToastStates.WARNING);
+    showToastMessage(
+        message: StringsManager.uploadImage, states: ToastStates.WARNING);
     final TaskSnapshot uploadTask;
     if (isUserProfile) {
       uploadTask = await FirebaseStorage.instance
           .ref()
-          .child(StringsManager.image.toLowerCase() + StringsManager.forwardSlash + Uri.file(image.path).pathSegments.last)
+          .child(StringsManager.image.toLowerCase() +
+              StringsManager.forwardSlash +
+              Uri.file(image.path).pathSegments.last)
           .putFile(image);
     } else {
       uploadTask = await FirebaseStorage.instance
           .ref()
-          .child(StringsManager.announcements.toLowerCase() + StringsManager.forwardSlash + Uri.file(image.path).pathSegments.last)
+          .child(StringsManager.announcements.toLowerCase() +
+              StringsManager.forwardSlash +
+              Uri.file(image.path).pathSegments.last)
           .putFile(image);
     }
 
@@ -160,13 +164,13 @@ class MainCubit extends Cubit<MainCubitStates> {
     emit(GetProfileLoading());
     otherProfile = null;
     DioHelp.getData(
-      path: USERS,
-      query: {KeysManager.id: id, KeysManager.haveMaterial: true}
-    )
-    .then((value) {
+        path: USERS,
+        query: {KeysManager.id: id, KeysManager.haveMaterial: true}).then(
+      (value) {
         otherProfile = ProfileModel.fromJson(value.data);
         emit(GetProfileSuccess());
-    },);
+      },
+    );
   }
 
   void logout(context) {
@@ -198,10 +202,8 @@ class MainCubit extends Cubit<MainCubitStates> {
       response.data.forEach((element) {
         requests!.add(MaterialModel.fromJson(element));
       });
-      dev.log('requests from semester $semester => ${requests!.length}');
       emit(GetRequestsSuccessState());
     } catch (e) {
-      dev.log('erro from getting request => ${e.toString()}');
       emit(GetRequestsErrorState());
     }
   }
