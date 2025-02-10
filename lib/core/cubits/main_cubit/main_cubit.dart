@@ -330,7 +330,7 @@ class MainCubit extends Cubit<MainCubitStates> {
         // exclude the admin
         leaderboardModel?.add(LeaderboardModel.fromJson(
             element)); //just to get the score of Admin
-        if (element[StringsManager.role] != StringsManager.ADMIN) {
+        if (element[StringsManager.role] != KeysManager.admin) {
           notAdminLeaderboardModel?.add(LeaderboardModel.fromJson(element));
           //print('leaderboard size ${notAdminLeaderboardModel!.first}');
         }

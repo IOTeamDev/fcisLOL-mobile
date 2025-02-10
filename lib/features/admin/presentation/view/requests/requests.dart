@@ -45,7 +45,7 @@ class _RequestsState extends State<Requests> {
             ),
             centerTitle: true,
             actions: [
-              IconButton(onPressed: () => _onRefresh(context), icon: Icon(IconsManager.refreshIcon))
+              IconButton(onPressed: () => onRefresh(context), icon: Icon(IconsManager.refreshIcon))
             ],
           ),
           body: Padding(
@@ -73,7 +73,7 @@ class _RequestsState extends State<Requests> {
                   },
                   builder: (context) => Expanded(
                     child: RefreshIndicator(
-                      onRefresh: () => _onRefresh(context),
+                      onRefresh: () => onRefresh(context),
                       child: ListView.separated(
                         physics: const AlwaysScrollableScrollPhysics(),
                         itemBuilder: (context, index) => _requestedMaterialBuilder(
@@ -104,8 +104,6 @@ class _RequestsState extends State<Requests> {
     );
   }
 
-  _onRefresh(context) => MainCubit.get(context).getRequests(semester: MainCubit.get(context).profileModel!.semester);
-
   Widget _requestedMaterialBuilder(index, context,
     {title,
     link,
@@ -132,7 +130,7 @@ class _RequestsState extends State<Requests> {
             )
           )
         );
-        if (refresh == StringsManager.refresh) _onRefresh(context);
+        if (refresh == StringsManager.refresh) onRefresh(context);
       },
       child: Container(
         decoration: BoxDecoration(

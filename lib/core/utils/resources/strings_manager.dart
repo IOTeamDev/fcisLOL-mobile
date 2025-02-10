@@ -17,7 +17,6 @@ class StringsManager{
   static const String noContent = 'No content';
   static const String deadLine = 'DeadLine';
   static const String dueDate = 'due_date';
-  static const String ADMIN = 'ADMIN';
   static const String role = 'role';
   static const String one = 'One';
   static const String oneNum = '1';
@@ -32,12 +31,16 @@ class StringsManager{
   static const String thisLinkIsCorrupted = 'This link is Corrupted';
   static const String error = 'Error';
   static const String announcements = 'Announcements';
+  static const String announcementDeleted = 'Announcement Deleted';
+  static const String announcementAdded = 'Announcement Added Successfully';
+  static const String errorOccurred = 'An Error Occurred';
   static const String requests = 'Requests';
   static const String description = 'Description';
   static const String endDate = '2027-12-30';
   static const String dateFormat = 'dd/MM/yyyy';
   static const String emptyFieldWarning = 'This field must not be Empty';
   static const String type = 'Type';
+  static const String announcementType = 'Announcement Type';
   static const String imagePickingWarning = 'Be careful when You choose image because it cna\'t be changed';
   static const String cancel = 'Cancel';
   static const String submit = 'Submit';
@@ -83,6 +86,12 @@ class StringsManager{
   static const String accept = 'Accept';
   static const String reject = 'Reject';
   static const String delete = 'Delete';
+  static const String whoAreWe = 'Who Are We';
+  static const String selectAll = 'Select All';
+  static const String copy = 'Copy';
+  static const String requestRejected = 'Request Rejected!!!!';
+  static const String requestAccepted = 'Request Accepted Successfully!!!!';
+  static const String requestDetails = 'Request Details';
 }
 
 class KeysManager{
@@ -98,4 +107,8 @@ class KeysManager{
   static const String finishedOnBoard = 'FinishedOnBoard';
   static const String admin = 'ADMIN';
   static const String isDarkMode = 'isDarkMode';
+  static const String applicationJson = 'application/json';
+  static const String authorization = 'Authorization';
+  static const String contentType = 'Content-Type';
+  static const String lang = 'lang';
 }

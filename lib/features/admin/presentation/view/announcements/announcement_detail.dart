@@ -85,9 +85,7 @@ class _AnnouncementDetailState extends State<AnnouncementDetail> {
                       ),
                       textDirection: isArabicLanguage(context) ? TextDirection.rtl : TextDirection.ltr,
                     ),
-                    SizedBox(
-                      height: AppSizesDouble.s5,
-                    ),
+                    SizedBox(height: AppSizesDouble.s5,),
                     divider(),
                     const SizedBox(
                       height: AppSizesDouble.s20,
@@ -130,16 +128,15 @@ class _AnnouncementDetailState extends State<AnnouncementDetail> {
                                               if (selectedText.isNotEmpty) {
                                                 Clipboard.setData(ClipboardData(text: selectedText));
                                               }
-                                              //Navigator.of(context).pop(); // Close context menu
                                             },
-                                            child: const Text('Copy'),
+                                            child: const Text(StringsManager.copy),
                                           ),
                                           TextButton(
                                             onPressed: () {
                                               // Select all text
                                               state.selectAll(SelectionChangedCause.tap);
                                             },
-                                            child: const Text('Select All'),
+                                            child: const Text(StringsManager.selectAll),
                                           ),
                                         ],
                                       );
@@ -172,10 +169,6 @@ class _AnnouncementDetailState extends State<AnnouncementDetail> {
         );
       },
     );
-  }
-
-  bool isArabicLanguage(BuildContext context) {
-    return Localizations.localeOf(context).languageCode == 'ar';
   }
 
 }

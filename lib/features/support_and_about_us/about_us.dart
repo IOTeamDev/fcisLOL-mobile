@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:lol/core/utils/resources/colors_manager.dart';
+import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/main.dart';
 import 'package:lol/core/utils/components.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -12,147 +14,134 @@ class AboutUs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text('About Us', style: Theme.of(context).textTheme.displayMedium,),
+        centerTitle: true,
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Container(
-            margin: EdgeInsetsDirectional.only(top: AppQueries.screenHeight(context) / 30),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              // About Us Section
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    backButton(context),
-                    Center(
-                      child: Text(
-                        'About Us',
-                        style: TextStyle(
-                          fontSize: 30,
+                    Text(
+                      StringsManager.whoAreWe,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                    SizedBox(height: 10),
+                    divider(
+                      color: ColorsManager.grey4
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 15),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 15),
+                padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: ColorsManager.grey1.withValues(alpha: 0.2),
+                  border: Border.all(color: ColorsManager.lightGrey1.withValues(alpha: 0.2))
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'UniNotes',
+                      style: GoogleFonts.abhayaLibre(
+                        letterSpacing: 1.9,
+                        fontSize: AppQueries.screenWidth(context) / 8,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      '“All In One”',
+                      style: TextStyle(
+                        fontSize: AppQueries.screenWidth(context) / 15,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey[300],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0,
+                        vertical: 10,
+                      ),
+                      child: RichText(
+                        text: TextSpan(
+                          text: 'UniNotes',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: AppQueries.screenWidth(context) / 18,
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text:
+                                  ' is an interactive platform where study materials are collected, allowing students to contribute content for all academic years. Admins review and approve submissions to ensure quality.',
+                              style: TextStyle(
+                                letterSpacing: 1.5,
+                                fontSize: AppQueries.screenWidth(context) / 20,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ],
                         ),
-                        textAlign: TextAlign.center,
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 25),
-                // About Us Section
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Who Are We',
-                        style: TextStyle(fontSize: width / 13),
-                      ),
-                      SizedBox(height: 20),
-                      Divider(color: Colors.grey),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 15),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 15),
-                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: HexColor('#757575'),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        'UniNotes',
-                        style: GoogleFonts.abhayaLibre(
-                          letterSpacing: 1.9,
-                          fontSize: width / 8,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Text(
-                        '“All In One”',
-                        style: TextStyle(
-                          fontSize: width / 15,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey[300],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10.0,
-                          vertical: 10,
-                        ),
-                        child: RichText(
-                          text: TextSpan(
-                            text: 'UniNotes',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: width / 18,
-                            ),
-                            children: <TextSpan>[
-                              TextSpan(
-                                text:
-                                    ' is an interactive platform where study materials are collected, allowing students to contribute content for all academic years. Admins review and approve submissions to ensure quality.',
-                                style: TextStyle(
-                                  letterSpacing: 1.5,
-                                  fontSize: width / 20,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: height / 25),
-
-                // Meet the Team Section
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Meet The Team',
-                        style: TextStyle(fontSize: width / 13),
-                      ),
-                      SizedBox(height: 20),
-                      Divider(color: Colors.grey),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: AppQueries.screenHeight(context),
-                  child: GridView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 10.0,
-                      mainAxisSpacing: 10.0,
-                      childAspectRatio: 0.8,
+              ),
+              SizedBox(height: AppQueries.screenHeight(context) / 25),
+          
+              // Meet the Team Section
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Meet The Team',
+                      style: TextStyle(fontSize: AppQueries.screenWidth(context) / 13),
                     ),
-                    itemCount: teamMembers.length,
-                    itemBuilder: (context, index) {
-                      final member = teamMembers[index];
-                      return _buildTeamMember(
-                        member['imagePath']!,
-                        member['name']!,
-                        member['role']!,
-                        member['contactUrl']!,
-                      );
-                    },
-                  ),
+                    SizedBox(height: 20),
+                    Divider(color: Colors.grey),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              SizedBox(
+                height: AppQueries.screenHeight(context),
+                child: GridView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10.0,
+                    mainAxisSpacing: 10.0,
+                    childAspectRatio: 0.8,
+                  ),
+                  itemCount: teamMembers.length,
+                  itemBuilder: (context, index) {
+                    final member = teamMembers[index];
+                    return _buildTeamMember(
+                      member['imagePath']!,
+                      member['name']!,
+                      member['role']!,
+                      member['contactUrl']!,
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
         ),
       ),
