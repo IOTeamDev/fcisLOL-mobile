@@ -21,7 +21,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'webview_screen.dart';
 
-onRefresh(context) => MainCubit.get(context).getRequests(semester: MainCubit.get(context).profileModel!.semester);
+onRefresh(Function<T>() refreshMethod) => refreshMethod;
 
 bool isArabicLanguage(BuildContext context) {
   return Localizations.localeOf(context).languageCode == 'ar';

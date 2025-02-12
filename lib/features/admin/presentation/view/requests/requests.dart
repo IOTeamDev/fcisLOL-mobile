@@ -45,7 +45,7 @@ class _RequestsState extends State<Requests> {
             ),
             centerTitle: true,
             actions: [
-              IconButton(onPressed: () => onRefresh(context), icon: Icon(IconsManager.refreshIcon))
+              IconButton(onPressed: () => onRefresh(MainCubit.get(context).getRequests(semester: MainCubit.get(context).profileModel!.semester) as Function<T> ()), icon: Icon(IconsManager.refreshIcon))
             ],
           ),
           body: Padding(
@@ -73,7 +73,7 @@ class _RequestsState extends State<Requests> {
                   },
                   builder: (context) => Expanded(
                     child: RefreshIndicator(
-                      onRefresh: () => onRefresh(context),
+                      onRefresh: () => onRefresh(MainCubit.get(context).getRequests(semester: MainCubit.get(context).profileModel!.semester) as Function<T> ()),
                       child: ListView.separated(
                         physics: const AlwaysScrollableScrollPhysics(),
                         itemBuilder: (context, index) => _requestedMaterialBuilder(
