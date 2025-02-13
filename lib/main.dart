@@ -139,16 +139,17 @@ class App extends StatelessWidget {
   const App({super.key, required this.startPage});
   @override
   Widget build(BuildContext context) {
+    print('--------------------$startPage');
     return MultiBlocProvider(
       providers: [
         BlocProvider(
             create: (BuildContext context) => MainCubit()..getProfileInfo()),
         BlocProvider(
             create: (BuildContext context) => AdminCubit()
-              ..getFcmTokens()
               ..getAnnouncements(MainCubit.get(context).profileModel != null
                   ? MainCubit.get(context).profileModel!.semester
-                  : AppConstants.SelectedSemester!)),
+                  : AppConstants.SelectedSemester!)
+              ..getFcmTokens()),
       ],
       child: MaterialApp(
         home: startPage,
