@@ -1,16 +1,15 @@
 import 'package:dio/dio.dart';
+import 'package:lol/core/utils/resources/strings_manager.dart';
 
 class DioHelp {
-  // static var dio = Dio();
   static Dio? dio;
 
   static initial() {
     dio = Dio(
       BaseOptions(
-          baseUrl: "https://fcislol.netlify.app/api/",
-          receiveDataWhenStatusError: true,
-          // headers: {"Content-Type": "application/json"}
-          ),
+        baseUrl: "https://fcislol.netlify.app/api/",
+        receiveDataWhenStatusError: true,
+        ),
     );
   }
 
@@ -20,10 +19,8 @@ class DioHelp {
     lang = 'en',
     token,
   }) async {
-    // if (dio == null) await initial();
-    //async and await
 
-    dio!.options.headers = {'lang': lang, 'Authorization': token??"",'Content-Type': "application/json"};
+    dio!.options.headers = {KeysManager.lang: lang, KeysManager.authorization: token??"",KeysManager.contentType: KeysManager.applicationJson};
     return await dio!.get(path, queryParameters:query );
   }
   static Future<Response> putData({
@@ -34,10 +31,8 @@ class DioHelp {
     required Map<String, dynamic> data
 
   }) async {
-    // if (dio == null) await initial();
-    //async and await
 
-    dio!.options.headers = {'lang': lang, 'Authorization': token??"",'Content-Type': 'application/json'};
+    dio!.options.headers = {KeysManager.lang: lang, KeysManager.authorization: token??"",KeysManager.contentType:KeysManager.applicationJson};
     return await dio!.put(path, queryParameters:query ,data: data);
   }
 
@@ -51,7 +46,7 @@ class DioHelp {
     // if (dio == null) await initial();
     //async and await
 
-    dio!.options.headers = {'lang': lang, 'Authorization': token,'Content-Type': "application/json"};
+    dio!.options.headers = {KeysManager.lang: lang, KeysManager.authorization: token,KeysManager.contentType: KeysManager.applicationJson};
     return await dio!.post(path, data: data);
 
     

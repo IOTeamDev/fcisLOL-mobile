@@ -147,11 +147,12 @@ class Home extends StatelessWidget {
                       child: CircularProgressIndicator(),
                     )
                   : RefreshIndicator(
-                      onRefresh: () => _onRefresh(
-                          context,
-                          profile != null
-                              ? profile.semester
-                              : AppConstants.SelectedSemester),
+                      onRefresh: () => onRefresh(
+                        () async {
+                          AdminCubit.get(context).getAnnouncements(profile != null ? profile.semester : AppConstants.SelectedSemester!);
+                          return Future.value();
+                        } as Function<T>()
+                      ),
                       child: SingleChildScrollView(
                         child: SafeArea(
                           child: Padding(
@@ -450,10 +451,6 @@ class Home extends StatelessWidget {
   }
 }
 
-Future<void> _onRefresh(context, semester) async {
-  AdminCubit.get(context).getAnnouncements(semester);
-  return Future.value();
-}
 
 Widget _customDrawer(context, semester) {
   ProfileModel? profileModel;

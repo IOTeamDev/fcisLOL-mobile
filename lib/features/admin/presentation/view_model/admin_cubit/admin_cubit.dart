@@ -82,35 +82,37 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     "A Little Surprise Just for You! 🎁",
     "Get the Scoop! Fresh News Inside 📢",
   ];
-  void addAnnouncement(
-      {required title,
-      description,
-      dueDate,
-      required type,
-      image,
-      required currentSemester}) {
+  void addAnnouncement({
+    required title,
+    description,
+    dueDate,
+    required type,
+    image,
+    required currentSemester
+  }) {
     Random random = Random();
-
     // Get a random index
     int randomIndex = random.nextInt(notificationsTitles.length);
+
     emit(AdminSaveAnnouncementLoadingState());
 
     DioHelp.postData(
-            path: ANNOUNCEMENTS,
-            data: {
-              'title': title,
-              'content': description ?? '',
-              'due_date': dueDate ?? '',
-              'type': type,
-              'semester': currentSemester,
-              'image': image
-            },
-            token: AppConstants.TOKEN)
-        .then((value) {
+      path: ANNOUNCEMENTS,
+      data: {
+        'title': title,
+        'content': description ?? '',
+        'due_date': dueDate ?? '',
+        'type': type,
+        'semester': currentSemester,
+        'image': image
+      },
+      token: AppConstants.TOKEN
+    ).then((value) {
       sendNotificationToUsers(
-          semester: currentSemester,
-          title: notificationsTitles[randomIndex],
-          body: title); // LOL
+        semester: currentSemester,
+        title: notificationsTitles[randomIndex],
+        body: title
+      ); // LOL
       emit(AdminSaveAnnouncementSuccessState());
       getAnnouncements(currentSemester);
     });
@@ -245,8 +247,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
       print(fcmTokens.length); // Print the number of fetched tokens
 
       // Filter users based on semester
-      List<FcmToken> filteredUsers =
-          fcmTokens.where((user) => user.semester == semester).toList();
+      List<FcmToken> filteredUsers = fcmTokens.where((user) => user.semester == semester).toList();
 
       if (filteredUsers.isEmpty) {
         print('No users found for semester: $semester');
@@ -323,8 +324,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     emit(UploadImageLoadingState());
     if (image == null) return;
 
-    showToastMessage(
-        message: 'Uploading your photo', states: ToastStates.WARNING);
+    showToastMessage(message: 'Uploading your photo', states: ToastStates.WARNING);
     final uploadTask = await FirebaseStorage.instance
         .ref()
         .child("announcements/${Uri.file(image.path).pathSegments.last}")

@@ -205,8 +205,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         ),
                                         ElevatedButton(
                                           onPressed: () {
-                                            String email =
-                                                emailController.text.trim();
+                                            String email = emailController.text.trim();
                                             forgetPassword(email: email);
                                             Navigator.of(context).pop();
                                           },

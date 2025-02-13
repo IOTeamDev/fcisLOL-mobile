@@ -10,7 +10,9 @@ import 'package:lol/features/subject/presentation/screens/widgets/build_floating
 import 'package:lol/features/subject/presentation/screens/widgets/custom_tab_bar.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/custom_tab_bar_view.dart';
 import 'package:provider/provider.dart';
-
+import '../../../../../core/utils/resources/colors_manager.dart';
+import '../../../../../core/utils/resources/strings_manager.dart';
+import '../../../../../core/utils/resources/values_manager.dart';
 import '../../../../core/utils/resources/constants_manager.dart';
 
 class SubjectDetails extends StatefulWidget {
@@ -32,7 +34,6 @@ class _MaterialDetailsState extends State<SubjectDetails>
   @override
   void initState() {
     _tabControllerOfShowingContent = TabController(length: 2, vsync: this);
-
     GetMaterialCubit.get(context).getMaterials(subject: widget.subjectName);
     MainCubit.get(context).getProfileInfo();
     super.initState();
@@ -41,7 +42,6 @@ class _MaterialDetailsState extends State<SubjectDetails>
   @override
   void dispose() {
     super.dispose();
-
     _tabControllerOfShowingContent.dispose();
   }
 
@@ -55,49 +55,25 @@ class _MaterialDetailsState extends State<SubjectDetails>
         getMaterialCubit: cubit,
       ),
       key: scaffoldKey,
+      appBar: AppBar(
+          title: Text(
+        widget.subjectName
+            .replaceAll(StringsManager.underScore, StringsManager.space)
+            .replaceAll(StringsManager.andWord, StringsManager.andSymbol),
+        style: Theme.of(context).textTheme.displayMedium!.copyWith(
+              fontSize: AppQueries.screenWidth(context) / AppSizes.s15,
+            ),
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+      )),
       body: Container(
         margin: EdgeInsetsDirectional.only(
-            top: AppQueries.screenHeight(context) / 15),
+            top: AppQueries.screenHeight(context) / AppSizes.s15),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    icon: Icon(
-                      Icons.arrow_back,
-                      color: Provider.of<ThemeProvider>(context).isDark
-                          ? ColorsManager.white
-                          : ColorsManager.black,
-                      size: 30,
-                    )),
-                Expanded(
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: Text(
-                      widget.subjectName
-                          .replaceAll('_', " ")
-                          .replaceAll("and", "&"),
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Provider.of<ThemeProvider>(context).isDark
-                              ? ColorsManager.white
-                              : ColorsManager.black,
-                          fontSize: AppQueries.screenWidth(context) / 15),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ),
-              ],
-            ),
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
+              padding: EdgeInsets.symmetric(
+                  horizontal: AppPaddings.p16, vertical: AppPaddings.p10),
               child: TextField(
                 onChanged: (query) {
                   cubit.runFilter(query: query);

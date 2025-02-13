@@ -24,35 +24,9 @@ class FeedbackScreen extends StatelessWidget {
       resizeToAvoidBottomInset: true,
       key: scaffoldKey,
       body: SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsetsDirectional.only(
-              top: AppQueries.screenHeight(context) / 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Stack(
-                children: [
-                  Positioned(
-                    left: 0,
-                    child: backButton(context),
-                  ),
-                  Center(
-                    child: Text(
-                      'Feedback',
-                      style: TextStyle(
-                        fontSize: AppQueries.screenWidth(context) / 10,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              _buildFeedBackForm(context)
-            ],
-          ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [_buildFeedBackForm(context)],
         ),
       ),
     );

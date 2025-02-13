@@ -21,95 +21,17 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'webview_screen.dart';
 
-Widget adminTopTitleWithDrawerButton(
-    {scaffoldKey,
-    required String title,
-    double size = 40,
-    required bool hasDrawer,
-    double bottomPadding = 15}) {
-  return Padding(
-    padding: EdgeInsetsDirectional.only(bottom: bottomPadding),
-    child: Row(
-      children: [
-        Expanded(
-          flex: 15,
-          child: Padding(
-            padding: const EdgeInsetsDirectional.symmetric(horizontal: 20.0),
-            child: Text(
-              title,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(color: Colors.white, fontSize: size),
-              textAlign: TextAlign.start,
-            ),
-          ),
-        ),
-        const Spacer(),
-        if (hasDrawer)
-          ElevatedButton(
-            onPressed: () {
-              scaffoldKey.currentState?.openDrawer();
-            },
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsetsDirectional.symmetric(
-                  horizontal: 5, vertical: 5),
-              backgroundColor: Colors.pinkAccent,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(50), // Create semi-circle effect
-                  topRight: Radius.circular(0), // Create semi-circle effect
-                  bottomLeft: Radius.circular(50),
-                  bottomRight: Radius.circular(0),
-                ),
-              ),
-            ),
-            child: const Icon(
-              Icons.menu,
-              color: Colors.white,
-              size: 40,
-            ),
-          ),
-      ],
-    ),
-  );
-}
+onRefresh(Function<T>() refreshMethod) => refreshMethod;
 
-RefreshIndicator swipeRefreshIndicator(
-    {dynamic child,
-    required Future<void> Function() onRefresh,
-    Color indicatorColor = ColorsManager.white}) {
-  return RefreshIndicator(
-    child: child,
-    onRefresh: onRefresh,
-    color: indicatorColor,
-  );
-}
-
-Widget backButton(context, {double bottomPadding = 8}) {
-  return Padding(
-    padding: EdgeInsets.only(bottom: bottomPadding),
-    child: Row(
-      children: [
-        MaterialButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          padding: EdgeInsets.zero,
-          child: const Icon(
-            Icons.arrow_back,
-            size: 30,
-          ),
-        ),
-      ],
-    ),
-  );
+bool isArabicLanguage(BuildContext context) {
+  return Localizations.localeOf(context).languageCode == 'ar';
 }
 
 Widget divider({
   Color color = ColorsManager.white,
   double height = AppSizesDouble.s1,
   double thickness = AppSizesDouble.s1,
-}) =>
-    Divider(
+}) => Divider(
       color: color,
       height: height,
       thickness: thickness,
@@ -123,8 +45,7 @@ void showToastMessage({
   gravity = ToastGravity.BOTTOM,
   int lengthForIOSAndWeb = 5,
   toastLength = Toast.LENGTH_SHORT,
-}) =>
-    Fluttertoast.showToast(
+}) => Fluttertoast.showToast(
       msg: message,
       toastLength: toastLength,
       gravity: gravity,

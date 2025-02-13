@@ -48,7 +48,10 @@ class _RequestsState extends State<Requests> {
             centerTitle: true,
             actions: [
               IconButton(
-                  onPressed: () => _onRefresh(context),
+                  onPressed: () => onRefresh(MainCubit.get(context).getRequests(
+                      semester: MainCubit.get(context)
+                          .profileModel!
+                          .semester) as Function<T>()),
                   icon: Icon(IconsManager.refreshIcon))
             ],
           ),
@@ -78,7 +81,11 @@ class _RequestsState extends State<Requests> {
                   },
                   builder: (context) => Expanded(
                     child: RefreshIndicator(
-                      onRefresh: () => _onRefresh(context),
+                      onRefresh: () => onRefresh(MainCubit.get(context)
+                          .getRequests(
+                              semester: MainCubit.get(context)
+                                  .profileModel!
+                                  .semester) as Function<T>()),
                       child: ListView.separated(
                         physics: const AlwaysScrollableScrollPhysics(),
                         itemBuilder: (context, index) =>
@@ -108,9 +115,6 @@ class _RequestsState extends State<Requests> {
     );
   }
 
-  _onRefresh(context) => MainCubit.get(context)
-      .getRequests(semester: MainCubit.get(context).profileModel!.semester);
-
   Widget _requestedMaterialBuilder(index, context,
       {title,
       link,
@@ -134,7 +138,7 @@ class _RequestsState extends State<Requests> {
                   pfp: pfp,
                   semester: semester,
                 )));
-        if (refresh == StringsManager.refresh) _onRefresh(context);
+        if (refresh == StringsManager.refresh) onRefresh(context);
       },
       child: Container(
         decoration: BoxDecoration(
