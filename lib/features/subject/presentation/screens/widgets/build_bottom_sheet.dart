@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
+import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/subject/data/models/author_model.dart';
 import 'package:lol/features/subject/data/models/material_model.dart';
@@ -12,6 +13,7 @@ import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_m
 import 'package:lol/features/subject/presentation/screens/widgets/build_text_form_field.dart';
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/resources/constants_manager.dart';
+import 'package:provider/provider.dart';
 
 class BuildBottomSheet extends StatefulWidget {
   const BuildBottomSheet(
@@ -66,7 +68,7 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
       },
       child: Container(
           decoration: BoxDecoration(
-            color: MainCubit.get(context).isDark
+            color: Provider.of<ThemeProvider>(context).isDark
                 ? ColorsManager.darkPrimary
                 : ColorsManager.lightGrey,
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -127,7 +129,7 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
                             ),
                           ),
                           PopupMenuButton(
-                              color: MainCubit.get(context).isDark
+                              color: Provider.of<ThemeProvider>(context).isDark
                                   ? ColorsManager.darkPrimary
                                   : Colors.white,
                               onSelected: (type) {

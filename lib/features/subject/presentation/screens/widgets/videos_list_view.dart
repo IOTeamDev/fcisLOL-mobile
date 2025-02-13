@@ -2,9 +2,11 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
+import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit_cubit.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/grid_tile_widget.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../core/cubits/main_cubit/main_cubit.dart';
 
@@ -23,7 +25,7 @@ class VideosListView extends StatelessWidget {
         if (state is GetMaterialLoading) {
           return Center(
             child: CircularProgressIndicator(
-              color: MainCubit.get(context).isDark
+              color: Provider.of<ThemeProvider>(context).isDark
                   ? ColorsManager.white
                   : ColorsManager.black,
             ),
@@ -38,7 +40,7 @@ class VideosListView extends StatelessWidget {
                   margin: EdgeInsets.only(bottom: 16.0),
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: MainCubit.get(context).isDark
+                    color: Provider.of<ThemeProvider>(context).isDark
                         ? ColorsManager.darkPrimary
                         : ColorsManager.lightPrimary,
                     borderRadius: BorderRadius.circular(15),
@@ -53,7 +55,7 @@ class VideosListView extends StatelessWidget {
             child: Text(
               'Oops! Something went wrong',
               style: TextStyle(
-                  color: MainCubit.get(context).isDark
+                  color: Provider.of<ThemeProvider>(context).isDark
                       ? ColorsManager.white
                       : ColorsManager.black),
             ),

@@ -8,6 +8,7 @@ import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/core/utils/resources/fonts_manager.dart';
 import 'package:lol/core/utils/resources/icons_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
+import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit_states.dart';
@@ -16,6 +17,7 @@ import 'package:lol/features/admin/presentation/view/requests/requests.dart';
 
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/navigation.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../core/utils/resources/colors_manager.dart';
 import '../../../../core/utils/resources/constants_manager.dart';
@@ -57,36 +59,37 @@ class AdminPanel extends StatelessWidget {
                 children: [
                   // Buttons
                   ConditionalBuilder(
-                    condition: MainCubit.get(context).profileModel != null && state is! GetProfileLoading,
-                    fallback: (context) => const Center(child: CircularProgressIndicator()),
+                    condition: MainCubit.get(context).profileModel != null &&
+                        state is! GetProfileLoading,
+                    fallback: (context) =>
+                        const Center(child: CircularProgressIndicator()),
                     builder: (context) => Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         buttonBuilder(
-                          context,
-                          mainCubit,
-                          ColorsManager.white,
-                          ColorsManager.lightGrey1,
-                          ColorsManager.darkPrimary,
-                          ColorsManager.lightGrey,
-                          IconsManager.campaignIcon,
-                          StringsManager.announcements,
-                          AddAnnouncement(semester: mainCubit.profileModel!.semester)
-                        ),
+                            context,
+                            mainCubit,
+                            ColorsManager.white,
+                            ColorsManager.lightGrey1,
+                            ColorsManager.darkPrimary,
+                            ColorsManager.lightGrey,
+                            IconsManager.campaignIcon,
+                            StringsManager.announcements,
+                            AddAnnouncement(
+                                semester: mainCubit.profileModel!.semester)),
                         SizedBox(
                           height: AppSizesDouble.s30,
                         ),
                         buttonBuilder(
-                          context,
-                          mainCubit,
-                          ColorsManager.white,
-                          ColorsManager.lightGrey1,
-                          ColorsManager.lightPrimary,
-                          ColorsManager.lightPrimary,
-                          IconsManager.emailIcon,
-                          StringsManager.requests,
-                          Requests()
-                        ),
+                            context,
+                            mainCubit,
+                            ColorsManager.white,
+                            ColorsManager.lightGrey1,
+                            ColorsManager.lightPrimary,
+                            ColorsManager.lightPrimary,
+                            IconsManager.emailIcon,
+                            StringsManager.requests,
+                            Requests()),
                       ],
                     ),
                   ),
@@ -117,7 +120,7 @@ class AdminPanel extends StatelessWidget {
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(AppSizesDouble.s40),
               topRight: Radius.circular(AppSizesDouble.s40)),
-          color: MainCubit.get(context).isDark
+          color: Provider.of<ThemeProvider>(context).isDark
               ? containerDarkThemeColor
               : containerLightThemeColor,
         ),
@@ -129,7 +132,7 @@ class AdminPanel extends StatelessWidget {
           }
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: MainCubit.get(context).isDark
+          backgroundColor: Provider.of<ThemeProvider>(context).isDark
               ? buttonDarkThemeColor
               : buttonLightThemeColor,
           padding: EdgeInsets.zero, // Remove default padding

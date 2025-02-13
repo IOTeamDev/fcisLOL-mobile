@@ -4,11 +4,11 @@ import 'package:lol/features/admin/presentation/view/admin_panal.dart';
 import 'package:lol/features/admin/presentation/view/announcements/announcements_list.dart';
 import 'package:lol/features/admin/presentation/view/requests/requests.dart';
 import 'package:lol/features/auth/presentation/view/login.dart';
-import 'package:lol/features/auth/presentation/view/onboarding.dart';
+import 'package:lol/features/on_boarding/presentation/view/onboarding.dart';
 import 'package:lol/features/auth/presentation/view/register.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
 
-class Routes{
+class Routes {
   static const String splashRoute = '/';
   static const String onBoardingRoute = '/onBoarding';
   static const String loginRoute = '/login';
@@ -20,10 +20,9 @@ class Routes{
   static const String announcementsListRoute = '/announcementsList';
 }
 
-class RouteGenerator{
-  static Route<dynamic> getRoute(RouteSettings settings, {semester})
-  {
-    switch(settings.name){
+class RouteGenerator {
+  static Route<dynamic> getRoute(RouteSettings settings, {semester}) {
+    switch (settings.name) {
       case Routes.onBoardingRoute:
         return MaterialPageRoute(builder: (_) => const OnBoarding());
       case Routes.loginRoute:
@@ -37,7 +36,8 @@ class RouteGenerator{
       case Routes.adminRequestsRoute:
         return MaterialPageRoute(builder: (_) => Requests());
       case Routes.announcementsListRoute:
-        return MaterialPageRoute(builder: (_) => AnnouncementsList(semester: semester));
+        return MaterialPageRoute(
+            builder: (_) => AnnouncementsList(semester: semester));
       default:
         return MaterialPageRoute(builder: (_) => const ErrorScreen());
     }

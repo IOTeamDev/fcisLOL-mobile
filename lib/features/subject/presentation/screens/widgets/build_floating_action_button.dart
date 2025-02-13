@@ -5,6 +5,7 @@ import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
+import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
 import 'package:lol/features/auth/presentation/view/login.dart';
@@ -110,7 +111,7 @@ class _BuildFloatingActionButtonState extends State<BuildFloatingActionButton> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50),
         ),
-        backgroundColor: MainCubit.get(context).isDark
+        backgroundColor: Provider.of<ThemeProvider>(context).isDark
             ? ColorsManager.lightPrimary
             : ColorsManager.lightGrey,
         child: Icon(

@@ -7,8 +7,10 @@ import 'package:linkify/linkify.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
+import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit_states.dart';
 import 'package:lol/core/utils/components.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../core/cubits/main_cubit/main_cubit.dart';
 import '../../../../../core/utils/resources/constants_manager.dart';
@@ -42,12 +44,15 @@ class RequestsDetails extends StatelessWidget {
     return BlocConsumer<MainCubit, MainCubitStates>(
       listener: (context, state) {
         if (state is DeleteMaterialSuccessState) {
-          showToastMessage(message: 'Request Rejected!!!!', states: ToastStates.WARNING);
+          showToastMessage(
+              message: 'Request Rejected!!!!', states: ToastStates.WARNING);
           Navigator.pop(context, 'refresh');
         }
 
         if (state is AcceptRequestSuccessState) {
-          showToastMessage(message: 'Request Accepted Successfully!!!!', states: ToastStates.SUCCESS);
+          showToastMessage(
+              message: 'Request Accepted Successfully!!!!',
+              states: ToastStates.SUCCESS);
           Navigator.pop(context, 'refresh');
         }
       },
@@ -56,23 +61,28 @@ class RequestsDetails extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: Text('Request Details', style: Theme.of(context).textTheme.displayMedium,),
+            title: Text(
+              'Request Details',
+              style: Theme.of(context).textTheme.displayMedium,
+            ),
           ),
           body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ConstrainedBox(
-                constraints: BoxConstraints(maxHeight: AppQueries.screenHeight(context) / 1.4),
+                constraints: BoxConstraints(
+                    maxHeight: AppQueries.screenHeight(context) / 1.4),
                 child: Container(
-                  margin: const EdgeInsetsDirectional.symmetric(horizontal: 15, vertical: 20),
+                  margin: const EdgeInsetsDirectional.symmetric(
+                      horizontal: 15, vertical: 20),
                   padding: const EdgeInsets.all(15),
                   width: double.infinity,
                   height: AppQueries.screenHeight(context) / 1.4,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: MainCubit.get(context).isDark
-                      ? ColorsManager.darkPrimary
-                      : ColorsManager.lightGrey,
+                    color: Provider.of<ThemeProvider>(context).isDark
+                        ? ColorsManager.darkPrimary
+                        : ColorsManager.lightGrey,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,9 +121,8 @@ class RequestsDetails extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                               ),
                               Padding(
-                                padding:
-                                    const EdgeInsetsDirectional.symmetric(
-                                        vertical: 5),
+                                padding: const EdgeInsetsDirectional.symmetric(
+                                    vertical: 5),
                                 child: Linkify(
                                   onOpen: (link) => onOpen(context, link),
                                   text: description,
@@ -140,8 +149,7 @@ class RequestsDetails extends StatelessWidget {
                           ConstrainedBox(
                             constraints: BoxConstraints(
                                 maxWidth:
-                                    AppQueries.screenWidth(context) /
-                                        1.7),
+                                    AppQueries.screenWidth(context) / 1.7),
                             child: Text(
                               subjectName,
                               style: TextStyle(
@@ -161,19 +169,16 @@ class RequestsDetails extends StatelessWidget {
                         ],
                       ),
                       Padding(
-                        padding:
-                            EdgeInsetsDirectional.symmetric(vertical: 15),
+                        padding: EdgeInsetsDirectional.symmetric(vertical: 15),
                         child: LayoutBuilder(
                           builder: (context, constraints) {
                             return Row(
                               children: [
-                                const Icon(Icons.link,
-                                    color: Colors.white),
+                                const Icon(Icons.link, color: Colors.white),
                                 const SizedBox(width: 5),
                                 ConstrainedBox(
                                   constraints: BoxConstraints(
-                                      maxWidth:
-                                          constraints.maxWidth - 30),
+                                      maxWidth: constraints.maxWidth - 30),
                                   child: GestureDetector(
                                     onTap: () async {
                                       final linkElement =
@@ -184,8 +189,7 @@ class RequestsDetails extends StatelessWidget {
                                       link,
                                       style: const TextStyle(
                                         color: Colors.blue,
-                                        decoration:
-                                            TextDecoration.underline,
+                                        decoration: TextDecoration.underline,
                                         decorationColor: Colors.blue,
                                       ),
                                       maxLines: 2,
@@ -216,16 +220,13 @@ class RequestsDetails extends StatelessWidget {
                               },
                               style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(13)),
-                                padding:
-                                    const EdgeInsetsDirectional.symmetric(
-                                        horizontal: 40),
+                                    borderRadius: BorderRadius.circular(13)),
+                                padding: const EdgeInsetsDirectional.symmetric(
+                                    horizontal: 40),
                                 backgroundColor: Colors.white,
                                 textStyle: TextStyle(
                                     fontSize:
-                                        AppQueries.screenWidth(context) /
-                                            17),
+                                        AppQueries.screenWidth(context) / 17),
                               ),
                               child: const Text(
                                 StringsManager.reject,
@@ -236,14 +237,20 @@ class RequestsDetails extends StatelessWidget {
                             //submit button
                             ElevatedButton(
                                 onPressed: () {
-                                  cubit.acceptRequest(cubit.requests![id].id!, semester);
+                                  cubit.acceptRequest(
+                                      cubit.requests![id].id!, semester);
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13)),
-                                  padding: const EdgeInsetsDirectional.symmetric(horizontal: 40),
-                                  backgroundColor:ColorsManager.lightPrimary,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(13)),
+                                  padding:
+                                      const EdgeInsetsDirectional.symmetric(
+                                          horizontal: 40),
+                                  backgroundColor: ColorsManager.lightPrimary,
                                   foregroundColor: Colors.white,
-                                  textStyle: TextStyle(fontSize: AppQueries.screenWidth(context) / 17),
+                                  textStyle: TextStyle(
+                                      fontSize:
+                                          AppQueries.screenWidth(context) / 17),
                                 ),
                                 child: const Text(StringsManager.accept)),
                           ],

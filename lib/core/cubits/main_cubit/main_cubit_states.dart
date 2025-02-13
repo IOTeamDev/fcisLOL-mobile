@@ -40,8 +40,6 @@ class GetProfileSuccess extends MainCubitStates {}
 
 class GetProfileFailure extends MainCubitStates {}
 
-class Logout extends MainCubitStates {}
-
 class RetrieveCurrentUserDataLoadingState extends MainCubitStates {}
 
 class RetrieveCurrentUserDataSuccessState extends MainCubitStates {}
@@ -102,3 +100,11 @@ class DeleteimageSuccessState extends MainCubitStates {}
 class DeleteimageErrorState extends MainCubitStates {}
 
 class ChangeAppModeState extends MainCubitStates {}
+
+final class LogoutSuccess extends MainCubitStates {}
+
+final class LogoutFailed extends MainCubitStates {
+  final String errMessage;
+
+  LogoutFailed({required this.errMessage});
+}

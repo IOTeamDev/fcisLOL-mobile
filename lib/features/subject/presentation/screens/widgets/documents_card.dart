@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
+import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/features/profile/view/other_profile.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/subject/data/models/material_model.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/remove_button.dart';
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/navigation.dart';
+import 'package:provider/provider.dart';
 import '../../../../../core/utils/resources/constants_manager.dart';
 
 class DocumentsCard extends StatelessWidget {
@@ -22,7 +24,7 @@ class DocumentsCard extends StatelessWidget {
         await onOpen(context, linkElement);
       },
       child: Card(
-          color: MainCubit.get(context).isDark
+          color: Provider.of<ThemeProvider>(context).isDark
               ? ColorsManager.darkPrimary
               : ColorsManager.lightPrimary,
           child: Container(

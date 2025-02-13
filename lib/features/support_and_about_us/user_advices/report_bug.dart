@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/core/utils/components.dart';
+import 'package:lol/core/utils/resources/theme_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../core/cubits/main_cubit/main_cubit.dart';
 import '../../../core/utils/resources/constants_manager.dart';
@@ -19,7 +21,8 @@ class ReportBug extends StatelessWidget {
     return Scaffold(
       body: Container(
         width: double.infinity,
-        margin: EdgeInsetsDirectional.only(top: AppQueries.screenHeight(context) / 10),
+        margin: EdgeInsetsDirectional.only(
+            top: AppQueries.screenHeight(context) / 10),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -43,7 +46,9 @@ class ReportBug extends StatelessWidget {
               SingleChildScrollView(
                 child: Container(
                   decoration: BoxDecoration(
-                      color: MainCubit.get(context).isDark ? HexColor('#3B3B3B') : HexColor('#757575'),
+                      color: Provider.of<ThemeProvider>(context).isDark
+                          ? HexColor('#3B3B3B')
+                          : HexColor('#757575'),
                       borderRadius: BorderRadius.circular(15)),
                   margin: EdgeInsetsDirectional.symmetric(
                       horizontal: 15, vertical: 30),
@@ -117,9 +122,12 @@ class ReportBug extends StatelessWidget {
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(13)),
                                   padding: EdgeInsetsDirectional.symmetric(
-                                      horizontal: AppQueries.screenWidth(context) / 11),
+                                      horizontal:
+                                          AppQueries.screenWidth(context) / 11),
                                   backgroundColor: Colors.white,
-                                  textStyle: TextStyle(fontSize: AppQueries.screenWidth(context) / 17),
+                                  textStyle: TextStyle(
+                                      fontSize:
+                                          AppQueries.screenWidth(context) / 17),
                                 ),
                                 child: const Text(
                                   'Cancel',
@@ -143,11 +151,16 @@ class ReportBug extends StatelessWidget {
                                         borderRadius:
                                             BorderRadius.circular(13)),
                                     padding: EdgeInsetsDirectional.symmetric(
-                                        horizontal: AppQueries.screenWidth(context) / 11),
+                                        horizontal:
+                                            AppQueries.screenWidth(context) /
+                                                11),
                                     backgroundColor:
                                         Color.fromARGB(255, 20, 130, 220),
                                     foregroundColor: Colors.white,
-                                    textStyle: TextStyle(fontSize: AppQueries.screenWidth(context) / 17),
+                                    textStyle: TextStyle(
+                                        fontSize:
+                                            AppQueries.screenWidth(context) /
+                                                17),
                                   ),
                                   child: const Text('Submit')),
                             ],

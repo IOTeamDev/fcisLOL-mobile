@@ -1,20 +1,18 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Cache {
-  static SharedPreferences? sharedpref;
+  static late SharedPreferences sharedpref;
 
   static initialize() async {
     sharedpref = await SharedPreferences.getInstance();
   }
 
   static Future<bool> writeData({required String key, required value}) async {
-            if (sharedpref == null) await initialize();
-
     try {
-      if (value is String) return await sharedpref!.setString(key, value);
-      if (value is bool) return await sharedpref!.setBool(key, value);
-      if (value is int) return await sharedpref!.setInt(key, value);
-      if (value is double) return await sharedpref!.setDouble(key, value);
+      if (value is String) return await sharedpref.setString(key, value);
+      if (value is bool) return await sharedpref.setBool(key, value);
+      if (value is int) return await sharedpref.setInt(key, value);
+      if (value is double) return await sharedpref.setDouble(key, value);
     } catch (e) {
       print(e.toString());
     }
@@ -22,14 +20,10 @@ class Cache {
   }
 
   static dynamic readData({required String key}) async {
-            if (sharedpref == null) await initialize();
-
-    return  sharedpref!.get(key);
+    return sharedpref.get(key);
   }
 
-  static Future<bool> removeValue({required String key}) async{
-        if (sharedpref == null) await initialize();
-
-  return  sharedpref!.remove(key);
+  static Future<bool> removeValue({required String key}) async {
+    return await sharedpref.remove(key);
   }
 }

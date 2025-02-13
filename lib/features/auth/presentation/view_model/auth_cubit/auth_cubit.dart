@@ -1,8 +1,16 @@
+import 'dart:developer';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:lol/core/network/remote/dio.dart';
+import 'package:lol/core/utils/dependencies_helper.dart';
+import 'package:lol/core/utils/resources/constants_manager.dart';
+import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/features/auth/data/models/login_model.dart';
+import 'package:lol/features/auth/presentation/view/choosing_year.dart';
+import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit.dart';
 
 part 'auth_state.dart';
 
@@ -27,7 +35,10 @@ class AuthCubit extends Cubit<AuthState> {
       });
       LoginModel loginModel = LoginModel.fromJson(response.data);
       await FirebaseMessaging.instance.requestPermission();
-      emit(LoginSuccess(token: loginModel.token));
+      await Cache.writeData(key: KeysManager.token, value: loginModel.token);
+      AppConstants.TOKEN = loginModel.token;
+      log('my token => ${AppConstants.TOKEN}');
+      emit(LoginSuccess());
     } catch (e) {
       emit(LoginFailed(errMessage: e.toString()));
     }

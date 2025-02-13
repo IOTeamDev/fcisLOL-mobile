@@ -10,6 +10,7 @@ import 'package:googleapis/games/v1.dart';
 import 'package:googleapis/mybusinessaccountmanagement/v1.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:linkify/linkify.dart';
+import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/main.dart';
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/widgets/default_button.dart';
@@ -21,6 +22,7 @@ import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/core/utils/navigation.dart';
 
 import 'package:lol/core/utils/resources/colors_manager.dart';
+import 'package:provider/provider.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});
@@ -35,7 +37,6 @@ class Profile extends StatelessWidget {
       create: (context) => MainCubit()..getProfileInfo(),
       child: BlocConsumer<MainCubit, MainCubitStates>(
         builder: (context, state) {
-          var cubit = MainCubit.get(context);
           if (state is UpdateUserSuccessState) {
             showToastMessage(
                 message: "Updated Profile Success",
@@ -63,36 +64,37 @@ class Profile extends StatelessWidget {
             appBar: AppBar(
               actions: [
                 if (state is GetUserImageSuccess)
-                TextButton(
-                  style: TextButton.styleFrom(
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    padding: EdgeInsets.zero,
-                    foregroundColor: Colors.blue
-                  ),
-                  onPressed: () async {
-                    await MainCubit.get(context).uploadPImage(
-                      image: MainCubit.get(context).userImageFile,
-                    );
+                  TextButton(
+                      style: TextButton.styleFrom(
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          padding: EdgeInsets.zero,
+                          foregroundColor: Colors.blue),
+                      onPressed: () async {
+                        await MainCubit.get(context).uploadPImage(
+                          image: MainCubit.get(context).userImageFile,
+                        );
 
-                    MainCubit.get(context).updateUser(
-                      userID: MainCubit.get(context).profileModel!.id,
-                      photo: MainCubit.get(context).userImagePath
-                    );
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(right: 10),
-                    child: Text(
-                      "Submit",
-                      style: TextStyle(fontSize: 17),
-                    ),
-                  )
-                ),
+                        MainCubit.get(context).updateUser(
+                            userID: MainCubit.get(context).profileModel!.id,
+                            photo: MainCubit.get(context).userImagePath);
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(right: 10),
+                        child: Text(
+                          "Submit",
+                          style: TextStyle(fontSize: 17),
+                        ),
+                      )),
               ],
-              backgroundColor: !cubit.isDark ? Colors.white : Color(0xff22272B),
+              backgroundColor: !Provider.of<ThemeProvider>(context).isDark
+                  ? Colors.white
+                  : Color(0xff22272B),
               title: Text("Profile"),
               centerTitle: true,
             ),
-            backgroundColor: cubit.isDark ? HexColor('#23252A') : Colors.white,
+            backgroundColor: Provider.of<ThemeProvider>(context).isDark
+                ? HexColor('#23252A')
+                : Colors.white,
             body: mainCubit.profileModel == null
                 ? const Center(
                     child: CircularProgressIndicator(),
@@ -117,7 +119,9 @@ class Profile extends StatelessWidget {
                                           alignment: Alignment.bottomRight,
                                           children: [
                                             CircleAvatar(
-                                              radius: AppQueries.screenWidth(context) / 7.5,
+                                              radius: AppQueries.screenWidth(
+                                                      context) /
+                                                  7.5,
                                               backgroundImage:
                                                   MainCubit.get(context)
                                                               .userImageFile !=
@@ -199,14 +203,20 @@ class Profile extends StatelessWidget {
                                   children: [
                                     ConstrainedBox(
                                       constraints: BoxConstraints(
-                                          maxWidth: AppQueries.screenWidth(context) / 1.9),
+                                          maxWidth:
+                                              AppQueries.screenWidth(context) /
+                                                  1.9),
                                       child: Text(
                                         mainCubit.profileModel!.name,
                                         style: TextStyle(
-                                            color: cubit.isDark
+                                            color: Provider.of<ThemeProvider>(
+                                                        context)
+                                                    .isDark
                                                 ? Colors.white
                                                 : Colors.black,
-                                            fontSize: AppQueries.screenWidth(context) / 15,
+                                            fontSize: AppQueries.screenWidth(
+                                                    context) /
+                                                15,
                                             fontWeight: FontWeight.bold),
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
@@ -221,24 +231,34 @@ class Profile extends StatelessWidget {
                                         Text(
                                           'Email: ',
                                           style: TextStyle(
-                                              color: cubit.isDark
+                                              color: Provider.of<ThemeProvider>(
+                                                          context)
+                                                      .isDark
                                                   ? Colors.white
                                                   : Colors.black,
-                                              fontSize:
-                                              AppQueries.screenWidth(context) / 20),
+                                              fontSize: AppQueries.screenWidth(
+                                                      context) /
+                                                  20),
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                         SizedBox(
-                                          width: AppQueries.screenWidth(context) / 2.5,
+                                          width:
+                                              AppQueries.screenWidth(context) /
+                                                  2.5,
                                           child: Text(
                                             mainCubit.profileModel!.email,
                                             style: TextStyle(
-                                                color: cubit.isDark
-                                                    ? Colors.white
-                                                    : Colors.black,
+                                                color:
+                                                    Provider.of<ThemeProvider>(
+                                                                context)
+                                                            .isDark
+                                                        ? Colors.white
+                                                        : Colors.black,
                                                 fontSize:
-                                                AppQueries.screenWidth(context) / 25),
+                                                    AppQueries.screenWidth(
+                                                            context) /
+                                                        25),
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                           ),
@@ -253,23 +273,34 @@ class Profile extends StatelessWidget {
                                           Text(
                                             'Phone: ',
                                             style: TextStyle(
-                                                color: cubit.isDark
-                                                    ? Colors.white
-                                                    : Colors.black,
+                                                color:
+                                                    Provider.of<ThemeProvider>(
+                                                                context)
+                                                            .isDark
+                                                        ? Colors.white
+                                                        : Colors.black,
                                                 fontSize:
-                                                AppQueries.screenWidth(context) / 20),
+                                                    AppQueries.screenWidth(
+                                                            context) /
+                                                        20),
                                             maxLines: 2,
                                           ),
                                           SizedBox(
-                                            width: AppQueries.screenWidth(context) / 2.5,
+                                            width: AppQueries.screenWidth(
+                                                    context) /
+                                                2.5,
                                             child: Text(
                                               '${mainCubit.profileModel!.phone}',
                                               style: TextStyle(
-                                                  color: cubit.isDark
-                                                      ? Colors.white
-                                                      : Colors.black,
+                                                  color:
+                                                      Provider.of<ThemeProvider>(
+                                                                  context)
+                                                              .isDark
+                                                          ? Colors.white
+                                                          : Colors.black,
                                                   fontSize:
-                                                  AppQueries.screenWidth(context) /
+                                                      AppQueries.screenWidth(
+                                                              context) /
                                                           25),
                                               maxLines: 2,
                                             ),
@@ -370,7 +401,9 @@ class Profile extends StatelessWidget {
                                         } else {
                                           return Center(
                                             child: CircularProgressIndicator(
-                                              color: cubit.isDark
+                                              color: Provider.of<ThemeProvider>(
+                                                          context)
+                                                      .isDark
                                                   ? Colors.white
                                                   : Colors.black,
                                             ),
@@ -389,13 +422,16 @@ class Profile extends StatelessWidget {
                                 child: Text(
                               "My Uploads",
                               style: TextStyle(
-                                  fontSize: AppQueries.screenWidth(context) / 18),
+                                  fontSize:
+                                      AppQueries.screenWidth(context) / 18),
                             )),
                             SizedBox(
                               height: 10,
                             ),
                             Divider(
-                              color: cubit.isDark ? Colors.white : Colors.black,
+                              color: Provider.of<ThemeProvider>(context).isDark
+                                  ? Colors.white
+                                  : Colors.black,
                               height: 0,
                             ),
                           ],
@@ -469,17 +505,22 @@ class Profile extends StatelessWidget {
                               fallback: (context) {
                                 if (state is GetRequestsLoadingState) {
                                   return SizedBox(
-                                      height: AppQueries.screenHeight(context) / 1.3,
+                                      height: AppQueries.screenHeight(context) /
+                                          1.3,
                                       child: Center(
                                         child: CircularProgressIndicator(),
                                       ));
                                 }
                                 return SizedBox(
-                                    height: AppQueries.screenHeight(context) / 1.3,
+                                    height:
+                                        AppQueries.screenHeight(context) / 1.3,
                                     child: Center(
                                       child: Text(
                                         'You Have No Contributions Yet!!!',
-                                        style: TextStyle(fontSize: AppQueries.screenWidth(context) / 12),
+                                        style: TextStyle(
+                                            fontSize: AppQueries.screenWidth(
+                                                    context) /
+                                                12),
                                         textAlign: TextAlign.center,
                                       ),
                                     ));
@@ -505,7 +546,9 @@ Widget materialBuilder(index, context,
   return Container(
     padding: EdgeInsets.all(5),
     decoration: BoxDecoration(
-      color: MainCubit.get(context).isDark ? HexColor('#3B3B3B') : Color.fromARGB(255, 20, 130, 220),
+      color: Provider.of<ThemeProvider>(context).isDark
+          ? HexColor('#3B3B3B')
+          : Color.fromARGB(255, 20, 130, 220),
       borderRadius: BorderRadius.circular(20),
     ),
     height: 170,
@@ -582,7 +625,8 @@ Widget materialBuilder(index, context,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                  fontSize: AppQueries.screenWidth(context) / 17, color: ColorsManager.white),
+                  fontSize: AppQueries.screenWidth(context) / 17,
+                  color: ColorsManager.white),
             ),
           ),
           // SizedBox(height: 5,),

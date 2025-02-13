@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
+import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/main.dart';
+import 'package:provider/provider.dart';
 
 class BuildTextFormField extends StatelessWidget {
   const BuildTextFormField({
@@ -35,13 +37,13 @@ class BuildTextFormField extends StatelessWidget {
       decoration: InputDecoration(
         enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(
-                color: MainCubit.get(context).isDark
+                color: Provider.of<ThemeProvider>(context).isDark
                     ? ColorsManager.grey
                     : ColorsManager.white)),
         hintText: hintText,
         hintStyle: TextStyle(
             fontSize: 20,
-            color: MainCubit.get(context).isDark
+            color: Provider.of<ThemeProvider>(context).isDark
                 ? ColorsManager.grey
                 : ColorsManager.white),
       ),

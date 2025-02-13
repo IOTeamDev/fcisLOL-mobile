@@ -9,16 +9,22 @@ class TogglePassword extends AuthState {}
 
 class LoginLoading extends AuthState {}
 
-class LoginSuccess extends AuthState {
-  final String token;
-
-  LoginSuccess({required this.token});
-}
+class LoginSuccess extends AuthState {}
 
 class LoginFailed extends AuthState {
   final String errMessage;
 
   LoginFailed({required this.errMessage});
+}
+
+class LogoutLoading extends AuthState {}
+
+class LogoutSuccess extends AuthState {}
+
+class LogoutFailed extends AuthState {
+  final String errMessage;
+
+  LogoutFailed({required this.errMessage});
 }
 
 class RegisterLoading extends AuthState {}

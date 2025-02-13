@@ -3,11 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
+import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit_cubit.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/build_floating_action_button.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/custom_tab_bar.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/custom_tab_bar_view.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../core/utils/resources/constants_manager.dart';
 
@@ -67,7 +69,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                     },
                     icon: Icon(
                       Icons.arrow_back,
-                      color: MainCubit.get(context).isDark
+                      color: Provider.of<ThemeProvider>(context).isDark
                           ? ColorsManager.white
                           : ColorsManager.black,
                       size: 30,
@@ -82,7 +84,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                           .replaceAll("and", "&"),
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: MainCubit.get(context).isDark
+                          color: Provider.of<ThemeProvider>(context).isDark
                               ? ColorsManager.white
                               : ColorsManager.black,
                           fontSize: AppQueries.screenWidth(context) / 15),
@@ -101,7 +103,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
                   cubit.runFilter(query: query);
                 },
                 style: TextStyle(
-                    color: MainCubit.get(context).isDark
+                    color: Provider.of<ThemeProvider>(context).isDark
                         ? Color(0xff1B262C)
                         : ColorsManager.lightGrey,
                     fontSize: 20),

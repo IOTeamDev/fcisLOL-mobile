@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -6,9 +7,11 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
+import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/core/utils/resources/themes_manager.dart';
 import 'package:lol/features/admin/presentation/view/announcements/add_announcement.dart';
 import 'package:lol/features/home/presentation/view/semester_navigate.dart';
+import 'package:lol/features/on_boarding/presentation/view/onboarding.dart';
 import 'package:lol/features/profile/view/other_profile.dart';
 import 'package:lol/features/auth/data/models/login_model.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
@@ -28,7 +31,6 @@ import 'package:provider/provider.dart';
 import 'core/utils/resources/strings_manager.dart';
 import 'features/auth/presentation/view_model/login_cubit/login_cubit.dart';
 import 'features/auth/presentation/view/login.dart';
-import 'features/auth/presentation/view/onboarding.dart';
 import 'features/auth/presentation/view/register.dart';
 import 'features/auth/presentation/view/select_image.dart';
 import 'features/leaderboard/presentation/view/leaderboard_view.dart';
@@ -106,10 +108,11 @@ main() async {
 
   Bloc.observer = MyBlocObserver();
 
-  AppConstants.TOKEN = await Cache.readData(key: KeysManager.token);
-  AppConstants.SelectedSemester = await Cache.readData(key: KeysManager.semester);
-  bool isOnBoardFinished = await Cache.readData(key: KeysManager.finishedOnBoard) ?? false;
-
+  AppConstants.TOKEN = Cache.sharedpref.getString(KeysManager.token);
+  AppConstants.SelectedSemester =
+      await Cache.readData(key: KeysManager.semester);
+  bool isOnBoardFinished =
+      await Cache.readData(key: KeysManager.finishedOnBoard) ?? false;
   // TOKEN = null;//
   final Widget startPage;
   if (!isOnBoardFinished) {
@@ -124,7 +127,10 @@ main() async {
     }
   }
 
-  runApp(App(startPage: startPage,));
+  runApp(ChangeNotifierProvider(
+    create: (context) => ThemeProvider(),
+    child: App(startPage: startPage),
+  ));
 }
 
 class App extends StatelessWidget {
@@ -136,30 +142,32 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (BuildContext context) => MainCubit()
-            ..getProfileInfo()
-            ..themeData
-        ),
+            create: (BuildContext context) => MainCubit()..getProfileInfo()),
         BlocProvider(
-          create: (BuildContext context) => AdminCubit()
-            ..getAnnouncements(MainCubit.get(context).profileModel != null
-              ? MainCubit.get(context).profileModel!.semester
-              : AppConstants.SelectedSemester!)
-            ..getFcmTokens()
-        ),
+            create: (BuildContext context) => AdminCubit()
+              ..getFcmTokens()
+              ..getAnnouncements(MainCubit.get(context).profileModel != null
+                  ? MainCubit.get(context).profileModel!.semester
+                  : AppConstants.SelectedSemester!)),
       ],
-      child: BlocConsumer<MainCubit, MainCubitStates>(
-        listener: (context, state) {
-          if(state is GetProfileSuccess){
-            MainCubit().getRequests(semester: MainCubit.get(context).profileModel!.semester);
-          }
-        },
-        builder: (context, state) => MaterialApp(
-          home: startPage,
-          debugShowCheckedModeBanner: false,
-          theme: MainCubit.get(context).themeData,
-        )
-      )
+      child: MaterialApp(
+        home: startPage,
+        theme: Provider.of<ThemeProvider>(context).themeData,
+        debugShowCheckedModeBanner: false,
+      ),
     );
+
+    // BlocConsumer<MainCubit, MainCubitStates>(
+    //     listener: (context, state) {
+    //       if (state is GetProfileSuccess) {
+    //         MainCubit().getRequests(
+    //             semester: MainCubit.get(context).profileModel!.semester);
+    //       }
+    //     },
+    //     builder: (context, state) => MaterialApp(
+    //           home: startPage,
+    //           debugShowCheckedModeBanner: false,
+    //           theme: MainCubit.get(context).themeData,
+    //         ));
   }
 }

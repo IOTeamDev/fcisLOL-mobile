@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
+import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/home/data/models/semster_model.dart';
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/core/utils/navigation.dart';
+import 'package:provider/provider.dart';
 
 class SemesterNavigate extends StatelessWidget {
   final String semester;
@@ -14,7 +16,6 @@ class SemesterNavigate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var cubit = MainCubit.get(context);
     int semesterIndex = semsesterIndex(semester);
     return Scaffold(
       body: SafeArea(
@@ -45,7 +46,10 @@ class SemesterNavigate extends StatelessWidget {
                             children: [
                               const SizedBox(width: 15),
                               Image.asset(
-                                color: cubit.isDark ? Colors.white : null,
+                                color:
+                                    Provider.of<ThemeProvider>(context).isDark
+                                        ? Colors.white
+                                        : null,
                                 "images/l.png",
                                 width: 45,
                                 height: 45,
@@ -72,7 +76,9 @@ class SemesterNavigate extends StatelessWidget {
                     "Semester $semester",
                     style: GoogleFonts.montserrat(
                         fontSize: 30,
-                        color: cubit.isDark ? Color(0xff4763C4) : Colors.black, //
+                        color: Provider.of<ThemeProvider>(context).isDark
+                            ? Color(0xff4763C4)
+                            : Colors.black, //
                         fontWeight: FontWeight.bold,
                         letterSpacing: 1.2),
                   ),

@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'dart:developer' as dev;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lol/core/models/current_user/current_user_model.dart';
@@ -145,18 +146,18 @@ class MainCubit extends Cubit<MainCubitStates> {
   }
 
   ProfileModel? profileModel;
-  getProfileInfo() {
-    if (AppConstants.TOKEN == null) return;
-
+  getProfileInfo() async {
     emit(GetProfileLoading());
-    profileModel = null;
-    DioHelp.getData(path: CURRENTUSER, token: AppConstants.TOKEN).then(
-      (value) {
-        profileModel = ProfileModel.fromJson(value.data);
+    try {
+      final response =
+          await DioHelp.getData(path: CURRENTUSER, token: AppConstants.TOKEN);
+      profileModel = ProfileModel.fromJson(response.data);
+      emit(GetProfileSuccess());
+    } catch (e) {
+      print(e.toString());
 
-        emit(GetProfileSuccess());
-      },
-    );
+      emit(GetProfileFailure());
+    }
   }
 
   ProfileModel? otherProfile;
@@ -173,20 +174,21 @@ class MainCubit extends Cubit<MainCubitStates> {
     );
   }
 
-  void logout(context) {
-    Cache.removeValue(key: KeysManager.token);
-    Cache.removeValue(key: KeysManager.semester); //SelectedSemester
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ChoosingYear(loginCubit: LoginCubit()),
-        ), //removing all background screens
-        (route) => false);
-    Future.delayed(Duration(seconds: AppSizes.s1), () {
+  Future<void> logout(context) async {
+    try {
+      await Cache.removeValue(key: KeysManager.token);
+      await Cache.removeValue(key: KeysManager.semester);
+      print('first token => ${AppConstants.TOKEN}');
+      print('first selected semester => ${AppConstants.SelectedSemester}');
       AppConstants.TOKEN = null;
       AppConstants.SelectedSemester = null;
-    });
-    emit(Logout());
+      print('second token => ${AppConstants.TOKEN}');
+      print('second selected semester => ${AppConstants.SelectedSemester}');
+      //SelectedSemester
+      emit(LogoutSuccess());
+    } catch (e) {
+      emit(LogoutFailed(errMessage: e.toString()));
+    }
   }
 
   List<MaterialModel>? requests;
@@ -402,33 +404,5 @@ class MainCubit extends Cubit<MainCubitStates> {
       print(error.toString());
       emit(UpdateUserErrorState());
     });
-  }
-
-  bool isDark = Cache.sharedpref!.getBool(KeysManager.isDarkMode)!;
-  ThemeData _appTheme = Cache.sharedpref!.getBool(KeysManager.isDarkMode)!
-      ? darkTheme
-      : lightTheme;
-
-  ThemeData get themeData {
-    if (Cache.sharedpref!.getBool(KeysManager.isDarkMode) == true) {
-      isDark = true;
-      return darkTheme;
-    } else {
-      isDark = false;
-      return lightTheme;
-    }
-  }
-
-  void toggleDarkMode() {
-    if (_appTheme == darkTheme) {
-      _appTheme = lightTheme;
-      isDark = false;
-    } else {
-      _appTheme = darkTheme;
-      isDark = true;
-    }
-
-    Cache.sharedpref!.setBool(KeysManager.isDarkMode, _appTheme == darkTheme);
-    emit(ChangeAppModeState());
   }
 }

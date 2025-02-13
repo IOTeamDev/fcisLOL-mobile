@@ -3,6 +3,8 @@ import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubi
 import 'package:lol/features/auth/presentation/view/choosing_year.dart';
 import 'package:lol/core/utils/navigation.dart';
 import 'package:lol/core/network/local/shared_preference.dart';
+import 'package:lol/features/on_boarding/data/model/on_boarding_model.dart';
+import 'package:lol/features/on_boarding/presentation/view/widgets/on_boarding_item.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnBoarding extends StatefulWidget {
@@ -43,7 +45,7 @@ class _OnBoardingState extends State<OnBoarding> {
                 },
                 controller: pageViewController,
                 itemBuilder: (context, index) =>
-                    onBoardingItem(onBoardingItemsList[index]),
+                    OnBoardingItem(model: onBoardingItemsList[index]),
                 itemCount: onBoardingItemsList.length,
               ),
             ),
@@ -96,57 +98,3 @@ class _OnBoardingState extends State<OnBoarding> {
     );
   }
 }
-
-Widget onBoardingItem(OnBoardingModel model) {
-  return Column(
-    children: [
-      const SizedBox(
-        height: 50,
-      ),
-      Text(
-        model.title!,
-        style: const TextStyle(
-          fontSize: 21.5,
-          letterSpacing: 2.5,
-          fontWeight: FontWeight.w700,
-        ),
-      ),
-      Expanded(child: Image.asset(model.image!)),
-      Center(
-        child: Text(
-          textAlign: TextAlign.center,
-          model.body!,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
-        ),
-      ),
-      const SizedBox(
-        height: 100,
-      ),
-    ],
-  );
-}
-
-class OnBoardingModel {
-  String? title;
-  String? body;
-  String? image;
-  OnBoardingModel(
-      {required this.title, required this.body, required this.image});
-}
-
-List<OnBoardingModel> onBoardingItemsList = [
-  OnBoardingModel(
-      title: "All In One Place",
-      body: "Videos 🎬, Notes 📝, Recordings 📹, Exams 🖊... and more ",
-      image: "images/Checklist.png"),
-  OnBoardingModel(
-      title: "Study anytime anywhere",
-      body:
-          " Whether you’re on the bus or at home, your learning is always within reach.",
-      image: "images/Subway-cuate.png"),
-  OnBoardingModel(
-      title: "A+ is Just a Tap Away !",
-      body:
-          "Why wait? Jump into your studies and watch your grades climb to the top.",
-      image: "images/Grades-pana.png"),
-];

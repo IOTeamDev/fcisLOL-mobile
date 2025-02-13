@@ -9,6 +9,7 @@ import 'package:googleapis/games/v1.dart';
 import 'package:googleapis/mybusinessaccountmanagement/v1.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:linkify/linkify.dart';
+import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/main.dart';
 import 'package:lol/core/models/profile/profile_materila_model.dart';
 import 'package:lol/core/utils/components.dart';
@@ -19,6 +20,7 @@ import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/core/utils/navigation.dart';
+import 'package:provider/provider.dart';
 
 bool refreshing = false;
 
@@ -29,7 +31,6 @@ class OtherProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var cubit = MainCubit.get(context);
     var nameController = TextEditingController();
     var emailController = TextEditingController();
     return BlocProvider(
@@ -47,15 +48,18 @@ class OtherProfile extends StatelessWidget {
           }
           return Scaffold(
             appBar: AppBar(
-              backgroundColor:
-                  cubit.isDark ? HexColor('#23252A') : Colors.white,
+              backgroundColor: Provider.of<ThemeProvider>(context).isDark
+                  ? HexColor('#23252A')
+                  : Colors.white,
               centerTitle: true,
               title: mainCubit.otherProfile == null
                   ? Text("")
                   : Text(
                       mainCubit.otherProfile!.name,
                       style: GoogleFonts.playfairDisplay(
-                        color: cubit.isDark ? Colors.white : Colors.black,
+                        color: Provider.of<ThemeProvider>(context).isDark
+                            ? Colors.white
+                            : Colors.black,
                         fontSize: AppQueries.screenWidth(context) / 15,
                         fontWeight: FontWeight.bold,
                       ),
@@ -64,7 +68,9 @@ class OtherProfile extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
             ),
-            backgroundColor: cubit.isDark ? HexColor('#23252A') : Colors.white,
+            backgroundColor: Provider.of<ThemeProvider>(context).isDark
+                ? HexColor('#23252A')
+                : Colors.white,
             body: mainCubit.otherProfile == null
                 ? const Center(
                     child: CircularProgressIndicator(),
@@ -235,7 +241,8 @@ class OtherProfile extends StatelessWidget {
                                 } else {
                                   return Center(
                                     child: CircularProgressIndicator(
-                                      color: cubit.isDark
+                                      color: Provider.of<ThemeProvider>(context)
+                                              .isDark
                                           ? Colors.white
                                           : Colors.black,
                                     ),
@@ -258,7 +265,9 @@ class OtherProfile extends StatelessWidget {
                           height: 10,
                         ),
                         Divider(
-                          color: cubit.isDark ? Colors.white : Colors.black,
+                          color: Provider.of<ThemeProvider>(context).isDark
+                              ? Colors.white
+                              : Colors.black,
                           height: 20,
                         ),
                         Expanded(
@@ -371,7 +380,7 @@ Widget materialBuilder(index, context,
   return Container(
     padding: EdgeInsets.all(5),
     decoration: BoxDecoration(
-      color: MainCubit.get(context).isDark
+      color: Provider.of<ThemeProvider>(context).isDark
           ? HexColor('#3B3B3B')
           : Color.fromARGB(255, 20, 130, 220),
       borderRadius: BorderRadius.circular(20),

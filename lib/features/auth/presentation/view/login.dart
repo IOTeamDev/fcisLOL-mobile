@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/utils/components.dart';
+import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/core/widgets/default_button.dart';
 import 'package:lol/core/widgets/default_text_button.dart';
 import 'package:lol/core/widgets/default_text_field.dart';
 import 'package:lol/core/widgets/snack.dart';
-import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit.dart';
-import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit_states.dart';
+import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
+import 'package:lol/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
 import 'package:lol/features/auth/presentation/view/register.dart';
 import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
@@ -17,38 +18,66 @@ import 'package:lol/core/utils/navigation.dart';
 import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
+  late GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  @override
+  void initState() {
+    super.initState();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    var emailController = TextEditingController();
-    var passwordController = TextEditingController();
-    var formKey = GlobalKey<FormState>();
     return BlocProvider(
-      create: (context) => LoginCubit(),
-      child: BlocConsumer<LoginCubit, LoginStates>(
+      create: (context) => AuthCubit(),
+      child: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is LoginSuccess) {
-            AppConstants.TOKEN = state.token;
-            Cache.writeData(key: "token", value: state.token);
-            print("${state.token}Token");
             showToastMessage(
               message: "Successfully signed in. Welcome back!",
               states: ToastStates.SUCCESS,
             );
 
-            navigatReplace(context, const Home());
+            navigatReplace(
+                context,
+                MultiBlocProvider(providers: [
+                  BlocProvider(
+                      create: (BuildContext context) =>
+                          MainCubit()..getProfileInfo()),
+                  BlocProvider(
+                      create: (BuildContext context) => AdminCubit()
+                        ..getAnnouncements(
+                            MainCubit.get(context).profileModel != null
+                                ? MainCubit.get(context).profileModel!.semester
+                                : AppConstants.SelectedSemester!)
+                        ..getFcmTokens()),
+                ], child: Home()));
           }
           if (state is LoginFailed) {
             showToastMessage(
                 states: ToastStates.ERROR,
-                // enumColor: Messages.error,
                 message: "Invalid email or password. Please try again");
           }
         },
         builder: (context, state) {
-          var loginCubit = LoginCubit.get(context);
+          var loginCubit = AuthCubit.get(context);
 
           return Scaffold(
             appBar: AppBar(),
@@ -65,16 +94,15 @@ class LoginScreen extends StatelessWidget {
                       ),
                       Center(
                         child: Row(
-                          // mainAxisSize: MainAxisSize.min,a
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Image.asset(
                               "images/l.png",
                               width: 35,
                               height: 35,
-                              color: MainCubit.get(context).isDark
-                                  ? Colors.white
-                                  : Colors.black,
+                              // color: MainCubit.get(context).isDark
+                              //     ? Colors.white
+                              //     : Colors.black,
                             ),
                             const SizedBox(
                               width: 5,
@@ -86,8 +114,6 @@ class LoginScreen extends StatelessWidget {
                                 letterSpacing: 2,
                               ),
                             ),
-
-                            // SizedBox(width:70)
                           ],
                         ),
                       ),

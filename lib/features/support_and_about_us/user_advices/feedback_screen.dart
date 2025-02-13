@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/core/utils/components.dart';
+import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/core/widgets/default_text_field.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/cubits/main_cubit/main_cubit.dart';
@@ -23,7 +25,8 @@ class FeedbackScreen extends StatelessWidget {
       key: scaffoldKey,
       body: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsetsDirectional.only(top: AppQueries.screenHeight(context) / 10),
+          margin: EdgeInsetsDirectional.only(
+              top: AppQueries.screenHeight(context) / 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -58,7 +61,9 @@ class FeedbackScreen extends StatelessWidget {
   Widget _buildFeedBackForm(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: MainCubit.get(context).isDark ? HexColor('#3B3B3B') : HexColor('#757575'),
+          color: Provider.of<ThemeProvider>(context).isDark
+              ? HexColor('#3B3B3B')
+              : HexColor('#757575'),
           borderRadius: BorderRadius.circular(15)),
       margin: EdgeInsetsDirectional.symmetric(horizontal: 15, vertical: 30),
       padding: const EdgeInsets.all(15.0),
@@ -106,8 +111,8 @@ class FeedbackScreen extends StatelessWidget {
                         padding: EdgeInsetsDirectional.symmetric(
                             horizontal: AppQueries.screenWidth(context) / 11),
                         backgroundColor: Colors.white,
-                        textStyle:
-                            TextStyle(fontSize: AppQueries.screenWidth(context) / 17),
+                        textStyle: TextStyle(
+                            fontSize: AppQueries.screenWidth(context) / 17),
                       ),
                       child: const Text(
                         'Cancel',
@@ -128,8 +133,8 @@ class FeedbackScreen extends StatelessWidget {
                               horizontal: AppQueries.screenWidth(context) / 11),
                           backgroundColor: Color.fromARGB(255, 20, 130, 220),
                           foregroundColor: Colors.white,
-                          textStyle:
-                              TextStyle(fontSize: AppQueries.screenWidth(context) / 17),
+                          textStyle: TextStyle(
+                              fontSize: AppQueries.screenWidth(context) / 17),
                         ),
                         child: const Text('Submit'))
                   ],
