@@ -10,7 +10,6 @@ import 'package:lol/features/subject/presentation/screens/widgets/build_floating
 import 'package:lol/features/subject/presentation/screens/widgets/custom_tab_bar.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/custom_tab_bar_view.dart';
 import 'package:provider/provider.dart';
-import '../../../../../core/utils/resources/colors_manager.dart';
 import '../../../../../core/utils/resources/strings_manager.dart';
 import '../../../../../core/utils/resources/values_manager.dart';
 import '../../../../core/utils/resources/constants_manager.dart';

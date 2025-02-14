@@ -55,20 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
               states: ToastStates.SUCCESS,
             );
 
-            navigatReplace(
-                context,
-                MultiBlocProvider(providers: [
-                  BlocProvider(
-                      create: (BuildContext context) =>
-                          MainCubit()..getProfileInfo()),
-                  BlocProvider(
-                      create: (BuildContext context) => AdminCubit()
-                        ..getAnnouncements(
-                            MainCubit.get(context).profileModel != null
-                                ? MainCubit.get(context).profileModel!.semester
-                                : AppConstants.SelectedSemester!)
-                        ..getFcmTokens()),
-                ], child: Home()));
+            navigatReplace(context, Home());
           }
           if (state is LoginFailed) {
             showToastMessage(
@@ -205,7 +192,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                         ),
                                         ElevatedButton(
                                           onPressed: () {
-                                            String email = emailController.text.trim();
+                                            String email =
+                                                emailController.text.trim();
                                             forgetPassword(email: email);
                                             Navigator.of(context).pop();
                                           },

@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit_states.dart';
 import 'package:lol/core/utils/components.dart';
 
@@ -18,7 +19,6 @@ import 'package:lol/features/auth/data/models/login_model.dart';
 import 'package:lol/core/network/endpoints.dart';
 import 'package:lol/core/network/remote/dio.dart';
 import 'package:lol/core/network/remote/fcm_helper.dart';
-import '../../../../../core/models/profile/profile_model.dart';
 import '../../../../../core/utils/resources/constants_manager.dart';
 import '../../../../../core/utils/navigation.dart';
 import '../../../../../core/network/local/shared_preference.dart';
@@ -82,14 +82,13 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     "A Little Surprise Just for You! 🎁",
     "Get the Scoop! Fresh News Inside 📢",
   ];
-  void addAnnouncement({
-    required title,
-    description,
-    dueDate,
-    required type,
-    image,
-    required currentSemester
-  }) {
+  void addAnnouncement(
+      {required title,
+      description,
+      dueDate,
+      required type,
+      image,
+      required currentSemester}) {
     Random random = Random();
     // Get a random index
     int randomIndex = random.nextInt(notificationsTitles.length);
@@ -97,38 +96,51 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     emit(AdminSaveAnnouncementLoadingState());
 
     DioHelp.postData(
-      path: ANNOUNCEMENTS,
-      data: {
-        'title': title,
-        'content': description ?? '',
-        'due_date': dueDate ?? '',
-        'type': type,
-        'semester': currentSemester,
-        'image': image
-      },
-      token: AppConstants.TOKEN
-    ).then((value) {
+            path: ANNOUNCEMENTS,
+            data: {
+              'title': title,
+              'content': description ?? '',
+              'due_date': dueDate ?? '',
+              'type': type,
+              'semester': currentSemester,
+              'image': image
+            },
+            token: AppConstants.TOKEN)
+        .then((value) {
       sendNotificationToUsers(
-        semester: currentSemester,
-        title: notificationsTitles[randomIndex],
-        body: title
-      ); // LOL
+          semester: currentSemester,
+          title: notificationsTitles[randomIndex],
+          body: title); // LOL
       emit(AdminSaveAnnouncementSuccessState());
       getAnnouncements(currentSemester);
     });
   }
 
+  // List<AnnouncementModel>? announcements;
+  // void getAnnouncements(String semester) {
+  //   announcements = null;
+  //   emit(AdminGetAnnouncementLoadingState());
+  //   DioHelp.getData(path: ANNOUNCEMENTS, query: {'semester': semester})
+  //       .then((value) {
+  //     announcements = [];
+  //     value.data.forEach((element) {
+  //       announcements!.add(AnnouncementModel.fromJson(element));
+  //     });
+  //     announcements?.sort((a, b) => b.id.compareTo(a.id));
+  //     emit(AdminGetAnnouncementSuccessState(announcements!));
+  //   });
+  // }
   List<AnnouncementModel>? announcements;
   void getAnnouncements(String semester) {
     announcements = null;
     emit(AdminGetAnnouncementLoadingState());
-    DioHelp.getData(path: ANNOUNCEMENTS, query: {'semester': semester})
-        .then((value) {
+    DioHelp.getData(
+        path: ANNOUNCEMENTS,
+        query: {KeysManager.semester: semester}).then((value) {
       announcements = [];
       value.data.forEach((element) {
         announcements!.add(AnnouncementModel.fromJson(element));
       });
-      announcements?.sort((a, b) => b.id.compareTo(a.id));
       emit(AdminGetAnnouncementSuccessState(announcements!));
     });
   }
@@ -247,7 +259,8 @@ class AdminCubit extends Cubit<AdminCubitStates> {
       print(fcmTokens.length); // Print the number of fetched tokens
 
       // Filter users based on semester
-      List<FcmToken> filteredUsers = fcmTokens.where((user) => user.semester == semester).toList();
+      List<FcmToken> filteredUsers =
+          fcmTokens.where((user) => user.semester == semester).toList();
 
       if (filteredUsers.isEmpty) {
         print('No users found for semester: $semester');
@@ -324,7 +337,8 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     emit(UploadImageLoadingState());
     if (image == null) return;
 
-    showToastMessage(message: 'Uploading your photo', states: ToastStates.WARNING);
+    showToastMessage(
+        message: 'Uploading your photo', states: ToastStates.WARNING);
     final uploadTask = await FirebaseStorage.instance
         .ref()
         .child("announcements/${Uri.file(image.path).pathSegments.last}")

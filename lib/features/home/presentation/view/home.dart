@@ -52,8 +52,23 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../admin/presentation/view/announcements/announcements_list.dart';
 import '../../../admin/presentation/view/admin_panal.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({super.key});
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  @override
+  void initState() {
+    super.initState();
+    MainCubit.get(context).getProfileInfo();
+    MainCubit.get(context).getAnnouncements(
+        MainCubit.get(context).profileModel != null
+            ? MainCubit.get(context).profileModel!.semester
+            : 'One');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,8 +104,8 @@ class Home extends StatelessWidget {
           BlocProvider.of<AdminCubit>(context)
               .getAnnouncements(AppConstants.SelectedSemester!);
         } else {
-          BlocProvider.of<AdminCubit>(context)
-              .getAnnouncements(MainCubit.get(context).profileModel!.semester);
+          // BlocProvider.of<AdminCubit>(context)
+          //     .getAnnouncements(MainCubit.get(context).profileModel!.semester);
         }
         wannaAnnouncements = false;
       }
@@ -147,12 +162,12 @@ class Home extends StatelessWidget {
                       child: CircularProgressIndicator(),
                     )
                   : RefreshIndicator(
-                      onRefresh: () => onRefresh(
-                        () async {
-                          AdminCubit.get(context).getAnnouncements(profile != null ? profile.semester : AppConstants.SelectedSemester!);
-                          return Future.value();
-                        } as Function<T>()
-                      ),
+                      onRefresh: () => onRefresh(() async {
+                        AdminCubit.get(context).getAnnouncements(profile != null
+                            ? profile.semester
+                            : AppConstants.SelectedSemester!);
+                        return Future.value();
+                      } as Function<T>()),
                       child: SingleChildScrollView(
                         child: SafeArea(
                           child: Padding(
@@ -450,7 +465,6 @@ class Home extends StatelessWidget {
     });
   }
 }
-
 
 Widget _customDrawer(context, semester) {
   ProfileModel? profileModel;

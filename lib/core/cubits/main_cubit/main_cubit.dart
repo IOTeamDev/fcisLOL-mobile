@@ -237,7 +237,6 @@ class MainCubit extends Cubit<MainCubitStates> {
   List<AnnouncementModel>? announcements;
   void getAnnouncements(String semester) {
     announcements = null;
-    print(AppConstants.SelectedSemester.toString());
     emit(GetAnnouncementsLoadingState());
     DioHelp.getData(
         path: ANNOUNCEMENTS,

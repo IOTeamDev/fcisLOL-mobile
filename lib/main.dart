@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -26,17 +23,11 @@ import 'package:lol/features/support_and_about_us/about_us.dart';
 import 'package:lol/features/support_and_about_us/user_advices/feedback_screen.dart';
 import 'package:lol/core/utils/dependencies_helper.dart';
 import 'package:lol/core/network/local/shared_preference.dart';
-import 'package:lol/core/network/remote/fcm_helper.dart';
 import 'package:provider/provider.dart';
 import 'core/utils/resources/strings_manager.dart';
 import 'features/auth/presentation/view_model/login_cubit/login_cubit.dart';
-import 'features/auth/presentation/view/login.dart';
-import 'features/auth/presentation/view/register.dart';
-import 'features/auth/presentation/view/select_image.dart';
-import 'features/leaderboard/presentation/view/leaderboard_view.dart';
 import 'core/utils/resources/constants_manager.dart';
 import 'features/auth/presentation/view/choosing_year.dart';
-import 'features/profile/view/profile.dart';
 import 'core/network/remote/dio.dart';
 import 'core/observer.dart';
 import 'package:flutter/material.dart';
@@ -44,29 +35,11 @@ import 'features/home/presentation/view/home.dart';
 
 String? privateKeyId;
 String? privateKey;
-// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-//   await Firebase.initializeApp();
-//   // If you're going to use other Firebase services in the background, such as Firestore,
-//   // make sure you call `initializeApp` before using other Firebase services.
 
-//   print("Handling a background message: ${message.messageId}");
-// }
-
-// void sendNotificationToSemesterThreeUsers(List<UserModel> users) {
-//   // Filter users whose semester is three
-//   List<UserModel> semesterThreeUsers = users.where((user) => user.semester == 3).toList();
-
-//   for (var user in semesterThreeUsers) {
-//     if (user.fcmToken.isNotEmpty) {
-//       sendFCMNotification(user.fcmToken);
-//     }
-//   }
-// }
 bool? changeSemester = false;
 bool? noMoreStorage = false;
 String? apiKey;
 String? fcmToken;
-// bool isDark = false;
 Map<String, dynamic> fcisServiceMap = {};
 main() async {
   setup();
@@ -97,15 +70,6 @@ main() async {
     privateKeyId = value.data()?["private_key_id"];
     privateKey = privateKey!.replaceAll(r'\n', '\n').trim();
   });
-// fCMHelper.initNotifications();
-
-// fCMHelper.sendNotifications(
-//   fcmToken: "chUAaG_7Tu68jnmU8UpxSN:APA91bHgHAocyXqRhWLeSw7NFepQMKaefT1i0ust8oQVvYsS1kt4OGk0wXHAqD3U6Erciw1IyPS5FUPNwxgkeNEXF4Q5W76GbTS-NZSexTaZNdLQCq1SZZzDkh23RHktWgqd7vBZLRRn",  // Use the token from step 2
-//   title: "Test Notification",
-//   body: "This is a test notification.",
-// );
-// await initNotifation();
-
   Bloc.observer = MyBlocObserver();
 
   AppConstants.TOKEN = Cache.sharedpref.getString(KeysManager.token);
@@ -139,17 +103,11 @@ class App extends StatelessWidget {
   const App({super.key, required this.startPage});
   @override
   Widget build(BuildContext context) {
-    print('--------------------$startPage');
     return MultiBlocProvider(
       providers: [
+        BlocProvider(create: (BuildContext context) => MainCubit()),
         BlocProvider(
-            create: (BuildContext context) => MainCubit()..getProfileInfo()),
-        BlocProvider(
-            create: (BuildContext context) => AdminCubit()
-              ..getAnnouncements(MainCubit.get(context).profileModel != null
-                  ? MainCubit.get(context).profileModel!.semester
-                  : AppConstants.SelectedSemester!)
-              ..getFcmTokens()),
+            create: (BuildContext context) => AdminCubit()..getFcmTokens()),
       ],
       child: MaterialApp(
         home: startPage,
@@ -157,18 +115,5 @@ class App extends StatelessWidget {
         debugShowCheckedModeBanner: false,
       ),
     );
-
-    // BlocConsumer<MainCubit, MainCubitStates>(
-    //     listener: (context, state) {
-    //       if (state is GetProfileSuccess) {
-    //         MainCubit().getRequests(
-    //             semester: MainCubit.get(context).profileModel!.semester);
-    //       }
-    //     },
-    //     builder: (context, state) => MaterialApp(
-    //           home: startPage,
-    //           debugShowCheckedModeBanner: false,
-    //           theme: MainCubit.get(context).themeData,
-    //         ));
   }
 }
