@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/features/auth/presentation/view/widgets/year.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit.dart';
@@ -30,100 +31,80 @@ class ChoosingYear extends StatelessWidget {
       value: loginCubit,
       child: BlocConsumer<LoginCubit, LoginStates>(
         builder: (context, state) => Scaffold(
-          backgroundColor: Colors.white,
+          appBar: AppBar(
+            backgroundColor: ColorsManager.white,
+            title: Text('Year Select', style: Theme.of(context).textTheme.displayMedium!.copyWith(color: ColorsManager.black),),
+            centerTitle: true,
+          ),
+          backgroundColor: ColorsManager.white,
           body: Column(
-            // mainAxisAlignment: userInfo==null?MainAxisAlignment.start:MainAxisAlignment.center,
-
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Content at the top of the body
-              if (userInfo == null)
-                Container(
-                  margin: EdgeInsets.only(top: 120),
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      OutlinedButton(
-                        onPressed: () {
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Registerscreen(),
-                              ),
-                              (route) => false);
-                        },
-                        child: Text(
-                          "Sign up with Email",
+              SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (userInfo != null)
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 3.5,
+                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center, // Center the rows horizontally
+                      children: [
+                        Year(
+                          title: "Level 1",
+                          userInfo: userInfo,
+                        ),
+                        Year(
+                          title: "Level 2",
+                          userInfo: userInfo,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center, // Center the rows horizontally
+                      children: [
+                        Year(
+                          title: "Level 3",
+                          userInfo: userInfo,
+                        ),
+                        Year(
+                          title: "Level 4",
+                          userInfo: userInfo,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'already have account!!',
                           style: TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.w700),
+                              fontSize: 14,
+                              color: Colors.black
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 40,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(child: Divider()),
-                          Container(
-                              margin: EdgeInsets.symmetric(horizontal: 10),
-                              child: Text("OR")),
-                          Expanded(child: Divider()),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        "Continue as a guest",
-                        style: TextStyle(
-                          fontSize: 25,
+                        //SizedBox(width: 2,),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LoginScreen(),
+                                ),
+                                    (route) => false);
+                          },
+                          child: Text(
+                            "Login",
+                            style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w700,
+                              color: ColorsManager.lightPrimary
+                            ),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-
-              // Spacer to push content to the center
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    // crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    //     .center, // Center the Year widgets vertically
-                    children: [
-                      if (userInfo != null)
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height / 3.5,
-                        ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment
-                            .center, // Center the rows horizontally
-                        children: [
-                          Year(
-                            title: "Level 1",
-                            userInfo: userInfo,
-                          ),
-                          Year(
-                            title: "Level 2",
-                            userInfo: userInfo,
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment
-                            .center, // Center the rows horizontally
-                        children: [
-                          Year(
-                            title: "Level 3",
-                            userInfo: userInfo,
-                          ),
-                          Year(
-                            title: "Level 4",
-                            userInfo: userInfo,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ],

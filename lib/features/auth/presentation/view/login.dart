@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/utils/components.dart';
+import 'package:lol/core/utils/resources/icons_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/core/widgets/default_button.dart';
 import 'package:lol/core/widgets/default_text_button.dart';
@@ -18,6 +19,8 @@ import 'package:lol/core/utils/navigation.dart';
 import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../core/utils/resources/colors_manager.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -29,6 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController emailController;
   late TextEditingController passwordController;
   late GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
@@ -59,214 +63,161 @@ class _LoginScreenState extends State<LoginScreen> {
           }
           if (state is LoginFailed) {
             showToastMessage(
-                states: ToastStates.ERROR,
-                message: "Invalid email or password. Please try again");
+              states: ToastStates.ERROR,
+              message: "Invalid email or password. Please try again"
+            );
           }
         },
         builder: (context, state) {
           var loginCubit = AuthCubit.get(context);
-
-          return Scaffold(
-            appBar: AppBar(),
-            body: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Form(
-                key: formKey,
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: Form(
+              key: formKey,
+              child: Center(
                 child: SingleChildScrollView(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Image.asset(
-                              "images/l.png",
-                              width: 35,
-                              height: 35,
-                              // color: MainCubit.get(context).isDark
-                              //     ? Colors.white
-                              //     : Colors.black,
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            const Text(
-                              "UniNotes",
-                              style: TextStyle(
-                                fontSize: 20,
-                                letterSpacing: 2,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 50,
-                      ),
                       const Text(
                         "Login ",
                         style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 40,
+                          fontWeight: FontWeight.w600,
+                          color: ColorsManager.black,
                         ),
                       ),
-                      const Text(
-                          "Continue Your Success Journey with UNINOTES !"),
-                      const SizedBox(
-                        height: 30,
+                      SizedBox(height: 20,),
+                      TextFormField(
+                        controller: emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        style: TextStyle(color: ColorsManager.black),
+                        decoration: InputDecoration(
+                          //hintStyle: TextStyle(color: ColorsManager.lightGrey),
+                          //hintText: 'Email',
+                          labelStyle: TextStyle(color: ColorsManager.lightGrey),
+                          labelText: 'Email',
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                          filled: true,
+                          fillColor: ColorsManager.grey3,
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: ColorsManager.lightPrimary),
+                            borderRadius: BorderRadius.circular(15)
+                          )
+                        ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Field cannot be empty";
+                          } else {
+                            return null; // Form is valid.
+                          }
+                        },
                       ),
-                      Column(
-                        children: [
-                          const Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "Email address",
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w600),
-                            ),
+                      SizedBox(height: 20,),
+                      TextFormField(
+                        obscureText: loginCubit.hiddenPassword,
+                        controller:  passwordController,
+                        keyboardType: TextInputType.visiblePassword,
+                        style: TextStyle(color: ColorsManager.black),
+                        decoration: InputDecoration(
+                          labelStyle: TextStyle(color: ColorsManager.lightGrey),
+                          labelText: 'Password',
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                          filled: true,
+                          fillColor: ColorsManager.grey3,
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: ColorsManager.lightPrimary),
+                              borderRadius: BorderRadius.circular(15)
                           ),
-                          const SizedBox(
-                            height: 5,
+                          suffixIcon: IconButton(
+                            icon: Icon(IconsManager.eyeIcon),
+                            color: loginCubit.hiddenPassword ? ColorsManager.lightGrey : Colors.blue,
+                            onPressed: loginCubit.togglePassword,
                           ),
-                          defaultTextField(
-                              textInputAction: TextInputAction.next,
-                              validateor: (value) {
-                                if (value!.isEmpty) {
-                                  return "Field cannot be empty";
-                                } else {
-                                  return null; // Form is valid.
-                                }
-                              },
-                              controller: emailController,
-                              type: TextInputType.emailAddress),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Text(
-                                "Password",
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w600),
-                              ),
-                              const Spacer(),
-                              TextButton(
-                                style: TextButton.styleFrom(
-                                    padding: const EdgeInsets.all(0)),
-                                child: const Text(
-                                  "Forgot Password ?",
-                                  textAlign: TextAlign.end,
-                                ),
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      title: const Text('Forgot Password'),
-                                      content: Form(
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            TextFormField(
-                                              controller: emailController,
-                                              keyboardType:
-                                                  TextInputType.emailAddress,
-                                              decoration: const InputDecoration(
-                                                labelText: 'Enter your email',
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const Text('Cancel'),
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            String email =
-                                                emailController.text.trim();
-                                            forgetPassword(email: email);
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const Text('Submit'),
-                                        )
-                                      ],
-                                    ),
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                          defaultTextField(
-                              onFieldSubmitted: (val) {
-                                if (formKey.currentState!.validate()) {
-                                  loginCubit.login(
-                                      email: emailController.text.toLowerCase(),
-                                      password: passwordController.text);
-                                }
-                              },
-                              suffFunc: () {
-                                loginCubit.togglePassword();
-                              },
-                              dtaSufIcon: Icon(
-                                Icons.remove_red_eye,
-                                color: loginCubit.hiddenPassword
-                                    ? null
-                                    : Colors.blue,
-                              ),
-                              wantMargin: false,
-                              validateor: (value) {
-                                return null;
-                              },
-                              controller: passwordController,
-                              obscure: loginCubit.hiddenPassword),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      const SizedBox(
-                        height: 50,
-                      ),
-                      state is LoginLoading
-                          ? const Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : defaultButton(
-                              color: Color(0xff4763C4),
-                              buttonFunc: () {
-                                if (formKey.currentState!.validate()) {
-// update fcm token
 
-                                  loginCubit.login(
-                                      email: emailController.text.toLowerCase(),
-                                      password: passwordController.text);
-                                }
-                              },
-                              buttonWidth: 400,
-                              title: "Log in"),
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text("Not a member yet ?"),
-                          defaultTextButton(
-                              onPressed: () {
-                                navigatReplace(context, Registerscreen());
-                              },
-                              text: "Register",
-                              color: Colors.blue)
-                        ],
-                      )
+                        ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Field cannot be empty";
+                          } else {
+                            return null; // Form is valid.
+                          }
+                        },
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            padding: const EdgeInsets.all(0),
+                            foregroundColor: ColorsManager.dodgerBlue
+                          ),
+                          child: const Text(
+                            "Forgot Password ?",
+                          ),
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) =>
+                                  AlertDialog(
+                                    title: const Text('Forgot Password'),
+                                    content: Form(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          TextFormField(
+                                            controller: emailController,
+                                            keyboardType:
+                                            TextInputType.emailAddress,
+                                            decoration: const InputDecoration(
+                                              labelText: 'Enter your email',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text('Cancel'),
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          String email =
+                                          emailController.text.trim();
+                                          forgetPassword(email: email);
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text('Submit'),
+                                      )
+                                    ],
+                                  ),
+                            );
+                          },
+                        ),
+                      ),
+                      state is LoginLoading ? const Center(
+                        child: CircularProgressIndicator(),
+                      ) : ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: ColorsManager.white,
+                          fixedSize: Size(AppQueries.screenWidth(context), 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)
+                          ),
+                          backgroundColor: ColorsManager.lightPrimary
+                        ),
+                        onPressed: () {
+                          if (formKey.currentState!.validate()) {
+                            loginCubit.login(
+                              email: emailController.text.toLowerCase(),
+                              password: passwordController.text
+                            );
+                          }
+                        }, 
+                        child: Text('Login', style: TextStyle(fontSize: 24),),
+                      ),
                     ],
                   ),
                 ),

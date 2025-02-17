@@ -25,6 +25,7 @@ import 'package:lol/core/utils/dependencies_helper.dart';
 import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:provider/provider.dart';
 import 'core/utils/resources/strings_manager.dart';
+import 'features/auth/presentation/view/registration_layout.dart';
 import 'features/auth/presentation/view_model/login_cubit/login_cubit.dart';
 import 'core/utils/resources/constants_manager.dart';
 import 'features/auth/presentation/view/choosing_year.dart';
@@ -73,10 +74,8 @@ main() async {
   Bloc.observer = MyBlocObserver();
 
   AppConstants.TOKEN = Cache.sharedpref.getString(KeysManager.token);
-  AppConstants.SelectedSemester =
-      await Cache.readData(key: KeysManager.semester);
-  bool isOnBoardFinished =
-      await Cache.readData(key: KeysManager.finishedOnBoard) ?? false;
+  AppConstants.SelectedSemester = await Cache.readData(key: KeysManager.semester);
+  bool isOnBoardFinished = await Cache.readData(key: KeysManager.finishedOnBoard) ?? false;
   // TOKEN = null;//
   final Widget startPage;
   if (!isOnBoardFinished) {
@@ -106,14 +105,14 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (BuildContext context) => MainCubit()),
-        BlocProvider(
-            create: (BuildContext context) => AdminCubit()..getFcmTokens()),
+        BlocProvider(create: (BuildContext context) => AdminCubit()..getFcmTokens()),
       ],
       child: MaterialApp(
-        home: startPage,
+        home: RegistrationLayout(),
         theme: Provider.of<ThemeProvider>(context).themeData,
         debugShowCheckedModeBanner: false,
       ),
     );
   }
+
 }

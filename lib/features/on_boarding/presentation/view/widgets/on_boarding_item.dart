@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/features/on_boarding/data/model/on_boarding_model.dart';
 
 class OnBoardingItem extends StatelessWidget {
@@ -7,29 +10,27 @@ class OnBoardingItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
+      alignment: Alignment.center,
       children: [
-        const SizedBox(
-          height: 50,
-        ),
-        Text(
-          model.title!,
-          style: const TextStyle(
-            fontSize: 21.5,
-            letterSpacing: 2.5,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        Expanded(child: Image.asset(model.image!)),
-        Center(
+        Positioned.fill(child: Image.asset(model.image!, fit: BoxFit.cover,)),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Text(
-            textAlign: TextAlign.center,
-            model.body!,
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+            model.title!,
+            style: TextStyle(
+              fontSize: 50,
+              letterSpacing: 1.2,
+              fontWeight: FontWeight.bold,
+              shadows: [
+                Shadow(
+                  offset: Offset(3, 3), // X and Y offset
+                  blurRadius: 5.0, // Spread of the shadow
+                  color: ColorsManager.black.withValues(alpha: 0.4), // Shadow color
+                ),
+              ],
+            ),
           ),
-        ),
-        const SizedBox(
-          height: 100,
         ),
       ],
     );

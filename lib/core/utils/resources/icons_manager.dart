@@ -23,4 +23,5 @@ class IconsManager{
   static const IconData paperIcon = Icons.add_alarm_outlined;
   static const IconData refreshIcon = Icons.refresh;
   static const IconData checkIcon = Icons.check;
+  static const IconData eyeIcon = Icons.visibility;
 }

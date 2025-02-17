@@ -353,35 +353,6 @@ class MainCubit extends Cubit<MainCubitStates> {
     return null;
   }
 
-  void updateSemester4all() {
-    DioHelp.getData(path: KeysManager.users).then((onValue) {
-      onValue.data.forEach((element) {
-        if (element[KeysManager.semester] == StringsManager.one) {
-          updateUser(
-              userID: element[KeysManager.id], semester: StringsManager.two);
-        }
-        if (element[KeysManager.semester] == StringsManager.two) {
-          updateUser(
-              userID: element[KeysManager.id], semester: StringsManager.three);
-        }
-        if (element[KeysManager.semester] == StringsManager.three) {
-          updateUser(
-              userID: element[KeysManager.id], semester: StringsManager.four);
-        }
-        if (element[KeysManager.semester] == StringsManager.four) {
-          updateUser(
-              userID: element[KeysManager.id], semester: StringsManager.five);
-        }
-        if (element[KeysManager.semester] == StringsManager.five) {
-          updateUser(
-              userID: element[KeysManager.id], semester: StringsManager.six);
-        }
-      });
-
-      emit(GetUserImageSuccess());
-    });
-  }
-
   updateUser({
     required int userID,
     String? semester,
