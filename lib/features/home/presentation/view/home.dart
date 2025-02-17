@@ -19,6 +19,7 @@ import 'package:lol/core/utils/resources/routes_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/core/utils/resources/values_manager.dart';
+import 'package:lol/features/auth/presentation/view/registration_layout.dart';
 import 'package:lol/features/home/presentation/view/semester_navigate.dart';
 import 'package:lol/core/models/admin/announcement_model.dart';
 import 'package:lol/features/home/data/models/semster_model.dart';
@@ -74,6 +75,12 @@ class _HomeState extends State<Home> {
     var scaffoldKey = GlobalKey<ScaffoldState>();
     return BlocConsumer<MainCubit, MainCubitStates>(listener: (context, state) {
       if (state is LogoutSuccess) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => RegistrationLayout(),
+          ),
+          (route) => false,
+        );
         showToastMessage(
           message: StringsManager.logOutSuccessfully,
           states: ToastStates.SUCCESS,
@@ -141,7 +148,7 @@ class _HomeState extends State<Home> {
                 ),
               ),
               drawer: CustomDrawer(AppConstants.TOKEN == null
-                  ? AppConstants.SelectedSemester!
+                  ? AppConstants.SelectedSemester ?? ''
                   : MainCubit.get(context).profileModel!.semester),
               body: profile == null && AppConstants.TOKEN != null
                   ? const Center(

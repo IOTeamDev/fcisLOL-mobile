@@ -152,8 +152,13 @@ class MainCubit extends Cubit<MainCubitStates> {
       final response =
           await DioHelp.getData(path: CURRENTUSER, token: AppConstants.TOKEN);
       profileModel = ProfileModel.fromJson(response.data);
-      print(
+      AppConstants.SelectedSemester = profileModel!.semester;
+      await Cache.writeData(
+          key: KeysManager.semester, value: profileModel!.semester);
+      dev.log(
           'profile semester =====================================> ${profileModel!.semester}');
+      dev.log(
+          'selected semester =====================================> ${AppConstants.SelectedSemester}');
       emit(GetProfileSuccess());
     } catch (e) {
       print(e.toString());
@@ -180,15 +185,14 @@ class MainCubit extends Cubit<MainCubitStates> {
     try {
       await Cache.removeValue(key: KeysManager.token);
       await Cache.removeValue(key: KeysManager.semester);
-      print('first token => ${AppConstants.TOKEN}');
-      print('first selected semester => ${AppConstants.SelectedSemester}');
+
       AppConstants.TOKEN = null;
       AppConstants.SelectedSemester = null;
-      print('second token => ${AppConstants.TOKEN}');
-      print('second selected semester => ${AppConstants.SelectedSemester}');
+
       //SelectedSemester
       emit(LogoutSuccess());
     } catch (e) {
+      dev.log('logoutFailed => $e');
       emit(LogoutFailed(errMessage: e.toString()));
     }
   }
@@ -296,6 +300,34 @@ class MainCubit extends Cubit<MainCubitStates> {
       emit(GetLeaderboardErrorState());
     });
     return null;
+  }
+
+  void updateSemester4all() {
+    DioHelp.getData(path: KeysManager.users).then((onValue) {
+      onValue.data.forEach((element) {
+        if (element[KeysManager.semester] == StringsManager.one) {
+          updateUser(
+              userID: element[KeysManager.id], semester: StringsManager.two);
+        }
+        if (element[KeysManager.semester] == StringsManager.two) {
+          updateUser(
+              userID: element[KeysManager.id], semester: StringsManager.three);
+        }
+        if (element[KeysManager.semester] == StringsManager.three) {
+          updateUser(
+              userID: element[KeysManager.id], semester: StringsManager.four);
+        }
+        if (element[KeysManager.semester] == StringsManager.four) {
+          updateUser(
+              userID: element[KeysManager.id], semester: StringsManager.five);
+        }
+        if (element[KeysManager.semester] == StringsManager.five) {
+          updateUser(
+              userID: element[KeysManager.id], semester: StringsManager.six);
+        }
+      });
+      emit(GetUserImageSuccess());
+    });
   }
 
   updateUser({

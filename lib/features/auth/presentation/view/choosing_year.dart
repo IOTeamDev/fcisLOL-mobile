@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
+import 'package:lol/features/auth/presentation/view/registration_layout.dart';
 import 'package:lol/features/auth/presentation/view/widgets/year.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit.dart';
@@ -33,7 +34,13 @@ class ChoosingYear extends StatelessWidget {
         builder: (context, state) => Scaffold(
           appBar: AppBar(
             backgroundColor: ColorsManager.white,
-            title: Text('Year Select', style: Theme.of(context).textTheme.displayMedium!.copyWith(color: ColorsManager.black),),
+            title: Text(
+              'Year Select',
+              style: Theme.of(context)
+                  .textTheme
+                  .displayMedium!
+                  .copyWith(color: ColorsManager.black),
+            ),
             centerTitle: true,
           ),
           backgroundColor: ColorsManager.white,
@@ -49,7 +56,8 @@ class ChoosingYear extends StatelessWidget {
                         height: MediaQuery.of(context).size.height / 3.5,
                       ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center, // Center the rows horizontally
+                      mainAxisAlignment: MainAxisAlignment
+                          .center, // Center the rows horizontally
                       children: [
                         Year(
                           title: "Level 1",
@@ -62,7 +70,8 @@ class ChoosingYear extends StatelessWidget {
                       ],
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center, // Center the rows horizontally
+                      mainAxisAlignment: MainAxisAlignment
+                          .center, // Center the rows horizontally
                       children: [
                         Year(
                           title: "Level 3",
@@ -79,10 +88,7 @@ class ChoosingYear extends StatelessWidget {
                       children: [
                         Text(
                           'already have account!!',
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black
-                          ),
+                          style: TextStyle(fontSize: 14, color: Colors.black),
                         ),
                         //SizedBox(width: 2,),
                         TextButton(
@@ -90,16 +96,16 @@ class ChoosingYear extends StatelessWidget {
                             Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => LoginScreen(),
+                                  builder: (context) => RegistrationLayout(),
                                 ),
-                                    (route) => false);
+                                (route) => false);
                           },
                           child: Text(
                             "Login",
                             style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w700,
-                              color: ColorsManager.lightPrimary
-                            ),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                                color: ColorsManager.lightPrimary),
                           ),
                         ),
                       ],

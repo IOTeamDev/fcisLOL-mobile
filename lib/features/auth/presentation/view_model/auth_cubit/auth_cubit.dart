@@ -37,7 +37,7 @@ class AuthCubit extends Cubit<AuthState> {
       await FirebaseMessaging.instance.requestPermission();
       await Cache.writeData(key: KeysManager.token, value: loginModel.token);
       AppConstants.TOKEN = loginModel.token;
-      log('my token => ${AppConstants.TOKEN}');
+      print('token=>>>>>>>>>>${AppConstants.TOKEN}');
       emit(LoginSuccess());
     } catch (e) {
       emit(LoginFailed(errMessage: e.toString()));

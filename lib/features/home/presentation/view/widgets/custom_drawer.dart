@@ -125,7 +125,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       color: Theme.of(context).scaffoldBackgroundColor),
                   accountName: const Text(StringsManager.guest),
                   accountEmail: Text(
-                    AppConstants.Level(AppConstants.SelectedSemester!),
+                    AppConstants.Level(AppConstants.SelectedSemester ?? ''),
                     style: Theme.of(context).textTheme.displayLarge,
                   ),
                   currentAccountPicture: const CircleAvatar(

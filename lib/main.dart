@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -74,14 +76,16 @@ main() async {
   Bloc.observer = MyBlocObserver();
 
   AppConstants.TOKEN = Cache.sharedpref.getString(KeysManager.token);
-  AppConstants.SelectedSemester = await Cache.readData(key: KeysManager.semester);
-  bool isOnBoardFinished = await Cache.readData(key: KeysManager.finishedOnBoard) ?? false;
+  AppConstants.SelectedSemester =
+      await Cache.sharedpref.getString(KeysManager.semester);
+  bool isOnBoardFinished =
+      await Cache.readData(key: KeysManager.finishedOnBoard) ?? false;
   // TOKEN = null;//
   final Widget startPage;
   if (!isOnBoardFinished) {
     startPage = const OnBoarding();
   } else {
-    if (AppConstants.SelectedSemester == null && AppConstants.TOKEN == null) {
+    if (AppConstants.TOKEN == null) {
       startPage = ChoosingYear(
         loginCubit: LoginCubit(),
       );
@@ -105,14 +109,14 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (BuildContext context) => MainCubit()),
-        BlocProvider(create: (BuildContext context) => AdminCubit()..getFcmTokens()),
+        BlocProvider(
+            create: (BuildContext context) => AdminCubit()..getFcmTokens()),
       ],
       child: MaterialApp(
-        home: RegistrationLayout(),
+        home: startPage,
         theme: Provider.of<ThemeProvider>(context).themeData,
         debugShowCheckedModeBanner: false,
       ),
     );
   }
-
 }

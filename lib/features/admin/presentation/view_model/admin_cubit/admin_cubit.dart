@@ -115,6 +115,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
   Future<void> getAnnouncements(String semester) async {
     emit(AdminGetAnnouncementLoadingState());
     try {
+      announcements.clear();
       final response = await DioHelp.getData(
           path: ANNOUNCEMENTS, query: {KeysManager.semester: semester});
       response.data.forEach((element) {
