@@ -92,6 +92,11 @@ class StringsManager{
   static const String requestRejected = 'Request Rejected!!!!';
   static const String requestAccepted = 'Request Accepted Successfully!!!!';
   static const String requestDetails = 'Request Details';
+  static const String getStarted = 'Get Started';
+  static const String next = 'Next';
+  static const String onBoardingTitle1 = 'Welcome to our App Uni-Notes';
+  static const String onBoardingTitle2 = 'Share materials with each other easily';
+  static const String onBoardingTitle3 = 'Be AWARE with the latest updates';
 }
 
 class KeysManager{

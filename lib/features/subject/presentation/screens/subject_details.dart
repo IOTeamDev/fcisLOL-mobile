@@ -111,10 +111,9 @@ class _MaterialDetailsState extends State<SubjectDetails>
             CustomTabBar(
                 tabController: _tabControllerOfShowingContent,
                 title1: 'Videos',
-                title2: 'Documents'),
-            Expanded(
-                child: CustomTabBarView(
-                    controller: _tabControllerOfShowingContent)),
+                title2: 'Documents'
+            ),
+            Expanded(child: CustomTabBarView(controller: _tabControllerOfShowingContent)),
           ],
         ),
       ),

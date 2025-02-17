@@ -16,6 +16,7 @@ abstract class ColorsManager {
       Color(0xff23252A); //background Color in dark theme
   static const Color white = Color(0xffffffff); //white
   static const Color black = Color(0xff000000); //black
+  static const Color black2 = Color(0xff23252A); //black
   static const Color cyan = Color(0xff00ffff); //blue
   static const Color lightCyan = Color(0xffEAFCFF); // blue
   static const Color dodgerBlue = Color(0xff1482DC); //blue

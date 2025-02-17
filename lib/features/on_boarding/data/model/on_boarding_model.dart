@@ -1,24 +1,23 @@
+import 'package:lol/core/utils/resources/assets_manager.dart';
+import 'package:lol/core/utils/resources/strings_manager.dart';
+
 class OnBoardingModel {
   String? title;
-  String? body;
   String? image;
-  OnBoardingModel(
-      {required this.title, required this.body, required this.image});
+  OnBoardingModel({required this.title, required this.image});
 }
 
 List<OnBoardingModel> onBoardingItemsList = [
   OnBoardingModel(
-      title: "All In One Place",
-      body: "Videos 🎬, Notes 📝, Recordings 📹, Exams 🖊... and more ",
-      image: "images/Checklist.png"),
+    title: StringsManager.onBoardingTitle1,
+    image: AssetsManager.onBoarding1
+  ),
   OnBoardingModel(
-      title: "Study anytime anywhere",
-      body:
-          " Whether you’re on the bus or at home, your learning is always within reach.",
-      image: "images/Subway-cuate.png"),
+    title: StringsManager.onBoardingTitle2,
+    image: AssetsManager.onBoarding2
+  ),
   OnBoardingModel(
-      title: "A+ is Just a Tap Away !",
-      body:
-          "Why wait? Jump into your studies and watch your grades climb to the top.",
-      image: "images/Grades-pana.png"),
+    title: StringsManager.onBoardingTitle3,
+    image: AssetsManager.onBoarding3
+  ),
 ];
