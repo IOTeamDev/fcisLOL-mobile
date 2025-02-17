@@ -7,6 +7,7 @@ import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/core/utils/resources/theme_provider.dart';
+import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit_states.dart';
 import 'package:lol/core/utils/resources/constants_manager.dart';
@@ -86,7 +87,7 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
 
     return BlocConsumer<MainCubit, MainCubitStates>(
       listener: (context, state) {
-        if (state is UpdateAnnouncementsSuccessState) {
+        if (state is AdminUpdateAnnouncementSuccessState) {
           showToastMessage(
               message: 'Announcement Updated Successfully!!',
               states: ToastStates.SUCCESS);
@@ -94,7 +95,6 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
         }
       },
       builder: (context, state) {
-        var cubit = MainCubit.get(context);
         return Scaffold(
           appBar: AppBar(
             title: Text(
@@ -360,7 +360,8 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                               ElevatedButton(
                                   onPressed: () async {
                                     if (_formKey.currentState!.validate()) {
-                                      cubit.updateAnnouncement(
+                                      AdminCubit.get(context)
+                                          .updateAnnouncement(
                                         id,
                                         title: titleController.text,
                                         content: contentController.text,

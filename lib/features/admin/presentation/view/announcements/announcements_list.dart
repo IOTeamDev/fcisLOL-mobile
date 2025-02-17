@@ -42,8 +42,7 @@ class AnnouncementsList extends StatelessWidget {
               child: RefreshIndicator(
                 onRefresh: () => _onRefresh(context),
                 child: ConditionalBuilder(
-                  condition: cubit.announcements != null &&
-                      state is! AdminGetAnnouncementLoadingState,
+                  condition: state is! AdminGetAnnouncementLoadingState,
                   fallback: (context) => Center(
                     child: CircularProgressIndicator(),
                   ),
@@ -51,17 +50,17 @@ class AnnouncementsList extends StatelessWidget {
                     //shrinkWrap: true,
                     physics: const AlwaysScrollableScrollPhysics(),
                     itemBuilder: (context, index) => announcementBuilder(
-                        cubit.announcements![index].id,
+                        cubit.announcements[index].id,
                         context,
-                        cubit.announcements![index].title,
+                        cubit.announcements[index].title,
                         index,
-                        cubit.announcements![index].content,
-                        cubit.announcements![index].dueDate,
-                        cubit.announcements![index].type),
+                        cubit.announcements[index].content,
+                        cubit.announcements[index].dueDate,
+                        cubit.announcements[index].type),
                     separatorBuilder: (context, index) => const SizedBox(
                       height: AppSizesDouble.s10,
                     ),
-                    itemCount: cubit.announcements!.length,
+                    itemCount: cubit.announcements.length,
                     //cubit.announcements!.length
                   ),
                 ),

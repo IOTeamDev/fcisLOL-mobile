@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
+import 'package:lol/features/home/presentation/view/widgets/subject_item_build.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/home/data/models/semster_model.dart';
 import 'package:lol/core/utils/components.dart';
@@ -98,15 +99,9 @@ class SemesterNavigate extends StatelessWidget {
                       // semesters[semesterIndex!].subjects.length,
                       semesters[semesterIndex].subjects.length,
                   itemBuilder: (context, index) {
-                    return
-
-                        // subjectItemBuild(
-                        //     semesters[semesterIndex!]
-                        //         .subjects[index],context);
-                        subjectItemBuild(
-                            semesters[semesterIndex].subjects[index],
-                            context,
-                            true);
+                    return SubjectItemBuild(
+                        subject: semesters[semesterIndex].subjects[index],
+                        navigation: true);
                   },
                 ),
               ],

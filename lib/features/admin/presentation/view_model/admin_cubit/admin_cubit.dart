@@ -6,9 +6,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
+import 'package:lol/core/utils/resources/values_manager.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit_states.dart';
 import 'package:lol/core/utils/components.dart';
-
+import 'dart:developer' as dev;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/date_time_patterns.dart';
@@ -35,7 +36,6 @@ class AdminCubit extends Cubit<AdminCubitStates> {
   List<FcmToken> adminFcmTokens = [];
 //List of notifications messages
   Future? getFcmTokens() {
-    print("object");
     DioHelp.getData(path: "users").then(
       (value) {
         value.data.forEach((element) {
@@ -43,8 +43,6 @@ class AdminCubit extends Cubit<AdminCubitStates> {
           if (element['role'] == 'ADMIN') {
             adminFcmTokens.add(FcmToken.fromJson(element));
           }
-
-          // print(fcmTokens[1].semester);
         });
         // fcmTokens.forEach((element) {
         //   if (element.name == "phone") print(element.semester);
@@ -55,10 +53,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
           //     body: "body",
           //     token:
           //         "chUAaG_7Tu68jnmU8UpxSN:APA91bHgHAocyXqRhWLeSw7NFepQMKaefT1i0ust8oQVvYsS1kt4OGk0wXHAqD3U6Erciw1IyPS5FUPNwxgkeNEXF4Q5W76GbTS-NZSexTaZNdLQCq1SZZzDkh23RHktWgqd7vBZLRRn");
-          if (action.fcmToken != null) {
-            print(action.name.toString());
-            print(action.fcmToken.toString());
-          }
+          if (action.fcmToken != null) {}
         }
         emit(GetFcmTokensSuccess());
       },
@@ -116,68 +111,54 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     });
   }
 
-  // List<AnnouncementModel>? announcements;
-  // void getAnnouncements(String semester) {
-  //   announcements = null;
-  //   emit(AdminGetAnnouncementLoadingState());
-  //   DioHelp.getData(path: ANNOUNCEMENTS, query: {'semester': semester})
-  //       .then((value) {
-  //     announcements = [];
-  //     value.data.forEach((element) {
-  //       announcements!.add(AnnouncementModel.fromJson(element));
-  //     });
-  //     announcements?.sort((a, b) => b.id.compareTo(a.id));
-  //     emit(AdminGetAnnouncementSuccessState(announcements!));
-  //   });
-  // }
-  List<AnnouncementModel>? announcements;
-  void getAnnouncements(String semester) {
-    announcements = null;
+  List<AnnouncementModel> announcements = [];
+  Future<void> getAnnouncements(String semester) async {
     emit(AdminGetAnnouncementLoadingState());
-    DioHelp.getData(
-        path: ANNOUNCEMENTS,
-        query: {KeysManager.semester: semester}).then((value) {
-      announcements = [];
-      value.data.forEach((element) {
-        announcements!.add(AnnouncementModel.fromJson(element));
+    try {
+      final response = await DioHelp.getData(
+          path: ANNOUNCEMENTS, query: {KeysManager.semester: semester});
+      response.data.forEach((element) {
+        announcements.add(AnnouncementModel.fromJson(element));
       });
-      emit(AdminGetAnnouncementSuccessState(announcements!));
-    });
+
+      emit(AdminGetAnnouncementSuccessState());
+    } catch (e) {
+      emit(AdminGetAnnouncementsErrorState(e.toString()));
+    }
   }
 
-  void updateAnnouncement(final String id,
-      {String? title,
-      String? content,
-      dynamic dueDate,
-      String? type,
-      required currentSemester}) {
+  void updateAnnouncement(
+    final int id, {
+    String? title,
+    String? content,
+    dynamic dueDate,
+    // String? type,
+    //dynamic currentSemester,
+    //String? image,
+  }) {
     emit(AdminUpdateAnnouncementLoadingState());
     DioHelp.putData(
         path: ANNOUNCEMENTS,
         data: {
-          'title': title,
-          'content': content,
-          'due_date': dueDate,
-          'type': type,
-          'semester': currentSemester
+          StringsManager.title: title ?? "",
+          StringsManager.content: content ?? "",
+          StringsManager.dueDate: dueDate,
+          //'type': type,
+          //'semester': currentSemester,
+          //'image': image,
         },
         token: AppConstants.TOKEN,
-        query: {'id': int.parse(id)}).then((value) {
-      print(value.data);
+        query: {KeysManager.id: id}).then((value) {
       // Assuming the response returns the updated announcement
       AnnouncementModel updatedAnnouncement =
           AnnouncementModel.fromJson(value.data);
 
       // Update the local announcements list
-      if (announcements != null) {
-        int index = announcements!.indexWhere((ann) => ann.id.toString() == id);
-        if (index != -1) {
-          announcements![index] = updatedAnnouncement;
-        }
+      int index = announcements.indexWhere((ann) => ann.id == id);
+      if (index != AppSizes.s1N) {
+        announcements[index] = updatedAnnouncement;
       }
       emit(AdminUpdateAnnouncementSuccessState());
-    }).catchError((error) {
-      emit(AdminUpdateAnnouncementErrorState(error.toString()));
     });
   }
 
@@ -204,9 +185,6 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     await fCMHelper.initNotifications();
     var serverKeyAuthorization = await fCMHelper.getAccessToken();
 
-    print(
-        "${serverKeyAuthorization}_________________________________________________________________________________");
-
     // change your project id
     const String urlEndPoint =
         "https://fcm.googleapis.com/v1/projects/fcis-da7f4/messages:send";
@@ -229,13 +207,6 @@ class AdminCubit extends Cubit<AdminCubitStates> {
       print(onError.toString());
       emit(SendNotificationError());
     });
-
-    // Print response status code and body for debugging
-    //   print('Response Status Code: ${response.statusCode}');
-    //   print('Response Data: ${response.data}');
-    // } catch (e) {
-    //   print("Error sending notification: $e");
-    // }
   }
 
   Future<void> sendNotificationToUsers({

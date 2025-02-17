@@ -152,6 +152,8 @@ class MainCubit extends Cubit<MainCubitStates> {
       final response =
           await DioHelp.getData(path: CURRENTUSER, token: AppConstants.TOKEN);
       profileModel = ProfileModel.fromJson(response.data);
+      print(
+          'profile semester =====================================> ${profileModel!.semester}');
       emit(GetProfileSuccess());
     } catch (e) {
       print(e.toString());
@@ -192,7 +194,8 @@ class MainCubit extends Cubit<MainCubitStates> {
   }
 
   List<MaterialModel>? requests;
-  void getRequests({required String semester, bool isAccepted = false}) async {
+  Future<void> getRequests(
+      {required String semester, bool isAccepted = false}) async {
     emit(GetRequestsLoadingState());
 
     try {
@@ -231,64 +234,6 @@ class MainCubit extends Cubit<MainCubitStates> {
         .then((value) {
       emit(AcceptRequestSuccessState());
       getRequests(semester: semester);
-    });
-  }
-
-  List<AnnouncementModel>? announcements;
-  void getAnnouncements(String semester) {
-    announcements = null;
-    emit(GetAnnouncementsLoadingState());
-    DioHelp.getData(
-        path: ANNOUNCEMENTS,
-        query: {KeysManager.semester: semester}).then((value) {
-      announcements = [];
-      value.data.forEach((element) {
-        announcements!.add(AnnouncementModel.fromJson(element));
-      });
-      emit(GetAnnouncementsSuccessState());
-    });
-  }
-
-  void updateAnnouncement(
-    final int id, {
-    String? title,
-    String? content,
-    dynamic dueDate,
-    // String? type,
-    //dynamic currentSemester,
-    //String? image,
-  }) {
-    print(id);
-    print(title);
-    print(content);
-    print(dueDate);
-    //print(currentSemester);
-    // print(image);
-    emit(UpdateAnnouncementsLoadingState());
-    DioHelp.putData(
-        path: ANNOUNCEMENTS,
-        data: {
-          StringsManager.title: title ?? "",
-          StringsManager.content: content ?? "",
-          StringsManager.dueDate: dueDate,
-          //'type': type,
-          //'semester': currentSemester,
-          //'image': image,
-        },
-        token: AppConstants.TOKEN,
-        query: {KeysManager.id: id}).then((value) {
-      // Assuming the response returns the updated announcement
-      AnnouncementModel updatedAnnouncement =
-          AnnouncementModel.fromJson(value.data);
-
-      // Update the local announcements list
-      if (announcements != null) {
-        int index = announcements!.indexWhere((ann) => ann.id == id);
-        if (index != AppSizes.s1N) {
-          announcements![index] = updatedAnnouncement;
-        }
-      }
-      emit(UpdateAnnouncementsSuccessState());
     });
   }
 

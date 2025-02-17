@@ -2,17 +2,13 @@ import 'package:lol/core/models/admin/announcement_model.dart';
 import 'package:lol/core/models/admin/requests_model.dart';
 import 'package:lol/features/subject/data/models/material_model.dart';
 
-abstract class AdminCubitStates {}
+sealed class AdminCubitStates {}
 
 class InitialAdminState extends AdminCubitStates {}
 
 class AdminGetAnnouncementLoadingState extends AdminCubitStates {}
 
-class AdminGetAnnouncementSuccessState extends AdminCubitStates {
-  final List<AnnouncementModel> announcements;
-
-  AdminGetAnnouncementSuccessState(this.announcements);
-}
+class AdminGetAnnouncementSuccessState extends AdminCubitStates {}
 
 class AdminGetAnnouncementsErrorState extends AdminCubitStates {
   final String error;

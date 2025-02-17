@@ -633,8 +633,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                   ),
                   ConditionalBuilder(
                     condition: state is! AdminGetAnnouncementLoadingState &&
-                        cubit.announcements != null &&
-                        cubit.announcements!.isNotEmpty,
+                        cubit.announcements.isNotEmpty,
                     builder: (context) => ListView.separated(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
@@ -643,14 +642,14 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                           // cubit.announcements![index].id,
                           context,
                           index,
-                          cubit.announcements![index].title,
-                          cubit.announcements![index].content,
-                          cubit.announcements![index].dueDate,
-                          cubit.announcements![index].type),
+                          cubit.announcements[index].title,
+                          cubit.announcements[index].content,
+                          cubit.announcements[index].dueDate,
+                          cubit.announcements[index].type),
                       separatorBuilder: (context, index) => const SizedBox(
                         height: AppSizesDouble.s10,
                       ),
-                      itemCount: cubit.announcements!.length,
+                      itemCount: cubit.announcements.length,
                     ),
                     fallback: (context) {
                       if (state is AdminGetAnnouncementLoadingState) {
@@ -743,7 +742,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
 
   Widget announcementBuilder(
       semester, context, index, title, content, date, selectedItem) {
-    var cubit = AdminCubit.get(context).announcements![index];
+    var cubit = AdminCubit.get(context).announcements[index];
     print(cubit.type);
     return GestureDetector(
       onTap: () {
