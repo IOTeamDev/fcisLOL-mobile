@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
 
 class DioHelp {
@@ -7,7 +8,7 @@ class DioHelp {
   static initial() {
     dio = Dio(
       BaseOptions(
-        baseUrl: "https://fcislol.netlify.app/api/",
+        baseUrl: AppConstants.appBaseUrl,
         receiveDataWhenStatusError: true,
         ),
     );

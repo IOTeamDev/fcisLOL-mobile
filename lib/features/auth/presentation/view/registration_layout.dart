@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/core/utils/resources/constants_manager.dart';
+import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/features/auth/presentation/view/login.dart';
 import 'package:lol/features/auth/presentation/view/register.dart';
 
@@ -41,10 +42,10 @@ class _RegistrationLayoutState extends State<RegistrationLayout> with SingleTick
                 controller: _tabController,
                 tabs: [
                   Tab(
-                    text: 'Login',
+                    text: StringsManager.login,
                   ),
                   Tab(
-                    text: 'Register',
+                    text: StringsManager.signup,
                   )
                 ]
             ),

@@ -5,6 +5,7 @@ import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/resources/icons_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
+import 'package:lol/core/utils/resources/values_manager.dart';
 import 'package:lol/core/widgets/default_button.dart';
 import 'package:lol/core/widgets/default_text_button.dart';
 import 'package:lol/core/widgets/default_text_field.dart';
@@ -79,145 +80,73 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Text(
-                        "Login ",
-                        style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.w600,
-                          color: ColorsManager.black,
-                        ),
+                      Text(
+                        StringsManager.login,
+                        style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                          fontSize: AppSizesDouble.s40,
+                          color: ColorsManager.black
+                        )
                       ),
-                      SizedBox(height: 20,),
-                      TextFormField(
-                        controller: emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        style: TextStyle(color: ColorsManager.black),
-                        decoration: InputDecoration(
-                          //hintStyle: TextStyle(color: ColorsManager.lightGrey),
-                          //hintText: 'Email',
-                          labelStyle: TextStyle(color: ColorsManager.lightGrey),
-                          labelText: 'Email',
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-                          filled: true,
-                          fillColor: ColorsManager.grey3,
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: ColorsManager.lightPrimary),
-                            borderRadius: BorderRadius.circular(15)
-                          )
-                        ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Field cannot be empty";
-                          } else {
-                            return null; // Form is valid.
-                          }
-                        },
-                      ),
-                      SizedBox(height: 20,),
-                      TextFormField(
-                        obscureText: loginCubit.hiddenPassword,
-                        controller:  passwordController,
-                        keyboardType: TextInputType.visiblePassword,
-                        style: TextStyle(color: ColorsManager.black),
-                        decoration: InputDecoration(
-                          labelStyle: TextStyle(color: ColorsManager.lightGrey),
-                          labelText: 'Password',
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-                          filled: true,
-                          fillColor: ColorsManager.grey3,
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: ColorsManager.lightPrimary),
-                              borderRadius: BorderRadius.circular(15)
-                          ),
-                          suffixIcon: IconButton(
-                            icon: Icon(IconsManager.eyeIcon),
-                            color: loginCubit.hiddenPassword ? ColorsManager.lightGrey : Colors.blue,
-                            onPressed: loginCubit.togglePassword,
-                          ),
-
-                        ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Field cannot be empty";
-                          } else {
-                            return null; // Form is valid.
-                          }
-                        },
-                      ),
+                      SizedBox(height: AppSizesDouble.s20,),
+                      defaultLoginInputField(emailController, StringsManager.email, TextInputType.emailAddress, false, loginCubit,),
+                      SizedBox(height: AppSizesDouble.s20,),
+                      defaultLoginInputField(passwordController, StringsManager.password, TextInputType.visiblePassword, true, loginCubit, IconsManager.eyeIcon),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: TextButton(
                           style: TextButton.styleFrom(
-                            padding: const EdgeInsets.all(0),
+                            padding: const EdgeInsets.all(AppSizesDouble.s0),
                             foregroundColor: ColorsManager.dodgerBlue
                           ),
                           child: const Text(
-                            "Forgot Password ?",
+                            StringsManager.forgotPassword + StringsManager.qMark,
                           ),
                           onPressed: () {
                             showDialog(
                               context: context,
                               builder: (context) =>
-                                  AlertDialog(
-                                    title: const Text('Forgot Password'),
-                                    content: Form(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          TextFormField(
-                                            controller: emailController,
-                                            keyboardType:
-                                            TextInputType.emailAddress,
-                                            decoration: const InputDecoration(
-                                              labelText: 'Enter your email',
-                                            ),
+                                AlertDialog(
+                                  title: const Text(StringsManager.forgotPassword),
+                                  content: Form(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        TextFormField(
+                                          controller: emailController,
+                                          keyboardType:
+                                          TextInputType.emailAddress,
+                                          decoration: const InputDecoration(
+                                            labelText: StringsManager.email,
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: const Text('Cancel'),
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          String email =
-                                          emailController.text.trim();
-                                          forgetPassword(email: email);
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: const Text('Submit'),
-                                      )
-                                    ],
                                   ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text(StringsManager.cancel),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        String email =
+                                        emailController.text.trim();
+                                        forgetPassword(email: email);
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text(StringsManager.submit),
+                                    )
+                                  ],
+                                ),
                             );
                           },
                         ),
                       ),
                       state is LoginLoading ? const Center(
                         child: CircularProgressIndicator(),
-                      ) : ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: ColorsManager.white,
-                          fixedSize: Size(AppQueries.screenWidth(context), 50),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15)
-                          ),
-                          backgroundColor: ColorsManager.lightPrimary
-                        ),
-                        onPressed: () {
-                          if (formKey.currentState!.validate()) {
-                            loginCubit.login(
-                              email: emailController.text.toLowerCase(),
-                              password: passwordController.text
-                            );
-                          }
-                        }, 
-                        child: Text('Login', style: TextStyle(fontSize: 24),),
-                      ),
+                      ) : defaultLoginButton(context, formKey, loginCubit, emailController, passwordController, StringsManager.login)
                     ],
                   ),
                 ),
