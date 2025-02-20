@@ -625,7 +625,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         Text(
                           AppConstants.TOKEN != null
                               ? StringsManager.logOut
-                              : StringsManager.logIn,
+                              : StringsManager.login,
                           style: Theme.of(context)
                               .textTheme
                               .bodyLarge!

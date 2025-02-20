@@ -28,9 +28,7 @@ class RouteGenerator {
       case Routes.loginRoute:
         return MaterialPageRoute(builder: (_) => const LoginScreen());
       case Routes.registerRoute:
-        return MaterialPageRoute(builder: (_) => const Registerscreen());
-      case Routes.mainRoute:
-        return MaterialPageRoute(builder: (_) => const Home());
+        return MaterialPageRoute(builder: (_) => Registerscreen());
       case Routes.adminPanelRoute:
         return MaterialPageRoute(builder: (_) => const AdminPanel());
       case Routes.adminRequestsRoute:

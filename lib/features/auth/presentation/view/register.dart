@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:lol/core/utils/components.dart';
+import 'package:lol/core/utils/resources/icons_manager.dart';
+import 'package:lol/core/utils/resources/values_manager.dart';
 import 'package:lol/core/widgets/default_button.dart';
 import 'package:lol/core/widgets/default_text_button.dart';
 import 'package:lol/core/widgets/default_text_field.dart';
@@ -15,6 +18,9 @@ import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/core/utils/navigation.dart';
 import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
+import '../../../../core/utils/resources/colors_manager.dart';
+import '../../../../core/utils/resources/strings_manager.dart';
 
 class UserInfo {
   late String name;

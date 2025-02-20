@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
+import 'package:lol/core/utils/resources/values_manager.dart';
 import 'package:lol/features/auth/presentation/view/registration_layout.dart';
 import 'package:lol/features/auth/presentation/view/widgets/year.dart';
 import 'package:lol/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
@@ -19,6 +20,7 @@ import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:lol/core/network/remote/fcm_helper.dart';
 
 import '../../../../core/utils/resources/constants_manager.dart';
+import '../../../../core/utils/resources/strings_manager.dart';
 
 late String switchSemester;
 
@@ -37,7 +39,7 @@ class ChoosingYear extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: ColorsManager.white,
         title: Text(
-          'Year Select',
+          StringsManager.yearSelect,
           style: Theme.of(context)
               .textTheme
               .displayMedium!
@@ -57,18 +59,19 @@ class ChoosingYear extends StatelessWidget {
                 children: [
                   if (userInfo != null)
                     SizedBox(
-                      height: MediaQuery.of(context).size.height / 3.5,
+                      height: MediaQuery.of(context).size.height /
+                          AppSizesDouble.s3_5,
                     ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment
                         .center, // Center the rows horizontally
                     children: [
                       Year(
-                        title: "Level 1",
+                        title: StringsManager.level1,
                         userInfo: userInfo,
                       ),
                       Year(
-                        title: "Level 2",
+                        title: StringsManager.level1,
                         userInfo: userInfo,
                       ),
                     ],
@@ -78,11 +81,11 @@ class ChoosingYear extends StatelessWidget {
                         .center, // Center the rows horizontally
                     children: [
                       Year(
-                        title: "Level 3",
+                        title: StringsManager.level3,
                         userInfo: userInfo,
                       ),
                       Year(
-                        title: "Level 4",
+                        title: StringsManager.level4,
                         userInfo: userInfo,
                       ),
                     ],
@@ -91,7 +94,7 @@ class ChoosingYear extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'already have account!!',
+                        StringsManager.alreadyHaveAccount,
                         style: TextStyle(fontSize: 14, color: Colors.black),
                       ),
                       //SizedBox(width: 2,),
@@ -105,7 +108,7 @@ class ChoosingYear extends StatelessWidget {
                               (route) => false);
                         },
                         child: Text(
-                          "Login",
+                          StringsManager.login,
                           style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w700,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/core/utils/resources/constants_manager.dart';
+import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/features/auth/presentation/view/login.dart';
 import 'package:lol/features/auth/presentation/view/register.dart';
 import 'package:lol/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';

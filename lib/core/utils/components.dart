@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:linkify/linkify.dart';
+import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/core/utils/resources/values_manager.dart';
 import 'package:lol/features/admin/presentation/view/admin_panal.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
@@ -36,6 +37,58 @@ Widget divider({
       height: height,
       thickness: thickness,
     );
+
+Widget defaultLoginButton(context, formKey, loginCubit, emailController, passwordController, text, [bool isSignUp = false, onPressed]) => ElevatedButton(
+  style: ElevatedButton.styleFrom(
+      foregroundColor: ColorsManager.white,
+      fixedSize: Size(AppQueries.screenWidth(context), AppSizesDouble.s50),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppSizesDouble.s15)
+      ),
+      backgroundColor: ColorsManager.lightPrimary
+  ),
+  onPressed: isSignUp? onPressed:() {
+    if (formKey.currentState!.validate()) {
+      loginCubit.login(
+          email: emailController.text.toLowerCase(),
+          password: passwordController.text
+      );
+    }
+  },
+  child: Text(text, style: Theme.of(context).textTheme.headlineLarge!.copyWith(color: ColorsManager.white),),
+);
+
+Widget defaultLoginInputField(controller, label, keyboardType, [bool isPassword = false, loginCubit, suffixIcon, bool isConfirmPassword = false, validationMessage, onFieldSubmit]) => TextFormField(
+  obscureText: isPassword?loginCubit.hiddenPassword:false,
+  controller:  controller,
+  keyboardType: keyboardType,
+  style: TextStyle(color: ColorsManager.black),
+  decoration: InputDecoration(
+    labelStyle: TextStyle(color: ColorsManager.lightGrey),
+    labelText: label,
+    border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+    filled: true,
+    fillColor: ColorsManager.grey3,
+    focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: ColorsManager.lightPrimary),
+        borderRadius: BorderRadius.circular(AppSizesDouble.s15)
+    ),
+    suffixIcon: isPassword? IconButton(
+      icon: Icon(suffixIcon),
+      color: loginCubit.hiddenPassword ? ColorsManager.lightGrey : Colors.blue,
+      onPressed: loginCubit.togglePassword,
+    ):null,
+
+  ),
+  validator: (value) {
+    if (value!.isEmpty) {
+      return isConfirmPassword? validationMessage: StringsManager.emptyFieldWarning;
+    } else {
+      return null; // Form is valid.
+    }
+  },
+  onFieldSubmitted: isConfirmPassword?onFieldSubmit:null,
+);
 
 void showToastMessage({
   required String message,

@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
@@ -52,7 +51,6 @@ import 'package:lol/core/utils/dependencies_helper.dart';
 import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../../../admin/presentation/view/announcements/announcements_list.dart';
 import '../../../admin/presentation/view/admin_panal.dart';
 
@@ -198,7 +196,10 @@ class _HomeState extends State<Home> {
                                         );
                                       } else if (state
                                           is AdminGetAnnouncementsErrorState) {
-                                        return Image.asset('images/th.png');
+                                        return Center(
+                                          child: Text(
+                                              'no announcements ${state.error}'),
+                                        );
                                       } else {
                                         return const SizedBox();
                                       }
@@ -239,12 +240,11 @@ class _HomeState extends State<Home> {
                                     itemCount: semesters[semesterIndex!]
                                         .subjects
                                         .length,
-                                    itemBuilder: (context, index) {
-                                      return SubjectItemBuild(
-                                          subject: semesters[semesterIndex!]
-                                              .subjects[index],
-                                          navigation: false);
-                                    },
+                                    itemBuilder: (context, index) =>
+                                        SubjectItemBuild(
+                                            subject: semesters[semesterIndex!]
+                                                .subjects[index],
+                                            navigation: false),
                                   ),
                                 ),
                               ],

@@ -95,10 +95,12 @@ main() async {
     }
   }
 
-  runApp(ChangeNotifierProvider(
-    create: (context) => ThemeProvider(),
-    child: App(startPage: startPage),
-  ));
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ThemeProvider(),
+      child: App(startPage: startPage),
+    )
+  );
 }
 
 class App extends StatelessWidget {
@@ -110,8 +112,7 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (BuildContext context) => MainCubit()),
-        BlocProvider(
-            create: (BuildContext context) => AdminCubit()..getFcmTokens()),
+        BlocProvider(create: (BuildContext context) => AdminCubit()..getFcmTokens()),
       ],
       child: MaterialApp(
         home: startPage,

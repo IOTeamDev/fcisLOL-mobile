@@ -126,18 +126,21 @@ class _RequestsState extends State<Requests> {
       semester}) {
     return InkWell(
       onTap: () async {
-        String? refresh = await Navigator.of(context).push(MaterialPageRoute(
+        String? refresh = await Navigator.of(context).push(
+          MaterialPageRoute(
             builder: (context) => RequestsDetails(
-                  authorName: authorName,
-                  type: type,
-                  description: description,
-                  link: link,
-                  subjectName: subjectName,
-                  id: index,
-                  title: title,
-                  pfp: pfp,
-                  semester: semester,
-                )));
+                authorName: authorName,
+                type: type,
+                description: description,
+                link: link,
+                subjectName: subjectName,
+                id: index,
+                title: title,
+                pfp: pfp,
+                semester: semester,
+            )
+          )
+        );
         if (refresh == StringsManager.refresh) onRefresh(context);
       },
       child: Container(
