@@ -322,7 +322,6 @@ class AdminCubit extends Cubit<AdminCubitStates> {
       emit(UploadImageSuccessState());
     } on Exception {
       emit(UploadImageErrorState());
-      // TODO
     }
   }
 }

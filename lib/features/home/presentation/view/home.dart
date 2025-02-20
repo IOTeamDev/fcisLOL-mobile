@@ -196,10 +196,7 @@ class _HomeState extends State<Home> {
                                         );
                                       } else if (state
                                           is AdminGetAnnouncementsErrorState) {
-                                        return Center(
-                                          child: Text(
-                                              'no announcements ${state.error}'),
-                                        );
+                                        return Image.asset('images/th.png');
                                       } else {
                                         return const SizedBox();
                                       }

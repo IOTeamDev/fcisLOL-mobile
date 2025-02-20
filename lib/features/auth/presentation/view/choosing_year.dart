@@ -50,77 +50,74 @@ class ChoosingYear extends StatelessWidget {
       backgroundColor: ColorsManager.white,
       body: BlocProvider.value(
         value: authCubit,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (userInfo != null)
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height /
-                          AppSizesDouble.s3_5,
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (userInfo != null)
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height /
+                        AppSizesDouble.s3_5,
+                  ),
+                Row(
+                  mainAxisAlignment:
+                      MainAxisAlignment.center, // Center the rows horizontally
+                  children: [
+                    Year(
+                      title: StringsManager.level1,
+                      userInfo: userInfo,
                     ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment
-                        .center, // Center the rows horizontally
-                    children: [
-                      Year(
-                        title: StringsManager.level1,
-                        userInfo: userInfo,
+                    Year(
+                      title: StringsManager.level1,
+                      userInfo: userInfo,
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment:
+                      MainAxisAlignment.center, // Center the rows horizontally
+                  children: [
+                    Year(
+                      title: StringsManager.level3,
+                      userInfo: userInfo,
+                    ),
+                    Year(
+                      title: StringsManager.level4,
+                      userInfo: userInfo,
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      StringsManager.alreadyHaveAccount,
+                      style: TextStyle(fontSize: 14, color: Colors.black),
+                    ),
+                    //SizedBox(width: 2,),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RegistrationLayout(),
+                            ),
+                            (route) => false);
+                      },
+                      child: Text(
+                        StringsManager.login,
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: ColorsManager.lightPrimary),
                       ),
-                      Year(
-                        title: StringsManager.level1,
-                        userInfo: userInfo,
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment
-                        .center, // Center the rows horizontally
-                    children: [
-                      Year(
-                        title: StringsManager.level3,
-                        userInfo: userInfo,
-                      ),
-                      Year(
-                        title: StringsManager.level4,
-                        userInfo: userInfo,
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        StringsManager.alreadyHaveAccount,
-                        style: TextStyle(fontSize: 14, color: Colors.black),
-                      ),
-                      //SizedBox(width: 2,),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => RegistrationLayout(),
-                              ),
-                              (route) => false);
-                        },
-                        child: Text(
-                          StringsManager.login,
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                              color: ColorsManager.lightPrimary),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

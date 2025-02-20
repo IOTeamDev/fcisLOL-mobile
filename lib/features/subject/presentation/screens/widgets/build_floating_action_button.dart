@@ -6,6 +6,7 @@ import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/core/utils/resources/theme_provider.dart';
+import 'package:lol/features/auth/presentation/view/registration_layout.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
 import 'package:lol/features/auth/presentation/view/login.dart';
@@ -25,7 +26,8 @@ class BuildFloatingActionButton extends StatefulWidget {
   final GetMaterialCubit getMaterialCubit;
 
   @override
-  State<BuildFloatingActionButton> createState() => _BuildFloatingActionButtonState();
+  State<BuildFloatingActionButton> createState() =>
+      _BuildFloatingActionButtonState();
 }
 
 class _BuildFloatingActionButtonState extends State<BuildFloatingActionButton> {
@@ -68,12 +70,11 @@ class _BuildFloatingActionButtonState extends State<BuildFloatingActionButton> {
               btnOkOnPress: () {
                 Cache.writeData(key: KeysManager.isDark, value: false);
                 Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => LoginScreen(),
-                  ),
-                  (route) => false
-                );
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RegistrationLayout(),
+                    ),
+                    (route) => false);
               },
             ).show();
           } else {
@@ -81,26 +82,25 @@ class _BuildFloatingActionButtonState extends State<BuildFloatingActionButton> {
             _descriptionController.text = '';
             _linkController.text = '';
             showModalBottomSheet(
-              isScrollControlled: true,
-              context: context,
-              builder: (context) => MultiBlocProvider(
-                providers: [
-                  BlocProvider(
-                    create: (context) => AddMaterialCubit(AdminCubit()),
-                  ),
-                  BlocProvider.value(value: widget.getMaterialCubit),
-                ],
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                  child: BuildBottomSheet(
-                    titleController: _titleController,
-                    descriptionController: _descriptionController,
-                    linkController: _linkController,
-                    subjectName: widget.subjectName
-                  ),
-                ),
-              )
-            );
+                isScrollControlled: true,
+                context: context,
+                builder: (context) => MultiBlocProvider(
+                      providers: [
+                        BlocProvider(
+                          create: (context) => AddMaterialCubit(AdminCubit()),
+                        ),
+                        BlocProvider.value(value: widget.getMaterialCubit),
+                      ],
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).viewInsets.bottom),
+                        child: BuildBottomSheet(
+                            titleController: _titleController,
+                            descriptionController: _descriptionController,
+                            linkController: _linkController,
+                            subjectName: widget.subjectName),
+                      ),
+                    ));
           }
         },
         shape: RoundedRectangleBorder(
