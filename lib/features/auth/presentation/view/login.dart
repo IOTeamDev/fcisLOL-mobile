@@ -76,23 +76,18 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       height: AppSizesDouble.s20,
                     ),
-                    defaultLoginInputField(
-                      _emailController,
-                      StringsManager.email,
-                      TextInputType.emailAddress,
-                      false,
-                      loginCubit,
-                    ),
+                    defaultLoginInputField(_emailController,
+                        StringsManager.email, TextInputType.emailAddress,
+                        loginCubit: loginCubit,
+                        textInputAction: TextInputAction.next),
                     SizedBox(
                       height: AppSizesDouble.s20,
                     ),
-                    defaultLoginInputField(
-                        _passwordController,
-                        StringsManager.password,
-                        TextInputType.visiblePassword,
-                        true,
-                        loginCubit,
-                        IconsManager.eyeIcon),
+                    defaultLoginInputField(_passwordController,
+                        StringsManager.password, TextInputType.visiblePassword,
+                        isPassword: true,
+                        loginCubit: loginCubit,
+                        suffixIcon: IconsManager.eyeIcon),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: TextButton(

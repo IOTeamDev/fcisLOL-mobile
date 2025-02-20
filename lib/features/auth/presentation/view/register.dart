@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:googleapis/cloudsearch/v1.dart';
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/resources/icons_manager.dart';
 import 'package:lol/core/utils/resources/values_manager.dart';
@@ -99,31 +100,30 @@ class _RegisterscreenState extends State<Registerscreen> {
                       height: AppSizesDouble.s25,
                     ),
                     defaultLoginInputField(_nameController,
-                        StringsManager.fullName, TextInputType.name),
+                        StringsManager.fullName, TextInputType.name,
+                        textInputAction: TextInputAction.next),
                     const SizedBox(
                       height: AppSizesDouble.s15,
                     ),
-                    defaultLoginInputField(
-                        _emailController,
-                        StringsManager.email,
-                        TextInputType.emailAddress,
-                        false,
-                        AuthCubit.get(context)),
+                    defaultLoginInputField(_emailController,
+                        StringsManager.email, TextInputType.emailAddress,
+                        loginCubit: AuthCubit.get(context),
+                        textInputAction: TextInputAction.next),
                     const SizedBox(
                       height: AppSizesDouble.s15,
                     ),
                     defaultLoginInputField(_phoneController,
-                        StringsManager.phoneNumber, TextInputType.phone),
+                        StringsManager.phoneNumber, TextInputType.phone,
+                        textInputAction: TextInputAction.next),
                     const SizedBox(
                       height: AppSizesDouble.s15,
                     ),
-                    defaultLoginInputField(
-                        _passwordController,
-                        StringsManager.password,
-                        TextInputType.visiblePassword,
-                        true,
-                        AuthCubit.get(context),
-                        IconsManager.eyeIcon),
+                    defaultLoginInputField(_passwordController,
+                        StringsManager.password, TextInputType.visiblePassword,
+                        isPassword: true,
+                        loginCubit: AuthCubit.get(context),
+                        suffixIcon: IconsManager.eyeIcon,
+                        textInputAction: TextInputAction.next),
                     const SizedBox(
                       height: AppSizesDouble.s15,
                     ),
@@ -131,12 +131,20 @@ class _RegisterscreenState extends State<Registerscreen> {
                         _confirmPassword,
                         StringsManager.confirmPassword,
                         TextInputType.visiblePassword,
-                        true,
-                        AuthCubit.get(context),
-                        null,
-                        true,
-                        StringsManager.passwordNotMatchingError,
-                        (_) => _onFieldSubmit(
+                        isPassword: true,
+                        loginCubit: AuthCubit.get(context),
+                        isConfirmPassword: true,
+                        validationMessage:
+                            StringsManager.passwordNotMatchingError,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return StringsManager.emptyFieldWarning;
+                          } else if (value != _passwordController.text) {
+                            return StringsManager.confirmPassword;
+                          }
+                          return null;
+                        },
+                        onFieldSubmit: (_) => _onFieldSubmit(
                             context,
                             _nameController,
                             _emailController,
@@ -155,7 +163,14 @@ class _RegisterscreenState extends State<Registerscreen> {
                             AuthCubit.get(context),
                             _emailController,
                             _passwordController,
-                            StringsManager.signup),
+                            StringsManager.signup,
+                            isSignUp: true,
+                            onPressed: () => _onFieldSubmit(
+                                context,
+                                _nameController,
+                                _emailController,
+                                _passwordController,
+                                _phoneController)),
                   ],
                 ),
               ),
