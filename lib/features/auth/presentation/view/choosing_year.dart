@@ -69,7 +69,7 @@ class ChoosingYear extends StatelessWidget {
                       userInfo: userInfo,
                     ),
                     Year(
-                      title: StringsManager.level1,
+                      title: StringsManager.level2,
                       userInfo: userInfo,
                     ),
                   ],
