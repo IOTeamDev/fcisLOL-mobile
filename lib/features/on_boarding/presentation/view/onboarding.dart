@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:lol/core/utils/dependencies_helper.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
+import 'package:lol/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
 import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit.dart';
 import 'package:lol/features/auth/presentation/view/choosing_year.dart';
 import 'package:lol/core/utils/navigation.dart';
@@ -29,7 +31,8 @@ class _OnBoardingState extends State<OnBoarding> {
         children: [
           PageView.builder(
             controller: pageViewController,
-            itemBuilder: (context, index) => OnBoardingItem(model: onBoardingItemsList[index]),
+            itemBuilder: (context, index) =>
+                OnBoardingItem(model: onBoardingItemsList[index]),
             itemCount: onBoardingItemsList.length,
             onPageChanged: (value) {
               if (value == onBoardingItemsList.length - 1) {
@@ -52,39 +55,46 @@ class _OnBoardingState extends State<OnBoarding> {
               children: [
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: !isLastPage? ColorsManager.lightPrimary: ColorsManager.black2,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSizesDouble.s15)),
+                    backgroundColor: !isLastPage
+                        ? ColorsManager.lightPrimary
+                        : ColorsManager.black2,
+                    shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(AppSizesDouble.s15)),
                     foregroundColor: ColorsManager.white,
-                    padding: EdgeInsets.symmetric(horizontal: AppPaddings.p50, vertical: AppPaddings.p15),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: AppPaddings.p50, vertical: AppPaddings.p15),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        isLastPage ? StringsManager.getStarted : StringsManager.next,
+                        isLastPage
+                            ? StringsManager.getStarted
+                            : StringsManager.next,
                         style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600
-                        ),
+                            fontSize: 16, fontWeight: FontWeight.w600),
                       ),
-                      if(!isLastPage)
-                      SizedBox(width: 10,),
-                      if(!isLastPage)
-                      Icon(
-                        Icons.arrow_right_alt,
-                        color: ColorsManager.white,
-                      )
+                      if (!isLastPage)
+                        SizedBox(
+                          width: 10,
+                        ),
+                      if (!isLastPage)
+                        Icon(
+                          Icons.arrow_right_alt,
+                          color: ColorsManager.white,
+                        )
                     ],
                   ),
                   onPressed: () {
                     if (isLastPage) {
-                      Cache.writeData(key: KeysManager.finishedOnBoard, value: true);
+                      Cache.writeData(
+                          key: KeysManager.finishedOnBoard, value: true);
                       navigatReplace(
-                        context,
-                        ChoosingYear(
-                          loginCubit: LoginCubit(),
-                        )
-                      ); ////
+                          context,
+                          ChoosingYear(
+                            authCubit: getIt.get<AuthCubit>(),
+                          )); ////
                     } else {
                       pageViewController.nextPage(
                         duration: Duration(milliseconds: AppSizes.s500),
@@ -93,18 +103,18 @@ class _OnBoardingState extends State<OnBoarding> {
                     }
                   },
                 ),
-                SizedBox(height: AppSizesDouble.s40,),
-                SmoothPageIndicator(
-                  effect: const WormEffect(
-                    activeDotColor: ColorsManager.lightPrimary,
-                    dotHeight: AppSizesDouble.s10,
-                    dotWidth: AppSizesDouble.s20,
-                    spacing: AppSizesDouble.s8,
-                    dotColor: ColorsManager.white
-                  ),
-                  controller: pageViewController,
-                  count: onBoardingItemsList.length
+                SizedBox(
+                  height: AppSizesDouble.s40,
                 ),
+                SmoothPageIndicator(
+                    effect: const WormEffect(
+                        activeDotColor: ColorsManager.lightPrimary,
+                        dotHeight: AppSizesDouble.s10,
+                        dotWidth: AppSizesDouble.s20,
+                        spacing: AppSizesDouble.s8,
+                        dotColor: ColorsManager.white),
+                    controller: pageViewController,
+                    count: onBoardingItemsList.length),
               ],
             ),
           )

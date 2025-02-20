@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lol/core/utils/dependencies_helper.dart';
+import 'package:lol/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit.dart';
 import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit_states.dart';
@@ -22,7 +24,7 @@ class SelectImage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => LoginCubit(),
+          create: (context) => AuthCubit(),
         ),
         BlocProvider(
           create: (context) => MainCubit(),
@@ -123,8 +125,8 @@ class SelectImage extends StatelessWidget {
                         navigate(
                             context,
                             ChoosingYear(
-                              loginCubit: LoginCubit(),
                               userInfo: userInfo,
+                              authCubit: getIt.get<AuthCubit>(),
                             ));
 
                         // loginCubit.register(

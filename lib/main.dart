@@ -9,6 +9,7 @@ import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/core/utils/resources/themes_manager.dart';
 import 'package:lol/features/admin/presentation/view/announcements/add_announcement.dart';
+import 'package:lol/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
 import 'package:lol/features/home/presentation/view/semester_navigate.dart';
 import 'package:lol/features/on_boarding/presentation/view/onboarding.dart';
 import 'package:lol/features/profile/view/other_profile.dart';
@@ -85,9 +86,9 @@ main() async {
   if (!isOnBoardFinished) {
     startPage = const OnBoarding();
   } else {
-    if (AppConstants.TOKEN == null) {
+    if (AppConstants.TOKEN == null && AppConstants.SelectedSemester == null) {
       startPage = ChoosingYear(
-        loginCubit: LoginCubit(),
+        authCubit: getIt.get<AuthCubit>(),
       );
     } else {
       startPage = const Home();

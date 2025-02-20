@@ -29,203 +29,189 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  late TextEditingController emailController;
-  late TextEditingController passwordController;
+  late TextEditingController _emailController;
+  late TextEditingController _passwordController;
   late GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
   }
 
   @override
   void dispose() {
     super.dispose();
-    emailController.dispose();
-    passwordController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuthCubit(),
-      child: BlocConsumer<AuthCubit, AuthState>(
-        listener: (context, state) {
-          if (state is LoginSuccess) {
-            showToastMessage(
-              message: "Successfully signed in. Welcome back!",
-              states: ToastStates.SUCCESS,
-            );
-
-            navigatReplace(context, Home());
-          }
-          if (state is LoginFailed) {
-            showToastMessage(
-              states: ToastStates.ERROR,
-              message: "Invalid email or password. Please try again"
-            );
-          }
-        },
-        builder: (context, state) {
-          var loginCubit = AuthCubit.get(context);
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: Form(
-              key: formKey,
-              child: Center(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Text(
-                        "Login ",
-                        style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.w600,
-                          color: ColorsManager.black,
-                        ),
+    return BlocBuilder<AuthCubit, AuthState>(
+      builder: (context, state) {
+        var loginCubit = AuthCubit.get(context);
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30),
+          child: Form(
+            key: formKey,
+            child: Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Login ",
+                      style: TextStyle(
+                        fontSize: 40,
+                        fontWeight: FontWeight.w600,
+                        color: ColorsManager.black,
                       ),
-                      SizedBox(height: 20,),
-                      TextFormField(
-                        controller: emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        style: TextStyle(color: ColorsManager.black),
-                        decoration: InputDecoration(
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    TextFormField(
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      style: TextStyle(color: ColorsManager.black),
+                      decoration: InputDecoration(
                           //hintStyle: TextStyle(color: ColorsManager.lightGrey),
                           //hintText: 'Email',
                           labelStyle: TextStyle(color: ColorsManager.lightGrey),
                           labelText: 'Email',
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15)),
                           filled: true,
                           fillColor: ColorsManager.grey3,
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: ColorsManager.lightPrimary),
-                            borderRadius: BorderRadius.circular(15)
-                          )
+                              borderSide:
+                                  BorderSide(color: ColorsManager.lightPrimary),
+                              borderRadius: BorderRadius.circular(15))),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Field cannot be empty";
+                        } else {
+                          return null; // Form is valid.
+                        }
+                      },
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    TextFormField(
+                      obscureText: loginCubit.hiddenPassword,
+                      controller: _passwordController,
+                      keyboardType: TextInputType.visiblePassword,
+                      style: TextStyle(color: ColorsManager.black),
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(color: ColorsManager.lightGrey),
+                        labelText: 'Password',
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15)),
+                        filled: true,
+                        fillColor: ColorsManager.grey3,
+                        focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: ColorsManager.lightPrimary),
+                            borderRadius: BorderRadius.circular(15)),
+                        suffixIcon: IconButton(
+                          icon: Icon(IconsManager.eyeIcon),
+                          color: loginCubit.hiddenPassword
+                              ? ColorsManager.lightGrey
+                              : Colors.blue,
+                          onPressed: loginCubit.togglePassword,
                         ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Field cannot be empty";
-                          } else {
-                            return null; // Form is valid.
-                          }
-                        },
                       ),
-                      SizedBox(height: 20,),
-                      TextFormField(
-                        obscureText: loginCubit.hiddenPassword,
-                        controller:  passwordController,
-                        keyboardType: TextInputType.visiblePassword,
-                        style: TextStyle(color: ColorsManager.black),
-                        decoration: InputDecoration(
-                          labelStyle: TextStyle(color: ColorsManager.lightGrey),
-                          labelText: 'Password',
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-                          filled: true,
-                          fillColor: ColorsManager.grey3,
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: ColorsManager.lightPrimary),
-                              borderRadius: BorderRadius.circular(15)
-                          ),
-                          suffixIcon: IconButton(
-                            icon: Icon(IconsManager.eyeIcon),
-                            color: loginCubit.hiddenPassword ? ColorsManager.lightGrey : Colors.blue,
-                            onPressed: loginCubit.togglePassword,
-                          ),
-
-                        ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Field cannot be empty";
-                          } else {
-                            return null; // Form is valid.
-                          }
-                        },
-                      ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: TextButton(
-                          style: TextButton.styleFrom(
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Field cannot be empty";
+                        } else {
+                          return null; // Form is valid.
+                        }
+                      },
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextButton(
+                        style: TextButton.styleFrom(
                             padding: const EdgeInsets.all(0),
-                            foregroundColor: ColorsManager.dodgerBlue
-                          ),
-                          child: const Text(
-                            "Forgot Password ?",
-                          ),
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) =>
-                                  AlertDialog(
-                                    title: const Text('Forgot Password'),
-                                    content: Form(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          TextFormField(
-                                            controller: emailController,
-                                            keyboardType:
-                                            TextInputType.emailAddress,
-                                            decoration: const InputDecoration(
-                                              labelText: 'Enter your email',
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: const Text('Cancel'),
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          String email =
-                                          emailController.text.trim();
-                                          forgetPassword(email: email);
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: const Text('Submit'),
-                                      )
-                                    ],
-                                  ),
-                            );
-                          },
-                        ),
-                      ),
-                      state is LoginLoading ? const Center(
-                        child: CircularProgressIndicator(),
-                      ) : ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: ColorsManager.white,
-                          fixedSize: Size(AppQueries.screenWidth(context), 50),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15)
-                          ),
-                          backgroundColor: ColorsManager.lightPrimary
+                            foregroundColor: ColorsManager.dodgerBlue),
+                        child: const Text(
+                          "Forgot Password ?",
                         ),
                         onPressed: () {
-                          if (formKey.currentState!.validate()) {
-                            loginCubit.login(
-                              email: emailController.text.toLowerCase(),
-                              password: passwordController.text
-                            );
-                          }
-                        }, 
-                        child: Text('Login', style: TextStyle(fontSize: 24),),
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text('Forgot Password'),
+                              content: Form(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    TextFormField(
+                                      controller: _emailController,
+                                      keyboardType: TextInputType.emailAddress,
+                                      decoration: const InputDecoration(
+                                        labelText: 'Enter your email',
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('Cancel'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    String email = _emailController.text.trim();
+                                    forgetPassword(email: email);
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('Submit'),
+                                )
+                              ],
+                            ),
+                          );
+                        },
                       ),
-                    ],
-                  ),
+                    ),
+                    state is LoginLoading
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                foregroundColor: ColorsManager.white,
+                                fixedSize:
+                                    Size(AppQueries.screenWidth(context), 50),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15)),
+                                backgroundColor: ColorsManager.lightPrimary),
+                            onPressed: () {
+                              if (formKey.currentState!.validate()) {
+                                loginCubit.login(
+                                    email: _emailController.text.toLowerCase(),
+                                    password: _passwordController.text);
+                              }
+                            },
+                            child: Text(
+                              'Login',
+                              style: TextStyle(fontSize: 24),
+                            ),
+                          ),
+                  ],
                 ),
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

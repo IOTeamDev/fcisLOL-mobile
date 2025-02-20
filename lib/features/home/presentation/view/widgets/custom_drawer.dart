@@ -17,6 +17,7 @@ import 'package:lol/core/utils/resources/values_manager.dart';
 import 'package:lol/features/admin/presentation/view/admin_panal.dart';
 import 'package:lol/features/admin/presentation/view/announcements/announcements_list.dart';
 import 'package:lol/features/auth/presentation/view/login.dart';
+import 'package:lol/features/auth/presentation/view/registration_layout.dart';
 import 'package:lol/features/home/presentation/view/semester_navigate.dart';
 import 'package:lol/features/leaderboard/presentation/view/leaderboard_view.dart';
 import 'package:lol/features/previous_exams/previous_exams.dart';
@@ -602,7 +603,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         ).show();
                       } else {
                         Cache.writeData(key: KeysManager.isDark, value: false);
-                        navigate(context, LoginScreen());
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => RegistrationLayout(),
+                          ),
+                          (route) => false,
+                        );
                       }
                     },
                     child: Row(

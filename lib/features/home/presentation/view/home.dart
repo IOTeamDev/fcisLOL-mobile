@@ -74,6 +74,24 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     var scaffoldKey = GlobalKey<ScaffoldState>();
     return BlocConsumer<MainCubit, MainCubitStates>(listener: (context, state) {
+      if (state is GetProfileSuccess) {
+        AdminCubit.get(context)
+            .getAnnouncements(MainCubit.get(context).profileModel!.semester);
+        MainCubit.get(context).getRequests(
+            semester: MainCubit.get(context).profileModel!.semester);
+        if (MainCubit.get(context).profileModel!.photo == null) {
+          MainCubit.get(context).updateUser(
+              userID: MainCubit.get(context).profileModel!.id,
+              photo: AppConstants.defaultProfileImage);
+        }
+        MainCubit.get(context).updateUser(
+            userID: MainCubit.get(context).profileModel!.id,
+            fcmToken: fcmToken);
+      }
+      if (state is GetProfileFailure && AppConstants.SelectedSemester != null) {
+        AdminCubit.get(context)
+            .getAnnouncements(AppConstants.SelectedSemester!);
+      }
       if (state is LogoutSuccess) {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
@@ -86,25 +104,7 @@ class _HomeState extends State<Home> {
           states: ToastStates.SUCCESS,
         );
       }
-      if (state is GetProfileSuccess) {}
     }, builder: (context, state) {
-      if (state is GetProfileSuccess) {
-        AdminCubit.get(context).getAnnouncements(
-            MainCubit.get(context).profileModel != null
-                ? MainCubit.get(context).profileModel!.semester
-                : AppConstants.SelectedSemester!);
-        MainCubit.get(context).getRequests(
-            semester: MainCubit.get(context).profileModel!.semester);
-        if (MainCubit.get(context).profileModel!.photo == null) {
-          MainCubit.get(context).updateUser(
-              userID: MainCubit.get(context).profileModel!.id,
-              photo: AppConstants.defaultProfileImage);
-        }
-        MainCubit.get(context).updateUser(
-            userID: MainCubit.get(context).profileModel!.id,
-            fcmToken: fcmToken);
-      }
-
       ProfileModel? profile;
       int? semesterIndex;
       if (MainCubit.get(context).profileModel != null) {
@@ -198,10 +198,7 @@ class _HomeState extends State<Home> {
                                         );
                                       } else if (state
                                           is AdminGetAnnouncementsErrorState) {
-                                        return Center(
-                                          child: Text(
-                                              'no announcements ${state.error}'),
-                                        );
+                                        return Image.asset('images/th.png');
                                       } else {
                                         return const SizedBox();
                                       }

@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/features/on_boarding/data/model/on_boarding_model.dart';
@@ -13,7 +11,11 @@ class OnBoardingItem extends StatelessWidget {
     return Stack(
       alignment: Alignment.center,
       children: [
-        Positioned.fill(child: Image.asset(model.image!, fit: BoxFit.cover,)),
+        Positioned.fill(
+            child: Image.asset(
+          model.image!,
+          fit: BoxFit.cover,
+        )),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Text(
@@ -26,7 +28,8 @@ class OnBoardingItem extends StatelessWidget {
                 Shadow(
                   offset: Offset(3, 3), // X and Y offset
                   blurRadius: 5.0, // Spread of the shadow
-                  color: ColorsManager.black.withValues(alpha: 0.4), // Shadow color
+                  color: ColorsManager.black
+                      .withValues(alpha: 0.4), // Shadow color
                 ),
               ],
             ),
