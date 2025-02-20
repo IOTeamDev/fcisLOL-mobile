@@ -48,15 +48,21 @@ class _RegisterscreenState extends State<Registerscreen> {
   late TextEditingController _nameController;
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
-  late TextEditingController _confirimPassword;
+  late TextEditingController _confirmPassword;
   late TextEditingController _phoneController;
+
+  final RegExp emailRegExp = RegExp(
+    r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+  );
+
+  var _formKey = GlobalKey<FormState>();
   @override
   void initState() {
     super.initState();
     _nameController = TextEditingController();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
-    _confirimPassword = TextEditingController();
+    _confirmPassword = TextEditingController();
     _phoneController = TextEditingController();
   }
 
@@ -66,288 +72,113 @@ class _RegisterscreenState extends State<Registerscreen> {
     _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _confirimPassword.dispose();
+    _confirmPassword.dispose();
     _phoneController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final RegExp emailRegExp = RegExp(
-      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-    );
-
-    var _formKey = GlobalKey<FormState>();
     return BlocBuilder<AuthCubit, AuthState>(
       builder: (context, state) {
-        return Scaffold(
-          body: Builder(builder: (context) {
-            return SafeArea(
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 25),
-                child: Form(
-                  key: _formKey,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 10,
-                        ),
-                        const Text(
-                          "Create you account",
-                          style: TextStyle(
-                              // letterSpacing: 3,
-                              // color: Additional2,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        const Text(
-                            "Welcome! Please fill in the details to get started"),
-                        const SizedBox(
-                          height: 20,
-                        ),
-
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        // const Row(
-                        //   mainAxisAlignment: MainAxisAlignment.start,
-                        //   children: [
-                        //     Expanded(child: Divider()),
-
-                        //     Text(
-                        //       "   or  ",
-                        //       style: TextStyle(fontSize: 17),
-                        //     ),
-                        //     Expanded(child: Divider()),
-                        //     // Expanded(child: HalfDivider(context)),
-                        //   ],
-                        // ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Column(
-                          children: [
-                            const Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                "Name",
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w600),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            defaultTextField(
-                                textInputAction: TextInputAction.next,
-                                validateor: (value) {
-                                  if (value!.isEmpty) {
-                                    return "field cannot be empty";
-                                  } else {
-                                    return null; // Form is valid.
-                                  }
-                                },
-                                controller: _nameController),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Column(
-                          children: [
-                            const Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                "Email address",
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w600),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            defaultTextField(
-                                textInputAction: TextInputAction.next,
-                                validateor: (value) {
-                                  if (value!.isEmpty) {
-                                    return "field cannot be empty";
-                                  }
-                                  if (!emailRegExp.hasMatch(value)) {
-                                    return "Invalid email format";
-                                  } else {
-                                    return null; // Form is valid.
-                                  }
-                                },
-                                controller: _emailController,
-                                type: TextInputType.emailAddress),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Row(
-                              children: [
-                                const Text(
-                                  "Phone number",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                const Spacer(),
-                                Text(
-                                  "Optional",
-                                  style: TextStyle(color: Colors.grey[700]),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            defaultTextField(
-                                textInputAction: TextInputAction.next,
-
-                                // label: "Phone",
-                                controller: _phoneController),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Column(
-                          children: [
-                            const Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                "Password",
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w600),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            defaultTextField(
-                                textInputAction: TextInputAction.next,
-                                validateor: (value) {
-                                  if (value!.isEmpty) {
-                                    return "field cannot be empty";
-                                  }
-                                  return null;
-                                },
-                                controller: _passwordController,
-                                obscure: true),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Column(
-                          children: [
-                            const Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                "Confirm Password",
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w600),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            defaultTextField(
-                                onFieldSubmitted: (v) {
-                                  if (_formKey.currentState!.validate()) {
-                                    UserInfo userInfo = UserInfo(
-                                        name: _nameController.text,
-                                        email:
-                                            _emailController.text.toLowerCase(),
-                                        password: _passwordController.text,
-                                        phone: _phoneController.text);
-                                    navigate(
-                                        context,
-                                        SelectImage(
-                                          userInfo: userInfo,
-                                        ));
-                                  }
-                                },
-                                validateor: (value) {
-                                  if (value != _passwordController.text) {
-                                    return "Passwords doesn't matched";
-                                  } else {
-                                    return null; // Form is valid.
-                                  }
-                                },
-                                controller: _confirimPassword,
-                                obscure: true),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        state is RegisterLoading
-                            ? const Center(
-                                child: CircularProgressIndicator(),
-                              )
-                            : defaultButton(
-                                color: Color(0xff4763C4),
-                                buttonFunc: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    UserInfo userInfo = UserInfo(
-                                        name: _nameController.text,
-                                        email:
-                                            _emailController.text.toLowerCase(),
-                                        password: _passwordController.text,
-                                        phone: _phoneController.text);
-                                    navigate(
-                                        context,
-                                        SelectImage(
-                                          userInfo: userInfo,
-                                        ));
-                                  }
-                                  // LoginCubit.get(context).register(
-                                  //     name: nameController.text,
-                                  //     email: emailController.text,
-                                  //     phone: phoneController.text,
-                                  //     photo:
-                                  //         "https://upload.wikimedia.org/wikipedia/en/c/ce/Walter_White_Jr_S5B.png",
-                                  //     password: passwordController.text,
-                                  //     semester: "Four");
-                                },
-                                buttonWidth: 300,
-                                title: "NEXT"),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              "Already have account?",
-                              style: TextStyle(fontWeight: FontWeight.w400),
-                            ),
-                            defaultTextButton(
-                                onPressed: () => navigatReplace(
-                                    context, const LoginScreen()),
-                                text: "Login",
-                                color: Colors.blue),
-                          ],
-                        ),
-                      ],
+        return Form(
+          key: _formKey,
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(AppPaddings.p20),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Text(StringsManager.signup,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineLarge!
+                            .copyWith(
+                                fontSize: AppSizesDouble.s40,
+                                color: ColorsManager.black)),
+                    const SizedBox(
+                      height: AppSizesDouble.s25,
                     ),
-                  ),
+                    defaultLoginInputField(_nameController,
+                        StringsManager.fullName, TextInputType.name),
+                    const SizedBox(
+                      height: AppSizesDouble.s15,
+                    ),
+                    defaultLoginInputField(
+                        _emailController,
+                        StringsManager.email,
+                        TextInputType.emailAddress,
+                        false,
+                        AuthCubit.get(context)),
+                    const SizedBox(
+                      height: AppSizesDouble.s15,
+                    ),
+                    defaultLoginInputField(_phoneController,
+                        StringsManager.phoneNumber, TextInputType.phone),
+                    const SizedBox(
+                      height: AppSizesDouble.s15,
+                    ),
+                    defaultLoginInputField(
+                        _passwordController,
+                        StringsManager.password,
+                        TextInputType.visiblePassword,
+                        true,
+                        AuthCubit.get(context),
+                        IconsManager.eyeIcon),
+                    const SizedBox(
+                      height: AppSizesDouble.s15,
+                    ),
+                    defaultLoginInputField(
+                        _confirmPassword,
+                        StringsManager.confirmPassword,
+                        TextInputType.visiblePassword,
+                        true,
+                        AuthCubit.get(context),
+                        null,
+                        true,
+                        StringsManager.passwordNotMatchingError,
+                        (_) => _onFieldSubmit(
+                            context,
+                            _nameController,
+                            _emailController,
+                            _passwordController,
+                            _phoneController)),
+                    const SizedBox(
+                      height: AppSizesDouble.s15,
+                    ),
+                    state is RegisterLoading
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : defaultLoginButton(
+                            context,
+                            _formKey,
+                            AuthCubit.get(context),
+                            _emailController,
+                            _passwordController,
+                            StringsManager.signup),
+                  ],
                 ),
               ),
-            );
-          }),
+            ),
+          ),
         );
       },
     );
+  }
+
+  _onFieldSubmit(context, nameController, emailController, passwordController,
+      phoneController) {
+    if (_formKey.currentState!.validate()) {
+      UserInfo userInfo = UserInfo(
+          name: nameController.text,
+          email: emailController.text.toLowerCase(),
+          password: passwordController.text,
+          phone: phoneController.text);
+      navigate(
+          context,
+          SelectImage(
+            userInfo: userInfo,
+          ));
+    }
   }
 }

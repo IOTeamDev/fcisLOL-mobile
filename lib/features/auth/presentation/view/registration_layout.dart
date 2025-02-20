@@ -47,10 +47,10 @@ class _RegistrationLayoutState extends State<RegistrationLayout>
                   controller: _tabController,
                   tabs: [
                     Tab(
-                      text: 'Login',
+                      text: StringsManager.login,
                     ),
                     Tab(
-                      text: 'Register',
+                      text: StringsManager.signup,
                     )
                   ]),
               Expanded(
