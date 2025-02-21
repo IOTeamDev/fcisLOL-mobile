@@ -3,10 +3,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
+import 'package:lol/core/utils/resources/theme_provider.dart';
+import 'package:lol/core/utils/resources/values_manager.dart';
 import 'package:lol/main.dart';
-import 'package:lol/core/utils/components.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../core/utils/components.dart';
 import '../../core/utils/resources/constants_manager.dart';
 
 class AboutUs extends StatelessWidget {
@@ -17,82 +20,60 @@ class AboutUs extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('About Us', style: Theme.of(context).textTheme.displayMedium,),
+        title: Text(StringsManager.aboutUs, style: Theme.of(context).textTheme.displayMedium,),
         centerTitle: true,
       ),
-      body: SafeArea(
+      body: Padding(
+        padding: const EdgeInsets.all(AppPaddings.p15),
         child: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               // About Us Section
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      StringsManager.whoAreWe,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                    SizedBox(height: 10),
-                    divider(
-                      color: ColorsManager.grey4
-                    ),
-                  ],
-                ),
+              Text(
+                StringsManager.whoAreWe,
+                style: Theme.of(context).textTheme.displayMedium,
               ),
-              SizedBox(height: 15),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: AppPaddings.p20),
+                child: divider(color: Colors.grey),
+              ),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 15),
-                padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                padding: EdgeInsets.symmetric(vertical: AppPaddings.p10),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: ColorsManager.grey1.withValues(alpha: 0.2),
-                  border: Border.all(color: ColorsManager.lightGrey1.withValues(alpha: 0.2))
+                  borderRadius: BorderRadius.circular(AppSizesDouble.s15),
+                  color: ColorsManager.darkPrimary.withValues(alpha: AppSizesDouble.s0_2),
+                  border: Border.all(color: ColorsManager.lightGrey1.withValues(alpha: AppSizesDouble.s0_2))
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      'UniNotes',
-                      style: GoogleFonts.abhayaLibre(
-                        letterSpacing: 1.9,
-                        fontSize: AppQueries.screenWidth(context) / 8,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+                      StringsManager.uniNotes,
+                      style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s9,)
                     ),
                     Text(
-                      '“All In One”',
-                      style: TextStyle(
-                        fontSize: AppQueries.screenWidth(context) / 15,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey[300],
-                      ),
+                      StringsManager.allInOne,
+                      style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize:  AppQueries.screenWidth(context) / AppSizes.s15, color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.lightGrey1: ColorsManager.lightGrey)
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0,
-                        vertical: 10,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: AppPaddings.p10,
+                        vertical: AppPaddings.p10,
                       ),
                       child: RichText(
                         text: TextSpan(
-                          text: 'UniNotes',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: AppQueries.screenWidth(context) / 18,
-                          ),
+                          text: StringsManager.uniNotes,
+                          style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s18),
                           children: <TextSpan>[
                             TextSpan(
-                              text:
-                                  ' is an interactive platform where study materials are collected, allowing students to contribute content for all academic years. Admins review and approve submissions to ensure quality.',
-                              style: TextStyle(
-                                letterSpacing: 1.5,
-                                fontSize: AppQueries.screenWidth(context) / 20,
+                              text: StringsManager.aboutUsBrief,
+                              style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                letterSpacing: AppSizesDouble.s1_2,
+                                fontSize: AppQueries.screenWidth(context) / AppSizes.s20,
                                 fontWeight: FontWeight.normal,
-                              ),
+                              )
                             ),
                           ],
                         ),
@@ -101,22 +82,15 @@ class AboutUs extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: AppQueries.screenHeight(context) / 25),
-          
+              SizedBox(height: AppSizesDouble.s25),
               // Meet the Team Section
+              Text(
+                StringsManager.meetTheTeam,
+                style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s13),
+              ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Meet The Team',
-                      style: TextStyle(fontSize: AppQueries.screenWidth(context) / 13),
-                    ),
-                    SizedBox(height: 20),
-                    Divider(color: Colors.grey),
-                  ],
-                ),
+                padding: const EdgeInsets.symmetric(vertical: AppPaddings.p20),
+                child: divider(color: Colors.grey),
               ),
               SizedBox(
                 height: AppQueries.screenHeight(context),
@@ -124,19 +98,19 @@ class AboutUs extends StatelessWidget {
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10.0,
-                    mainAxisSpacing: 10.0,
-                    childAspectRatio: 0.8,
+                    crossAxisCount: AppSizes.s2,
+                    crossAxisSpacing: AppSizesDouble.s10,
+                    mainAxisSpacing: AppSizesDouble.s10,
+                    childAspectRatio: AppSizesDouble.s0_8,
                   ),
-                  itemCount: teamMembers.length,
+                  itemCount: AppConstants.teamMembers.length,
                   itemBuilder: (context, index) {
-                    final member = teamMembers[index];
                     return _buildTeamMember(
-                      member['imagePath']!,
-                      member['name']!,
-                      member['role']!,
-                      member['contactUrl']!,
+                      context,
+                      AppConstants.teamMembers[index][KeysManager.imagePath]!,
+                      AppConstants.teamMembers[index][KeysManager.name]!,
+                      AppConstants.teamMembers[index][KeysManager.role]!,
+                      AppConstants.teamMembers[index][KeysManager.contactUrl]!
                     );
                   },
                 ),
@@ -148,43 +122,36 @@ class AboutUs extends StatelessWidget {
     );
   }
 
-  Widget _buildTeamMember(
-      String imagePath, String name, String role, String contactEmail) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
+  Widget _buildTeamMember(context, String imagePath, String name, String role, String contactEmail) {
+    return InkWell(
+      onTap: () =>  _contactTeamMember(contactEmail),
+      child: Card(
+        color: Theme.of(context).primaryColor,
+        elevation: AppSizesDouble.s4,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSizesDouble.s15)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircleAvatar(
-              radius: 40,
+              radius: AppSizesDouble.s40,
               backgroundImage: NetworkImage(imagePath),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: AppSizesDouble.s5),
             Text(
               name,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(color: ColorsManager.white),
+              textAlign: TextAlign.center,
+              maxLines: AppSizes.s2,
+              overflow: TextOverflow.ellipsis,
             ),
             Text(
               role,
-              style: TextStyle(
-                color: Colors.grey[600],
-                fontStyle: FontStyle.italic,
-                fontSize: 12,
-              ),
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: ColorsManager.grey2)
             ),
-            SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () => _contactTeamMember(contactEmail),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent,
-              ),
-              child: Text(
-                'Contact',
-                style: TextStyle(color: Colors.white),
-              ),
+            SizedBox(height: AppSizesDouble.s10),
+            Text(
+              StringsManager.contact,
+              style: TextStyle(color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.dodgerBlue:ColorsManager.lightGrey2),
             ),
           ],
         ),
@@ -196,49 +163,4 @@ class AboutUs extends StatelessWidget {
     launchUrl(Uri.parse(email));
   }
 
-  List<Map<String, String>> get teamMembers => [
-        {
-          'name': 'Omar Nasr',
-          'imagePath':
-              'https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/images%2Ffile.jpg?alt=media&token=7f050ff7-8d8d-4ea4-84da-3d254c36c0c2',
-          'role': 'Flutter Developer',
-          'contactUrl': 'https://linktr.ee/J3_Unknown'
-        },
-        {
-          'name': 'Mahmoud Saad',
-          'imagePath':
-              'https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/IMG_%D9%A2%D9%A0%D9%A2%D9%A4%D9%A1%D9%A0%D9%A2%D9%A9_%D9%A1%D9%A1%D9%A5%D9%A7%D9%A2%D9%A9%20(1).jpg?alt=media&token=33ea4477-f573-47e6-981e-c01dc81c1c8b',
-          'role': 'Flutter Developer',
-          'contactUrl': 'https://linktr.ee/malik1307'
-        },
-        {
-          'name': 'Saif Elnawawy',
-          'imagePath':
-              'https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/images%2F459111528_411397035091165_5639055007617670316_n.jpg?alt=media&token=6ee42433-ee9f-449c-bef2-3abf21edd5b6',
-          'role': 'Flutter Developer',
-          'contactUrl':
-              'https://linktr.ee/Se_if?utm_source=linktree_profile_share'
-        },
-        {
-          'name': 'Omar M. Hassan',
-          'imagePath':
-              'https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/417357665_1165557908119538_5289593370887603831_n.jpg?alt=media&token=d112e3d8-3182-409a-a83e-0e8c581ccc4d',
-          'role': 'Backend Developer',
-          'contactUrl': 'https://0mr.me/who'
-        },
-        {
-          'name': 'Mahmoud Ahmed',
-          'imagePath':
-              'https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/images%2Ffile%20(4).jpg?alt=media&token=66fabec5-9958-4217-81cc-73bfe4cabdba',
-          'role': 'UI/UX Designer',
-          'contactUrl': 'https://linktr.ee/mahmoud588'
-        },
-        {
-          'name': 'Ibrahim Abo Elso\'ud',
-          'imagePath':
-              'https://images-cdn.ubuy.co.in/64c7e79e11e2491d3f730794-flag-of-palestine-3x5-ft-flags-3-x-5.jpg',
-          'role': 'Contributor',
-          'contactUrl': 'http://Aboelsoud.vercel.app'
-        },
-      ];
 }

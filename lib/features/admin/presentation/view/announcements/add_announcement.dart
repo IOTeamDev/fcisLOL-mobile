@@ -33,14 +33,12 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
   double _height = AppSizesDouble.s80;
   bool _isExpanded = false;
   bool _showContent = false;
-  final _formKey = GlobalKey<FormState>();
-  final _titleController = TextEditingController();
-  final _dateController = TextEditingController();
-  final _descriptionController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
   String? dueDateFormatted;
-  String dueDateWord = StringsManager.dueDate
-      .split(StringsManager.dash)
-      .join(StringsManager.space);
+  String dueDateWord = StringsManager.dueDate.split(StringsManager.dash).join(StringsManager.space);
   String? _selectedItem;
   IconData datePickerIcon = IconsManager.datePickerIcon;
   final Map<TextEditingController, TextDirection> _textDirections = {};
@@ -197,24 +195,22 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                           //Description Input text Field
                                           TextFormField(
                                             controller: _descriptionController,
-                                            textDirection: getTextDirection(
-                                                _descriptionController),
+                                            textDirection: getTextDirection(_descriptionController),
                                             minLines: AppSizes.s5,
                                             maxLines: AppSizes.s5,
                                             decoration: InputDecoration(
-                                              hintText:
-                                                  StringsManager.description,
+                                              hintText: StringsManager.description,
                                               hintStyle: TextStyle(
-                                                  fontSize: AppSizesDouble.s20,
-                                                  color:
-                                                      Provider.of<ThemeProvider>(
-                                                                  context)
-                                                              .isDark
-                                                          ? ColorsManager
-                                                              .lightGrey1
-                                                          : ColorsManager
-                                                              .lightGrey2),
-                                              enabledBorder: UnderlineInputBorder(
+                                                fontSize: AppSizesDouble.s20,
+                                                color:
+                                                    Provider.of<ThemeProvider>(
+                                                                context)
+                                                            .isDark
+                                                        ? ColorsManager
+                                                            .lightGrey1
+                                                        : ColorsManager
+                                                            .lightGrey2),
+                                                enabledBorder: UnderlineInputBorder(
                                                   borderSide: BorderSide(
                                                       color:
                                                           Provider.of<ThemeProvider>(
@@ -301,46 +297,24 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                               Expanded(
                                                 child: ElevatedButton(
                                                   style: ElevatedButton.styleFrom(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              vertical:
-                                                                  AppSizesDouble
-                                                                      .s15),
-                                                      backgroundColor:
-                                                          ColorsManager.white,
-                                                      shape: RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.circular(
-                                                                  AppSizesDouble
-                                                                      .s10))),
+                                                    padding: EdgeInsets.symmetric(vertical: AppSizesDouble.s15),
+                                                    backgroundColor: ColorsManager.white,
+                                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSizesDouble.s10))
+                                                  ),
                                                   onPressed: () {
                                                     setState(() {
-                                                      cubit.announcementImageFile =
-                                                          null;
-                                                      cubit.pickerIcon =
-                                                          IconsManager
-                                                              .imageIcon;
-                                                      cubit.imageName =
-                                                          StringsManager
-                                                              .selectImage;
-                                                      _getAnnouncementImage(
-                                                          cubit);
+                                                      cubit.announcementImageFile = null;
+                                                      cubit.pickerIcon = IconsManager.imageIcon;
+                                                      cubit.imageName = StringsManager.selectImage;
+                                                      _getAnnouncementImage(cubit);
                                                     });
                                                   },
                                                   child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
+                                                    mainAxisAlignment: MainAxisAlignment.center,
                                                     children: [
                                                       Text(
                                                         cubit.imageName,
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .bodyLarge!
-                                                            .copyWith(
-                                                                color:
-                                                                    ColorsManager
-                                                                        .black),
+                                                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: ColorsManager.black),
                                                       ),
                                                       SizedBox(
                                                         width:
@@ -348,28 +322,19 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                       ),
                                                       InkWell(
                                                         onTap: () {
-                                                          if (cubit
-                                                                  .announcementImageFile !=
-                                                              null) {
+                                                          if (cubit.announcementImageFile != null) {
                                                             setState(() {
-                                                              cubit.announcementImageFile =
-                                                                  null;
-                                                              cubit.pickerIcon =
-                                                                  IconsManager
-                                                                      .imageIcon;
-                                                              cubit.imageName =
-                                                                  StringsManager
-                                                                      .selectImage;
+                                                              cubit.announcementImageFile = null;
+                                                              cubit.pickerIcon = IconsManager.imageIcon;
+                                                              cubit.imageName = StringsManager.selectImage;
                                                             });
                                                           } else {
-                                                            _getAnnouncementImage(
-                                                                cubit);
+                                                            _getAnnouncementImage(cubit);
                                                           }
                                                         },
                                                         child: Icon(
                                                           cubit.pickerIcon,
-                                                          color: ColorsManager
-                                                              .black,
+                                                          color: ColorsManager.black,
                                                         ),
                                                       ),
                                                     ],
@@ -389,21 +354,15 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                   color: ColorsManager.white),
                                             ),
                                             value: _selectedItem,
-                                            dropdownColor: ColorsManager
-                                                .white, // Background color for the dropdown list
-                                            iconEnabledColor: ColorsManager
-                                                .white, // Color of the dropdown icon
-                                            style: const TextStyle(
-                                                color: ColorsManager
-                                                    .white), // Style for the selected item outside the list
+                                            dropdownColor: ColorsManager.white, // Background color for the dropdown list
+                                            iconEnabledColor: ColorsManager.white, // Color of the dropdown icon
+                                            style: const TextStyle(color: ColorsManager.white), // Style for the selected item outside the list
                                             items: _items.map((String item) {
                                               return DropdownMenuItem<String>(
                                                 value: item,
                                                 child: Text(
                                                   item,
-                                                  style: const TextStyle(
-                                                      color: ColorsManager
-                                                          .black), // Always black for the list items
+                                                  style: const TextStyle(color: ColorsManager.black), // Always black for the list items
                                                 ),
                                               );
                                             }).toList(),
@@ -442,51 +401,24 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                   onPressed: () {
                                                     setState(() {
                                                       _titleController.clear();
-                                                      _dateController.text =
-                                                          dueDateWord;
-                                                      _descriptionController
-                                                          .clear();
-                                                      _isExpanded =
-                                                          false; // Toggle the expansion
-                                                      _height =
-                                                          AppSizesDouble.s80;
+                                                      _dateController.text = dueDateWord;
+                                                      _descriptionController.clear();
+                                                      _isExpanded = false; // Toggle the expansion
+                                                      _height = AppSizesDouble.s80;
                                                       _showContent = false;
                                                       dueDateFormatted = null;
-                                                      cubit.announcementImageFile =
-                                                          null;
-                                                      cubit.imageName =
-                                                          StringsManager
-                                                              .selectImage;
-                                                      cubit.pickerIcon =
-                                                          IconsManager
-                                                              .imageIcon;
+                                                      cubit.announcementImageFile = null;
+                                                      cubit.imageName = StringsManager.selectImage;
+                                                      cubit.pickerIcon = IconsManager.imageIcon;
                                                     });
                                                   },
                                                   style:
                                                       ElevatedButton.styleFrom(
-                                                    shape: RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                AppSizesDouble
-                                                                    .s13)),
-                                                    padding: EdgeInsetsDirectional
-                                                        .symmetric(
-                                                            horizontal: AppQueries
-                                                                    .screenWidth(
-                                                                        context) /
-                                                                AppSizes.s10),
-                                                    backgroundColor:
-                                                        ColorsManager.white,
-                                                    foregroundColor:
-                                                        ColorsManager.black,
-                                                    textStyle: Theme.of(context)
-                                                        .textTheme
-                                                        .headlineMedium!
-                                                        .copyWith(
-                                                            fontSize: AppQueries
-                                                                    .screenWidth(
-                                                                        context) /
-                                                                AppSizes.s17),
+                                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSizesDouble.s13)),
+                                                    padding: EdgeInsetsDirectional.symmetric(horizontal: AppQueries.screenWidth(context) / AppSizes.s10),
+                                                    backgroundColor: ColorsManager.white,
+                                                    foregroundColor: ColorsManager.black,
+                                                    textStyle: Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s17),
                                                   ),
                                                   child: const Text(
                                                     StringsManager.cancel,
@@ -496,156 +428,99 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                 //submit button
                                                 ElevatedButton(
                                                     onPressed: () async {
-                                                      if (_formKey.currentState!
-                                                          .validate()) {
-                                                        if (_selectedItem ==
-                                                            null) {
+                                                      if (_formKey.currentState!.validate()) {
+                                                        if (_selectedItem == null) {
                                                           showToastMessage(
-                                                              textColor:
-                                                                  ColorsManager
-                                                                      .black,
-                                                              message:
-                                                                  StringsManager
-                                                                      .selectAnnouncementTypeWarning,
-                                                              states:
-                                                                  ToastStates
-                                                                      .WARNING);
+                                                            textColor: ColorsManager.black,
+                                                            message: StringsManager.selectAnnouncementTypeWarning,
+                                                            states: ToastStates.WARNING
+                                                          );
                                                         } else {
                                                           setState(() {
                                                             _isExpanded = false;
-                                                            _showContent =
-                                                                false;
-                                                            _height =
-                                                                AppSizesDouble
-                                                                    .s80;
+                                                            _showContent = false;
+                                                            _height = AppSizesDouble.s80;
                                                           });
 
-                                                          await cubit.uploadPImage(
-                                                              image: cubit
-                                                                  .announcementImageFile);
-                                                          print(
-                                                              'adding announcement');
+                                                          await cubit.uploadPImage(image: cubit.announcementImageFile);
+                                                          print('adding announcement');
                                                           cubit.addAnnouncement(
-                                                              title:
-                                                                  _titleController
-                                                                      .text,
-                                                              dueDate:
-                                                                  dueDateFormatted,
-                                                              type:
-                                                                  _selectedItem,
-                                                              description:
-                                                                  _descriptionController
-                                                                      .text,
-                                                              image: cubit
-                                                                      .announcementImageFile ??
-                                                                  AppConstants
-                                                                      .defaultImage,
-                                                              currentSemester:
-                                                                  widget
-                                                                      .semester);
+                                                            title: _titleController.text,
+                                                            dueDate: dueDateFormatted,
+                                                            type: _selectedItem,
+                                                            description: _descriptionController.text,
+                                                            image: cubit.announcementImageFile ?? AppConstants.defaultImage,
+                                                            currentSemester: widget.semester
+                                                          );
                                                           setState(() {
-                                                            _titleController
-                                                                .clear();
-                                                            _descriptionController
-                                                                .clear();
-                                                            _dateController
-                                                                    .text =
-                                                                dueDateWord;
-                                                            _selectedItem =
-                                                                null;
-                                                            dueDateFormatted =
-                                                                null;
-                                                            cubit.announcementImageFile =
-                                                                null;
-                                                            cubit.imageName =
-                                                                StringsManager
-                                                                    .selectImage;
-                                                            cubit.pickerIcon =
-                                                                IconsManager
-                                                                    .imageIcon;
-                                                            datePickerIcon =
-                                                                IconsManager
-                                                                    .datePickerIcon;
+                                                            _titleController.clear();
+                                                            _descriptionController.clear();
+                                                            _dateController.text = dueDateWord;
+                                                            _selectedItem = null;
+                                                            dueDateFormatted = null;
+                                                            cubit.announcementImageFile = null;
+                                                            cubit.imageName = StringsManager.selectImage;
+                                                            cubit.pickerIcon = IconsManager.imageIcon;
+                                                            datePickerIcon = IconsManager.datePickerIcon;
                                                           });
                                                         }
                                                       }
                                                     },
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      shape: RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.circular(
-                                                                  AppSizesDouble
-                                                                      .s13)),
-                                                      padding: EdgeInsetsDirectional.symmetric(
-                                                          horizontal: AppQueries
-                                                                  .screenWidth(
-                                                                      context) /
-                                                              AppSizes.s10),
-                                                      backgroundColor:
-                                                          ColorsManager
-                                                              .lightPrimary,
-                                                      foregroundColor:
-                                                          ColorsManager.white,
-                                                      textStyle: Theme.of(
-                                                              context)
-                                                          .textTheme
-                                                          .headlineMedium!
-                                                          .copyWith(
-                                                              fontSize: AppQueries
-                                                                      .screenWidth(
-                                                                          context) /
-                                                                  AppSizes.s17),
-                                                    ),
-                                                    child: const Text(
-                                                        StringsManager.submit)),
+                                                  style: ElevatedButton.styleFrom(
+                                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSizesDouble.s13)),
+                                                    padding: EdgeInsetsDirectional.symmetric(horizontal: AppQueries.screenWidth(context) / AppSizes.s10),
+                                                    backgroundColor: ColorsManager.lightPrimary,
+                                                    foregroundColor: ColorsManager.white,
+                                                    textStyle: Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s17),
+                                                  ),
+                                                  child: const Text(StringsManager.submit)
+                                                ),
                                               ],
                                             ),
                                           ),
                                         ]),
                                   ),
                                 ),
-                              ))
-                          : !_isExpanded
-                              ? Padding(
-                                  padding: EdgeInsetsDirectional.symmetric(
-                                      vertical: AppSizesDouble.s10,
-                                      horizontal: AppSizesDouble.s15),
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        StringsManager.addNew,
-                                        style: TextStyle(
-                                            fontSize: FontSize.size30,
-                                            color: ColorsManager.white),
-                                      ),
-                                      Spacer(),
-                                      Icon(
-                                        IconsManager.addIcon,
-                                        color: ColorsManager.white,
-                                        size: AppSizesDouble.s40,
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              : null,
+                              )
+                      ) : !_isExpanded ? Padding(
+                        padding: EdgeInsetsDirectional.symmetric(
+                          vertical: AppSizesDouble.s10,
+                          horizontal: AppSizesDouble.s15
+                        ),
+                        child: Row(
+                          children: [
+                            Text(
+                              StringsManager.addNew,
+                              style: TextStyle(
+                                fontSize: FontSize.size30,
+                                color: ColorsManager.white
+                              ),
+                            ),
+                            Spacer(),
+                            Icon(
+                              IconsManager.addIcon,
+                              color: ColorsManager.white,
+                              size: AppSizesDouble.s40,
+                            ),
+                          ],
+                        ),
+                      ) : null,
                     ),
                   ),
                   ConditionalBuilder(
-                    condition: state is! AdminGetAnnouncementLoadingState &&
-                        cubit.announcements.isNotEmpty,
+                    condition: state is! AdminGetAnnouncementLoadingState && cubit.announcements.isNotEmpty,
                     builder: (context) => ListView.separated(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) => announcementBuilder(
-                          widget.semester,
-                          // cubit.announcements![index].id,
-                          context,
-                          index,
-                          cubit.announcements[index].title,
-                          cubit.announcements[index].content,
-                          cubit.announcements[index].dueDate,
-                          cubit.announcements[index].type),
+                        widget.semester,
+                        context,
+                        index,
+                        cubit.announcements[index].title,
+                        cubit.announcements[index].content,
+                        cubit.announcements[index].dueDate,
+                        cubit.announcements[index].type
+                      ),
                       separatorBuilder: (context, index) => const SizedBox(
                         height: AppSizesDouble.s10,
                       ),
@@ -654,15 +529,12 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                     fallback: (context) {
                       if (state is AdminGetAnnouncementLoadingState) {
                         return SizedBox(
-                          height: AppQueries.screenHeight(context) /
-                              AppSizesDouble.s1_5,
-                          child:
-                              const Center(child: CircularProgressIndicator()),
+                          height: AppQueries.screenHeight(context) / AppSizesDouble.s1_5,
+                          child: const Center(child: CircularProgressIndicator()),
                         );
                       } else {
                         return SizedBox(
-                          height: AppQueries.screenHeight(context) /
-                              AppSizesDouble.s1_5,
+                          height: AppQueries.screenHeight(context) / AppSizesDouble.s1_5,
                           child: Center(
                             child: Text(
                               StringsManager.noAnnouncementsYet,
@@ -694,24 +566,21 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
   }
 
   _datePicker() => showDatePicker(
-        context: context,
-        initialDate: DateTime.now().add(Duration(days: AppSizes.s1)),
-        firstDate: DateTime.now().add(Duration(days: AppSizes.s1)),
-        lastDate: DateTime.parse(StringsManager.endDate),
-      ).then((value) {
-        if (value != null) {
-          setState(() {
-            DateTime selectedDate =
-                DateTime(value.year, value.month, value.day);
-            dueDateFormatted = DateTime.utc(
-                    selectedDate.year, selectedDate.month, selectedDate.day)
-                .toIso8601String();
-            _dateController.text =
-                intl.DateFormat(StringsManager.dateFormat).format(value);
-            datePickerIcon = IconsManager.closeIcon;
-          });
-        }
-      });
+      context: context,
+      initialDate: DateTime.now().add(Duration(days: AppSizes.s1)),
+      firstDate: DateTime.now().add(Duration(days: AppSizes.s1)),
+      lastDate: DateTime.parse(StringsManager.endDate),
+    ).then((value) {
+      if (value != null) {
+        setState(() {
+          DateTime selectedDate = DateTime(value.year, value.month, value.day);
+          dueDateFormatted = DateTime.utc(selectedDate.year, selectedDate.month, selectedDate.day).toIso8601String();
+          _dateController.text = intl.DateFormat(StringsManager.dateFormat).format(value);
+          datePickerIcon = IconsManager.closeIcon;
+        });
+      }
+    }
+  );
 
   _getAnnouncementImage(cubit) {
     showToastMessage(
@@ -723,14 +592,12 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
 
   void _addDirectionListener(TextEditingController controller) {
     controller.addListener(() {
-      if (controller.text.isNotEmpty &&
-          !_textDirections.containsKey(controller)) {
+      if (controller.text.isNotEmpty && !_textDirections.containsKey(controller)) {
         final firstChar = controller.text[0];
         final isArabic = RegExp(r'^[\u0600-\u06FF]').hasMatch(firstChar);
 
         setState(() {
-          _textDirections[controller] =
-              isArabic ? TextDirection.rtl : TextDirection.ltr;
+          _textDirections[controller] = isArabic ? TextDirection.rtl : TextDirection.ltr;
         });
       }
     });
@@ -741,7 +608,8 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
   }
 
   Widget announcementBuilder(
-      semester, context, index, title, content, date, selectedItem) {
+      semester, context, index, title, content, date, selectedItem)
+  {
     var cubit = AdminCubit.get(context).announcements[index];
     print(cubit.type);
     return GestureDetector(

@@ -10,4 +10,5 @@ class AssetsManager{
   static const String onBoarding1 = '${_imagePath}OnBoarding1.png';
   static const String onBoarding2 = '${_imagePath}OnBoarding2.png';
   static const String onBoarding3 = '${_imagePath}OnBoarding3.png';
+  static const String emptyAnnouncements = '${_imagePath}th.png';
 }

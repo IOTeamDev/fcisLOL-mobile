@@ -16,9 +16,8 @@ import '../../../data/models/semster_model.dart';
 
 class SubjectItemBuild extends StatelessWidget {
   const SubjectItemBuild(
-      {super.key, required this.subject, required this.navigation});
+      {super.key, required this.subject});
   final SubjectModel subject;
-  final bool navigation;
 
   @override
   Widget build(BuildContext context) {

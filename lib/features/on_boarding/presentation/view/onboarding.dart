@@ -31,11 +31,10 @@ class _OnBoardingState extends State<OnBoarding> {
         children: [
           PageView.builder(
             controller: pageViewController,
-            itemBuilder: (context, index) =>
-                OnBoardingItem(model: onBoardingItemsList[index]),
+            itemBuilder: (context, index) => OnBoardingItem(model: onBoardingItemsList[index]),
             itemCount: onBoardingItemsList.length,
             onPageChanged: (value) {
-              if (value == onBoardingItemsList.length - 1) {
+              if (value == onBoardingItemsList.length - AppSizes.s1) {
                 isLastPage = true;
                 setState(() {
                   print(isLastPage);
@@ -56,28 +55,24 @@ class _OnBoardingState extends State<OnBoarding> {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: !isLastPage
-                        ? ColorsManager.lightPrimary
-                        : ColorsManager.black2,
-                    shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(AppSizesDouble.s15)),
+                      ? ColorsManager.lightPrimary
+                      : ColorsManager.darkGrey,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSizesDouble.s15)),
                     foregroundColor: ColorsManager.white,
-                    padding: EdgeInsets.symmetric(
-                        horizontal: AppPaddings.p50, vertical: AppPaddings.p15),
+                    padding: EdgeInsets.symmetric(horizontal: AppPaddings.p50, vertical: AppPaddings.p15),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
                         isLastPage
-                            ? StringsManager.getStarted
-                            : StringsManager.next,
-                        style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w600),
+                          ? StringsManager.getStarted
+                          : StringsManager.next,
+                        style: const TextStyle(fontSize: AppSizesDouble.s16, fontWeight: FontWeight.w600),
                       ),
                       if (!isLastPage)
                         SizedBox(
-                          width: 10,
+                          width: AppSizesDouble.s10,
                         ),
                       if (!isLastPage)
                         Icon(

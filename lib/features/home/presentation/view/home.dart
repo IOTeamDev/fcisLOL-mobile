@@ -73,22 +73,21 @@ class _HomeState extends State<Home> {
     var scaffoldKey = GlobalKey<ScaffoldState>();
     return BlocConsumer<MainCubit, MainCubitStates>(listener: (context, state) {
       if (state is GetProfileSuccess) {
-        AdminCubit.get(context)
-            .getAnnouncements(MainCubit.get(context).profileModel!.semester);
-        MainCubit.get(context).getRequests(
-            semester: MainCubit.get(context).profileModel!.semester);
+        AdminCubit.get(context).getAnnouncements(MainCubit.get(context).profileModel!.semester);
+        MainCubit.get(context).getRequests(semester: MainCubit.get(context).profileModel!.semester);
         if (MainCubit.get(context).profileModel!.photo == null) {
           MainCubit.get(context).updateUser(
-              userID: MainCubit.get(context).profileModel!.id,
-              photo: AppConstants.defaultProfileImage);
+            userID: MainCubit.get(context).profileModel!.id,
+            photo: AppConstants.defaultProfileImage
+          );
         }
         MainCubit.get(context).updateUser(
-            userID: MainCubit.get(context).profileModel!.id,
-            fcmToken: fcmToken);
+          userID: MainCubit.get(context).profileModel!.id,
+          fcmToken: fcmToken
+        );
       }
       if (state is GetProfileFailure && AppConstants.SelectedSemester != null) {
-        AdminCubit.get(context)
-            .getAnnouncements(AppConstants.SelectedSemester!);
+        AdminCubit.get(context).getAnnouncements(AppConstants.SelectedSemester!);
       }
       if (state is LogoutSuccess) {
         Navigator.of(context).pushAndRemoveUntil(
@@ -176,72 +175,47 @@ class _HomeState extends State<Home> {
                                           .headlineLarge),
                                 ), //Announcements Text
                                 BlocBuilder<AdminCubit, AdminCubitStates>(
-                                    buildWhen: (previous, current) =>
-                                        current is AdminGetAnnouncementLoadingState ||
-                                        current
-                                            is AdminGetAnnouncementSuccessState ||
-                                        current
-                                            is AdminGetAnnouncementsErrorState,
-                                    builder: (context, state) {
-                                      if (state
-                                          is AdminGetAnnouncementSuccessState) {
-                                        return BuildAnnouncementsRow(
-                                            announcements:
-                                                AdminCubit.get(context)
-                                                    .announcements);
-                                      } else if (state
-                                          is AdminGetAnnouncementLoadingState) {
-                                        return const Center(
-                                          child: CircularProgressIndicator(),
-                                        );
-                                      } else if (state
-                                          is AdminGetAnnouncementsErrorState) {
-                                        return Image.asset('images/th.png');
-                                      } else {
-                                        return const SizedBox();
-                                      }
-                                    }), //Announcements Carousel Slider
+                                  buildWhen: (previous, current) =>
+                                    current is AdminGetAnnouncementLoadingState ||
+                                    current is AdminGetAnnouncementSuccessState ||
+                                    current is AdminGetAnnouncementsErrorState,
+                                  builder: (context, state) {
+                                    if (state is AdminGetAnnouncementSuccessState) {
+                                      return BuildAnnouncementsRow(announcements: AdminCubit.get(context).announcements);
+                                    } else if (state is AdminGetAnnouncementLoadingState) {
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    } else if (state is AdminGetAnnouncementsErrorState) {
+                                      return Image.asset(AssetsManager.emptyAnnouncements);
+                                    } else {
+                                      return const SizedBox();
+                                    }
+                                  }
+                                ), //Announcements Carousel Slider
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: AppPaddings.p20,
-                                      vertical: AppPaddings.p20),
-                                  child: divider(
-                                      color: Provider.of<ThemeProvider>(context)
-                                              .isDark
-                                          ? ColorsManager.white
-                                          : ColorsManager.black),
+                                    horizontal: AppPaddings.p20,
+                                    vertical: AppPaddings.p20
+                                  ),
+                                  child: divider(color: Provider.of<ThemeProvider>(context).isDark ? ColorsManager.white : ColorsManager.black),
                                 ), //divider
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: AppPaddings.p20),
-                                  child: Text(StringsManager.subject,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineLarge),
+                                  padding: const EdgeInsets.symmetric(horizontal: AppPaddings.p20),
+                                  child: Text(StringsManager.subject, style: Theme.of(context).textTheme.headlineLarge),
                                 ), // Subjects Text
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.all(AppPaddings.p10),
+                                  padding: const EdgeInsets.all(AppPaddings.p10),
                                   child: GridView.builder(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(), // Disable scrolling in the GridView
-                                    shrinkWrap:
-                                        true, // Shrink the GridView to fit its content
-                                    gridDelegate:
-                                        const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount:
-                                          AppSizes.s2, // Two items per row
+                                    physics: const NeverScrollableScrollPhysics(), // Disable scrolling in the GridView
+                                    shrinkWrap: true, // Shrink the GridView to fit its content
+                                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: AppSizes.s2, // Two items per row
                                       crossAxisSpacing: AppSizesDouble.s10,
                                       mainAxisSpacing: AppSizesDouble.s10,
                                     ),
-                                    itemCount: semesters[semesterIndex!]
-                                        .subjects
-                                        .length,
-                                    itemBuilder: (context, index) =>
-                                        SubjectItemBuild(
-                                            subject: semesters[semesterIndex!]
-                                                .subjects[index],
-                                            navigation: false),
+                                    itemCount: semesters[semesterIndex!].subjects.length,
+                                    itemBuilder: (context, index) => SubjectItemBuild(subject: semesters[semesterIndex!].subjects[index],),
                                   ),
                                 ),
                               ],

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:lol/core/utils/components.dart';
+import 'package:lol/core/utils/resources/colors_manager.dart';
+import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/core/widgets/default_text_field.dart';
 import 'package:provider/provider.dart';
@@ -8,26 +10,38 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/cubits/main_cubit/main_cubit.dart';
 import '../../../core/utils/resources/constants_manager.dart';
+import '../../../core/utils/resources/values_manager.dart';
 import '../../../main.dart';
 
-class FeedbackScreen extends StatelessWidget {
+class FeedbackScreen extends StatefulWidget {
   FeedbackScreen({super.key});
 
-  final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _formKey = GlobalKey<FormState>();
+  @override
+  State<FeedbackScreen> createState() => _FeedbackScreenState();
+}
 
+class _FeedbackScreenState extends State<FeedbackScreen> {
+  final _formKey = GlobalKey<FormState>();
   final _feedbackController = TextEditingController();
+
+  final Map<TextEditingController, TextDirection> _textDirections = {};
+
+  @override
+  void initState() {
+   _addDirectionListener(_feedbackController);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
-      key: scaffoldKey,
+      appBar: AppBar(
+        title: Text(StringsManager.feedback, style: Theme.of(context).textTheme.displayMedium,),
+        centerTitle: true,
+
+      ),
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [_buildFeedBackForm(context)],
-        ),
+        child: _buildFeedBackForm(context),
       ),
     );
   }
@@ -35,91 +49,86 @@ class FeedbackScreen extends StatelessWidget {
   Widget _buildFeedBackForm(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: Provider.of<ThemeProvider>(context).isDark
-              ? HexColor('#3B3B3B')
-              : HexColor('#757575'),
-          borderRadius: BorderRadius.circular(15)),
-      margin: EdgeInsetsDirectional.symmetric(horizontal: 15, vertical: 30),
-      padding: const EdgeInsets.all(15.0),
+        color: Provider.of<ThemeProvider>(context).isDark ? ColorsManager.darkPrimary : ColorsManager.grey3,
+        borderRadius: BorderRadius.circular(AppSizesDouble.s15),
+        border: Border.all(color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.transparent: ColorsManager.grey.withValues(alpha: AppSizesDouble.s0_3))
+      ),
+      margin: EdgeInsetsDirectional.symmetric(horizontal: AppMargins.m15, vertical: AppMargins.m30),
+      padding: const EdgeInsets.all(AppPaddings.p15),
       child: SingleChildScrollView(
         child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                TextFormField(
-                  minLines: 12,
-                  maxLines: 15,
-                  controller: _feedbackController,
-                  keyboardType: TextInputType.multiline,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'This field must not be Empty';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                      hintText: 'Your feedback',
-                      hintStyle:
-                          TextStyle(fontSize: 20, color: Colors.grey[400]),
-                      border: UnderlineInputBorder(),
-                      enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey)),
-                      focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white))),
-                  style: const TextStyle(color: Colors.white),
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                minLines: AppSizes.s12,
+                maxLines: AppSizes.s12,
+                controller: _feedbackController,
+                textDirection: getTextDirection(_feedbackController),
+                keyboardType: TextInputType.multiline,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return StringsManager.emptyFieldWarning;
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                  hintText: StringsManager.bugDescription,
+                  hintStyle: Theme.of(context).textTheme.headlineMedium!.copyWith(color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.lightGrey1: ColorsManager.grey),
+                  border: UnderlineInputBorder(),
+                  enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: ColorsManager.grey)),
+                  focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: ColorsManager.lightPrimary)),
                 ),
-                SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                cursorColor: ColorsManager.lightPrimary,
+                style: const TextStyle(color: ColorsManager.white),
+              ),
+              SizedBox(height: AppSizesDouble.s10,),
+              Padding(
+                padding: const EdgeInsetsDirectional.symmetric(horizontal: AppPaddings.p10),
+                child: Row(
                   children: [
+                    //cancel button
                     ElevatedButton(
                       onPressed: () {
-                        _feedbackController.text = '';
-                        Navigator.of(context).pop();
+                        _feedbackController.clear();
+                        Navigator.pop(context);
                       },
                       style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(13)),
-                        padding: EdgeInsetsDirectional.symmetric(
-                            horizontal: AppQueries.screenWidth(context) / 11),
-                        backgroundColor: Colors.white,
-                        textStyle: TextStyle(
-                            fontSize: AppQueries.screenWidth(context) / 17),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSizesDouble.s13)),
+                        padding: EdgeInsetsDirectional.symmetric(horizontal: AppQueries.screenWidth(context) / AppSizes.s11),
+                        backgroundColor: ColorsManager.white,
+                        foregroundColor: ColorsManager.black,
+                        textStyle: TextStyle(fontSize: AppQueries.screenWidth(context) / AppSizes.s17),
                       ),
-                      child: const Text(
-                        'Cancel',
-                        style: TextStyle(color: Colors.black),
-                      ),
+                      child: const Text(StringsManager.cancel,),
                     ),
+                    const Spacer(),
+                    //submit button
                     ElevatedButton(
-                        onPressed: () {
-                          sendBugReport(
-                            feedbackDescription: _feedbackController.text,
-                          );
-                          _feedbackController.clear();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(13)),
-                          padding: EdgeInsetsDirectional.symmetric(
-                              horizontal: AppQueries.screenWidth(context) / 11),
-                          backgroundColor: Color.fromARGB(255, 20, 130, 220),
-                          foregroundColor: Colors.white,
-                          textStyle: TextStyle(
-                              fontSize: AppQueries.screenWidth(context) / 17),
-                        ),
-                        child: const Text('Submit'))
+                      onPressed: () async {
+                        sendFeedback(feedbackDescription: _feedbackController.text,);
+                        _feedbackController.clear();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSizesDouble.s13)),
+                        padding: EdgeInsetsDirectional.symmetric(horizontal: AppQueries.screenWidth(context) / AppSizes.s11),
+                        backgroundColor: ColorsManager.lightPrimary,
+                        foregroundColor: Colors.white,
+                        textStyle: TextStyle(fontSize: AppQueries.screenWidth(context) / AppSizes.s17),
+                      ),
+                      child: const Text(StringsManager.submit)
+                    ),
                   ],
-                )
-              ],
-            )),
+                ),
+              ),
+            ],
+          )
+        ),
       ),
     );
   }
 
-  Future<void> sendBugReport({required String feedbackDescription}) async {
+  Future<void> sendFeedback({required String feedbackDescription}) async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
@@ -133,5 +142,32 @@ class FeedbackScreen extends StatelessWidget {
       );
       await launchUrl(emailUri);
     }
+  }
+
+  void _addDirectionListener(TextEditingController controller) {
+    controller.addListener(() {
+      if (controller.text.isNotEmpty) {
+        final firstChar = controller.text[0];
+        final isArabic = RegExp(r'^[\u0600-\u06FF]').hasMatch(firstChar);
+        setState(() {
+          _textDirections[controller] = isArabic ? TextDirection.rtl : TextDirection.ltr;
+        });
+      } else {
+        setState(() {
+          _textDirections[controller] = TextDirection.ltr; // Default to LTR when empty
+        });
+      }
+    });
+  }
+
+  TextDirection getTextDirection(TextEditingController controller) {
+    return _textDirections[controller] ?? TextDirection.ltr; // Default LTR
+  }
+
+  @override
+  void dispose() {
+    _feedbackController.removeListener((){});
+    _feedbackController.dispose();
+    super.dispose();
   }
 }

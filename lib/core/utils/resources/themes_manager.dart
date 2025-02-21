@@ -19,7 +19,7 @@ ThemeData lightTheme = ThemeData(
     titleLarge:getMediumStyle(color: ColorsManager.black, fontSize: FontSize.size18),
     titleMedium: getMediumStyle(color: ColorsManager.black, fontSize: FontSize.size16),
     bodyLarge: getRegularStyle(color: ColorsManager.black,),
-    bodySmall: getRegularStyle(color: ColorsManager.black, fontSize: FontSize.size10),
+    bodySmall: getRegularStyle(color: ColorsManager.black, fontSize: FontSize.size12),
   ),
 );
 
@@ -41,6 +41,6 @@ ThemeData darkTheme = ThemeData(
     titleLarge: getMediumStyle(color: ColorsManager.white, fontSize: FontSize.size18),
     titleMedium: getMediumStyle(color: ColorsManager.white, fontSize: FontSize.size16),
     bodyLarge: getRegularStyle(color: ColorsManager.white),
-    bodySmall: getRegularStyle(color: ColorsManager.white, fontSize: FontSize.size10),
+    bodySmall: getRegularStyle(color: ColorsManager.white, fontSize: FontSize.size12),
   ),
 );
