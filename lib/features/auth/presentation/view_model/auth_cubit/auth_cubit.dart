@@ -1,10 +1,13 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:lol/core/network/remote/dio.dart';
+import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/dependencies_helper.dart';
 import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
@@ -68,7 +71,49 @@ class AuthCubit extends Cubit<AuthState> {
       await FirebaseMessaging.instance.requestPermission();
       emit(RegisterSuccess(token: loginModel.token));
     } catch (e) {
+      log(e.toString());
       emit(RegisterFailed(errMessage: e.toString()));
+    }
+  }
+
+  String? userImagePath;
+
+  String? announcementImagePath;
+
+  Future<void> uploadPImage({File? image, bool isUserProfile = true}) async {
+    announcementImagePath = null;
+    emit(UploadImageLoading());
+    if (image == null) return;
+
+    showToastMessage(
+        message: StringsManager.uploadImage, states: ToastStates.WARNING);
+    final TaskSnapshot uploadTask;
+    if (isUserProfile) {
+      uploadTask = await FirebaseStorage.instance
+          .ref()
+          .child(StringsManager.image.toLowerCase() +
+              StringsManager.forwardSlash +
+              Uri.file(image.path).pathSegments.last)
+          .putFile(image);
+    } else {
+      uploadTask = await FirebaseStorage.instance
+          .ref()
+          .child(StringsManager.announcements.toLowerCase() +
+              StringsManager.forwardSlash +
+              Uri.file(image.path).pathSegments.last)
+          .putFile(image);
+    }
+
+    try {
+      final imagePath = await uploadTask.ref.getDownloadURL();
+      if (isUserProfile) {
+        userImagePath = imagePath;
+      } else {
+        announcementImagePath = imagePath;
+      }
+      emit(UploadImageSuccess());
+    } on Exception {
+      emit(UploadImageFailure());
     }
   }
 }

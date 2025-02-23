@@ -10,7 +10,6 @@ import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/features/auth/presentation/view/choosing_year.dart';
 import 'package:lol/features/auth/presentation/view/register.dart';
 import 'package:lol/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
-import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
 
 class Year extends StatefulWidget {
@@ -25,11 +24,11 @@ class Year extends StatefulWidget {
 
 class YearState extends State<Year> {
   bool isExpanded = false;
+  late String switchSemester;
 
   @override
   Widget build(context) {
     var loginCubit = AuthCubit.get(context);
-    UserInfo? userInfo = widget.userInfo;
 
     return Column(
       children: [
@@ -87,12 +86,14 @@ class YearState extends State<Year> {
                 ListTile(
                   title: const Text('Semester 1'),
                   textColor: ColorsManager.black,
-                  onTap: () => _awesomeDialogForSemester1(userInfo, loginCubit),
+                  onTap: () =>
+                      _awesomeDialogForSemester1(widget.userInfo, loginCubit),
                 ),
                 ListTile(
                   title: const Text('Semester 2'),
                   textColor: ColorsManager.black,
-                  onTap: () => _awesomeDialogForSemester2(userInfo, loginCubit),
+                  onTap: () =>
+                      _awesomeDialogForSemester2(widget.userInfo, loginCubit),
                 ),
               ],
             ),
@@ -145,7 +146,7 @@ class YearState extends State<Year> {
         },
       ).show();
 
-  _awesomeDialogForSemester2(userInfo, loginCubit) => AwesomeDialog(
+  _awesomeDialogForSemester2(userInfo, AuthCubit loginCubit) => AwesomeDialog(
         context: context,
         dialogType: DialogType.info,
         animType: AnimType.rightSlide,

@@ -57,8 +57,7 @@ class MainCubit extends Cubit<MainCubitStates> {
       userImageFile = File(tempPostImage.path);
       final int sizeInBytes = await userImageFile!.length();
       final int sizeInMB = sizeInBytes ~/ sqrt(AppSizes.s1024);
-      print(sizeInBytes);
-      print(sizeInMB);
+
       if (sizeInMB <= AppSizes.s1) {
         emit(GetUserImageSuccess());
       } else {

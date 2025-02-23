@@ -12,19 +12,9 @@ class FCMHelper {
   // initialize notifications for this app or device
   Future<void> initNotifications() async {
     await _firebaseMessaging.requestPermission();
-    // get device token
-    String? deviceToken = await _firebaseMessaging.getToken();
-    print(
-        "===================Device FirebaseMessaging Token====================");
-    print(deviceToken);
-    print(
-        "===================Device FirebaseMessaging Token====================");
   }
 
   Future<String?> getAccessToken() async {
-    print("$privateKeyId---------");
-    print(privateKey);
-
     final serviceAccountJson = {
       "type": "service_account",
       "project_id": "fcis-da7f4",

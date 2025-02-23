@@ -22,8 +22,6 @@ import 'package:lol/core/network/remote/fcm_helper.dart';
 import '../../../../core/utils/resources/constants_manager.dart';
 import '../../../../core/utils/resources/strings_manager.dart';
 
-late String switchSemester;
-
 class ChoosingYear extends StatelessWidget {
   final UserInfo? userInfo;
   final AuthCubit authCubit;
