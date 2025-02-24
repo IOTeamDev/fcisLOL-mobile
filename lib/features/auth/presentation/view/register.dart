@@ -140,7 +140,7 @@ class _RegisterscreenState extends State<Registerscreen> {
                           if (value!.isEmpty) {
                             return StringsManager.emptyFieldWarning;
                           } else if (value != _passwordController.text) {
-                            return StringsManager.confirmPassword;
+                            return 'Passwords does not match';
                           }
                           return null;
                         },

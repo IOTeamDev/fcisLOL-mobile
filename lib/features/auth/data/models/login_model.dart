@@ -1,25 +1,55 @@
 class LoginModel {
-  late String message;
-  late String token;
-  late UserModel user;
+  String message;
+  String token;
+  UserModel user;
+  LoginModel({
+    required this.message,
+    required this.token,
+    required this.user,
+  });
 
-  LoginModel.fromJson(Map<String, dynamic> model) {
-    message = model["message"];
-    token = model["token"];
-    user = UserModel.fromJson(model["user"]);
+  factory LoginModel.fromJson(Map<String, dynamic> model) {
+    return LoginModel(
+      message: model["message"],
+      token: model["token"],
+      user: UserModel.fromJson(model["user"]),
+    );
   }
 }
 
 class UserModel {
-  late String name;
-  late String semester;
-  late String role;
+  int id;
+  String name;
+  String email;
+  String? photo;
+  String semester;
+  String role;
+  int score;
   String? fcmToken;
+  String? lastActive;
 
-  UserModel.fromJson(Map<String, dynamic> model) {
-    name = model["name"];
-    semester = model["semester"];
-    role = model["role"];
-    fcmToken = model["fcmToken"];
+  UserModel(
+      {required this.id,
+      required this.name,
+      required this.email,
+      this.photo,
+      required this.semester,
+      required this.role,
+      required this.score,
+      this.fcmToken,
+      this.lastActive});
+
+  factory UserModel.fromJson(Map<String, dynamic> model) {
+    return UserModel(
+      id: model["id"],
+      name: model["name"],
+      email: model["email"],
+      photo: model["photo"],
+      semester: model["semester"],
+      role: model["role"],
+      fcmToken: model["fcmToken"],
+      score: model["score"],
+      lastActive: model["lastActive"],
+    );
   }
 }

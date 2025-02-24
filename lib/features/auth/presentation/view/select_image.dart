@@ -22,15 +22,8 @@ class SelectImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => AuthCubit(),
-        ),
-        BlocProvider(
-          create: (context) => MainCubit(),
-        ),
-      ],
+    return BlocProvider(
+      create: (context) => AuthCubit(),
       child: BlocConsumer<MainCubit, MainCubitStates>(
         listener: (context, state) {
           if (state is GetUserImageLimitExceed) {

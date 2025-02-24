@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -171,6 +173,8 @@ class YearState extends State<Year> {
           if (userInfo != null) {
             FCMHelper fCMHelper = FCMHelper();
             fCMHelper.initNotifications();
+            print('semester => $switchSemester');
+
             String? fcmToken = await FirebaseMessaging.instance.getToken();
             loginCubit.register(
               name: userInfo.name,

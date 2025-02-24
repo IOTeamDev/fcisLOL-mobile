@@ -47,10 +47,12 @@ class StringsManager {
   static const String emptyFieldWarning = 'This field must not be Empty';
   static const String type = 'Type';
   static const String announcementType = 'Announcement Type';
-  static const String imagePickingWarning = 'Be careful when You choose image because it can\'t be changed';
+  static const String imagePickingWarning =
+      'Be careful when You choose image because it can\'t be changed';
   static const String cancel = 'Cancel';
   static const String submit = 'Submit';
-  static const String selectAnnouncementTypeWarning = 'Please select the announcement type';
+  static const String selectAnnouncementTypeWarning =
+      'Please select the announcement type';
   static const String noAnnouncementsYet = 'You have no announcements yet!!!';
   static const String noLeaderBoard = 'No Leaderboard Yet!!!';
   static const String noRequests = 'No Requests Available';
@@ -82,8 +84,10 @@ class StringsManager {
   static const String feedback = 'Feedback';
   static const String aboutUs = 'About Us';
   static const String logOut = 'Log Out';
-  static const String logOutWarningMessage = 'Are you sure you want to log out?';
-  static const String deleteRequestMessage = 'Are you sure you want to Delete the request?';
+  static const String logOutWarningMessage =
+      'Are you sure you want to log out?';
+  static const String deleteRequestMessage =
+      'Are you sure you want to Delete the request?';
   static const String logOutSuccessfully = 'Logout Successfully';
   static const String links = 'Links';
   static const String exams = 'Exams';
@@ -96,7 +100,8 @@ class StringsManager {
   static const String whoAreWe = 'Who Are We';
   static const String uniNotes = 'UniNotes';
   static const String meetTheTeam = 'Meet The Team';
-  static const String aboutUsBrief = ' is an interactive platform where study materials are collected, allowing students to contribute content for all academic years. Admins review and approve submissions to ensure quality.';
+  static const String aboutUsBrief =
+      ' is an interactive platform where study materials are collected, allowing students to contribute content for all academic years. Admins review and approve submissions to ensure quality.';
   static const String allInOne = '“All In One”';
   static const String selectAll = 'Select All';
   static const String copy = 'Copy';
@@ -106,16 +111,18 @@ class StringsManager {
   static const String getStarted = 'Get Started';
   static const String next = 'Next';
   static const String onBoardingTitle1 = 'Welcome to our App Uni-Notes';
-  static const String onBoardingTitle2 = 'Share materials with each other easily';
+  static const String onBoardingTitle2 =
+      'Share materials with each other easily';
   static const String onBoardingTitle3 = 'Be AWARE with the latest updates';
   static const String login = 'Login';
   static const String signup = 'Sign up';
   static const String alreadyHaveAccount = 'already have account!!';
   static const String successfullySignedIn = 'Successfully signed up!';
-  static const String signInErrorMessage = 'Wrong credentials, Please Try again!!';
+  static const String signInErrorMessage =
+      'Wrong credentials, Please Try again!!';
   static const String email = 'Email';
   static const String password = 'Password';
-  static const String confirmPassword = "Password doesn't match!";
+  static const String confirmPassword = "Confirm Password";
   static const String fullName = 'Full Name';
   static const String phoneNumber = 'Phone Number';
   static const String forgotPassword = 'Forgot Password';
