@@ -128,6 +128,7 @@ class StringsManager {
   static const String forgotPassword = 'Forgot Password';
   static const String passwordNotMatchingError = 'Passwords does not match';
   static const String contact = 'Press to Contact';
+  static const String profileImage = 'Profile Image';
 }
 
 class KeysManager {

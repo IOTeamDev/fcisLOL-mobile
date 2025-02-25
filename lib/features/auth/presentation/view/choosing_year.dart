@@ -38,10 +38,7 @@ class ChoosingYear extends StatelessWidget {
         backgroundColor: ColorsManager.white,
         title: Text(
           StringsManager.yearSelect,
-          style: Theme.of(context)
-              .textTheme
-              .displayMedium!
-              .copyWith(color: ColorsManager.black),
+          style: Theme.of(context).textTheme.displayMedium!.copyWith(color: ColorsManager.black),
         ),
         centerTitle: true,
       ),
@@ -53,14 +50,8 @@ class ChoosingYear extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (userInfo != null)
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height /
-                        AppSizesDouble.s3_5,
-                  ),
                 Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment.center, // Center the rows horizontally
+                  mainAxisAlignment: MainAxisAlignment.center, // Center the rows horizontally
                   children: [
                     Year(
                       title: StringsManager.level1,
@@ -86,6 +77,7 @@ class ChoosingYear extends StatelessWidget {
                     ),
                   ],
                 ),
+                if(userInfo == null)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

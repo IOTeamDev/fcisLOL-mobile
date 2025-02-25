@@ -24,4 +24,6 @@ class IconsManager{
   static const IconData refreshIcon = Icons.refresh;
   static const IconData checkIcon = Icons.check;
   static const IconData eyeIcon = Icons.visibility;
+  static const IconData leftArrowIcon = Icons.arrow_right_alt;
+  static const IconData backIcon = Icons.arrow_back_outlined;
 }

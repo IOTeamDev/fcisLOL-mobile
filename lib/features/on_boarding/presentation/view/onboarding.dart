@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lol/core/utils/dependencies_helper.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
+import 'package:lol/core/utils/resources/icons_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
 import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit.dart';
@@ -54,9 +55,7 @@ class _OnBoardingState extends State<OnBoarding> {
               children: [
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: !isLastPage
-                      ? ColorsManager.lightPrimary
-                      : ColorsManager.darkGrey,
+                    backgroundColor: ColorsManager.lightPrimary,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSizesDouble.s15)),
                     foregroundColor: ColorsManager.white,
                     padding: EdgeInsets.symmetric(horizontal: AppPaddings.p50, vertical: AppPaddings.p15),
@@ -76,7 +75,7 @@ class _OnBoardingState extends State<OnBoarding> {
                         ),
                       if (!isLastPage)
                         Icon(
-                          Icons.arrow_right_alt,
+                          IconsManager.leftArrowIcon,
                           color: ColorsManager.white,
                         )
                     ],

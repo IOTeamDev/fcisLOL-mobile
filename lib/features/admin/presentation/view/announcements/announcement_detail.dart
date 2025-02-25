@@ -73,29 +73,19 @@ class _AnnouncementDetailState extends State<AnnouncementDetail> {
                 padding: const EdgeInsets.all(AppPaddings.p18),
                 width: double.infinity,
                 decoration: BoxDecoration(
-                    color: Provider.of<ThemeProvider>(context).isDark
-                        ? ColorsManager.darkPrimary
-                        : ColorsManager.lightPrimary,
+                    color: Theme.of(context).primaryColor,
                     borderRadius: BorderRadius.circular(AppSizesDouble.s20)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SelectableText(
                       widget.title,
-                      style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                            fontSize:
-                                AppQueries.screenWidth(context) / AppSizes.s13,
-                          ),
-                      textDirection: isArabicLanguage(context)
-                          ? TextDirection.rtl
-                          : TextDirection.ltr,
+                      style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s13,),
+                      textDirection: isArabicLanguage(context) ? TextDirection.ltr : TextDirection.rtl,
                     ),
                     SizedBox(
-                      height: AppSizesDouble.s5,
-                    ),
-                    divider(),
-                    const SizedBox(
-                      height: AppSizesDouble.s20,
+                      height: AppSizesDouble.s30,
+                      child: divider(),
                     ),
                     Expanded(
                       child: SingleChildScrollView(
@@ -123,8 +113,7 @@ class _AnnouncementDetailState extends State<AnnouncementDetail> {
                                   textAlign: TextAlign.start,
                                   textDirection: textDirection,
                                   contextMenuBuilder: (context, state) {
-                                    final textController =
-                                        state.textEditingValue;
+                                    final textController = state.textEditingValue;
                                     final selection = textController.selection;
                                     String selectedText =
                                         widget.description.substring(
@@ -144,7 +133,7 @@ class _AnnouncementDetailState extends State<AnnouncementDetail> {
                                             }
                                             //Navigator.of(context).pop(); // Close context menu
                                           },
-                                          child: const Text('Copy'),
+                                          child: const Text(StringsManager.copy,),
                                         ),
                                         TextButton(
                                           onPressed: () {
@@ -152,7 +141,7 @@ class _AnnouncementDetailState extends State<AnnouncementDetail> {
                                             state.selectAll(
                                                 SelectionChangedCause.tap);
                                           },
-                                          child: const Text('Select All'),
+                                          child: const Text(StringsManager.selectAll),
                                         ),
                                       ],
                                     );

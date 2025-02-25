@@ -32,8 +32,10 @@ import '../../utils/resources/values_manager.dart';
 class MainCubit extends Cubit<MainCubitStates> {
   MainCubit() : super(InitialMainState());
   static MainCubit get(context) => BlocProvider.of(context);
-
+  IconData? pickerIcon = IconsManager.imageIcon;
+  String? imageName = StringsManager.selectImage;
   bool openedDrawer = false;
+
   void openDrawerState() {
     openedDrawer = true;
     emit(OpenDrawerState());
@@ -49,60 +51,65 @@ class MainCubit extends Cubit<MainCubitStates> {
   var picker = ImagePicker();
   getUserImage({required bool fromGallery}) async {
     emit(GetUserImageLoading());
+    pickerIcon = IconsManager.imageIcon;
+    imageName = StringsManager.selectImage;
     //const int maxStorageLimit = 1000000000; // 1 GB in bytes
 
-    var tempPostImage = await picker.pickImage(
-        source: fromGallery ? ImageSource.gallery : ImageSource.camera);
+    var tempPostImage = await picker.pickImage(source: fromGallery ? ImageSource.gallery : ImageSource.camera);
     if (tempPostImage != null) {
       userImageFile = File(tempPostImage.path);
-      final int sizeInBytes = await userImageFile!.length();
-      final int sizeInMB = sizeInBytes ~/ sqrt(AppSizes.s1024);
+      pickerIcon = IconsManager.closeIcon;
+      imageName = tempPostImage.path.split(StringsManager.forwardSlash).last;
+      // final int sizeInBytes = await userImageFile!.length();
+      // final int sizeInMB = sizeInBytes ~/ sqrt(AppSizes.s1024);
 
-      if (sizeInMB <= AppSizes.s1) {
         emit(GetUserImageSuccess());
-      } else {
-        userImageFile = null;
-        emit(GetUserImageLimitExceed());
-      }
+      // if (sizeInMB <= AppSizes.s1) {
+      // } else {
+      //   userImageFile = null;
+      //   emit(GetUserImageLimitExceed());
+      // }
     } else {
+      imageName = StringsManager.selectImage;
+      pickerIcon = IconsManager.imageIcon;
       emit(GetUserImageFailure());
     }
   }
 
   File? announcementImageFile;
   String? announcementImagePath;
-  IconData? pickerIcon;
-  String? imageName;
   getAnnouncementImage() async {
     emit(GetAnnouncementImageLoading());
+    pickerIcon = IconsManager.imageIcon;
+    imageName = StringsManager.selectImage;
 
     var tempPostImage = await picker.pickImage(source: ImageSource.gallery);
     if (tempPostImage != null) {
       announcementImageFile = File(tempPostImage.path);
       pickerIcon = IconsManager.closeIcon;
       imageName = tempPostImage.path.split(StringsManager.forwardSlash).last;
-      final int sizeInBytes = await announcementImageFile!.length();
-      final int sizeInMB = sizeInBytes ~/ sqrt(AppSizes.s1024);
-      print(sizeInBytes);
-      print(sizeInMB);
-      if (sizeInMB <= AppSizes.s1) {
-        pickerIcon = IconsManager.closeIcon;
+      // final int sizeInBytes = await announcementImageFile!.length();
+      // final int sizeInMB = sizeInBytes ~/ sqrt(AppSizes.s1024);
+      // print(sizeInBytes);
+      // print(sizeInMB);
+        //pickerIcon = IconsManager.closeIcon;
         showToastMessage(
             message: StringsManager.imgPickedSuccessfully,
             states: ToastStates.SUCCESS);
         emit(GetAnnouncementImageSuccess());
-      } else {
-        showToastMessage(
-            message: StringsManager.imgLimitExceeded,
-            states: ToastStates.WARNING);
-        imageName = StringsManager.selectImage;
-        pickerIcon = IconsManager.imageIcon;
-        announcementImageFile = null;
-        emit(GetAnnouncementLimitExceed());
-      }
+      // if (sizeInMB <= AppSizes.s1) {
+      // } else {
+      //   showToastMessage(
+      //       message: StringsManager.imgLimitExceeded,
+      //       states: ToastStates.WARNING);
+      //   imageName = StringsManager.selectImage;
+      //   pickerIcon = IconsManager.imageIcon;
+      //   announcementImageFile = null;
+      //   emit(GetAnnouncementLimitExceed());
+      // }
     } else {
-      pickerIcon = IconsManager.imageIcon;
       imageName = StringsManager.selectImage;
+      pickerIcon = IconsManager.imageIcon;
       emit(GetAnnouncementImageFailure());
     }
   }
@@ -112,8 +119,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     emit(UploadImageLoading());
     if (image == null) return;
 
-    showToastMessage(
-        message: StringsManager.uploadImage, states: ToastStates.WARNING);
+    showToastMessage(message: StringsManager.uploadImage, states: ToastStates.WARNING);
     final TaskSnapshot uploadTask;
     if (isUserProfile) {
       uploadTask = await FirebaseStorage.instance

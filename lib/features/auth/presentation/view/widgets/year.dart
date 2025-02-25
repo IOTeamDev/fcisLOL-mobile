@@ -9,10 +9,13 @@ import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/navigation.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/core/utils/resources/constants_manager.dart';
+import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/features/auth/presentation/view/choosing_year.dart';
 import 'package:lol/features/auth/presentation/view/register.dart';
 import 'package:lol/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
+
+import '../../../../../core/utils/resources/values_manager.dart';
 
 class Year extends StatefulWidget {
   final String title;
@@ -105,92 +108,109 @@ class YearState extends State<Year> {
   }
 
   _awesomeDialogForSemester1(userInfo, loginCubit) => AwesomeDialog(
-        context: context,
-        dialogType: DialogType.info,
-        animType: AnimType.rightSlide,
-        title: 'You About To Assign In ${widget.title} Semester 1',
-        btnOkText: "Confirm",
-        btnCancelOnPress: () {},
-        btnOkOnPress: () async {
-          switch (widget.title) {
-            case "Level 1":
-              switchSemester = "One";
-              break;
-            case "Level 2":
-              switchSemester = "Three";
-              break;
-            case "Level 3":
-              switchSemester = "Five";
-              break;
-            case "Level 4":
-              switchSemester = "Seven";
-              break;
-          }
-          if (userInfo != null) {
-            FCMHelper fCMHelper = FCMHelper();
-            fCMHelper.initNotifications();
-            String? fcmToken = await FirebaseMessaging.instance.getToken();
-            loginCubit.register(
-              fcmToken: fcmToken,
-              name: userInfo.name,
-              email: userInfo.email,
-              phone: userInfo.phone,
-              photo: userInfo.photo!,
-              password: userInfo.password,
-              semester: switchSemester,
-            );
-          } else {
-            AppConstants.SelectedSemester = switchSemester;
-            Cache.writeData(
-                key: "semester", value: AppConstants.SelectedSemester);
-            navigatReplace(context, const Home());
-          }
-        },
-      ).show();
+    context: context,
+    dialogType: DialogType.info,
+    animType: AnimType.scale,
+    dialogBackgroundColor: ColorsManager.white,
+    dismissOnTouchOutside: true,
+    barrierColor: ColorsManager.black.withValues(alpha: AppSizesDouble.s0_7),
+    title: 'You About To Assign In ${widget.title} Semester 1',
+    titleTextStyle: Theme.of(context).textTheme.titleLarge!.copyWith(color: ColorsManager.black),
+    btnOkText: StringsManager.submit,
+    btnCancelColor: ColorsManager.imperialRed,
+    btnCancelOnPress: () {},
+    btnOkOnPress: () async {
+      switch (widget.title) {
+        case "Level 1":
+          switchSemester = "One";
+          break;
+        case "Level 2":
+          switchSemester = "Three";
+          break;
+        case "Level 3":
+          switchSemester = "Five";
+          break;
+        case "Level 4":
+          switchSemester = "Seven";
+          break;
+      }
+      if (userInfo != null) {
+        FCMHelper fCMHelper = FCMHelper();
+        fCMHelper.initNotifications();
+        String? fcmToken = await FirebaseMessaging.instance.getToken();
+        loginCubit.register(
+          context,
+          fcmToken: fcmToken,
+          name: userInfo.name,
+          email: userInfo.email,
+          phone: userInfo.phone,
+          photo: userInfo.photo!,
+          password: userInfo.password,
+          semester: switchSemester,
+        );
+        AppConstants.SelectedSemester = switchSemester;
+        Cache.writeData(key: "semester", value: AppConstants.SelectedSemester);
+      } else {
+        AppConstants.SelectedSemester = switchSemester;
+        Cache.writeData(
+            key: "semester", value: AppConstants.SelectedSemester);
+        navigatReplace(context, const Home());
+      }
+    },
+  ).show();
 
   _awesomeDialogForSemester2(userInfo, AuthCubit loginCubit) => AwesomeDialog(
-        context: context,
-        dialogType: DialogType.info,
-        animType: AnimType.rightSlide,
-        title: 'You About To Assign In ${widget.title} Semester 2',
-        btnCancelOnPress: () {},
-        btnOkOnPress: () async {
-          switch (widget.title) {
-            case "Level 1":
-              switchSemester = "Two";
-              break;
-            case "Level 2":
-              switchSemester = "Four";
-              break;
-            case "Level 3":
-              switchSemester = "Six";
-              break;
-            case "Level 4":
-              switchSemester = "Eight";
-              break;
-          }
+    context: context,
+    dismissOnTouchOutside: true,
+    barrierColor: ColorsManager.black.withValues(alpha: AppSizesDouble.s0_7),
+    dialogType: DialogType.info,
+    btnOkText: StringsManager.submit,
+    animType: AnimType.scale,
+    title: 'You About To Assign In ${widget.title} Semester 2',
+    dialogBackgroundColor: ColorsManager.white,
+    titleTextStyle: Theme.of(context).textTheme.titleLarge!.copyWith(color: ColorsManager.black),
+    btnCancelColor: ColorsManager.imperialRed,
+    btnCancelOnPress: () {},
+    btnOkOnPress: () async {
+      switch (widget.title) {
+        case "Level 1":
+          switchSemester = "Two";
+          break;
+        case "Level 2":
+          switchSemester = "Four";
+          break;
+        case "Level 3":
+          switchSemester = "Six";
+          break;
+        case "Level 4":
+          switchSemester = "Eight";
+          break;
+      }
 
-          if (userInfo != null) {
-            FCMHelper fCMHelper = FCMHelper();
-            fCMHelper.initNotifications();
-            print('semester => $switchSemester');
+      if (userInfo != null) {
+        FCMHelper fCMHelper = FCMHelper();
+        fCMHelper.initNotifications();
+        print('semester => $switchSemester');
 
-            String? fcmToken = await FirebaseMessaging.instance.getToken();
-            loginCubit.register(
-              name: userInfo.name,
-              email: userInfo.email,
-              phone: userInfo.phone,
-              fcmToken: fcmToken,
-              photo: userInfo.photo!,
-              password: userInfo.password,
-              semester: switchSemester,
-            );
-          } else {
-            AppConstants.SelectedSemester = switchSemester;
-            Cache.writeData(
-                key: "semester", value: AppConstants.SelectedSemester);
-            navigatReplace(context, const Home());
-          }
-        },
-      ).show();
+        String? fcmToken = await FirebaseMessaging.instance.getToken();
+        loginCubit.register(
+          context,
+          name: userInfo.name,
+          email: userInfo.email,
+          phone: userInfo.phone,
+          fcmToken: fcmToken,
+          photo: userInfo.photo!,
+          password: userInfo.password,
+          semester: switchSemester,
+        );
+        log('signedIn');
+        AppConstants.SelectedSemester = switchSemester;
+        Cache.writeData(key: "semester", value: AppConstants.SelectedSemester);
+      } else {
+        AppConstants.SelectedSemester = switchSemester;
+        Cache.writeData(key: "semester", value: AppConstants.SelectedSemester);
+        navigatReplace(context, const Home());
+      }
+    },
+  ).show();
 }

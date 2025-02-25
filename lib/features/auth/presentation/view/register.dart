@@ -31,11 +31,11 @@ class UserInfo {
   String? photo;
 
   UserInfo(
-      {required this.name,
-      required this.email,
-      required this.password,
-      this.photo,
-      required this.phone});
+    {required this.name,
+    required this.email,
+    required this.password,
+    this.photo,
+    required this.phone});
 }
 
 class Registerscreen extends StatefulWidget {
@@ -134,8 +134,7 @@ class _RegisterscreenState extends State<Registerscreen> {
                         isPassword: true,
                         loginCubit: AuthCubit.get(context),
                         isConfirmPassword: true,
-                        validationMessage:
-                            StringsManager.passwordNotMatchingError,
+                        validationMessage: StringsManager.passwordNotMatchingError,
                         validator: (value) {
                           if (value!.isEmpty) {
                             return StringsManager.emptyFieldWarning;
@@ -153,24 +152,24 @@ class _RegisterscreenState extends State<Registerscreen> {
                     const SizedBox(
                       height: AppSizesDouble.s15,
                     ),
-                    state is RegisterLoading
-                        ? const Center(
-                            child: CircularProgressIndicator(),
-                          )
-                        : defaultLoginButton(
-                            context,
-                            _formKey,
-                            AuthCubit.get(context),
-                            _emailController,
-                            _passwordController,
-                            StringsManager.signup,
-                            isSignUp: true,
-                            onPressed: () => _onFieldSubmit(
-                                context,
-                                _nameController,
-                                _emailController,
-                                _passwordController,
-                                _phoneController)),
+                    state is RegisterLoading ? const Center(
+                      child: CircularProgressIndicator(),
+                    ) : defaultLoginButton(
+                      context,
+                      _formKey,
+                      AuthCubit.get(context),
+                      _emailController,
+                      _passwordController,
+                      StringsManager.signup,
+                      isSignUp: true,
+                      onPressed: () => _onFieldSubmit(
+                        context,
+                        _nameController,
+                        _emailController,
+                        _passwordController,
+                        _phoneController
+                      )
+                    ),
                   ],
                 ),
               ),
@@ -190,10 +189,11 @@ class _RegisterscreenState extends State<Registerscreen> {
           password: passwordController.text,
           phone: phoneController.text);
       navigate(
-          context,
-          SelectImage(
-            userInfo: userInfo,
-          ));
+        context,
+        SelectImage(
+          userInfo: userInfo,
+        )
+      );
     }
   }
 }

@@ -5,6 +5,7 @@ class AppConstants {
   static String? SelectedSemester;
   static const String appBaseUrl = 'https://fcislol.netlify.app/api/';
   static const String defaultImage = 'https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/140.jpg?alt=media&token=3e5a4144-20ca-44ce-ba14-57432e49914f';
+  static const String noneLoggedInDefaultImage = 'images/default-avatar-icon-of-social-media-user-vector.jpg';
   static const String defaultProfileImage = 'https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/images%2Fdefault-avatar-icon-of-social-media-user-vector.jpg?alt=media&token=5fc138d2-3919-4854-888e-2d8fec45d555';
   static const String year28Drive = 'https://drive.google.com/drive/folders/1TOj0c-vFblz4guLuRa4VQ56rq4kIuvDQ?fbclid=IwZXh0bgNhZW0CMTAAAR1l30on7Dhr4yV7aM4wyoAsCKsXqHWlJlhG1220oij8ae5SIy3vYLdogPY_aem_gjZq7IZHltbC53_jmnI7KQ';
   static const String year27Drive = 'https://drive.google.com/drive/folders/1-1_Ef2qF0_rDzToD4OlqIl5xubgpMGU0';

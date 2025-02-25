@@ -52,6 +52,7 @@ Widget defaultLoginButton(
     onPressed: isSignUp ? onPressed : () {
       if (formKey.currentState!.validate()) {
         loginCubit.login(
+          context,
           email: emailController.text.toLowerCase(),
           password: passwordController.text
         );

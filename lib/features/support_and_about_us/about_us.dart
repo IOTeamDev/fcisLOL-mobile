@@ -41,17 +41,12 @@ class AboutUs extends StatelessWidget {
               ),
               Container(
                 padding: EdgeInsets.symmetric(vertical: AppPaddings.p10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(AppSizesDouble.s15),
-                  color: ColorsManager.darkPrimary.withValues(alpha: AppSizesDouble.s0_2),
-                  border: Border.all(color: ColorsManager.lightGrey1.withValues(alpha: AppSizesDouble.s0_2))
-                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
                       StringsManager.uniNotes,
-                      style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s9,)
+                      style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s9, fontWeight: FontWeight.bold)
                     ),
                     Text(
                       StringsManager.allInOne,
