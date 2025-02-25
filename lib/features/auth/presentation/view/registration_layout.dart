@@ -35,23 +35,6 @@ class _RegistrationLayoutState extends State<RegistrationLayout>
       create: (context) => AuthCubit(),
       child: BlocListener<AuthCubit, AuthState>(
         listener: (context, state) {
-          if (state is RegisterSuccess) {
-            AppConstants.TOKEN = state.token;
-
-            Cache.writeData(key: KeysManager.token, value: state.token);
-
-            showToastMessage(
-              message: 'Successfully signed up !',
-              states: ToastStates.SUCCESS,
-            );
-            navigatReplace(context, const Home());
-          }
-          if (state is RegisterFailed) {
-            showToastMessage(
-              message: 'Please try with another email address',
-              states: ToastStates.ERROR,
-            );
-          }
           if (state is LoginSuccess) {
             showToastMessage(
               message: "Successfully signed in. Welcome back!",

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:lol/core/network/remote/fcm_helper.dart';
 import 'package:lol/core/utils/components.dart';
@@ -35,79 +36,106 @@ class YearState extends State<Year> {
   Widget build(context) {
     var loginCubit = AuthCubit.get(context);
 
-    return Column(
-      children: [
-        InkWell(
-          onTap: () {
-            if (widget.title == "Level 4") {
-              showToastMessage(
-                  message: "Currently Updating", states: ToastStates.INFO);
-            } else {
-              setState(() {
-                isExpanded = !isExpanded;
-              });
-            }
-          },
-          child: AnimatedContainer(
-            margin: EdgeInsets.all(20),
-            duration: Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-            decoration: BoxDecoration(
-              color: ColorsManager.lightPrimary,
-              borderRadius: BorderRadius.circular(20.0),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black26,
-                  offset: Offset(0, 4),
-                  blurRadius: 8.0,
-                ),
-              ],
+    return BlocListener<AuthCubit, AuthState>(
+      listener: (context, state) {
+        if (state is RegisterSuccess) {
+          AppConstants.TOKEN = state.token;
+
+          Cache.writeData(key: KeysManager.token, value: state.token);
+
+          showToastMessage(
+            message: 'Successfully signed up !',
+            states: ToastStates.SUCCESS,
+          );
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => Home(),
             ),
-            width: AppQueries.screenWidth(context) /
-                3, // Fixed width for each card
-            height: AppQueries.screenHeight(context) /
-                6, // Fixed height for each card
-            child: Center(
-              child: Text(
-                widget.title,
-                style: TextStyle(
-                    fontSize: 24,
-                    color: ColorsManager.white,
-                    fontWeight: FontWeight.bold),
+            (route) => false,
+          );
+        }
+        if (state is RegisterFailed) {
+          showToastMessage(
+            message: 'Please try with another email address',
+            states: ToastStates.ERROR,
+          );
+        }
+      },
+      child: Column(
+        children: [
+          InkWell(
+            onTap: () {
+              if (widget.title == "Level 4") {
+                showToastMessage(
+                    message: "Currently Updating", states: ToastStates.INFO);
+              } else {
+                setState(() {
+                  isExpanded = !isExpanded;
+                });
+              }
+            },
+            child: AnimatedContainer(
+              margin: EdgeInsets.all(20),
+              duration: Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+              decoration: BoxDecoration(
+                color: ColorsManager.lightPrimary,
+                borderRadius: BorderRadius.circular(20.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    offset: Offset(0, 4),
+                    blurRadius: 8.0,
+                  ),
+                ],
+              ),
+              width: AppQueries.screenWidth(context) /
+                  3, // Fixed width for each card
+              height: AppQueries.screenHeight(context) /
+                  6, // Fixed height for each card
+              child: Center(
+                child: Text(
+                  widget.title,
+                  style: TextStyle(
+                      fontSize: 24,
+                      color: ColorsManager.white,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
             ),
           ),
-        ),
-        if (isExpanded)
-          Container(
-            width: 150,
-            margin: const EdgeInsets.symmetric(vertical: 5),
-            decoration: BoxDecoration(
-              color: ColorsManager.lightGrey1,
-              borderRadius: BorderRadius.circular(8.0),
+          if (isExpanded)
+            Container(
+              width: 150,
+              margin: const EdgeInsets.symmetric(vertical: 5),
+              decoration: BoxDecoration(
+                color: ColorsManager.lightGrey1,
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: Column(
+                children: [
+                  ListTile(
+                    title: const Text('Semester 1'),
+                    textColor: ColorsManager.black,
+                    onTap: () =>
+                        _awesomeDialogForSemester1(widget.userInfo, loginCubit),
+                  ),
+                  ListTile(
+                    title: const Text('Semester 2'),
+                    textColor: ColorsManager.black,
+                    onTap: () =>
+                        _awesomeDialogForSemester2(widget.userInfo, loginCubit),
+                  ),
+                ],
+              ),
             ),
-            child: Column(
-              children: [
-                ListTile(
-                  title: const Text('Semester 1'),
-                  textColor: ColorsManager.black,
-                  onTap: () =>
-                      _awesomeDialogForSemester1(widget.userInfo, loginCubit),
-                ),
-                ListTile(
-                  title: const Text('Semester 2'),
-                  textColor: ColorsManager.black,
-                  onTap: () =>
-                      _awesomeDialogForSemester2(widget.userInfo, loginCubit),
-                ),
-              ],
-            ),
-          ),
-      ],
+        ],
+      ),
     );
   }
 
-  _awesomeDialogForSemester1(userInfo, loginCubit) => AwesomeDialog(
+  _awesomeDialogForSemester1(UserInfo? userInfo, AuthCubit loginCubit) =>
+      AwesomeDialog(
         context: context,
         dialogType: DialogType.info,
         animType: AnimType.scale,
@@ -138,29 +166,21 @@ class YearState extends State<Year> {
               switchSemester = "Seven";
               break;
           }
-          if (userInfo != null) {
-            FCMHelper fCMHelper = FCMHelper();
-            fCMHelper.initNotifications();
-            String? fcmToken = await FirebaseMessaging.instance.getToken();
-            loginCubit.register(
-              context,
-              fcmToken: fcmToken,
-              name: userInfo.name,
-              email: userInfo.email,
-              phone: userInfo.phone,
-              photo: userInfo.photo!,
-              password: userInfo.password,
-              semester: switchSemester,
-            );
-            AppConstants.SelectedSemester = switchSemester;
-            Cache.writeData(
-                key: "semester", value: AppConstants.SelectedSemester);
-          } else {
-            AppConstants.SelectedSemester = switchSemester;
-            Cache.writeData(
-                key: "semester", value: AppConstants.SelectedSemester);
-            navigatReplace(context, const Home());
-          }
+          FCMHelper fCMHelper = FCMHelper();
+          fCMHelper.initNotifications();
+          String? fcmToken = await FirebaseMessaging.instance.getToken();
+          loginCubit.register(
+            fcmToken: fcmToken,
+            name: userInfo!.name,
+            email: userInfo.email,
+            phone: userInfo.phone,
+            photo: userInfo.photo!,
+            password: userInfo.password,
+            semester: switchSemester,
+          );
+          AppConstants.SelectedSemester = switchSemester;
+          Cache.writeData(
+              key: "semester", value: AppConstants.SelectedSemester);
         },
       ).show();
 
@@ -211,7 +231,7 @@ class YearState extends State<Year> {
               password: userInfo.password,
               semester: switchSemester,
             );
-            log('signedIn');
+
             AppConstants.SelectedSemester = switchSemester;
             Cache.writeData(
                 key: "semester", value: AppConstants.SelectedSemester);
