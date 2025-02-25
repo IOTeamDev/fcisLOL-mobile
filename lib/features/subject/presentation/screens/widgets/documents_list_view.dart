@@ -38,7 +38,13 @@ class DocumentsListView extends StatelessWidget {
             child: ListView.builder(
               itemCount: cubit.documents!.length,
               itemBuilder: (context, i) {
-                return DocumentsCard(document: cubit.documents![i]);
+                if (cubit.documents!.isEmpty) {
+                  return Center(
+                    child: Text('Materials Apper here'),
+                  );
+                } else {
+                  return DocumentsCard(document: cubit.documents![i]);
+                }
               },
             ),
           );

@@ -15,8 +15,7 @@ import 'package:provider/provider.dart';
 import '../../../data/models/semster_model.dart';
 
 class SubjectItemBuild extends StatelessWidget {
-  const SubjectItemBuild(
-      {super.key, required this.subject});
+  const SubjectItemBuild({super.key, required this.subject});
   final SubjectModel subject;
 
   @override
@@ -29,7 +28,6 @@ class SubjectItemBuild extends StatelessWidget {
               create: (context) =>
                   GetMaterialCubit(getIt.get<SubjectRepoImp>()),
               child: SubjectDetails(
-                navigate: false,
                 subjectName: subject.subjectName,
               ),
             ));

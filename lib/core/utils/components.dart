@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:googleapis_auth/auth_io.dart';
 import 'package:http/http.dart' as http;
 import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
@@ -12,6 +13,7 @@ import 'package:lol/core/utils/resources/values_manager.dart';
 import 'package:lol/features/admin/presentation/view/admin_panal.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
+import 'package:lol/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/features/profile/view/profile.dart';
 import 'package:lol/features/admin/presentation/view/announcements/announcements_list.dart';
@@ -32,80 +34,93 @@ Widget divider({
   Color color = ColorsManager.white,
   double height = AppSizesDouble.s1,
   double thickness = AppSizesDouble.s1,
-})
-=> Divider(
-  color: color,
-  height: height,
-  thickness: thickness,
-);
+}) =>
+    Divider(
+      color: color,
+      height: height,
+      thickness: thickness,
+    );
 
 Widget defaultLoginButton(
-  context, formKey, loginCubit, emailController, passwordController, text,
-  {bool isSignUp = false, Function()? onPressed}
-  )
-=> ElevatedButton(
-    style: ElevatedButton.styleFrom(
-      foregroundColor: ColorsManager.white,
-      fixedSize: Size(AppQueries.screenWidth(context), AppSizesDouble.s50),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSizesDouble.s15)),
-      backgroundColor: ColorsManager.lightPrimary),
-    onPressed: isSignUp ? onPressed : () {
-      if (formKey.currentState!.validate()) {
-        loginCubit.login(
-          context,
-          email: emailController.text.toLowerCase(),
-          password: passwordController.text
-        );
-      }
-    },
-    child: Text(
-      text,
-      style: Theme.of(context).textTheme.headlineLarge!.copyWith(color: ColorsManager.white),
-    ),
-  );
+        context,
+        GlobalKey<FormState> formKey,
+        AuthCubit loginCubit,
+        TextEditingController emailController,
+        TextEditingController passwordController,
+        String text,
+        {bool isSignUp = false,
+        Function()? onPressed}) =>
+    ElevatedButton(
+      style: ElevatedButton.styleFrom(
+          foregroundColor: ColorsManager.white,
+          fixedSize: Size(AppQueries.screenWidth(context), AppSizesDouble.s50),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppSizesDouble.s15)),
+          backgroundColor: ColorsManager.lightPrimary),
+      onPressed: isSignUp
+          ? onPressed
+          : () {
+              if (formKey.currentState!.validate()) {
+                loginCubit.login(
+                    email: emailController.text.toLowerCase(),
+                    password: passwordController.text);
+              }
+            },
+      child: Text(
+        text,
+        style: Theme.of(context)
+            .textTheme
+            .headlineLarge!
+            .copyWith(color: ColorsManager.white),
+      ),
+    );
 
 Widget defaultLoginInputField(controller, label, keyboardType,
-  {bool isPassword = false,
-  loginCubit,
-  suffixIcon,
-  bool isConfirmPassword = false,
-  validationMessage,
-  onFieldSubmit,
-  TextInputAction textInputAction = TextInputAction.done,
-  String? Function(String?)? validator = null}
-  )
-=> TextFormField(
-    obscureText: isPassword ? loginCubit.hiddenPassword : false,
-    controller: controller,
-    textInputAction: textInputAction,
-    keyboardType: keyboardType,
-    style: TextStyle(color: ColorsManager.black),
-    decoration: InputDecoration(
-      labelStyle: TextStyle(color: ColorsManager.lightGrey),
-      labelText: label,
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-      filled: true,
-      fillColor: ColorsManager.grey3,
-      focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: ColorsManager.lightPrimary),
-        borderRadius: BorderRadius.circular(AppSizesDouble.s15)
+        {bool isPassword = false,
+        loginCubit,
+        suffixIcon,
+        bool isConfirmPassword = false,
+        validationMessage,
+        onFieldSubmit,
+        TextInputAction textInputAction = TextInputAction.done,
+        String? Function(String?)? validator = null}) =>
+    TextFormField(
+      obscureText: isPassword ? loginCubit.hiddenPassword : false,
+      controller: controller,
+      textInputAction: textInputAction,
+      keyboardType: keyboardType,
+      style: TextStyle(color: ColorsManager.black),
+      decoration: InputDecoration(
+        labelStyle: TextStyle(color: ColorsManager.lightGrey),
+        labelText: label,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+        filled: true,
+        fillColor: ColorsManager.grey3,
+        focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: ColorsManager.lightPrimary),
+            borderRadius: BorderRadius.circular(AppSizesDouble.s15)),
+        suffixIcon: isPassword
+            ? IconButton(
+                icon: Icon(suffixIcon),
+                color: loginCubit.hiddenPassword
+                    ? ColorsManager.lightGrey
+                    : Colors.blue,
+                onPressed: loginCubit.togglePassword,
+              )
+            : null,
       ),
-      suffixIcon: isPassword ? IconButton(
-        icon: Icon(suffixIcon),
-        color: loginCubit.hiddenPassword ? ColorsManager.lightGrey : Colors.blue,
-        onPressed: loginCubit.togglePassword,
-      ) : null,
-    ),
-    validator: validator ??
-      (value) {
-        if (value!.isEmpty) {
-          return isConfirmPassword ? validationMessage : StringsManager.emptyFieldWarning;
-        } else {
-          return null; // Form is valid.
-        }
-      },
-    onFieldSubmitted: isConfirmPassword ? onFieldSubmit : null,
-  );
+      validator: validator ??
+          (value) {
+            if (value!.isEmpty) {
+              return isConfirmPassword
+                  ? validationMessage
+                  : StringsManager.emptyFieldWarning;
+            } else {
+              return null; // Form is valid.
+            }
+          },
+      onFieldSubmitted: isConfirmPassword ? onFieldSubmit : null,
+    );
 
 void showToastMessage({
   required String message,
@@ -115,7 +130,8 @@ void showToastMessage({
   gravity = ToastGravity.BOTTOM,
   int lengthForIOSAndWeb = 5,
   toastLength = Toast.LENGTH_SHORT,
-}) => Fluttertoast.showToast(
+}) =>
+    Fluttertoast.showToast(
       msg: message,
       toastLength: toastLength,
       gravity: gravity,

@@ -87,7 +87,7 @@ class _BuildFloatingActionButtonState extends State<BuildFloatingActionButton> {
                 builder: (context) => MultiBlocProvider(
                       providers: [
                         BlocProvider(
-                          create: (context) => AddMaterialCubit(AdminCubit()),
+                          create: (context) => AddMaterialCubit(),
                         ),
                         BlocProvider.value(value: widget.getMaterialCubit),
                       ],

@@ -18,13 +18,13 @@ class LoginModel {
 }
 
 class UserModel {
-  int id;
+  int? id;
   String name;
   String email;
   String? photo;
   String semester;
   String role;
-  int score;
+  int? score;
   String? fcmToken;
   String? lastActive;
 

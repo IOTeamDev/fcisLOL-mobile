@@ -13,10 +13,7 @@ import 'package:meta/meta.dart';
 part 'add_material_state.dart';
 
 class AddMaterialCubit extends Cubit<AddMaterialState> {
-  AddMaterialCubit(this.adminCubit) : super(AddMaterialInitial());
-
-  // final SubjectRepoImp _subjectRepoImp;
-  final AdminCubit adminCubit;
+  AddMaterialCubit() : super(AddMaterialInitial());
 
   static AddMaterialCubit get(context) => BlocProvider.of(context);
 
@@ -29,11 +26,8 @@ class AddMaterialCubit extends Cubit<AddMaterialState> {
       required String subjectName,
       required String role,
       required AuthorModel author}) async {
-    await adminCubit.getFcmTokens();
-    Random random = Random();
-
     // Get a random index
-    int randomIndex = random.nextInt(notificationsMaterialTitle.length);
+
     emit(AddMaterialLoading());
 
     DioHelp.postData(
@@ -52,23 +46,18 @@ class AddMaterialCubit extends Cubit<AddMaterialState> {
       if (role == 'ADMIN') {
         emit(AddMaterialSuccessAdmin());
       } else {
-        adminCubit.sendNotificationToUsers(
-            sendToAdmin: true,
-            semester: semester,
-            title: notificationsMaterialTitle[randomIndex],
-            body:
-                "${author.authorName} wants to add a material in ${subjectName.replaceAll('_', " ").replaceAll("and", "&")} !");
-
         emit(AddMaterialSuccessUser());
       }
 
       // getMaterials(subject: subjectName);
     }).catchError(
         // ignore: invalid_return_type_for_catch_error
-        (e) => print('Error from posting material =/////////////////$e'));
+        (e) {
+      print('Error from posting material =/////////////////$e');
+      emit(AddMaterialError(errorMessage: e.toString()));
+    });
   }
 
-  List<FcmToken> get adminFCMTokens => adminCubit.adminFcmTokens;
   List<String> notificationsMaterialTitle = [
     "New Material! Check It Out, 🚀",
     "User Shared Content! Approve? 🎉",

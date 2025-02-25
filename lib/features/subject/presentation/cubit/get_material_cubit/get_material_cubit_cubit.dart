@@ -29,17 +29,22 @@ class GetMaterialCubit extends Cubit<GetMaterialState> {
   List<MaterialModel>? filteredMaterials;
 
   Future<void> getMaterials({String? subject}) async {
+    if (isClosed) return;
+
     emit(GetMaterialLoading());
 
     try {
       materials = await _subjectRepoImp.getMaterials(subject: subject);
+      if (isClosed) return;
       videos = [];
       documents = [];
       filteredMaterials = materials!.reversed.toList();
-
       emit(GetMaterialSuccess());
       filterVideosAndDocuments();
     } catch (error) {
+      if (isClosed) return;
+
+      log('error from getting materials $error');
       emit(GetMaterialError(errorMessage: error.toString()));
     }
   }
@@ -87,8 +92,8 @@ class GetMaterialCubit extends Cubit<GetMaterialState> {
       emit(DeleteMaterialSuccess());
       getMaterials(subject: subjectName);
     }).catchError((error) {
-      emit(DeleteMaterialError(error: error.toString()));
       log('error from deleting material $error');
+      emit(DeleteMaterialError(error: error.toString()));
     });
   }
 }

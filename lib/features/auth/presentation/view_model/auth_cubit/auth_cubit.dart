@@ -32,7 +32,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(TogglePassword());
   }
 
-  Future<void> login(context, {required String email, required String password}) async {
+  Future<void> login({required String email, required String password}) async {
     emit(LoginLoading());
     try {
       final response = await DioHelp.postData(path: "login", data: {
@@ -42,17 +42,16 @@ class AuthCubit extends Cubit<AuthState> {
       LoginModel loginModel = LoginModel.fromJson(response.data);
       await FirebaseMessaging.instance.requestPermission();
       await Cache.writeData(key: KeysManager.token, value: loginModel.token);
-      AppConstants.SelectedSemester = loginModel.user.semester;
       AppConstants.TOKEN = loginModel.token;
-      print('token=>>>>>>>>>>${AppConstants.TOKEN}');
       emit(LoginSuccess());
-      navigatReplace(context, Home());
     } catch (e) {
+      log(e.toString());
+
       emit(LoginFailed(errMessage: e.toString()));
     }
   }
 
-  Future<void> register(context, {
+  Future<void> register({
     required String name,
     required String email,
     required String phone,
@@ -72,11 +71,9 @@ class AuthCubit extends Cubit<AuthState> {
         "semester": semester,
         "fcmToken": fcmToken,
       });
-      log('sending request success');
       LoginModel loginModel = LoginModel.fromJson(response.data);
       await FirebaseMessaging.instance.requestPermission();
       emit(RegisterSuccess(token: loginModel.token));
-      navigatReplace(context, Home());
     } catch (e) {
       log(e.toString());
       emit(RegisterFailed(errMessage: e.toString()));
@@ -91,15 +88,16 @@ class AuthCubit extends Cubit<AuthState> {
     announcementImagePath = null;
     emit(UploadImageLoading());
     if (image == null) return;
-    showToastMessage(message: StringsManager.uploadImage, states: ToastStates.WARNING);
+    showToastMessage(
+        message: StringsManager.uploadImage, states: ToastStates.WARNING);
     final TaskSnapshot uploadTask;
     if (isUserProfile) {
       uploadTask = await FirebaseStorage.instance
-        .ref()
-        .child(StringsManager.image.toLowerCase() +
-            StringsManager.forwardSlash +
-            Uri.file(image.path).pathSegments.last)
-        .putFile(image);
+          .ref()
+          .child(StringsManager.image.toLowerCase() +
+              StringsManager.forwardSlash +
+              Uri.file(image.path).pathSegments.last)
+          .putFile(image);
     } else {
       uploadTask = await FirebaseStorage.instance
           .ref()

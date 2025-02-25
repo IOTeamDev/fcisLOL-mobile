@@ -1,10 +1,12 @@
 import 'dart:developer';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/core/utils/resources/theme_provider.dart';
+import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/subject/data/models/author_model.dart';
 import 'package:lol/features/subject/data/models/material_model.dart';
@@ -39,12 +41,19 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
   Widget build(BuildContext context) {
     var cubit = AddMaterialCubit.get(context);
     return BlocListener<AddMaterialCubit, AddMaterialState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is AddMaterialSuccessUser) {
           showToastMessage(
               message:
                   'The request has been sent to the Admin, and waiting for approval...',
               states: ToastStates.SUCCESS);
+          AdminCubit.get(context).sendNotificationToUsers(
+              sendToAdmin: true,
+              semester: MainCubit.get(context).profileModel!.semester,
+              title: cubit.notificationsMaterialTitle[
+                  Random().nextInt(cubit.notificationsMaterialTitle.length)],
+              body:
+                  "${MainCubit.get(context).profileModel!.name} wants to add a material in ${widget.subjectName.replaceAll('_', " ").replaceAll("and", "&")} !");
           Navigator.of(context).pop();
         }
         if (state is AddMaterialSuccessAdmin) {
@@ -64,6 +73,7 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
           showToastMessage(
               message: 'Uploading Material........',
               states: ToastStates.WARNING);
+          await AdminCubit.get(context).getFcmTokens();
         }
       },
       child: Container(
@@ -231,7 +241,7 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
           .read<GetMaterialCubit>()
           .getMaterials(subject: widget.subjectName);
     } catch (e) {
-      log('error while getting materials from addMaterialCubit $e');
+      print('error while getting materials from addMaterialCubit $e');
     }
   }
 }

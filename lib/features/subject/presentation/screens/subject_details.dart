@@ -17,9 +17,7 @@ import '../../../../core/utils/resources/constants_manager.dart';
 class SubjectDetails extends StatefulWidget {
   final String subjectName;
 
-  final bool navigate;
-  const SubjectDetails(
-      {super.key, required this.subjectName, required this.navigate});
+  const SubjectDetails({super.key, required this.subjectName});
 
   @override
   State<SubjectDetails> createState() => _MaterialDetailsState();
@@ -34,7 +32,6 @@ class _MaterialDetailsState extends State<SubjectDetails>
   void initState() {
     _tabControllerOfShowingContent = TabController(length: 2, vsync: this);
     GetMaterialCubit.get(context).getMaterials(subject: widget.subjectName);
-    MainCubit.get(context).getProfileInfo();
     super.initState();
   }
 
@@ -65,57 +62,54 @@ class _MaterialDetailsState extends State<SubjectDetails>
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
       )),
-      body: Container(
-        margin: EdgeInsetsDirectional.only(
-            top: AppQueries.screenHeight(context) / AppSizes.s15),
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: AppPaddings.p16, vertical: AppPaddings.p10),
-              child: TextField(
-                onChanged: (query) {
-                  cubit.runFilter(query: query);
-                },
-                style: TextStyle(
-                    color: Provider.of<ThemeProvider>(context).isDark
-                        ? Color(0xff1B262C)
-                        : ColorsManager.lightGrey,
-                    fontSize: 20),
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.search,
-                decoration: InputDecoration(
-                    fillColor: Color(0xffCDCDCD),
-                    filled: true,
-                    prefixIcon: Icon(
-                      Icons.search,
-                      size: 25,
-                      color: ColorsManager.lightGrey,
-                    ),
-                    contentPadding: const EdgeInsets.all(10.0),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    hintText: 'Search for Videos, Documents',
-                    hintStyle: TextStyle(
-                      color: ColorsManager.lightGrey,
-                      fontSize: 15,
-                    )),
-              ),
+      body: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: AppPaddings.p16, vertical: AppPaddings.p10),
+            child: TextField(
+              onChanged: (query) {
+                cubit.runFilter(query: query);
+              },
+              style: TextStyle(
+                  color: Provider.of<ThemeProvider>(context).isDark
+                      ? Color(0xff1B262C)
+                      : ColorsManager.lightGrey,
+                  fontSize: 20),
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.search,
+              decoration: InputDecoration(
+                  fillColor: Color(0xffCDCDCD),
+                  filled: true,
+                  prefixIcon: Icon(
+                    Icons.search,
+                    size: 25,
+                    color: ColorsManager.lightGrey,
+                  ),
+                  contentPadding: const EdgeInsets.all(10.0),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  hintText: 'Search for Videos, Documents',
+                  hintStyle: TextStyle(
+                    color: ColorsManager.lightGrey,
+                    fontSize: 15,
+                  )),
             ),
-            CustomTabBar(
-                tabController: _tabControllerOfShowingContent,
-                title1: 'Videos',
-                title2: 'Documents'
-            ),
-            Expanded(child: CustomTabBarView(controller: _tabControllerOfShowingContent)),
-          ],
-        ),
+          ),
+          CustomTabBar(
+              tabController: _tabControllerOfShowingContent,
+              title1: 'Videos',
+              title2: 'Documents'),
+          Expanded(
+              child:
+                  CustomTabBarView(controller: _tabControllerOfShowingContent)),
+        ],
       ),
     );
   }

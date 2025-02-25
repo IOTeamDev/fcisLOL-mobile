@@ -36,17 +36,23 @@ class VideosListView extends StatelessWidget {
             child: ListView.builder(
               itemCount: cubit.videos!.length,
               itemBuilder: (context, i) {
-                return Container(
-                  margin: EdgeInsets.only(bottom: 16.0),
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Provider.of<ThemeProvider>(context).isDark
-                        ? ColorsManager.darkPrimary
-                        : ColorsManager.lightPrimary,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: GridTileWidget(video: cubit.videos![i]),
-                );
+                if (cubit.videos!.isEmpty) {
+                  return Center(
+                    child: Text('Materials Apper here'),
+                  );
+                } else {
+                  return Container(
+                    margin: EdgeInsets.only(bottom: 16.0),
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Provider.of<ThemeProvider>(context).isDark
+                          ? ColorsManager.darkPrimary
+                          : ColorsManager.lightPrimary,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: GridTileWidget(video: cubit.videos![i]),
+                  );
+                }
               },
             ),
           );
