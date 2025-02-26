@@ -3,6 +3,8 @@ import 'package:linkify/linkify.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/features/profile/view/other_profile.dart';
+import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit_cubit.dart';
+import 'package:lol/features/subject/presentation/screens/widgets/edit_button.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/subject/data/models/material_model.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/remove_button.dart';
@@ -131,9 +133,19 @@ class GridTileWidget extends StatelessWidget {
                 AppConstants.TOKEN != null)
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Align(
-                    alignment: Alignment.topRight,
-                    child: RemoveButton(material: video)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    EditButton(
+                      material: video,
+                      getMaterialCubit: GetMaterialCubit.get(context),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    RemoveButton(material: video),
+                  ],
+                ),
               ),
           ],
         ));

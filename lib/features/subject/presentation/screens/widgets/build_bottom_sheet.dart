@@ -7,6 +7,7 @@ import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
+import 'package:lol/features/subject/presentation/screens/widgets/bottom_sheet_button.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/subject/data/models/author_model.dart';
 import 'package:lol/features/subject/data/models/material_model.dart';
@@ -34,7 +35,6 @@ class BuildBottomSheet extends StatefulWidget {
 }
 
 class _BuildBottomSheetState extends State<BuildBottomSheet> {
-  bool wannaProfileModel = true;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -168,65 +168,48 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         //Cancel Button
-                        MaterialButton(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          minWidth: AppQueries.screenWidth(context) / 3,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15)),
-                          color: Colors.white,
+                        BottomSheetButton(
+                          text: 'Cancel',
+                          color: ColorsManager.white,
+                          textStyle: TextStyle(
+                              color: ColorsManager.darkGrey, fontSize: 20),
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
-                          child: Text(
-                            'Cancel',
-                            style: TextStyle(
-                                color: Color.fromRGBO(35, 37, 42, 1),
-                                fontSize: 20),
-                          ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         //Submit Button
-                        if (AppConstants.TOKEN != null)
-                          MaterialButton(
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                            minWidth: AppQueries.screenWidth(context) / 3,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
-                            color: Color.fromRGBO(71, 100, 197, 1),
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                AuthorModel author = AuthorModel(
-                                    authorName: MainCubit.get(context)
-                                        .profileModel
-                                        ?.name,
-                                    authorPhoto: MainCubit.get(context)
-                                        .profileModel
-                                        ?.photo);
-                                BlocProvider.of<AddMaterialCubit>(context)
-                                    .addMaterial(
-                                        title: widget.titleController.text,
-                                        description:
-                                            widget.descriptionController.text,
-                                        link: widget.linkController.text,
-                                        type: cubit.selectedType,
-                                        subjectName: widget.subjectName,
-                                        semester: MainCubit.get(context)
-                                            .profileModel!
-                                            .semester,
-                                        role: MainCubit.get(context)
-                                            .profileModel!
-                                            .role,
-                                        author: author);
-                              }
-                            },
-                            child: Text(
-                              'Submit',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
-                            ),
-                          ),
+                        BottomSheetButton(
+                          text: 'Submit',
+                          color: ColorsManager.lightPrimary,
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              AuthorModel author = AuthorModel(
+                                  authorName:
+                                      MainCubit.get(context).profileModel?.name,
+                                  authorPhoto: MainCubit.get(context)
+                                      .profileModel
+                                      ?.photo);
+                              BlocProvider.of<AddMaterialCubit>(context)
+                                  .addMaterial(
+                                      title: widget.titleController.text,
+                                      description:
+                                          widget.descriptionController.text,
+                                      link: widget.linkController.text,
+                                      type: cubit.selectedType,
+                                      subjectName: widget.subjectName,
+                                      semester: MainCubit.get(context)
+                                          .profileModel!
+                                          .semester,
+                                      role: MainCubit.get(context)
+                                          .profileModel!
+                                          .role,
+                                      author: author);
+                            }
+                          },
+                        ),
                       ],
                     )
                   ],
