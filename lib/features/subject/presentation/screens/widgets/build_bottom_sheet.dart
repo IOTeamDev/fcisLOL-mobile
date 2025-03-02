@@ -63,7 +63,7 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
               states: ToastStates.SUCCESS);
           Navigator.of(context).pop();
         }
-        if (state is AddMaterialError) {
+        if (state is AddMaterialFailed) {
           showToastMessage(
               message: 'error while uploading Material',
               states: ToastStates.ERROR);

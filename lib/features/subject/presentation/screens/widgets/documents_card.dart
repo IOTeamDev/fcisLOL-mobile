@@ -4,6 +4,8 @@ import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/features/profile/view/other_profile.dart';
+import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit_cubit.dart';
+import 'package:lol/features/subject/presentation/screens/widgets/edit_button.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/subject/data/models/material_model.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/remove_button.dart';
@@ -59,6 +61,11 @@ class DocumentsCard extends StatelessWidget {
                         ),
                       ),
                     ),
+                    if (MainCubit.get(context).profileModel?.role == 'ADMIN' &&
+                        AppConstants.TOKEN != null)
+                      EditButton(
+                          material: document,
+                          getMaterialCubit: GetMaterialCubit.get(context)),
                     if (MainCubit.get(context).profileModel?.role == 'ADMIN' &&
                         AppConstants.TOKEN != null)
                       RemoveButton(material: document),

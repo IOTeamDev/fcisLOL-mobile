@@ -1,4 +1,4 @@
-// 
+//
 const String ANNOUNCEMENTS = 'announcements';
 
 const String MATERIAL = 'material';
@@ -11,4 +11,4 @@ const String LEADERBOARD = 'leaderboard';
 
 const String USERS = 'users';
 
-
+const String EDIT = 'material/edit';

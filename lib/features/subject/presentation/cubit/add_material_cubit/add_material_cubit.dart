@@ -1,5 +1,5 @@
 import 'dart:math';
-
+import 'dart:developer' as dev;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/core/models/fcm_model.dart';
 import 'package:lol/features/subject/data/models/author_model.dart';
@@ -25,7 +25,7 @@ class AddMaterialCubit extends Cubit<AddMaterialState> {
       required String semester,
       required String subjectName,
       required String role,
-      required AuthorModel author}) async {
+      required AuthorModel author}) {
     // Get a random index
 
     emit(AddMaterialLoading());
@@ -54,7 +54,7 @@ class AddMaterialCubit extends Cubit<AddMaterialState> {
         // ignore: invalid_return_type_for_catch_error
         (e) {
       print('Error from posting material =/////////////////$e');
-      emit(AddMaterialError(errorMessage: e.toString()));
+      emit(AddMaterialFailed(errorMessage: e.toString()));
     });
   }
 
@@ -78,5 +78,31 @@ class AddMaterialCubit extends Cubit<AddMaterialState> {
   void changeType({required String type}) {
     selectedType = type;
     emit(TypeChangedState(selectedType: selectedType));
+  }
+
+  Future<void> editMaterial({
+    required int id,
+    required String title,
+    String description = '',
+    required String link,
+  }) async {
+    emit(EditMaterialLoading());
+
+    try {
+      await DioHelp.patchData(
+        path: EDIT,
+        data: {
+          'id': id,
+          'title': title,
+          'description': description,
+          'link': link,
+        },
+        token: AppConstants.TOKEN,
+      );
+      emit(EditMaterialSuccess());
+    } catch (e) {
+      dev.log('Error from editting material =/////////////////$e');
+      emit(EditMaterialFailed(errorMessage: e.toString()));
+    }
   }
 }

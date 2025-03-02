@@ -36,9 +36,12 @@ class EditButton extends StatelessWidget {
                     padding: EdgeInsets.only(
                         bottom: MediaQuery.of(context).viewInsets.bottom),
                     child: EditMaterialBottomSheet(
-                        title: material.title!,
-                        description: material.description!,
-                        link: material.link!),
+                      title: material.title!,
+                      description: material.description!,
+                      link: material.link!,
+                      id: material.id!,
+                      subjectName: material.subject!,
+                    ),
                   ),
                 ));
       },

@@ -83,6 +83,7 @@ main() async {
       await Cache.readData(key: KeysManager.finishedOnBoard) ?? false;
   // TOKEN = null;//
   final Widget startPage;
+  log('token=>>>>>>>>>> ${AppConstants.TOKEN}');
   if (!isOnBoardFinished) {
     startPage = const OnBoarding();
   } else {

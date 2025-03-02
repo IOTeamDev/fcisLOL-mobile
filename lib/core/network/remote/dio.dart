@@ -28,29 +28,12 @@ class DioHelp {
     return await dio!.get(path, queryParameters: query);
   }
 
-  static Future<Response> putData(
-      {required Map<String, dynamic> query,
-      required String path,
-      lang = 'en',
-      String? token,
-      required Map<String, dynamic> data}) async {
-    dio!.options.headers = {
-      KeysManager.lang: lang,
-      KeysManager.authorization: token ?? "",
-      KeysManager.contentType: KeysManager.applicationJson
-    };
-    return await dio!.put(path, queryParameters: query, data: data);
-  }
-
   static Future<Response> postData({
     required String path,
     required data,
     lang = 'en',
-    token,
+    String? token,
   }) async {
-    // if (dio == null) await initial();
-    //async and await
-
     dio!.options.headers = {
       KeysManager.lang: lang,
       KeysManager.authorization: token,
@@ -72,5 +55,33 @@ class DioHelp {
     };
     return await dio!.delete(path,
         queryParameters: query, data: data); // ID as query parameter
+  }
+
+  static Future<Response> putData(
+      {required Map<String, dynamic> query,
+      required String path,
+      lang = 'en',
+      String? token,
+      required Map<String, dynamic> data}) async {
+    dio!.options.headers = {
+      KeysManager.lang: lang,
+      KeysManager.authorization: token ?? "",
+      KeysManager.contentType: KeysManager.applicationJson
+    };
+    return await dio!.put(path, queryParameters: query, data: data);
+  }
+
+  static Future<Response> patchData({
+    required String path,
+    required Map<String, dynamic> data,
+    lang = 'en',
+    String? token,
+  }) async {
+    dio!.options.headers = {
+      KeysManager.lang: lang,
+      KeysManager.authorization: token,
+      KeysManager.contentType: KeysManager.applicationJson
+    };
+    return await dio!.patch(path, data: data);
   }
 }
