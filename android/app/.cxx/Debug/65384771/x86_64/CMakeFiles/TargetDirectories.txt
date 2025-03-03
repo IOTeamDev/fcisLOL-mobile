@@ -1,0 +1,2 @@
+D:/fcisLOL-mobile/android/app/.cxx/Debug/65384771/x86_64/CMakeFiles/edit_cache.dir
+D:/fcisLOL-mobile/android/app/.cxx/Debug/65384771/x86_64/CMakeFiles/rebuild_cache.dir
