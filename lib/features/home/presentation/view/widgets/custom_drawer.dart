@@ -153,7 +153,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 child: Column(
               //mainAxisSize: MainAxisSize.max,
               children: [
-                if (profileModel?.role == KeysManager.admin)
+                if (profileModel?.role == KeysManager.admin ||
+                    profileModel?.role == KeysManager.developer)
                   ListTile(
                     leading: Icon(
                       IconsManager.adminIcon,
@@ -514,9 +515,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     StringsManager.support,
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero), // Removes divider when expanded
-                  collapsedShape: RoundedRectangleBorder(borderRadius: BorderRadius.zero), // Removes divider when collapsed
-                  childrenPadding: EdgeInsets.symmetric(horizontal: AppPaddings.p20),
+                  shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.zero), // Removes divider when expanded
+                  collapsedShape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.zero), // Removes divider when collapsed
+                  childrenPadding:
+                      EdgeInsets.symmetric(horizontal: AppPaddings.p20),
                   children: [
                     ListTile(
                       title: Text(
@@ -577,7 +583,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           title: StringsManager.logOut,
                           dialogType: DialogType.warning,
                           dismissOnTouchOutside: true,
-                          barrierColor: ColorsManager.black.withValues(alpha: AppSizesDouble.s0_7),
+                          barrierColor: ColorsManager.black
+                              .withValues(alpha: AppSizesDouble.s0_7),
                           body: Text(
                             StringsManager.logOutWarningMessage,
                             style: Theme.of(context).textTheme.displayLarge,
@@ -605,11 +612,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(AppConstants.TOKEN != null
-                            ? IconsManager.logOutIcon
-                            : IconsManager.logInIcon,
-                          color: ColorsManager.white
-                        ),
+                        Icon(
+                            AppConstants.TOKEN != null
+                                ? IconsManager.logOutIcon
+                                : IconsManager.logInIcon,
+                            color: ColorsManager.white),
                         SizedBox(
                           width: AppSizesDouble.s10,
                         ),
@@ -617,7 +624,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           AppConstants.TOKEN != null
                               ? StringsManager.logOut
                               : StringsManager.login,
-                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontWeight: FontWeightManager.semiBold, color: ColorsManager.white),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge!
+                              .copyWith(
+                                  fontWeight: FontWeightManager.semiBold,
+                                  color: ColorsManager.white),
                         ),
                       ],
                     )),
