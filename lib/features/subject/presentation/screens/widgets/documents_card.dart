@@ -61,12 +61,19 @@ class DocumentsCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    if (MainCubit.get(context).profileModel?.role == 'ADMIN' &&
+                    if ((MainCubit.get(context).profileModel?.role == 'ADMIN' ||
+                            MainCubit.get(context).profileModel?.role ==
+                                'DEV') &&
                         AppConstants.TOKEN != null)
                       EditButton(
                           material: document,
                           getMaterialCubit: GetMaterialCubit.get(context)),
-                    if (MainCubit.get(context).profileModel?.role == 'ADMIN' &&
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    if ((MainCubit.get(context).profileModel?.role == 'ADMIN' ||
+                            MainCubit.get(context).profileModel?.role ==
+                                'DEV') &&
                         AppConstants.TOKEN != null)
                       RemoveButton(material: document),
                   ],

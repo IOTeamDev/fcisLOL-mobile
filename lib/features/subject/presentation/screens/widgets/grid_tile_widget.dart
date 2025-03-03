@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
@@ -48,6 +50,12 @@ class GridTileWidget extends StatelessWidget {
                             return Image.network(
                               snapshot.data!,
                               fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Image.network(
+                                  'https://www.buffalotech.com/images/made/images/remote/https_i.ytimg.com/vi/06wIw-NdHIw/sddefault_300_225_s.jpg',
+                                  fit: BoxFit.cover,
+                                ); // Show default thumbnail if the URL is broken
+                              },
                             ); // Display the thumbnail
                           } else {
                             return Image.network(
@@ -129,7 +137,8 @@ class GridTileWidget extends StatelessWidget {
                 ),
               ],
             ),
-            if (MainCubit.get(context).profileModel?.role == 'ADMIN' &&
+            if ((MainCubit.get(context).profileModel?.role == 'ADMIN' ||
+                    MainCubit.get(context).profileModel?.role == 'DEV') &&
                 AppConstants.TOKEN != null)
               Padding(
                 padding: const EdgeInsets.all(8.0),

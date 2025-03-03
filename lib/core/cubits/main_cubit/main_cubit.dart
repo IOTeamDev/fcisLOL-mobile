@@ -55,7 +55,8 @@ class MainCubit extends Cubit<MainCubitStates> {
     imageName = StringsManager.selectImage;
     //const int maxStorageLimit = 1000000000; // 1 GB in bytes
 
-    var tempPostImage = await picker.pickImage(source: fromGallery ? ImageSource.gallery : ImageSource.camera);
+    var tempPostImage = await picker.pickImage(
+        source: fromGallery ? ImageSource.gallery : ImageSource.camera);
     if (tempPostImage != null) {
       userImageFile = File(tempPostImage.path);
       pickerIcon = IconsManager.closeIcon;
@@ -63,7 +64,7 @@ class MainCubit extends Cubit<MainCubitStates> {
       // final int sizeInBytes = await userImageFile!.length();
       // final int sizeInMB = sizeInBytes ~/ sqrt(AppSizes.s1024);
 
-        emit(GetUserImageSuccess());
+      emit(GetUserImageSuccess());
       // if (sizeInMB <= AppSizes.s1) {
       // } else {
       //   userImageFile = null;
@@ -92,11 +93,11 @@ class MainCubit extends Cubit<MainCubitStates> {
       // final int sizeInMB = sizeInBytes ~/ sqrt(AppSizes.s1024);
       // print(sizeInBytes);
       // print(sizeInMB);
-        //pickerIcon = IconsManager.closeIcon;
-        showToastMessage(
-            message: StringsManager.imgPickedSuccessfully,
-            states: ToastStates.SUCCESS);
-        emit(GetAnnouncementImageSuccess());
+      //pickerIcon = IconsManager.closeIcon;
+      showToastMessage(
+          message: StringsManager.imgPickedSuccessfully,
+          states: ToastStates.SUCCESS);
+      emit(GetAnnouncementImageSuccess());
       // if (sizeInMB <= AppSizes.s1) {
       // } else {
       //   showToastMessage(
@@ -119,7 +120,8 @@ class MainCubit extends Cubit<MainCubitStates> {
     emit(UploadImageLoading());
     if (image == null) return;
 
-    showToastMessage(message: StringsManager.uploadImage, states: ToastStates.WARNING);
+    showToastMessage(
+        message: StringsManager.uploadImage, states: ToastStates.WARNING);
     final TaskSnapshot uploadTask;
     if (isUserProfile) {
       uploadTask = await FirebaseStorage.instance
@@ -257,18 +259,15 @@ class MainCubit extends Cubit<MainCubitStates> {
     for (int i = 0; i < leaderboardModel!.length; i++) {
       if (leaderboardModel![i].id == userId) {
         score4User = leaderboardModel![i];
-        print(score4User!.score);
         // emit(GetScore4User());
       }
     }
     for (int i = 0; i < notAdminLeaderboardModel!.length; i++) {
       if (notAdminLeaderboardModel![i].id == userId) {
         score4User?.userRank = i + 1;
-        print(score4User?.userRank);
         // emit(GetScore4User());
       }
     }
-    print(score4User!.score);
   }
 
   Future? getLeaderboard(currentSemester) {
@@ -285,7 +284,8 @@ class MainCubit extends Cubit<MainCubitStates> {
         // exclude the admin
         leaderboardModel?.add(LeaderboardModel.fromJson(
             element)); //just to get the score of Admin
-        if (element[StringsManager.role] != KeysManager.admin) {
+        if (element[StringsManager.role] != KeysManager.admin &&
+            element[StringsManager.role] != KeysManager.developer) {
           notAdminLeaderboardModel?.add(LeaderboardModel.fromJson(element));
           //print('leaderboard size ${notAdminLeaderboardModel!.first}');
         }

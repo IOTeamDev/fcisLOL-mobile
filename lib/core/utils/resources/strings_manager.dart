@@ -143,6 +143,7 @@ class KeysManager {
   static const String isDark = 'isDark';
   static const String finishedOnBoard = 'FinishedOnBoard';
   static const String admin = 'ADMIN';
+  static const String developer = 'DEV';
   static const String isDarkMode = 'isDarkMode';
   static const String applicationJson = 'application/json';
   static const String authorization = 'Authorization';

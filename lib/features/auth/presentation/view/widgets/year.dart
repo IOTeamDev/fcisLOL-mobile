@@ -166,21 +166,28 @@ class YearState extends State<Year> {
               switchSemester = "Seven";
               break;
           }
-          FCMHelper fCMHelper = FCMHelper();
-          fCMHelper.initNotifications();
-          String? fcmToken = await FirebaseMessaging.instance.getToken();
-          loginCubit.register(
-            fcmToken: fcmToken,
-            name: userInfo!.name,
-            email: userInfo.email,
-            phone: userInfo.phone,
-            photo: userInfo.photo!,
-            password: userInfo.password,
-            semester: switchSemester,
-          );
-          AppConstants.SelectedSemester = switchSemester;
-          Cache.writeData(
-              key: "semester", value: AppConstants.SelectedSemester);
+          if (userInfo != null) {
+            FCMHelper fCMHelper = FCMHelper();
+            fCMHelper.initNotifications();
+            String? fcmToken = await FirebaseMessaging.instance.getToken();
+            loginCubit.register(
+              fcmToken: fcmToken,
+              name: userInfo!.name,
+              email: userInfo.email,
+              phone: userInfo.phone,
+              photo: userInfo.photo!,
+              password: userInfo.password,
+              semester: switchSemester,
+            );
+            AppConstants.SelectedSemester = switchSemester;
+            Cache.writeData(
+                key: "semester", value: AppConstants.SelectedSemester);
+          } else {
+            AppConstants.SelectedSemester = switchSemester;
+            Cache.writeData(
+                key: "semester", value: AppConstants.SelectedSemester);
+            navigatReplace(context, const Home());
+          }
         },
       ).show();
 
