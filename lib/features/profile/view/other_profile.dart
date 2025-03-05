@@ -162,8 +162,7 @@ class OtherProfile extends StatelessWidget {
                             ),
                             Builder(
                               builder: (context) {
-                                if (MainCubit.get(context).leaderboardModel !=
-                                    null) {
+                                if (MainCubit.get(context).leaderboardModel != null) {
                                   return Builder(builder: (context) {
                                     MainCubit.get(context).getScore4User(
                                         MainCubit.get(context)

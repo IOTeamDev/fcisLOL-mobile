@@ -7,8 +7,9 @@ ThemeData lightTheme = ThemeData(
   primaryColor: ColorsManager.lightPrimary,
   scaffoldBackgroundColor: ColorsManager.white,
   appBarTheme: AppBarTheme(
-      color: ColorsManager.white,
-      iconTheme: IconThemeData(color: ColorsManager.lightPrimary)),
+    color: ColorsManager.white,
+    iconTheme: IconThemeData(color: ColorsManager.lightPrimary)
+  ),
   drawerTheme: DrawerThemeData(backgroundColor: ColorsManager.white),
   iconTheme: IconThemeData(color: ColorsManager.lightPrimary),
   textTheme: TextTheme(

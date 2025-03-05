@@ -48,11 +48,9 @@ class _RequestsState extends State<Requests> {
             centerTitle: true,
             actions: [
               IconButton(
-                  onPressed: () => onRefresh(MainCubit.get(context).getRequests(
-                      semester: MainCubit.get(context)
-                          .profileModel!
-                          .semester) as Function<T>()),
-                  icon: Icon(IconsManager.refreshIcon))
+                onPressed: () => MainCubit.get(context).getRequests(semester: MainCubit.get(context).profileModel!.semester),
+                icon: Icon(IconsManager.refreshIcon)
+              )
             ],
           ),
           body: Padding(
@@ -290,23 +288,35 @@ class _RequestsState extends State<Requests> {
                           dialogType: DialogType.warning,
                           body: Text(
                             StringsManager.deleteRequestMessage,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleLarge!
-                                .copyWith(color: ColorsManager.black),
+                            style: Theme.of(context).textTheme.titleLarge!,
                             textAlign: TextAlign.center,
                           ),
+                          barrierColor: ColorsManager.black.withValues(alpha: AppSizesDouble.s0_6),
+                          dismissOnTouchOutside: true,
                           animType: AnimType.scale,
-                          btnOkColor: ColorsManager.imperialRed,
-                          btnCancelOnPress: () {},
-                          btnOkText: StringsManager.delete,
-                          btnCancelColor: ColorsManager.grey4,
-                          btnOkOnPress: () {
-                            MainCubit.get(context).deleteMaterial(
-                              MainCubit.get(context).requests![index].id!,
-                              MainCubit.get(context).profileModel!.semester,
-                            );
-                          },
+                          btnOk: ElevatedButton(
+                            onPressed: (){
+                              MainCubit.get(context).deleteMaterial(
+                                MainCubit.get(context).requests![index].id!,
+                                MainCubit.get(context).profileModel!.semester,
+                              );
+                              Navigator.of(context).pop();
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: ColorsManager.imperialRed, // Red background
+                            ),
+                            child: Text(StringsManager.delete, style: TextStyle(color: ColorsManager.white),) 
+                          ),
+                          btnCancel: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: ColorsManager.grey4, // Grey background
+                            ),
+                            onPressed: () {},
+                            child: Text(
+                              StringsManager.cancel, // Use cancel text if defined
+                              style: const TextStyle(color: Colors.black), // Black text
+                            ),
+                          ),
                         ).show();
                       },
                       color: ColorsManager.imperialRed,

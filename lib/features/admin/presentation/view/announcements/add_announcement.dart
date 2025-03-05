@@ -121,8 +121,9 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                     },
                     child: AnimatedContainer(
                       margin: const EdgeInsets.symmetric(
-                          vertical: AppSizesDouble.s30,
-                          horizontal: AppSizesDouble.s10),
+                        vertical: AppSizesDouble.s30,
+                        horizontal: AppSizesDouble.s10
+                      ),
                       duration: const Duration(milliseconds: AppSizes.s380),
                       width: double.infinity,
                       height: _height,
@@ -139,19 +140,13 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                               child: Form(
                                 key: _formKey,
                                 child: AnimatedOpacity(
-                                  opacity: _isExpanded
-                                      ? AppSizesDouble.s1
-                                      : AppSizesDouble.s0,
-                                  duration: const Duration(
-                                      milliseconds: AppSizes.s250),
+                                  opacity: _isExpanded ? AppSizesDouble.s1 : AppSizesDouble.s0,
+                                  duration: const Duration(milliseconds: AppSizes.s250),
                                   curve: Curves.easeInOut,
                                   child: Directionality(
-                                    textDirection: isArabicLanguage(context)
-                                        ? TextDirection.rtl
-                                        : TextDirection.ltr,
+                                    textDirection: isArabicLanguage(context) ? TextDirection.rtl : TextDirection.ltr,
                                     child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           //Title Text Input
                                           TextFormField(
@@ -317,8 +312,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                         style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: ColorsManager.black),
                                                       ),
                                                       SizedBox(
-                                                        width:
-                                                            AppSizesDouble.s5,
+                                                        width: AppSizesDouble.s5,
                                                       ),
                                                       InkWell(
                                                         onTap: () {

@@ -15,6 +15,7 @@ class StringsManager {
   static const String uploadImage = 'Uploading your photo';
   static const String title = 'title';
   static const String content = 'content';
+  static const String profile = 'Profile';
   static const String noContent = 'No content';
   static const String deadLine = 'DeadLine';
   static const String dueDate = 'due_date';

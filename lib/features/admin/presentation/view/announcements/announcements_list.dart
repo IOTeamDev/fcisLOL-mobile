@@ -1,11 +1,11 @@
 import 'dart:math';
-
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
+import 'package:lol/core/utils/resources/icons_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
@@ -18,9 +18,33 @@ import '../../../../../core/utils/resources/colors_manager.dart';
 import '../../../../../core/utils/resources/constants_manager.dart';
 import '../../../../../core/utils/resources/values_manager.dart';
 
-class AnnouncementsList extends StatelessWidget {
+class AnnouncementsList extends StatefulWidget {
   final String semester;
-  const AnnouncementsList({super.key, required this.semester});
+  AnnouncementsList({super.key, required this.semester});
+
+  @override
+  State<AnnouncementsList> createState() => _AnnouncementsListState();
+}
+
+class _AnnouncementsListState extends State<AnnouncementsList> {
+  final List<String> _items = [
+    'All',
+    'Faculty',
+    'Summer_Training',
+    'Workshop',
+    'Final',
+    'Practical',
+    'Assignment',
+    'Quiz',
+    'Other',
+  ];
+  late String filteredValue;
+
+  @override
+  void initState() {
+    filteredValue = _items[0];
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +59,26 @@ class AnnouncementsList extends StatelessWidget {
               style: Theme.of(context).textTheme.displayMedium,
             ),
             centerTitle: true,
+            actions: [
+              PopupMenuButton<String>(
+                icon: Icon(IconsManager.filterIcon, color: Theme.of(context).iconTheme.color),
+                color: ColorsManager.white,
+                style: ButtonStyle(foregroundColor: WidgetStatePropertyAll(ColorsManager.black)),
+                onSelected: (value) {
+                  setState(() {
+                    filteredValue = value;
+                  });
+                },
+                itemBuilder: (context) {
+                  return _items.map(
+                  (item) => PopupMenuItem(
+                    value: item,
+                    child: Text(item.replaceAll(StringsManager.underScore, StringsManager.space), style: TextStyle(color: ColorsManager.black)),
+                  ),
+                ).toList();
+                },
+              ),
+            ],
           ),
           body: SafeArea(
             child: Padding(
@@ -49,14 +93,35 @@ class AnnouncementsList extends StatelessWidget {
                   builder: (context) => ListView.separated(
                     //shrinkWrap: true,
                     physics: const AlwaysScrollableScrollPhysics(),
-                    itemBuilder: (context, index) => announcementBuilder(
-                        cubit.announcements[index].id,
-                        context,
-                        cubit.announcements[index].title,
-                        index,
-                        cubit.announcements[index].content,
-                        cubit.announcements[index].dueDate,
-                        cubit.announcements[index].type),
+                    itemBuilder: (context, index) {
+                      if(filteredValue == _items[0])
+                      {
+                        return announcementBuilder(
+                          cubit.announcements[index].id,
+                          context,
+                          cubit.announcements[index].title,
+                          index,
+                          cubit.announcements[index].content,
+                          cubit.announcements[index].dueDate,
+                          cubit.announcements[index].type
+                        );
+                      }else{
+                        if(cubit.announcements[index].type == filteredValue){
+                          return announcementBuilder(
+                            cubit.announcements[index].id,
+                            context,
+                            cubit.announcements[index].title,
+                            index,
+                            cubit.announcements[index].content,
+                            cubit.announcements[index].dueDate,
+                            cubit.announcements[index].type
+                          );
+                        }
+                        else{
+                          return null;
+                        }
+                      }
+                    },
                     separatorBuilder: (context, index) => const SizedBox(
                       height: AppSizesDouble.s10,
                     ),
@@ -73,7 +138,7 @@ class AnnouncementsList extends StatelessWidget {
   }
 
   Future<void> _onRefresh(context) async {
-    AdminCubit.get(context).getAnnouncements(semester);
+    AdminCubit.get(context).getAnnouncements(widget.semester);
     return Future.value();
   }
 
@@ -82,13 +147,14 @@ class AnnouncementsList extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         navigate(
-            context,
-            AnnouncementDetail(
-              semester: semester,
-              title: title,
-              description: content,
-              date: dueDate,
-            ));
+          context,
+          AnnouncementDetail(
+            semester: widget.semester,
+            title: title,
+            description: content,
+            date: dueDate,
+          )
+        );
       },
       child: Container(
         margin: EdgeInsetsDirectional.symmetric(horizontal: AppMargins.m10),

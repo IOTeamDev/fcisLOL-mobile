@@ -23,14 +23,13 @@ class SubjectItemBuild extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         navigate(
-            context,
-            BlocProvider(
-              create: (context) =>
-                  GetMaterialCubit(getIt.get<SubjectRepoImp>()),
-              child: SubjectDetails(
-                subjectName: subject.subjectName,
-              ),
-            ));
+          context,
+          BlocProvider(
+            create: (context) => GetMaterialCubit(getIt.get<SubjectRepoImp>()),
+            child: SubjectDetails(
+              subjectName: subject.subjectName,
+            ),
+          ));
       },
       child: Card(
         elevation: AppSizesDouble.s12, // More elevation for depth
@@ -39,30 +38,19 @@ class SubjectItemBuild extends StatelessWidget {
         ),
         clipBehavior: Clip.antiAliasWithSaveLayer,
         child: Container(
-          padding: EdgeInsets.all(AppPaddings.p10),
-          decoration: BoxDecoration(
-              color: Provider.of<ThemeProvider>(context).isDark
-                  ? ColorsManager.grey1
-                  : ColorsManager.lightPrimary),
+          padding: EdgeInsets.all(AppPaddings.p5),
+          decoration: BoxDecoration(color: Provider.of<ThemeProvider>(context).isDark ? ColorsManager.grey1 : ColorsManager.lightPrimary),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset(subject.subjectImage,
-                  height: AppSizesDouble.s70, color: Colors.white),
-              SizedBox(
-                height: AppSizesDouble.s10,
-              ),
+              Image.asset(subject.subjectImage, height: AppSizesDouble.s70, color: Colors.white),
+              SizedBox(height: AppSizesDouble.s10,),
               Text(
                 textAlign: TextAlign.center,
-                subject.subjectName
-                    .replaceAll(StringsManager.underScore, StringsManager.space)
-                    .replaceAll(
-                        StringsManager.andWord, StringsManager.andSymbol),
+                subject.subjectName.replaceAll(StringsManager.underScore, StringsManager.space).replaceAll(StringsManager.andWord, StringsManager.andSymbol),
                 maxLines: AppSizes.s2,
-                style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    fontWeight: FontWeightManager.semiBold,
-                    color: ColorsManager.white),
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeightManager.semiBold, color: ColorsManager.white),
                 overflow: TextOverflow.ellipsis,
               ),
             ],

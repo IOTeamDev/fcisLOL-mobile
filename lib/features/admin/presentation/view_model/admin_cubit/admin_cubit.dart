@@ -228,11 +228,8 @@ class AdminCubit extends Cubit<AdminCubitStates> {
         // await getFcmTokens();
       }
 
-      print(fcmTokens.length); // Print the number of fetched tokens
-
       // Filter users based on semester
-      List<FcmToken> filteredUsers =
-          fcmTokens.where((user) => user.semester == semester).toList();
+      List<FcmToken> filteredUsers = fcmTokens.where((user) => user.semester == semester).toList();
 
       if (filteredUsers.isEmpty) {
         print('No users found for semester: $semester');
@@ -243,23 +240,19 @@ class AdminCubit extends Cubit<AdminCubitStates> {
       for (var user in filteredUsers) {
         if (user.fcmToken != null) {
           print('${user.semester} - Sending notification to: ${user.fcmToken}');
-          await sendFCMNotification(
-              title: title, body: body, token: user.fcmToken!);
+          await sendFCMNotification(title: title, body: body, token: user.fcmToken!);
         }
       }
     } else {
-      List<FcmToken> filteredUsers =
-          adminFcmTokens.where((user) => user.semester == semester).toList();
+      List<FcmToken> filteredUsers = adminFcmTokens.where((user) => user.semester == semester).toList();
       if (filteredUsers.isEmpty) {
         print('No users found for semester: $semester');
         return; // Exit early if no users are found for the semester
       }
       for (var user in filteredUsers) {
         if (user.fcmToken != null) {
-          print(
-              '${user.semester} - Sending notification to: ${user.name}================================================================');
-          await sendFCMNotification(
-              title: title, body: body, token: user.fcmToken!);
+          print('${user.semester} - Sending notification to: ${user.name}================================================================');
+          await sendFCMNotification(title: title, body: body, token: user.fcmToken!);
         }
       }
     }
@@ -277,26 +270,24 @@ class AdminCubit extends Cubit<AdminCubitStates> {
 
     var tempPostImage = await picker.pickImage(source: ImageSource.gallery);
     if (tempPostImage != null) {
-      announcementImageFile = File(tempPostImage.path);
-      pickerIcon = Icons.close;
-      imageName = tempPostImage.path.split('/').last;
-      final int sizeInBytes = await announcementImageFile!.length();
-      final int sizeInMB = sizeInBytes ~/ (1024 * 1024);
-      print(sizeInBytes);
-      print(sizeInMB);
-      if (sizeInMB <= 1) {
+      // pickerIcon = Icons.close;
+      // final int sizeInBytes = await announcementImageFile!.length();
+      // final int sizeInMB = sizeInBytes ~/ (1024 * 1024);
+      // print(sizeInBytes);
+      // print(sizeInMB);
+      // if (sizeInMB <= 1) {
+        announcementImageFile = File(tempPostImage.path);
+        imageName = tempPostImage.path.split('/').last;
         pickerIcon = Icons.clear;
-        showToastMessage(
-            message: 'Imaged Picked Successfully', states: ToastStates.SUCCESS);
+        showToastMessage(message: 'Imaged Picked Successfully', states: ToastStates.SUCCESS);
         emit(ImagePickingSuccessState());
-      } else {
-        showToastMessage(
-            message: 'Image Limit Exceeded', states: ToastStates.WARNING);
-        imageName = 'Select Image';
-        pickerIcon = Icons.image;
-        announcementImageFile = null;
-        emit(ImagePickingExceedState());
-      }
+      // } else {
+      //   showToastMessage(message: 'Image Limit Exceeded', states: ToastStates.WARNING);
+      //   imageName = 'Select Image';
+      //   pickerIcon = Icons.image;
+      //   announcementImageFile = null;
+      //   emit(ImagePickingExceedState());
+      // }
     } else {
       pickerIcon = Icons.image;
       imageName = 'Select Image';
@@ -309,13 +300,11 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     emit(UploadImageLoadingState());
     if (image == null) return;
 
-    showToastMessage(
-        message: 'Uploading your photo', states: ToastStates.WARNING);
+    showToastMessage(message: 'Uploading your photo', states: ToastStates.WARNING);
     final uploadTask = await FirebaseStorage.instance
         .ref()
         .child("announcements/${Uri.file(image.path).pathSegments.last}")
         .putFile(image);
-
     try {
       final imagePath = await uploadTask.ref.getDownloadURL();
       announcementImagePath = imagePath;

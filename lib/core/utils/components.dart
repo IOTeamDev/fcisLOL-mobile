@@ -35,45 +35,45 @@ Widget divider({
   double height = AppSizesDouble.s1,
   double thickness = AppSizesDouble.s1,
 }) =>
-    Divider(
-      color: color,
-      height: height,
-      thickness: thickness,
-    );
+  Divider(
+    color: color,
+    height: height,
+    thickness: thickness,
+  );
 
 Widget defaultLoginButton(
-        context,
-        GlobalKey<FormState> formKey,
-        AuthCubit loginCubit,
-        TextEditingController emailController,
-        TextEditingController passwordController,
-        String text,
-        {bool isSignUp = false,
-        Function()? onPressed}) =>
-    ElevatedButton(
-      style: ElevatedButton.styleFrom(
-          foregroundColor: ColorsManager.white,
-          fixedSize: Size(AppQueries.screenWidth(context), AppSizesDouble.s50),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(AppSizesDouble.s15)),
-          backgroundColor: ColorsManager.lightPrimary),
-      onPressed: isSignUp
-          ? onPressed
-          : () {
-              if (formKey.currentState!.validate()) {
-                loginCubit.login(
-                    email: emailController.text.toLowerCase(),
-                    password: passwordController.text);
-              }
-            },
-      child: Text(
-        text,
-        style: Theme.of(context)
-            .textTheme
-            .headlineLarge!
-            .copyWith(color: ColorsManager.white),
-      ),
-    );
+  context,
+  GlobalKey<FormState> formKey,
+  AuthCubit loginCubit,
+  TextEditingController emailController,
+  TextEditingController passwordController,
+  String text,
+  {bool isSignUp = false,
+  Function()? onPressed}) =>
+  ElevatedButton(
+    style: ElevatedButton.styleFrom(
+        foregroundColor: ColorsManager.white,
+        fixedSize: Size(AppQueries.screenWidth(context), AppSizesDouble.s50),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppSizesDouble.s15)),
+        backgroundColor: ColorsManager.lightPrimary),
+    onPressed: isSignUp
+        ? onPressed
+        : () {
+            if (formKey.currentState!.validate()) {
+              loginCubit.login(
+                  email: emailController.text.toLowerCase(),
+                  password: passwordController.text);
+            }
+          },
+    child: Text(
+      text,
+      style: Theme.of(context)
+          .textTheme
+          .headlineLarge!
+          .copyWith(color: ColorsManager.white),
+    ),
+  );
 
 Widget defaultLoginInputField(controller, label, keyboardType,
         {bool isPassword = false,
