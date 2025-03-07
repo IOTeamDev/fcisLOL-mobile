@@ -69,13 +69,13 @@ class _ReportBugState extends State<ReportBug> {
                         },
                         decoration: InputDecoration(
                           hintText: StringsManager.bugTitle,
-                          hintStyle: Theme.of(context).textTheme.headlineMedium!.copyWith(color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.lightGrey1: ColorsManager.grey),
+                          hintStyle: Theme.of(context).textTheme.headlineMedium!.copyWith(color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.lightGrey1: ColorsManager.black.withValues(alpha: 0.7)),
                           border: UnderlineInputBorder(),
                           enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: ColorsManager.grey)),
                           focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: ColorsManager.lightPrimary)),
                         ),
                         cursorColor: ColorsManager.lightPrimary,
-                        style: const TextStyle(color: ColorsManager.white),
+                        style: Theme.of(context).textTheme.titleMedium!.copyWith(color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.white: ColorsManager.black)
                       ),
                       SizedBox(height: AppSizesDouble.s10,),
                       TextFormField(
@@ -92,13 +92,13 @@ class _ReportBugState extends State<ReportBug> {
                         },
                         decoration: InputDecoration(
                           hintText: StringsManager.bugDescription,
-                          hintStyle: Theme.of(context).textTheme.headlineMedium!.copyWith(color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.lightGrey1: ColorsManager.grey),
+                          hintStyle: Theme.of(context).textTheme.headlineMedium!.copyWith(color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.lightGrey1: ColorsManager.black.withValues(alpha: 0.7)),
                           border: UnderlineInputBorder(),
                           enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: ColorsManager.grey)),
                           focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: ColorsManager.lightPrimary)),
                         ),
                         cursorColor: ColorsManager.lightPrimary,
-                        style: const TextStyle(color: ColorsManager.white),
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.white: ColorsManager.black)
                       ),
                       SizedBox(height: AppSizesDouble.s10,),
                       Padding(

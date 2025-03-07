@@ -124,7 +124,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               : UserAccountsDrawerHeader(
                   decoration: BoxDecoration(
                       color: Theme.of(context).scaffoldBackgroundColor),
-                  accountName: const Text(StringsManager.guest),
+                  accountName: Text(StringsManager.guest, style: Theme.of(context).textTheme.titleLarge,),
                   accountEmail: Text(
                     AppConstants.Level(AppConstants.SelectedSemester ?? ''),
                     style: Theme.of(context).textTheme.displayLarge,
@@ -255,11 +255,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius
-                                  .zero), // Removes divider when expanded
+                              borderRadius: BorderRadius.zero), // Removes divider when expanded
                           onTap: () {
-                            navigate(context,
-                                SemesterNavigate(semester: StringsManager.one));
+                            navigate(context, SemesterNavigate(semester: StringsManager.one));
                           },
                         ),
                         ListTile(

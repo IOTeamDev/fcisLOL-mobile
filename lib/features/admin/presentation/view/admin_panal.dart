@@ -32,73 +32,68 @@ class AdminPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        //BlocProvider(create: (context) => MainCubit()..getProfileInfo()),
-        BlocProvider(create: (context) => AdminCubit()),
-      ],
-      child: BlocConsumer<MainCubit, MainCubitStates>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          var mainCubit = MainCubit.get(context);
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(
-                StringsManager.admin,
-                style: Theme.of(context)
-                    .textTheme
-                    .displayMedium!
-                    .copyWith(fontWeight: FontWeightManager.semiBold),
-              ),
-              centerTitle: true,
+    return BlocConsumer<MainCubit, MainCubitStates>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        var mainCubit = MainCubit.get(context);
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(
+              StringsManager.admin,
+              style: Theme.of(context)
+                  .textTheme
+                  .displayMedium!
+                  .copyWith(fontWeight: FontWeightManager.semiBold),
             ),
-            body: Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Buttons
-                  ConditionalBuilder(
-                    condition: MainCubit.get(context).profileModel != null &&
-                        state is! GetProfileLoading,
-                    fallback: (context) =>
-                        const Center(child: CircularProgressIndicator()),
-                    builder: (context) => Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        buttonBuilder(
-                            context,
-                            mainCubit,
-                            ColorsManager.white,
-                            ColorsManager.lightGrey1,
-                            ColorsManager.darkPrimary,
-                            ColorsManager.lightGrey,
-                            IconsManager.campaignIcon,
-                            StringsManager.announcements,
-                            AddAnnouncement(
-                                semester: mainCubit.profileModel!.semester)),
-                        SizedBox(
-                          height: AppSizesDouble.s30,
-                        ),
-                        buttonBuilder(
-                            context,
-                            mainCubit,
-                            ColorsManager.white,
-                            ColorsManager.lightGrey1,
-                            ColorsManager.lightPrimary,
-                            ColorsManager.lightPrimary,
-                            IconsManager.emailIcon,
-                            StringsManager.requests,
-                            Requests()),
-                      ],
-                    ),
+            centerTitle: true,
+          ),
+          body: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // Buttons
+                ConditionalBuilder(
+                  condition: MainCubit.get(context).profileModel != null &&
+                      state is! GetProfileLoading,
+                  fallback: (context) =>
+                      const Center(child: CircularProgressIndicator()),
+                  builder: (context) => Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      buttonBuilder(
+                          context,
+                          mainCubit,
+                          ColorsManager.white,
+                          ColorsManager.lightGrey1,
+                          ColorsManager.darkPrimary,
+                          ColorsManager.lightGrey,
+                          IconsManager.campaignIcon,
+                          StringsManager.announcements,
+                          AddAnnouncement(
+                              semester: mainCubit.profileModel!.semester)),
+                      SizedBox(
+                        height: AppSizesDouble.s30,
+                      ),
+                      buttonBuilder(
+                        context,
+                        mainCubit,
+                        ColorsManager.white,
+                        ColorsManager.lightGrey1,
+                        ColorsManager.lightPrimary,
+                        ColorsManager.lightPrimary,
+                        IconsManager.emailIcon,
+                        StringsManager.requests,
+                        Requests()
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -112,7 +107,9 @@ class AdminPanel extends StatelessWidget {
       icon,
       title,
       navigationWidget) {
-    return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
       Container(
         height: AppSizesDouble.s13,
         width: AppQueries.screenWidth(context) - AppSizes.s70,

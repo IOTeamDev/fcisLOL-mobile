@@ -172,7 +172,7 @@ class YearState extends State<Year> {
             String? fcmToken = await FirebaseMessaging.instance.getToken();
             loginCubit.register(
               fcmToken: fcmToken,
-              name: userInfo!.name,
+              name: userInfo.name,
               email: userInfo.email,
               phone: userInfo.phone,
               photo: userInfo.photo!,

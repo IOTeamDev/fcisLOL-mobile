@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
@@ -75,10 +74,7 @@ class _HomeState extends State<Home> {
     return BlocConsumer<MainCubit, MainCubitStates>(
       listener: (context, state) {
         if (state is GetProfileSuccess) {
-          AdminCubit.get(context)
-              .getAnnouncements(MainCubit.get(context).profileModel!.semester);
-          MainCubit.get(context).getRequests(
-              semester: MainCubit.get(context).profileModel!.semester);
+          AdminCubit.get(context).getAnnouncements(MainCubit.get(context).profileModel!.semester);
           if (MainCubit.get(context).profileModel!.photo == null) {
             MainCubit.get(context).updateUser(
                 userID: MainCubit.get(context).profileModel!.id,
@@ -89,8 +85,7 @@ class _HomeState extends State<Home> {
               fcmToken: fcmToken);
         }
         if (state is GetProfileFailure && AppConstants.SelectedSemester != null) {
-          AdminCubit.get(context)
-              .getAnnouncements(AppConstants.SelectedSemester!);
+          AdminCubit.get(context).getAnnouncements(AppConstants.SelectedSemester!);
         }
         if (state is LogoutSuccess) {
           Navigator.of(context).pushAndRemoveUntil(
@@ -141,10 +136,10 @@ class _HomeState extends State<Home> {
               style: Theme.of(context).textTheme.displayMedium!.copyWith(fontWeight: FontWeightManager.semiBold),
             ),
             actions: [
-              profile?.role == 'DEV'?
+              profile?.role == KeysManager.developer?
               IconButton(
                 onPressed: (){
-                  //TODO: Get the all Semesters Announcements
+                  AdminCubit.get(context).getAllSemestersAnnouncements();
                 },
                 icon: Icon(IconsManager.devIcon, color: Theme.of(context).iconTheme.color,)
               ):SizedBox(),

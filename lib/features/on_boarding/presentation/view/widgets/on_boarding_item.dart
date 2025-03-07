@@ -24,6 +24,7 @@ class OnBoardingItem extends StatelessWidget {
               fontSize: 50,
               letterSpacing: 1.2,
               fontWeight: FontWeight.bold,
+              color: ColorsManager.white,
               shadows: [
                 Shadow(
                   offset: Offset(3, 3), // X and Y offset

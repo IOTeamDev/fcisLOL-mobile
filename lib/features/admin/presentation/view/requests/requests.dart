@@ -34,6 +34,9 @@ class _RequestsState extends State<Requests> {
 
   @override
   Widget build(BuildContext context) {
+    if(MainCubit.get(context).requests == null){
+      MainCubit.get(context).getRequests(semester: MainCubit.get(context).profileModel!.semester);
+    }
     return BlocConsumer<MainCubit, MainCubitStates>(
       listener: (context, state) {},
       builder: (context, state) {

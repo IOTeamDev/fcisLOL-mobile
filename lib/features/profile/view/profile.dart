@@ -35,6 +35,9 @@ class Profile extends StatelessWidget {
     return BlocConsumer<MainCubit, MainCubitStates>(
       builder: (context, state) {
         var mainCubit = MainCubit.get(context);
+        if(mainCubit.leaderboardModel == null) {
+          mainCubit.getLeaderboard(mainCubit.profileModel!.semester);
+        }
         return Scaffold(
           appBar: AppBar(
             actions: [
@@ -69,9 +72,7 @@ class Profile extends StatelessWidget {
             title: Text(StringsManager.profile, style: Theme.of(context).textTheme.displayMedium,),
             centerTitle: true,
           ),
-          body: mainCubit.profileModel == null ?
-          const Center(child: CircularProgressIndicator(),) :
-          Padding(
+          body: Padding(
             padding: const EdgeInsets.only(bottom: 10.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,41 +127,24 @@ class Profile extends StatelessWidget {
                             //       maxLines: 2,
                             //     ),
                             //   ),
-                            Builder(
+                            ConditionalBuilder(
+                              condition: MainCubit.get(context).leaderboardModel != null && MainCubit.get(context).score4User != null && state is !GetLeaderboardLoadingState,
                               builder: (context) {
-                                if (MainCubit.get(context).leaderboardModel != null) {
-                                  return Builder(builder: (context) {
-                                    MainCubit.get(context).getScore4User(MainCubit.get(context).profileModel!.id);
-                                    var score4User = MainCubit.get(context).score4User;
-                                    return Text.rich(
-                                      TextSpan(
-                                        children: [
-                                          TextSpan(
-                                            text: "Score: ",
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400
-                                            ),
-                                          ),
-                                          TextSpan(
-                                            text: score4User!.score.toString(),
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  });
-                                } else {
-                                  return Center(
-                                    child: CircularProgressIndicator(
-                                      color: Provider.of<ThemeProvider>(context).isDark ? ColorsManager.white : ColorsManager.black,
-                                    ),
-                                  );
-                                }
+                                MainCubit.get(context).getScore4User(MainCubit.get(context).profileModel!.id);
+                                return Row(
+                                children: [
+                                  Text('Score: ', style: Theme.of(context).textTheme.titleSmall,),
+                                  Text(MainCubit.get(context).score4User!.score.toString(), style: Theme.of(context).textTheme.titleLarge,),
+                                ],
+                              );
                               },
+                              fallback: (context) {
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    color: Provider.of<ThemeProvider>(context).isDark ? ColorsManager.white : ColorsManager.black,
+                                  ),
+                                );
+                              }
                             ),
                           ],
                         ),

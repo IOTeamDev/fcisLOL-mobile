@@ -83,7 +83,7 @@ class _AnnouncementDetailState extends State<AnnouncementDetail> {
                       children: [
                         SelectableText(
                           widget.title,
-                          style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s13,),
+                          style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s13,color: ColorsManager.white),
                         ),
                       ],
                     ),

@@ -38,7 +38,7 @@ class SemesterNavigate extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if(MainCubit.get(context).profileModel!.role == 'DEV')
+                if(MainCubit.get(context).profileModel != null && MainCubit.get(context).profileModel!.role == KeysManager.developer && AdminCubit.get(context).allSemestersAnnouncements[semester] != null)
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: AppPaddings.p20,
@@ -49,27 +49,27 @@ class SemesterNavigate extends StatelessWidget {
                     style: Theme.of(context).textTheme.headlineLarge
                   ),
                 ),
-                if(MainCubit.get(context).profileModel!.role == 'DEV')
+                if(MainCubit.get(context).profileModel != null && MainCubit.get(context).profileModel!.role == KeysManager.developer && AdminCubit.get(context).allSemestersAnnouncements[semester] != null)
                 BlocBuilder<AdminCubit, AdminCubitStates>(
-                    buildWhen: (previous, current) =>
-                    current is AdminGetAnnouncementLoadingState ||
-                        current is AdminGetAnnouncementSuccessState ||
-                        current is AdminGetAnnouncementsErrorState,
-                    builder: (context, state) {
-                      if (state is AdminGetAnnouncementSuccessState) {
-                        return BuildAnnouncementsRow(announcements: AdminCubit.get(context).announcements);
-                      } else if (state is AdminGetAnnouncementLoadingState) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else if (state is AdminGetAnnouncementsErrorState) {
-                        return Image.asset(AssetsManager.emptyAnnouncements);
-                      } else {
-                        return const SizedBox();
-                      }
+                  buildWhen: (previous, current) =>
+                  current is AdminGetAnnouncementLoadingState ||
+                      current is AdminGetAnnouncementSuccessState ||
+                      current is AdminGetAnnouncementsErrorState,
+                  builder: (context, state) {
+                    if (state is AdminGetAnnouncementSuccessState) {
+                      return BuildAnnouncementsRow(announcements: AdminCubit.get(context).allSemestersAnnouncements[semester]!);
+                    } else if (state is AdminGetAnnouncementLoadingState) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (state is AdminGetAnnouncementsErrorState) {
+                      return Image.asset(AssetsManager.emptyAnnouncements);
+                    } else {
+                      return const SizedBox();
                     }
+                  }
                 ),
-                if(MainCubit.get(context).profileModel!.role == 'DEV')
+                if(MainCubit.get(context).profileModel != null && MainCubit.get(context).profileModel!.role == KeysManager.developer && AdminCubit.get(context).allSemestersAnnouncements[semester] != null)
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: AppPaddings.p20,
@@ -82,7 +82,7 @@ class SemesterNavigate extends StatelessWidget {
                       : ColorsManager.black
                   ),
                 ),
-                if(MainCubit.get(context).profileModel!.role == 'DEV')
+                if(MainCubit.get(context).profileModel != null && MainCubit.get(context).profileModel!.role == KeysManager.developer && AdminCubit.get(context).allSemestersAnnouncements[semester] != null)
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: AppPaddings.p20),
                   child: Text(StringsManager.subject,

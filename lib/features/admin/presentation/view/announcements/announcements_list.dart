@@ -172,28 +172,25 @@ class _AnnouncementsListState extends State<AnnouncementsList> {
                 : ColorsManager.lightPrimary),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: isArabicLanguage(context)? CrossAxisAlignment.start:CrossAxisAlignment.end,
           children: [
             Text(
               title,
-              style: Theme.of(context).textTheme.headlineMedium,
+              style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: ColorsManager.white),
               maxLines: AppSizes.s2,
               overflow: TextOverflow.ellipsis,
             ),
-            SizedBox(
-              height: AppSizesDouble.s10,
-            ),
-            Text(
-              content,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge!
-                  .copyWith(color: ColorsManager.grey2),
-              maxLines: AppSizes.s3,
-              overflow: TextOverflow.ellipsis,
-            ),
-            SizedBox(
-              height: AppSizesDouble.s10,
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: AppPaddings.p10),
+              child: Text(
+                content,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge!
+                    .copyWith(color: ColorsManager.grey2),
+                maxLines: AppSizes.s3,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -204,7 +201,7 @@ class _AnnouncementsListState extends State<AnnouncementsList> {
                       : DateFormat(StringsManager.dateFormat)
                           .format(DateTime.parse(dueDate))
                           .toString(),
-                  style: Theme.of(context).textTheme.bodyLarge,
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: ColorsManager.white),
                 )
               ],
             )

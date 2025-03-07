@@ -22,92 +22,88 @@ class LeaderboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var scaffoldKey = GlobalKey<ScaffoldState>();
-    return BlocProvider(
-      create: (context) => MainCubit()..getLeaderboard(semester),
-      child: BlocConsumer<MainCubit, MainCubitStates>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          return Scaffold(
-            key: scaffoldKey,
-            appBar: AppBar(
-              title: Text(
-                StringsManager.leaderboard,
-                style: Theme.of(context).textTheme.displayMedium,
-              ),
-              centerTitle: true,
+    return BlocConsumer<MainCubit, MainCubitStates>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        if(MainCubit.get(context).leaderboardModel == null){
+          MainCubit.get(context).getLeaderboard(semester);
+        }
+        return Scaffold(
+          key: scaffoldKey,
+          appBar: AppBar(
+            title: Text(
+              StringsManager.leaderboard,
+              style: Theme.of(context).textTheme.displayMedium,
             ),
-            body: SafeArea(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    ConstrainedBox(
-                      constraints: BoxConstraints(
-                          maxHeight: AppQueries.screenHeight(context) /
-                              AppSizesDouble.s1_1),
-                      child: SingleChildScrollView(
-                        padding: EdgeInsets.only(bottom: AppPaddings.p10),
-                        child: ConditionalBuilder(
-                          condition:
-                              MainCubit.get(context).notAdminLeaderboardModel !=
-                                      null &&
-                                  state is! GetLeaderboardLoadingState &&
-                                  (MainCubit.get(context)
-                                              .notAdminLeaderboardModel
-                                              ?.length ??
-                                          AppSizes.s0) >=
-                                      AppSizes.s3,
-                          builder: (context) => Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                height: AppQueries.screenHeight(context) /
-                                    AppSizes.s80,
+            centerTitle: true,
+          ),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                        maxHeight: AppQueries.screenHeight(context) /
+                            AppSizesDouble.s1_1),
+                    child: SingleChildScrollView(
+                      padding: EdgeInsets.only(bottom: AppPaddings.p10),
+                      child: ConditionalBuilder(
+                        condition:
+                            MainCubit.get(context).notAdminLeaderboardModel !=
+                                    null &&
+                                state is! GetLeaderboardLoadingState &&
+                                (MainCubit.get(context)
+                                            .notAdminLeaderboardModel
+                                            ?.length ??
+                                        AppSizes.s0) >=
+                                    AppSizes.s3,
+                        builder: (context) => Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: AppQueries.screenHeight(context) /
+                                  AppSizes.s80,
+                            ),
+                            //Top 3 Contributors Stages
+                            Padding(
+                              padding: const EdgeInsetsDirectional.symmetric(
+                                  horizontal: AppPaddings.p10),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  _topThreeBuilder(
+                                      context,
+                                      AppSizes.s1,
+                                      StringsManager.twoNum,
+                                      AppSizes.s4,
+                                      AppSizesDouble.s35,
+                                      ColorsManager.darkLightPrimary,
+                                      ColorsManager.silver),
+                                  _topThreeBuilder(
+                                      context,
+                                      AppSizes.s0,
+                                      StringsManager.oneNum,
+                                      AppSizesDouble.s3_2,
+                                      AppSizesDouble.s40,
+                                      ColorsManager.lightPrimary,
+                                      ColorsManager.gold),
+                                  _topThreeBuilder(
+                                      context,
+                                      AppSizes.s2,
+                                      StringsManager.threeNum,
+                                      AppSizes.s5,
+                                      AppSizesDouble.s30,
+                                      ColorsManager.darkLightPrimary,
+                                      ColorsManager.bronze),
+                                ],
                               ),
-                              //Top 3 Contributors Stages
-                              Padding(
-                                padding: const EdgeInsetsDirectional.symmetric(
-                                    horizontal: AppPaddings.p10),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    _topThreeBuilder(
-                                        context,
-                                        AppSizes.s1,
-                                        StringsManager.twoNum,
-                                        AppSizes.s4,
-                                        AppSizesDouble.s35,
-                                        ColorsManager.darkLightPrimary,
-                                        ColorsManager.silver),
-                                    _topThreeBuilder(
-                                        context,
-                                        AppSizes.s0,
-                                        StringsManager.oneNum,
-                                        AppSizesDouble.s3_2,
-                                        AppSizesDouble.s40,
-                                        ColorsManager.lightPrimary,
-                                        ColorsManager.gold),
-                                    _topThreeBuilder(
-                                        context,
-                                        AppSizes.s2,
-                                        StringsManager.threeNum,
-                                        AppSizes.s5,
-                                        AppSizesDouble.s30,
-                                        ColorsManager.darkLightPrimary,
-                                        ColorsManager.bronze),
-                                  ],
-                                ),
-                              ),
-                              divider(
-                                  color:
-                                      Provider.of<ThemeProvider>(context).isDark
-                                          ? ColorsManager.white
-                                          : ColorsManager.black),
-                              SizedBox(
-                                height: AppSizesDouble.s10,
-                              ),
-                              //Other Contributors
-                              ConditionalBuilder(
+                            ),
+                            divider(color: Provider.of<ThemeProvider>(context).isDark ? ColorsManager.white : ColorsManager.black),
+                            //Other Contributors
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: AppPaddings.p10),
+                              child: ConditionalBuilder(
                                 condition: MainCubit.get(context)
                                         .notAdminLeaderboardModel!
                                         .length >
@@ -178,43 +174,43 @@ class LeaderboardScreen extends StatelessWidget {
                                       ),
                                     )),
                               ),
-                            ],
-                          ),
-                          fallback: (context) {
-                            if (state is GetLeaderboardLoadingState) {
-                              return SizedBox(
-                                  height: AppQueries.screenHeight(context) /
-                                      AppSizesDouble.s1_3,
-                                  child: Center(
-                                    child: CircularProgressIndicator(),
-                                  ));
-                            }
+                            ),
+                          ],
+                        ),
+                        fallback: (context) {
+                          if (state is GetLeaderboardLoadingState) {
                             return SizedBox(
                                 height: AppQueries.screenHeight(context) /
                                     AppSizesDouble.s1_3,
                                 child: Center(
-                                  child: Text(
-                                    StringsManager.noLeaderBoard,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displayMedium!
-                                        .copyWith(
-                                            fontSize: AppQueries.screenWidth(
-                                                    context) /
-                                                AppSizes.s12),
-                                  ),
+                                  child: CircularProgressIndicator(),
                                 ));
-                          },
-                        ),
+                          }
+                          return SizedBox(
+                              height: AppQueries.screenHeight(context) /
+                                  AppSizesDouble.s1_3,
+                              child: Center(
+                                child: Text(
+                                  StringsManager.noLeaderBoard,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .displayMedium!
+                                      .copyWith(
+                                          fontSize: AppQueries.screenWidth(
+                                                  context) /
+                                              AppSizes.s12),
+                                ),
+                              ));
+                        },
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -296,9 +292,7 @@ class LeaderboardScreen extends StatelessWidget {
                       style: Theme.of(context)
                           .textTheme
                           .headlineMedium!
-                          .copyWith(
-                              fontSize: AppQueries.screenWidth(context) /
-                                  AppSizes.s15))
+                          .copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s15, color: ColorsManager.white))
                 ],
               ),
             ),

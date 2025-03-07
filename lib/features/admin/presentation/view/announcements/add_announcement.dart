@@ -151,8 +151,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                           //Title Text Input
                                           TextFormField(
                                             controller: _titleController,
-                                            textDirection: getTextDirection(
-                                                _titleController),
+                                            textDirection: getTextDirection(_titleController),
                                             validator: _titleValidator,
                                             decoration: InputDecoration(
                                               hintText: StringsManager

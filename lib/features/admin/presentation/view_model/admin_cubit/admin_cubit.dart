@@ -128,6 +128,32 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     }
   }
 
+  Map<String, List<AnnouncementModel>>allSemestersAnnouncements = {};
+  List<String> semesters = [
+    'One',
+    'Two',
+    'Three',
+    'Four',
+    'Five',
+    'Six',
+  ];
+  Future<void> getAllSemestersAnnouncements() async {
+    emit(AdminGetAnnouncementLoadingState());
+    try {
+      allSemestersAnnouncements.clear();
+
+      for(var semester in semesters){
+        final response = await DioHelp.getData(path: ANNOUNCEMENTS, query: {KeysManager.semester: semester});
+        allSemestersAnnouncements[semester] = [];
+        for (var element in response.data) {
+          allSemestersAnnouncements[semester]!.add(AnnouncementModel.fromJson(element));
+        }
+      }
+      emit(AdminGetAnnouncementSuccessState());
+    } catch (e) {
+      emit(AdminGetAnnouncementsErrorState(e.toString()));
+    }
+  }
   void updateAnnouncement(
     final int id, {
     String? title,
