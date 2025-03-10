@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
+import 'package:lol/core/models/admin/announcement_model.dart';
 import 'package:lol/core/utils/resources/icons_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/core/utils/resources/theme_provider.dart';
@@ -90,44 +91,33 @@ class _AnnouncementsListState extends State<AnnouncementsList> {
                   fallback: (context) => Center(
                     child: CircularProgressIndicator(),
                   ),
-                  builder: (context) => ListView.separated(
-                    //shrinkWrap: true,
+                  builder: (context) {
+                    List<AnnouncementModel> announcements;
+                    (MainCubit.get(context).profileModel!.role == KeysManager.developer && cubit.allAnnouncements.isNotEmpty)?
+                    announcements = cubit.allAnnouncements: announcements = cubit.announcements;
+                    List<AnnouncementModel> filteredAnnouncements = filteredValue == _items[0]
+                    ? announcements
+                    : announcements.where((announcement) => announcement.type == filteredValue).toList();
+                    return ListView.separated(
                     physics: const AlwaysScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
-                      if(filteredValue == _items[0])
-                      {
-                        return announcementBuilder(
-                          cubit.announcements[index].id,
-                          context,
-                          cubit.announcements[index].title,
-                          index,
-                          cubit.announcements[index].content,
-                          cubit.announcements[index].dueDate,
-                          cubit.announcements[index].type
-                        );
-                      }else{
-                        if(cubit.announcements[index].type == filteredValue){
-                          return announcementBuilder(
-                            cubit.announcements[index].id,
-                            context,
-                            cubit.announcements[index].title,
-                            index,
-                            cubit.announcements[index].content,
-                            cubit.announcements[index].dueDate,
-                            cubit.announcements[index].type
-                          );
-                        }
-                        else{
-                          return null;
-                        }
-                      }
+                      return announcementBuilder(
+                        filteredAnnouncements[index].id,
+                        context,
+                        filteredAnnouncements[index].title,
+                        index,
+                        filteredAnnouncements[index].content,
+                        filteredAnnouncements[index].dueDate,
+                        filteredAnnouncements[index].type
+                      );
                     },
                     separatorBuilder: (context, index) => const SizedBox(
                       height: AppSizesDouble.s10,
                     ),
-                    itemCount: cubit.announcements.length,
+                    itemCount: filteredAnnouncements.length,
                     //cubit.announcements!.length
-                  ),
+                  );
+                  },
                 ),
               ),
             ),
@@ -138,7 +128,11 @@ class _AnnouncementsListState extends State<AnnouncementsList> {
   }
 
   Future<void> _onRefresh(context) async {
-    AdminCubit.get(context).getAnnouncements(widget.semester);
+    if(MainCubit.get(context).profileModel!.role == KeysManager.developer && AdminCubit.get(context).allAnnouncements.isNotEmpty){
+      AdminCubit.get(context).getAllSemestersAnnouncements();
+    }else{
+      AdminCubit.get(context).getAnnouncements(widget.semester);
+    }
     return Future.value();
   }
 
@@ -166,10 +160,11 @@ class _AnnouncementsListState extends State<AnnouncementsList> {
         ),
         width: double.infinity,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppSizesDouble.s20),
-            color: Provider.of<ThemeProvider>(context).isDark
-                ? ColorsManager.darkPrimary
-                : ColorsManager.lightPrimary),
+          borderRadius: BorderRadius.circular(AppSizesDouble.s20),
+          color: Provider.of<ThemeProvider>(context).isDark
+            ? ColorsManager.darkPrimary
+            : ColorsManager.lightPrimary
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: isArabicLanguage(context)? CrossAxisAlignment.start:CrossAxisAlignment.end,
