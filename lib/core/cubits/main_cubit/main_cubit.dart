@@ -176,8 +176,9 @@ class MainCubit extends Cubit<MainCubitStates> {
     otherProfile = null;
     DioHelp.getData(
       path: USERS,
-      query: {KeysManager.id: id, KeysManager.haveMaterial: true}
+      query: {KeysManager.id: id??1, KeysManager.haveMaterial: true}
     ).then((value) {
+      print(value.data);
       otherProfile = ProfileModel.fromJson(value.data);
       emit(GetProfileSuccess());
     },);

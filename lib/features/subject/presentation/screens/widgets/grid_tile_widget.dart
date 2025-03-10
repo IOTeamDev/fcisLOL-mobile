@@ -44,8 +44,7 @@ class GridTileWidget extends StatelessWidget {
                                 child:
                                     CircularProgressIndicator()); // Show a loading indicator while waiting
                           } else if (snapshot.hasError) {
-                            return Text(
-                                'Error loading thumbnail'); // Display an error if one occurs
+                            return Text('Error loading thumbnail'); // Display an error if one occurs
                           } else if (snapshot.data != null) {
                             return Image.network(
                               snapshot.data!,
@@ -98,7 +97,7 @@ class GridTileWidget extends StatelessWidget {
                               onTap: () => navigate(
                                   context,
                                   OtherProfile(
-                                    id: 117,
+                                    id: video.author!.authorId,
                                   )),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,

@@ -107,8 +107,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
               title1: 'Videos',
               title2: 'Documents'),
           Expanded(
-              child:
-                  CustomTabBarView(controller: _tabControllerOfShowingContent)),
+              child: CustomTabBarView(controller: _tabControllerOfShowingContent)),
         ],
       ),
     );

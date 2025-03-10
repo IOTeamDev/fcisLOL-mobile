@@ -187,11 +187,9 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               AuthorModel author = AuthorModel(
-                                  authorName:
-                                      MainCubit.get(context).profileModel?.name,
-                                  authorPhoto: MainCubit.get(context)
-                                      .profileModel
-                                      ?.photo);
+                                authorId: MainCubit.get(context).profileModel?.id,
+                                authorName: MainCubit.get(context).profileModel?.name,
+                                authorPhoto: MainCubit.get(context).profileModel?.photo);
                               BlocProvider.of<AddMaterialCubit>(context)
                                   .addMaterial(
                                       title: widget.titleController.text,
