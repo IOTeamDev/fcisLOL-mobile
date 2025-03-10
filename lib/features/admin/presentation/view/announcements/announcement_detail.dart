@@ -65,16 +65,15 @@ class _AnnouncementDetailState extends State<AnnouncementDetail> {
             children: [
               Container(
                 constraints: BoxConstraints(
-                  maxHeight:
-                      AppQueries.screenHeight(context) / AppSizesDouble.s1_4,
+                  maxHeight: AppQueries.screenHeight(context) / AppSizesDouble.s1_4,
                 ),
-                margin: const EdgeInsets.symmetric(
-                    horizontal: AppMargins.m15, vertical: AppMargins.m20),
+                margin: const EdgeInsets.symmetric(horizontal: AppMargins.m15, vertical: AppMargins.m20),
                 padding: const EdgeInsets.all(AppPaddings.p18),
                 width: double.infinity,
                 decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    borderRadius: BorderRadius.circular(AppSizesDouble.s20)),
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.circular(AppSizesDouble.s20)
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

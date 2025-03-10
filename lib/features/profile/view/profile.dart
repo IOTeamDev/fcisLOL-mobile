@@ -11,6 +11,7 @@ import 'package:googleapis/games/v1.dart';
 import 'package:googleapis/mybusinessaccountmanagement/v1.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:linkify/linkify.dart';
+import 'package:lol/core/utils/resources/icons_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/core/utils/resources/values_manager.dart';
@@ -43,7 +44,7 @@ class Profile extends StatelessWidget {
             actions: [
               IconButton(
                 onPressed: (){},
-                icon: Icon(CupertinoIcons.square_pencil)
+                icon: Icon(IconsManager.editPenIcon)
               )
               // TextButton(
               //   style: TextButton.styleFrom(
@@ -73,7 +74,7 @@ class Profile extends StatelessWidget {
             centerTitle: true,
           ),
           body: Padding(
-            padding: const EdgeInsets.only(bottom: 10.0),
+            padding: EdgeInsets.only(bottom: AppPaddings.p10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -83,10 +84,10 @@ class Profile extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SizedBox(
-                          width: AppQueries.screenWidth(context) / 3.2,
+                          width: AppQueries.screenWidth(context) / AppSizesDouble.s3_2,
                           child: CircleAvatar(
-                            radius: AppQueries.screenWidth(context) / 8.5,
-                            backgroundImage: MainCubit.get(context).userImageFile != null ?
+                            radius: AppQueries.screenWidth(context) / AppSizesDouble.s8_5,
+                            backgroundImage: mainCubit.userImageFile != null ?
                             NetworkImage(AppConstants.defaultProfileImage) :
                             NetworkImage(mainCubit.profileModel!.photo!,),
                           ),
@@ -95,24 +96,22 @@ class Profile extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             ConstrainedBox(
-                              constraints: BoxConstraints(maxWidth: AppQueries.screenWidth(context) / 1.7),
+                              constraints: BoxConstraints(maxWidth: AppQueries.screenWidth(context) / AppSizesDouble.s1_7),
                               child: Text(
                                 mainCubit.profileModel!.name,
-                                style: Theme.of(context).textTheme.displayLarge!.copyWith( fontSize: AppQueries.screenWidth(context) / 15),
-                                maxLines: 2,
+                                style: Theme.of(context).textTheme.displayLarge!.copyWith( fontSize: AppQueries.screenWidth(context) / AppSizes.s15),
+                                maxLines: AppSizes.s2,
                                 overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.center,
                               ),
                             ),
-                            SizedBox(height: 4,),
+                            SizedBox(height: AppSizesDouble.s4,),
                             SizedBox(
-                              width: AppQueries.screenWidth(context) / 2.5,
+                              width: AppQueries.screenWidth(context) / AppSizesDouble.s2_5,
                               child: Text(
                                 mainCubit.profileModel!.email,
-                                style: TextStyle(
-                                  color: Provider.of<ThemeProvider>(context).isDark ? Colors.white : Colors.black,
-                                  fontSize: AppQueries.screenWidth(context) / 25),
-                                maxLines: 2,
+                                style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s25),
+                                maxLines: AppSizes.s2,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -128,21 +127,19 @@ class Profile extends StatelessWidget {
                             //     ),
                             //   ),
                             ConditionalBuilder(
-                              condition: MainCubit.get(context).leaderboardModel != null && MainCubit.get(context).score4User != null && state is !GetLeaderboardLoadingState,
+                              condition: mainCubit.leaderboardModel != null && mainCubit.score4User != null && state is !GetLeaderboardLoadingState,
                               builder: (context) {
-                                MainCubit.get(context).getScore4User(MainCubit.get(context).profileModel!.id);
+                                mainCubit.getScore4User(mainCubit.profileModel!.id);
                                 return Row(
                                 children: [
                                   Text('Score: ', style: Theme.of(context).textTheme.titleSmall,),
-                                  Text(MainCubit.get(context).score4User!.score.toString(), style: Theme.of(context).textTheme.titleLarge,),
+                                  Text(mainCubit.score4User!.score.toString(), style: Theme.of(context).textTheme.titleLarge,),
                                 ],
                               );
                               },
                               fallback: (context) {
                                 return Center(
-                                  child: CircularProgressIndicator(
-                                    color: Provider.of<ThemeProvider>(context).isDark ? ColorsManager.white : ColorsManager.black,
-                                  ),
+                                  child: CircularProgressIndicator(),
                                 );
                               }
                             ),
@@ -150,57 +147,50 @@ class Profile extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 15,),
-                    Center(child: Text("My Uploads", style: TextStyle(fontSize: AppQueries.screenWidth(context) / 18),)),
-                    SizedBox(height: 10,),
-                    Divider(
-                      color: Provider.of<ThemeProvider>(context).isDark ? ColorsManager.white : ColorsManager.black,
-                      height: 0,
+                    SizedBox(
+                      height: AppSizesDouble.s50,
+                      child: Center(child: Text(StringsManager.myUploads, style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s18)),),
                     ),
+                    divider(),
                   ],
                 ),
                 Expanded(
                   child: ConditionalBuilder(
-                    condition: MainCubit.get(context).profileModel!.materials.isNotEmpty && state is! GetRequestsLoadingState,
+                    condition: mainCubit.profileModel!.materials.isNotEmpty && state is! GetRequestsLoadingState,
                     builder: (context) => Padding(
                       padding: EdgeInsets.symmetric(vertical: AppPaddings.p15, horizontal: AppPaddings.p10),
-                      child: Column(
-                        children: [
-                          Expanded(
-                            child: ListView.separated(
-                              physics: BouncingScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                var mainCubit = MainCubit.get(context);
-                                return materialBuilder(
-                                  index,
-                                  context,
-                                  title: mainCubit.profileModel!.materials[index].title,
-                                  description: mainCubit.profileModel!.materials[index].description,
-                                  type: mainCubit.profileModel!.materials[index].type,
-                                  link: mainCubit.profileModel!.materials[index].link,
-                                  subjectName: mainCubit.profileModel!.materials[index].subject,
-                                );
-                              },
-                              separatorBuilder: (context, index) => SizedBox(height: 10,),
-                              itemCount: mainCubit.profileModel!.materials.length
-                            ),
-                          ),
-                        ],
+                      child: ListView.separated(
+                        physics: BouncingScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return materialBuilder(
+                            index,
+                            context,
+                            title: mainCubit.profileModel!.materials[index].title,
+                            description: mainCubit.profileModel!.materials[index].description,
+                            type: mainCubit.profileModel!.materials[index].type,
+                            link: mainCubit.profileModel!.materials[index].link,
+                            subjectName: mainCubit.profileModel!.materials[index].subject,
+                          );
+                        },
+                        separatorBuilder: (context, index) => SizedBox(height: AppSizesDouble.s10,),
+                        itemCount: mainCubit.profileModel!.materials.length
                       ),
                     ),
                     fallback: (context) {
                       if (state is GetRequestsLoadingState) {
                         return SizedBox(
-                          height: AppQueries.screenHeight(context) / 1.3,
+                          height: AppQueries.screenHeight(context) / AppSizesDouble.s1_3,
                           child: Center(child: CircularProgressIndicator(),)
                         );
                       }
                       return SizedBox(
-                        height: AppQueries.screenHeight(context) / 1.3,
+                        height: AppQueries.screenHeight(context) / AppSizesDouble.s1_3,
                         child: Center(
                           child: Text(
-                            'You Have No Contributions Yet!!!',
-                            style: TextStyle(fontSize: AppQueries.screenWidth(context) / 12),
+                            StringsManager.noContributionsYet,
+                            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                              fontSize: AppQueries.screenWidth(context) / AppSizes.s12,
+                            ),
                             textAlign: TextAlign.center,
                           ),
                         )
@@ -222,146 +212,3 @@ class Profile extends StatelessWidget {
   }
 }
 
-Widget materialBuilder(index, context, {title, link, type, subjectName, description}) {
-  return Container(
-    padding: EdgeInsets.all(5),
-    decoration: BoxDecoration(
-      color: Provider.of<ThemeProvider>(context).isDark ?
-      HexColor('#3B3B3B') :
-      Color.fromARGB(255, 20, 130, 220),
-      borderRadius: BorderRadius.circular(20),
-    ),
-    height: 170,
-    child: Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  '$title ',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              // const Spacer(),
-              if (MainCubit.get(context).profileModel!.role == 'ADMIN'||MainCubit.get(context).profileModel!.role =="DEV")
-                MaterialButton(
-                  onPressed: () {
-                    AwesomeDialog(
-                      context: context,
-                      title: "Delete",
-                      dialogType: DialogType.warning,
-                      body: Text(
-                        "Are you sure you want to Delete the Material?",
-                        style: TextStyle(fontSize: 17),
-                      ),
-                      animType: AnimType.rightSlide,
-                      btnOkColor: Colors.red,
-                      btnCancelOnPress: () {},
-                      btnOkText: "Delete",
-                      btnCancelColor: Colors.grey,
-
-                      // titleTextStyle: TextStyle(fontSize: 22),
-                      btnOkOnPress: () {
-                        print(MainCubit.get(context)
-                            .profileModel!
-                            .materials[index]
-                            .id!);
-                        print(MainCubit.get(context).profileModel!.semester);
-                        MainCubit.get(context).deleteMaterial(
-                          MainCubit.get(context)
-                              .profileModel!
-                              .materials[index]
-                              .id!,
-                          MainCubit.get(context).profileModel!.semester,
-                          isMaterial: true,
-                        );
-                      },
-                    ).show();
-                  },
-                  shape: RoundedRectangleBorder(),
-                  minWidth: 0,
-                  padding: EdgeInsets.zero,
-                  child: const Icon(Icons.close, color: Colors.red),
-                ),
-            ],
-          ),
-          Flexible(
-            child: Text(
-              textAlign: TextAlign.start,
-              subjectName
-                  .toString()
-                  .replaceAll('_', ' ')
-                  .replaceAll('And', '&'),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  fontSize: AppQueries.screenWidth(context) / 17,
-                  color: ColorsManager.white),
-            ),
-          ),
-          // SizedBox(height: 5,),
-          Text(
-            type,
-            style: TextStyle(fontSize: 13, color: Colors.grey[300]),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          LayoutBuilder(
-            builder: (context, constraints) {
-              return Row(
-                children: [
-                  Icon(Icons.link, color: HexColor('#B7B7B7')),
-                  const SizedBox(width: 5),
-                  Expanded(
-                    child: InkWell(
-                      onTap: () async {
-                        final linkElement = LinkableElement(link, link);
-                        await onOpen(context, linkElement);
-                      },
-                      child: Text(
-                        link,
-                        style: TextStyle(
-                          color: Colors.lightBlueAccent,
-                          decoration: TextDecoration.underline,
-                          decorationColor: Colors.lightBlueAccent,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ),
-                  // Spacer(),
-                  Text(
-                    MainCubit.get(context)
-                            .profileModel!
-                            .materials[index]
-                            .accepted!
-                        ? 'Accepted'
-                        : 'Pending',
-                    style: TextStyle(
-                        color: MainCubit.get(context)
-                                .profileModel!
-                                .materials[index]
-                                .accepted!
-                            ? Colors.greenAccent
-                            : Colors.amber),
-                  ),
-                ],
-              );
-            },
-          ),
-        ],
-      ),
-    ),
-  );
-}

@@ -48,19 +48,20 @@ class StringsManager {
   static const String emptyFieldWarning = 'This field must not be Empty';
   static const String type = 'Type';
   static const String announcementType = 'Announcement Type';
-  static const String imagePickingWarning =
-      'Be careful when You choose image because it can\'t be changed';
+  static const String imagePickingWarning = 'Be careful when You choose image because it can\'t be changed';
   static const String cancel = 'Cancel';
   static const String submit = 'Submit';
-  static const String selectAnnouncementTypeWarning =
-      'Please select the announcement type';
-  static const String noAnnouncementsYet = 'You have no announcements yet!!!';
+  static const String selectAnnouncementTypeWarning = 'Please select the announcement type';
+  static const String noAnnouncementsYet = 'You have no announcements yet!!';
+  static const String noContributionsYet = 'You Have No Contributions Yet!!';
   static const String noLeaderBoard = 'No Leaderboard Yet!!!';
   static const String noRequests = 'No Requests Available';
   static const String addNew = 'Add New';
   static const String subject = 'Subjects';
   static const String home = 'Home';
   static const String profileInfo = 'Profile info';
+  static const String myUploads = 'My Uploads';
+  static const String uploads = 'Uploads';
   static const String guest = 'Guest';
   static const String admin = 'Admin';
   static const String leaderboard = 'Leaderboard';
@@ -87,8 +88,8 @@ class StringsManager {
   static const String logOut = 'Log Out';
   static const String logOutWarningMessage =
       'Are you sure you want to log out?';
-  static const String deleteRequestMessage =
-      'Are you sure you want to Delete the request?';
+  static const String deleteRequestMessage = 'Are you sure you want to Delete the request?';
+  static const String deleteMaterialMessage = 'Are you sure you want to Delete the Material?';
   static const String logOutSuccessfully = 'Logout Successfully';
   static const String links = 'Links';
   static const String exams = 'Exams';
@@ -106,8 +107,10 @@ class StringsManager {
   static const String allInOne = '“All In One”';
   static const String selectAll = 'Select All';
   static const String copy = 'Copy';
-  static const String requestRejected = 'Request Rejected!!!!';
-  static const String requestAccepted = 'Request Accepted Successfully!!!!';
+  static const String requestRejected = 'Request Rejected!!';
+  static const String requestAccepted = 'Request Accepted Successfully!!';
+  static const String accepted = 'Accepted';
+  static const String pending = 'Pending';
   static const String requestDetails = 'Request Details';
   static const String getStarted = 'Get Started';
   static const String next = 'Next';
@@ -130,6 +133,7 @@ class StringsManager {
   static const String passwordNotMatchingError = 'Passwords does not match';
   static const String contact = 'Press to Contact';
   static const String profileImage = 'Profile Image';
+  static const String semester = 'Semester';
 }
 
 class KeysManager {

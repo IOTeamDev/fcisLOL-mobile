@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:googleapis_auth/auth_io.dart';
 import 'package:http/http.dart' as http;
 import 'package:lol/core/utils/resources/colors_manager.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:linkify/linkify.dart';
+import 'package:lol/core/utils/resources/icons_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/core/utils/resources/values_manager.dart';
 import 'package:lol/features/admin/presentation/view/admin_panal.dart';
@@ -40,6 +42,130 @@ Widget divider({
     height: height,
     thickness: thickness,
   );
+
+Widget materialBuilder(index, context, {title, link, type, subjectName, description}) {
+  var cubit = MainCubit.get(context);
+  return Container(
+    padding: EdgeInsets.all(AppSizesDouble.s15),
+    decoration: BoxDecoration(
+      color: Theme.of(context).primaryColor,
+      borderRadius: BorderRadius.circular(AppSizesDouble.s20),
+    ),
+    height: AppSizesDouble.s170,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            SizedBox(
+              width: AppQueries.screenWidth(context)/AppSizesDouble.s1_4,
+              child: Text(
+                title,
+                maxLines: AppSizes.s1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.displayMedium!.copyWith(color: ColorsManager.white),
+              ),
+            ),
+            const Spacer(),
+            if (cubit.profileModel!.role == KeysManager.admin || cubit.profileModel!.role == KeysManager.developer)
+              IconButton(
+                onPressed: () {
+                  AwesomeDialog(
+                    context: context,
+                    title: StringsManager.delete,
+                    dialogType: DialogType.warning,
+                    body: Text(
+                      textAlign: TextAlign.center,
+                      StringsManager.deleteMaterialMessage,
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    animType: AnimType.scale,
+                    btnOk: ElevatedButton(
+                      onPressed: (){
+                        cubit.deleteMaterial(
+                          cubit.profileModel!.materials[index].id!,
+                          cubit.profileModel!.semester,
+                          isMaterial: true,
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(backgroundColor: ColorsManager.imperialRed),
+                      child: Text(StringsManager.delete, style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: ColorsManager.white),),
+                    ),
+                    btnCancel: ElevatedButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        style: ElevatedButton.styleFrom(backgroundColor:  ColorsManager.grey4),
+                        child: Text(StringsManager.cancel, style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: ColorsManager.black),)
+                    ),
+                  ).show();
+                },
+                icon: Icon(IconsManager.closeIcon, color: ColorsManager.imperialRed),
+              ),
+          ],
+        ),
+        Flexible(
+          child: Text(
+            textAlign: TextAlign.start,
+            subjectName.toString()
+                .replaceAll(StringsManager.underScore, StringsManager.space)
+                .replaceAll(StringsManager.andWord.substring(AppSizes.s0).toUpperCase()+StringsManager.andWord.substring(AppSizes.s1,AppSizes.s2).toUpperCase(), StringsManager.andSymbol),
+            maxLines: AppSizes.s1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+                fontSize: AppQueries.screenWidth(context) / AppSizes.s22,
+                color: ColorsManager.white
+            ),
+          ),
+        ),
+        // SizedBox(height: 5,),
+        Text(
+          type,
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: ColorsManager.grey4),
+          maxLines: AppSizes.s1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            return Row(
+              children: [
+                Icon(IconsManager.linkIcon, color: ColorsManager.grey2),
+                SizedBox(width: AppSizesDouble.s5),
+                Expanded(
+                  child: InkWell(
+                    onTap: () async {
+                      final linkElement = LinkableElement(link, link);
+                      await onOpen(context, linkElement);
+                    },
+                    child: Text(
+                      link,
+                      style: TextStyle(
+                        color: Colors.lightBlueAccent,
+                        decoration: TextDecoration.underline,
+                        decorationColor: Colors.lightBlueAccent,
+                      ),
+                      maxLines: AppSizes.s1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+                Text(
+                  cubit.profileModel!.materials[index].accepted! ?
+                  StringsManager.accepted :
+                  StringsManager.pending,
+                  style: TextStyle(
+                      color: cubit.profileModel!.materials[index].accepted! ?
+                      ColorsManager.persianGreen :
+                      ColorsManager.gold
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+      ],
+    ),
+  );
+}
 
 Widget defaultLoginButton(
   context,

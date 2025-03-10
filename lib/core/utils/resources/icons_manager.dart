@@ -29,4 +29,5 @@ class IconsManager{
   static const IconData backIcon = Icons.arrow_back_outlined;
   static const IconData filterIcon = Icons.filter_list_alt;
   static const IconData devIcon = CupertinoIcons.ant_fill;
+  static const IconData editPenIcon = CupertinoIcons.square_pencil;
 }

@@ -6,6 +6,12 @@ import 'fonts_manager.dart';
 ThemeData lightTheme = ThemeData(
   primaryColor: ColorsManager.lightPrimary,
   scaffoldBackgroundColor: ColorsManager.white,
+  dividerTheme: DividerThemeData(
+    color: Colors.black
+  ),
+  progressIndicatorTheme: ProgressIndicatorThemeData(
+    color: ColorsManager.black
+  ),
   appBarTheme: AppBarTheme(
     color: ColorsManager.white,
     iconTheme: IconThemeData(color: ColorsManager.lightPrimary)
@@ -13,7 +19,7 @@ ThemeData lightTheme = ThemeData(
   drawerTheme: DrawerThemeData(backgroundColor: ColorsManager.white),
   iconTheme: IconThemeData(color: ColorsManager.lightPrimary),
   textTheme: TextTheme(
-    displayLarge: getSemiBoldStyle(color: ColorsManager.black, fontSize: FontSize.size30),
+    displayLarge: getBoldStyle(color: ColorsManager.black, fontSize: FontSize.size30),
     displayMedium: getSemiBoldStyle(color: ColorsManager.black, fontSize: FontSize.size28),
     headlineLarge: getSemiBoldStyle(color: ColorsManager.black, fontSize: FontSize.size24),
     headlineMedium: getSemiBoldStyle(color: ColorsManager.black, fontSize: FontSize.size20),
@@ -28,6 +34,12 @@ ThemeData darkTheme = ThemeData(
   colorScheme: ColorScheme.dark(),
   scaffoldBackgroundColor: ColorsManager.darkGrey,
   primaryColor: ColorsManager.darkPrimary,
+  dividerTheme: DividerThemeData(
+    color: Colors.white
+  ),
+  progressIndicatorTheme: ProgressIndicatorThemeData(
+    color: ColorsManager.white
+  ),
   appBarTheme: AppBarTheme(
     color: ColorsManager.darkGrey,
     iconTheme: IconThemeData(color: ColorsManager.white)

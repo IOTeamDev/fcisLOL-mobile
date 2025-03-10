@@ -29,7 +29,10 @@ class SemesterNavigate extends StatelessWidget {
     int semesterIndex = semsesterIndex(semester);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Semester $semester', style: Theme.of(context).textTheme.displayMedium,),
+        title: Text(
+          StringsManager.semester+ StringsManager.space + semester,
+          style: Theme.of(context).textTheme.displayMedium,
+        ),
       ),
       body: Padding(
         padding: EdgeInsets.all(AppPaddings.p8),
