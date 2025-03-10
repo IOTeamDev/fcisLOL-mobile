@@ -84,6 +84,7 @@ class AppSizesDouble{
   static const double s1_2 = 1.2;
   static const double s1_3 = 1.3;
   static const double s1_4 = 1.4;
+  static const double s1_45 = 1.45;
   static const double s1_5 = 1.5;
   static const double s1_7 = 1.7;
   static const double s1_8 = 1.8;
@@ -98,6 +99,7 @@ class AppSizesDouble{
   static const double s8 = 8;
   static const double s8_5 = 8.5;
   static const double s10 = 10;
+  static const double s11 = 11;
   static const double s12 = 12;
   static const double s13 = 13;
   static const double s15 = 15;

@@ -99,7 +99,7 @@ class LeaderboardScreen extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            divider(color: Provider.of<ThemeProvider>(context).isDark ? ColorsManager.white : ColorsManager.black),
+                            divider(),
                             //Other Contributors
                             Padding(
                               padding: EdgeInsets.symmetric(vertical: AppPaddings.p10),

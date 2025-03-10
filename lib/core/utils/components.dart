@@ -219,7 +219,7 @@ Widget defaultLoginInputField(controller, label, keyboardType,
       decoration: InputDecoration(
         labelStyle: TextStyle(color: ColorsManager.lightGrey),
         labelText: label,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(AppSizesDouble.s15)),
         filled: true,
         fillColor: ColorsManager.grey3,
         focusedBorder: OutlineInputBorder(
@@ -230,63 +230,63 @@ Widget defaultLoginInputField(controller, label, keyboardType,
                 icon: Icon(suffixIcon),
                 color: loginCubit.hiddenPassword
                     ? ColorsManager.lightGrey
-                    : Colors.blue,
+                    : ColorsManager.dodgerBlue,
                 onPressed: loginCubit.togglePassword,
               )
             : null,
       ),
       validator: validator ??
-          (value) {
-            if (value!.isEmpty) {
-              return isConfirmPassword
-                  ? validationMessage
-                  : StringsManager.emptyFieldWarning;
-            } else {
-              return null; // Form is valid.
-            }
-          },
+      (value) {
+        if (value!.isEmpty) {
+          return isConfirmPassword
+              ? validationMessage
+              : StringsManager.emptyFieldWarning;
+        } else {
+          return null; // Form is valid.
+        }
+      },
       onFieldSubmitted: isConfirmPassword ? onFieldSubmit : null,
     );
 
 void showToastMessage({
   required String message,
-  Color textColor = Colors.white,
+  Color textColor = ColorsManager.white,
   required ToastStates states,
-  double fontSize = 16,
+  double fontSize = AppSizesDouble.s16,
   gravity = ToastGravity.BOTTOM,
-  int lengthForIOSAndWeb = 5,
+  int lengthForIOSAndWeb = AppSizes.s5,
   toastLength = Toast.LENGTH_SHORT,
 }) =>
-    Fluttertoast.showToast(
-      msg: message,
-      toastLength: toastLength,
-      gravity: gravity,
-      timeInSecForIosWeb: lengthForIOSAndWeb,
-      backgroundColor: chooseToastColor(states),
-      textColor: textColor,
-      fontSize: fontSize,
-    );
+  Fluttertoast.showToast(
+    msg: message,
+    toastLength: toastLength,
+    gravity: gravity,
+    timeInSecForIosWeb: lengthForIOSAndWeb,
+    backgroundColor: chooseToastColor(states),
+    textColor: textColor,
+    fontSize: fontSize,
+  );
 
 // ignore: constant_identifier_names
 enum ToastStates { SUCCESS, ERROR, WARNING, INFO }
 
 Color chooseToastColor(ToastStates states) {
-  Color? color;
+  Color color = ColorsManager.grey;
   switch (states) {
     case ToastStates.SUCCESS:
-      color = Colors.green[600];
+      color = ColorsManager.persianGreen;
       break;
     case ToastStates.WARNING:
-      color = Colors.amber[600];
+      color = ColorsManager.gold;
       break;
     case ToastStates.ERROR:
-      color = Colors.red[600];
+      color = ColorsManager.imperialRed;
       break;
     case ToastStates.INFO:
-      color = Colors.grey[600];
+      color = ColorsManager.grey;
       break;
   }
-  return color!;
+  return color;
 }
 
 Future<String?> getYouTubeThumbnail(String videoUrl, apiKey) async {
@@ -346,7 +346,6 @@ Future<String> getFirstVideoThumbnail(String playlistUrl, String apiKey) async {
 Future<void> onOpen(BuildContext context, LinkableElement link) async {
   final url = link.url;
 
-  // Open Facebook links directly using `url_launcher`
   if (await canLaunchUrl(Uri.parse(url))) {
     await launchUrl(Uri.parse(url));
   } else {

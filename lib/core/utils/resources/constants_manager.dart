@@ -13,6 +13,15 @@ class AppConstants {
   static const String year25Drive = 'https://drive.google.com/drive/folders/1BAXez9FJKF_ASx79usd_-Xi47TdUYK73?fbclid=IwAR3cRtEV1aJrcvKoGNBLCbqBu2LMLrsWYfQkOZUb6SQE2dtT3ZtqrcCjxno';
   static const String year24Drive = 'https://drive.google.com/drive/u/0/folders/11egB46e3wtl1Q69wdCBBam87bwMF7Qo-';
 
+  static List<String> semesters = [
+    'One',
+    'Two',
+    'Three',
+    'Four',
+    'Five',
+    'Six',
+  ];
+
   static String Level(String semester) {
     switch (semester) {
       case "One":

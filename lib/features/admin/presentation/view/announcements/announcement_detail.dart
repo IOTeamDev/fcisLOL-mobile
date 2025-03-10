@@ -77,14 +77,12 @@ class _AnnouncementDetailState extends State<AnnouncementDetail> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: !isArabicLanguage(context)? MainAxisAlignment.end:MainAxisAlignment.start,
-                      children: [
-                        SelectableText(
-                          widget.title,
-                          style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s13,color: ColorsManager.white),
-                        ),
-                      ],
+                    Align(
+                      child: SelectableText(
+                        widget.title,
+                        style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s13,color: ColorsManager.white),
+                      ),
+                      alignment: isArabicLanguage(context)? Alignment.centerLeft:Alignment.centerRight,
                     ),
                     SizedBox(
                       height: AppSizesDouble.s30,

@@ -30,4 +30,6 @@ class IconsManager{
   static const IconData filterIcon = Icons.filter_list_alt;
   static const IconData devIcon = CupertinoIcons.ant_fill;
   static const IconData editPenIcon = CupertinoIcons.square_pencil;
+  static const IconData editIcon = Icons.edit_outlined;
+  static const IconData deleteIcon = CupertinoIcons.delete;
 }

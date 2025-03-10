@@ -25,6 +25,7 @@ import '../../../../../core/utils/navigation.dart';
 import '../../../../../core/network/local/shared_preference.dart';
 import '../../../../auth/presentation/view_model/login_cubit/login_cubit.dart';
 import '../../../../auth/presentation/view/choosing_year.dart';
+import '../../../../home/data/models/semster_model.dart';
 
 //uid null?
 class AdminCubit extends Cubit<AdminCubitStates> {
@@ -129,31 +130,27 @@ class AdminCubit extends Cubit<AdminCubitStates> {
   }
 
   Map<String, List<AnnouncementModel>>allSemestersAnnouncements = {};
-  List<String> semesters = [
-    'One',
-    'Two',
-    'Three',
-    'Four',
-    'Five',
-    'Six',
-  ];
+  List<AnnouncementModel> allAnnouncements = [];
+
   Future<void> getAllSemestersAnnouncements() async {
     emit(AdminGetAnnouncementLoadingState());
     try {
       allSemestersAnnouncements.clear();
 
-      for(var semester in semesters){
+      for(var semester in AppConstants.semesters){
         final response = await DioHelp.getData(path: ANNOUNCEMENTS, query: {KeysManager.semester: semester});
         allSemestersAnnouncements[semester] = [];
         for (var element in response.data) {
           allSemestersAnnouncements[semester]!.add(AnnouncementModel.fromJson(element));
         }
       }
+      allAnnouncements = allSemestersAnnouncements.values.expand((e) => e).toList();
       emit(AdminGetAnnouncementSuccessState());
     } catch (e) {
       emit(AdminGetAnnouncementsErrorState(e.toString()));
     }
   }
+
   void updateAnnouncement(
     final int id, {
     String? title,
@@ -213,8 +210,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     var serverKeyAuthorization = await fCMHelper.getAccessToken();
 
     // change your project id
-    const String urlEndPoint =
-        "https://fcm.googleapis.com/v1/projects/fcis-da7f4/messages:send";
+    const String urlEndPoint = "https://fcm.googleapis.com/v1/projects/fcis-da7f4/messages:send";
 
     Dio dio = Dio();
     dio.options.headers['Content-Type'] = 'application/json';

@@ -198,11 +198,7 @@ class _HomeState extends State<Home> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: AppPaddings.p20,
                             vertical: AppPaddings.p20),
-                        child: divider(
-                          color: Provider.of<ThemeProvider>(context).isDark
-                            ? ColorsManager.white
-                            : ColorsManager.black
-                        ),
+                        child: divider(),
                       ), //divider
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: AppPaddings.p20),

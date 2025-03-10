@@ -38,8 +38,9 @@ class StringsManager {
   static const String thisLinkIsCorrupted = 'This link is Corrupted';
   static const String error = 'Error';
   static const String announcements = 'Announcements';
-  static const String announcementDeleted = 'Announcement Deleted';
-  static const String announcementAdded = 'Announcement Added Successfully';
+  static const String announcementDeleted = 'Announcement Deleted!!';
+  static const String announcementAdded = 'Announcement Added Successfully!!';
+  static const String announcementUpdated = 'Announcement Updated Successfully!!';
   static const String errorOccurred = 'An Error Occurred';
   static const String requests = 'Requests';
   static const String description = 'Description';
@@ -52,6 +53,8 @@ class StringsManager {
   static const String cancel = 'Cancel';
   static const String submit = 'Submit';
   static const String selectAnnouncementTypeWarning = 'Please select the announcement type';
+  static const String selectAnnouncementSemesterWarning = 'Please select the desired semester for the Announcement';
+  static const String fillAllFieldsWarning = 'Please fill all fields correctly';
   static const String noAnnouncementsYet = 'You have no announcements yet!!';
   static const String noContributionsYet = 'You Have No Contributions Yet!!';
   static const String noLeaderBoard = 'No Leaderboard Yet!!!';

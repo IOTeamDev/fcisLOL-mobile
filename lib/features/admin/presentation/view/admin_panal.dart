@@ -115,11 +115,12 @@ class AdminPanel extends StatelessWidget {
         width: AppQueries.screenWidth(context) - AppSizes.s70,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(AppSizesDouble.s40),
-              topRight: Radius.circular(AppSizesDouble.s40)),
+            topLeft: Radius.circular(AppSizesDouble.s40),
+            topRight: Radius.circular(AppSizesDouble.s40)
+          ),
           color: Provider.of<ThemeProvider>(context).isDark
-              ? containerDarkThemeColor
-              : containerLightThemeColor,
+            ? containerDarkThemeColor
+            : containerLightThemeColor,
         ),
       ),
       ElevatedButton(

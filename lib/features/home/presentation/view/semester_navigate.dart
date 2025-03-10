@@ -78,12 +78,7 @@ class SemesterNavigate extends StatelessWidget {
                     horizontal: AppPaddings.p20,
                     vertical: AppPaddings.p20
                   ),
-                  child: divider(
-                    color: Provider.of<ThemeProvider>(context)
-                      .isDark
-                      ? ColorsManager.white
-                      : ColorsManager.black
-                  ),
+                  child: divider(),
                 ),
                 if(MainCubit.get(context).profileModel != null && MainCubit.get(context).profileModel!.role == KeysManager.developer && AdminCubit.get(context).allSemestersAnnouncements[semester] != null)
                 Padding(

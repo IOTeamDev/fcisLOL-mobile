@@ -5,6 +5,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
+import 'package:lol/core/utils/resources/icons_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
@@ -15,6 +16,7 @@ import 'package:lol/core/utils/components.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/utils/resources/colors_manager.dart';
+import '../../../../../core/utils/resources/values_manager.dart';
 
 class EditAnnouncement extends StatefulWidget {
   final int id;
@@ -44,32 +46,38 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
   late TextEditingController titleController;
   late TextEditingController contentController;
   late TextEditingController _dateController;
+  late IconData datePickerIcon;
   late int id;
   String? dueDateFormatted;
-
+  String dueDateWord = StringsManager.dueDate.split(StringsManager.underScore).join(StringsManager.space);
   final _formKey = GlobalKey<FormState>();
+  final Map<TextEditingController, TextDirection> _textDirections = {};
   @override
   void initState() {
     super.initState();
-    // Initialize controllers with existing values
     titleController = TextEditingController(text: widget.title);
     contentController = TextEditingController(text: widget.content);
+    _addDirectionListener(titleController);
+    _addDirectionListener(contentController);
     _dateController = TextEditingController(
-        text: widget.date == 'No Due Date'
-            ? 'Due Date'
-            : intl.DateFormat('dd/MM/yyyy')
-                .format(DateTime.parse(widget.date)));
-    //selectedItem = widget.selectedItem;
+      text: widget.date == StringsManager.noDueDate ? dueDateWord:
+      intl.DateFormat(StringsManager.dateFormat).format(DateTime.parse(widget.date))
+    );
+    datePickerIcon =  _dateController == StringsManager.noDueDate?IconsManager.closeIcon:IconsManager.datePickerIcon;
+    _checkInitialDirection(titleController);
+    _checkInitialDirection(contentController);
+
+    _addDirectionListener(titleController);
+    _addDirectionListener(contentController);
+
     id = widget.id;
-    // print('date controller: ${_dateController.text}');
-    // print('widget date: ${widget.date}');
-    // dueDateFormatted = widget.date;
-    // print('due Date: $dueDateFormatted');
   }
+
 
   @override
   void dispose() {
-    // Dispose controllers when not needed
+    titleController.removeListener((){});
+    contentController.removeListener((){});
     titleController.dispose();
     contentController.dispose();
     _dateController.dispose();
@@ -78,19 +86,14 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
 
   @override
   Widget build(BuildContext context) {
-    final content =
-        widget.content.isEmpty ? StringsManager.noContent : widget.content;
-    final isContentRtl = intl.Bidi.detectRtlDirectionality(content);
-    final textDirection = widget.content.isEmpty
-        ? (isArabicLanguage(context) ? TextDirection.rtl : TextDirection.ltr)
-        : (isContentRtl ? TextDirection.rtl : TextDirection.ltr);
 
     return BlocConsumer<MainCubit, MainCubitStates>(
       listener: (context, state) {
         if (state is AdminUpdateAnnouncementSuccessState) {
           showToastMessage(
-              message: 'Announcement Updated Successfully!!',
-              states: ToastStates.SUCCESS);
+            message: StringsManager.announcementUpdated,
+            states: ToastStates.SUCCESS
+          );
           Navigator.pop(context, StringsManager.refresh);
         }
       },
@@ -102,238 +105,110 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
               style: Theme.of(context).textTheme.displayMedium,
             ),
           ),
-          body: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  margin: const EdgeInsetsDirectional.symmetric(
-                      horizontal: 15, vertical: 40),
-                  padding: const EdgeInsets.all(15),
-                  height: AppQueries.screenHeight(context) / 1.45,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      color: Provider.of<ThemeProvider>(context).isDark
-                          ? HexColor('#3B3B3B')
-                          : HexColor('#757575'),
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Form(
-                    key: _formKey,
+          body: Center(
+            child: SingleChildScrollView(
+              child: Container(
+                margin: EdgeInsetsDirectional.symmetric(horizontal: AppMargins.m15),
+                padding: EdgeInsets.all(AppPaddings.p15),
+                height: AppQueries.screenHeight(context) / AppSizesDouble.s1_45,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.circular(AppSizesDouble.s20)
+                ),
+                child: Form(
+                  key: _formKey,
+                  child: Directionality(
+                    textDirection: isArabicLanguage(context)? TextDirection.rtl:TextDirection.ltr,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Title Text Input
                         TextFormField(
-                          textDirection: isArabicLanguage(context)
-                              ? TextDirection.rtl
-                              : TextDirection.ltr,
                           controller: titleController,
+                          textDirection: getTextDirection(titleController),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Title must not be empty';
+                              return StringsManager.emptyFieldWarning;
                             }
                             return null;
                           },
                           decoration: InputDecoration(
-                            hintText: 'Title',
-                            hintStyle: TextStyle(
-                                fontSize: 20, color: Colors.grey[400]),
+                            hintText: StringsManager.title,
+                            hintStyle: Theme.of(context).textTheme.headlineMedium!.copyWith(color: ColorsManager.lightGrey1),
                             enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Provider.of<ThemeProvider>(context)
-                                            .isDark
-                                        ? HexColor('#848484')
-                                        : HexColor('#FFFFFF'))),
+                              borderSide: BorderSide(
+                                color: Provider.of<ThemeProvider>(context).isDark
+                                ? ColorsManager.grey
+                                : ColorsManager.white
+                              )
+                            ),
                           ),
                           style: const TextStyle(color: Colors.white),
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: AppSizesDouble.s10),
                         // Description Text Input
                         TextFormField(
-                          textDirection: textDirection,
                           controller: contentController,
-                          minLines: 5,
-                          maxLines: 12,
+                          textDirection: getTextDirection(contentController),
+                          minLines: AppSizes.s12,
+                          maxLines: AppSizes.s12,
                           decoration: InputDecoration(
                             hintText: StringsManager.description,
-                            hintStyle: TextStyle(
-                                fontSize: 20, color: Colors.grey[400]),
+                            hintStyle: Theme.of(context).textTheme.headlineMedium!.copyWith(color: ColorsManager.lightGrey1),
                             enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Provider.of<ThemeProvider>(context)
-                                            .isDark
-                                        ? ColorsManager.grey
-                                        : ColorsManager.white)),
+                              borderSide: BorderSide(
+                                color: Provider.of<ThemeProvider>(context).isDark
+                                ? ColorsManager.grey
+                                : ColorsManager.white
+                              )
+                            ),
                           ),
                           style: const TextStyle(color: Colors.white),
                         ),
-                        const SizedBox(height: 10),
-                        Row(
-                          children: [
-                            // DatePicker Text Field
-                            GestureDetector(
-                              onTap: () => showDatePicker(
-                                context: context,
-                                initialDate:
-                                    DateTime.now().add(Duration(days: 1)),
-                                firstDate:
-                                    DateTime.now().add(Duration(days: 1)),
-                                lastDate: DateTime.parse('2027-11-30'),
-                              ).then((value) {
-                                if (value != null) {
-                                  setState(() {
-                                    DateTime selectedDate = DateTime(
-                                        value.year, value.month, value.day);
-                                    dueDateFormatted = DateTime.utc(
-                                            selectedDate.year,
-                                            selectedDate.month,
-                                            selectedDate.day)
-                                        .toIso8601String();
-                                    print(dueDateFormatted);
-                                    _dateController.text =
-                                        intl.DateFormat('dd/MM/yyyy')
-                                            .format(value);
-                                  });
-                                  // print(dueDateFormatted);
-                                  // print(_dateController.text);
-                                }
-                              }),
-                              child: Container(
-                                width: AppQueries.screenWidth(context) / 2.2,
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10)),
-                                padding: EdgeInsetsDirectional.symmetric(
-                                    horizontal: 10),
-                                child: AbsorbPointer(
-                                  child: TextFormField(
-                                    onTap: () {},
-                                    controller: _dateController,
-                                    keyboardType: TextInputType.none,
-                                    decoration: InputDecoration(
-                                      suffixIcon: Icon(
-                                        Icons.date_range,
-                                        color: Colors.black,
-                                      ),
-                                      hintText: 'Due Date',
-                                      hintStyle: TextStyle(
-                                          fontSize: 14, color: Colors.black),
-                                      border: InputBorder.none,
-                                    ),
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    maxLines: 1,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            // Announcement Type Dropdown
-                            // DropdownButton<String>(
-                            //   hint: const Text(
-                            //     'Type',
-                            //     style: TextStyle(color: Colors.white),
-                            //   ),
-                            //   value: selectedItem,
-                            //   dropdownColor: Colors.white,
-                            //   iconEnabledColor: Colors.white,
-                            //   style: const TextStyle(color: Colors.white),
-                            //   items: _items.map((String item) {
-                            //     return DropdownMenuItem<String>(
-                            //       value: item,
-                            //       child: Text(
-                            //         item,
-                            //         style: const TextStyle(
-                            //             color: Colors.black),
-                            //       ),
-                            //     );
-                            //   }).toList(),
-                            //   onChanged: (String? newValue) {
-                            //     setState(() {
-                            //       selectedItem = newValue;
-                            //     });
-                            //   },
-                            //   selectedItemBuilder:
-                            //       (BuildContext context) {
-                            //     // Ensuring the selected item has the same padding and alignment as the menu items
-                            //     return _items.map((String item) {
-                            //       return DropdownMenuItem<String>(
-                            //         value: item,
-                            //         child: Text(
-                            //           item,
-                            //           style: const TextStyle(
-                            //             color: Colors
-                            //                 .white, // White color for the selected item displayed outside
-                            //           ),
-                            //         ),
-                            //       );
-                            //     }).toList();
-                            //   },
-                            // ),
-                          ],
-                        ),
+                        SizedBox(height: AppSizesDouble.s10),
                         SizedBox(
-                          height: 10,
+                          width: AppQueries.screenWidth(context) / AppSizes.s3,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (_dateController.text != dueDateWord) {
+                                setState(() {
+                                  datePickerIcon = IconsManager.datePickerIcon;
+                                  _dateController.text = dueDateWord;
+                                });
+                              } else {
+                                _datePicker();
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.symmetric(vertical: AppSizesDouble.s15),
+                                backgroundColor: ColorsManager.white,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSizesDouble.s10))
+                            ),
+                            child: Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  _dateController.text,
+                                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: ColorsManager.black),
+                                ),
+                                SizedBox(
+                                  width:
+                                  AppSizesDouble.s5,
+                                ),
+                                Icon(
+                                  datePickerIcon,
+                                  color: ColorsManager.black,
+                                ),
+                              ],
+                            ),
+                          )
                         ),
-                        //Upload Image button
-                        // Container(
-                        //     padding: EdgeInsetsDirectional.symmetric(horizontal: 15),
-                        //     width: width / 2.1,
-                        //     height: 50,
-                        //     decoration: BoxDecoration(
-                        //       color: Colors.white,
-                        //       borderRadius: BorderRadius.circular(10),
-                        //     ),
-                        //     child: GestureDetector(
-                        //       onTap: () {
-                        //         if (cubit.AnnouncementImageFile == null) {
-                        //           cubit.getAnnouncementImage();
-                        //         }
-                        //       },
-                        //       child: Row(
-                        //             children: [
-                        //               ConstrainedBox(
-                        //                   constraints: BoxConstraints(maxWidth: width / 4),
-                        //                   child: Text(
-                        //                     cubit.imageName!,
-                        //                     style: TextStyle(color: Colors.black),
-                        //                     overflow: TextOverflow.ellipsis,
-                        //                     maxLines: 1,
-                        //                   )),
-                        //               SizedBox(
-                        //                 width: 5,
-                        //               ),
-                        //               IconButton(
-                        //                   icon: Icon(
-                        //                     cubit.pickerIcon,
-                        //                     color: Colors.black,
-                        //                   ),
-                        //                   onPressed: () {
-                        //                     if (cubit.AnnouncementImageFile == null && widget.imageLink == null) {
-                        //                       cubit.getAnnouncementImage();
-                        //                     } else {
-                        //                       setState(() {
-                        //                         cubit.AnnouncementImageFile = null;
-                        //                         cubit.pickerIcon = Icons.image;
-                        //                         cubit.imageName = 'Select Image';
-                        //                       });
-                        //                     }
-                        //                   }),
-                        //             ],
-                        //           ),
-                        //     )
-                        // ),
-                        // SizedBox(height: 10,),
-                        // ConstrainedBox(
-                        //   constraints: BoxConstraints(maxWidth: width/1.1),
-                        //   child: Text('keep it if you don\'t to change the photo!!', style: TextStyle(color: Colors.grey[400]),)
-                        // ),
                         const Spacer(),
                         divider(),
                         // Cancel and Accept Buttons
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: EdgeInsets.all(AppPaddings.p8),
                           child: Row(
                             children: [
                               ElevatedButton(
@@ -342,59 +217,43 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                                 },
                                 style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(13)),
+                                      borderRadius: BorderRadius.circular(AppSizesDouble.s13)),
                                   padding: EdgeInsetsDirectional.symmetric(
                                       horizontal:
-                                          AppQueries.screenWidth(context) / 11),
-                                  backgroundColor: Colors.white,
-                                  textStyle: TextStyle(
-                                      fontSize:
-                                          AppQueries.screenWidth(context) / 17),
+                                          AppQueries.screenWidth(context) / AppSizesDouble.s11),
+                                  backgroundColor: ColorsManager.white,
+                                  foregroundColor: ColorsManager.black,
+                                  textStyle: TextStyle(fontSize: AppQueries.screenWidth(context) / AppSizesDouble.s17),
                                 ),
-                                child: const Text(
-                                  'Cancel',
-                                  style: TextStyle(color: Colors.black),
-                                ),
+                                child: const Text(StringsManager.cancel,),
                               ),
                               const Spacer(),
                               ElevatedButton(
                                   onPressed: () async {
                                     if (_formKey.currentState!.validate()) {
-                                      AdminCubit.get(context)
-                                          .updateAnnouncement(
+                                      AdminCubit.get(context).updateAnnouncement(
                                         id,
                                         title: titleController.text,
                                         content: contentController.text,
-                                        dueDate:
-                                            dueDateFormatted == 'No Due Date'
-                                                ? null
-                                                : dueDateFormatted,
+                                        dueDate: dueDateFormatted == StringsManager.noDueDate ? null : dueDateFormatted,
                                       );
                                     } else {
                                       // Show error if validation fails
                                       showToastMessage(
-                                        message:
-                                            'Please fill all fields correctly.',
+                                        message: StringsManager.fillAllFieldsWarning,
                                         states: ToastStates.ERROR,
                                       );
                                     }
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(13)),
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSizesDouble.s13)),
                                     padding: EdgeInsetsDirectional.symmetric(
-                                        horizontal:
-                                            AppQueries.screenWidth(context) /
-                                                11),
+                                        horizontal: AppQueries.screenWidth(context) / AppSizes.s11),
                                     backgroundColor: ColorsManager.lightPrimary,
                                     foregroundColor: ColorsManager.white,
-                                    textStyle: TextStyle(
-                                        fontSize:
-                                            AppQueries.screenWidth(context) /
-                                                17),
+                                    textStyle: TextStyle(fontSize: AppQueries.screenWidth(context) / AppSizes.s17),
                                   ),
-                                  child: const Text('Submit')),
+                                  child: const Text(StringsManager.submit)),
                             ],
                           ),
                         ),
@@ -402,7 +261,7 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
                     ),
                   ),
                 ),
-              ],
+              ),
             ),
           ),
         );
@@ -410,7 +269,53 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
     );
   }
 
-  bool isArabicLanguage(BuildContext context) {
-    return Localizations.localeOf(context).languageCode == 'ar';
+  _datePicker() => showDatePicker(
+    context: context,
+    initialDate: DateTime.now().add(Duration(days: AppSizes.s1)),
+    firstDate: DateTime.now().add(Duration(days: AppSizes.s1)),
+    lastDate: DateTime.parse(StringsManager.endDate),
+  ).then((value) {
+    if (value != null) {
+      setState(() {
+        DateTime selectedDate = DateTime(value.year, value.month, value.day);
+        dueDateFormatted = DateTime.utc(selectedDate.year, selectedDate.month, selectedDate.day).toIso8601String();
+        _dateController.text = intl.DateFormat(StringsManager.dateFormat).format(value);
+        datePickerIcon = IconsManager.closeIcon;
+      });
+    }
+  });
+
+  void _addDirectionListener(TextEditingController controller) {
+    controller.addListener(() {
+      final text = controller.text;
+      TextDirection newDirection = TextDirection.ltr;
+      if (text.isNotEmpty) {
+        final firstChar = text[0];
+        final isArabic = RegExp(r'^[\u0600-\u06FF]').hasMatch(firstChar);
+        newDirection = isArabic ? TextDirection.rtl : TextDirection.ltr;
+      }
+
+      if (_textDirections[controller] != newDirection) {
+        setState(() {
+          _textDirections[controller] = newDirection;
+        });
+      }
+    });
   }
+
+  void _checkInitialDirection(TextEditingController controller) {
+    final text = controller.text;
+    if (text.isNotEmpty) {
+      final firstChar = text[0];
+      final isArabic = RegExp(r'^[\u0600-\u06FF]').hasMatch(firstChar);
+      _textDirections[controller] = isArabic ? TextDirection.rtl : TextDirection.ltr;
+    }
+  }
+
+// Update getTextDirection to handle null values
+  TextDirection getTextDirection(TextEditingController controller) {
+    return _textDirections[controller] ??
+        (isArabicLanguage(context) ? TextDirection.rtl : TextDirection.ltr);
+  }
+
 }
