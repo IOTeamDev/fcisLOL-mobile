@@ -89,25 +89,10 @@ class MainCubit extends Cubit<MainCubitStates> {
       announcementImageFile = File(tempPostImage.path);
       pickerIcon = IconsManager.closeIcon;
       imageName = tempPostImage.path.split(StringsManager.forwardSlash).last;
-      // final int sizeInBytes = await announcementImageFile!.length();
-      // final int sizeInMB = sizeInBytes ~/ sqrt(AppSizes.s1024);
-      // print(sizeInBytes);
-      // print(sizeInMB);
-      //pickerIcon = IconsManager.closeIcon;
       showToastMessage(
           message: StringsManager.imgPickedSuccessfully,
           states: ToastStates.SUCCESS);
       emit(GetAnnouncementImageSuccess());
-      // if (sizeInMB <= AppSizes.s1) {
-      // } else {
-      //   showToastMessage(
-      //       message: StringsManager.imgLimitExceeded,
-      //       states: ToastStates.WARNING);
-      //   imageName = StringsManager.selectImage;
-      //   pickerIcon = IconsManager.imageIcon;
-      //   announcementImageFile = null;
-      //   emit(GetAnnouncementLimitExceed());
-      // }
     } else {
       imageName = StringsManager.selectImage;
       pickerIcon = IconsManager.imageIcon;
@@ -217,7 +202,32 @@ class MainCubit extends Cubit<MainCubitStates> {
     }
   }
 
-  void deleteMaterial(int id, semester, {isMaterial = false}) {
+  Map<String, List<MaterialModel>> allSemestersRequests = {};
+  List<MaterialModel> allRequests = [];
+  Future<void> getAllSemestersRequests() async {
+    allSemestersRequests.clear();
+    allRequests.clear();
+    emit(GetRequestsLoadingState());
+    try {
+      for(var semester in AppConstants.semesters){
+          dynamic response  = await DioHelp.getData(
+          path: MATERIAL,
+          query: {KeysManager.semester: semester, KeysManager.accepted: false},
+        );
+        allSemestersRequests[semester] = [];
+
+        for(var element in response.data){
+          allSemestersRequests[semester]!.add(MaterialModel.fromJson(element));
+        };
+      }
+      allRequests = allSemestersRequests.values.expand((e) => e).toList();
+      emit(GetRequestsSuccessState());
+    } catch (e) {
+      emit(GetRequestsErrorState());
+    }
+  }
+
+  void deleteMaterial(int id, semester, {role, isMaterial = false}) {
     emit(DeleteMaterialLoadingState());
     DioHelp.deleteData(
       path: MATERIAL,
@@ -225,11 +235,15 @@ class MainCubit extends Cubit<MainCubitStates> {
       token: AppConstants.TOKEN
     ).then((value) {
       emit(DeleteMaterialSuccessState());
-      getRequests(semester: semester, isAccepted: isMaterial);
+      if(role == KeysManager.developer) {
+        getAllSemestersRequests();
+      } else{
+        getRequests(semester: semester, isAccepted: isMaterial);
+      }
     });
   }
 
-  void acceptRequest(int id, semester) {
+  void acceptRequest(int id, [semester,role]) {
     emit(AcceptRequestLoadingState());
     DioHelp.getData(
       path: ACCEPT,
@@ -237,7 +251,11 @@ class MainCubit extends Cubit<MainCubitStates> {
       token: AppConstants.TOKEN
     ).then((value) {
       emit(AcceptRequestSuccessState());
-      getRequests(semester: semester);
+      if(role == KeysManager.developer) {
+        getAllSemestersRequests();
+      } else{
+        getRequests(semester: semester);
+      }
     });
   }
 
@@ -281,8 +299,6 @@ class MainCubit extends Cubit<MainCubitStates> {
       notAdminLeaderboardModel!.sort((a, b) => b.score!.compareTo(a.score!));
       if (profileModel != null) {
         getScore4User(profileModel!.id);
-      } else {
-        // print("object");
       }
       emit(GetLeaderboardSuccessState());
     }).catchError((onError) {

@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'dart:developer' as dev;
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -190,21 +190,18 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
                                 authorId: MainCubit.get(context).profileModel?.id,
                                 authorName: MainCubit.get(context).profileModel?.name,
                                 authorPhoto: MainCubit.get(context).profileModel?.photo);
-                              BlocProvider.of<AddMaterialCubit>(context)
-                                  .addMaterial(
-                                      title: widget.titleController.text,
-                                      description:
-                                          widget.descriptionController.text,
-                                      link: widget.linkController.text,
-                                      type: cubit.selectedType,
-                                      subjectName: widget.subjectName,
-                                      semester: MainCubit.get(context)
-                                          .profileModel!
-                                          .semester,
-                                      role: MainCubit.get(context)
-                                          .profileModel!
-                                          .role,
-                                      author: author);
+                              BlocProvider.of<AddMaterialCubit>(context).addMaterial(
+                                title: widget.titleController.text,
+                                description: widget.descriptionController.text,
+                                link: widget.linkController.text,
+                                type: cubit.selectedType,
+                                subjectName: widget.subjectName,
+                                semester: AppConstants.navigatedSemester != MainCubit.get(context).profileModel!.semester? AppConstants.navigatedSemester!:MainCubit.get(context).profileModel!.semester,
+                                role: MainCubit.get(context).profileModel!.role,
+                                author: author
+                              );
+                              dev.log(AppConstants.navigatedSemester!);
+                              dev.log(MainCubit.get(context).profileModel!.semester);
                             }
                           },
                         ),

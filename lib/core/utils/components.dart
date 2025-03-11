@@ -58,8 +58,10 @@ Widget materialBuilder(index, context, {title, link, type, subjectName, descript
       children: [
         Row(
           children: [
-            SizedBox(
-              width: AppQueries.screenWidth(context)/AppSizesDouble.s1_4,
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: AppQueries.screenWidth(context)/AppSizesDouble.s1_4,
+              ),
               child: Text(
                 title,
                 maxLines: AppSizes.s1,

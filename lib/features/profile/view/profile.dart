@@ -147,55 +147,66 @@ class Profile extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: AppSizesDouble.s50,
-                      child: Center(child: Text(StringsManager.myUploads, style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s18)),),
-                    ),
-                    divider(),
                   ],
                 ),
+                SizedBox(height: AppSizesDouble.s30,),
                 Expanded(
-                  child: ConditionalBuilder(
-                    condition: mainCubit.profileModel!.materials.isNotEmpty && state is! GetRequestsLoadingState,
-                    builder: (context) => Padding(
-                      padding: EdgeInsets.symmetric(vertical: AppPaddings.p15, horizontal: AppPaddings.p10),
-                      child: ListView.separated(
-                        physics: BouncingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return materialBuilder(
-                            index,
-                            context,
-                            title: mainCubit.profileModel!.materials[index].title,
-                            description: mainCubit.profileModel!.materials[index].description,
-                            type: mainCubit.profileModel!.materials[index].type,
-                            link: mainCubit.profileModel!.materials[index].link,
-                            subjectName: mainCubit.profileModel!.materials[index].subject,
-                          );
-                        },
-                        separatorBuilder: (context, index) => SizedBox(height: AppSizesDouble.s10,),
-                        itemCount: mainCubit.profileModel!.materials.length
-                      ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(AppSizesDouble.s30)),
+                      color: ColorsManager.darkPrimary.withValues(alpha: 0.4)
                     ),
-                    fallback: (context) {
-                      if (state is GetRequestsLoadingState) {
-                        return SizedBox(
-                          height: AppQueries.screenHeight(context) / AppSizesDouble.s1_3,
-                          child: Center(child: CircularProgressIndicator(),)
-                        );
-                      }
-                      return SizedBox(
-                        height: AppQueries.screenHeight(context) / AppSizesDouble.s1_3,
-                        child: Center(
-                          child: Text(
-                            StringsManager.noContributionsYet,
-                            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                              fontSize: AppQueries.screenWidth(context) / AppSizes.s12,
+                    padding: EdgeInsets.symmetric(vertical: AppPaddings.p20, horizontal: AppPaddings.p10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(StringsManager.myUploads, style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s18)),
+                        divider(
+                          height: AppSizesDouble.s20
+                        ),
+                        Expanded(
+                          child: ConditionalBuilder(
+                            condition: mainCubit.profileModel!.materials.isNotEmpty && state is! GetRequestsLoadingState,
+                            builder: (context) => ListView.separated(
+                              physics: BouncingScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                return materialBuilder(
+                                  index,
+                                  context,
+                                  title: mainCubit.profileModel!.materials[index].title,
+                                  description: mainCubit.profileModel!.materials[index].description,
+                                  type: mainCubit.profileModel!.materials[index].type,
+                                  link: mainCubit.profileModel!.materials[index].link,
+                                  subjectName: mainCubit.profileModel!.materials[index].subject,
+                                );
+                              },
+                              separatorBuilder: (context, index) => SizedBox(height: AppSizesDouble.s10,),
+                              itemCount: mainCubit.profileModel!.materials.length
                             ),
-                            textAlign: TextAlign.center,
+                            fallback: (context) {
+                              if (state is GetRequestsLoadingState) {
+                                return SizedBox(
+                                  height: AppQueries.screenHeight(context) / AppSizesDouble.s1_3,
+                                  child: Center(child: CircularProgressIndicator(),)
+                                );
+                              }
+                              return SizedBox(
+                                height: AppQueries.screenHeight(context) / AppSizesDouble.s1_3,
+                                child: Center(
+                                  child: Text(
+                                    StringsManager.noContributionsYet,
+                                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                      fontSize: AppQueries.screenWidth(context) / AppSizes.s12,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                )
+                              );
+                            }
                           ),
-                        )
-                      );
-                    }
+                        ),
+                      ],
+                    ),
                   ),
                 )
               ],

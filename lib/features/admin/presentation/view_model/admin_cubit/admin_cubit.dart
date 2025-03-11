@@ -279,7 +279,6 @@ class AdminCubit extends Cubit<AdminCubitStates> {
       }
     }
 
-    // print('Notifications sent successfully');
   }
 
   File? announcementImageFile;
@@ -292,24 +291,11 @@ class AdminCubit extends Cubit<AdminCubitStates> {
 
     var tempPostImage = await picker.pickImage(source: ImageSource.gallery);
     if (tempPostImage != null) {
-      // pickerIcon = Icons.close;
-      // final int sizeInBytes = await announcementImageFile!.length();
-      // final int sizeInMB = sizeInBytes ~/ (1024 * 1024);
-      // print(sizeInBytes);
-      // print(sizeInMB);
-      // if (sizeInMB <= 1) {
         announcementImageFile = File(tempPostImage.path);
         imageName = tempPostImage.path.split('/').last;
         pickerIcon = Icons.clear;
         showToastMessage(message: 'Imaged Picked Successfully', states: ToastStates.SUCCESS);
         emit(ImagePickingSuccessState());
-      // } else {
-      //   showToastMessage(message: 'Image Limit Exceeded', states: ToastStates.WARNING);
-      //   imageName = 'Select Image';
-      //   pickerIcon = Icons.image;
-      //   announcementImageFile = null;
-      //   emit(ImagePickingExceedState());
-      // }
     } else {
       pickerIcon = Icons.image;
       imageName = 'Select Image';

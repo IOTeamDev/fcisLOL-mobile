@@ -268,10 +268,10 @@ class _RequestsDetailsState extends State<RequestsDetails> {
                           //cancel button
                           ElevatedButton(
                             onPressed: () {
-                              //print(cubit.requests![id].id);
                               cubit.deleteMaterial(
-                                  cubit.requests![widget.id].id!,
-                                  widget.semester);
+                                cubit.requests![widget.id].id!,
+                                widget.semester
+                              );
                             },
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(

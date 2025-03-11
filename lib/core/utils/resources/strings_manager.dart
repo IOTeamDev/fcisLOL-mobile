@@ -23,6 +23,7 @@ class StringsManager {
   static const String yearSelect = 'Year Select';
   static const String one = 'One';
   static const String oneNum = '1';
+  static const String level = 'Level';
   static const String level1 = 'Level 1';
   static const String two = 'Two';
   static const String twoNum = '2';

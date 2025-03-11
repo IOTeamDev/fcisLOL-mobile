@@ -50,7 +50,7 @@ class DocumentsCard extends StatelessWidget {
                         constraints: BoxConstraints(
                             maxWidth: AppQueries.screenWidth(context) - 180),
                         child: Text(
-                          '${document.title}',
+                          document.title!,
                           style: TextStyle(
                             color: ColorsManager.white,
                             fontSize: AppQueries.screenWidth(context) / 20,
@@ -91,12 +91,12 @@ class DocumentsCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                       )
-                    : GestureDetector(
+                    : InkWell(
+                        splashColor: ColorsManager.transparent,
                         onTap: () => navigate(
-                            context,
-                            OtherProfile(
-                              id: 117,
-                            )),
+                          context,
+                          OtherProfile(id: document.author!.authorId,)
+                        ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [

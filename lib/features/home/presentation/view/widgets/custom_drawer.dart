@@ -257,6 +257,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.zero), // Removes divider when expanded
                           onTap: () {
+                            AppConstants.navigatedSemester = 'One';
                             navigate(context, SemesterNavigate(semester: StringsManager.one));
                           },
                         ),
@@ -265,12 +266,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             StringsManager.secondSemester,
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius
-                                  .zero), // Removes divider when expanded
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero), // Removes divider when expanded
                           onTap: () {
-                            navigate(context,
-                                SemesterNavigate(semester: StringsManager.two));
+                            AppConstants.navigatedSemester = 'Two';
+                            navigate(context, SemesterNavigate(semester: StringsManager.two));
                           },
                         ),
                       ],
@@ -298,10 +297,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               borderRadius: BorderRadius
                                   .zero), // Removes divider when expanded
                           onTap: () {
+                            AppConstants.navigatedSemester = 'Three';
                             navigate(
-                                context,
-                                SemesterNavigate(
-                                    semester: StringsManager.three));
+                              context,
+                              SemesterNavigate(semester: StringsManager.three));
                           },
                         ),
                         ListTile(
@@ -309,14 +308,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             StringsManager.secondSemester,
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius
-                                  .zero), // Removes divider when expanded
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero), // Removes divider when expanded
                           onTap: () {
+                            AppConstants.navigatedSemester = 'Four';
                             navigate(
-                                context,
-                                SemesterNavigate(
-                                    semester: StringsManager.four));
+                              context,
+                              SemesterNavigate(semester: StringsManager.four));
                           },
                         ),
                       ],
@@ -344,10 +341,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               borderRadius: BorderRadius
                                   .zero), // Removes divider when expanded
                           onTap: () {
+                            AppConstants.navigatedSemester = 'Five';
                             navigate(
-                                context,
-                                SemesterNavigate(
-                                    semester: StringsManager.five));
+                              context,
+                              SemesterNavigate(semester: StringsManager.five)
+                            );
                           },
                         ),
                         ListTile(
@@ -359,6 +357,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               borderRadius: BorderRadius
                                   .zero), // Removes divider when expanded
                           onTap: () {
+                            AppConstants.navigatedSemester = 'Six';
                             navigate(context,
                                 SemesterNavigate(semester: StringsManager.six));
                           },

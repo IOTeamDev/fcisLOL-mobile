@@ -82,78 +82,84 @@ class _OtherProfileState extends State<OtherProfile> {
                 ),
                 SizedBox(height: AppSizesDouble.s4,),
                 Text(
-                  'level ${((semsesterIndex(mainCubit.otherProfile!.semester)/2) + 1).floor()}',
+                  '${StringsManager.level} ${((semsesterIndex(mainCubit.otherProfile!.semester)/AppSizes.s2) + AppSizes.s1).floor()}',
                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s25),
                   maxLines: AppSizes.s2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                SizedBox(
-                  height: AppSizesDouble.s50,
-                  child: Center(
-                    child: Text(
-                      StringsManager.uploads,
-                      style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s18)
-                    )
-                  ),
-                ),
-                divider(),
                 Expanded(
-                  child: ConditionalBuilder(
-                    condition: mainCubit.otherProfile!.materials.isNotEmpty && state is! GetRequestsLoadingState,
-                    builder: (context) => Padding(
-                      padding: EdgeInsetsDirectional.symmetric(horizontal: AppPaddings.p10, vertical: AppPaddings.p15),
-                      child: ListView.separated(
-                        physics: BouncingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return materialBuilder(
-                            index,
-                            context,
-                            title: mainCubit
-                                .otherProfile!
-                                .materials[index]
-                                .title,
-                            description: mainCubit
-                                .otherProfile!
-                                .materials[index]
-                                .description,
-                            type: mainCubit
-                                .otherProfile!
-                                .materials[index]
-                                .type,
-                            link: mainCubit
-                                .otherProfile!
-                                .materials[index]
-                                .link,
-                            subjectName: mainCubit
-                                .otherProfile!
-                                .materials[index]
-                                .subject,
-                          );
-                        },
-                        separatorBuilder: (context, index) => SizedBox(height: AppSizesDouble.s10,),
-                        itemCount: mainCubit.otherProfile!.materials.length
-                      ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(AppSizesDouble.s30)),
+                        color: ColorsManager.darkPrimary.withValues(alpha: 0.4)
                     ),
-                    fallback: (context) {
-                      if (state is GetRequestsLoadingState) {
-                        return SizedBox(
-                          height: AppQueries.screenHeight(context) / AppSizesDouble.s1_3,
-                          child: Center(child: CircularProgressIndicator(),)
-                        );
-                      }
-                      return SizedBox(
-                        height: AppQueries.screenHeight(context) / AppSizesDouble.s1_3,
-                        child: Center(
-                          child: Text(
-                            StringsManager.noContributionsYet,
-                            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                              fontSize: AppQueries.screenWidth(context) / AppSizes.s12,
+                    padding: EdgeInsets.symmetric(vertical: AppPaddings.p20, horizontal: AppPaddings.p10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          StringsManager.uploads,
+                          style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s18)
+                        ),
+                        divider(height: AppSizesDouble.s20),
+                        Expanded(
+                          child: ConditionalBuilder(
+                            condition: mainCubit.otherProfile!.materials.isNotEmpty && state is! GetRequestsLoadingState,
+                            builder: (context) => ListView.separated(
+                              physics: BouncingScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                return materialBuilder(
+                                  index,
+                                  context,
+                                  title: mainCubit
+                                      .otherProfile!
+                                      .materials[index]
+                                      .title,
+                                  description: mainCubit
+                                      .otherProfile!
+                                      .materials[index]
+                                      .description,
+                                  type: mainCubit
+                                      .otherProfile!
+                                      .materials[index]
+                                      .type,
+                                  link: mainCubit
+                                      .otherProfile!
+                                      .materials[index]
+                                      .link,
+                                  subjectName: mainCubit
+                                      .otherProfile!
+                                      .materials[index]
+                                      .subject,
+                                );
+                              },
+                              separatorBuilder: (context, index) => SizedBox(height: AppSizesDouble.s10,),
+                              itemCount: mainCubit.otherProfile!.materials.length
                             ),
-                            textAlign: TextAlign.center,
+                            fallback: (context) {
+                              if (state is GetRequestsLoadingState) {
+                                return SizedBox(
+                                  height: AppQueries.screenHeight(context) / AppSizesDouble.s1_3,
+                                  child: Center(child: CircularProgressIndicator(),)
+                                );
+                              }
+                              return SizedBox(
+                                height: AppQueries.screenHeight(context) / AppSizesDouble.s1_3,
+                                child: Center(
+                                  child: Text(
+                                    StringsManager.noContributionsYet,
+                                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                      fontSize: AppQueries.screenWidth(context) / AppSizes.s12,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                )
+                              );
+                            }
                           ),
-                        )
-                      );
-                    }
+                        ),
+                      ],
+                    ),
                   ),
                 )
               ],

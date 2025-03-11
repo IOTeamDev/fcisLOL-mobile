@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppConstants {
   static String? TOKEN;
   static String? SelectedSemester;
+  static String? navigatedSemester;
   static const String appBaseUrl = 'https://fcislol.netlify.app/api/';
   static const String defaultImage = 'https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/140.jpg?alt=media&token=3e5a4144-20ca-44ce-ba14-57432e49914f';
   static const String noneLoggedInDefaultImage = 'images/default-avatar-icon-of-social-media-user-vector.jpg';

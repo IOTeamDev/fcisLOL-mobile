@@ -93,7 +93,8 @@ class GridTileWidget extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                               ),
                             )
-                          : GestureDetector(
+                          : InkWell(
+                              splashColor: ColorsManager.transparent,
                               onTap: () => navigate(
                                   context,
                                   OtherProfile(

@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:developer' as dev;
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ import 'package:lol/core/utils/navigation.dart';
 import 'package:provider/provider.dart';
 import '../../../../../core/utils/resources/constants_manager.dart';
 import '../../../../../core/utils/resources/values_manager.dart';
+import '../../../../subject/data/models/material_model.dart';
 
 class Requests extends StatefulWidget {
   const Requests({super.key});
@@ -34,9 +36,14 @@ class _RequestsState extends State<Requests> {
 
   @override
   Widget build(BuildContext context) {
-    if(MainCubit.get(context).requests == null){
-      MainCubit.get(context).getRequests(semester: MainCubit.get(context).profileModel!.semester);
-    }
+
+      if(MainCubit.get(context).profileModel!.role == KeysManager.developer && MainCubit.get(context).allRequests.isEmpty){
+        MainCubit.get(context).getAllSemestersRequests();
+      } else if(MainCubit.get(context).requests == null){
+        dev.log(MainCubit.get(context).profileModel!.semester);
+        MainCubit.get(context).getRequests(semester: MainCubit.get(context).profileModel!.semester);
+      }
+
     return BlocConsumer<MainCubit, MainCubitStates>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -51,7 +58,14 @@ class _RequestsState extends State<Requests> {
             centerTitle: true,
             actions: [
               IconButton(
-                onPressed: () => MainCubit.get(context).getRequests(semester: MainCubit.get(context).profileModel!.semester),
+                onPressed: () {
+                  if(MainCubit.get(context).profileModel!.role == KeysManager.developer){
+                    MainCubit.get(context).getAllSemestersRequests();
+                  } else{
+                    dev.log(MainCubit.get(context).profileModel!.semester);
+                    MainCubit.get(context).getRequests(semester: MainCubit.get(context).profileModel!.semester);
+                  }
+                },
                 icon: Icon(IconsManager.refreshIcon)
               )
             ],
@@ -61,9 +75,8 @@ class _RequestsState extends State<Requests> {
             child: Column(
               children: [
                 ConditionalBuilder(
-                  condition: cubit.requests != null &&
-                      cubit.requests!.isNotEmpty &&
-                      state is! GetRequestsLoadingState,
+                  condition: MainCubit.get(context).profileModel!.role == KeysManager.developer? (cubit.allRequests.isNotEmpty && state is !GetRequestsLoadingState):
+                  (cubit.requests!.isNotEmpty && state is! GetRequestsLoadingState),
                   fallback: (context) {
                     if (state is GetRequestsLoadingState) {
                       return Expanded(
@@ -74,39 +87,31 @@ class _RequestsState extends State<Requests> {
                     }
                     return Expanded(
                       child: Center(
-                          child: Text(
+                        child: Text(
                         StringsManager.noRequests,
                         style: Theme.of(context).textTheme.headlineMedium,
                       )),
                     );
                   },
-                  builder: (context) => Expanded(
-                    child: RefreshIndicator(
-                      onRefresh: () => onRefresh(MainCubit.get(context)
-                          .getRequests(
-                              semester: MainCubit.get(context)
-                                  .profileModel!
-                                  .semester) as Function<T>()),
-                      child: ListView.separated(
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        itemBuilder: (context, index) =>
-                            _requestedMaterialBuilder(index, context,
-                                title: cubit.requests![index].title,
-                                type: cubit.requests![index].type,
-                                authorName:
-                                    cubit.requests![index].author?.authorName,
-                                pfp: cubit.requests![index].author?.authorPhoto,
-                                link: cubit.requests![index].link,
-                                subjectName: cubit.requests![index].subject,
-                                description: cubit.requests![index].description,
-                                semester: cubit.profileModel!.semester),
-                        separatorBuilder: (context, index) => const Padding(
-                          padding: EdgeInsetsDirectional.all(AppPaddings.p5),
+                  builder: (context) {
+                    List<MaterialModel> requests = cubit.allRequests.isEmpty? cubit.requests!:cubit.allRequests;
+                    return Expanded(
+                    child: ListView.separated(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      itemBuilder: (context, index) =>
+                        _requestedMaterialBuilder(
+                          index,
+                          context,
+                          requests[index],
+                          semester: cubit.profileModel!.semester
                         ),
-                        itemCount: cubit.requests!.length,
+                      separatorBuilder: (context, index) => const Padding(
+                        padding: EdgeInsetsDirectional.all(AppPaddings.p5),
                       ),
+                      itemCount: requests.length,
                     ),
-                  ),
+                  );
+                  },
                 )
               ],
             ),
@@ -116,29 +121,22 @@ class _RequestsState extends State<Requests> {
     );
   }
 
-  Widget _requestedMaterialBuilder(index, context,
-      {title,
-      link,
-      type,
-      authorName,
-      pfp,
-      subjectName,
-      description,
-      semester}) {
+  Widget _requestedMaterialBuilder(index, context, MaterialModel request,
+  {semester}) {
     return InkWell(
       onTap: () async {
         String? refresh = await Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => RequestsDetails(
-                authorName: authorName,
-                type: type,
-                description: description,
-                link: link,
-                subjectName: subjectName,
-                id: index,
-                title: title,
-                pfp: pfp,
-                semester: semester,
+              authorName: request.author!.authorName!,
+              type: request.type!,
+              description: request.description!,
+              link: request.link!,
+              subjectName: request.subject!,
+              id: index,
+              title: request.title!,
+              pfp: request.author!.authorPhoto!,
+              semester: semester,
             )
           )
         );
@@ -146,9 +144,7 @@ class _RequestsState extends State<Requests> {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Provider.of<ThemeProvider>(context).isDark
-              ? ColorsManager.darkPrimary
-              : ColorsManager.lightPrimary,
+          color: Theme.of(context).primaryColor,
           borderRadius: BorderRadius.circular(AppSizesDouble.s20),
         ),
         margin:
@@ -168,16 +164,14 @@ class _RequestsState extends State<Requests> {
               child: Row(
                 children: [
                   CircleAvatar(
-                    backgroundImage: NetworkImage(pfp.toString()),
+                    backgroundImage: NetworkImage(request.author!.authorPhoto.toString()),
                     radius: AppSizesDouble.s17,
                   ),
                   const SizedBox(width: AppSizesDouble.s10),
                   ConstrainedBox(
-                    constraints: BoxConstraints(
-                        maxWidth: AppQueries.screenWidth(context) /
-                            AppSizesDouble.s3),
+                    constraints: BoxConstraints(maxWidth: AppQueries.screenWidth(context) / AppSizesDouble.s3),
                     child: Text(
-                      authorName,
+                      request.author!.authorName!,
                       style: Theme.of(context)
                           .textTheme
                           .titleLarge!
@@ -188,11 +182,9 @@ class _RequestsState extends State<Requests> {
                   ),
                   const Spacer(),
                   ConstrainedBox(
-                    constraints:
-                        const BoxConstraints(maxWidth: AppSizesDouble.s130),
+                    constraints: const BoxConstraints(maxWidth: AppSizesDouble.s130),
                     child: Text(
-                      subjectName.toString().replaceAll(
-                          StringsManager.underScore, StringsManager.space),
+                      request.subject.toString().replaceAll(StringsManager.underScore, StringsManager.space),
                       style: Theme.of(context)
                           .textTheme
                           .titleSmall!
@@ -207,24 +199,21 @@ class _RequestsState extends State<Requests> {
             ),
             Padding(
               padding: EdgeInsetsDirectional.only(
-                  start: AppPaddings.p10,
-                  end: AppPaddings.p10,
-                  top: AppPaddings.p0,
-                  bottom: AppPaddings.p5),
+                start: AppPaddings.p10,
+                end: AppPaddings.p10,
+                top: AppPaddings.p0,
+                bottom: AppPaddings.p5),
               child: Text(
-                title,
-                style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                      color: Colors.white,
-                    ),
+                request.title!,
+                style: Theme.of(context).textTheme.headlineLarge!.copyWith(color: Colors.white,),
                 maxLines: AppSizes.s1,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
             Padding(
-              padding:
-                  EdgeInsetsDirectional.symmetric(horizontal: AppPaddings.p10),
+              padding: EdgeInsetsDirectional.symmetric(horizontal: AppPaddings.p10),
               child: Text(
-                type,
+                request.type!,
                 style: Theme.of(context)
                     .textTheme
                     .bodyLarge!
@@ -240,18 +229,19 @@ class _RequestsState extends State<Requests> {
                     Icon(IconsManager.linkIcon,
                         color: Provider.of<ThemeProvider>(context).isDark
                             ? ColorsManager.dodgerBlue
-                            : ColorsManager.lightGrey1),
+                            : ColorsManager.lightGrey1
+                    ),
                     const SizedBox(width: AppSizesDouble.s5),
                     ConstrainedBox(
                       constraints: BoxConstraints(
                           maxWidth: constraints.maxWidth - AppSizes.s140),
                       child: GestureDetector(
                         onTap: () async {
-                          final linkElement = LinkableElement(link, link);
+                          final linkElement = LinkableElement(request.link, request.link!);
                           await onOpen(context, linkElement);
                         },
                         child: Text(
-                          link,
+                          request.link!,
                           style: TextStyle(
                             color: Provider.of<ThemeProvider>(context).isDark
                                 ? ColorsManager.dodgerBlue
@@ -271,17 +261,16 @@ class _RequestsState extends State<Requests> {
                     MaterialButton(
                       onPressed: () {
                         MainCubit.get(context).acceptRequest(
-                            MainCubit.get(context).requests![index].id!,
-                            MainCubit.get(context).profileModel!.semester);
+                          request.id!,
+                          semester,
+                          MainCubit.get(context).profileModel!.role
+                        );
                       },
                       color: ColorsManager.green,
-                      shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(AppSizesDouble.s10)),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSizesDouble.s10)),
                       minWidth: AppSizesDouble.s0,
                       padding: const EdgeInsets.all(AppPaddings.p8),
-                      child: const Icon(IconsManager.checkIcon,
-                          color: ColorsManager.white),
+                      child: const Icon(IconsManager.checkIcon, color: ColorsManager.white),
                     ),
                     MaterialButton(
                       onPressed: () {
@@ -300,8 +289,9 @@ class _RequestsState extends State<Requests> {
                           btnOk: ElevatedButton(
                             onPressed: (){
                               MainCubit.get(context).deleteMaterial(
-                                MainCubit.get(context).requests![index].id!,
-                                MainCubit.get(context).profileModel!.semester,
+                                request.id!,
+                                role: MainCubit.get(context).profileModel!.role,
+                                semester,
                               );
                               Navigator.of(context).pop();
                             },
@@ -314,7 +304,9 @@ class _RequestsState extends State<Requests> {
                             style: ElevatedButton.styleFrom(
                               backgroundColor: ColorsManager.grey4, // Grey background
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
                             child: Text(
                               StringsManager.cancel, // Use cancel text if defined
                               style: const TextStyle(color: Colors.black), // Black text

@@ -77,8 +77,8 @@ class _HomeState extends State<Home> {
           AdminCubit.get(context).getAnnouncements(MainCubit.get(context).profileModel!.semester);
           if (MainCubit.get(context).profileModel!.photo == null) {
             MainCubit.get(context).updateUser(
-                userID: MainCubit.get(context).profileModel!.id,
-                photo: AppConstants.defaultProfileImage);
+              userID: MainCubit.get(context).profileModel!.id,
+              photo: AppConstants.defaultProfileImage);
           }
           MainCubit.get(context).updateUser(
               userID: MainCubit.get(context).profileModel!.id,
