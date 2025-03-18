@@ -370,6 +370,9 @@ class MainCubit extends Cubit<MainCubitStates> {
           token: AppConstants.TOKEN,
           query: {KeysManager.id: id});
 
+      await Cache.removeValue(key: KeysManager.token);
+      await Cache.removeValue(key: KeysManager.semester);
+
       AppConstants.TOKEN = null;
       AppConstants.SelectedSemester = null;
       emit(DeleteAccountSuccess());
