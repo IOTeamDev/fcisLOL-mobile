@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,16 +35,13 @@ class Profile extends StatelessWidget {
     return BlocConsumer<MainCubit, MainCubitStates>(
       builder: (context, state) {
         var mainCubit = MainCubit.get(context);
-        if(mainCubit.leaderboardModel == null) {
+        if (mainCubit.leaderboardModel == null) {
           mainCubit.getLeaderboard(mainCubit.profileModel!.semester);
         }
         return Scaffold(
           appBar: AppBar(
             actions: [
-              IconButton(
-                onPressed: (){},
-                icon: Icon(IconsManager.editPenIcon)
-              )
+              IconButton(onPressed: () {}, icon: Icon(IconsManager.editPenIcon))
               // TextButton(
               //   style: TextButton.styleFrom(
               //     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -70,7 +66,10 @@ class Profile extends StatelessWidget {
               //   )
               // ),
             ],
-            title: Text(StringsManager.profile, style: Theme.of(context).textTheme.displayMedium,),
+            title: Text(
+              StringsManager.profile,
+              style: Theme.of(context).textTheme.displayMedium,
+            ),
             centerTitle: true,
           ),
           body: Padding(
@@ -84,33 +83,54 @@ class Profile extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SizedBox(
-                          width: AppQueries.screenWidth(context) / AppSizesDouble.s3_2,
+                          width: AppQueries.screenWidth(context) /
+                              AppSizesDouble.s3_2,
                           child: CircleAvatar(
-                            radius: AppQueries.screenWidth(context) / AppSizesDouble.s8_5,
-                            backgroundImage: mainCubit.userImageFile != null ?
-                            NetworkImage(AppConstants.defaultProfileImage) :
-                            NetworkImage(mainCubit.profileModel!.photo!,),
+                            radius: AppQueries.screenWidth(context) /
+                                AppSizesDouble.s8_5,
+                            backgroundImage: mainCubit.userImageFile != null
+                                ? NetworkImage(AppConstants.defaultProfileImage)
+                                : NetworkImage(
+                                    mainCubit.profileModel!.photo!,
+                                  ),
                           ),
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             ConstrainedBox(
-                              constraints: BoxConstraints(maxWidth: AppQueries.screenWidth(context) / AppSizesDouble.s1_7),
+                              constraints: BoxConstraints(
+                                  maxWidth: AppQueries.screenWidth(context) /
+                                      AppSizesDouble.s1_7),
                               child: Text(
                                 mainCubit.profileModel!.name,
-                                style: Theme.of(context).textTheme.displayLarge!.copyWith( fontSize: AppQueries.screenWidth(context) / AppSizes.s15),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .displayLarge!
+                                    .copyWith(
+                                        fontSize:
+                                            AppQueries.screenWidth(context) /
+                                                AppSizes.s15),
                                 maxLines: AppSizes.s2,
                                 overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.center,
                               ),
                             ),
-                            SizedBox(height: AppSizesDouble.s4,),
                             SizedBox(
-                              width: AppQueries.screenWidth(context) / AppSizesDouble.s2_5,
+                              height: AppSizesDouble.s4,
+                            ),
+                            SizedBox(
+                              width: AppQueries.screenWidth(context) /
+                                  AppSizesDouble.s2_5,
                               child: Text(
                                 mainCubit.profileModel!.email,
-                                style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s25),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .copyWith(
+                                        fontSize:
+                                            AppQueries.screenWidth(context) /
+                                                AppSizes.s25),
                                 maxLines: AppSizes.s2,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -127,83 +147,119 @@ class Profile extends StatelessWidget {
                             //     ),
                             //   ),
                             ConditionalBuilder(
-                              condition: mainCubit.leaderboardModel != null && mainCubit.score4User != null && state is !GetLeaderboardLoadingState,
-                              builder: (context) {
-                                mainCubit.getScore4User(mainCubit.profileModel!.id);
-                                return Row(
-                                children: [
-                                  Text('Score: ', style: Theme.of(context).textTheme.titleSmall,),
-                                  Text(mainCubit.score4User!.score.toString(), style: Theme.of(context).textTheme.titleLarge,),
-                                ],
-                              );
-                              },
-                              fallback: (context) {
-                                return Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              }
-                            ),
+                                condition: mainCubit.leaderboardModel != null &&
+                                    mainCubit.score4User != null &&
+                                    state is! GetLeaderboardLoadingState,
+                                builder: (context) {
+                                  mainCubit.getScore4User(
+                                      mainCubit.profileModel!.id);
+                                  return Row(
+                                    children: [
+                                      Text(
+                                        'Score: ',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleSmall,
+                                      ),
+                                      Text(
+                                        mainCubit.score4User!.score.toString(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge,
+                                      ),
+                                    ],
+                                  );
+                                },
+                                fallback: (context) {
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }),
                           ],
                         ),
                       ],
                     ),
                   ],
                 ),
-                SizedBox(height: AppSizesDouble.s30,),
+                SizedBox(
+                  height: AppSizesDouble.s30,
+                ),
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(AppSizesDouble.s30)),
-                      color: ColorsManager.darkPrimary.withValues(alpha: 0.4)
-                    ),
-                    padding: EdgeInsets.symmetric(vertical: AppPaddings.p20, horizontal: AppPaddings.p10),
+                        borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(AppSizesDouble.s30)),
+                        color:
+                            ColorsManager.darkPrimary.withValues(alpha: 0.4)),
+                    padding: EdgeInsets.symmetric(
+                        vertical: AppPaddings.p20, horizontal: AppPaddings.p10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(StringsManager.myUploads, style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s18)),
-                        divider(
-                          height: AppSizesDouble.s20
-                        ),
+                        Text(StringsManager.myUploads,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(
+                                    fontSize: AppQueries.screenWidth(context) /
+                                        AppSizes.s18)),
+                        divider(height: AppSizesDouble.s20),
                         Expanded(
                           child: ConditionalBuilder(
-                            condition: mainCubit.profileModel!.materials.isNotEmpty && state is! GetRequestsLoadingState,
-                            builder: (context) => ListView.separated(
-                              physics: BouncingScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                return materialBuilder(
-                                  index,
-                                  context,
-                                  title: mainCubit.profileModel!.materials[index].title,
-                                  description: mainCubit.profileModel!.materials[index].description,
-                                  type: mainCubit.profileModel!.materials[index].type,
-                                  link: mainCubit.profileModel!.materials[index].link,
-                                  subjectName: mainCubit.profileModel!.materials[index].subject,
-                                );
-                              },
-                              separatorBuilder: (context, index) => SizedBox(height: AppSizesDouble.s10,),
-                              itemCount: mainCubit.profileModel!.materials.length
-                            ),
-                            fallback: (context) {
-                              if (state is GetRequestsLoadingState) {
+                              condition: mainCubit
+                                      .profileModel!.materials.isNotEmpty &&
+                                  state is! GetRequestsLoadingState,
+                              builder: (context) => ListView.separated(
+                                  physics: BouncingScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    return materialBuilder(
+                                      index,
+                                      context,
+                                      title: mainCubit
+                                          .profileModel!.materials[index].title,
+                                      description: mainCubit.profileModel!
+                                          .materials[index].description,
+                                      type: mainCubit
+                                          .profileModel!.materials[index].type,
+                                      link: mainCubit
+                                          .profileModel!.materials[index].link,
+                                      subjectName: mainCubit.profileModel!
+                                          .materials[index].subject,
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) =>
+                                      SizedBox(
+                                        height: AppSizesDouble.s10,
+                                      ),
+                                  itemCount:
+                                      mainCubit.profileModel!.materials.length),
+                              fallback: (context) {
+                                if (state is GetRequestsLoadingState) {
+                                  return SizedBox(
+                                      height: AppQueries.screenHeight(context) /
+                                          AppSizesDouble.s1_3,
+                                      child: Center(
+                                        child: CircularProgressIndicator(),
+                                      ));
+                                }
                                 return SizedBox(
-                                  height: AppQueries.screenHeight(context) / AppSizesDouble.s1_3,
-                                  child: Center(child: CircularProgressIndicator(),)
-                                );
-                              }
-                              return SizedBox(
-                                height: AppQueries.screenHeight(context) / AppSizesDouble.s1_3,
-                                child: Center(
-                                  child: Text(
-                                    StringsManager.noContributionsYet,
-                                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                      fontSize: AppQueries.screenWidth(context) / AppSizes.s12,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                )
-                              );
-                            }
-                          ),
+                                    height: AppQueries.screenHeight(context) /
+                                        AppSizesDouble.s1_3,
+                                    child: Center(
+                                      child: Text(
+                                        StringsManager.noContributionsYet,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge!
+                                            .copyWith(
+                                              fontSize: AppQueries.screenWidth(
+                                                      context) /
+                                                  AppSizes.s12,
+                                            ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ));
+                              }),
                         ),
                       ],
                     ),
@@ -222,4 +278,3 @@ class Profile extends StatelessWidget {
     );
   }
 }
-

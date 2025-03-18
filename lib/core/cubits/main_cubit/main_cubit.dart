@@ -141,32 +141,31 @@ class MainCubit extends Cubit<MainCubitStates> {
   getProfileInfo() async {
     emit(GetProfileLoading());
     try {
-      final response = await DioHelp.getData(path: CURRENTUSER, token: AppConstants.TOKEN);
+      final response =
+          await DioHelp.getData(path: CURRENTUSER, token: AppConstants.TOKEN);
       profileModel = ProfileModel.fromJson(response.data);
       AppConstants.SelectedSemester = profileModel!.semester;
-      await Cache.writeData(key: KeysManager.semester, value: profileModel!.semester);
-      dev.log('profile semester =====================================> ${profileModel!.semester}');
-      dev.log('selected semester =====================================> ${AppConstants.SelectedSemester}');
+      await Cache.writeData(
+          key: KeysManager.semester, value: profileModel!.semester);
+
       emit(GetProfileSuccess());
     } catch (e) {
-      print(e.toString());
-
       emit(GetProfileFailure());
     }
   }
 
   ProfileModel? otherProfile;
-  getOtherProfile(id) {
+  Future<void> getOtherProfile(id) async {
     emit(GetProfileLoading());
     otherProfile = null;
-    DioHelp.getData(
-      path: USERS,
-      query: {KeysManager.id: id??1, KeysManager.haveMaterial: true}
-    ).then((value) {
-      print(value.data);
-      otherProfile = ProfileModel.fromJson(value.data);
-      emit(GetProfileSuccess());
-    },);
+    await DioHelp.getData(
+        path: USERS,
+        query: {KeysManager.id: id ?? 1, KeysManager.haveMaterial: true}).then(
+      (value) {
+        otherProfile = ProfileModel.fromJson(value.data);
+        emit(GetProfileSuccess());
+      },
+    );
   }
 
   Future<void> logout(context) async {
@@ -179,13 +178,13 @@ class MainCubit extends Cubit<MainCubitStates> {
 
       emit(LogoutSuccess());
     } catch (e) {
-      dev.log('logoutFailed => $e');
       emit(LogoutFailed(errMessage: e.toString()));
     }
   }
 
   List<MaterialModel>? requests;
-  Future<void> getRequests({required String semester, bool isAccepted = false}) async {
+  Future<void> getRequests(
+      {required String semester, bool isAccepted = false}) async {
     emit(GetRequestsLoadingState());
     try {
       final response = await DioHelp.getData(
@@ -209,16 +208,17 @@ class MainCubit extends Cubit<MainCubitStates> {
     allRequests.clear();
     emit(GetRequestsLoadingState());
     try {
-      for(var semester in AppConstants.semesters){
-          dynamic response  = await DioHelp.getData(
+      for (var semester in AppConstants.semesters) {
+        dynamic response = await DioHelp.getData(
           path: MATERIAL,
           query: {KeysManager.semester: semester, KeysManager.accepted: false},
         );
         allSemestersRequests[semester] = [];
 
-        for(var element in response.data){
+        for (var element in response.data) {
           allSemestersRequests[semester]!.add(MaterialModel.fromJson(element));
-        };
+        }
+        ;
       }
       allRequests = allSemestersRequests.values.expand((e) => e).toList();
       emit(GetRequestsSuccessState());
@@ -227,33 +227,34 @@ class MainCubit extends Cubit<MainCubitStates> {
     }
   }
 
-  void deleteMaterial(int id, semester, {role, isMaterial = false}) {
+  Future<void> deleteMaterial(int id, semester,
+      {role, isMaterial = false}) async {
     emit(DeleteMaterialLoadingState());
-    DioHelp.deleteData(
-      path: MATERIAL,
-      data: {KeysManager.id: id},
-      token: AppConstants.TOKEN
-    ).then((value) {
+    await DioHelp.deleteData(
+            path: MATERIAL,
+            data: {KeysManager.id: id},
+            token: AppConstants.TOKEN)
+        .then((value) {
       emit(DeleteMaterialSuccessState());
-      if(role == KeysManager.developer) {
+      if (role == KeysManager.developer) {
         getAllSemestersRequests();
-      } else{
+      } else {
         getRequests(semester: semester, isAccepted: isMaterial);
       }
     });
   }
 
-  void acceptRequest(int id, [semester,role]) {
+  Future<void> acceptRequest(int id, [semester, role]) async {
     emit(AcceptRequestLoadingState());
-    DioHelp.getData(
-      path: ACCEPT,
-      query: {KeysManager.id: id, KeysManager.accepted: true},
-      token: AppConstants.TOKEN
-    ).then((value) {
+    await DioHelp.getData(
+            path: ACCEPT,
+            query: {KeysManager.id: id, KeysManager.accepted: true},
+            token: AppConstants.TOKEN)
+        .then((value) {
       emit(AcceptRequestSuccessState());
-      if(role == KeysManager.developer) {
+      if (role == KeysManager.developer) {
         getAllSemestersRequests();
-      } else{
+      } else {
         getRequests(semester: semester);
       }
     });
@@ -279,26 +280,27 @@ class MainCubit extends Cubit<MainCubitStates> {
     }
   }
 
-  Future? getLeaderboard(currentSemester) {
+  Future<void> getLeaderboard(currentSemester) async {
     notAdminLeaderboardModel = [];
     leaderboardModel = [];
     emit(GetLeaderboardLoadingState());
-    DioHelp.getData(
-      path: LEADERBOARD,
-      query: {KeysManager.semester: currentSemester}).then((value) {
+    await DioHelp.getData(
+        path: LEADERBOARD,
+        query: {KeysManager.semester: currentSemester}).then((value) async {
       value.data.forEach((element) {
         // exclude the admin
-        if (element[StringsManager.role] != KeysManager.admin && element[StringsManager.role] != KeysManager.developer) {
+        if (element[StringsManager.role] != KeysManager.admin &&
+            element[StringsManager.role] != KeysManager.developer) {
           notAdminLeaderboardModel?.add(LeaderboardModel.fromJson(element));
-        }
-        else{
-          leaderboardModel?.add(LeaderboardModel.fromJson(element)); //just to get the score of Admin
+        } else {
+          leaderboardModel?.add(LeaderboardModel.fromJson(
+              element)); //just to get the score of Admin
         }
       });
 
       notAdminLeaderboardModel!.sort((a, b) => b.score!.compareTo(a.score!));
       if (profileModel != null) {
-        getScore4User(profileModel!.id);
+        await getScore4User(profileModel!.id);
       }
       emit(GetLeaderboardSuccessState());
     }).catchError((onError) {
@@ -309,8 +311,8 @@ class MainCubit extends Cubit<MainCubitStates> {
     return null;
   }
 
-  void updateSemester4all() {
-    DioHelp.getData(path: KeysManager.users).then((onValue) {
+  void updateSemester4all() async {
+    await DioHelp.getData(path: KeysManager.users).then((onValue) {
       onValue.data.forEach((element) {
         if (element[KeysManager.semester] == StringsManager.one) {
           updateUser(
@@ -342,8 +344,8 @@ class MainCubit extends Cubit<MainCubitStates> {
     String? semester,
     String? fcmToken,
     String? photo,
-  }) {
-    DioHelp.putData(
+  }) async {
+    await DioHelp.putData(
         token: AppConstants.TOKEN,
         query: {KeysManager.id: userID},
         path: KeysManager.users,
@@ -358,5 +360,22 @@ class MainCubit extends Cubit<MainCubitStates> {
       print(error.toString());
       emit(UpdateUserErrorState());
     });
+  }
+
+  Future<void> deleteAccount({required int id}) async {
+    emit(DeleteAccountLoading());
+    try {
+      await DioHelp.deleteData(
+          path: KeysManager.users,
+          token: AppConstants.TOKEN,
+          query: {KeysManager.id: id});
+
+      AppConstants.TOKEN = null;
+      AppConstants.SelectedSemester = null;
+      emit(DeleteAccountSuccess());
+    } catch (e) {
+      dev.log('error form deleting acoount => $e');
+      emit(DeleteAccountFailed(errMessage: e.toString()));
+    }
   }
 }

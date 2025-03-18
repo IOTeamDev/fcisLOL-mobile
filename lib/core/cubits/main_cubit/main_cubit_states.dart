@@ -2,92 +2,92 @@ import 'package:lol/core/models/current_user/current_user_model.dart';
 
 abstract class MainCubitStates {}
 
-class InitialMainState extends MainCubitStates {}
+final class InitialMainState extends MainCubitStates {}
 
-class OpenDrawerState extends MainCubitStates {}
+final class OpenDrawerState extends MainCubitStates {}
 
-class CloseDrawerState extends MainCubitStates {}
+final class CloseDrawerState extends MainCubitStates {}
 
-class ChangeMode extends MainCubitStates {}
+final class ChangeMode extends MainCubitStates {}
 
-class GetUserImageSuccess extends MainCubitStates {}
+final class GetUserImageSuccess extends MainCubitStates {}
 
-class GetUserImageFailure extends MainCubitStates {}
+final class GetUserImageFailure extends MainCubitStates {}
 
-class GetUserImageLoading extends MainCubitStates {}
+final class GetUserImageLoading extends MainCubitStates {}
 
-class GetAnnouncementImageSuccess extends MainCubitStates {}
+final class GetAnnouncementImageSuccess extends MainCubitStates {}
 
-class GetAnnouncementLimitExceed extends MainCubitStates {}
+final class GetAnnouncementLimitExceed extends MainCubitStates {}
 
-class GetAnnouncementImageFailure extends MainCubitStates {}
+final class GetAnnouncementImageFailure extends MainCubitStates {}
 
-class GetAnnouncementImageLoading extends MainCubitStates {}
+final class GetAnnouncementImageLoading extends MainCubitStates {}
 
-class GetUserImageLimitExceed extends MainCubitStates {}
+final class GetUserImageLimitExceed extends MainCubitStates {}
 
-class GetUserImageNoMoreSpace extends MainCubitStates {}
+final class GetUserImageNoMoreSpace extends MainCubitStates {}
 
-class UploadImageSuccess extends MainCubitStates {}
+final class UploadImageSuccess extends MainCubitStates {}
 
-class UploadImageFailure extends MainCubitStates {}
+final class UploadImageFailure extends MainCubitStates {}
 
 class UploadImageLoading extends MainCubitStates {}
 
-class GetProfileLoading extends MainCubitStates {}
+final class GetProfileLoading extends MainCubitStates {}
 
-class GetProfileSuccess extends MainCubitStates {}
+final class GetProfileSuccess extends MainCubitStates {}
 
-class GetProfileFailure extends MainCubitStates {}
+final class GetProfileFailure extends MainCubitStates {}
 
-class RetrieveCurrentUserDataLoadingState extends MainCubitStates {}
+final class RetrieveCurrentUserDataLoadingState extends MainCubitStates {}
 
-class RetrieveCurrentUserDataSuccessState extends MainCubitStates {}
+final class RetrieveCurrentUserDataSuccessState extends MainCubitStates {}
 
-class RetrieveCurrentUserDataErrorState extends MainCubitStates {
+final class RetrieveCurrentUserDataErrorState extends MainCubitStates {
   final String error;
   RetrieveCurrentUserDataErrorState({required this.error});
 }
 
-class GetRequestsLoadingState extends MainCubitStates {}
+final class GetRequestsLoadingState extends MainCubitStates {}
 
-class GetRequestsSuccessState extends MainCubitStates {}
+final class GetRequestsSuccessState extends MainCubitStates {}
 
-class GetRequestsErrorState extends MainCubitStates {}
+final class GetRequestsErrorState extends MainCubitStates {}
 
-class GetMaterialLoadingState extends MainCubitStates {}
+final class GetMaterialLoadingState extends MainCubitStates {}
 
-class GetMaterialSuccessState extends MainCubitStates {}
+final class GetMaterialSuccessState extends MainCubitStates {}
 
-class GetMaterialErrorState extends MainCubitStates {}
+final class GetMaterialErrorState extends MainCubitStates {}
 
-class DeleteMaterialLoadingState extends MainCubitStates {}
+final class DeleteMaterialLoadingState extends MainCubitStates {}
 
-class DeleteMaterialSuccessState extends MainCubitStates {}
+final class DeleteMaterialSuccessState extends MainCubitStates {}
 
-class DeleteMaterialErrorState extends MainCubitStates {}
+final class DeleteMaterialErrorState extends MainCubitStates {}
 
-class AcceptRequestLoadingState extends MainCubitStates {}
+final class AcceptRequestLoadingState extends MainCubitStates {}
 
-class AcceptRequestSuccessState extends MainCubitStates {}
+final class AcceptRequestSuccessState extends MainCubitStates {}
 
-class AcceptRequestErrorState extends MainCubitStates {}
+final class AcceptRequestErrorState extends MainCubitStates {}
 
-class GetLeaderboardLoadingState extends MainCubitStates {}
+final class GetLeaderboardLoadingState extends MainCubitStates {}
 
-class GetLeaderboardSuccessState extends MainCubitStates {}
+final class GetLeaderboardSuccessState extends MainCubitStates {}
 
-class GetLeaderboardErrorState extends MainCubitStates {}
+final class GetLeaderboardErrorState extends MainCubitStates {}
 
-class UpdateUserSuccessState extends MainCubitStates {}
+final class UpdateUserSuccessState extends MainCubitStates {}
 
-class UpdateUserErrorState extends MainCubitStates {}
+final class UpdateUserErrorState extends MainCubitStates {}
 
-class DeleteimageSuccessState extends MainCubitStates {}
+final class DeleteimageSuccessState extends MainCubitStates {}
 
 class DeleteimageErrorState extends MainCubitStates {}
 
-class ChangeAppModeState extends MainCubitStates {}
+final class ChangeAppModeState extends MainCubitStates {}
 
 final class LogoutSuccess extends MainCubitStates {}
 
@@ -96,3 +96,13 @@ final class LogoutFailed extends MainCubitStates {
 
   LogoutFailed({required this.errMessage});
 }
+
+final class DeleteAccountLoading extends MainCubitStates {}
+
+final class DeleteAccountFailed extends MainCubitStates {
+  final String errMessage;
+
+  DeleteAccountFailed({required this.errMessage});
+}
+
+final class DeleteAccountSuccess extends MainCubitStates {}
