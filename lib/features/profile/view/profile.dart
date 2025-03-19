@@ -37,6 +37,67 @@ class Profile extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             actions: [
+              ElevatedButton.icon(
+                label: Text(
+                  'Delete',
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleSmall!
+                      .copyWith(color: ColorsManager.black),
+                ),
+                icon: Icon(IconsManager.deleteIcon),
+                style: ButtonStyle(
+                  backgroundColor: WidgetStateProperty.resolveWith(
+                    (states) {
+                      return ColorsManager.white;
+                    },
+                  ),
+                  iconColor: WidgetStateProperty.resolveWith(
+                    (states) {
+                      return ColorsManager.black;
+                    },
+                  ),
+                ),
+                onPressed: () {
+                  AwesomeDialog(
+                    context: context,
+                    title: StringsManager.delete,
+                    dialogType: DialogType.warning,
+                    body: Text(
+                      textAlign: TextAlign.center,
+                      'If you press "Delete", your Uninotes account will be deleted forever',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    animType: AnimType.scale,
+                    btnOk: ElevatedButton(
+                      onPressed: () {
+                        context.read<MainCubit>().deleteAccount(
+                            id: context.read<MainCubit>().profileModel!.id);
+                      },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: ColorsManager.imperialRed),
+                      child: Text(
+                        StringsManager.delete,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium!
+                            .copyWith(color: ColorsManager.white),
+                      ),
+                    ),
+                    btnCancel: ElevatedButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: ColorsManager.grey4),
+                        child: Text(
+                          StringsManager.cancel,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(color: ColorsManager.black),
+                        )),
+                  ).show();
+                },
+              )
               // ElevatedButton(
               //   onPressed: (){},
               //   child: Row(
@@ -78,7 +139,10 @@ class Profile extends StatelessWidget {
               //   )
               // ),
             ],
-            title: Text(StringsManager.profile, style: Theme.of(context).textTheme.displayMedium,),
+            title: Text(
+              StringsManager.profile,
+              style: Theme.of(context).textTheme.displayMedium,
+            ),
             centerTitle: true,
           ),
           body: Padding(
@@ -100,103 +164,149 @@ class Profile extends StatelessWidget {
                       bottom: AppSizesDouble.s10N, // Adjust position
                       child: IntrinsicWidth(
                         child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: AppPaddings.p10),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: AppPaddings.p10),
                           height: AppSizesDouble.s25,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                             color: ColorsManager.lightPrimary,
-                            borderRadius: BorderRadius.circular(AppSizesDouble.s20),
+                            borderRadius:
+                                BorderRadius.circular(AppSizesDouble.s20),
                           ),
                           child: Text(
                             mainCubit.profileModel!.score.toString(),
-                            style: Theme.of(context).textTheme.titleLarge!.copyWith(color: ColorsManager.white),
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge!
+                                .copyWith(color: ColorsManager.white),
                           ),
                         ),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: AppSizesDouble.s20,),
+                SizedBox(
+                  height: AppSizesDouble.s20,
+                ),
                 ConstrainedBox(
-                  constraints: BoxConstraints(maxWidth: AppQueries.screenWidth(context) / AppSizesDouble.s1_2),
+                  constraints: BoxConstraints(
+                      maxWidth: AppQueries.screenWidth(context) /
+                          AppSizesDouble.s1_2),
                   child: Text(
                     mainCubit.profileModel!.name,
-                    style: Theme.of(context).textTheme.displayLarge!.copyWith( fontSize: AppQueries.screenWidth(context) / AppSizes.s13),
+                    style: Theme.of(context).textTheme.displayLarge!.copyWith(
+                        fontSize:
+                            AppQueries.screenWidth(context) / AppSizes.s13),
                     maxLines: AppSizes.s2,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
                   ),
                 ),
-                SizedBox(height: AppSizesDouble.s4,),
+                SizedBox(
+                  height: AppSizesDouble.s4,
+                ),
                 Text(
                   mainCubit.profileModel!.email,
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s22),
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      fontSize: AppQueries.screenWidth(context) / AppSizes.s22),
                   maxLines: AppSizes.s2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                SizedBox(height: AppSizesDouble.s4,),
+                SizedBox(
+                  height: AppSizesDouble.s4,
+                ),
                 Text(
-                  "Phone: ${mainCubit.profileModel!.phone.isNotEmpty? mainCubit.profileModel!.phone:'No Phone Provided'}",
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s22),
+                  "Phone: ${mainCubit.profileModel!.phone.isNotEmpty ? mainCubit.profileModel!.phone : 'No Phone Provided'}",
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      fontSize: AppQueries.screenWidth(context) / AppSizes.s22),
                   maxLines: AppSizes.s2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                SizedBox(height: AppSizesDouble.s25,),
+                SizedBox(
+                  height: AppSizesDouble.s25,
+                ),
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(AppSizesDouble.s40)),
-                      color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.grey5: ColorsManager.lightGrey1
-                    ),
-                    padding: EdgeInsets.symmetric(vertical: AppPaddings.p20, horizontal: AppPaddings.p25),
+                        borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(AppSizesDouble.s40)),
+                        color: Provider.of<ThemeProvider>(context).isDark
+                            ? ColorsManager.grey5
+                            : ColorsManager.lightGrey1),
+                    padding: EdgeInsets.symmetric(
+                        vertical: AppPaddings.p20, horizontal: AppPaddings.p25),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(StringsManager.myUploads, style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s18,)),
+                        Text(StringsManager.myUploads,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(
+                                  fontSize: AppQueries.screenWidth(context) /
+                                      AppSizes.s18,
+                                )),
                         divider(
-                          height: AppSizesDouble.s20,
-                          color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.white: ColorsManager.black
-                        ),
+                            height: AppSizesDouble.s20,
+                            color: Provider.of<ThemeProvider>(context).isDark
+                                ? ColorsManager.white
+                                : ColorsManager.black),
                         Expanded(
                           child: ConditionalBuilder(
-                            condition: mainCubit.profileModel!.materials.isNotEmpty && state is! GetRequestsLoadingState,
-                            builder: (context) => ListView.separated(
-                              physics: BouncingScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                return materialBuilder(
-                                  index,
-                                  context,
-                                  title: mainCubit.profileModel!.materials[index].title,
-                                  description: mainCubit.profileModel!.materials[index].description,
-                                  type: mainCubit.profileModel!.materials[index].type,
-                                  link: mainCubit.profileModel!.materials[index].link,
-                                  subjectName: mainCubit.profileModel!.materials[index].subject,
-                                );
-                              },
-                              separatorBuilder: (context, index) => SizedBox(height: AppSizesDouble.s10,),
-                              itemCount: mainCubit.profileModel!.materials.length
-                            ),
-                            fallback: (context) {
-                              if (state is GetRequestsLoadingState) {
+                              condition: mainCubit
+                                      .profileModel!.materials.isNotEmpty &&
+                                  state is! GetRequestsLoadingState,
+                              builder: (context) => ListView.separated(
+                                  physics: BouncingScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    return materialBuilder(
+                                      index,
+                                      context,
+                                      title: mainCubit
+                                          .profileModel!.materials[index].title,
+                                      description: mainCubit.profileModel!
+                                          .materials[index].description,
+                                      type: mainCubit
+                                          .profileModel!.materials[index].type,
+                                      link: mainCubit
+                                          .profileModel!.materials[index].link,
+                                      subjectName: mainCubit.profileModel!
+                                          .materials[index].subject,
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) =>
+                                      SizedBox(
+                                        height: AppSizesDouble.s10,
+                                      ),
+                                  itemCount:
+                                      mainCubit.profileModel!.materials.length),
+                              fallback: (context) {
+                                if (state is GetRequestsLoadingState) {
+                                  return SizedBox(
+                                      height: AppQueries.screenHeight(context) /
+                                          AppSizesDouble.s1_3,
+                                      child: Center(
+                                        child: CircularProgressIndicator(),
+                                      ));
+                                }
                                 return SizedBox(
-                                  height: AppQueries.screenHeight(context) / AppSizesDouble.s1_3,
-                                  child: Center(child: CircularProgressIndicator(),)
-                                );
-                              }
-                              return SizedBox(
-                                height: AppQueries.screenHeight(context) / AppSizesDouble.s1_3,
-                                child: Center(
-                                  child: Text(
-                                    StringsManager.noContributionsYet,
-                                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                      fontSize: AppQueries.screenWidth(context) / AppSizes.s12,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                )
-                              );
-                            }
-                          ),
+                                    height: AppQueries.screenHeight(context) /
+                                        AppSizesDouble.s1_3,
+                                    child: Center(
+                                      child: Text(
+                                        StringsManager.noContributionsYet,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge!
+                                            .copyWith(
+                                              fontSize: AppQueries.screenWidth(
+                                                      context) /
+                                                  AppSizes.s12,
+                                            ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ));
+                              }),
                         ),
                       ],
                     ),
@@ -214,6 +324,4 @@ class Profile extends StatelessWidget {
       },
     );
   }
-
 }
-
