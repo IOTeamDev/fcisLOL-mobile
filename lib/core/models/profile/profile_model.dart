@@ -5,8 +5,9 @@ class ProfileModel {
   late String email;
   late String semester;
   late String role;
-  String? phone;
-  String? photo;
+  late int score;
+  late String phone;
+  late String photo;
   late int id;
   late List<ProfileMaterilaModel> materials = [];
 
@@ -16,6 +17,7 @@ class ProfileModel {
     semester = model['semester'];
     role = model['role'];
     phone = model['phone'] ?? "";
+    score = model['score'];
     id = model['id'];
     photo = model['photo'];
 

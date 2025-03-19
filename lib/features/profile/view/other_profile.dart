@@ -69,31 +69,69 @@ class _OtherProfileState extends State<OtherProfile> {
             padding: EdgeInsets.symmetric(vertical: AppPaddings.p10),
             child: Column(
               children: [
-                CircleAvatar(
-                  radius: AppQueries.screenWidth(context) / AppSizesDouble.s7_5,
-                  backgroundImage: NetworkImage(mainCubit.otherProfile!.photo!,),
+                Stack(
+                  clipBehavior: Clip.none,
+                  alignment: Alignment.bottomCenter,
+                  children: [
+                    CircleAvatar(
+                      radius: AppSizesDouble.s50,
+                      backgroundImage: mainCubit.userImageFile != null ?
+                      NetworkImage(AppConstants.defaultProfileImage) :
+                      NetworkImage(mainCubit.otherProfile!.photo),
+                    ),
+                    Positioned(
+                      bottom: AppSizesDouble.s10N, // Adjust position
+                      child: IntrinsicWidth(
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: AppPaddings.p10),
+                          constraints: BoxConstraints(
+                            maxWidth: AppSizesDouble.s100,
+                            minWidth: AppSizesDouble.s35,
+                          ),
+                          height: AppSizesDouble.s25,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: ColorsManager.lightPrimary,
+                            borderRadius: BorderRadius.circular(AppSizesDouble.s20),
+                          ),
+                          child: Text(
+                            mainCubit.otherProfile!.score.toString(),
+                            style: Theme.of(context).textTheme.titleLarge!.copyWith(color: ColorsManager.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(height: AppSizesDouble.s10,),
+                SizedBox(height: AppSizesDouble.s20,),
                 Text(
                   mainCubit.otherProfile!.email,
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s25),
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s22),
                   maxLines: AppSizes.s2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                SizedBox(height: AppSizesDouble.s4,),
+                // SizedBox(height: AppSizesDouble.s4,),
+                // Text(
+                //   "Phone: ${mainCubit.otherProfile!.phone.isNotEmpty? mainCubit.otherProfile!.phone:'No Phone Provided'}",
+                //   style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s22),
+                //   maxLines: AppSizes.s2,
+                //   overflow: TextOverflow.ellipsis,
+                // ),
+                // SizedBox(height: AppSizesDouble.s4,),
                 Text(
                   '${StringsManager.level} ${((semsesterIndex(mainCubit.otherProfile!.semester)/AppSizes.s2) + AppSizes.s1).floor()}',
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s25),
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s22),
                   maxLines: AppSizes.s2,
                   overflow: TextOverflow.ellipsis,
                 ),
+                SizedBox(height: AppSizesDouble.s25,),
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(AppSizesDouble.s30)),
-                        color: ColorsManager.darkPrimary.withValues(alpha: 0.4)
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(AppSizesDouble.s40)),
+                        color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.grey5: ColorsManager.lightGrey1
                     ),
-                    padding: EdgeInsets.symmetric(vertical: AppPaddings.p20, horizontal: AppPaddings.p10),
+                    padding: EdgeInsets.symmetric(vertical: AppPaddings.p20, horizontal: AppPaddings.p25),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -101,7 +139,10 @@ class _OtherProfileState extends State<OtherProfile> {
                           StringsManager.uploads,
                           style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s18)
                         ),
-                        divider(height: AppSizesDouble.s20),
+                        divider(
+                          height: AppSizesDouble.s20,
+                          color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.white: ColorsManager.black
+                        ),
                         Expanded(
                           child: ConditionalBuilder(
                             condition: mainCubit.otherProfile!.materials.isNotEmpty && state is! GetRequestsLoadingState,
@@ -112,25 +153,25 @@ class _OtherProfileState extends State<OtherProfile> {
                                   index,
                                   context,
                                   title: mainCubit
-                                      .otherProfile!
-                                      .materials[index]
-                                      .title,
+                                    .otherProfile!
+                                    .materials[index]
+                                    .title,
                                   description: mainCubit
-                                      .otherProfile!
-                                      .materials[index]
-                                      .description,
+                                    .otherProfile!
+                                    .materials[index]
+                                    .description,
                                   type: mainCubit
-                                      .otherProfile!
-                                      .materials[index]
-                                      .type,
+                                    .otherProfile!
+                                    .materials[index]
+                                    .type,
                                   link: mainCubit
-                                      .otherProfile!
-                                      .materials[index]
-                                      .link,
-                                  subjectName: mainCubit
-                                      .otherProfile!
-                                      .materials[index]
-                                      .subject,
+                                    .otherProfile!
+                                    .materials[index]
+                                    .link,
+                                subjectName: mainCubit
+                                    .otherProfile!
+                                    .materials[index]
+                                    .subject,
                                 );
                               },
                               separatorBuilder: (context, index) => SizedBox(height: AppSizesDouble.s10,),

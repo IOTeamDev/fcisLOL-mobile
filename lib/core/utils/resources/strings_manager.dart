@@ -18,6 +18,9 @@ class StringsManager {
   static const String profile = 'Profile';
   static const String noContent = 'No content';
   static const String deadLine = 'DeadLine';
+  static const String newFeatures = 'New Features';
+  static const String patchNotes = 'Patch Notes';
+  static const String bugFixes = 'Bug Fixes';
   static const String dueDate = 'due_date';
   static const String role = 'role';
   static const String yearSelect = 'Year Select';
@@ -85,6 +88,7 @@ class StringsManager {
   static const String year24 = '2024';
   static const String support = 'Support';
   static const String reportBug = 'Report Bug';
+  static const String releaseNotes = 'Release Notes';
   static const String bugTitle = 'Bug title';
   static const String bugDescription = 'Bug description';
   static const String feedback = 'Feedback';

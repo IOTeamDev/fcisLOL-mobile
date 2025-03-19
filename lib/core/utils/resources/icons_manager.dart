@@ -32,4 +32,5 @@ class IconsManager{
   static const IconData editPenIcon = CupertinoIcons.square_pencil;
   static const IconData editIcon = Icons.edit_outlined;
   static const IconData deleteIcon = CupertinoIcons.delete;
+  static const IconData circleIcon = CupertinoIcons.circle_fill;
 }

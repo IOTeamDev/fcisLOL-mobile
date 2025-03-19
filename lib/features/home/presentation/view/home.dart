@@ -74,6 +74,8 @@ class _HomeState extends State<Home> {
     return BlocConsumer<MainCubit, MainCubitStates>(
       listener: (context, state) {
         if (state is GetProfileSuccess) {
+          AppConstants.navigatedSemester = MainCubit.get(context).profileModel!.semester;
+          print('the navigated semester is: ${AppConstants.navigatedSemester}');
           AdminCubit.get(context).getAnnouncements(MainCubit.get(context).profileModel!.semester);
           if (MainCubit.get(context).profileModel!.photo == null) {
             MainCubit.get(context).updateUser(
@@ -136,7 +138,7 @@ class _HomeState extends State<Home> {
               style: Theme.of(context).textTheme.displayMedium!.copyWith(fontWeight: FontWeightManager.semiBold),
             ),
             actions: [
-              profile?.role == KeysManager.developer?
+              profile?.role == KeysManager.developer && AppConstants.TOKEN != null && profile != null?
               IconButton(
                 onPressed: (){
                   AdminCubit.get(context).getAllSemestersAnnouncements();

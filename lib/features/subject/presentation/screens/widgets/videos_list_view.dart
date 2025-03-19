@@ -38,16 +38,14 @@ class VideosListView extends StatelessWidget {
               itemBuilder: (context, i) {
                 if (cubit.videos!.isEmpty) {
                   return Center(
-                    child: Text('Materials Apper here'),
+                    child: Text('Materials Appear here'),
                   );
                 } else {
                   return Container(
                     margin: EdgeInsets.only(bottom: 16.0),
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(15),
                     decoration: BoxDecoration(
-                      color: Provider.of<ThemeProvider>(context).isDark
-                          ? ColorsManager.darkPrimary
-                          : ColorsManager.lightPrimary,
+                      color: Theme.of(context).primaryColor,
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: GridTileWidget(video: cubit.videos![i]),

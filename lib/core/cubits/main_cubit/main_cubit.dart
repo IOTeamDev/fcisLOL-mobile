@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 import 'dart:math';
 
@@ -265,18 +266,21 @@ class MainCubit extends Cubit<MainCubitStates> {
 
   Future<void> getScore4User(int userId) async {
     score4User = null;
-    for (int i = 0; i < leaderboardModel!.length; i++) {
-      if (leaderboardModel![i].id == userId) {
-        score4User = leaderboardModel![i];
-        // emit(GetScore4User());
+      print('Entered user Score');
+      for (int i = 0; i < leaderboardModel!.length; i++) {
+        if (leaderboardModel![i].id == userId) {
+          print('got User score');
+          score4User = leaderboardModel![i];
+          //emit(GetScore4User());
+        }else{
+          score4User = LeaderboardModel.fromJson({
+            'id': profileModel!.id,
+            'score': 0,
+            'name': profileModel!.name,
+            'photo': profileModel!.photo,
+          });
+        }
       }
-    }
-    for (int i = 0; i < notAdminLeaderboardModel!.length; i++) {
-      if (notAdminLeaderboardModel![i].id == userId) {
-        score4User?.userRank = i + 1;
-        // emit(GetScore4User());
-      }
-    }
   }
 
   Future? getLeaderboard(currentSemester) {
@@ -309,34 +313,6 @@ class MainCubit extends Cubit<MainCubitStates> {
     return null;
   }
 
-  void updateSemester4all() {
-    DioHelp.getData(path: KeysManager.users).then((onValue) {
-      onValue.data.forEach((element) {
-        if (element[KeysManager.semester] == StringsManager.one) {
-          updateUser(
-              userID: element[KeysManager.id], semester: StringsManager.two);
-        }
-        if (element[KeysManager.semester] == StringsManager.two) {
-          updateUser(
-              userID: element[KeysManager.id], semester: StringsManager.three);
-        }
-        if (element[KeysManager.semester] == StringsManager.three) {
-          updateUser(
-              userID: element[KeysManager.id], semester: StringsManager.four);
-        }
-        if (element[KeysManager.semester] == StringsManager.four) {
-          updateUser(
-              userID: element[KeysManager.id], semester: StringsManager.five);
-        }
-        if (element[KeysManager.semester] == StringsManager.five) {
-          updateUser(
-              userID: element[KeysManager.id], semester: StringsManager.six);
-        }
-      });
-      emit(GetUserImageSuccess());
-    });
-  }
-
   updateUser({
     required int userID,
     String? semester,
@@ -352,7 +328,6 @@ class MainCubit extends Cubit<MainCubitStates> {
           if (fcmToken != null) KeysManager.fcmToken: fcmToken,
           if (photo != null) KeysManager.photo: photo
         }).then((val) {
-      print(val.data[KeysManager.id]);
       emit(UpdateUserSuccessState());
     }).catchError((error) {
       print(error.toString());

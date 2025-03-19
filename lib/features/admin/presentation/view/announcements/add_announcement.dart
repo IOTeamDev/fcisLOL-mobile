@@ -13,7 +13,6 @@ import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/core/utils/webview_screen.dart';
 import 'package:lol/core/utils/navigation.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:provider/provider.dart';
 import '../../../../../core/cubits/main_cubit/main_cubit.dart';
 import '../../../../../core/models/admin/announcement_model.dart';
@@ -108,6 +107,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
               child: Column(
                 children: [
                   InkWell(
+                    splashColor: ColorsManager.transparent,
                     onTap: () {
                       setState(() {
                         _isExpanded = true; // Toggle the expansion
@@ -619,7 +619,8 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
   Widget announcementBuilder(semester, context, index, announcementModel)
   {
     var cubit = AdminCubit.get(context);
-    return GestureDetector(
+    return InkWell(
+      splashColor: ColorsManager.transparent,
       onTap: () {
         navigate(
           context,
@@ -633,10 +634,8 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
         );
       },
       child: Container(
-        margin:
-            const EdgeInsetsDirectional.symmetric(horizontal: AppMargins.m10),
-        padding:
-            const EdgeInsetsDirectional.symmetric(horizontal: AppPaddings.p10),
+        margin: const EdgeInsetsDirectional.symmetric(horizontal: AppMargins.m10),
+        padding: const EdgeInsetsDirectional.symmetric(horizontal: AppPaddings.p10),
         height: AppSizesDouble.s80,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppSizesDouble.s20),
@@ -682,7 +681,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                 );
 
                 if (refresh == StringsManager.refresh) {
-                  AdminCubit.get(context).getAnnouncements(semester);
+                 cubit.getAnnouncements(semester);
                 }
               },
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSizesDouble.s10)),
@@ -697,7 +696,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
             //Delete Icon
             MaterialButton(
               onPressed: () {
-                AdminCubit.get(context).deleteAnnouncement(announcementModel.id, semester);
+               cubit.deleteAnnouncement(announcementModel.id, semester);
               },
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSizesDouble.s10)),
               minWidth: AppSizesDouble.s10,

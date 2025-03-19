@@ -36,18 +36,16 @@ class _RequestsState extends State<Requests> {
 
   @override
   Widget build(BuildContext context) {
-
-      if(MainCubit.get(context).profileModel!.role == KeysManager.developer && MainCubit.get(context).allRequests.isEmpty){
-        MainCubit.get(context).getAllSemestersRequests();
-      } else if(MainCubit.get(context).requests == null){
-        dev.log(MainCubit.get(context).profileModel!.semester);
-        MainCubit.get(context).getRequests(semester: MainCubit.get(context).profileModel!.semester);
+      var cubit = MainCubit.get(context);
+      if(cubit.profileModel!.role == KeysManager.developer && cubit.allRequests.isEmpty){
+        cubit.getAllSemestersRequests();
+      } else if(cubit.requests == null){
+        cubit.getRequests(semester: cubit.profileModel!.semester);
       }
 
     return BlocConsumer<MainCubit, MainCubitStates>(
       listener: (context, state) {},
       builder: (context, state) {
-        var cubit = MainCubit.get(context);
         return Scaffold(
           key: scaffoldKey,
           appBar: AppBar(
@@ -59,11 +57,11 @@ class _RequestsState extends State<Requests> {
             actions: [
               IconButton(
                 onPressed: () {
-                  if(MainCubit.get(context).profileModel!.role == KeysManager.developer){
-                    MainCubit.get(context).getAllSemestersRequests();
+                  if(cubit.profileModel!.role == KeysManager.developer){
+                    cubit.getAllSemestersRequests();
                   } else{
-                    dev.log(MainCubit.get(context).profileModel!.semester);
-                    MainCubit.get(context).getRequests(semester: MainCubit.get(context).profileModel!.semester);
+                    dev.log(cubit.profileModel!.semester);
+                    cubit.getRequests(semester: cubit.profileModel!.semester);
                   }
                 },
                 icon: Icon(IconsManager.refreshIcon)
@@ -75,7 +73,7 @@ class _RequestsState extends State<Requests> {
             child: Column(
               children: [
                 ConditionalBuilder(
-                  condition: MainCubit.get(context).profileModel!.role == KeysManager.developer? (cubit.allRequests.isNotEmpty && state is !GetRequestsLoadingState):
+                  condition: cubit.profileModel!.role == KeysManager.developer? (cubit.allRequests.isNotEmpty && state is !GetRequestsLoadingState):
                   (cubit.requests!.isNotEmpty && state is! GetRequestsLoadingState),
                   fallback: (context) {
                     if (state is GetRequestsLoadingState) {
@@ -263,7 +261,7 @@ class _RequestsState extends State<Requests> {
                         MainCubit.get(context).acceptRequest(
                           request.id!,
                           semester,
-                          MainCubit.get(context).profileModel!.role
+                            MainCubit.get(context).profileModel!.role
                         );
                       },
                       color: ColorsManager.green,

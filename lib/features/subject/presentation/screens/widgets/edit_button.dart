@@ -7,6 +7,8 @@ import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_m
 import 'package:lol/features/subject/presentation/screens/widgets/build_bottom_sheet.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/edit_material_bottom_sheet.dart';
 
+import '../../../../../core/utils/resources/values_manager.dart';
+
 class EditButton extends StatelessWidget {
   const EditButton(
       {super.key, required this.material, required this.getMaterialCubit});
@@ -18,8 +20,8 @@ class EditButton extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
       ),
-      minWidth: 30,
-      height: 50,
+      minWidth: 20,
+      height: 40,
       color: ColorsManager.white,
       onPressed: () {
         showModalBottomSheet(
@@ -47,9 +49,10 @@ class EditButton extends StatelessWidget {
       },
       child: Icon(
         Icons.edit_outlined,
-        color: Color(0xffCE3A3C),
+        color: ColorsManager.black,
         size: 25,
       ),
+      padding: EdgeInsets.symmetric(horizontal: AppPaddings.p10),
     );
   }
 }

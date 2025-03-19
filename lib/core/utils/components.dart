@@ -43,7 +43,7 @@ Widget divider({
     thickness: thickness,
   );
 
-Widget materialBuilder(index, context, {title, link, type, subjectName, description}) {
+Widget materialBuilder(index, context, {title, link, type, subjectName, description, isMain = true}) {
   var cubit = MainCubit.get(context);
   return Container(
     padding: EdgeInsets.all(AppSizesDouble.s15),
@@ -58,18 +58,14 @@ Widget materialBuilder(index, context, {title, link, type, subjectName, descript
       children: [
         Row(
           children: [
-            ConstrainedBox(
-              constraints: BoxConstraints(
-                maxWidth: AppQueries.screenWidth(context)/AppSizesDouble.s1_4,
-              ),
+            Expanded(
               child: Text(
                 title,
                 maxLines: AppSizes.s1,
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.displayMedium!.copyWith(color: ColorsManager.white),
+                style: Theme.of(context).textTheme.headlineLarge!.copyWith(color: ColorsManager.white, fontWeight: FontWeight.bold),
               ),
             ),
-            const Spacer(),
             if (cubit.profileModel!.role == KeysManager.admin || cubit.profileModel!.role == KeysManager.developer)
               IconButton(
                 onPressed: () {
@@ -86,8 +82,12 @@ Widget materialBuilder(index, context, {title, link, type, subjectName, descript
                     btnOk: ElevatedButton(
                       onPressed: (){
                         cubit.deleteMaterial(
-                          cubit.profileModel!.materials[index].id!,
-                          cubit.profileModel!.semester,
+                          isMain?
+                          cubit.profileModel!.materials[index].id!:
+                          cubit.otherProfile!.materials[index].id!,
+                          isMain?
+                          cubit.profileModel!.semester:
+                          cubit.otherProfile!.semester,
                           isMaterial: true,
                         );
                       },
@@ -109,8 +109,8 @@ Widget materialBuilder(index, context, {title, link, type, subjectName, descript
           child: Text(
             textAlign: TextAlign.start,
             subjectName.toString()
-                .replaceAll(StringsManager.underScore, StringsManager.space)
-                .replaceAll(StringsManager.andWord.substring(AppSizes.s0).toUpperCase()+StringsManager.andWord.substring(AppSizes.s1,AppSizes.s2).toUpperCase(), StringsManager.andSymbol),
+              .replaceAll(StringsManager.underScore, StringsManager.space)
+              .replaceAll(StringsManager.andWord.substring(AppSizes.s0).toUpperCase()+StringsManager.andWord.substring(AppSizes.s1,AppSizes.s2).toUpperCase(), StringsManager.andSymbol),
             maxLines: AppSizes.s1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
@@ -151,13 +151,15 @@ Widget materialBuilder(index, context, {title, link, type, subjectName, descript
                   ),
                 ),
                 Text(
-                  cubit.profileModel!.materials[index].accepted! ?
+                  (isMain?
+                  cubit.profileModel!.materials[index].accepted!:
+                  cubit.otherProfile!.materials[index].accepted! )?
                   StringsManager.accepted :
                   StringsManager.pending,
                   style: TextStyle(
-                      color: cubit.profileModel!.materials[index].accepted! ?
-                      ColorsManager.persianGreen :
-                      ColorsManager.gold
+                    color: (isMain? cubit.profileModel!.materials[index].accepted!: cubit.otherProfile!.materials[index].accepted!) ?
+                    ColorsManager.persianGreen :
+                    ColorsManager.gold
                   ),
                 ),
               ],
@@ -232,7 +234,7 @@ Widget defaultLoginInputField(controller, label, keyboardType,
                 icon: Icon(suffixIcon),
                 color: loginCubit.hiddenPassword
                     ? ColorsManager.lightGrey
-                    : ColorsManager.dodgerBlue,
+                    : ColorsManager.lightPrimary,
                 onPressed: loginCubit.togglePassword,
               )
             : null,

@@ -79,6 +79,8 @@ class GetLeaderboardSuccessState extends MainCubitStates {}
 
 class GetLeaderboardErrorState extends MainCubitStates {}
 
+class GetScore4User extends MainCubitStates {}
+
 class UpdateUserSuccessState extends MainCubitStates {}
 
 class UpdateUserErrorState extends MainCubitStates {}

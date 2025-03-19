@@ -19,9 +19,11 @@ import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/core/utils/navigation.dart';
 import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../core/utils/resources/colors_manager.dart';
 import '../../../../core/utils/resources/strings_manager.dart';
+import '../../../../core/utils/resources/theme_provider.dart';
 
 class UserInfo {
   late String name;
@@ -152,8 +154,10 @@ class _RegisterscreenState extends State<Registerscreen> {
                     const SizedBox(
                       height: AppSizesDouble.s15,
                     ),
-                    state is RegisterLoading ? const Center(
-                      child: CircularProgressIndicator(),
+                    state is RegisterLoading ? Center(
+                      child: CircularProgressIndicator(
+                          color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.white: ColorsManager.black
+                      ),
                     ) : defaultLoginButton(
                       context,
                       _formKey,

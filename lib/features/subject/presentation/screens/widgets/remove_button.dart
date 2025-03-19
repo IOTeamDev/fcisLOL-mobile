@@ -8,6 +8,8 @@ import 'package:lol/features/subject/data/models/material_model.dart';
 import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit_cubit.dart';
 import 'package:lol/core/utils/components.dart';
 
+import '../../../../../core/utils/resources/values_manager.dart';
+
 class RemoveButton extends StatelessWidget {
   const RemoveButton({super.key, required this.material});
   final MaterialModel material;
@@ -29,8 +31,8 @@ class RemoveButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
-        minWidth: 30,
-        height: 50,
+        minWidth: 20,
+        height: 40,
         color: ColorsManager.white,
         onPressed: () {
           AwesomeDialog(
@@ -48,9 +50,10 @@ class RemoveButton extends StatelessWidget {
         },
         child: Icon(
           Icons.delete,
-          color: Color(0xffCE3A3C),
+          color: ColorsManager.imperialRed,
           size: 25,
         ),
+        padding: EdgeInsets.symmetric(horizontal: AppPaddings.p10),
       ),
     );
   }

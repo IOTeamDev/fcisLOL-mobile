@@ -1,7 +1,5 @@
 class ProfileMaterilaModel {
-
-
-int? id;
+  int? id;
   String? subject;
   String? link;
   String? type;
@@ -21,9 +19,5 @@ int? id;
     semester = json['semester'];
     title = json['title'];
     description = json['description'];
-//image
-
   }
-
-
 }

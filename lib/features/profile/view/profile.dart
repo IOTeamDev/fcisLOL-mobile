@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,7 +23,6 @@ import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/core/utils/navigation.dart';
-
 import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:provider/provider.dart';
 
@@ -36,16 +34,26 @@ class Profile extends StatelessWidget {
     return BlocConsumer<MainCubit, MainCubitStates>(
       builder: (context, state) {
         var mainCubit = MainCubit.get(context);
-        if(mainCubit.leaderboardModel == null) {
-          mainCubit.getLeaderboard(mainCubit.profileModel!.semester);
-        }
         return Scaffold(
           appBar: AppBar(
             actions: [
-              IconButton(
-                onPressed: (){},
-                icon: Icon(IconsManager.editPenIcon)
-              )
+              // ElevatedButton(
+              //   onPressed: (){},
+              //   child: Row(
+              //     children: [
+              //       Icon(
+              //         IconsManager.editIcon,
+              //         color: Theme.of(context).iconTheme.color!.withValues(
+              //           red: Theme.of(context).iconTheme.color!.r * -1,
+              //           blue: Theme.of(context).iconTheme.color!.b * -1,
+              //           green: Theme.of(context).iconTheme.color!.g * -1
+              //         ),
+              //       ),
+              //       Text('Edit', style: Theme.of(context).textTheme.titleSmall,)
+              //     ],
+              //   ),
+              // )
+              //
               // TextButton(
               //   style: TextButton.styleFrom(
               //     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -76,93 +84,78 @@ class Profile extends StatelessWidget {
           body: Padding(
             padding: EdgeInsets.only(bottom: AppPaddings.p10),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Column(
+                Stack(
+                  clipBehavior: Clip.none,
+                  alignment: Alignment.bottomCenter,
                   children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          width: AppQueries.screenWidth(context) / AppSizesDouble.s3_2,
-                          child: CircleAvatar(
-                            radius: AppQueries.screenWidth(context) / AppSizesDouble.s8_5,
-                            backgroundImage: mainCubit.userImageFile != null ?
-                            NetworkImage(AppConstants.defaultProfileImage) :
-                            NetworkImage(mainCubit.profileModel!.photo!,),
+                    CircleAvatar(
+                      radius: AppSizesDouble.s50,
+                      backgroundImage: mainCubit.userImageFile != null
+                          ? NetworkImage(AppConstants.defaultProfileImage)
+                          : NetworkImage(mainCubit.profileModel!.photo),
+                    ),
+                    Positioned(
+                      bottom: AppSizesDouble.s10N, // Adjust position
+                      child: IntrinsicWidth(
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: AppPaddings.p10),
+                          height: AppSizesDouble.s25,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: ColorsManager.lightPrimary,
+                            borderRadius: BorderRadius.circular(AppSizesDouble.s20),
+                          ),
+                          child: Text(
+                            mainCubit.profileModel!.score.toString(),
+                            style: Theme.of(context).textTheme.titleLarge!.copyWith(color: ColorsManager.white),
                           ),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ConstrainedBox(
-                              constraints: BoxConstraints(maxWidth: AppQueries.screenWidth(context) / AppSizesDouble.s1_7),
-                              child: Text(
-                                mainCubit.profileModel!.name,
-                                style: Theme.of(context).textTheme.displayLarge!.copyWith( fontSize: AppQueries.screenWidth(context) / AppSizes.s15),
-                                maxLines: AppSizes.s2,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                            SizedBox(height: AppSizesDouble.s4,),
-                            SizedBox(
-                              width: AppQueries.screenWidth(context) / AppSizesDouble.s2_5,
-                              child: Text(
-                                mainCubit.profileModel!.email,
-                                style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s25),
-                                maxLines: AppSizes.s2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            // if (mainCubit.profileModel?.phone != null &&
-                            //     mainCubit
-                            //         .profileModel!.phone!.isNotEmpty)
-                            //   SizedBox(
-                            //     width: AppQueries.screenWidth(context) / 2.5,
-                            //     child: Text(
-                            //       mainCubit.profileModel!.phone.toString(),
-                            //       style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize: AppQueries.screenWidth(context) / 25),
-                            //       maxLines: 2,
-                            //     ),
-                            //   ),
-                            ConditionalBuilder(
-                              condition: mainCubit.leaderboardModel != null && mainCubit.score4User != null && state is !GetLeaderboardLoadingState,
-                              builder: (context) {
-                                mainCubit.getScore4User(mainCubit.profileModel!.id);
-                                return Row(
-                                children: [
-                                  Text('Score: ', style: Theme.of(context).textTheme.titleSmall,),
-                                  Text(mainCubit.score4User!.score.toString(), style: Theme.of(context).textTheme.titleLarge,),
-                                ],
-                              );
-                              },
-                              fallback: (context) {
-                                return Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              }
-                            ),
-                          ],
-                        ),
-                      ],
+                      ),
                     ),
                   ],
                 ),
-                SizedBox(height: AppSizesDouble.s30,),
+                SizedBox(height: AppSizesDouble.s20,),
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: AppQueries.screenWidth(context) / AppSizesDouble.s1_2),
+                  child: Text(
+                    mainCubit.profileModel!.name,
+                    style: Theme.of(context).textTheme.displayLarge!.copyWith( fontSize: AppQueries.screenWidth(context) / AppSizes.s13),
+                    maxLines: AppSizes.s2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                SizedBox(height: AppSizesDouble.s4,),
+                Text(
+                  mainCubit.profileModel!.email,
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s22),
+                  maxLines: AppSizes.s2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                SizedBox(height: AppSizesDouble.s4,),
+                Text(
+                  "Phone: ${mainCubit.profileModel!.phone.isNotEmpty? mainCubit.profileModel!.phone:'No Phone Provided'}",
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s22),
+                  maxLines: AppSizes.s2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                SizedBox(height: AppSizesDouble.s25,),
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(AppSizesDouble.s30)),
-                      color: ColorsManager.darkPrimary.withValues(alpha: 0.4)
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(AppSizesDouble.s40)),
+                      color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.grey5: ColorsManager.lightGrey1
                     ),
-                    padding: EdgeInsets.symmetric(vertical: AppPaddings.p20, horizontal: AppPaddings.p10),
+                    padding: EdgeInsets.symmetric(vertical: AppPaddings.p20, horizontal: AppPaddings.p25),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(StringsManager.myUploads, style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s18)),
+                        Text(StringsManager.myUploads, style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s18,)),
                         divider(
-                          height: AppSizesDouble.s20
+                          height: AppSizesDouble.s20,
+                          color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.white: ColorsManager.black
                         ),
                         Expanded(
                           child: ConditionalBuilder(
@@ -221,5 +214,6 @@ class Profile extends StatelessWidget {
       },
     );
   }
+
 }
 

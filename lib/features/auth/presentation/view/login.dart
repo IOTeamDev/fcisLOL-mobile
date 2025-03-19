@@ -20,9 +20,11 @@ import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/features/profile/view/profile.dart';
 import 'package:lol/core/utils/navigation.dart';
 import 'package:lol/core/network/local/shared_preference.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/utils/resources/colors_manager.dart';
+import '../../../../core/utils/resources/theme_provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -56,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
       builder: (context, state) {
         var loginCubit = AuthCubit.get(context);
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
+          padding: const EdgeInsets.symmetric(horizontal: AppSizesDouble.s30),
           child: Form(
             key: formKey,
             child: Center(
@@ -76,24 +78,30 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       height: AppSizesDouble.s20,
                     ),
-                    defaultLoginInputField(_emailController,
-                        StringsManager.email, TextInputType.emailAddress,
-                        loginCubit: loginCubit,
-                        textInputAction: TextInputAction.next),
+                    defaultLoginInputField(
+                      _emailController,
+                      StringsManager.email,
+                      TextInputType.emailAddress,
+                      loginCubit: loginCubit,
+                    ),
                     SizedBox(
                       height: AppSizesDouble.s20,
                     ),
-                    defaultLoginInputField(_passwordController,
-                        StringsManager.password, TextInputType.visiblePassword,
-                        isPassword: true,
-                        loginCubit: loginCubit,
-                        suffixIcon: IconsManager.eyeIcon),
+                    defaultLoginInputField(
+                      _passwordController,
+                      StringsManager.password,
+                      TextInputType.visiblePassword,
+                      isPassword: true,
+                      loginCubit: loginCubit,
+                      suffixIcon: IconsManager.eyeIcon
+                    ),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: TextButton(
                         style: TextButton.styleFrom(
-                            padding: const EdgeInsets.all(AppSizesDouble.s0),
-                            foregroundColor: ColorsManager.dodgerBlue),
+                          padding: const EdgeInsets.all(AppSizesDouble.s0),
+                          foregroundColor: ColorsManager.dodgerBlue
+                        ),
                         child: const Text(
                           StringsManager.forgotPassword + StringsManager.qMark,
                         ),
@@ -138,8 +146,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     state is LoginLoading
-                        ? const Center(
-                            child: CircularProgressIndicator(),
+                        ? Center(
+                            child: CircularProgressIndicator(
+                                color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.white: ColorsManager.black
+                            ),
                           )
                         : defaultLoginButton(
                             context,

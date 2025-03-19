@@ -24,6 +24,7 @@ import 'package:lol/features/previous_exams/previous_exams.dart';
 import 'package:lol/features/profile/view/profile.dart';
 import 'package:lol/features/support_and_about_us/about_us.dart';
 import 'package:lol/features/support_and_about_us/user_advices/feedback_screen.dart';
+import 'package:lol/features/support_and_about_us/user_advices/release_notes_screen.dart';
 import 'package:lol/features/support_and_about_us/user_advices/report_bug.dart';
 import 'package:lol/features/useful_links/useful_links.dart';
 import 'package:provider/provider.dart';
@@ -53,14 +54,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
           //header
           AppConstants.TOKEN != null
               ? SizedBox(
-                  height:
-                      AppQueries.screenHeight(context) / AppSizesDouble.s3_2,
+                  height: AppQueries.screenHeight(context) / AppSizesDouble.s3_2,
                   child: UserAccountsDrawerHeader(
                     otherAccountsPictures: [
                       IconButton(
-                          onPressed: () {
-                            Provider.of<ThemeProvider>(context, listen: false)
-                                .toggleDarkMode();
+                          onPressed: () {Provider.of<ThemeProvider>(context, listen: false).toggleDarkMode();
                           },
                           icon: Icon(
                             Provider.of<ThemeProvider>(context).isDark
@@ -69,15 +67,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             color: Theme.of(context).iconTheme.color,
                           ))
                     ],
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).drawerTheme.backgroundColor),
+                    decoration: BoxDecoration(color: Theme.of(context).drawerTheme.backgroundColor),
                     accountName: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ConstrainedBox(
-                          constraints: BoxConstraints(
-                              maxWidth: AppQueries.screenWidth(context) /
-                                  AppSizesDouble.s1_5),
+                          constraints: BoxConstraints(maxWidth: AppQueries.screenWidth(context) / AppSizesDouble.s1_5),
                           child: Text(
                             profileModel!.name,
                             style: Theme.of(context).textTheme.titleLarge,
@@ -114,47 +109,44 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     currentAccountPicture: ClipOval(
                       child: Image.network(
                         profileModel!.photo ?? AppConstants.defaultProfileImage,
-                        width: AppSizesDouble.s10,
-                        height: AppSizesDouble.s10,
+                        width: AppSizesDouble.s15,
+                        height: AppSizesDouble.s15,
                         fit: BoxFit.cover,
                       ),
                     ),
                   ),
                 )
               : UserAccountsDrawerHeader(
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).scaffoldBackgroundColor),
+                  decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor),
                   accountName: Text(StringsManager.guest, style: Theme.of(context).textTheme.titleLarge,),
                   accountEmail: Text(
                     AppConstants.Level(AppConstants.SelectedSemester ?? ''),
                     style: Theme.of(context).textTheme.displayLarge,
                   ),
                   currentAccountPicture: const CircleAvatar(
-                    backgroundImage:
-                        NetworkImage(AppConstants.defaultProfileImage),
+                    backgroundImage: NetworkImage(AppConstants.defaultProfileImage),
                   ),
                   otherAccountsPictures: [
-                    IconButton(
-                        onPressed: () {
-                          Provider.of<ThemeProvider>(context, listen: false)
-                              .toggleDarkMode();
-                        },
-                        icon: Icon(
-                          Provider.of<ThemeProvider>(context).isDark
-                              ? IconsManager.lightModeIcon
-                              : IconsManager.darkModeIcon,
-                          color: Theme.of(context).iconTheme.color,
-                        ))
+                  IconButton(
+                    onPressed: () {
+                      Provider.of<ThemeProvider>(context, listen: false).toggleDarkMode();
+                    },
+                    icon: Icon(
+                      Provider.of<ThemeProvider>(context).isDark
+                          ? IconsManager.lightModeIcon
+                          : IconsManager.darkModeIcon,
+                      color: Theme.of(context).iconTheme.color,
+                    )
+                  )
                   ],
-                ),
+          ),
           //body
           Expanded(
             child: SingleChildScrollView(
                 child: Column(
               //mainAxisSize: MainAxisSize.max,
               children: [
-                if (profileModel?.role == KeysManager.admin ||
-                    profileModel?.role == KeysManager.developer)
+                if (profileModel?.role == KeysManager.admin || profileModel?.role == KeysManager.developer)
                   ListTile(
                     leading: Icon(
                       IconsManager.adminIcon,
@@ -164,9 +156,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       StringsManager.admin,
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.zero), // Removes divider when expanded
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero), // Removes divider when expanded
                     onTap: () => navigate(context, AdminPanel()),
                   ), //admin panel
                 ListTile(
@@ -178,22 +168,18 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     StringsManager.announcements,
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
-                  shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.zero), // Removes divider when expanded
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero), // Removes divider when expanded
                   onTap: () {
                     if (AppConstants.TOKEN == null) {
                       navigate(
-                          context,
-                          AnnouncementsList(
-                              semester: AppConstants.SelectedSemester!));
+                        context,
+                        AnnouncementsList(semester: AppConstants.SelectedSemester!)
+                      );
                     } else {
                       navigate(
-                          context,
-                          AnnouncementsList(
-                              semester: MainCubit.get(context)
-                                  .profileModel!
-                                  .semester));
+                        context,
+                        AnnouncementsList(semester: MainCubit.get(context).profileModel!.semester)
+                      );
                     }
                   },
                 ), //announcements list
@@ -257,7 +243,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.zero), // Removes divider when expanded
                           onTap: () {
-                            AppConstants.navigatedSemester = 'One';
+                            AppConstants.navigatedSemester = StringsManager.one;
                             navigate(context, SemesterNavigate(semester: StringsManager.one));
                           },
                         ),
@@ -268,7 +254,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           ),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero), // Removes divider when expanded
                           onTap: () {
-                            AppConstants.navigatedSemester = 'Two';
+                            AppConstants.navigatedSemester = StringsManager.two;
                             navigate(context, SemesterNavigate(semester: StringsManager.two));
                           },
                         ),
@@ -297,7 +283,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               borderRadius: BorderRadius
                                   .zero), // Removes divider when expanded
                           onTap: () {
-                            AppConstants.navigatedSemester = 'Three';
+                            AppConstants.navigatedSemester = StringsManager.three;
                             navigate(
                               context,
                               SemesterNavigate(semester: StringsManager.three));
@@ -310,7 +296,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           ),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero), // Removes divider when expanded
                           onTap: () {
-                            AppConstants.navigatedSemester = 'Four';
+                            AppConstants.navigatedSemester = StringsManager.four;
                             navigate(
                               context,
                               SemesterNavigate(semester: StringsManager.four));
@@ -341,7 +327,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               borderRadius: BorderRadius
                                   .zero), // Removes divider when expanded
                           onTap: () {
-                            AppConstants.navigatedSemester = 'Five';
+                            AppConstants.navigatedSemester = StringsManager.five;
                             navigate(
                               context,
                               SemesterNavigate(semester: StringsManager.five)
@@ -357,7 +343,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               borderRadius: BorderRadius
                                   .zero), // Removes divider when expanded
                           onTap: () {
-                            AppConstants.navigatedSemester = 'Six';
+                            AppConstants.navigatedSemester = StringsManager.six;
                             navigate(context,
                                 SemesterNavigate(semester: StringsManager.six));
                           },
@@ -375,6 +361,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                         //currently Not Used
+
                         // children: [
                         //   ListTile(
                         //     title: const Text("First Semester"),
@@ -481,28 +468,30 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     ),
                   ],
                 ), //Drive
-                ListTile(
-                  leading: Icon(
-                    IconsManager.linkIcon,
-                    color: Theme.of(context).iconTheme.color,
-                  ),
-                  title: Text(
-                    StringsManager.links,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                  onTap: () => navigate(context, UsefulLinks()),
-                ), //important links
-                ListTile(
-                  leading: Icon(
-                    IconsManager.paperIcon,
-                    color: Theme.of(context).iconTheme.color,
-                  ),
-                  title: Text(
-                    StringsManager.exams,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                  onTap: () => navigate(context, PreviousExams()),
-                ), //Exams
+
+                // ListTile(
+                //   leading: Icon(
+                //     IconsManager.linkIcon,
+                //     color: Theme.of(context).iconTheme.color,
+                //   ),
+                //   title: Text(
+                //     StringsManager.links,
+                //     style: Theme.of(context).textTheme.bodyLarge,
+                //   ),
+                //   onTap: () => navigate(context, UsefulLinks()),
+                // ), //important links
+                // ListTile(
+                //   leading: Icon(
+                //     IconsManager.paperIcon,
+                //     color: Theme.of(context).iconTheme.color,
+                //   ),
+                //   title: Text(
+                //     StringsManager.exams,
+                //     style: Theme.of(context).textTheme.bodyLarge,
+                //   ),
+                //   onTap: () => navigate(context, PreviousExams()),
+                // ), //Exams
+
                 ExpansionTile(
                   leading: Icon(
                     IconsManager.supportAgentIcon,
@@ -537,6 +526,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       ),
                       onTap: () {
                         navigate(context, FeedbackScreen());
+                      },
+                    ),
+                    ListTile(
+                      title: Text(
+                        StringsManager.releaseNotes,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      onTap: () {
+                        navigate(context, ReleaseNotesScreen());
                       },
                     ),
                   ],
@@ -598,6 +596,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         ).show();
                       } else {
                         Cache.writeData(key: KeysManager.isDark, value: false);
+                        Provider.of<ThemeProvider>(context, listen: false).isDark = false;
                         Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
                             builder: (context) => RegistrationLayout(),
