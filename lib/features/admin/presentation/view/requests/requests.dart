@@ -36,12 +36,13 @@ class _RequestsState extends State<Requests> {
 
   @override
   Widget build(BuildContext context) {
-      var cubit = MainCubit.get(context);
-      if(cubit.profileModel!.role == KeysManager.developer && cubit.allRequests.isEmpty){
-        cubit.getAllSemestersRequests();
-      } else if(cubit.requests == null){
-        cubit.getRequests(semester: cubit.profileModel!.semester);
-      }
+    var cubit = MainCubit.get(context);
+    if (cubit.profileModel!.role == KeysManager.developer &&
+        cubit.allRequests.isEmpty) {
+      cubit.getAllSemestersRequests();
+    } else if (cubit.requests == null) {
+      cubit.getRequests(semester: cubit.profileModel!.semester);
+    }
 
     return BlocConsumer<MainCubit, MainCubitStates>(
       listener: (context, state) {},
@@ -56,16 +57,15 @@ class _RequestsState extends State<Requests> {
             centerTitle: true,
             actions: [
               IconButton(
-                onPressed: () {
-                  if(cubit.profileModel!.role == KeysManager.developer){
-                    cubit.getAllSemestersRequests();
-                  } else{
-                    dev.log(cubit.profileModel!.semester);
-                    cubit.getRequests(semester: cubit.profileModel!.semester);
-                  }
-                },
-                icon: Icon(IconsManager.refreshIcon)
-              )
+                  onPressed: () {
+                    if (cubit.profileModel!.role == KeysManager.developer) {
+                      cubit.getAllSemestersRequests();
+                    } else {
+                      dev.log(cubit.profileModel!.semester);
+                      cubit.getRequests(semester: cubit.profileModel!.semester);
+                    }
+                  },
+                  icon: Icon(IconsManager.refreshIcon))
             ],
           ),
           body: Padding(
@@ -73,8 +73,11 @@ class _RequestsState extends State<Requests> {
             child: Column(
               children: [
                 ConditionalBuilder(
-                  condition: cubit.profileModel!.role == KeysManager.developer? (cubit.allRequests.isNotEmpty && state is !GetRequestsLoadingState):
-                  (cubit.requests!.isNotEmpty && state is! GetRequestsLoadingState),
+                  condition: cubit.profileModel!.role == KeysManager.developer
+                      ? (cubit.allRequests.isNotEmpty &&
+                          state is! GetRequestsLoadingState)
+                      : (cubit.requests!.isNotEmpty &&
+                          state is! GetRequestsLoadingState),
                   fallback: (context) {
                     if (state is GetRequestsLoadingState) {
                       return Expanded(
@@ -85,30 +88,31 @@ class _RequestsState extends State<Requests> {
                     }
                     return Expanded(
                       child: Center(
-                        child: Text(
+                          child: Text(
                         StringsManager.noRequests,
                         style: Theme.of(context).textTheme.headlineMedium,
                       )),
                     );
                   },
                   builder: (context) {
-                    List<MaterialModel> requests = cubit.allRequests.isEmpty? cubit.requests!:cubit.allRequests;
+                    List<MaterialModel> requests = cubit.allRequests.isEmpty
+                        ? cubit.requests!
+                        : cubit.allRequests;
+                    dev.log(requests[0].id.toString());
                     return Expanded(
-                    child: ListView.separated(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      itemBuilder: (context, index) =>
-                        _requestedMaterialBuilder(
-                          index,
-                          context,
-                          requests[index],
-                          semester: cubit.profileModel!.semester
+                      child: ListView.separated(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return _requestedMaterialBuilder(
+                              index, context, requests[index],
+                              semester: cubit.profileModel!.semester);
+                        },
+                        separatorBuilder: (context, index) => const Padding(
+                          padding: EdgeInsetsDirectional.all(AppPaddings.p5),
                         ),
-                      separatorBuilder: (context, index) => const Padding(
-                        padding: EdgeInsetsDirectional.all(AppPaddings.p5),
+                        itemCount: requests.length,
                       ),
-                      itemCount: requests.length,
-                    ),
-                  );
+                    );
                   },
                 )
               ],
@@ -120,24 +124,22 @@ class _RequestsState extends State<Requests> {
   }
 
   Widget _requestedMaterialBuilder(index, context, MaterialModel request,
-  {semester}) {
+      {semester}) {
+    dev.log(request.id.toString());
     return InkWell(
       onTap: () async {
-        String? refresh = await Navigator.of(context).push(
-          MaterialPageRoute(
+        String? refresh = await Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => RequestsDetails(
-              authorName: request.author!.authorName!,
-              type: request.type!,
-              description: request.description!,
-              link: request.link!,
-              subjectName: request.subject!,
-              id: index,
-              title: request.title!,
-              pfp: request.author!.authorPhoto!,
-              semester: semester,
-            )
-          )
-        );
+                  authorName: request.author!.authorName!,
+                  type: request.type!,
+                  description: request.description!,
+                  link: request.link!,
+                  subjectName: request.subject!,
+                  id: index,
+                  title: request.title!,
+                  pfp: request.author!.authorPhoto!,
+                  semester: semester,
+                )));
         if (refresh == StringsManager.refresh) onRefresh(context);
       },
       child: Container(
@@ -162,12 +164,15 @@ class _RequestsState extends State<Requests> {
               child: Row(
                 children: [
                   CircleAvatar(
-                    backgroundImage: NetworkImage(request.author!.authorPhoto.toString()),
+                    backgroundImage:
+                        NetworkImage(request.author!.authorPhoto.toString()),
                     radius: AppSizesDouble.s17,
                   ),
                   const SizedBox(width: AppSizesDouble.s10),
                   ConstrainedBox(
-                    constraints: BoxConstraints(maxWidth: AppQueries.screenWidth(context) / AppSizesDouble.s3),
+                    constraints: BoxConstraints(
+                        maxWidth: AppQueries.screenWidth(context) /
+                            AppSizesDouble.s3),
                     child: Text(
                       request.author!.authorName!,
                       style: Theme.of(context)
@@ -180,9 +185,11 @@ class _RequestsState extends State<Requests> {
                   ),
                   const Spacer(),
                   ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: AppSizesDouble.s130),
+                    constraints:
+                        const BoxConstraints(maxWidth: AppSizesDouble.s130),
                     child: Text(
-                      request.subject.toString().replaceAll(StringsManager.underScore, StringsManager.space),
+                      request.subject.toString().replaceAll(
+                          StringsManager.underScore, StringsManager.space),
                       style: Theme.of(context)
                           .textTheme
                           .titleSmall!
@@ -197,19 +204,22 @@ class _RequestsState extends State<Requests> {
             ),
             Padding(
               padding: EdgeInsetsDirectional.only(
-                start: AppPaddings.p10,
-                end: AppPaddings.p10,
-                top: AppPaddings.p0,
-                bottom: AppPaddings.p5),
+                  start: AppPaddings.p10,
+                  end: AppPaddings.p10,
+                  top: AppPaddings.p0,
+                  bottom: AppPaddings.p5),
               child: Text(
                 request.title!,
-                style: Theme.of(context).textTheme.headlineLarge!.copyWith(color: Colors.white,),
+                style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                      color: Colors.white,
+                    ),
                 maxLines: AppSizes.s1,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
             Padding(
-              padding: EdgeInsetsDirectional.symmetric(horizontal: AppPaddings.p10),
+              padding:
+                  EdgeInsetsDirectional.symmetric(horizontal: AppPaddings.p10),
               child: Text(
                 request.type!,
                 style: Theme.of(context)
@@ -227,15 +237,15 @@ class _RequestsState extends State<Requests> {
                     Icon(IconsManager.linkIcon,
                         color: Provider.of<ThemeProvider>(context).isDark
                             ? ColorsManager.dodgerBlue
-                            : ColorsManager.lightGrey1
-                    ),
+                            : ColorsManager.lightGrey1),
                     const SizedBox(width: AppSizesDouble.s5),
                     ConstrainedBox(
                       constraints: BoxConstraints(
                           maxWidth: constraints.maxWidth - AppSizes.s140),
                       child: GestureDetector(
                         onTap: () async {
-                          final linkElement = LinkableElement(request.link, request.link!);
+                          final linkElement =
+                              LinkableElement(request.link, request.link!);
                           await onOpen(context, linkElement);
                         },
                         child: Text(
@@ -259,16 +269,18 @@ class _RequestsState extends State<Requests> {
                     MaterialButton(
                       onPressed: () {
                         MainCubit.get(context).acceptRequest(
-                          request.id!,
-                          semester,
-                            MainCubit.get(context).profileModel!.role
-                        );
+                            request.id!,
+                            semester,
+                            MainCubit.get(context).profileModel!.role);
                       },
                       color: ColorsManager.green,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSizesDouble.s10)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(AppSizesDouble.s10)),
                       minWidth: AppSizesDouble.s0,
                       padding: const EdgeInsets.all(AppPaddings.p8),
-                      child: const Icon(IconsManager.checkIcon, color: ColorsManager.white),
+                      child: const Icon(IconsManager.checkIcon,
+                          color: ColorsManager.white),
                     ),
                     MaterialButton(
                       onPressed: () {
@@ -281,33 +293,41 @@ class _RequestsState extends State<Requests> {
                             style: Theme.of(context).textTheme.titleLarge!,
                             textAlign: TextAlign.center,
                           ),
-                          barrierColor: ColorsManager.black.withValues(alpha: AppSizesDouble.s0_6),
+                          barrierColor: ColorsManager.black
+                              .withValues(alpha: AppSizesDouble.s0_6),
                           dismissOnTouchOutside: true,
                           animType: AnimType.scale,
                           btnOk: ElevatedButton(
-                            onPressed: (){
-                              MainCubit.get(context).deleteMaterial(
-                                request.id!,
-                                role: MainCubit.get(context).profileModel!.role,
-                                semester,
-                              );
-                              Navigator.of(context).pop();
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: ColorsManager.imperialRed, // Red background
-                            ),
-                            child: Text(StringsManager.delete, style: TextStyle(color: ColorsManager.white),) 
-                          ),
+                              onPressed: () {
+                                MainCubit.get(context).deleteMaterial(
+                                  request.id!,
+                                  role:
+                                      MainCubit.get(context).profileModel!.role,
+                                  semester,
+                                );
+                                Navigator.of(context).pop();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    ColorsManager.imperialRed, // Red background
+                              ),
+                              child: Text(
+                                StringsManager.delete,
+                                style: TextStyle(color: ColorsManager.white),
+                              )),
                           btnCancel: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: ColorsManager.grey4, // Grey background
+                              backgroundColor:
+                                  ColorsManager.grey4, // Grey background
                             ),
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
                             child: Text(
-                              StringsManager.cancel, // Use cancel text if defined
-                              style: const TextStyle(color: Colors.black), // Black text
+                              StringsManager
+                                  .cancel, // Use cancel text if defined
+                              style: const TextStyle(
+                                  color: Colors.black), // Black text
                             ),
                           ),
                         ).show();

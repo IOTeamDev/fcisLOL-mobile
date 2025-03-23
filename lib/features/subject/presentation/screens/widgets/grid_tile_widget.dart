@@ -6,7 +6,7 @@ import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/features/profile/view/other_profile.dart';
-import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit_cubit.dart';
+import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/edit_button.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/subject/data/models/material_model.dart';
@@ -40,10 +40,14 @@ class GridTileWidget extends StatelessWidget {
                       child: FutureBuilder<String?>(
                         future: getYouTubeThumbnail(video.link!, apiKey),
                         builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return Center(child: CircularProgressIndicator()); // Show a loading indicator while waiting
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(
+                                child:
+                                    CircularProgressIndicator()); // Show a loading indicator while waiting
                           } else if (snapshot.hasError) {
-                            return Text('Error loading thumbnail'); // Display an error if one occurs
+                            return Text(
+                                'Error loading thumbnail'); // Display an error if one occurs
                           } else if (snapshot.data != null) {
                             return Image.network(
                               snapshot.data!,
@@ -84,7 +88,8 @@ class GridTileWidget extends StatelessWidget {
                               child: Text(
                                 'Shared by: ${video.author!.authorName}',
                                 style: TextStyle(
-                                  fontSize: AppQueries.screenWidth(context) / 30,
+                                  fontSize:
+                                      AppQueries.screenWidth(context) / 30,
                                   color: ColorsManager.white,
                                 ),
                                 maxLines: 1,
@@ -94,29 +99,34 @@ class GridTileWidget extends StatelessWidget {
                           : InkWell(
                               splashColor: ColorsManager.transparent,
                               onTap: () => navigate(
-                                context,
-                                OtherProfile(id: video.author!.authorId,)
-                              ),
+                                  context,
+                                  OtherProfile(
+                                    id: video.author!.authorId,
+                                  )),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
                                     'Shared by:  ',
                                     style: TextStyle(
-                                      fontSize: AppQueries.screenWidth(context) / 30,
+                                      fontSize:
+                                          AppQueries.screenWidth(context) / 30,
                                       color: ColorsManager.white,
                                     ),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   CircleAvatar(
-                                    radius: AppQueries.screenWidth(context) / 35,
-                                    backgroundImage: NetworkImage('${video.author!.authorPhoto}'),
+                                    radius:
+                                        AppQueries.screenWidth(context) / 35,
+                                    backgroundImage: NetworkImage(
+                                        '${video.author!.authorPhoto}'),
                                   ),
                                   Text(
                                     '  ${video.author!.authorName}',
                                     style: TextStyle(
-                                      fontSize: AppQueries.screenWidth(context) / 30,
+                                      fontSize:
+                                          AppQueries.screenWidth(context) / 30,
                                       color: ColorsManager.white,
                                     ),
                                     maxLines: 1,
@@ -130,7 +140,11 @@ class GridTileWidget extends StatelessWidget {
                 ),
               ],
             ),
-            if ((MainCubit.get(context).profileModel?.role == KeysManager.admin || MainCubit.get(context).profileModel?.role == KeysManager.developer) && AppConstants.TOKEN != null)
+            if ((MainCubit.get(context).profileModel?.role ==
+                        KeysManager.admin ||
+                    MainCubit.get(context).profileModel?.role ==
+                        KeysManager.developer) &&
+                AppConstants.TOKEN != null)
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(

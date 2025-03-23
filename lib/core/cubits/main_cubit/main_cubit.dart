@@ -250,20 +250,25 @@ class MainCubit extends Cubit<MainCubitStates> {
     });
   }
 
-  void acceptRequest(int id, [semester, role]) {
+  Future<void> acceptRequest(int id, [semester, role]) async {
     emit(AcceptRequestLoadingState());
-    DioHelp.getData(
-            path: ACCEPT,
-            query: {KeysManager.id: id, KeysManager.accepted: true},
-            token: AppConstants.TOKEN)
-        .then((value) {
+    try {
+      await DioHelp.getData(
+          path: ACCEPT,
+          query: {KeysManager.id: id, KeysManager.accepted: true},
+          token: AppConstants.TOKEN);
       emit(AcceptRequestSuccessState());
       if (role == KeysManager.developer) {
         getAllSemestersRequests();
       } else {
         getRequests(semester: semester);
       }
-    });
+      dev.log('material accepted successfully');
+    } catch (e) {
+      debugPrint('error from accepting request => $e');
+
+      emit(AcceptRequestErrorState());
+    }
   }
 
   List<LeaderboardModel>? leaderboardModel;

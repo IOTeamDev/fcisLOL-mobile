@@ -1,4 +1,4 @@
-part of 'get_material_cubit_cubit.dart';
+part of 'get_material_cubit.dart';
 
 @immutable
 sealed class GetMaterialState {}

@@ -22,36 +22,38 @@ class SubjectRepoImp implements SubjectRepo {
       return materials;
     } on DioException catch (e) {
       throw Exception('Failed to fetch materials: $e');
+    } catch (e) {
+      throw Exception('Failed to fetch materials: $e');
     }
   }
 
-  @override
-  Future<Response> addMaterial(
-      {required String title,
-      String description = '',
-      required String link,
-      required String type,
-      required String semester,
-      required String subjectName,
-      required String role,
-      required AuthorModel author}) async {
-    try {
-      final response = await DioHelp.postData(
-        path: MATERIAL,
-        data: {
-          'subject': subjectName,
-          'title': title,
-          'description': description,
-          'link': link,
-          'type': type,
-          'semester': semester,
-          'author': {'name': author.authorName, 'photo': author.authorPhoto}
-        },
-        token: AppConstants.TOKEN,
-      );
-      return response;
-    } catch (e) {
-      throw Exception('Failed to add material: $e');
-    }
-  }
+  // @override
+  // Future<Response> addMaterial(
+  //     {required String title,
+  //     String description = '',
+  //     required String link,
+  //     required String type,
+  //     required String semester,
+  //     required String subjectName,
+  //     required String role,
+  //     required AuthorModel author}) async {
+  //   try {
+  //     final response = await DioHelp.postData(
+  //       path: MATERIAL,
+  //       data: {
+  //         'subject': subjectName,
+  //         'title': title,
+  //         'description': description,
+  //         'link': link,
+  //         'type': type,
+  //         'semester': semester,
+  //         'author': {'name': author.authorName, 'photo': author.authorPhoto}
+  //       },
+  //       token: AppConstants.TOKEN,
+  //     );
+  //     return response;
+  //   } catch (e) {
+  //     throw Exception('Failed to add material: $e');
+  //   }
+  // }
 }

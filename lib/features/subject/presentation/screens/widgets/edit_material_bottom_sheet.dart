@@ -5,7 +5,7 @@ import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/features/subject/presentation/cubit/add_material_cubit/add_material_cubit.dart';
-import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit_cubit.dart';
+import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/bottom_sheet_button.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/build_text_form_field.dart';
 import 'package:provider/provider.dart';

@@ -7,7 +7,11 @@ final class AddMaterialInitial extends AddMaterialState {}
 
 final class AddMaterialLoading extends AddMaterialState {}
 
-final class AddMaterialSuccessAdmin extends AddMaterialState {}
+final class AddMaterialSuccessAdmin extends AddMaterialState {
+  final int? materialId;
+
+  AddMaterialSuccessAdmin({required this.materialId});
+}
 
 final class AddMaterialSuccessUser extends AddMaterialState {}
 

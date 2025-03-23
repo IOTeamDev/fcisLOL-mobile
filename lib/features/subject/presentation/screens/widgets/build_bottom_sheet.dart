@@ -12,7 +12,7 @@ import 'package:lol/main.dart';
 import 'package:lol/features/subject/data/models/author_model.dart';
 import 'package:lol/features/subject/data/models/material_model.dart';
 import 'package:lol/features/subject/presentation/cubit/add_material_cubit/add_material_cubit.dart';
-import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit_cubit.dart';
+import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/build_text_form_field.dart';
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/resources/constants_manager.dart';
@@ -44,30 +44,39 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
       listener: (context, state) async {
         if (state is AddMaterialSuccessUser) {
           showToastMessage(
-            message: 'The request has been sent to the Admin, and waiting for approval...',
-            states: ToastStates.SUCCESS
-          );
+              message:
+                  'The request has been sent to the Admin, and waiting for approval...',
+              states: ToastStates.SUCCESS);
           AdminCubit.get(context).sendNotificationToUsers(
-            sendToAdmin: true,
-            semester: MainCubit.get(context).profileModel!.semester,
-            title: cubit.notificationsMaterialTitle[Random().nextInt(cubit.notificationsMaterialTitle.length)],
-            body: "${MainCubit.get(context).profileModel!.name} wants to add a material in ${widget.subjectName.replaceAll('_', " ").replaceAll("and", "&")} !");
+              sendToAdmin: true,
+              semester: MainCubit.get(context).profileModel!.semester,
+              title: cubit.notificationsMaterialTitle[
+                  Random().nextInt(cubit.notificationsMaterialTitle.length)],
+              body:
+                  "${MainCubit.get(context).profileModel!.name} wants to add a material in ${widget.subjectName.replaceAll('_', " ").replaceAll("and", "&")} !");
           Navigator.of(context).pop();
         }
         if (state is AddMaterialSuccessAdmin) {
-          _getMaterials(context);
-          showToastMessage(message: 'Material Added Successfully', states: ToastStates.SUCCESS);
+          await context.read<MainCubit>().acceptRequest(
+              state.materialId!,
+              context.read<MainCubit>().profileModel!.semester,
+              context.read<MainCubit>().profileModel!.role);
+          await _getMaterials(context);
+          showToastMessage(
+              message: 'Material Added Successfully',
+              states: ToastStates.SUCCESS);
           Navigator.of(context).pop();
         }
         if (state is AddMaterialFailed) {
           showToastMessage(
-            message: 'error while uploading Material',
-            states: ToastStates.ERROR
-          );
+              message: 'Error while uploading Material',
+              states: ToastStates.ERROR);
           Navigator.of(context).pop();
         }
         if (state is AddMaterialLoading) {
-          showToastMessage(message: 'Uploading Material........', states: ToastStates.WARNING);
+          showToastMessage(
+              message: 'Uploading Material........',
+              states: ToastStates.WARNING);
           await AdminCubit.get(context).getFcmTokens();
         }
       },
@@ -182,20 +191,36 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               AuthorModel author = AuthorModel(
-                                authorId: MainCubit.get(context).profileModel?.id,
-                                authorName: MainCubit.get(context).profileModel?.name,
-                                authorPhoto: MainCubit.get(context).profileModel?.photo
-                              );
-                              BlocProvider.of<AddMaterialCubit>(context).addMaterial(
-                                title: widget.titleController.text,
-                                description: widget.descriptionController.text,
-                                link: widget.linkController.text,
-                                type: cubit.selectedType,
-                                subjectName: widget.subjectName,
-                                semester: AppConstants.navigatedSemester != MainCubit.get(context).profileModel!.semester && AppConstants.navigatedSemester != null? AppConstants.navigatedSemester!:MainCubit.get(context).profileModel!.semester,
-                                role: MainCubit.get(context).profileModel!.role,
-                                author: author
-                              );
+                                  authorId:
+                                      MainCubit.get(context).profileModel?.id,
+                                  authorName:
+                                      MainCubit.get(context).profileModel?.name,
+                                  authorPhoto: MainCubit.get(context)
+                                      .profileModel
+                                      ?.photo);
+                              BlocProvider.of<AddMaterialCubit>(context)
+                                  .addMaterial(
+                                      title: widget.titleController.text,
+                                      description:
+                                          widget.descriptionController.text,
+                                      link: widget.linkController.text,
+                                      type: cubit.selectedType,
+                                      subjectName: widget.subjectName,
+                                      semester: AppConstants
+                                                      .navigatedSemester !=
+                                                  MainCubit.get(context)
+                                                      .profileModel!
+                                                      .semester &&
+                                              AppConstants.navigatedSemester !=
+                                                  null
+                                          ? AppConstants.navigatedSemester!
+                                          : MainCubit.get(context)
+                                              .profileModel!
+                                              .semester,
+                                      role: MainCubit.get(context)
+                                          .profileModel!
+                                          .role,
+                                      author: author);
                             }
                           },
                         ),
@@ -207,13 +232,14 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
     );
   }
 
-  void _getMaterials(BuildContext context) async {
+  Future<void> _getMaterials(BuildContext context) async {
     try {
       await context
           .read<GetMaterialCubit>()
           .getMaterials(subject: widget.subjectName);
+      dev.log('get materials from addMaterialCubit');
     } catch (e) {
-      print('error while getting materials from addMaterialCubit $e');
+      debugPrint('error while getting materials from addMaterialCubit $e');
     }
   }
 }

@@ -1,5 +1,6 @@
-import 'dart:math';
-import 'dart:developer' as dev;
+import 'dart:developer';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/core/models/fcm_model.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
@@ -10,7 +11,6 @@ import 'package:lol/features/subject/data/repos/subject_repo_imp.dart';
 import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/core/network/endpoints.dart';
 import 'package:lol/core/network/remote/dio.dart';
-import 'package:meta/meta.dart';
 part 'add_material_state.dart';
 
 class AddMaterialCubit extends Cubit<AddMaterialState> {
@@ -18,7 +18,7 @@ class AddMaterialCubit extends Cubit<AddMaterialState> {
 
   static AddMaterialCubit get(context) => BlocProvider.of(context);
 
-  void addMaterial(
+  Future<void> addMaterial(
       {required String title,
       String description = '',
       required String link,
@@ -26,37 +26,33 @@ class AddMaterialCubit extends Cubit<AddMaterialState> {
       required String semester,
       required String subjectName,
       required String role,
-      required AuthorModel author}) {
+      required AuthorModel author}) async {
     // Get a random index
 
     emit(AddMaterialLoading());
-
-    DioHelp.postData(
-      path: MATERIAL,
-      data: {
-        'subject': subjectName,
-        'title': title,
-        'description': description,
-        'link': link,
-        'type': type,
-        'semester': semester,
-        'author': {'name': author.authorName, 'photo': author.authorPhoto}
-      },
-      token: AppConstants.TOKEN,
-    ).then((response) {
+    try {
+      final response = await DioHelp.postData(
+        path: MATERIAL,
+        data: {
+          'subject': subjectName,
+          'title': title,
+          'description': description,
+          'link': link,
+          'type': type,
+          'semester': semester,
+          'author': {'name': author.authorName, 'photo': author.authorPhoto}
+        },
+        token: AppConstants.TOKEN,
+      );
       if (role == KeysManager.admin || role == KeysManager.developer) {
-        emit(AddMaterialSuccessAdmin());
+        emit(AddMaterialSuccessAdmin(materialId: response.data['id']));
       } else {
         emit(AddMaterialSuccessUser());
       }
-
-      // getMaterials(subject: subjectName);
-    }).catchError(
-        // ignore: invalid_return_type_for_catch_error
-        (e) {
-      print('Error from posting material =/////////////////$e');
+    } catch (e) {
+      log('Error from posting material =/////////////////$e');
       emit(AddMaterialFailed(errorMessage: e.toString()));
-    });
+    }
   }
 
   List<String> notificationsMaterialTitle = [
@@ -102,7 +98,7 @@ class AddMaterialCubit extends Cubit<AddMaterialState> {
       );
       emit(EditMaterialSuccess());
     } catch (e) {
-      dev.log('Error from editting material =/////////////////$e');
+      debugPrint('Error from editting material =/////////////////$e');
       emit(EditMaterialFailed(errorMessage: e.toString()));
     }
   }

@@ -20,7 +20,7 @@ import 'package:lol/features/admin/presentation/view/admin_panal.dart';
 import 'package:lol/features/admin/presentation/view/announcements/announcements_list.dart';
 import 'package:lol/core/error/error_screen.dart';
 import 'package:lol/features/subject/data/repos/subject_repo_imp.dart';
-import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit_cubit.dart';
+import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit.dart';
 import 'package:lol/features/subject/presentation/screens/subject_details.dart';
 import 'package:lol/features/support_and_about_us/about_us.dart';
 import 'package:lol/features/support_and_about_us/user_advices/feedback_screen.dart';

@@ -6,7 +6,7 @@ import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubi
 import 'package:lol/features/subject/data/repos/subject_repo.dart';
 import 'package:lol/features/subject/data/repos/subject_repo_imp.dart';
 import 'package:lol/features/subject/presentation/cubit/add_material_cubit/add_material_cubit.dart';
-import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit_cubit.dart';
+import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit.dart';
 
 final GetIt getIt = GetIt.instance;
 
