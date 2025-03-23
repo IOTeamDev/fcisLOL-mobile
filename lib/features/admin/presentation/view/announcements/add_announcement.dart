@@ -69,25 +69,27 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
       listener: (context, state) {
         if (state is AdminSaveAnnouncementSuccessState) {
           showToastMessage(
-              message: StringsManager.announcementAdded,
-              states: ToastStates.SUCCESS);
+            message: StringsManager.announcementAdded,
+            states: ToastStates.SUCCESS
+          );
         } else if (state is AdminSaveAnnouncementsErrorState) {
           showToastMessage(
-              message: StringsManager.errorOccurred + StringsManager.colon + state.error,
-              states: ToastStates.ERROR);
+            message: StringsManager.errorOccurred + StringsManager.colon + state.error,
+            states: ToastStates.ERROR
+          );
         }
 
         if (state is AdminDeleteAnnouncementSuccessState) {
           showToastMessage(
-              message: StringsManager.announcementDeleted,
-              states: ToastStates.WARNING);
+            message: StringsManager.announcementDeleted,
+            states: ToastStates.WARNING
+          );
         }
         if (state is AdminDeleteAnnouncementErrorState) {
           showToastMessage(
-              message: StringsManager.errorOccurred +
-                  StringsManager.colon +
-                  state.error,
-              states: ToastStates.ERROR);
+            message: StringsManager.errorOccurred + StringsManager.colon + state.error,
+            states: ToastStates.ERROR
+          );
         }
       },
       builder: (context, state) {
@@ -131,9 +133,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                       height: _height,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(AppSizesDouble.s20),
-                        color: Provider.of<ThemeProvider>(context).isDark
-                          ? ColorsManager.darkPrimary
-                          : ColorsManager.lightGrey
+                        color: Theme.of(context).primaryColor,
                       ),
                       curve: Curves.fastEaseInToSlowEaseOut,
                       child: _isExpanded && _showContent
@@ -593,6 +593,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
     );
     cubit.getAnnouncementImage();
   }
+
   void _addDirectionListener(TextEditingController controller) {
     controller.addListener(() {
       final text = controller.text;

@@ -506,28 +506,28 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         ),
                       ],
                     ), //Drive
-                    ListTile(
-                      leading: Icon(
-                        IconsManager.linkIcon,
-                        color: Theme.of(context).iconTheme.color,
-                      ),
-                      title: Text(
-                        StringsManager.links,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                      onTap: () => navigate(context, UsefulLinks()),
-                    ), //important links
-                    ListTile(
-                      leading: Icon(
-                        IconsManager.paperIcon,
-                        color: Theme.of(context).iconTheme.color,
-                      ),
-                      title: Text(
-                        StringsManager.exams,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                      onTap: () => navigate(context, PreviousExams()),
-                    ), //Exams
+                    // ListTile(
+                    //   leading: Icon(
+                    //     IconsManager.linkIcon,
+                    //     color: Theme.of(context).iconTheme.color,
+                    //   ),
+                    //   title: Text(
+                    //     StringsManager.links,
+                    //     style: Theme.of(context).textTheme.bodyLarge,
+                    //   ),
+                    //   onTap: () => navigate(context, UsefulLinks()),
+                    // ), //important links
+                    // ListTile(
+                    //   leading: Icon(
+                    //     IconsManager.paperIcon,
+                    //     color: Theme.of(context).iconTheme.color,
+                    //   ),
+                    //   title: Text(
+                    //     StringsManager.exams,
+                    //     style: Theme.of(context).textTheme.bodyLarge,
+                    //   ),
+                    //   onTap: () => navigate(context, PreviousExams()),
+                    // ), //Exams
                     ExpansionTile(
                       leading: Icon(
                         IconsManager.supportAgentIcon,

@@ -75,7 +75,7 @@ class StringsManager {
   static const String years = 'Years';
   static const String firstYear = 'First Year';
   static const String secondYear = 'Second Year';
-  static const String thirdYear = 'third Year';
+  static const String thirdYear = 'Third Year';
   static const String seniors = 'seniors';
   static const String firstSemester = 'First Semester';
   static const String secondSemester = 'Second Semester';
@@ -123,15 +123,13 @@ class StringsManager {
   static const String getStarted = 'Get Started';
   static const String next = 'Next';
   static const String onBoardingTitle1 = 'Welcome to our App Uni-Notes';
-  static const String onBoardingTitle2 =
-      'Share materials with each other easily';
+  static const String onBoardingTitle2 = 'Share materials with each other easily';
   static const String onBoardingTitle3 = 'Be AWARE with the latest updates';
   static const String login = 'Login';
   static const String signup = 'Sign up';
   static const String alreadyHaveAccount = 'already have account!!';
   static const String successfullySignedIn = 'Successfully signed up!';
-  static const String signInErrorMessage =
-      'Wrong credentials, Please Try again!!';
+  static const String signInErrorMessage = 'Wrong credentials, Please Try again!!';
   static const String email = 'Email';
   static const String password = 'Password';
   static const String confirmPassword = "Confirm Password";

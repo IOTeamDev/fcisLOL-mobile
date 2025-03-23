@@ -12,7 +12,7 @@ const List<String> newFeatures = [
 ];
 
 const List<String> patchNotes = [
-  // 'First Patch Note',
+  'Fixed Third Year Capitalization',
   // 'Second Patch Note',
   // 'Third Patch Note',
 ];
