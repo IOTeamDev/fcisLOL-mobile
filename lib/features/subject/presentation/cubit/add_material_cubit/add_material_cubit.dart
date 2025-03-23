@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:developer' as dev;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/core/models/fcm_model.dart';
+import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/features/subject/data/models/author_model.dart';
 import 'package:lol/features/subject/data/models/material_model.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
@@ -43,7 +44,7 @@ class AddMaterialCubit extends Cubit<AddMaterialState> {
       },
       token: AppConstants.TOKEN,
     ).then((response) {
-      if (role == 'ADMIN') {
+      if (role == KeysManager.admin || role == KeysManager.developer) {
         emit(AddMaterialSuccessAdmin());
       } else {
         emit(AddMaterialSuccessUser());

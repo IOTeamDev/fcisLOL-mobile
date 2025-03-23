@@ -34,8 +34,7 @@ class RouteGenerator {
       case Routes.adminRequestsRoute:
         return MaterialPageRoute(builder: (_) => Requests());
       case Routes.announcementsListRoute:
-        return MaterialPageRoute(
-            builder: (_) => AnnouncementsList(semester: semester));
+        return MaterialPageRoute(builder: (_) => AnnouncementsList(semester: semester));
       default:
         return MaterialPageRoute(builder: (_) => const ErrorScreen());
     }

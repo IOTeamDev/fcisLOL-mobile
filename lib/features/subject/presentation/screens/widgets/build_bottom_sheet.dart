@@ -44,35 +44,30 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
       listener: (context, state) async {
         if (state is AddMaterialSuccessUser) {
           showToastMessage(
-              message:
-                  'The request has been sent to the Admin, and waiting for approval...',
-              states: ToastStates.SUCCESS);
+            message: 'The request has been sent to the Admin, and waiting for approval...',
+            states: ToastStates.SUCCESS
+          );
           AdminCubit.get(context).sendNotificationToUsers(
-              sendToAdmin: true,
-              semester: MainCubit.get(context).profileModel!.semester,
-              title: cubit.notificationsMaterialTitle[
-                  Random().nextInt(cubit.notificationsMaterialTitle.length)],
-              body:
-                  "${MainCubit.get(context).profileModel!.name} wants to add a material in ${widget.subjectName.replaceAll('_', " ").replaceAll("and", "&")} !");
+            sendToAdmin: true,
+            semester: MainCubit.get(context).profileModel!.semester,
+            title: cubit.notificationsMaterialTitle[Random().nextInt(cubit.notificationsMaterialTitle.length)],
+            body: "${MainCubit.get(context).profileModel!.name} wants to add a material in ${widget.subjectName.replaceAll('_', " ").replaceAll("and", "&")} !");
           Navigator.of(context).pop();
         }
         if (state is AddMaterialSuccessAdmin) {
           _getMaterials(context);
-          showToastMessage(
-              message: 'Material Added Successfully',
-              states: ToastStates.SUCCESS);
+          showToastMessage(message: 'Material Added Successfully', states: ToastStates.SUCCESS);
           Navigator.of(context).pop();
         }
         if (state is AddMaterialFailed) {
           showToastMessage(
-              message: 'error while uploading Material',
-              states: ToastStates.ERROR);
+            message: 'error while uploading Material',
+            states: ToastStates.ERROR
+          );
           Navigator.of(context).pop();
         }
         if (state is AddMaterialLoading) {
-          showToastMessage(
-              message: 'Uploading Material........',
-              states: ToastStates.WARNING);
+          showToastMessage(message: 'Uploading Material........', states: ToastStates.WARNING);
           await AdminCubit.get(context).getFcmTokens();
         }
       },
@@ -189,19 +184,18 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
                               AuthorModel author = AuthorModel(
                                 authorId: MainCubit.get(context).profileModel?.id,
                                 authorName: MainCubit.get(context).profileModel?.name,
-                                authorPhoto: MainCubit.get(context).profileModel?.photo);
+                                authorPhoto: MainCubit.get(context).profileModel?.photo
+                              );
                               BlocProvider.of<AddMaterialCubit>(context).addMaterial(
                                 title: widget.titleController.text,
                                 description: widget.descriptionController.text,
                                 link: widget.linkController.text,
                                 type: cubit.selectedType,
                                 subjectName: widget.subjectName,
-                                semester: AppConstants.navigatedSemester != MainCubit.get(context).profileModel!.semester? AppConstants.navigatedSemester!:MainCubit.get(context).profileModel!.semester,
+                                semester: AppConstants.navigatedSemester != MainCubit.get(context).profileModel!.semester && AppConstants.navigatedSemester != null? AppConstants.navigatedSemester!:MainCubit.get(context).profileModel!.semester,
                                 role: MainCubit.get(context).profileModel!.role,
                                 author: author
                               );
-                              dev.log(AppConstants.navigatedSemester!);
-                              dev.log(MainCubit.get(context).profileModel!.semester);
                             }
                           },
                         ),

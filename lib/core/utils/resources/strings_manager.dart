@@ -107,8 +107,8 @@ class StringsManager {
   static const String accept = 'Accept';
   static const String reject = 'Reject';
   static const String delete = 'Delete';
-  static const String whoAreWe = 'Who Are We';
-  static const String uniNotes = 'UniNotes';
+  static const String whoAreWe = 'Who Are We?';
+  static const String uniNotes = 'Uni Notes';
   static const String meetTheTeam = 'Meet The Team';
   static const String aboutUsBrief =
       ' is an interactive platform where study materials are collected, allowing students to contribute content for all academic years. Admins review and approve submissions to ensure quality.';
@@ -137,7 +137,7 @@ class StringsManager {
   static const String phoneNumber = 'Phone Number';
   static const String forgotPassword = 'Forgot Password';
   static const String passwordNotMatchingError = 'Passwords does not match';
-  static const String contact = 'Press to Contact';
+  static const String contact = 'Contact';
   static const String profileImage = 'Profile Image';
   static const String semester = 'Semester';
 }

@@ -26,6 +26,7 @@ import 'package:lol/features/previous_exams/previous_exams.dart';
 import 'package:lol/features/profile/view/profile.dart';
 import 'package:lol/features/support_and_about_us/about_us.dart';
 import 'package:lol/features/support_and_about_us/user_advices/feedback_screen.dart';
+import 'package:lol/features/support_and_about_us/user_advices/release_notes_screen.dart';
 import 'package:lol/features/support_and_about_us/user_advices/report_bug.dart';
 import 'package:lol/features/useful_links/useful_links.dart';
 import 'package:provider/provider.dart';
@@ -564,6 +565,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             navigate(context, FeedbackScreen());
                           },
                         ),
+                        ListTile(
+                          title: Text(
+                            StringsManager.releaseNotes,
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                          onTap: () {
+                            navigate(context, ReleaseNotesScreen());
+                          },
+                        ),
                       ],
                     ), //support
                     ListTile(
@@ -622,8 +632,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               },
                             ).show();
                           } else {
-                            Cache.writeData(
-                                key: KeysManager.isDark, value: false);
+                            Cache.removeValue(key: KeysManager.isDark);
+                            Cache.removeValue(key: KeysManager.token);
+                            AppConstants.SelectedSemester = null;
+                            AppConstants.TOKEN = null;
                             Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
                                 builder: (context) => RegistrationLayout(),
@@ -636,23 +648,25 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
-                                AppConstants.TOKEN != null
-                                    ? IconsManager.logOutIcon
-                                    : IconsManager.logInIcon,
-                                color: ColorsManager.white),
+                              AppConstants.TOKEN != null
+                                ? IconsManager.logOutIcon
+                                : IconsManager.logInIcon,
+                              color: ColorsManager.white
+                            ),
                             SizedBox(
                               width: AppSizesDouble.s10,
                             ),
                             Text(
                               AppConstants.TOKEN != null
-                                  ? StringsManager.logOut
-                                  : StringsManager.login,
+                                ? StringsManager.logOut
+                                : StringsManager.login,
                               style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge!
-                                  .copyWith(
-                                      fontWeight: FontWeightManager.semiBold,
-                                      color: ColorsManager.white),
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(
+                                  fontWeight: FontWeightManager.semiBold,
+                                  color: ColorsManager.white
+                                ),
                             ),
                           ],
                         )),

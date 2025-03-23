@@ -74,6 +74,12 @@ class AppConstants {
       'contactUrl': 'https://0mr.me/who'
     },
     {
+      'name': 'Ahmed M. Khalaf',
+      'imagePath': 'https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/WhatsApp%20Image%202025-03-23%20at%2017.44.20_2ac6c493.jpg?alt=media&token=cd0c8dad-6c38-4153-9396-53c98c9bc30a',
+      'role': 'UI/UX Designer',
+      'contactUrl': 'https://linktr.ee/ZVAXEROWS?utm_source=linktree_admin_share'
+    },
+    {
       'name': 'Mahmoud Ahmed',
       'imagePath': 'https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/images%2Ffile%20(4).jpg?alt=media&token=66fabec5-9958-4217-81cc-73bfe4cabdba',
       'role': 'UI/UX Designer',

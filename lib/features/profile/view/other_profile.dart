@@ -152,26 +152,12 @@ class _OtherProfileState extends State<OtherProfile> {
                                 return materialBuilder(
                                   index,
                                   context,
-                                  title: mainCubit
-                                    .otherProfile!
-                                    .materials[index]
-                                    .title,
-                                  description: mainCubit
-                                    .otherProfile!
-                                    .materials[index]
-                                    .description,
-                                  type: mainCubit
-                                    .otherProfile!
-                                    .materials[index]
-                                    .type,
-                                  link: mainCubit
-                                    .otherProfile!
-                                    .materials[index]
-                                    .link,
-                                subjectName: mainCubit
-                                    .otherProfile!
-                                    .materials[index]
-                                    .subject,
+                                  isMain: false,
+                                  title: mainCubit.otherProfile!.materials[index].title,
+                                  description: mainCubit.otherProfile!.materials[index].description,
+                                  type: mainCubit.otherProfile!.materials[index].type,
+                                  link: mainCubit.otherProfile!.materials[index].link,
+                                  subjectName: mainCubit.otherProfile!.materials[index].subject,
                                 );
                               },
                               separatorBuilder: (context, index) => SizedBox(height: AppSizesDouble.s10,),

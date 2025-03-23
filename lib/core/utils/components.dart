@@ -110,12 +110,12 @@ Widget materialBuilder(index, context, {title, link, type, subjectName, descript
             textAlign: TextAlign.start,
             subjectName.toString()
               .replaceAll(StringsManager.underScore, StringsManager.space)
-              .replaceAll(StringsManager.andWord.substring(AppSizes.s0).toUpperCase()+StringsManager.andWord.substring(AppSizes.s1,AppSizes.s2).toUpperCase(), StringsManager.andSymbol),
+              .replaceAll(StringsManager.andWord.substring(AppSizes.s0).toUpperCase()+StringsManager.andWord.substring(AppSizes.s1).toUpperCase(), StringsManager.andSymbol),
             maxLines: AppSizes.s1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-                fontSize: AppQueries.screenWidth(context) / AppSizes.s22,
-                color: ColorsManager.white
+              fontSize: AppQueries.screenWidth(context) / AppSizes.s22,
+              color: ColorsManager.white
             ),
           ),
         ),
@@ -150,21 +150,24 @@ Widget materialBuilder(index, context, {title, link, type, subjectName, descript
                     ),
                   ),
                 ),
-                Text(
-                  (isMain?
-                  cubit.profileModel!.materials[index].accepted!:
-                  cubit.otherProfile!.materials[index].accepted! )?
-                  StringsManager.accepted :
-                  StringsManager.pending,
-                  style: TextStyle(
-                    color: (isMain? cubit.profileModel!.materials[index].accepted!: cubit.otherProfile!.materials[index].accepted!) ?
-                    ColorsManager.persianGreen :
-                    ColorsManager.gold
-                  ),
-                ),
               ],
             );
           },
+        ),
+        Align(
+          alignment: Alignment.centerRight,
+          child: Text(
+            (isMain?
+            cubit.profileModel!.materials[index].accepted!:
+            cubit.otherProfile!.materials[index].accepted! )?
+            StringsManager.accepted :
+            StringsManager.pending,
+            style: TextStyle(
+              color: (isMain? cubit.profileModel!.materials[index].accepted!: cubit.otherProfile!.materials[index].accepted!) ?
+              ColorsManager.persianGreen :
+              ColorsManager.gold
+            ),
+          ),
         ),
       ],
     ),

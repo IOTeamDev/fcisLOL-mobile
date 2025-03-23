@@ -99,12 +99,11 @@ class AuthCubit extends Cubit<AuthState> {
               Uri.file(image.path).pathSegments.last)
           .putFile(image);
     } else {
-      uploadTask = await FirebaseStorage.instance
-          .ref()
-          .child(StringsManager.announcements.toLowerCase() +
-              StringsManager.forwardSlash +
-              Uri.file(image.path).pathSegments.last)
-          .putFile(image);
+      uploadTask = await FirebaseStorage.instance.ref()
+        .child(StringsManager.announcements.toLowerCase() +
+            StringsManager.forwardSlash +
+            Uri.file(image.path).pathSegments.last)
+        .putFile(image);
     }
 
     try {

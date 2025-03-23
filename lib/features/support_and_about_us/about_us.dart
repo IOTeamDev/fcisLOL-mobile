@@ -28,7 +28,6 @@ class AboutUs extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               // About Us Section
               Text(
@@ -40,34 +39,43 @@ class AboutUs extends StatelessWidget {
                 child: divider(color: Colors.grey),
               ),
               Container(
-                padding: EdgeInsets.symmetric(vertical: AppPaddings.p10),
+                padding: EdgeInsets.symmetric(horizontal: AppPaddings.p15, vertical: AppPaddings.p20),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.circular(AppSizesDouble.s15)
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      StringsManager.uniNotes,
-                      style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s9, fontWeight: FontWeight.bold)
-                    ),
-                    Text(
-                      StringsManager.allInOne,
-                      style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize:  AppQueries.screenWidth(context) / AppSizes.s15, color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.lightGrey1: ColorsManager.lightGrey)
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            StringsManager.uniNotes,
+                            style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s11, fontWeight: FontWeight.w500, color: ColorsManager.white)
+                          ),
+                        ),
+                        Text(
+                          StringsManager.allInOne,
+                          style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize:  AppQueries.screenWidth(context) / AppSizes.s17, color: ColorsManager.grey2)
+                        ),
+                      ],
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(
-                        horizontal: AppPaddings.p10,
                         vertical: AppPaddings.p10,
                       ),
                       child: RichText(
                         text: TextSpan(
                           text: StringsManager.uniNotes,
-                          style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s18),
+                          style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s22, fontWeight: FontWeight.w500, color: ColorsManager.white),
                           children: <TextSpan>[
                             TextSpan(
                               text: StringsManager.aboutUsBrief,
                               style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                                letterSpacing: AppSizesDouble.s1_2,
-                                fontSize: AppQueries.screenWidth(context) / AppSizes.s20,
+                                fontSize: AppQueries.screenWidth(context) / AppSizes.s27,
                                 fontWeight: FontWeight.normal,
+                                color: ColorsManager.white
                               )
                             ),
                           ],
@@ -77,38 +85,30 @@ class AboutUs extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: AppSizesDouble.s25),
               // Meet the Team Section
-              Text(
-                StringsManager.meetTheTeam,
-                style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s13),
-              ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: AppPaddings.p20),
                 child: divider(color: Colors.grey),
               ),
-              SizedBox(
-                height: AppQueries.screenHeight(context),
-                child: GridView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: AppSizes.s2,
-                    crossAxisSpacing: AppSizesDouble.s10,
-                    mainAxisSpacing: AppSizesDouble.s10,
-                    childAspectRatio: AppSizesDouble.s0_8,
-                  ),
-                  itemCount: AppConstants.teamMembers.length,
-                  itemBuilder: (context, index) {
-                    return _buildTeamMember(
-                      context,
-                      AppConstants.teamMembers[index][KeysManager.imagePath]!,
-                      AppConstants.teamMembers[index][KeysManager.name]!,
-                      AppConstants.teamMembers[index][KeysManager.role]!,
-                      AppConstants.teamMembers[index][KeysManager.contactUrl]!
-                    );
-                  },
-                ),
+              Text(
+                StringsManager.meetTheTeam,
+                style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s13),
+              ),
+              SizedBox(height: AppSizesDouble.s10,),
+              ListView.separated(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: AppConstants.teamMembers.length,
+                itemBuilder: (context, index) {
+                  return _buildTeamMember(
+                    context,
+                    AppConstants.teamMembers[index][KeysManager.imagePath]!,
+                    AppConstants.teamMembers[index][KeysManager.name]!,
+                    AppConstants.teamMembers[index][KeysManager.role]!,
+                    AppConstants.teamMembers[index][KeysManager.contactUrl]!
+                  );
+                },
+                separatorBuilder: (context, index) => SizedBox(height: AppSizesDouble.s15,),
               ),
             ],
           ),
@@ -118,36 +118,61 @@ class AboutUs extends StatelessWidget {
   }
 
   Widget _buildTeamMember(context, String imagePath, String name, String role, String contactEmail) {
-    return InkWell(
-      onTap: () =>  _contactTeamMember(contactEmail),
-      child: Card(
-        color: Theme.of(context).primaryColor,
-        elevation: AppSizesDouble.s4,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSizesDouble.s15)),
-        child: Column(
+    return IntrinsicHeight(
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
+          boxShadow: [
+            BoxShadow(
+              color: ColorsManager.black.withValues(alpha: AppSizesDouble.s0_3),
+              offset: Offset(0, 5),
+              blurRadius: 5
+            )
+          ],
+          borderRadius: BorderRadius.circular(AppSizesDouble.s15),
+        ),
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             CircleAvatar(
-              radius: AppSizesDouble.s40,
+              radius: AppSizesDouble.s30,
               backgroundImage: NetworkImage(imagePath),
             ),
-            SizedBox(height: AppSizesDouble.s5),
-            Text(
-              name,
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(color: ColorsManager.white),
-              textAlign: TextAlign.center,
-              maxLines: AppSizes.s2,
-              overflow: TextOverflow.ellipsis,
+            SizedBox(width: AppSizesDouble.s10),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: AppQueries.screenWidth(context)/2.5),
+                  child: Text(
+                    name,
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(color: ColorsManager.white,),
+                    textAlign: TextAlign.start,
+                    maxLines: AppSizes.s2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Text(
+                  role,
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: ColorsManager.grey2)
+                ),
+              ],
             ),
-            Text(
-              role,
-              style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: ColorsManager.grey2)
-            ),
-            SizedBox(height: AppSizesDouble.s10),
-            Text(
-              StringsManager.contact,
-              style: TextStyle(color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.dodgerBlue:ColorsManager.lightGrey2),
-            ),
+            Spacer(),
+            TextButton(
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: AppQueries.screenWidth(context)/AppSizes.s20),
+                backgroundColor: Provider.of<ThemeProvider>(context).isDark? ColorsManager.lightPrimary:ColorsManager.white
+              ),
+              onPressed: () => _contactTeamMember(contactEmail),
+              child: Text(
+                StringsManager.contact,
+                style: TextStyle(color: Theme.of(context).textTheme.titleSmall!.color),
+              ),
+            )
           ],
         ),
       ),

@@ -93,7 +93,7 @@ class _AnnouncementsListState extends State<AnnouncementsList> {
                   ),
                   builder: (context) {
                     List<AnnouncementModel> announcements;
-                    (MainCubit.get(context).profileModel!.role == KeysManager.developer && cubit.allAnnouncements.isNotEmpty)?
+                    (MainCubit.get(context).profileModel != null && MainCubit.get(context).profileModel!.role == KeysManager.developer && cubit.allAnnouncements.isNotEmpty)?
                     announcements = cubit.allAnnouncements: announcements = cubit.announcements;
                     List<AnnouncementModel> filteredAnnouncements = filteredValue == _items[0]
                     ? announcements
