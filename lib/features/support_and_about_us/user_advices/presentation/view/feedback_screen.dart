@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
@@ -8,10 +10,10 @@ import 'package:lol/core/widgets/default_text_field.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../core/cubits/main_cubit/main_cubit.dart';
-import '../../../core/utils/resources/constants_manager.dart';
-import '../../../core/utils/resources/values_manager.dart';
-import '../../../main.dart';
+import '../../../../../core/cubits/main_cubit/main_cubit.dart';
+import '../../../../../core/utils/resources/constants_manager.dart';
+import '../../../../../core/utils/resources/values_manager.dart';
+import '../../../../../main.dart';
 
 class FeedbackScreen extends StatefulWidget {
   FeedbackScreen({super.key});
@@ -40,8 +42,11 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
         centerTitle: true,
 
       ),
-      body: SingleChildScrollView(
-        child: _buildFeedBackForm(context),
+      body: BlocConsumer<MainCubit, MainCubitStates>(
+        listener: (context, state) {},
+        builder: (context, state) => SingleChildScrollView(
+          child: _buildFeedBackForm(context),
+        ),
       ),
     );
   }
@@ -73,7 +78,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                   return null;
                 },
                 decoration: InputDecoration(
-                  hintText: StringsManager.bugDescription,
+                  hintText: StringsManager.feedback,
                   hintStyle: Theme.of(context).textTheme.headlineMedium!.copyWith(color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.lightGrey1: ColorsManager.black.withValues(alpha: 0.7)),
                   border: UnderlineInputBorder(),
                   enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: ColorsManager.grey)),
@@ -131,16 +136,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   Future<void> sendFeedback({required String feedbackDescription}) async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-
-      final String subject = Uri.encodeComponent('Feedback');
-      final String body = Uri.encodeComponent(feedbackDescription);
-
-      final Uri emailUri = Uri(
-        scheme: 'mailto',
-        path: 'taemaomar65@gmail.com',
-        query: 'subject=$subject&body=$body',
-      );
-      await launchUrl(emailUri);
+      MainCubit.get(context).sendReportBugOrFeedBack('\n\nFeedBack\n\n$feedbackDescription');
     }
   }
 

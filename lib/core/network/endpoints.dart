@@ -12,3 +12,5 @@ const String LEADERBOARD = 'leaderboard';
 const String USERS = 'users';
 
 const String EDIT = 'material/edit';
+
+const String REPORT = 'report';

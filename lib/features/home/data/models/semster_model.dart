@@ -13,15 +13,11 @@ class SubjectModel {
 }
 
 List<SubjectModel> semesterOne = [
-  SubjectModel(
-      subjectName: "Introduction_to_Computer_Sciences",
-      subjectImage: "images/c-.png"),
+  SubjectModel(subjectName: "Introduction_to_Computer_Sciences", subjectImage: "images/c-.png"),
   SubjectModel(subjectName: "Physics", subjectImage: "images/physics.png"),
   SubjectModel(subjectName: "Calculus", subjectImage: "images/integral.png"),
   SubjectModel(subjectName: "Psychology", subjectImage: "images/autism.png"),
-  SubjectModel(
-      subjectName: "Probability_and_Statistics",
-      subjectImage: "images/dice.png"),
+  SubjectModel(subjectName: "Probability_and_Statistics", subjectImage: "images/dice.png"),
   SubjectModel(subjectName: "English", subjectImage: "images/english.png"),
 ];
 
@@ -70,8 +66,7 @@ List<SubjectModel> semesterFour = [
 ];
 
 List<SubjectModel> semesterFive = [
-  SubjectModel(
-      subjectName: "Operating_Systems", subjectImage: "images/linux-logo.png"),
+  SubjectModel(subjectName: "Operating_Systems", subjectImage: "images/linux-logo.png"),
   SubjectModel(
       subjectName: "DSP",
       subjectImage:
@@ -110,8 +105,7 @@ List<SubjectModel> semesterSix = [
       subjectImage: "images/coding-language.png"), //
   SubjectModel(
       subjectName: "HPC",
-      subjectImage:
-          "images/performance.png"), //
+      subjectImage: "images/performance.png"), //
   SubjectModel(
       subjectName: "Analysis_and_Design_of_Algorithms",
       subjectImage: "images/algorithm.png"), //

@@ -21,7 +21,7 @@ class IconsManager{
   static const IconData campaignIcon = Icons.campaign;
   static const IconData emailIcon = Icons.email;
   static const IconData linkIcon = Icons.link;
-  static const IconData paperIcon = Icons.add_alarm_outlined;
+  static const IconData paperIcon = Icons.folder_special;
   static const IconData refreshIcon = Icons.refresh;
   static const IconData checkIcon = Icons.check;
   static const IconData eyeIcon = Icons.visibility;
@@ -33,4 +33,6 @@ class IconsManager{
   static const IconData editIcon = Icons.edit_outlined;
   static const IconData deleteIcon = CupertinoIcons.delete;
   static const IconData circleIcon = CupertinoIcons.circle_fill;
+  static const IconData dropdownIcon = Icons.keyboard_arrow_down;
+  static const IconData searchIcon = CupertinoIcons.search;
 }

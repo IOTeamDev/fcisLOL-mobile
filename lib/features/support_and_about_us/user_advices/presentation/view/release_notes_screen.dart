@@ -10,8 +10,8 @@ import 'package:lol/features/support_and_about_us/user_advices/release_notes_wid
 import 'package:lol/features/support_and_about_us/user_advices/release_notes_widgets/view/new_features.dart';
 import 'package:lol/features/support_and_about_us/user_advices/release_notes_widgets/view/patch_notes.dart';
 import 'package:provider/provider.dart';
-import '../../../core/utils/resources/theme_provider.dart';
-import '../../../core/utils/resources/values_manager.dart';
+import '../../../../../core/utils/resources/theme_provider.dart';
+import '../../../../../core/utils/resources/values_manager.dart';
 
 class ReleaseNotesScreen extends StatelessWidget {
   const ReleaseNotesScreen({super.key});

@@ -306,8 +306,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                           DropdownButton<String>(
                                             hint: const Text(
                                               StringsManager.announcementType,
-                                              style: TextStyle(
-                                                  color: ColorsManager.white),
+                                              style: TextStyle(color: ColorsManager.white),
                                             ),
                                             value: _selectedItem,
                                             dropdownColor: ColorsManager.white, // Background color for the dropdown list

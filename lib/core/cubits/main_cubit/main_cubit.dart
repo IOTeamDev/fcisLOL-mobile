@@ -121,8 +121,7 @@ class MainCubit extends Cubit<MainCubitStates> {
           .ref()
           .child(StringsManager.announcements.toLowerCase() +
               StringsManager.forwardSlash +
-              Uri.file(image.path).pathSegments.last)
-          .putFile(image);
+              Uri.file(image.path).pathSegments.last).putFile(image);
     }
 
     try {
@@ -142,16 +141,11 @@ class MainCubit extends Cubit<MainCubitStates> {
   getProfileInfo() async {
     emit(GetProfileLoading());
     try {
-      final response =
-          await DioHelp.getData(path: CURRENTUSER, token: AppConstants.TOKEN);
+      final response = await DioHelp.getData(path: CURRENTUSER, token: AppConstants.TOKEN);
       profileModel = ProfileModel.fromJson(response.data);
       AppConstants.SelectedSemester = profileModel!.semester;
-      await Cache.writeData(
-          key: KeysManager.semester, value: profileModel!.semester);
-      dev.log(
-          'profile semester =====================================> ${profileModel!.semester}');
-      dev.log(
-          'selected semester =====================================> ${AppConstants.SelectedSemester}');
+      await Cache.writeData(key: KeysManager.semester, value: profileModel!.semester);
+
       emit(GetProfileSuccess());
     } catch (e) {
       print(e.toString());
@@ -263,7 +257,6 @@ class MainCubit extends Cubit<MainCubitStates> {
       } else {
         getRequests(semester: semester);
       }
-      dev.log('material accepted successfully');
     } catch (e) {
       debugPrint('error from accepting request => $e');
 
@@ -273,26 +266,6 @@ class MainCubit extends Cubit<MainCubitStates> {
 
   List<LeaderboardModel>? leaderboardModel;
   List<LeaderboardModel>? notAdminLeaderboardModel;
-  LeaderboardModel? score4User;
-
-  Future<void> getScore4User(int userId) async {
-    score4User = null;
-    print('Entered user Score');
-    for (int i = 0; i < leaderboardModel!.length; i++) {
-      if (leaderboardModel![i].id == userId) {
-        print('got User score');
-        score4User = leaderboardModel![i];
-        //emit(GetScore4User());
-      } else {
-        score4User = LeaderboardModel.fromJson({
-          'id': profileModel!.id,
-          'score': 0,
-          'name': profileModel!.name,
-          'photo': profileModel!.photo,
-        });
-      }
-    }
-  }
 
   Future? getLeaderboard(currentSemester) {
     notAdminLeaderboardModel = [];
@@ -313,9 +286,6 @@ class MainCubit extends Cubit<MainCubitStates> {
       });
 
       notAdminLeaderboardModel!.sort((a, b) => b.score!.compareTo(a.score!));
-      if (profileModel != null) {
-        getScore4User(profileModel!.id);
-      }
       emit(GetLeaderboardSuccessState());
     }).catchError((onError) {
       print(onError.toString());
@@ -334,7 +304,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     DioHelp.putData(
         token: AppConstants.TOKEN,
         query: {KeysManager.id: userID},
-        path: KeysManager.users,
+        path: USERS,
         data: {
           if (semester != null) KeysManager.semester: semester,
           if (fcmToken != null) KeysManager.fcmToken: fcmToken,
@@ -351,7 +321,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     emit(DeleteAccountLoading());
     try {
       await DioHelp.deleteData(
-          path: KeysManager.users,
+          path: USERS,
           token: AppConstants.TOKEN,
           query: {KeysManager.id: id});
       await Cache.removeValue(key: KeysManager.token);
@@ -364,5 +334,15 @@ class MainCubit extends Cubit<MainCubitStates> {
       dev.log('error form deleting acoount => $e');
       emit(DeleteAccountFailed(errMessage: e.toString()));
     }
+  }
+
+  void sendReportBugOrFeedBack(message){
+    DioHelp.postData(path: REPORT, data: {
+      'name':profileModel?.name??'Guest',
+      'message': message
+    }).then((value){
+      emit(SendingReportOrFeedBackSuccessState());
+      showToastMessage(message: 'Sent Successfully!', states: ToastStates.SUCCESS);
+    });
   }
 }

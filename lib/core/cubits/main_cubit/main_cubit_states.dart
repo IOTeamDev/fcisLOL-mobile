@@ -106,3 +106,7 @@ final class DeleteAccountFailed extends MainCubitStates {
 }
 
 final class DeleteAccountSuccess extends MainCubitStates {}
+
+final class SendingReportOrFeedBackSuccessState extends MainCubitStates {}
+
+final class SendingReportOrFeedBackErrorState extends MainCubitStates {}

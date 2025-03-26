@@ -100,7 +100,7 @@ class StringsManager {
   static const String deleteMaterialMessage = 'Are you sure you want to Delete the Material?';
   static const String logOutSuccessfully = 'Logout Successfully';
   static const String links = 'Links';
-  static const String exams = 'Exams';
+  static const String exams = 'Previous Exams';
   static const String noDueDate = 'No Due Date';
   static const String noMoreUsers = 'No more Users!!!';
   static const String refresh = 'refresh';

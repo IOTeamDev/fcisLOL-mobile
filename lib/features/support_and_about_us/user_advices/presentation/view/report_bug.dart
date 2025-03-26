@@ -5,10 +5,10 @@ import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../core/cubits/main_cubit/main_cubit.dart';
-import '../../../core/utils/resources/constants_manager.dart';
-import '../../../core/utils/resources/values_manager.dart';
-import '../../../main.dart';
+import '../../../../../core/cubits/main_cubit/main_cubit.dart';
+import '../../../../../core/utils/resources/constants_manager.dart';
+import '../../../../../core/utils/resources/values_manager.dart';
+import '../../../../../main.dart';
 
 class ReportBug extends StatefulWidget {
 
@@ -163,18 +163,20 @@ class _ReportBugState extends State<ReportBug> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      final String subject = Uri.encodeComponent(bugTitle);
-      final String body = Uri.encodeComponent(
-        bugDescription,
-      );
+      // final String subject = Uri.encodeComponent(bugTitle);
+      // final String body = Uri.encodeComponent(
+      //   bugDescription,
+      // );
+      //
+      // final Uri emailUri = Uri(
+      //   scheme: 'mailto',
+      //   path: 'taemaomar65@gmail.com',
+      //   query: 'subject=$subject&body=$body',
+      // );
+      //
+      // await launchUrl(emailUri);
 
-      final Uri emailUri = Uri(
-        scheme: 'mailto',
-        path: 'taemaomar65@gmail.com',
-        query: 'subject=$subject&body=$body',
-      );
-
-      await launchUrl(emailUri);
+      MainCubit.get(context).sendReportBugOrFeedBack('\n\nBug Report: $bugTitle\n\n$bugDescription');
     }
   }
 

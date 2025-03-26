@@ -25,9 +25,9 @@ import 'package:lol/features/leaderboard/presentation/view/leaderboard_view.dart
 import 'package:lol/features/previous_exams/previous_exams.dart';
 import 'package:lol/features/profile/view/profile.dart';
 import 'package:lol/features/support_and_about_us/about_us.dart';
-import 'package:lol/features/support_and_about_us/user_advices/feedback_screen.dart';
-import 'package:lol/features/support_and_about_us/user_advices/release_notes_screen.dart';
-import 'package:lol/features/support_and_about_us/user_advices/report_bug.dart';
+import 'package:lol/features/support_and_about_us/user_advices/presentation/view/feedback_screen.dart';
+import 'package:lol/features/support_and_about_us/user_advices/presentation/view/release_notes_screen.dart';
+import 'package:lol/features/support_and_about_us/user_advices/presentation/view/report_bug.dart';
 import 'package:lol/features/useful_links/useful_links.dart';
 import 'package:provider/provider.dart';
 
@@ -361,15 +361,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                 StringsManager.firstSemester,
                                 style: Theme.of(context).textTheme.bodyLarge,
                               ),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius
-                                      .zero), // Removes divider when expanded
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero), // Removes divider when expanded
                               onTap: () {
                                 AppConstants.navigatedSemester = 'Five';
                                 navigate(
-                                    context,
-                                    SemesterNavigate(
-                                        semester: StringsManager.five));
+                                  context,
+                                  SemesterNavigate(semester: StringsManager.five)
+                                );
                               },
                             ),
                             ListTile(
@@ -518,17 +516,17 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     //   ),
                     //   onTap: () => navigate(context, UsefulLinks()),
                     // ), //important links
-                    // ListTile(
-                    //   leading: Icon(
-                    //     IconsManager.paperIcon,
-                    //     color: Theme.of(context).iconTheme.color,
-                    //   ),
-                    //   title: Text(
-                    //     StringsManager.exams,
-                    //     style: Theme.of(context).textTheme.bodyLarge,
-                    //   ),
-                    //   onTap: () => navigate(context, PreviousExams()),
-                    // ), //Exams
+                    ListTile(
+                      leading: Icon(
+                        IconsManager.paperIcon,
+                        color: Theme.of(context).iconTheme.color,
+                      ),
+                      title: Text(
+                        StringsManager.exams,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      onTap: () => navigate(context, PreviousExams()),
+                    ), //Exams
                     ExpansionTile(
                       leading: Icon(
                         IconsManager.supportAgentIcon,

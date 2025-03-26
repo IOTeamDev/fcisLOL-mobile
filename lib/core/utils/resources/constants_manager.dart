@@ -42,8 +42,7 @@ class AppConstants {
       case "Eight":
         return "Fourth Level";
 
-      default:
-        return null.toString();
+      default: return null.toString();
     }
   }
 
