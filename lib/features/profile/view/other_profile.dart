@@ -17,8 +17,6 @@ import 'package:lol/features/home/data/models/semster_model.dart';
 import 'package:lol/main.dart';
 import 'package:lol/core/models/profile/profile_materila_model.dart';
 import 'package:lol/core/utils/components.dart';
-import 'package:lol/core/widgets/default_button.dart';
-import 'package:lol/core/widgets/default_text_field.dart';
 import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';

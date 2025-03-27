@@ -39,7 +39,6 @@ import 'package:lol/features/support_and_about_us/about_us.dart';
 import 'package:lol/features/support_and_about_us/user_advices/presentation/view/feedback_screen.dart';
 import 'package:lol/features/support_and_about_us/user_advices/presentation/view/report_bug.dart';
 import 'package:lol/core/utils/components.dart';
-import 'package:lol/core/widgets/snack.dart';
 import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';

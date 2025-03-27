@@ -12,7 +12,6 @@ import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubi
 import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit_states.dart';
 import 'package:lol/features/auth/presentation/view/register.dart';
 import 'package:lol/core/utils/components.dart';
-import 'package:lol/core/widgets/snack.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/features/auth/presentation/view/choosing_year.dart';

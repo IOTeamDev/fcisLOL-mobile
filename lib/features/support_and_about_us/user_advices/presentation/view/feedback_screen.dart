@@ -6,7 +6,6 @@ import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/core/utils/resources/theme_provider.dart';
-import 'package:lol/core/widgets/default_text_field.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
