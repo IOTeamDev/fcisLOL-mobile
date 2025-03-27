@@ -11,6 +11,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/core/utils/resources/icons_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
+import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/core/utils/resources/values_manager.dart';
 import 'package:lol/features/admin/presentation/view/admin_panal.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
@@ -22,6 +23,7 @@ import 'package:lol/features/admin/presentation/view/announcements/announcements
 import 'package:lol/features/auth/presentation/view/login.dart';
 import 'package:lol/core/error/error_screen.dart';
 import 'package:lol/core/utils/navigation.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'webview_screen.dart';
@@ -207,6 +209,56 @@ Widget defaultLoginButton(
           .copyWith(color: ColorsManager.white),
     ),
   );
+
+Widget previousExamsBuilder(context, String title, String link, role){
+  return InkWell(
+    onTap: (){
+      launchUrl(Uri.parse(link));
+    },
+    child: Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.lightGrey:ColorsManager.grey3,
+      ),
+      width: double.infinity,
+      height: 60,
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              title,
+              style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                fontWeight: FontWeight.bold
+              ),
+              maxLines: AppSizes.s1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          if(role == KeysManager.admin || role == KeysManager.developer)
+          IconButton(
+            onPressed: (){},
+            icon: Icon(IconsManager.editIcon, color: ColorsManager.black),
+            style: IconButton.styleFrom(
+              backgroundColor: ColorsManager.white,
+              shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(10))
+            ),
+          ),
+          if(role == KeysManager.admin || role == KeysManager.developer)
+          IconButton(
+            onPressed: (){},
+            icon: Icon(IconsManager.deleteIcon, color: ColorsManager.white,),
+            style: IconButton.styleFrom(
+                backgroundColor: ColorsManager.imperialRed,
+                shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(10))
+            ),
+          ),
+        ],
+      ),
+      alignment: Alignment.centerLeft,
+      padding: EdgeInsets.symmetric(horizontal: 10),
+    ),
+  );
+}
 
 Widget defaultLoginInputField(controller, label, keyboardType,
         {bool isPassword = false,

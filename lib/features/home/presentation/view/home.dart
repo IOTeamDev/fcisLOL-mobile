@@ -31,7 +31,7 @@ import 'package:lol/features/home/presentation/view/widgets/build_announcements_
 import 'package:lol/features/home/presentation/view/widgets/custom_drawer.dart';
 import 'package:lol/features/home/presentation/view/widgets/subject_item_build.dart';
 import 'package:lol/features/leaderboard/presentation/view/leaderboard_view.dart';
-import 'package:lol/features/previous_exams/previous_exams.dart';
+import 'package:lol/features/previous_exams/presentation/view/previous_exams.dart';
 import 'package:lol/features/subject/data/repos/subject_repo_imp.dart';
 import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit.dart';
 import 'package:lol/features/subject/presentation/screens/subject_details.dart';
@@ -99,7 +99,7 @@ class _HomeState extends State<Home> {
             message: 'Unable to delete your account now',
             states: ToastStates.ERROR);
       }
-      if (state is DeleteAccountSuccess) {
+      if (state is DeleteAccountSuccessState) {
         showToastMessage(
             message: 'Your Account was deleted', states: ToastStates.SUCCESS);
         Navigator.of(context).pushAndRemoveUntil(

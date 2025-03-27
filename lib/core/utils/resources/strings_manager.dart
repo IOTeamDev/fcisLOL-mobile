@@ -164,4 +164,5 @@ class KeysManager {
   static const String name = 'name';
   static const String role = 'role';
   static const String contactUrl = 'contactUrl';
+  static const String subject = 'subject';
 }

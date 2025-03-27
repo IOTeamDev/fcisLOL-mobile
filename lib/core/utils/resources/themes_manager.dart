@@ -23,7 +23,7 @@ ThemeData lightTheme = ThemeData(
     displayMedium: getSemiBoldStyle(color: ColorsManager.black, fontSize: FontSize.size28),
     headlineLarge: getSemiBoldStyle(color: ColorsManager.black, fontSize: FontSize.size24),
     headlineMedium: getSemiBoldStyle(color: ColorsManager.black, fontSize: FontSize.size20),
-    titleLarge:getMediumStyle(color: ColorsManager.black, fontSize: FontSize.size18),
+    titleLarge: getMediumStyle(color: ColorsManager.black, fontSize: FontSize.size18),
     titleMedium: getMediumStyle(color: ColorsManager.black, fontSize: FontSize.size16),
     bodyLarge: getRegularStyle(color: ColorsManager.black,),
     bodySmall: getRegularStyle(color: ColorsManager.black, fontSize: FontSize.size12),

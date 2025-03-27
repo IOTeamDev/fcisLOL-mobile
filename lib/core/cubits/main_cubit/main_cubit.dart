@@ -25,6 +25,7 @@ import 'package:lol/core/utils/navigation.dart';
 import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:lol/core/models/admin/requests_model.dart';
 import 'package:lol/core/models/admin/announcement_model.dart';
+import 'package:lol/features/previous_exams/data/previous_exams_model.dart';
 import 'package:lol/features/subject/data/models/material_model.dart';
 import '../../utils/resources/icons_manager.dart';
 import '../../utils/resources/values_manager.dart';
@@ -36,6 +37,7 @@ class MainCubit extends Cubit<MainCubitStates> {
   IconData? pickerIcon = IconsManager.imageIcon;
   String? imageName = StringsManager.selectImage;
   bool openedDrawer = false;
+  bool isBottomSheetShown = false;
 
   void openDrawerState() {
     openedDrawer = true;
@@ -248,9 +250,9 @@ class MainCubit extends Cubit<MainCubitStates> {
     emit(AcceptRequestLoadingState());
     try {
       await DioHelp.getData(
-          path: ACCEPT,
-          query: {KeysManager.id: id, KeysManager.accepted: true},
-          token: AppConstants.TOKEN);
+        path: ACCEPT,
+        query: {KeysManager.id: id, KeysManager.accepted: true},
+        token: AppConstants.TOKEN);
       emit(AcceptRequestSuccessState());
       if (role == KeysManager.developer) {
         getAllSemestersRequests();
@@ -258,8 +260,6 @@ class MainCubit extends Cubit<MainCubitStates> {
         getRequests(semester: semester);
       }
     } catch (e) {
-      debugPrint('error from accepting request => $e');
-
       emit(AcceptRequestErrorState());
     }
   }
@@ -280,8 +280,7 @@ class MainCubit extends Cubit<MainCubitStates> {
             element[StringsManager.role] != KeysManager.developer) {
           notAdminLeaderboardModel?.add(LeaderboardModel.fromJson(element));
         } else {
-          leaderboardModel?.add(LeaderboardModel.fromJson(
-              element)); //just to get the score of Admin
+          leaderboardModel?.add(LeaderboardModel.fromJson(element)); //just to get the score of Admin
         }
       });
 
@@ -329,20 +328,81 @@ class MainCubit extends Cubit<MainCubitStates> {
 
       AppConstants.TOKEN = null;
       AppConstants.SelectedSemester = null;
-      emit(DeleteAccountSuccess());
+      emit(DeleteAccountSuccessState());
     } catch (e) {
-      dev.log('error form deleting acoount => $e');
       emit(DeleteAccountFailed(errMessage: e.toString()));
     }
   }
 
-  void sendReportBugOrFeedBack(message){
+  void sendReportBugOrFeedBack(message, {bool isFeedback = false}){
     DioHelp.postData(path: REPORT, data: {
       'name':profileModel?.name??'Guest',
       'message': message
     }).then((value){
       emit(SendingReportOrFeedBackSuccessState());
-      showToastMessage(message: 'Sent Successfully!', states: ToastStates.SUCCESS);
+      showToastMessage(message: '${isFeedback ?'Feedback':'Bug Report'} Sent Successfully!', states: ToastStates.SUCCESS);
+    });
+  }
+
+  void changeBottomSheetState(isShown){
+    isBottomSheetShown = isShown;
+    emit(ChangeBottomSheetState());
+  }
+
+  List<PreviousExamModel> previousExamsFinal = [];
+  List<PreviousExamModel> previousExamsMid = [];
+  List<PreviousExamModel> previousExamsOther = [];
+  void getPreviousExams(subject, {bool accepted = true}){
+    emit(GetPreviousExamsLoadingState());
+    DioHelp.getData(
+      path: PREVIOUSEXAMS,
+      query: {
+        KeysManager.accepted:accepted,
+        KeysManager.subject:subject
+      }
+    ).then((value){
+      previousExamsFinal = [];
+      previousExamsMid = [];
+      previousExamsOther = [];
+      value.data.forEach((element){
+        if(element['type'] == 'Final')
+          previousExamsFinal.add(PreviousExamModel.fromJson(element));
+        if(element['type'] == 'Mid')
+          previousExamsMid.add(PreviousExamModel.fromJson(element));
+        if(element['type'] == 'Other')
+          previousExamsOther.add(PreviousExamModel.fromJson(element));
+      });
+      emit(GetPreviousExamsSuccessState());
+    });
+  }
+
+  void addPreviousExam(
+    String title,
+    String link,
+    String semester,
+    String subject,
+    String currentSubject,
+    String type,
+  ){
+    emit(AddPreviousExamsLoadingState());
+    DioHelp.postData(
+      token: AppConstants.TOKEN,
+      path: PREVIOUSEXAMS,
+      data: {
+        'title':title,
+        'link':link,
+        'semester':semester,
+        'subject':subject,
+        'type':type
+      }
+    ).then((value){
+      if(currentSubject == subject && (profileModel!.role == KeysManager.developer || profileModel!.role == KeysManager.admin)){
+        getPreviousExams(subject);
+        showToastMessage(message: 'Exam Added Successfully', states: ToastStates.SUCCESS);
+      } else{
+        showToastMessage(message: 'Exam Added Successfully, and Waiting for Admin Approval', states: ToastStates.SUCCESS);
+      }
+      emit(AddPreviousExamsSuccessState());
     });
   }
 }

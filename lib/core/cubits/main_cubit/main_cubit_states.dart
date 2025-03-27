@@ -105,8 +105,22 @@ final class DeleteAccountFailed extends MainCubitStates {
   DeleteAccountFailed({required this.errMessage});
 }
 
-final class DeleteAccountSuccess extends MainCubitStates {}
+final class DeleteAccountSuccessState extends MainCubitStates {}
 
 final class SendingReportOrFeedBackSuccessState extends MainCubitStates {}
 
 final class SendingReportOrFeedBackErrorState extends MainCubitStates {}
+
+final class GetPreviousExamsLoadingState extends MainCubitStates {}
+
+final class GetPreviousExamsSuccessState extends MainCubitStates {}
+
+final class GetPreviousExamsErrorState extends MainCubitStates {}
+
+final class AddPreviousExamsLoadingState extends MainCubitStates {}
+
+final class AddPreviousExamsSuccessState extends MainCubitStates {}
+
+final class AddPreviousExamsErrorState extends MainCubitStates {}
+
+final class ChangeBottomSheetState extends MainCubitStates {}

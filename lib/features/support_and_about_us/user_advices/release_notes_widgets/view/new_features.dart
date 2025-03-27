@@ -39,7 +39,7 @@ class NewFeatures extends StatelessWidget {
           separatorBuilder: (context, index) => SizedBox(height: AppSizesDouble.s11,),
           itemCount: newFeatures.length
         ),
-        divider(height: AppSizesDouble.s20)
+        divider(color: ColorsManager.white, height: AppSizesDouble.s20)
       ],
     );
   }

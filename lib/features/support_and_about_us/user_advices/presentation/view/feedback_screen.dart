@@ -135,7 +135,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   Future<void> sendFeedback({required String feedbackDescription}) async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      MainCubit.get(context).sendReportBugOrFeedBack('\n\nFeedBack\n\n$feedbackDescription');
+      MainCubit.get(context).sendReportBugOrFeedBack('\n\nFeedBack\n\n$feedbackDescription', isFeedback: true);
     }
   }
 

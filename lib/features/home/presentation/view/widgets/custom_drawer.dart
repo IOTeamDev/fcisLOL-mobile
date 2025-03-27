@@ -22,7 +22,7 @@ import 'package:lol/features/auth/presentation/view/login.dart';
 import 'package:lol/features/auth/presentation/view/registration_layout.dart';
 import 'package:lol/features/home/presentation/view/semester_navigate.dart';
 import 'package:lol/features/leaderboard/presentation/view/leaderboard_view.dart';
-import 'package:lol/features/previous_exams/previous_exams.dart';
+import 'package:lol/features/previous_exams/presentation/view/previous_exams.dart';
 import 'package:lol/features/profile/view/profile.dart';
 import 'package:lol/features/support_and_about_us/about_us.dart';
 import 'package:lol/features/support_and_about_us/user_advices/presentation/view/feedback_screen.dart';

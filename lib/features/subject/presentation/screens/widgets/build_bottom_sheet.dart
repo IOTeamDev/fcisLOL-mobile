@@ -1,5 +1,6 @@
 import 'dart:developer' as dev;
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -80,155 +81,156 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
           await AdminCubit.get(context).getFcmTokens();
         }
       },
-      child: Container(
-          decoration: BoxDecoration(
-            color: Provider.of<ThemeProvider>(context).isDark
-                ? ColorsManager.darkPrimary
-                : ColorsManager.lightGrey,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-          ),
-          padding: const EdgeInsets.all(16),
-          width: AppQueries.screenWidth(context),
-          child: SingleChildScrollView(
-            child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5),
-                      child: BuildTextFormField(
-                        controller: widget.titleController,
-                        hintText: 'Title (e.g:chapter3)',
-                        canBeEmpty: false,
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaY: 5, sigmaX: 5),
+        child: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            padding: const EdgeInsets.all(16),
+            width: AppQueries.screenWidth(context),
+            child: SingleChildScrollView(
+              child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: BuildTextFormField(
+                          controller: widget.titleController,
+                          hintText: 'Title (e.g:chapter3)',
+                          canBeEmpty: false,
+                        ),
                       ),
-                    ),
 
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: BuildTextFormField(
-                        controller: widget.descriptionController,
-                        hintText: 'Description (Optional)',
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: BuildTextFormField(
+                          controller: widget.descriptionController,
+                          hintText: 'Description (Optional)',
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: BuildTextFormField(
-                        controller: widget.linkController,
-                        hintText: 'Material Link',
-                        canBeEmpty: false,
-                        textInputAction: TextInputAction.done,
-                        textInputType: TextInputType.url,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: BuildTextFormField(
+                          controller: widget.linkController,
+                          hintText: 'Material Link',
+                          canBeEmpty: false,
+                          textInputAction: TextInputAction.done,
+                          textInputType: TextInputType.url,
+                        ),
                       ),
-                    ),
 
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(
-                                left: 0, top: 0, bottom: 0),
-                            padding: const EdgeInsets.all(10),
-                            width: AppQueries.screenWidth(context) / 3,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Color.fromRGBO(71, 100, 197, 1),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(
+                                  left: 0, top: 0, bottom: 0),
+                              padding: const EdgeInsets.all(10),
+                              width: AppQueries.screenWidth(context) / 3,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Color.fromRGBO(71, 100, 197, 1),
+                              ),
+                              child: Text(
+                                cubit.selectedType.toLowerCase(),
+                                style:
+                                    TextStyle(color: Colors.white, fontSize: 16),
+                                textAlign: TextAlign.center,
+                              ),
                             ),
-                            child: Text(
-                              cubit.selectedType.toLowerCase(),
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 16),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          PopupMenuButton(
-                              color: Provider.of<ThemeProvider>(context).isDark
-                                  ? ColorsManager.darkPrimary
-                                  : Colors.white,
-                              onSelected: (type) {
-                                cubit.changeType(type: type);
-                              },
-                              iconColor: Colors.white,
-                              itemBuilder: (context) {
-                                return [
-                                  PopupMenuItem(
-                                    value: cubit.item1,
-                                    child: const Text('Video'),
-                                  ),
-                                  PopupMenuItem(
-                                    value: cubit.item2,
-                                    child: const Text(
-                                      'Document',
+                            PopupMenuButton(
+                                color: Provider.of<ThemeProvider>(context).isDark
+                                    ? ColorsManager.darkPrimary
+                                    : Colors.white,
+                                onSelected: (type) {
+                                  cubit.changeType(type: type);
+                                },
+                                iconColor: Colors.white,
+                                itemBuilder: (context) {
+                                  return [
+                                    PopupMenuItem(
+                                      value: cubit.item1,
+                                      child: const Text('Video'),
                                     ),
-                                  )
-                                ];
-                              }),
-                        ],
+                                    PopupMenuItem(
+                                      value: cubit.item2,
+                                      child: const Text(
+                                        'Document',
+                                      ),
+                                    )
+                                  ];
+                                }),
+                          ],
+                        ),
                       ),
-                    ),
-                    //Cancel and submit buttons
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        //Cancel Button
-                        BottomSheetButton(
-                          text: 'Cancel',
-                          color: ColorsManager.white,
-                          textStyle: TextStyle(
-                              color: ColorsManager.darkGrey, fontSize: 20),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        //Submit Button
-                        BottomSheetButton(
-                          text: 'Submit',
-                          color: ColorsManager.lightPrimary,
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              AuthorModel author = AuthorModel(
-                                  authorId:
-                                      MainCubit.get(context).profileModel?.id,
-                                  authorName:
-                                      MainCubit.get(context).profileModel?.name,
-                                  authorPhoto: MainCubit.get(context)
-                                      .profileModel
-                                      ?.photo);
-                              BlocProvider.of<AddMaterialCubit>(context)
-                                  .addMaterial(
-                                      title: widget.titleController.text,
-                                      description:
-                                          widget.descriptionController.text,
-                                      link: widget.linkController.text,
-                                      type: cubit.selectedType,
-                                      subjectName: widget.subjectName,
-                                      semester: AppConstants
-                                                      .navigatedSemester !=
-                                                  MainCubit.get(context)
-                                                      .profileModel!
-                                                      .semester &&
-                                              AppConstants.navigatedSemester !=
-                                                  null
-                                          ? AppConstants.navigatedSemester!
-                                          : MainCubit.get(context)
-                                              .profileModel!
-                                              .semester,
-                                      role: MainCubit.get(context)
-                                          .profileModel!
-                                          .role,
-                                      author: author);
-                            }
-                          },
-                        ),
-                      ],
-                    )
-                  ],
-                )),
-          )),
+                      //Cancel and submit buttons
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          //Cancel Button
+                          BottomSheetButton(
+                            text: 'Cancel',
+                            color: ColorsManager.white,
+                            textStyle: TextStyle(
+                                color: ColorsManager.darkGrey, fontSize: 20),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          //Submit Button
+                          BottomSheetButton(
+                            text: 'Submit',
+                            color: ColorsManager.lightPrimary,
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                AuthorModel author = AuthorModel(
+                                    authorId:
+                                        MainCubit.get(context).profileModel?.id,
+                                    authorName:
+                                        MainCubit.get(context).profileModel?.name,
+                                    authorPhoto: MainCubit.get(context)
+                                        .profileModel
+                                        ?.photo);
+                                BlocProvider.of<AddMaterialCubit>(context)
+                                    .addMaterial(
+                                        title: widget.titleController.text,
+                                        description:
+                                            widget.descriptionController.text,
+                                        link: widget.linkController.text,
+                                        type: cubit.selectedType,
+                                        subjectName: widget.subjectName,
+                                        semester: AppConstants
+                                                        .navigatedSemester !=
+                                                    MainCubit.get(context)
+                                                        .profileModel!
+                                                        .semester &&
+                                                AppConstants.navigatedSemester !=
+                                                    null
+                                            ? AppConstants.navigatedSemester!
+                                            : MainCubit.get(context)
+                                                .profileModel!
+                                                .semester,
+                                        role: MainCubit.get(context)
+                                            .profileModel!
+                                            .role,
+                                        author: author);
+                              }
+                            },
+                          ),
+                        ],
+                      )
+                    ],
+                  )),
+            )),
+      ),
     );
   }
 
