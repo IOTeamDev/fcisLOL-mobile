@@ -82,25 +82,28 @@ class _BuildFloatingActionButtonState extends State<BuildFloatingActionButton> {
             _descriptionController.text = '';
             _linkController.text = '';
             showModalBottomSheet(
-                isScrollControlled: true,
-                context: context,
-                builder: (context) => MultiBlocProvider(
-                      providers: [
-                        BlocProvider(
-                          create: (context) => AddMaterialCubit(),
-                        ),
-                        BlocProvider.value(value: widget.getMaterialCubit),
-                      ],
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).viewInsets.bottom),
-                        child: BuildBottomSheet(
-                            titleController: _titleController,
-                            descriptionController: _descriptionController,
-                            linkController: _linkController,
-                            subjectName: widget.subjectName),
-                      ),
-                    ));
+              sheetAnimationStyle: AnimationStyle(curve: Curves.easeInOut,duration: Duration(milliseconds: 650), reverseCurve: Curves.fastOutSlowIn, reverseDuration: Duration(milliseconds: 600)),
+              isScrollControlled: true,
+              context: context,
+              builder: (context) => MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                    create: (context) => AddMaterialCubit(),
+                  ),
+                  BlocProvider.value(value: widget.getMaterialCubit),
+                ],
+                child: Padding(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: BuildBottomSheet(
+                    titleController: _titleController,
+                    descriptionController: _descriptionController,
+                    linkController: _linkController,
+                    subjectName: widget.subjectName
+                  ),
+                ),
+              )
+            );
           }
         },
         shape: RoundedRectangleBorder(

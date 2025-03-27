@@ -127,7 +127,7 @@ class _OtherProfileState extends State<OtherProfile> {
                   child: Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.vertical(top: Radius.circular(AppSizesDouble.s40)),
-                        color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.grey5: ColorsManager.lightGrey1
+                        color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.grey5: ColorsManager.grey7
                     ),
                     padding: EdgeInsets.symmetric(vertical: AppPaddings.p20, horizontal: AppPaddings.p25),
                     child: Column(

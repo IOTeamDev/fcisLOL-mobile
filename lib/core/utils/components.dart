@@ -50,7 +50,7 @@ Widget materialBuilder(index, context, {title, link, type, subjectName, descript
   return Container(
     padding: EdgeInsets.all(AppSizesDouble.s15),
     decoration: BoxDecoration(
-      color: Theme.of(context).primaryColor,
+      color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.darkPrimary:ColorsManager.white,
       borderRadius: BorderRadius.circular(AppSizesDouble.s20),
     ),
     height: AppSizesDouble.s170,
@@ -65,11 +65,11 @@ Widget materialBuilder(index, context, {title, link, type, subjectName, descript
                 title,
                 maxLines: AppSizes.s1,
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.headlineLarge!.copyWith(color: ColorsManager.white, fontWeight: FontWeight.bold),
+                style: Theme.of(context).textTheme.headlineLarge!.copyWith(fontWeight: FontWeight.bold),
               ),
             ),
             if (cubit.profileModel!.role == KeysManager.admin || cubit.profileModel!.role == KeysManager.developer)
-              IconButton(
+            IconButton(
                 onPressed: () {
                   AwesomeDialog(
                     context: context,
@@ -117,14 +117,14 @@ Widget materialBuilder(index, context, {title, link, type, subjectName, descript
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontSize: AppQueries.screenWidth(context) / AppSizes.s22,
-              color: ColorsManager.white
+              color: ColorsManager.grey6
             ),
           ),
         ),
         // SizedBox(height: 5,),
         Text(
           type,
-          style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: ColorsManager.grey4),
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: ColorsManager.grey6),
           maxLines: AppSizes.s1,
           overflow: TextOverflow.ellipsis,
         ),
@@ -132,7 +132,7 @@ Widget materialBuilder(index, context, {title, link, type, subjectName, descript
           builder: (context, constraints) {
             return Row(
               children: [
-                Icon(IconsManager.linkIcon, color: ColorsManager.grey2),
+                Icon(IconsManager.linkIcon, color: ColorsManager.grey6),
                 SizedBox(width: AppSizesDouble.s5),
                 Expanded(
                   child: InkWell(
@@ -384,8 +384,7 @@ Future<String> getFirstVideoThumbnail(String playlistUrl, String apiKey) async {
   final playlistId = playlistUrl.split("list=")[1];
 
   // Build the API request URL
-  final url =
-      'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=1&playlistId=$playlistId&key=$apiKey';
+  final url = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=1&playlistId=$playlistId&key=$apiKey';
 
   // Send the HTTP request
   final response = await http.get(Uri.parse(url));

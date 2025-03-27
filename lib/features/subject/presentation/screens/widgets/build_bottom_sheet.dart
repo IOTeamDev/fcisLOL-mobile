@@ -82,7 +82,7 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
         }
       },
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaY: 5, sigmaX: 5),
+        filter: ImageFilter.blur(sigmaY: 3, sigmaX: 3),
         child: Container(
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColor,

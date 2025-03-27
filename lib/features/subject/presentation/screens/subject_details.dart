@@ -52,16 +52,18 @@ class _MaterialDetailsState extends State<SubjectDetails>
       ),
       key: scaffoldKey,
       appBar: AppBar(
-          title: Text(
-        widget.subjectName
-            .replaceAll(StringsManager.underScore, StringsManager.space)
-            .replaceAll(StringsManager.andWord, StringsManager.andSymbol),
-        style: Theme.of(context).textTheme.displayMedium!.copyWith(
-              fontSize: AppQueries.screenWidth(context) / AppSizes.s15,
-            ),
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
-      )),
+          title: Expanded(
+            child: Text(
+              widget.subjectName
+              .replaceAll(StringsManager.underScore, StringsManager.space)
+              .replaceAll(StringsManager.andWord, StringsManager.andSymbol),
+                    style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                fontSize: AppQueries.screenWidth(context) / AppSizes.s15,
+              ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+          )),
       body: Column(
         children: [
           Padding(
@@ -106,9 +108,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
               tabController: _tabControllerOfShowingContent,
               title1: 'Videos',
               title2: 'Documents'),
-          Expanded(
-              child:
-                  CustomTabBarView(controller: _tabControllerOfShowingContent)),
+          Expanded(child: CustomTabBarView(controller: _tabControllerOfShowingContent)),
         ],
       ),
     );

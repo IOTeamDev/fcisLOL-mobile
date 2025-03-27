@@ -5,6 +5,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:googleapis/container/v1.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
@@ -212,9 +213,11 @@ class _PreviousExamsState extends State<PreviousExams> {
             onPressed: (){
               if(!cubit.isBottomSheetShown){
                 cubit.changeBottomSheetState(true);
-                _scaffoldKey.currentState!.showBottomSheet((context) => StatefulBuilder(
+                _scaffoldKey.currentState!.showBottomSheet(
+                  sheetAnimationStyle: AnimationStyle(curve: Curves.fastEaseInToSlowEaseOut,duration: Duration(milliseconds: 650), reverseCurve: Curves.fastOutSlowIn, reverseDuration: Duration(milliseconds: 600)),
+                  (context) => StatefulBuilder(
                   builder:(context, setState) => BackdropFilter(
-                    filter: ImageFilter.blur(sigmaY: 5, sigmaX: 5),
+                    filter: ImageFilter.blur(sigmaY: 3, sigmaX: 3),
                     child: IntrinsicHeight(
                       child: Container(
                         padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
@@ -378,19 +381,19 @@ class _PreviousExamsState extends State<PreviousExams> {
                                 child: Container(
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
-                                      color: ColorsManager.lightPrimary,
+                                      color: ColorsManager.white,
                                       borderRadius: BorderRadius.circular(AppPaddings.p40)
                                   ),
                                   padding: EdgeInsets.symmetric(horizontal: 15,),
                                   child: DropdownButton<String>(
                                     isExpanded: true,
-                                    icon: Icon(IconsManager.dropdownIcon),
+                                    icon: Icon(IconsManager.dropdownIcon, color: ColorsManager.black,),
                                     value: selectedExamType,
                                     underline: SizedBox(),
-                                    hint: Text('Select Exam Type', style: TextStyle(color: ColorsManager.white)),
+                                    hint: Text('Select Exam Type', style: TextStyle(color: ColorsManager.black)),
                                     dropdownColor: ColorsManager.white, // Background color for the dropdown list
                                     iconEnabledColor: ColorsManager.white, // Color of the dropdown icon
-                                    style: const TextStyle(color: ColorsManager.white), // Style for the selected item outside
+                                    style: const TextStyle(color: ColorsManager.black), // Style for the selected item outside
                                     items: examsType.map((String item) => DropdownMenuItem(value: item, child: Text(item,  style: const TextStyle(color: ColorsManager.black),),)
                                     ).toList(),
                                     selectedItemBuilder: (BuildContext context) {
@@ -401,7 +404,7 @@ class _PreviousExamsState extends State<PreviousExams> {
                                             item,
                                             style: const TextStyle(
                                               color:
-                                              ColorsManager.white,
+                                              ColorsManager.black,
                                             ),
                                           ),
                                         );
@@ -437,8 +440,8 @@ class _PreviousExamsState extends State<PreviousExams> {
                                         backgroundColor: ColorsManager.lightPrimary
                                       ),
                                       onPressed: (){
-                                        if(_formKey.currentState!.validate()){
-                                          if(bottomSheetSelectedSubject != null && selectedExamType != null){
+                                        if(bottomSheetSelectedSubject != null && selectedExamType != null){
+                                          if(_formKey.currentState!.validate()){
                                             cubit.addPreviousExam(
                                               _titleController.text,
                                               _LinkController.text,
@@ -449,15 +452,15 @@ class _PreviousExamsState extends State<PreviousExams> {
                                             );
                                             cubit.changeBottomSheetState(false);
                                             Navigator.of(context).pop();
-                                          } else {
-                                            if(bottomSheetSelectedSubject == null && selectedExamType == null){
-                                              showToastMessage(message: 'Please Select Subject and Exam Type', states: ToastStates.WARNING, textColor: ColorsManager.black, toastLength: 3);
-                                            }
-                                            else if(bottomSheetSelectedSubject == null){
-                                              showToastMessage(message: 'Please Select Subject', states: ToastStates.WARNING);
-                                            }else{
-                                              showToastMessage(message: 'Please Select Exam Type', states: ToastStates.WARNING);
-                                            }
+                                          }
+                                        } else {
+                                          if(bottomSheetSelectedSubject == null && selectedExamType == null){
+                                            showToastMessage(message: 'Please Select Subject and Exam Type', states: ToastStates.WARNING, textColor: ColorsManager.black, toastLength: 3);
+                                          }
+                                          else if(bottomSheetSelectedSubject == null){
+                                            showToastMessage(message: 'Please Select Subject', states: ToastStates.WARNING);
+                                          }else{
+                                            showToastMessage(message: 'Please Select Exam Type', states: ToastStates.WARNING);
                                           }
                                         }
                                       },

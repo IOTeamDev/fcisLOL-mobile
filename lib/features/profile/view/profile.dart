@@ -230,7 +230,7 @@ class Profile extends StatelessWidget {
                             top: Radius.circular(AppSizesDouble.s40)),
                         color: Provider.of<ThemeProvider>(context).isDark
                             ? ColorsManager.grey5
-                            : ColorsManager.lightGrey1),
+                            : ColorsManager.grey7),
                     padding: EdgeInsets.symmetric(
                         vertical: AppPaddings.p20, horizontal: AppPaddings.p25),
                     child: Column(
