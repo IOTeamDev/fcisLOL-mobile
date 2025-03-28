@@ -6,7 +6,6 @@ import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/core/utils/resources/icons_manager.dart';
@@ -18,6 +17,8 @@ import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
+import 'package:lol/features/home/presentation/view/widgets/edit_exam_popup.dart';
+import 'package:lol/features/previous_exams/data/previous_exams_model.dart';
 import 'package:lol/features/profile/view/profile.dart';
 import 'package:lol/features/admin/presentation/view/announcements/announcements_list.dart';
 import 'package:lol/features/auth/presentation/view/login.dart';
@@ -210,10 +211,10 @@ Widget defaultLoginButton(
     ),
   );
 
-Widget previousExamsBuilder(context, String title, String link, role){
+Widget previousExamsBuilder(context, PreviousExamModel exam, role, semester){
   return InkWell(
     onTap: (){
-      launchUrl(Uri.parse(link));
+      launchUrl(Uri.parse(exam.link));
     },
     child: Container(
       decoration: BoxDecoration(
@@ -226,7 +227,7 @@ Widget previousExamsBuilder(context, String title, String link, role){
         children: [
           Expanded(
             child: Text(
-              title,
+              exam.title,
               style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                 fontWeight: FontWeight.bold
               ),
@@ -236,7 +237,7 @@ Widget previousExamsBuilder(context, String title, String link, role){
           ),
           if(role == KeysManager.admin || role == KeysManager.developer)
           IconButton(
-            onPressed: (){},
+            onPressed: () => showDialog(context: context, builder: (context) => EditExamPopup(exam: exam, semester: semester)),
             icon: Icon(IconsManager.editIcon, color: ColorsManager.black),
             style: IconButton.styleFrom(
               backgroundColor: ColorsManager.white,
@@ -245,11 +246,13 @@ Widget previousExamsBuilder(context, String title, String link, role){
           ),
           if(role == KeysManager.admin || role == KeysManager.developer)
           IconButton(
-            onPressed: (){},
+            onPressed: () {
+              MainCubit.get(context).deletePreviousExam(exam.id, exam.subject);
+            },
             icon: Icon(IconsManager.deleteIcon, color: ColorsManager.white,),
             style: IconButton.styleFrom(
-                backgroundColor: ColorsManager.imperialRed,
-                shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(10))
+              backgroundColor: ColorsManager.imperialRed,
+              shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(10))
             ),
           ),
         ],
@@ -285,14 +288,14 @@ Widget defaultLoginInputField(controller, label, keyboardType,
             borderSide: BorderSide(color: ColorsManager.lightPrimary),
             borderRadius: BorderRadius.circular(AppSizesDouble.s15)),
         suffixIcon: isPassword
-            ? IconButton(
-                icon: Icon(suffixIcon),
-                color: loginCubit.hiddenPassword
-                    ? ColorsManager.lightGrey
-                    : ColorsManager.lightPrimary,
-                onPressed: loginCubit.togglePassword,
-              )
-            : null,
+          ? IconButton(
+              icon: Icon(suffixIcon),
+              color: loginCubit.hiddenPassword
+                ? ColorsManager.lightGrey
+                : ColorsManager.lightPrimary,
+              onPressed: loginCubit.togglePassword,
+            )
+          : null,
       ),
       validator: validator ??
       (value) {

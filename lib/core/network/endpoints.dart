@@ -16,3 +16,5 @@ const String EDIT = 'material/edit';
 const String REPORT = 'report';
 
 const String PREVIOUSEXAMS = 'previousExams';
+
+const String EDITPREVIOUSEXAMS = 'previousExams/edit';

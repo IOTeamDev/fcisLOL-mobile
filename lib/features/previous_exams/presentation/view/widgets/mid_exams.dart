@@ -5,7 +5,8 @@ import '../../../../../core/utils/components.dart';
 import '../../../../../core/utils/resources/colors_manager.dart';
 
 class MidExams extends StatelessWidget {
-  const MidExams({super.key});
+  String semester;
+  MidExams({super.key, required this.semester});
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +26,9 @@ class MidExams extends StatelessWidget {
           physics: NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) => previousExamsBuilder(
             context,
-            MainCubit.get(context).previousExamsMid[index].title,
-            MainCubit.get(context).previousExamsMid[index].link,
-            MainCubit.get(context).profileModel!.role
+            MainCubit.get(context).previousExamsMid[index],
+            MainCubit.get(context).profileModel!.role,
+            semester
           ),
           separatorBuilder: (context, index) => SizedBox(height: 10,),
           itemCount: MainCubit.get(context).previousExamsMid.length,

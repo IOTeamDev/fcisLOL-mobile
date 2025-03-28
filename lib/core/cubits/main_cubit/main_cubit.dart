@@ -376,6 +376,47 @@ class MainCubit extends Cubit<MainCubitStates> {
     });
   }
 
+  void editPreviousExam(id, title, link, semester, subject, type){
+    emit(EditPreviousExamsLoadingState());
+    print(AppConstants.TOKEN);
+    print(id);
+    print(title);
+    print(link);
+    print(semester);
+    print(subject);
+    print(type);
+    DioHelp.patchData(
+      path: EDITPREVIOUSEXAMS,
+      token: AppConstants.TOKEN,
+      data: {
+        'id':id,
+        'title':title,
+        'link':link,
+        'semester':semester,
+        'subject':subject,
+        'type':type,
+      }
+    ).then((value){
+      showToastMessage(message: 'Exam Edited Successfully', states: ToastStates.SUCCESS);
+      emit(EditPreviousExamsSuccessState());
+      getPreviousExams(subject);
+    });
+  }
+
+  void deletePreviousExam(id, subject){
+    emit(DeletePreviousExamsLoadingState());
+    DioHelp.deleteData(
+      token: AppConstants.TOKEN,
+      path: PREVIOUSEXAMS,
+      data: {
+        KeysManager.id:id
+      }
+    ).then((value){
+      emit(DeletePreviousExamsSuccessState());
+      getPreviousExams(subject);
+    });
+  }
+
   void addPreviousExam(
     String title,
     String link,

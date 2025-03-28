@@ -4,8 +4,8 @@ import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
 
 class FinalExams extends StatelessWidget {
-
-  FinalExams({super.key,});
+  String semester;
+  FinalExams({super.key, required this.semester});
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +25,9 @@ class FinalExams extends StatelessWidget {
           physics: NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) => previousExamsBuilder(
             context,
-            MainCubit.get(context).previousExamsFinal[index].title,
-            MainCubit.get(context).previousExamsFinal[index].link,
-            MainCubit.get(context).profileModel!.role
+            MainCubit.get(context).previousExamsFinal[index],
+            MainCubit.get(context).profileModel!.role,
+            semester
           ),
           separatorBuilder: (context, index) => SizedBox(height: 10,),
           itemCount: MainCubit.get(context).previousExamsFinal.length,
