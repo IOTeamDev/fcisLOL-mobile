@@ -217,17 +217,16 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     dio.options.headers['Content-Type'] = 'application/json';
     dio.options.headers['Authorization'] = 'Bearer $serverKeyAuthorization';
 
-    dio
-        .post(
-          urlEndPoint,
-          data: fCMHelper.getBody(
-            fcmToken: token,
-            title: title,
-            body: body,
-          ),
-        )
-        .then((onValue) => emit(SendNotificationSuccess()))
-        .catchError((onError) {
+    dio.post(
+      urlEndPoint,
+      data: fCMHelper.getBody(
+        fcmToken: token,
+        title: title,
+        body: body,
+      ),
+    )
+    .then((onValue) => emit(SendNotificationSuccess()))
+    .catchError((onError) {
       print(onError.toString());
       emit(SendNotificationError());
     });

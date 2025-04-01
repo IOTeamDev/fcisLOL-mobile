@@ -38,7 +38,10 @@ ThemeData darkTheme = ThemeData(
     color: Colors.white
   ),
   progressIndicatorTheme: ProgressIndicatorThemeData(
-    color: ColorsManager.white
+    color: ColorsManager.white,
+    circularTrackColor: ColorsManager.white,
+    linearTrackColor: ColorsManager.white,
+    refreshBackgroundColor: ColorsManager.darkPrimary
   ),
   appBarTheme: AppBarTheme(
     color: ColorsManager.darkGrey,

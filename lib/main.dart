@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -40,7 +39,6 @@ import 'features/home/presentation/view/home.dart';
 String? privateKeyId;
 String? privateKey;
 
-bool? changeSemester = false;
 bool? noMoreStorage = false;
 String? apiKey;
 String? fcmToken;
@@ -52,17 +50,23 @@ main() async {
   await Cache.initialize();
   await DioHelp.initial();
   await Firebase.initializeApp();
-  fcmToken = await FirebaseMessaging.instance.getToken();
+  try{
+    fcmToken = await FirebaseMessaging.instance.getToken();
+  }catch(error){
+    log(error.toString());
+  }
 
   FirebaseFirestore.instance
       .collection("indicators")
       .doc("constants")
       .get()
       .then((onValue) {
-    changeSemester = onValue.data()?["changeSemester"] ?? false;
     noMoreStorage = onValue.data()?["noMoreStorage"] ?? false;
     apiKey = onValue.data()?["apiKey"];
+  }).catchError((error){
+    log('error occurred $error');
   });
+
 
   await FirebaseFirestore.instance
       .collection("4notifications")
@@ -74,14 +78,14 @@ main() async {
     privateKeyId = value.data()?["private_key_id"];
     privateKey = privateKey!.replaceAll(r'\n', '\n').trim();
   });
+
   Bloc.observer = MyBlocObserver();
 
   AppConstants.TOKEN = Cache.sharedpref.getString(KeysManager.token);
-  AppConstants.SelectedSemester =
-      await Cache.sharedpref.getString(KeysManager.semester);
-  bool isOnBoardFinished =
-      await Cache.readData(key: KeysManager.finishedOnBoard) ?? false;
+  AppConstants.SelectedSemester = await Cache.sharedpref.getString(KeysManager.semester);
+  bool isOnBoardFinished = await Cache.readData(key: KeysManager.finishedOnBoard) ?? false;
   final Widget startPage;
+
   if (!isOnBoardFinished) {
     startPage = const OnBoarding();
   } else {
@@ -93,7 +97,9 @@ main() async {
       startPage = const Home();
     }
   }
-
+  ErrorWidget.builder = (FlutterErrorDetails errorDetails){
+    return ErrorScreen(errorDetails: errorDetails);
+  };
   runApp(ChangeNotifierProvider(
     create: (context) => ThemeProvider(),
     child: App(startPage: startPage),
@@ -109,12 +115,14 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (BuildContext context) => MainCubit()),
-        BlocProvider(
-            create: (BuildContext context) => AdminCubit()..getFcmTokens()),
+        BlocProvider(create: (BuildContext context) => AdminCubit()..getFcmTokens()),
       ],
       child: MaterialApp(
         home: startPage,
-        theme: Provider.of<ThemeProvider>(context).themeData,
+        theme: darkTheme,
+        darkTheme: darkTheme,
+        themeMode: ThemeMode.dark,
+        // theme: Provider.of<ThemeProvider>(context).themeData,
         debugShowCheckedModeBanner: false,
       ),
     );

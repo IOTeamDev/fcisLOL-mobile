@@ -25,8 +25,7 @@ class SubjectItemBuild extends StatelessWidget {
         navigate(
             context,
             BlocProvider(
-              create: (context) =>
-                  GetMaterialCubit(getIt.get<SubjectRepoImp>()),
+              create: (context) => GetMaterialCubit(getIt.get<SubjectRepoImp>()),
               child: SubjectDetails(
                 subjectName: subject.subjectName,
               ),
@@ -41,15 +40,13 @@ class SubjectItemBuild extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.all(AppPaddings.p5),
           decoration: BoxDecoration(
-              color: Provider.of<ThemeProvider>(context).isDark
-                  ? ColorsManager.grey1
-                  : ColorsManager.lightPrimary),
+              color:Theme.of(context).primaryColor
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset(subject.subjectImage,
-                  height: AppSizesDouble.s70, color: Colors.white),
+              Image.asset(subject.subjectImage, height: AppSizesDouble.s70, color: Colors.white),
               SizedBox(
                 height: AppSizesDouble.s10,
               ),

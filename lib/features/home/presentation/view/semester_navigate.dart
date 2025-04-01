@@ -33,8 +33,7 @@ class SemesterNavigate extends StatelessWidget {
         if(!didPop){
           return;
         }
-        AppConstants.navigatedSemester = MainCubit.get(context).profileModel!.semester;
-        print(AppConstants.navigatedSemester);
+        AppConstants.navigatedSemester = MainCubit.get(context).profileModel!= null? MainCubit.get(context).profileModel!.semester:AppConstants.SelectedSemester;
       },
       child: Scaffold(
         appBar: AppBar(

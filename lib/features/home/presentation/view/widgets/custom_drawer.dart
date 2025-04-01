@@ -62,20 +62,20 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 AppConstants.TOKEN != null ? SizedBox(
                         height: AppQueries.screenHeight(context) / AppSizesDouble.s3_2,
                         child: UserAccountsDrawerHeader(
-                          otherAccountsPictures: [
-                            IconButton(
-                                onPressed: () {
-                                  Provider.of<ThemeProvider>(context,
-                                          listen: false)
-                                      .toggleDarkMode();
-                                },
-                                icon: Icon(
-                                  Provider.of<ThemeProvider>(context).isDark
-                                      ? IconsManager.lightModeIcon
-                                      : IconsManager.darkModeIcon,
-                                  color: Theme.of(context).iconTheme.color,
-                                ))
-                          ],
+                          // otherAccountsPictures: [
+                          //   // IconButton(
+                          //   //     onPressed: () {
+                          //   //       Provider.of<ThemeProvider>(context,
+                          //   //               listen: false)
+                          //   //           .toggleDarkMode();
+                          //   //     },
+                          //   //     icon: Icon(
+                          //   //       Provider.of<ThemeProvider>(context).isDark
+                          //   //           ? IconsManager.lightModeIcon
+                          //   //           : IconsManager.darkModeIcon,
+                          //   //       color: Theme.of(context).iconTheme.color,
+                          //   //     ))
+                          // ],
                           decoration: BoxDecoration(
                               color:
                                   Theme.of(context).drawerTheme.backgroundColor),
@@ -145,19 +145,19 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           backgroundImage:
                               NetworkImage(AppConstants.defaultProfileImage),
                         ),
-                        otherAccountsPictures: [
-                          IconButton(
-                              onPressed: () {
-                                Provider.of<ThemeProvider>(context, listen: false)
-                                    .toggleDarkMode();
-                              },
-                              icon: Icon(
-                                Provider.of<ThemeProvider>(context).isDark
-                                    ? IconsManager.lightModeIcon
-                                    : IconsManager.darkModeIcon,
-                                color: Theme.of(context).iconTheme.color,
-                              ))
-                        ],
+                        // otherAccountsPictures: [
+                        //   // IconButton(
+                        //   //     onPressed: () {
+                        //   //       Provider.of<ThemeProvider>(context, listen: false)
+                        //   //           .toggleDarkMode();
+                        //   //     },
+                        //   //     icon: Icon(
+                        //   //       Provider.of<ThemeProvider>(context).isDark
+                        //   //           ? IconsManager.lightModeIcon
+                        //   //           : IconsManager.darkModeIcon,
+                        //   //       color: Theme.of(context).iconTheme.color,
+                        //   //     ))
+                        // ],
                       ),
                 //body
                 Expanded(

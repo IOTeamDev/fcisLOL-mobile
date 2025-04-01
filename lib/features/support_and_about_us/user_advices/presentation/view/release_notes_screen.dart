@@ -40,28 +40,62 @@ class ReleaseNotesScreen extends StatelessWidget {
             )
           ]
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              AppConstants.appVersion,
-              style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.lightPrimary:ColorsManager.white
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Text(
+                AppConstants.appVersion,
+                style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                  color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.lightPrimary:ColorsManager.white
+                ),
               ),
             ),
-            divider(height: AppSizesDouble.s20),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    if(newFeatures.isNotEmpty)NewFeatures(),
-                    if(patchNotes.isNotEmpty)PatchNotes(),
-                    if(bugFixes.isNotEmpty)BugFixes(),
-                  ],
+            SliverToBoxAdapter(child: divider(height: AppSizesDouble.s20)),
+            if(newFeatures.isNotEmpty)
+              SliverPadding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                sliver: SliverToBoxAdapter(
+                  child: Text(
+                    StringsManager.newFeatures,
+                    style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                        color: ColorsManager.white,
+                        fontWeight: FontWeight.bold
+                    ),
+                  ),
                 ),
-              )
-            ),
-            //if(newFeatures.length>0)
+              ),
+            if(newFeatures.isNotEmpty)
+              ReleaseNotesGenerator(notes: newFeatures),
+            if(patchNotes.isNotEmpty)
+              SliverPadding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                sliver: SliverToBoxAdapter(
+                  child: Text(
+                    StringsManager.patchNotes,
+                    style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                        color: ColorsManager.white,
+                        fontWeight: FontWeight.bold
+                    ),
+                  ),
+                ),
+              ),
+            if(patchNotes.isNotEmpty)
+              ReleaseNotesGenerator(notes: patchNotes),
+            if(bugFixes.isNotEmpty)
+              SliverPadding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                sliver: SliverToBoxAdapter(
+                  child: Text(
+                    StringsManager.bugFixes,
+                    style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                        color: ColorsManager.white,
+                        fontWeight: FontWeight.bold
+                    ),
+                  ),
+                ),
+              ),
+            if(bugFixes.isNotEmpty)
+              ReleaseNotesGenerator(notes: bugFixes),
           ],
         ),
       ),

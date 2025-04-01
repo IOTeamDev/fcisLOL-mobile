@@ -251,8 +251,7 @@ class Profile extends StatelessWidget {
                                 : ColorsManager.black),
                         Expanded(
                           child: ConditionalBuilder(
-                              condition: mainCubit
-                                      .profileModel!.materials.isNotEmpty &&
+                              condition: mainCubit.profileModel!.materials.isNotEmpty &&
                                   state is! GetRequestsLoadingState,
                               builder: (context) => ListView.separated(
                                   physics: BouncingScrollPhysics(),
@@ -260,16 +259,7 @@ class Profile extends StatelessWidget {
                                     return materialBuilder(
                                       index,
                                       context,
-                                      title: mainCubit
-                                          .profileModel!.materials[index].title,
-                                      description: mainCubit.profileModel!
-                                          .materials[index].description,
-                                      type: mainCubit
-                                          .profileModel!.materials[index].type,
-                                      link: mainCubit
-                                          .profileModel!.materials[index].link,
-                                      subjectName: mainCubit.profileModel!
-                                          .materials[index].subject,
+                                      profileModel: mainCubit.profileModel,
                                     );
                                   },
                                   separatorBuilder: (context, index) =>

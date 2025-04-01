@@ -164,6 +164,7 @@ class MainCubit extends Cubit<MainCubitStates> {
         path: USERS,
         query: {KeysManager.id: id ?? 1, KeysManager.haveMaterial: true}).then(
       (value) {
+        print(value.data);
         otherProfile = ProfileModel.fromJson(value.data);
         emit(GetProfileSuccess());
       },

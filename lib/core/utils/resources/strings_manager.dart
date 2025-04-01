@@ -40,6 +40,7 @@ class StringsManager {
   static const String six = 'Six';
   static const String notFoundErrorCode = '404';
   static const String thisLinkIsCorrupted = 'This link is Corrupted';
+  static const String anErrorOccurred = 'An Error Occurred, no worries just send us a report bug request and it will be fixed AS SOON AS possible';
   static const String error = 'Error';
   static const String announcements = 'Announcements';
   static const String announcementDeleted = 'Announcement Deleted!!';

@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:googleapis_auth/auth_io.dart';
 import 'package:http/http.dart' as http;
+import 'package:lol/core/models/profile/profile_model.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
@@ -46,135 +48,146 @@ Widget divider({
     thickness: thickness,
   );
 
-Widget materialBuilder(index, context, {title, link, type, subjectName, description, isMain = true}) {
-  var cubit = MainCubit.get(context);
-  return Container(
-    padding: EdgeInsets.all(AppSizesDouble.s15),
-    decoration: BoxDecoration(
-      color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.darkPrimary:ColorsManager.white,
-      borderRadius: BorderRadius.circular(AppSizesDouble.s20),
-    ),
-    height: AppSizesDouble.s170,
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            Expanded(
-              child: Text(
-                title,
-                maxLines: AppSizes.s1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.headlineLarge!.copyWith(fontWeight: FontWeight.bold),
+class materialBuilder extends StatelessWidget {
+  int index;
+  BuildContext context;
+  ProfileModel? profileModel;
+  bool isMain;
+  materialBuilder(this.index, this.context, {super.key, required this.profileModel, this.isMain = true});
+
+  @override
+  Widget build(BuildContext context) {
+    var cubit = MainCubit.get(context);
+    return Container(
+      padding: EdgeInsets.all(AppSizesDouble.s15),
+      decoration: BoxDecoration(
+        //color: ColorsManager.darkPrimary,
+        color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.darkPrimary:ColorsManager.white,
+        borderRadius: BorderRadius.circular(AppSizesDouble.s20),
+      ),
+      height: AppSizesDouble.s170,
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  profileModel!.name,
+                  maxLines: AppSizes.s1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(fontWeight: FontWeight.bold),
+                ),
+              ),
+              if(cubit.profileModel != null)
+                if(cubit.profileModel!.role == KeysManager.admin || cubit.profileModel!.role == KeysManager.developer)
+                IconButton(
+                  onPressed: () {
+                    AwesomeDialog(
+                      context: context,
+                      title: StringsManager.delete,
+                      dialogType: DialogType.warning,
+                      body: Text(
+                        textAlign: TextAlign.center,
+                        StringsManager.deleteMaterialMessage,
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                      animType: AnimType.scale,
+                      btnOk: ElevatedButton(
+                        onPressed: (){
+                          cubit.deleteMaterial(
+                            isMain?
+                            cubit.profileModel!.materials[index].id!:
+                            cubit.otherProfile!.materials[index].id!,
+                            isMain?
+                            cubit.profileModel!.semester:
+                            cubit.otherProfile!.semester,
+                            isMaterial: true,
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(backgroundColor: ColorsManager.imperialRed),
+                        child: Text(StringsManager.delete, style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: ColorsManager.white),),
+                      ),
+                      btnCancel: ElevatedButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          style: ElevatedButton.styleFrom(backgroundColor:  ColorsManager.grey4),
+                          child: Text(StringsManager.cancel, style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: ColorsManager.black),)
+                      ),
+                    ).show();
+                  },
+                  icon: Icon(IconsManager.closeIcon, color: ColorsManager.imperialRed),
+                ),
+            ],
+          ),
+          Flexible(
+            child: Text(
+              textAlign: TextAlign.start,
+              profileModel!.materials[index].title.toString()
+              .replaceAll(StringsManager.underScore, StringsManager.space),
+              maxLines: AppSizes.s1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: AppQueries.screenWidth(context) / AppSizes.s22,
+                color: ColorsManager.grey6
               ),
             ),
-            if (cubit.profileModel!.role == KeysManager.admin || cubit.profileModel!.role == KeysManager.developer)
-            IconButton(
-                onPressed: () {
-                  AwesomeDialog(
-                    context: context,
-                    title: StringsManager.delete,
-                    dialogType: DialogType.warning,
-                    body: Text(
-                      textAlign: TextAlign.center,
-                      StringsManager.deleteMaterialMessage,
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    animType: AnimType.scale,
-                    btnOk: ElevatedButton(
-                      onPressed: (){
-                        cubit.deleteMaterial(
-                          isMain?
-                          cubit.profileModel!.materials[index].id!:
-                          cubit.otherProfile!.materials[index].id!,
-                          isMain?
-                          cubit.profileModel!.semester:
-                          cubit.otherProfile!.semester,
-                          isMaterial: true,
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(backgroundColor: ColorsManager.imperialRed),
-                      child: Text(StringsManager.delete, style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: ColorsManager.white),),
-                    ),
-                    btnCancel: ElevatedButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        style: ElevatedButton.styleFrom(backgroundColor:  ColorsManager.grey4),
-                        child: Text(StringsManager.cancel, style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: ColorsManager.black),)
-                    ),
-                  ).show();
-                },
-                icon: Icon(IconsManager.closeIcon, color: ColorsManager.imperialRed),
-              ),
-          ],
-        ),
-        Flexible(
-          child: Text(
-            textAlign: TextAlign.start,
-            subjectName.toString()
-              .replaceAll(StringsManager.underScore, StringsManager.space)
-              .replaceAll(StringsManager.andWord.substring(AppSizes.s0).toUpperCase()+StringsManager.andWord.substring(AppSizes.s1).toUpperCase(), StringsManager.andSymbol),
+          ),
+          // SizedBox(height: 5,),
+          Text(
+            profileModel!.materials[index].type!,
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: ColorsManager.grey6),
             maxLines: AppSizes.s1,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: AppQueries.screenWidth(context) / AppSizes.s22,
-              color: ColorsManager.grey6
-            ),
           ),
-        ),
-        // SizedBox(height: 5,),
-        Text(
-          type,
-          style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: ColorsManager.grey6),
-          maxLines: AppSizes.s1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        LayoutBuilder(
-          builder: (context, constraints) {
-            return Row(
-              children: [
-                Icon(IconsManager.linkIcon, color: ColorsManager.grey6),
-                SizedBox(width: AppSizesDouble.s5),
-                Expanded(
-                  child: InkWell(
-                    onTap: () async {
-                      final linkElement = LinkableElement(link, link);
-                      await onOpen(context, linkElement);
-                    },
-                    child: Text(
-                      link,
-                      style: TextStyle(
-                        color: Colors.lightBlueAccent,
-                        decoration: TextDecoration.underline,
-                        decorationColor: Colors.lightBlueAccent,
+          LayoutBuilder(
+            builder: (context, constraints) {
+              return Row(
+                children: [
+                  Icon(IconsManager.linkIcon, color: ColorsManager.grey6),
+                  SizedBox(width: AppSizesDouble.s5),
+                  Expanded(
+                    child: InkWell(
+                      onTap: () async {
+                        final linkElement = LinkableElement(profileModel!.materials[index].link, profileModel!.materials[index].link!);
+                        await onOpen(context, linkElement);
+                      },
+                      child: Text(
+                        profileModel!.materials[index].link!,
+                        style: TextStyle(
+                          color: Colors.lightBlueAccent,
+                          decoration: TextDecoration.underline,
+                          decorationColor: Colors.lightBlueAccent,
+                        ),
+                        maxLines: AppSizes.s1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: AppSizes.s1,
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                ),
-              ],
-            );
-          },
-        ),
-        Align(
-          alignment: Alignment.centerRight,
-          child: Text(
-            (isMain?
-            cubit.profileModel!.materials[index].accepted!:
-            cubit.otherProfile!.materials[index].accepted! )?
-            StringsManager.accepted :
-            StringsManager.pending,
-            style: TextStyle(
-              color: (isMain? cubit.profileModel!.materials[index].accepted!: cubit.otherProfile!.materials[index].accepted!) ?
-              ColorsManager.persianGreen :
-              ColorsManager.gold
+                ],
+              );
+            },
+          ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Text(
+              (isMain?
+              cubit.profileModel!.materials[index].accepted!:
+              cubit.otherProfile!.materials[index].accepted! )?
+              StringsManager.accepted :
+              StringsManager.pending,
+              style: TextStyle(
+                  color: (isMain? cubit.profileModel!.materials[index].accepted!: cubit.otherProfile!.materials[index].accepted!) ?
+                  ColorsManager.persianGreen :
+                  ColorsManager.gold
+              ),
             ),
           ),
-        ),
-      ],
-    ),
-  );
+        ],
+      ),
+    );
+  }
 }
 
 Widget defaultLoginButton(

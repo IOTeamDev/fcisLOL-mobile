@@ -8,39 +8,24 @@ import 'package:lol/features/support_and_about_us/user_advices/release_notes_wid
 
 import '../../../../../core/utils/resources/colors_manager.dart';
 
-class NewFeatures extends StatelessWidget {
-  const NewFeatures({super.key});
+class ReleaseNotesGenerator extends StatelessWidget {
+  List<String> notes;
+  ReleaseNotesGenerator({super.key, required this.notes});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          StringsManager.newFeatures,
-          style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-              color: ColorsManager.white,
-              fontWeight: FontWeight.bold
-          ),
-        ),
-        SizedBox(height: AppSizesDouble.s10,),
-        ListView.separated(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) => Row(
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            textBaseline: TextBaseline.ideographic,
-            children: [
-              Icon(IconsManager.circleIcon, size: AppSizesDouble.s8, color: ColorsManager.white),
-              SizedBox(width: AppSizesDouble.s10,),
-              Expanded(child: Text(newFeatures[index], style: Theme.of(context).textTheme.titleLarge!.copyWith(color: ColorsManager.white),))
-            ],
-          ),
-          separatorBuilder: (context, index) => SizedBox(height: AppSizesDouble.s11,),
-          itemCount: newFeatures.length
-        ),
-        divider(color: ColorsManager.white, height: AppSizesDouble.s20)
-      ],
+    return SliverList.separated(
+      itemBuilder: (context, index) => Row(
+        crossAxisAlignment: CrossAxisAlignment.baseline,
+        textBaseline: TextBaseline.ideographic,
+        children: [
+          Icon(IconsManager.circleIcon, size: AppSizesDouble.s8, color: ColorsManager.white),
+          SizedBox(width: AppSizesDouble.s10,),
+          Expanded(child: Text(notes[index], style: Theme.of(context).textTheme.titleLarge!.copyWith(color: ColorsManager.white),))
+        ],
+      ),
+      separatorBuilder: (context, index) => SizedBox(height: AppSizesDouble.s11,),
+      itemCount: notes.length
     );
   }
 }

@@ -13,6 +13,7 @@ abstract class ColorsManager {
   static const Color grey5 = Color(0xff2d2d2d);
   static const Color grey6 = Color(0xff9F9F9F); // grey[300]
   static const Color grey7 = Color(0xffE6E6E6);
+  static const Color grey8 = Color(0xff41454F);
   static const Color lightGrey = Color(0xff757575); //grey[600]
   static const Color lightGrey1 = Color(0xffbdbdbd); //grey[400]
   static const Color lightGrey2 = Color(0xfff5f5f5); //grey[100]
