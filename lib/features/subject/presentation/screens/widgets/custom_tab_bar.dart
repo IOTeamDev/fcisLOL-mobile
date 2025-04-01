@@ -19,17 +19,11 @@ class CustomTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TabBar(
-      indicatorColor: Provider.of<ThemeProvider>(context).isDark
-          ? ColorsManager.white
-          : ColorsManager.lightPrimary,
+      indicatorColor:  ColorsManager.lightPrimary,
       indicatorWeight: 1.0,
-      labelColor: Provider.of<ThemeProvider>(context).isDark
-          ? ColorsManager.white
-          : ColorsManager.lightPrimary,
+      labelColor: ColorsManager.lightPrimary,
       dividerColor: ColorsManager.darkPrimary,
-      unselectedLabelColor: Provider.of<ThemeProvider>(context).isDark
-          ? ColorsManager.darkPrimary
-          : ColorsManager.lightGrey,
+      unselectedLabelColor: ColorsManager.lightGrey,
       controller: tabController,
       tabs: [
         TabForCustomTabBar(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppConstants {
-  static String appVersion = 'V2.2.1+3';
+  static String appVersion = 'V2.2.2+3';
   static String? TOKEN;
   static String? SelectedSemester;
   static String? navigatedSemester;

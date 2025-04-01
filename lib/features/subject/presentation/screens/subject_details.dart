@@ -52,16 +52,17 @@ class _MaterialDetailsState extends State<SubjectDetails>
       ),
       key: scaffoldKey,
       appBar: AppBar(
-          title: Text(
-            widget.subjectName
-            .replaceAll(StringsManager.underScore, StringsManager.space)
-            .replaceAll(StringsManager.andWord, StringsManager.andSymbol),
-                  style: Theme.of(context).textTheme.displayMedium!.copyWith(
-              fontSize: AppQueries.screenWidth(context) / AppSizes.s15,
-            ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                )),
+          title: FittedBox(
+            child: Text(
+              widget.subjectName
+              .replaceAll(StringsManager.underScore, StringsManager.space),
+                    style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                fontSize: AppQueries.screenWidth(context) / AppSizes.s15,
+              ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+          )),
       body: Column(
         children: [
           Padding(
@@ -72,14 +73,12 @@ class _MaterialDetailsState extends State<SubjectDetails>
                 cubit.runFilter(query: query);
               },
               style: TextStyle(
-                  color: Provider.of<ThemeProvider>(context).isDark
-                      ? Color(0xff1B262C)
-                      : ColorsManager.lightGrey,
-                  fontSize: 20),
+                color: ColorsManager.black,
+                fontSize: 20),
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.search,
               decoration: InputDecoration(
-                  fillColor: Color(0xffCDCDCD),
+                  fillColor: ColorsManager.grey7,
                   filled: true,
                   prefixIcon: Icon(
                     Icons.search,
