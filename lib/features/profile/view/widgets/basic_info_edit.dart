@@ -9,9 +9,10 @@ import '../../../../core/utils/resources/values_manager.dart';
 
 class BasicInfoEdit extends StatefulWidget {
   String userName;
+  String email;
   String phone;
   String semester;
-  BasicInfoEdit({super.key, required this.userName, required this.phone, required this.semester});
+  BasicInfoEdit({super.key, required this.userName, required this.email, required this.phone, required this.semester});
 
   @override
   State<BasicInfoEdit> createState() => _BasicInfoEditState();
@@ -19,12 +20,15 @@ class BasicInfoEdit extends StatefulWidget {
 
 class _BasicInfoEditState extends State<BasicInfoEdit> {
   late TextEditingController _userNameController;
+  late TextEditingController _emailController;
   late TextEditingController _phoneController;
   late String _selectedSemester;
+  late GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     _userNameController = TextEditingController(text: widget.userName);
+    _emailController = TextEditingController(text: widget.email);
     _phoneController = TextEditingController(text: widget.phone);
     _selectedSemester = widget.semester;
     super.initState();
@@ -34,12 +38,13 @@ class _BasicInfoEditState extends State<BasicInfoEdit> {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Form(
+        key: _formKey,
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('User Name', style: Theme.of(context).textTheme.titleLarge,),
-              SizedBox(height: 10,),
+              SizedBox(height: 5,),
               TextFormField(
                 controller: _userNameController,
                 keyboardType: TextInputType.name,
@@ -50,18 +55,44 @@ class _BasicInfoEditState extends State<BasicInfoEdit> {
                   return null;
                 },
                 cursorColor: ColorsManager.lightPrimary,
-                style: TextStyle(color: ColorsManager.black, fontWeight: FontWeight.w500, fontSize: 18),
+                style: TextStyle(color: ColorsManager.black, fontWeight: FontWeight.w500),
                 decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide(color: ColorsManager.lightPrimary)),
+                  hintText: 'Username',
+                  hintStyle: TextStyle(color: ColorsManager.grey),
                   filled: true,
                   fillColor: ColorsManager.grey7,
+                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide(color: ColorsManager.lightPrimary)),
                   enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide(color: ColorsManager.white)),
                   errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide(color: ColorsManager.imperialRed)),
                 ),
               ),
-              SizedBox(height: 20,),
-              Text('Phone Number', style: Theme.of(context).textTheme.titleLarge,),
               SizedBox(height: 10,),
+              Text('Email Address', style: Theme.of(context).textTheme.titleMedium,),
+              SizedBox(height: 5,),
+              TextFormField(
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                validator: (value){
+                  if(value == null){
+                    return StringsManager.emptyFieldWarning;
+                  }
+                  return null;
+                },
+                cursorColor: ColorsManager.lightPrimary,
+                style: TextStyle(color: ColorsManager.black, fontWeight: FontWeight.w500),
+                decoration: InputDecoration(
+                  hintText: 'Email Address',
+                  hintStyle: TextStyle(color: ColorsManager.grey),
+                  filled: true,
+                  fillColor: ColorsManager.grey7,
+                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide(color: ColorsManager.lightPrimary)),
+                  enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide(color: ColorsManager.white)),
+                  errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide(color: ColorsManager.imperialRed)),
+                ),
+              ),
+              SizedBox(height: 10,),
+              Text('Phone Number', style: Theme.of(context).textTheme.titleLarge,),
+              SizedBox(height: 5,),
               TextFormField(
                 controller: _phoneController,
                 keyboardType: TextInputType.phone,
@@ -72,7 +103,7 @@ class _BasicInfoEditState extends State<BasicInfoEdit> {
                   return null;
                 },
                 cursorColor: ColorsManager.lightPrimary,
-                style: TextStyle(color: ColorsManager.black, fontWeight: FontWeight.w500, fontSize: 18),
+                style: TextStyle(color: ColorsManager.black, fontWeight: FontWeight.w500),
                 decoration: InputDecoration(
                   hintText: 'Phone Number',
                   hintStyle: TextStyle(color: ColorsManager.grey),
@@ -83,9 +114,9 @@ class _BasicInfoEditState extends State<BasicInfoEdit> {
                   errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide(color: ColorsManager.imperialRed)),
                 ),
               ),
-              SizedBox(height: 20,),
-              Text('Semester', style: Theme.of(context).textTheme.titleLarge,),
               SizedBox(height: 10,),
+              Text('Semester', style: Theme.of(context).textTheme.titleLarge,),
+              SizedBox(height: 5,),
               Container(
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
@@ -132,10 +163,31 @@ class _BasicInfoEditState extends State<BasicInfoEdit> {
                   },
                 ),
               ),
+              SizedBox(height: 25,),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: ColorsManager.lightPrimary,
+                    foregroundColor: ColorsManager.white,
+                    padding: EdgeInsets.symmetric(vertical: 12)
+                  ),
+                  onPressed: (){},
+                  child: Text('Save Data')
+                ),
+              )
             ],
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _userNameController.dispose();
+    _phoneController.dispose();
+    super.dispose();
   }
 }

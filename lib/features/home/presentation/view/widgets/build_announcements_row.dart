@@ -27,18 +27,15 @@ class BuildAnnouncementsRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return CarouselSlider(
       items: announcements.isEmpty ? [
-        InkWell(
-          onTap: () => navigate(context, AnnouncementsList(semester: MainCubit.get(context).profileModel!.semester)),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(AppSizesDouble.s15),
-            ),
-            child: Image.asset(
-              height: AppSizesDouble.s600,
-              width: double.infinity,
-              fit: BoxFit.cover,
-              AssetsManager.noAnnouncements
-            ),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(AppSizesDouble.s15),
+          ),
+          child: Image.asset(
+            height: AppSizesDouble.s600,
+            width: double.infinity,
+            fit: BoxFit.cover,
+            AssetsManager.noAnnouncements
           ),
         )
       ] : announcements.map((announce) {

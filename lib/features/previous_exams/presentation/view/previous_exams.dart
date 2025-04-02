@@ -156,23 +156,24 @@ class _PreviousExamsState extends State<PreviousExams> {
                               setState(() {
                                 selectedSubject = value;
                                 AppConstants.previousExamsSelectedSubject = selectedSubject;
+                                cubit.getPreviousExams(selectedSubject);
                               });
                             },
                           ),
                         ),
                       ),
-                      SizedBox(width: 10),
-                    if(selectedSubject != null)
-                      IconButton(
-                        style: IconButton.styleFrom(
-                          backgroundColor: ColorsManager.lightPrimary,
-                          padding: EdgeInsets.all(12),
-                        ),
-                        onPressed: (){
-                          cubit.getPreviousExams(selectedSubject);
-                        },
-                        icon: Icon(IconsManager.searchIcon)
-                      )
+                      // SizedBox(width: 10),
+                    // if(selectedSubject != null)
+                    //   IconButton(
+                    //     style: IconButton.styleFrom(
+                    //       backgroundColor: ColorsManager.lightPrimary,
+                    //       padding: EdgeInsets.all(12),
+                    //     ),
+                    //     onPressed: (){
+                    //
+                    //     },
+                    //     icon: Icon(IconsManager.searchIcon)
+                    //   )
                   ],
                 ),
                 SizedBox(height: 30,),

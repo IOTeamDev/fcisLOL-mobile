@@ -635,6 +635,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               Cache.removeValue(key: KeysManager.token);
                               AppConstants.SelectedSemester = null;
                               AppConstants.TOKEN = null;
+                              AppConstants.navigatedSemester = null;
+                              AppConstants.previousExamsSelectedSubject = null;
+                              AppConstants.previousExamsSelectedSemester = null;
                               Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
                                   builder: (context) => RegistrationLayout(),

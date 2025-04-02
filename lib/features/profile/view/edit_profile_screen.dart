@@ -34,38 +34,36 @@ class _EditProfileScreenState extends State<EditProfileScreen> with TickerProvid
       appBar: AppBar(
         title: Text('Edit Profile', style: Theme.of(context).textTheme.displayMedium,),
         centerTitle: true,
-        actions: [
-          ElevatedButton(
-            onPressed: (){},
-            child: Text('Save', style: TextStyle(color: ColorsManager.white),),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: ColorsManager.lightPrimary
-            ),
-          ),
-          SizedBox(width: 10,),
-        ],
       ),
       body: Stack(
         alignment: Alignment.topCenter,
         children: [
-          Stack(
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            alignment: Alignment.center,
-            children: [
-              CircleAvatar(
-                radius: AppQueries.screenWidth(context)/5,
-                backgroundImage: NetworkImage(MainCubit.get(context).profileModel?.photo??AppConstants.defaultProfileImage),
+          SizedBox(
+            height: AppQueries.screenWidth(context)/3,
+            width: AppQueries.screenWidth(context)/3,
+            child: InkWell(
+              splashColor: ColorsManager.transparent,
+              onTap: (){},
+              child: Stack(
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                alignment: Alignment.center,
+                children: [
+                  CircleAvatar(
+                    radius: AppQueries.screenWidth(context)/5,
+                    backgroundImage: NetworkImage(MainCubit.get(context).profileModel?.photo??AppConstants.defaultProfileImage),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: ColorsManager.black.withValues(alpha: 0.4),
+                      borderRadius: BorderRadius.circular(100)
+                    ),
+                    width: AppQueries.screenWidth(context)/2.5,
+                    height: AppQueries.screenWidth(context)/2.5,
+                    child: Icon(IconsManager.editIcon, size: AppQueries.screenWidth(context)/4,),
+                  ),
+                ],
               ),
-              Container(
-                decoration: BoxDecoration(
-                  color: ColorsManager.black.withValues(alpha: 0.4),
-                  borderRadius: BorderRadius.circular(100)
-                ),
-                width: AppQueries.screenWidth(context)/2.5,
-                height: AppQueries.screenWidth(context)/2.5,
-                child: Icon(IconsManager.editIcon, size: AppQueries.screenWidth(context)/4,),
-              ),
-            ],
+            ),
           ),
           SizedBox(height: 30,),
           Align(
@@ -78,7 +76,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> with TickerProvid
                 ? ColorsManager.grey5
                 : ColorsManager.grey7
               ),
-              height: AppQueries.screenHeight(context)/1.7,
+              height: AppQueries.screenHeight(context)/1.5,
               child: Column(
                 children: [
                   TabBar(
@@ -93,12 +91,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> with TickerProvid
                     labelStyle: TextStyle(),
                     tabs: [
                       Tab(
-                        text: 'Basic Info',
+                        text: 'Personal Info',
                         height: 40,
                       ),
                       Tab(
                         height: 40,
-                        text: 'Login Info',
+                        text: 'Change Password',
                       ),
                       Tab(
                         height: 40,
@@ -112,7 +110,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> with TickerProvid
                                   'Delete Account',
                                 ),
                                 style: TextStyle(
-                                  // Custom style for last tab
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
                                   color: isLastTabSelected? ColorsManager.imperialRed: ColorsManager.darkRed,
@@ -128,8 +125,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> with TickerProvid
                   Expanded(
                     child: TabBarView(
                       children: [
-                        BasicInfoEdit(semester: MainCubit.get(context).profileModel!.semester, phone: MainCubit.get(context).profileModel!.phone, userName: MainCubit.get(context).profileModel!.name,),
-                        LoginInfoEdit(email: MainCubit.get(context).profileModel!.email),
+                        BasicInfoEdit(semester: MainCubit.get(context).profileModel!.semester, phone: MainCubit.get(context).profileModel!.phone, userName: MainCubit.get(context).profileModel!.name, email: MainCubit.get(context).profileModel!.email),
+                        LoginInfoEdit(),
                         DeleteAccountSection(),
                       ],
                       controller: _tabController

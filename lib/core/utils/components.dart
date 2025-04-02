@@ -248,16 +248,16 @@ Widget previousExamsBuilder(context, PreviousExamModel exam, role, semester){
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          if(role == KeysManager.admin || role == KeysManager.developer)
+          if(AppConstants.TOKEN != null && (role == KeysManager.admin || role == KeysManager.developer))
           IconButton(
-            onPressed: () => showDialog(context: context, builder: (context) => EditExamPopup(exam: exam, semester: semester)),
+            onPressed: () => showDialog(barrierColor: ColorsManager.black.withValues(alpha: 0.4), context: context, builder: (context) => EditExamPopup(exam: exam, semester: semester), barrierDismissible: true),
             icon: Icon(IconsManager.editIcon, color: ColorsManager.black),
             style: IconButton.styleFrom(
               backgroundColor: ColorsManager.white,
               shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(10))
             ),
           ),
-          if(role == KeysManager.admin || role == KeysManager.developer)
+          if(AppConstants.TOKEN != null && (role == KeysManager.admin || role == KeysManager.developer))
           IconButton(
             onPressed: () {
               MainCubit.get(context).deletePreviousExam(exam.id, exam.subject);
