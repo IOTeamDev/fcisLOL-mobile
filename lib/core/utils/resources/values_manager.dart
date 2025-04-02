@@ -122,6 +122,7 @@ class AppSizesDouble{
   static const double s60 = 60;
   static const double s70 = 70;
   static const double s80 = 80;
+  static const double s95 = 95;
   static const double s100 = 100;
   static const double s130 = 130;
   static const double s150 = 150;

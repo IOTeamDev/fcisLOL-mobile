@@ -14,6 +14,7 @@ import 'package:lol/core/utils/resources/icons_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/core/utils/resources/values_manager.dart';
+import 'package:lol/features/profile/view/edit_profile_screen.dart';
 import 'package:lol/main.dart';
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/resources/constants_manager.dart';
@@ -35,107 +36,75 @@ class Profile extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             actions: [
-              ElevatedButton.icon(
-                label: Text(
-                  'Delete',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleSmall!
-                      .copyWith(color: ColorsManager.black),
-                ),
-                icon: Icon(IconsManager.deleteIcon),
-                style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.resolveWith(
-                    (states) {
-                      return ColorsManager.white;
-                    },
-                  ),
-                  iconColor: WidgetStateProperty.resolveWith(
-                    (states) {
-                      return ColorsManager.black;
-                    },
-                  ),
-                ),
-                onPressed: () {
-                  AwesomeDialog(
-                    context: context,
-                    title: StringsManager.delete,
-                    dialogType: DialogType.warning,
-                    body: Text(
-                      textAlign: TextAlign.center,
-                      'If you press "Delete", your Uninotes account will be deleted forever',
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    animType: AnimType.scale,
-                    btnOk: ElevatedButton(
-                      onPressed: () {
-                        context.read<MainCubit>().deleteAccount(
-                            id: context.read<MainCubit>().profileModel!.id);
-                      },
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: ColorsManager.imperialRed),
-                      child: Text(
-                        StringsManager.delete,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium!
-                            .copyWith(color: ColorsManager.white),
-                      ),
-                    ),
-                    btnCancel: ElevatedButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: ColorsManager.grey4),
-                        child: Text(
-                          StringsManager.cancel,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(color: ColorsManager.black),
-                        )),
-                  ).show();
-                },
-              )
-              // ElevatedButton(
-              //   onPressed: (){},
-              //   child: Row(
-              //     children: [
-              //       Icon(
-              //         IconsManager.editIcon,
-              //         color: Theme.of(context).iconTheme.color!.withValues(
-              //           red: Theme.of(context).iconTheme.color!.r * -1,
-              //           blue: Theme.of(context).iconTheme.color!.b * -1,
-              //           green: Theme.of(context).iconTheme.color!.g * -1
+              // ElevatedButton.icon(
+              //   label: Text(
+              //     'Delete',
+              //     style: Theme.of(context)
+              //         .textTheme
+              //         .titleSmall!
+              //         .copyWith(color: ColorsManager.black),
+              //   ),
+              //   icon: Icon(IconsManager.deleteIcon),
+              //   style: ButtonStyle(
+              //     backgroundColor: WidgetStateProperty.resolveWith(
+              //       (states) {
+              //         return ColorsManager.white;
+              //       },
+              //     ),
+              //     iconColor: WidgetStateProperty.resolveWith(
+              //       (states) {
+              //         return ColorsManager.black;
+              //       },
+              //     ),
+              //   ),
+              //   onPressed: () {
+              //     AwesomeDialog(
+              //       context: context,
+              //       title: StringsManager.delete,
+              //       dialogType: DialogType.warning,
+              //       body: Text(
+              //         textAlign: TextAlign.center,
+              //         'If you press "Delete", your Uninotes account will be deleted forever',
+              //         style: Theme.of(context).textTheme.titleLarge,
+              //       ),
+              //       animType: AnimType.scale,
+              //       btnOk: ElevatedButton(
+              //         onPressed: () {
+              //           context.read<MainCubit>().deleteAccount(
+              //               id: context.read<MainCubit>().profileModel!.id);
+              //         },
+              //         style: ElevatedButton.styleFrom(
+              //             backgroundColor: ColorsManager.imperialRed),
+              //         child: Text(
+              //           StringsManager.delete,
+              //           style: Theme.of(context)
+              //               .textTheme
+              //               .bodyMedium!
+              //               .copyWith(color: ColorsManager.white),
               //         ),
               //       ),
-              //       Text('Edit', style: Theme.of(context).textTheme.titleSmall,)
-              //     ],
-              //   ),
-              // )
-              //
-              // TextButton(
-              //   style: TextButton.styleFrom(
-              //     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              //     padding: EdgeInsets.zero,
-              //     foregroundColor: Colors.blue
-              //   ),
-              //   onPressed: () async {
-              //     await MainCubit.get(context).uploadPImage(
-              //       image: MainCubit.get(context).userImageFile,
-              //     );
-              //
-              //     MainCubit.get(context).updateUser(
-              //         userID: MainCubit.get(context).profileModel!.id,
-              //         photo: MainCubit.get(context).userImagePath);
+              //       btnCancel: ElevatedButton(
+              //           onPressed: () => Navigator.of(context).pop(),
+              //           style: ElevatedButton.styleFrom(
+              //               backgroundColor: ColorsManager.grey4),
+              //           child: Text(
+              //             StringsManager.cancel,
+              //             style: Theme.of(context)
+              //                 .textTheme
+              //                 .bodyMedium!
+              //                 .copyWith(color: ColorsManager.black),
+              //           )),
+              //     ).show();
               //   },
-              //   child: Container(
-              //     margin: EdgeInsets.only(right: 10),
-              //     child: Text(
-              //       "Submit",
-              //       style: TextStyle(fontSize: 17),
-              //     ),
-              //   )
-              // ),
+              // )
+              ElevatedButton.icon(
+                label: Text('Edit', style: Theme.of(context).textTheme.titleSmall!.copyWith(color: ColorsManager.black),),
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditProfileScreen())),
+                icon: Icon(IconsManager.editIcon, color: ColorsManager.black,),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: ColorsManager.white
+                ),
+              )
             ],
             title: Text(
               StringsManager.profile,

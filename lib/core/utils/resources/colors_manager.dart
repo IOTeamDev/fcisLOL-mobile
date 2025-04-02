@@ -42,6 +42,7 @@ abstract class ColorsManager {
   static const Color persianGreen = Color(0xff4EBF9E); // green
   static const Color green = Color(0xff3cb043); // green
   static const Color imperialRed = Color(0xfff74c4c); // red (for Remove button)
+  static const Color darkRed = Color(0xff660000); // red (for Remove button)
   static const Color gold = Color(0xffFFD700);
   static const Color bronze = Color(0xffCD7F32);
   static const Color silver = Color(0xffC0C0C0);

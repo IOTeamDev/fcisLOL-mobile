@@ -11,6 +11,8 @@ import 'package:lol/features/admin/presentation/view/announcements/add_announcem
 import 'package:lol/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
 import 'package:lol/features/home/presentation/view/semester_navigate.dart';
 import 'package:lol/features/on_boarding/presentation/view/onboarding.dart';
+import 'package:lol/features/otp_and_verification/presentation/view/otp_verification_screen.dart';
+import 'package:lol/features/profile/view/edit_profile_screen.dart';
 import 'package:lol/features/profile/view/other_profile.dart';
 import 'package:lol/features/auth/data/models/login_model.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
@@ -97,6 +99,7 @@ main() async {
       startPage = const Home();
     }
   }
+
   ErrorWidget.builder = (FlutterErrorDetails errorDetails){
     return ErrorScreen(errorDetails: errorDetails);
   };
