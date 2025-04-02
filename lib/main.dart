@@ -4,8 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
+import 'package:lol/core/network/remote/send_grid_helper.dart';
 import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/core/utils/resources/themes_manager.dart';
 import 'package:lol/features/admin/presentation/view/announcements/add_announcement.dart';
@@ -47,10 +49,11 @@ String? fcmToken;
 Map<String, dynamic> fcisServiceMap = {};
 main() async {
   setup();
-
+  await dotenv.load();
   WidgetsFlutterBinding.ensureInitialized();
   await Cache.initialize();
   await DioHelp.initial();
+  await SendGridHelper.initial();
   await Firebase.initializeApp();
   fcmToken = await FirebaseMessaging.instance.getToken();
 

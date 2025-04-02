@@ -11,6 +11,7 @@ import 'package:lol/core/utils/navigation.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
+import 'package:lol/features/auth/data/models/registration_user_model.dart';
 import 'package:lol/features/auth/presentation/view/choosing_year.dart';
 import 'package:lol/features/auth/presentation/view/register.dart';
 import 'package:lol/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
@@ -20,7 +21,7 @@ import '../../../../../core/utils/resources/values_manager.dart';
 
 class Year extends StatefulWidget {
   final String title;
-  final UserInfo? userInfo;
+  final RegistrationUserModel? userInfo;
 
   const Year({super.key, required this.title, this.userInfo});
 
@@ -37,30 +38,7 @@ class YearState extends State<Year> {
     var loginCubit = AuthCubit.get(context);
 
     return BlocListener<AuthCubit, AuthState>(
-      listener: (context, state) {
-        if (state is RegisterSuccess) {
-          AppConstants.TOKEN = state.token;
-
-          Cache.writeData(key: KeysManager.token, value: state.token);
-
-          showToastMessage(
-            message: 'Successfully signed up !',
-            states: ToastStates.SUCCESS,
-          );
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-              builder: (context) => Home(),
-            ),
-            (route) => false,
-          );
-        }
-        if (state is RegisterFailed) {
-          showToastMessage(
-            message: 'Please try with another email address',
-            states: ToastStates.ERROR,
-          );
-        }
-      },
+      listener: (context, state) {},
       child: Column(
         children: [
           InkWell(
@@ -134,7 +112,8 @@ class YearState extends State<Year> {
     );
   }
 
-  _awesomeDialogForSemester1(UserInfo? userInfo, AuthCubit loginCubit) =>
+  _awesomeDialogForSemester1(
+          RegistrationUserModel? userInfo, AuthCubit loginCubit) =>
       AwesomeDialog(
         context: context,
         dialogType: DialogType.info,

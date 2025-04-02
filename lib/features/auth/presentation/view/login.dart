@@ -56,6 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppSizesDouble.s30),
           child: Form(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             key: formKey,
             child: Center(
               child: SingleChildScrollView(
@@ -83,21 +84,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       height: AppSizesDouble.s20,
                     ),
-                    defaultLoginInputField(
-                      _passwordController,
-                      StringsManager.password,
-                      TextInputType.visiblePassword,
-                      isPassword: true,
-                      loginCubit: loginCubit,
-                      suffixIcon: IconsManager.eyeIcon
-                    ),
+                    defaultLoginInputField(_passwordController,
+                        StringsManager.password, TextInputType.visiblePassword,
+                        isPassword: true,
+                        loginCubit: loginCubit,
+                        suffixIcon: IconsManager.eyeIcon),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: TextButton(
                         style: TextButton.styleFrom(
-                          padding: const EdgeInsets.all(AppSizesDouble.s0),
-                          foregroundColor: ColorsManager.dodgerBlue
-                        ),
+                            padding: const EdgeInsets.all(AppSizesDouble.s0),
+                            foregroundColor: ColorsManager.dodgerBlue),
                         child: const Text(
                           StringsManager.forgotPassword + StringsManager.qMark,
                         ),
@@ -144,8 +141,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     state is LoginLoading
                         ? Center(
                             child: CircularProgressIndicator(
-                                color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.white: ColorsManager.black
-                            ),
+                                color:
+                                    Provider.of<ThemeProvider>(context).isDark
+                                        ? ColorsManager.white
+                                        : ColorsManager.black),
                           )
                         : defaultLoginButton(
                             context,

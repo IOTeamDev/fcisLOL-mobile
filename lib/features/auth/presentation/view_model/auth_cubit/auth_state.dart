@@ -46,5 +46,23 @@ final class UploadImageLoading extends AuthState {}
 final class UploadImageSuccess extends AuthState {}
 
 final class UploadImageFailure extends AuthState {}
-// final class UploadImageLoading extends AuthState {}
-// final class UploadImageLoading extends AuthState {}
+
+final class SendVerificationCodeLoading extends AuthState {}
+
+final class SendVerificationCodeSuccess extends AuthState {}
+
+final class SendVerificationCodeFailed extends AuthState {
+  final String errMessage;
+  SendVerificationCodeFailed({required this.errMessage});
+}
+
+// final class EmailVerifiedLoading extends AuthState {}
+
+// final class BuyerVerifiedSuccess extends AuthState {}
+
+// final class SellerVerifiedSuccess extends AuthState {}
+
+// final class EmailVerifiedFailed extends AuthState {
+//   final String errMessage;
+//   EmailVerifiedFailed({required this.errMessage});
+// }

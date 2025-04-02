@@ -123,7 +123,8 @@ class MainCubit extends Cubit<MainCubitStates> {
           .ref()
           .child(StringsManager.announcements.toLowerCase() +
               StringsManager.forwardSlash +
-              Uri.file(image.path).pathSegments.last).putFile(image);
+              Uri.file(image.path).pathSegments.last)
+          .putFile(image);
     }
 
     try {
@@ -143,10 +144,12 @@ class MainCubit extends Cubit<MainCubitStates> {
   getProfileInfo() async {
     emit(GetProfileLoading());
     try {
-      final response = await DioHelp.getData(path: CURRENTUSER, token: AppConstants.TOKEN);
+      final response =
+          await DioHelp.getData(path: CURRENTUSER, token: AppConstants.TOKEN);
       profileModel = ProfileModel.fromJson(response.data);
       AppConstants.SelectedSemester = profileModel!.semester;
-      await Cache.writeData(key: KeysManager.semester, value: profileModel!.semester);
+      await Cache.writeData(
+          key: KeysManager.semester, value: profileModel!.semester);
 
       emit(GetProfileSuccess());
     } catch (e) {
@@ -250,9 +253,9 @@ class MainCubit extends Cubit<MainCubitStates> {
     emit(AcceptRequestLoadingState());
     try {
       await DioHelp.getData(
-        path: ACCEPT,
-        query: {KeysManager.id: id, KeysManager.accepted: true},
-        token: AppConstants.TOKEN);
+          path: ACCEPT,
+          query: {KeysManager.id: id, KeysManager.accepted: true},
+          token: AppConstants.TOKEN);
       emit(AcceptRequestSuccessState());
       if (role == KeysManager.developer) {
         getAllSemestersRequests();
@@ -280,7 +283,8 @@ class MainCubit extends Cubit<MainCubitStates> {
             element[StringsManager.role] != KeysManager.developer) {
           notAdminLeaderboardModel?.add(LeaderboardModel.fromJson(element));
         } else {
-          leaderboardModel?.add(LeaderboardModel.fromJson(element)); //just to get the score of Admin
+          leaderboardModel?.add(LeaderboardModel.fromJson(
+              element)); //just to get the score of Admin
         }
       });
 
@@ -320,9 +324,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     emit(DeleteAccountLoading());
     try {
       await DioHelp.deleteData(
-          path: USERS,
-          token: AppConstants.TOKEN,
-          query: {KeysManager.id: id});
+          path: USERS, token: AppConstants.TOKEN, query: {KeysManager.id: id});
       await Cache.removeValue(key: KeysManager.token);
       await Cache.removeValue(key: KeysManager.semester);
 
@@ -334,17 +336,20 @@ class MainCubit extends Cubit<MainCubitStates> {
     }
   }
 
-  void sendReportBugOrFeedBack(message, {bool isFeedback = false}){
-    DioHelp.postData(path: REPORT, data: {
-      'name':profileModel?.name??'Guest',
-      'message': message
-    }).then((value){
+  void sendReportBugOrFeedBack(message, {bool isFeedback = false}) {
+    DioHelp.postData(
+            path: REPORT,
+            data: {'name': profileModel?.name ?? 'Guest', 'message': message})
+        .then((value) {
       emit(SendingReportOrFeedBackSuccessState());
-      showToastMessage(message: '${isFeedback ?'Feedback':'Bug Report'} Sent Successfully!', states: ToastStates.SUCCESS);
+      showToastMessage(
+          message:
+              '${isFeedback ? 'Feedback' : 'Bug Report'} Sent Successfully!',
+          states: ToastStates.SUCCESS);
     });
   }
 
-  void changeBottomSheetState(isShown){
+  void changeBottomSheetState(isShown) {
     isBottomSheetShown = isShown;
     emit(ChangeBottomSheetState());
   }
@@ -352,24 +357,21 @@ class MainCubit extends Cubit<MainCubitStates> {
   List<PreviousExamModel> previousExamsFinal = [];
   List<PreviousExamModel> previousExamsMid = [];
   List<PreviousExamModel> previousExamsOther = [];
-  void getPreviousExams(subject, {bool accepted = true}){
+  void getPreviousExams(subject, {bool accepted = true}) {
     emit(GetPreviousExamsLoadingState());
-    DioHelp.getData(
-      path: PREVIOUSEXAMS,
-      query: {
-        KeysManager.accepted:accepted,
-        KeysManager.subject:subject
-      }
-    ).then((value){
+    DioHelp.getData(path: PREVIOUSEXAMS, query: {
+      KeysManager.accepted: accepted,
+      KeysManager.subject: subject
+    }).then((value) {
       previousExamsFinal = [];
       previousExamsMid = [];
       previousExamsOther = [];
-      value.data.forEach((element){
-        if(element['type'] == 'Final')
+      value.data.forEach((element) {
+        if (element['type'] == 'Final')
           previousExamsFinal.add(PreviousExamModel.fromJson(element));
-        if(element['type'] == 'Mid')
+        if (element['type'] == 'Mid')
           previousExamsMid.add(PreviousExamModel.fromJson(element));
-        if(element['type'] == 'Other')
+        if (element['type'] == 'Other')
           previousExamsOther.add(PreviousExamModel.fromJson(element));
       });
       emit(GetPreviousExamsSuccessState());
@@ -383,24 +385,25 @@ class MainCubit extends Cubit<MainCubitStates> {
     String subject,
     String currentSubject,
     String type,
-  ){
+  ) {
     emit(AddPreviousExamsLoadingState());
-    DioHelp.postData(
-      token: AppConstants.TOKEN,
-      path: PREVIOUSEXAMS,
-      data: {
-        'title':title,
-        'link':link,
-        'semester':semester,
-        'subject':subject,
-        'type':type
-      }
-    ).then((value){
-      if(currentSubject == subject && (profileModel!.role == KeysManager.developer || profileModel!.role == KeysManager.admin)){
+    DioHelp.postData(token: AppConstants.TOKEN, path: PREVIOUSEXAMS, data: {
+      'title': title,
+      'link': link,
+      'semester': semester,
+      'subject': subject,
+      'type': type
+    }).then((value) {
+      if (currentSubject == subject &&
+          (profileModel!.role == KeysManager.developer ||
+              profileModel!.role == KeysManager.admin)) {
         getPreviousExams(subject);
-        showToastMessage(message: 'Exam Added Successfully', states: ToastStates.SUCCESS);
-      } else{
-        showToastMessage(message: 'Exam Added Successfully, and Waiting for Admin Approval', states: ToastStates.SUCCESS);
+        showToastMessage(
+            message: 'Exam Added Successfully', states: ToastStates.SUCCESS);
+      } else {
+        showToastMessage(
+            message: 'Exam Added Successfully, and Waiting for Admin Approval',
+            states: ToastStates.SUCCESS);
       }
       emit(AddPreviousExamsSuccessState());
     });

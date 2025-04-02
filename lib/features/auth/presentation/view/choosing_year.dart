@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/core/utils/resources/values_manager.dart';
+import 'package:lol/features/auth/data/models/registration_user_model.dart';
 import 'package:lol/features/auth/presentation/view/registration_layout.dart';
 import 'package:lol/features/auth/presentation/view/widgets/year.dart';
 import 'package:lol/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
@@ -23,7 +24,7 @@ import '../../../../core/utils/resources/constants_manager.dart';
 import '../../../../core/utils/resources/strings_manager.dart';
 
 class ChoosingYear extends StatelessWidget {
-  final UserInfo? userInfo;
+  final RegistrationUserModel? userInfo;
   final AuthCubit authCubit;
   const ChoosingYear({
     super.key,
@@ -38,7 +39,10 @@ class ChoosingYear extends StatelessWidget {
         backgroundColor: ColorsManager.white,
         title: Text(
           StringsManager.yearSelect,
-          style: Theme.of(context).textTheme.displayMedium!.copyWith(color: ColorsManager.black),
+          style: Theme.of(context)
+              .textTheme
+              .displayMedium!
+              .copyWith(color: ColorsManager.black),
         ),
         centerTitle: true,
       ),
@@ -51,7 +55,8 @@ class ChoosingYear extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center, // Center the rows horizontally
+                  mainAxisAlignment:
+                      MainAxisAlignment.center, // Center the rows horizontally
                   children: [
                     Year(
                       title: StringsManager.level1,
@@ -77,34 +82,34 @@ class ChoosingYear extends StatelessWidget {
                     ),
                   ],
                 ),
-                if(userInfo == null)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      StringsManager.alreadyHaveAccount,
-                      style: TextStyle(fontSize: 14, color: Colors.black),
-                    ),
-                    //SizedBox(width: 2,),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => RegistrationLayout(),
-                            ),
-                            (route) => false);
-                      },
-                      child: Text(
-                        StringsManager.login,
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            color: ColorsManager.lightPrimary),
+                if (userInfo == null)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        StringsManager.alreadyHaveAccount,
+                        style: TextStyle(fontSize: 14, color: Colors.black),
                       ),
-                    ),
-                  ],
-                ),
+                      //SizedBox(width: 2,),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => RegistrationLayout(),
+                              ),
+                              (route) => false);
+                        },
+                        child: Text(
+                          StringsManager.login,
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: ColorsManager.lightPrimary),
+                        ),
+                      ),
+                    ],
+                  ),
               ],
             ),
           ),
