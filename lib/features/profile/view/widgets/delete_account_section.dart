@@ -61,7 +61,7 @@ class DeleteAccountSection extends StatelessWidget {
                   dialogType: DialogType.warning,
                   body: Text(
                     textAlign: TextAlign.center,
-                    'If you press "Delete", your Uninotes account will be deleted forever',
+                    'If you press "DELETE", your Uni-Notes account will be deleted PERMANENTLY',
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   animType: AnimType.scale,
@@ -75,9 +75,9 @@ class DeleteAccountSection extends StatelessWidget {
                     child: Text(
                       StringsManager.delete,
                       style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium!
-                          .copyWith(color: ColorsManager.white),
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(color: ColorsManager.white),
                     ),
                   ),
                   btnCancel: ElevatedButton(

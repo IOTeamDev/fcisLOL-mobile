@@ -181,6 +181,14 @@ class MainCubit extends Cubit<MainCubitStates> {
 
       AppConstants.TOKEN = null;
       AppConstants.SelectedSemester = null;
+      AppConstants.previousExamsSelectedSubject = null;
+      AppConstants.previousExamsSelectedSemester = null;
+      AppConstants.navigatedSemester = null;
+
+      profileModel = null;
+      previousExamsMid.clear();
+      previousExamsFinal.clear();
+      previousExamsOther.clear();
 
       emit(LogoutSuccess());
     } catch (e) {

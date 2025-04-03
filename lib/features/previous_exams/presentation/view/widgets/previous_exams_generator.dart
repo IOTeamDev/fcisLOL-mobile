@@ -12,12 +12,15 @@ class PreviousExamsGenerator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverList.separated(
-      itemBuilder: (context, index) => previousExamsBuilder(
-        context,
-        previousExamList[index],
-        MainCubit.get(context).profileModel?.role??'STUDENT',
-        semester
-      ),
+      itemBuilder: (context, index) {
+        final reversedIndex = previousExamList.length -1 - index;
+        return previousExamsBuilder(
+          context,
+          previousExamList[reversedIndex],
+          MainCubit.get(context).profileModel?.role??'STUDENT',
+          semester
+        );
+      },
       separatorBuilder: (context, index) => SizedBox(height: 10,),
       itemCount: previousExamList.length,
     );
