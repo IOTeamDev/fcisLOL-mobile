@@ -121,7 +121,7 @@ class App extends StatelessWidget {
         BlocProvider(create: (BuildContext context) => AdminCubit()..getFcmTokens()),
       ],
       child: MaterialApp(
-        home: startPage,
+        home: ChoosingYear(authCubit: AuthCubit()),
         theme: darkTheme,
         darkTheme: darkTheme,
         themeMode: ThemeMode.dark,

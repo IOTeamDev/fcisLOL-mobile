@@ -115,7 +115,7 @@ class _PreviousExamsState extends State<PreviousExams> {
                     ),
                     SizedBox(width: 7,),
                     if(selectedSemester != null)
-                      Expanded(
+                    Expanded(
                         flex: 2,
                         child: Container(
                           alignment: Alignment.center,
@@ -162,18 +162,6 @@ class _PreviousExamsState extends State<PreviousExams> {
                           ),
                         ),
                       ),
-                      // SizedBox(width: 10),
-                    // if(selectedSubject != null)
-                    //   IconButton(
-                    //     style: IconButton.styleFrom(
-                    //       backgroundColor: ColorsManager.lightPrimary,
-                    //       padding: EdgeInsets.all(12),
-                    //     ),
-                    //     onPressed: (){
-                    //
-                    //     },
-                    //     icon: Icon(IconsManager.searchIcon)
-                    //   )
                   ],
                 ),
                 SizedBox(height: 30,),
