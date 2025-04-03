@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/navigation.dart';
@@ -8,10 +9,12 @@ import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/features/auth/presentation/view/login.dart';
 import 'package:lol/features/auth/presentation/view/register.dart';
+import 'package:lol/features/auth/presentation/view/select_image.dart';
 import 'package:lol/features/auth/presentation/view/verify_email.dart';
 import 'package:lol/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
 import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
+import 'package:lol/features/otp_and_verification/presentation/view/otp_verification_screen.dart';
 
 class RegistrationLayout extends StatefulWidget {
   RegistrationLayout({super.key});
@@ -41,8 +44,12 @@ class _RegistrationLayoutState extends State<RegistrationLayout>
               message: "Successfully signed in. Welcome back!",
               states: ToastStates.SUCCESS,
             );
-
-            // navigate(context, VerifyEmail());
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => Home(),
+              ),
+              (route) => false,
+            );
           }
           if (state is LoginFailed) {
             showToastMessage(
@@ -58,9 +65,18 @@ class _RegistrationLayoutState extends State<RegistrationLayout>
               message: 'You need to verify your email',
               states: ToastStates.SUCCESS,
             );
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => Home(),
+              ),
+              (route) => false,
+            );
             // Navigator.of(context).pushAndRemoveUntil(
             //   MaterialPageRoute(
-            //     builder: (context) => VerifyEmail(),
+            //     builder: (context) => OtpVerificationScreen(
+            //       selectedMethod: 'email',
+            //       recepientEmail: state.userEmail,
+            //     ),
             //   ),
             //   (route) => false,
             // );

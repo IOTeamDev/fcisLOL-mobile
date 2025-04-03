@@ -73,7 +73,11 @@ class AuthCubit extends Cubit<AuthState> {
       });
       LoginModel loginModel = LoginModel.fromJson(response.data);
       await FirebaseMessaging.instance.requestPermission();
-      emit(RegisterSuccess(token: loginModel.token));
+      AppConstants.SelectedSemester = semester;
+      await Cache.writeData(
+          key: KeysManager.semester, value: AppConstants.SelectedSemester);
+
+      emit(RegisterSuccess(token: loginModel.token, userEmail: email));
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
         emit(RegisterFailed(
@@ -124,50 +128,6 @@ class AuthCubit extends Cubit<AuthState> {
       emit(UploadImageSuccess());
     } on Exception {
       emit(UploadImageFailure());
-    }
-  }
-
-  int _verificationCode = 000000;
-
-  Future<void> sendVerificationCode({
-    required String recepientEmail,
-    String? recepientName,
-  }) async {
-    emit(SendVerificationCodeLoading());
-    Random random = Random();
-    _verificationCode = 100000 + random.nextInt(900000);
-
-    try {
-      await SendGridHelper.post(
-        endPoint: sendGridEndPoint,
-        data: {
-          "personalizations": [
-            {
-              "to": [
-                {"email": recepientEmail, "name": recepientName ?? ""},
-              ],
-            },
-          ],
-          "from": {"email": "elnawawyseif@gmail.com"},
-          "subject": "Verifying ECommercy account",
-          "content": [
-            {
-              "type": "text/html",
-              "value":
-                  "Hello ${recepientName ?? ''}, your ECommercy verification code is: <strong>$_verificationCode</strong>",
-            },
-          ],
-        },
-      );
-
-      emit(SendVerificationCodeSuccess());
-    } catch (e) {
-      debugPrint(e.toString());
-      emit(
-        SendVerificationCodeFailed(
-          errMessage: 'Unable to send code now, please try again later',
-        ),
-      );
     }
   }
 

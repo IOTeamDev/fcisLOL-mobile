@@ -40,12 +40,14 @@ class StringsManager {
   static const String six = 'Six';
   static const String notFoundErrorCode = '404';
   static const String thisLinkIsCorrupted = 'This link is Corrupted';
-  static const String anErrorOccurred = 'An Error Occurred, no worries just send us a report bug request and it will be fixed AS SOON AS possible';
+  static const String anErrorOccurred =
+      'An Error Occurred, no worries just send us a report bug request and it will be fixed AS SOON AS possible';
   static const String error = 'Error';
   static const String announcements = 'Announcements';
   static const String announcementDeleted = 'Announcement Deleted!!';
   static const String announcementAdded = 'Announcement Added Successfully!!';
-  static const String announcementUpdated = 'Announcement Updated Successfully!!';
+  static const String announcementUpdated =
+      'Announcement Updated Successfully!!';
   static const String errorOccurred = 'An Error Occurred';
   static const String requests = 'Requests';
   static const String description = 'Description';
@@ -54,11 +56,14 @@ class StringsManager {
   static const String emptyFieldWarning = 'This field must not be Empty';
   static const String type = 'Type';
   static const String announcementType = 'Announcement Type';
-  static const String imagePickingWarning = 'Be careful when You choose image because it can\'t be changed';
+  static const String imagePickingWarning =
+      'Be careful when You choose image because it can\'t be changed';
   static const String cancel = 'Cancel';
   static const String submit = 'Submit';
-  static const String selectAnnouncementTypeWarning = 'Please select the announcement type';
-  static const String selectAnnouncementSemesterWarning = 'Please select the desired semester for the Announcement';
+  static const String selectAnnouncementTypeWarning =
+      'Please select the announcement type';
+  static const String selectAnnouncementSemesterWarning =
+      'Please select the desired semester for the Announcement';
   static const String fillAllFieldsWarning = 'Please fill all fields correctly';
   static const String noAnnouncementsYet = 'You have no announcements yet!!';
   static const String noContributionsYet = 'You Have No Contributions Yet!!';
@@ -97,8 +102,10 @@ class StringsManager {
   static const String logOut = 'Log Out';
   static const String logOutWarningMessage =
       'Are you sure you want to log out?';
-  static const String deleteRequestMessage = 'Are you sure you want to Delete the request?';
-  static const String deleteMaterialMessage = 'Are you sure you want to Delete the Material?';
+  static const String deleteRequestMessage =
+      'Are you sure you want to Delete the request?';
+  static const String deleteMaterialMessage =
+      'Are you sure you want to Delete the Material?';
   static const String logOutSuccessfully = 'Logout Successfully';
   static const String links = 'Links';
   static const String exams = 'Previous Exams';
@@ -124,13 +131,15 @@ class StringsManager {
   static const String getStarted = 'Get Started';
   static const String next = 'Next';
   static const String onBoardingTitle1 = 'Welcome to our App Uni-Notes';
-  static const String onBoardingTitle2 = 'Share materials with each other easily';
+  static const String onBoardingTitle2 =
+      'Share materials with each other easily';
   static const String onBoardingTitle3 = 'Be AWARE with the latest updates';
   static const String login = 'Login';
   static const String signup = 'Sign up';
   static const String alreadyHaveAccount = 'already have account!!';
   static const String successfullySignedIn = 'Successfully signed up!';
-  static const String signInErrorMessage = 'Wrong credentials, Please Try again!!';
+  static const String signInErrorMessage =
+      'Wrong credentials, Please Try again!!';
   static const String email = 'Email';
   static const String password = 'Password';
   static const String confirmPassword = "Confirm Password";

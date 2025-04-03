@@ -55,9 +55,9 @@ main() async {
   await DioHelp.initial();
   await SendGridHelper.initial();
   await Firebase.initializeApp();
-  try{
+  try {
     fcmToken = await FirebaseMessaging.instance.getToken();
-  }catch(error){
+  } catch (error) {
     log(error.toString());
   }
 
@@ -68,10 +68,9 @@ main() async {
       .then((onValue) {
     noMoreStorage = onValue.data()?["noMoreStorage"] ?? false;
     apiKey = onValue.data()?["apiKey"];
-  }).catchError((error){
+  }).catchError((error) {
     log('error occurred $error');
   });
-
 
   await FirebaseFirestore.instance
       .collection("4notifications")
@@ -87,8 +86,11 @@ main() async {
   Bloc.observer = MyBlocObserver();
 
   AppConstants.TOKEN = Cache.sharedpref.getString(KeysManager.token);
-  AppConstants.SelectedSemester = await Cache.sharedpref.getString(KeysManager.semester);
-  bool isOnBoardFinished = await Cache.readData(key: KeysManager.finishedOnBoard) ?? false;
+  AppConstants.SelectedSemester =
+      await Cache.sharedpref.getString(KeysManager.semester);
+  bool isOnBoardFinished =
+      await Cache.readData(key: KeysManager.finishedOnBoard) ?? false;
+
   final Widget startPage;
 
   if (!isOnBoardFinished) {
@@ -103,7 +105,7 @@ main() async {
     }
   }
 
-  ErrorWidget.builder = (FlutterErrorDetails errorDetails){
+  ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
     return ErrorScreen(errorDetails: errorDetails);
   };
   runApp(ChangeNotifierProvider(
@@ -121,7 +123,8 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (BuildContext context) => MainCubit()),
-        BlocProvider(create: (BuildContext context) => AdminCubit()..getFcmTokens()),
+        BlocProvider(
+            create: (BuildContext context) => AdminCubit()..getFcmTokens()),
       ],
       child: MaterialApp(
         home: startPage,

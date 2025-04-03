@@ -1,7 +1,9 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:googleapis/cloudsearch/v1.dart';
+import 'package:lol/core/network/remote/fcm_helper.dart' show FCMHelper;
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/resources/icons_manager.dart';
 import 'package:lol/core/utils/resources/values_manager.dart';
@@ -166,15 +168,22 @@ class _RegisterscreenState extends State<Registerscreen> {
                         _emailController,
                         _passwordController,
                         StringsManager.signup,
-                        isSignUp: true, onPressed: () {
+                        isSignUp: true, onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        context.read<AuthCubit>().register(
+                        FCMHelper fCMHelper = FCMHelper();
+                        fCMHelper.initNotifications();
+
+                        String? fcmToken =
+                            await FirebaseMessaging.instance.getToken();
+                        await context.read<AuthCubit>().register(
                             name: _nameController.text,
                             email: _emailController.text,
                             phone: _phoneController.text,
-                            photo: null,
                             password: _passwordController.text,
-                            semester: _selectedSemester);
+                            semester: _selectedSemester,
+                            fcmToken: fcmToken,
+                            photo:
+                                'https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/images%2Fdefault-avatar-icon-of-social-media-user-vector.jpg?alt=media&token=5fc138d2-3919-4854-888e-2d8fec45d555');
                       }
                     }),
                   ],
