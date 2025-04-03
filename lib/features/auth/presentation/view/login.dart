@@ -160,8 +160,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: () {
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
-                                builder: (context) => ChoosingYear(
-                                    authCubit: getIt.get<AuthCubit>()),
+                                builder: (context) => ChoosingYear(),
                               ),
                               (route) => false);
                         },

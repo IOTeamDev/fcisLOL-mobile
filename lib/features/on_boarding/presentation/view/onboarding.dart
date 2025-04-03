@@ -88,9 +88,8 @@ class _OnBoardingState extends State<OnBoarding> {
                           key: KeysManager.finishedOnBoard, value: true);
                       navigatReplace(
                           context,
-                          ChoosingYear(
-                            authCubit: getIt.get<AuthCubit>(),
-                          ));
+                          ChoosingYear()
+                      );
                     } else {
                       pageViewController.nextPage(
                         duration: Duration(milliseconds: AppSizes.s500),

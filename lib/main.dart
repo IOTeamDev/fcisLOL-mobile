@@ -125,7 +125,7 @@ class App extends StatelessWidget {
             create: (BuildContext context) => AdminCubit()..getFcmTokens()),
       ],
       child: MaterialApp(
-        home: ChoosingYear(authCubit: AuthCubit()),
+        home: ChoosingYear(),
         theme: darkTheme,
         darkTheme: darkTheme,
         themeMode: ThemeMode.dark,
