@@ -1,10 +1,8 @@
 import 'dart:developer';
 import 'dart:ui';
-
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:googleapis/container/v1.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
@@ -12,9 +10,7 @@ import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/core/utils/resources/icons_manager.dart';
 import 'package:lol/core/utils/resources/values_manager.dart';
 import 'package:lol/features/home/data/models/semster_model.dart';
-import 'package:lol/features/previous_exams/presentation/view/widgets/final_exams.dart';
-import 'package:lol/features/previous_exams/presentation/view/widgets/mid_exams.dart';
-import 'package:lol/features/previous_exams/presentation/view/widgets/other_exams.dart';
+import 'package:lol/features/previous_exams/presentation/view/widgets/previous_exams_generator.dart';
 import '../../../../core/cubits/main_cubit/main_cubit.dart';
 import '../../../../core/utils/resources/strings_manager.dart';
 
@@ -76,23 +72,20 @@ class _PreviousExamsState extends State<PreviousExams> {
                       child: Container(
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                            color: ColorsManager.lightPrimary,
+                            color: ColorsManager.white,
                             borderRadius:
                                 BorderRadius.circular(AppPaddings.p40)),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 15,
-                        ),
                         child: DropdownButton<String>(
                           isExpanded: true,
                           icon: Icon(IconsManager.dropdownIcon),
                           value: selectedSemester,
                           underline: SizedBox(),
                           hint: Text('Select Semester',
-                              style: TextStyle(color: ColorsManager.white)),
+                              style: TextStyle(color: ColorsManager.black)),
                           dropdownColor: ColorsManager
                               .white, // Background color for the dropdown list
                           iconEnabledColor:
-                              ColorsManager.white, // Color of the dropdown icon
+                              ColorsManager.black, // Color of the dropdown icon
                           style: const TextStyle(
                               color: ColorsManager
                                   .white), // Style for the selected item outside
@@ -113,7 +106,7 @@ class _PreviousExamsState extends State<PreviousExams> {
                                 child: Text(
                                   item,
                                   style: const TextStyle(
-                                    color: ColorsManager.white,
+                                    color: ColorsManager.black,
                                   ),
                                 ),
                               );
@@ -132,7 +125,7 @@ class _PreviousExamsState extends State<PreviousExams> {
                       ),
                     ),
                     SizedBox(
-                      width: 15,
+                      width: 7,
                     ),
                     if (selectedSemester != null)
                       Expanded(
@@ -140,7 +133,7 @@ class _PreviousExamsState extends State<PreviousExams> {
                         child: Container(
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                              color: ColorsManager.lightPrimary,
+                              color: ColorsManager.white,
                               borderRadius:
                                   BorderRadius.circular(AppPaddings.p40)),
                           padding: EdgeInsets.symmetric(
@@ -152,11 +145,11 @@ class _PreviousExamsState extends State<PreviousExams> {
                             icon: Icon(IconsManager.dropdownIcon),
                             underline: SizedBox(),
                             hint: Text('Select Subject',
-                                style: TextStyle(color: ColorsManager.white)),
+                                style: TextStyle(color: ColorsManager.black)),
                             dropdownColor: ColorsManager
                                 .white, // Background color for the dropdown list
                             iconEnabledColor: ColorsManager
-                                .white, // Color of the dropdown icon
+                                .black, // Color of the dropdown icon
                             style: const TextStyle(
                                 color: ColorsManager
                                     .white), // Style for the selected item outside
@@ -185,7 +178,7 @@ class _PreviousExamsState extends State<PreviousExams> {
                                         StringsManager.underScore,
                                         StringsManager.space),
                                     style: const TextStyle(
-                                      color: ColorsManager.white,
+                                      color: ColorsManager.black,
                                     ),
                                   ),
                                 );
@@ -201,8 +194,13 @@ class _PreviousExamsState extends State<PreviousExams> {
                           ),
                         ),
                       ),
-                    if (selectedSemester != null && selectedSubject != null)
+                    SizedBox(width: 10),
+                    if (selectedSubject != null)
                       IconButton(
+                          style: IconButton.styleFrom(
+                            backgroundColor: ColorsManager.lightPrimary,
+                            padding: EdgeInsets.all(12),
+                          ),
                           onPressed: () {
                             cubit.getPreviousExams(selectedSubject);
                           },
@@ -228,28 +226,91 @@ class _PreviousExamsState extends State<PreviousExams> {
                           color: ColorsManager.white,
                         ));
                       },
-                      builder: (context) => SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            if (cubit.previousExamsFinal.isNotEmpty)
-                              FinalExams(),
-                            if (cubit.previousExamsMid.isNotEmpty) MidExams(),
-                            if (cubit.previousExamsOther.isNotEmpty)
-                              OtherExams(),
-                            if (cubit.previousExamsMid.isEmpty &&
-                                cubit.previousExamsOther.isEmpty &&
-                                cubit.previousExamsFinal.isEmpty)
-                              Text(
+                      builder: (context) => CustomScrollView(
+                        physics: BouncingScrollPhysics(),
+                        slivers: [
+                          if (cubit.previousExamsFinal.isNotEmpty)
+                            SliverPadding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: AppPaddings.p10),
+                              sliver: SliverToBoxAdapter(
+                                child: Text(
+                                  'Final Exams',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineLarge!
+                                      .copyWith(
+                                          color: ColorsManager.white,
+                                          fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                          if (cubit.previousExamsFinal.isNotEmpty)
+                            PreviousExamsGenerator(
+                              semester: selectedSemester!,
+                              previousExamList:
+                                  MainCubit.get(context).previousExamsFinal,
+                            ),
+                          if (cubit.previousExamsMid.isNotEmpty)
+                            SliverPadding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: AppPaddings.p15),
+                              sliver: SliverToBoxAdapter(
+                                child: Text(
+                                  'Mid Exams',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineLarge!
+                                      .copyWith(
+                                          color: ColorsManager.white,
+                                          fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                          if (cubit.previousExamsMid.isNotEmpty)
+                            PreviousExamsGenerator(
+                              semester: selectedSemester!,
+                              previousExamList:
+                                  MainCubit.get(context).previousExamsMid,
+                            ),
+                          if (cubit.previousExamsOther.isNotEmpty)
+                            SliverPadding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: AppPaddings.p15),
+                              sliver: SliverToBoxAdapter(
+                                child: Text(
+                                  'Other Exams',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineLarge!
+                                      .copyWith(
+                                          color: ColorsManager.white,
+                                          fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                          if (cubit.previousExamsOther.isNotEmpty)
+                            PreviousExamsGenerator(
+                              semester: selectedSemester!,
+                              previousExamList:
+                                  MainCubit.get(context).previousExamsOther,
+                            ),
+                          if (cubit.previousExamsMid.isEmpty &&
+                              cubit.previousExamsOther.isEmpty &&
+                              cubit.previousExamsFinal.isEmpty)
+                            SliverToBoxAdapter(
+                              child: Text(
                                 'There are no Exams Yet',
+                                textAlign: TextAlign.center,
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleLarge!
                                     .copyWith(
                                       color: ColorsManager.white,
                                     ),
-                              )
-                          ],
-                        ),
+                              ),
+                            )
+                        ],
                       ),
                     ),
                   ),

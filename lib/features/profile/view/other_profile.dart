@@ -53,12 +53,14 @@ class _OtherProfileState extends State<OtherProfile> {
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: mainCubit.otherProfile == null ? Text("") : Text(
-              mainCubit.otherProfile!.name,
-              style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s15),
-              maxLines: AppSizes.s2,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
+            title: mainCubit.otherProfile == null ? Text("") : FittedBox(
+              child: Text(
+                mainCubit.otherProfile!.name,
+                style: Theme.of(context).textTheme.displayLarge,
+                maxLines: AppSizes.s2,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+              ),
             ),
           ),
           body: mainCubit.otherProfile == null ?
@@ -67,6 +69,7 @@ class _OtherProfileState extends State<OtherProfile> {
             padding: EdgeInsets.symmetric(vertical: AppPaddings.p10),
             child: Column(
               children: [
+                //*profile Picture and Score Stack
                 Stack(
                   clipBehavior: Clip.none,
                   alignment: Alignment.bottomCenter,
@@ -104,22 +107,14 @@ class _OtherProfileState extends State<OtherProfile> {
                 SizedBox(height: AppSizesDouble.s20,),
                 Text(
                   mainCubit.otherProfile!.email,
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s22),
+                  style: Theme.of(context).textTheme.headlineMedium,
                   maxLines: AppSizes.s2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                // SizedBox(height: AppSizesDouble.s4,),
-                // Text(
-                //   "Phone: ${mainCubit.otherProfile!.phone.isNotEmpty? mainCubit.otherProfile!.phone:'No Phone Provided'}",
-                //   style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s22),
-                //   maxLines: AppSizes.s2,
-                //   overflow: TextOverflow.ellipsis,
-                // ),
-                // SizedBox(height: AppSizesDouble.s4,),
                 Text(
                   '${StringsManager.level} ${((semsesterIndex(mainCubit.otherProfile!.semester)/AppSizes.s2) + AppSizes.s1).floor()}',
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s22),
-                  maxLines: AppSizes.s2,
+                  style: Theme.of(context).textTheme.headlineMedium,
+                  maxLines: AppSizes.s1,
                   overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(height: AppSizesDouble.s25,),
@@ -127,8 +122,10 @@ class _OtherProfileState extends State<OtherProfile> {
                   child: Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.vertical(top: Radius.circular(AppSizesDouble.s40)),
-                        color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.grey5: ColorsManager.grey7
+                        //color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.grey5: ColorsManager.grey7
+                        color: ColorsManager.grey5
                     ),
+                    width: double.infinity,
                     padding: EdgeInsets.symmetric(vertical: AppPaddings.p20, horizontal: AppPaddings.p25),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,49 +136,49 @@ class _OtherProfileState extends State<OtherProfile> {
                         ),
                         divider(
                           height: AppSizesDouble.s20,
-                          color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.white: ColorsManager.black
+                          //color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.white: ColorsManager.black
                         ),
-                        Expanded(
-                          child: ConditionalBuilder(
-                            condition: mainCubit.otherProfile!.materials.isNotEmpty && state is! GetRequestsLoadingState,
-                            builder: (context) => ListView.separated(
-                              physics: BouncingScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                return materialBuilder(
-                                  index,
-                                  context,
-                                  isMain: false,
-                                  title: mainCubit.otherProfile!.materials[index].title,
-                                  description: mainCubit.otherProfile!.materials[index].description,
-                                  type: mainCubit.otherProfile!.materials[index].type,
-                                  link: mainCubit.otherProfile!.materials[index].link,
-                                  subjectName: mainCubit.otherProfile!.materials[index].subject,
-                                );
-                              },
-                              separatorBuilder: (context, index) => SizedBox(height: AppSizesDouble.s10,),
-                              itemCount: mainCubit.otherProfile!.materials.length
+                        ConditionalBuilder(
+                          condition: mainCubit.otherProfile!.materials.isNotEmpty && state is! GetRequestsLoadingState,
+                          // builder: (context) => ListView.separated(
+                          //   physics: BouncingScrollPhysics(),
+                          //   itemBuilder: (context, index) {
+                          //     return materialBuilder(
+                          //       index,
+                          //       context,
+                          //       isMain: false,
+                          //       profileModel: mainCubit.otherProfile,
+                          //     );
+                          //   },
+                          //   separatorBuilder: (context, index) => SizedBox(height: AppSizesDouble.s10,),
+                          //   itemCount: mainCubit.otherProfile!.materials.length
+                          // ),
+                            builder: (context) => materialBuilder(
+                              0,
+                              context,
+                              isMain: false,
+                              profileModel: mainCubit.otherProfile,
                             ),
-                            fallback: (context) {
-                              if (state is GetRequestsLoadingState) {
-                                return SizedBox(
-                                  height: AppQueries.screenHeight(context) / AppSizesDouble.s1_3,
-                                  child: Center(child: CircularProgressIndicator(),)
-                                );
-                              }
+                          fallback: (context) {
+                            if (state is GetRequestsLoadingState) {
                               return SizedBox(
                                 height: AppQueries.screenHeight(context) / AppSizesDouble.s1_3,
-                                child: Center(
-                                  child: Text(
-                                    StringsManager.noContributionsYet,
-                                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                      fontSize: AppQueries.screenWidth(context) / AppSizes.s12,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                )
+                                child: Center(child: CircularProgressIndicator(),)
                               );
                             }
-                          ),
+                            return SizedBox(
+                              height: AppQueries.screenHeight(context) / AppSizesDouble.s1_3,
+                              child: Center(
+                                child: Text(
+                                  StringsManager.noContributionsYet,
+                                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                    fontSize: AppQueries.screenWidth(context) / AppSizes.s12,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              )
+                            );
+                          }
                         ),
                       ],
                     ),

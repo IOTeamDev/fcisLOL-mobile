@@ -13,6 +13,7 @@ abstract class ColorsManager {
   static const Color grey5 = Color(0xff2d2d2d);
   static const Color grey6 = Color(0xff9F9F9F); // grey[300]
   static const Color grey7 = Color(0xffE6E6E6);
+  static const Color grey8 = Color(0xff41454F);
   static const Color lightGrey = Color(0xff757575); //grey[600]
   static const Color lightGrey1 = Color(0xffbdbdbd); //grey[400]
   static const Color lightGrey2 = Color(0xfff5f5f5); //grey[100]
@@ -42,6 +43,7 @@ abstract class ColorsManager {
   static const Color persianGreen = Color(0xff4EBF9E); // green
   static const Color green = Color(0xff3cb043); // green
   static const Color imperialRed = Color(0xfff74c4c); // red (for Remove button)
+  static const Color darkRed = Color(0xff660000); // red (for Remove button)
   static const Color gold = Color(0xffFFD700);
   static const Color bronze = Color(0xffCD7F32);
   static const Color silver = Color(0xffC0C0C0);

@@ -117,10 +117,22 @@ final class GetPreviousExamsSuccessState extends MainCubitStates {}
 
 final class GetPreviousExamsErrorState extends MainCubitStates {}
 
+final class DeletePreviousExamsLoadingState extends MainCubitStates {}
+
+final class DeletePreviousExamsSuccessState extends MainCubitStates {}
+
+final class DeletePreviousExamsErrorState extends MainCubitStates {}
+
 final class AddPreviousExamsLoadingState extends MainCubitStates {}
 
 final class AddPreviousExamsSuccessState extends MainCubitStates {}
 
 final class AddPreviousExamsErrorState extends MainCubitStates {}
+
+final class EditPreviousExamsLoadingState extends MainCubitStates {}
+
+final class EditPreviousExamsSuccessState extends MainCubitStates {}
+
+final class EditPreviousExamsErrorState extends MainCubitStates {}
 
 final class ChangeBottomSheetState extends MainCubitStates {}

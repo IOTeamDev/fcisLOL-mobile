@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "C:\\Users\\taema\\.shorebird\\bin\\cache\\flutter\\b14323b05f28b2c72b34f57c8059ec3001d65712\\packages\\flutter_tools\\gradle\\src\\main\\groovy\\CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "D:\\android_studio_sdk\\cmake\\3.22.1\\bin\\ninja.exe",
+      "-C",
+      "C:\\Users\\taema\\OneDrive\\Desktop\\Flutter Apps\\FCIS_lol_mobile\\fcisLOL-mobile\\android\\app\\.cxx\\RelWithDebInfo\\05r5i163\\x86",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "D:\\android_studio_sdk\\cmake\\3.22.1\\bin\\ninja.exe",
+    "-C",
+    "C:\\Users\\taema\\OneDrive\\Desktop\\Flutter Apps\\FCIS_lol_mobile\\fcisLOL-mobile\\android\\app\\.cxx\\RelWithDebInfo\\05r5i163\\x86",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}

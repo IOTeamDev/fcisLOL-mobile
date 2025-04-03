@@ -66,206 +66,200 @@ class _HomeState extends State<Home> {
   late GlobalKey<ScaffoldState> scaffoldKey;
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<MainCubit, MainCubitStates>(listener: (context, state) {
-      if (state is GetProfileSuccess) {
-        AdminCubit.get(context)
-            .getAnnouncements(MainCubit.get(context).profileModel!.semester);
-        MainCubit.get(context).updateUser(
-            userID: MainCubit.get(context).profileModel!.id,
-            fcmToken: fcmToken);
-      }
-      if (state is GetProfileFailure && AppConstants.SelectedSemester != null) {
-        AdminCubit.get(context)
-            .getAnnouncements(AppConstants.SelectedSemester!);
-      }
-      if (state is LogoutSuccess) {
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) => RegistrationLayout(),
-          ),
-          (route) => false,
-        );
-        showToastMessage(
-          message: StringsManager.logOutSuccessfully,
-          states: ToastStates.SUCCESS,
-        );
-      }
-      if (state is DeleteAccountFailed) {
-        showToastMessage(
-            message: 'Unable to delete your account now',
-            states: ToastStates.ERROR);
-      }
-      if (state is DeleteAccountSuccessState) {
-        showToastMessage(
-            message: 'Your Account was deleted', states: ToastStates.SUCCESS);
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) => RegistrationLayout(),
-          ),
-          (route) => false,
-        );
-      }
-    }, builder: (context, state) {
-      ProfileModel? profile;
-      int? semesterIndex;
-      if (MainCubit.get(context).profileModel != null) {
-        profile = MainCubit.get(context).profileModel!;
-        print(profile.name);
-      }
+    return BlocConsumer<MainCubit, MainCubitStates>(
+      listener: (context, state) {
+        if (state is GetProfileSuccess) {
+          AdminCubit.get(context).getAnnouncements(MainCubit.get(context).profileModel?.semester??AppConstants.SelectedSemester!);
+          MainCubit.get(context).updateUser(
+              userID: MainCubit.get(context).profileModel!.id,
+              fcmToken: fcmToken);
+        }
+        if (state is GetProfileFailure && AppConstants.SelectedSemester != null) {
+          AdminCubit.get(context)
+              .getAnnouncements(AppConstants.SelectedSemester!);
+        }
+        if (state is LogoutSuccess) {
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => RegistrationLayout(),
+            ),
+            (route) => false,
+          );
+          showToastMessage(
+            message: StringsManager.logOutSuccessfully,
+            states: ToastStates.SUCCESS,
+          );
+        }
+        if (state is DeleteAccountFailed) {
+          showToastMessage(
+              message: 'Unable to delete your account now',
+              states: ToastStates.ERROR);
+        }
+        if (state is DeleteAccountSuccessState) {
+          showToastMessage(message: 'Your Account was deleted', states: ToastStates.SUCCESS);
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => RegistrationLayout(),
+            ),
+            (route) => false,
+          );
+        }
+      },
 
-      if (profile != null) {
-        semesterIndex = semsesterIndex(profile.semester);
-      } else if (AppConstants.TOKEN == null) {
-        semesterIndex = semsesterIndex(AppConstants.SelectedSemester!);
-      }
-
-      return profile == null && AppConstants.TOKEN != null
-          ? const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            )
-          : Scaffold(
-              key: scaffoldKey,
-              appBar: AppBar(
-                leading: IconButton(
-                    padding: EdgeInsets.zero,
-                    onPressed: () {
-                      if ((AppConstants.TOKEN != null && profile != null) ||
-                          AppConstants.TOKEN == null) {
-                        scaffoldKey.currentState!
-                            .openDrawer(); // Use key to open the drawer
-                      }
-                    },
-                    icon: Icon(
-                      IconsManager.filledGridIcon,
-                    )), //drawer icon
-                centerTitle: true,
-                title: Text(
-                  StringsManager.home,
-                  style: Theme.of(context)
-                      .textTheme
-                      .displayMedium!
-                      .copyWith(fontWeight: FontWeightManager.semiBold),
-                ),
-                actions: [
-                  profile?.role == KeysManager.developer &&
-                          AppConstants.TOKEN != null
-                      ? IconButton(
-                          onPressed: () {
-                            AdminCubit.get(context)
-                                .getAllSemestersAnnouncements();
-                          },
-                          icon: Icon(
-                            IconsManager.devIcon,
-                            color: Theme.of(context).iconTheme.color,
-                          ))
-                      : SizedBox(),
-                ],
+      builder: (context, state) {
+        ProfileModel? profile;
+        int? semesterIndex;
+        if (MainCubit.get(context).profileModel != null) {
+          profile = MainCubit.get(context).profileModel!;
+        }
+        if (profile != null) {
+          semesterIndex = semsesterIndex(profile.semester);
+        } else if (AppConstants.TOKEN == null) {
+          semesterIndex = semsesterIndex(AppConstants.SelectedSemester!);
+        }
+        return profile == null && AppConstants.TOKEN != null
+        ? const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          )
+        : Scaffold(
+          key: scaffoldKey,
+          appBar: AppBar(
+            leading: IconButton(
+                padding: EdgeInsets.zero,
+                onPressed: () {
+                  if ((AppConstants.TOKEN != null && profile != null) ||
+                      AppConstants.TOKEN == null) {
+                    scaffoldKey.currentState!
+                        .openDrawer(); // Use key to open the drawer
+                  }
+                },
+                icon: Icon(
+                  IconsManager.filledGridIcon,
+                )), //drawer icon
+            centerTitle: true,
+            title: Text(
+              StringsManager.home,
+              style: Theme.of(context)
+                  .textTheme
+                  .displayMedium!
+                  .copyWith(fontWeight: FontWeightManager.semiBold),
+            ),
+            actions: [
+              if(profile != null && profile.role == KeysManager.developer && AppConstants.TOKEN != null)
+              IconButton(
+                onPressed: () {
+                  AdminCubit.get(context).getAllSemestersAnnouncements();
+                },
+                icon: Icon(
+                  IconsManager.devIcon,
+                  color: Theme.of(context).iconTheme.color,
+                )
               ),
-              drawer: CustomDrawer(AppConstants.TOKEN == null
-                  ? AppConstants.SelectedSemester ?? ''
-                  : MainCubit.get(context).profileModel!.semester),
-              drawerEdgeDragWidth:
-                  AppQueries.screenWidth(context) * AppSizesDouble.s0_4,
-              body: profile == null && AppConstants.TOKEN != null
-                  ? const Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : RefreshIndicator(
-                      onRefresh: () async {
-                        AdminCubit.get(context).getAnnouncements(profile != null
-                            ? profile.semester
-                            : AppConstants.SelectedSemester!);
-                        return Future.value();
-                      },
-                      child: SingleChildScrollView(
-                        child: SafeArea(
-                          child: Padding(
-                            padding: EdgeInsets.all(AppPaddings.p8),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: AppPaddings.p20,
-                                      vertical: AppPaddings.p10),
-                                  child: Text(StringsManager.announcements,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineLarge),
-                                ), //Announcements Text
-                                BlocBuilder<AdminCubit, AdminCubitStates>(
-                                    buildWhen: (previous, current) =>
-                                        current is AdminGetAnnouncementLoadingState ||
-                                        current
-                                            is AdminGetAnnouncementSuccessState ||
-                                        current
-                                            is AdminGetAnnouncementsErrorState,
-                                    builder: (context, state) {
-                                      if (state
-                                          is AdminGetAnnouncementSuccessState) {
-                                        return BuildAnnouncementsRow(
-                                            announcements:
-                                                AdminCubit.get(context)
-                                                    .announcements);
-                                      } else if (state
-                                          is AdminGetAnnouncementLoadingState) {
-                                        return const Center(
-                                          child: CircularProgressIndicator(),
-                                        );
-                                      } else if (state
-                                          is AdminGetAnnouncementsErrorState) {
-                                        return Image.asset(
-                                            AssetsManager.emptyAnnouncements);
-                                      } else {
-                                        return const SizedBox();
-                                      }
-                                    }), //Announcements Carousel Slider
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: AppPaddings.p20,
-                                      vertical: AppPaddings.p20),
-                                  child: divider(),
-                                ), //divider
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: AppPaddings.p20),
-                                  child: Text(StringsManager.subject,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineLarge),
-                                ), // Subjects Text
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.all(AppPaddings.p10),
-                                  child: GridView.builder(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(), // Disable scrolling in the GridView
-                                    shrinkWrap:
-                                        true, // Shrink the GridView to fit its content
-                                    gridDelegate:
-                                        const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount:
-                                          AppSizes.s2, // Two items per row
-                                      crossAxisSpacing: AppSizesDouble.s10,
-                                      mainAxisSpacing: AppSizesDouble.s10,
-                                    ),
-                                    itemCount: semesters[semesterIndex!]
-                                        .subjects
-                                        .length,
-                                    itemBuilder: (context, index) =>
-                                        SubjectItemBuild(
-                                      subject: semesters[semesterIndex!]
-                                          .subjects[index],
-                                    ),
-                                  ),
+            ],
+          ),
+          drawer: CustomDrawer(AppConstants.TOKEN == null ? AppConstants.SelectedSemester ?? '' : MainCubit.get(context).profileModel!.semester),
+          drawerEdgeDragWidth: AppQueries.screenWidth(context) * AppSizesDouble.s0_4,
+          body: profile == null && AppConstants.TOKEN != null
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : RefreshIndicator(
+                  onRefresh: () async {
+                    AdminCubit.get(context).getAnnouncements(profile != null
+                        ? profile.semester
+                        : AppConstants.SelectedSemester!);
+                    return Future.value();
+                  },
+                  child: SingleChildScrollView(
+                    child: SafeArea(
+                      child: Padding(
+                        padding: EdgeInsets.all(AppPaddings.p8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: AppPaddings.p20,
+                                  vertical: AppPaddings.p10),
+                              child: Text(StringsManager.announcements,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineLarge),
+                            ), //Announcements Text
+                            BlocBuilder<AdminCubit, AdminCubitStates>(
+                                buildWhen: (previous, current) =>
+                                    current is AdminGetAnnouncementLoadingState ||
+                                    current
+                                        is AdminGetAnnouncementSuccessState ||
+                                    current
+                                        is AdminGetAnnouncementsErrorState,
+                                builder: (context, state) {
+                                  if (state
+                                      is AdminGetAnnouncementSuccessState) {
+                                    return BuildAnnouncementsRow(
+                                        announcements:
+                                            AdminCubit.get(context)
+                                                .announcements);
+                                  } else if (state
+                                      is AdminGetAnnouncementLoadingState) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  } else if (state
+                                      is AdminGetAnnouncementsErrorState) {
+                                    return Image.asset(
+                                        AssetsManager.emptyAnnouncements);
+                                  } else {
+                                    return const SizedBox();
+                                  }
+                                }), //Announcements Carousel Slider
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: AppPaddings.p20,
+                                  vertical: AppPaddings.p20),
+                              child: divider(),
+                            ), //divider
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: AppPaddings.p20),
+                              child: Text(StringsManager.subject,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineLarge),
+                            ), // Subjects Text
+                            Padding(
+                              padding:
+                                  const EdgeInsets.all(AppPaddings.p10),
+                              child: GridView.builder(
+                                physics:
+                                    const NeverScrollableScrollPhysics(), // Disable scrolling in the GridView
+                                shrinkWrap:
+                                    true, // Shrink the GridView to fit its content
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount:
+                                      AppSizes.s2, // Two items per row
+                                  crossAxisSpacing: AppSizesDouble.s10,
+                                  mainAxisSpacing: AppSizesDouble.s10,
                                 ),
-                              ],
+                                itemCount: semesters[semesterIndex!]
+                                    .subjects
+                                    .length,
+                                itemBuilder: (context, index) =>
+                                    SubjectItemBuild(
+                                  subject: semesters[semesterIndex!]
+                                      .subjects[index],
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
                       ),
                     ),
-            );
-    });
+                  ),
+                ),
+        );
+      }
+    );
   }
 }

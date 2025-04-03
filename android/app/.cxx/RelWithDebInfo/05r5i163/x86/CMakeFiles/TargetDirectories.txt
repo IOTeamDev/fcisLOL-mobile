@@ -1,0 +1,2 @@
+C:/Users/taema/OneDrive/Desktop/Flutter Apps/FCIS_lol_mobile/fcisLOL-mobile/android/app/.cxx/RelWithDebInfo/05r5i163/x86/CMakeFiles/edit_cache.dir
+C:/Users/taema/OneDrive/Desktop/Flutter Apps/FCIS_lol_mobile/fcisLOL-mobile/android/app/.cxx/RelWithDebInfo/05r5i163/x86/CMakeFiles/rebuild_cache.dir

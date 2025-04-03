@@ -36,7 +36,7 @@ class RouteGenerator {
       case Routes.announcementsListRoute:
         return MaterialPageRoute(builder: (_) => AnnouncementsList(semester: semester));
       default:
-        return MaterialPageRoute(builder: (_) => const ErrorScreen());
+        return MaterialPageRoute(builder: (_) => Home());
     }
   }
 }

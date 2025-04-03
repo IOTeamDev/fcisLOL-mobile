@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -14,6 +13,8 @@ import 'package:lol/features/admin/presentation/view/announcements/add_announcem
 import 'package:lol/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
 import 'package:lol/features/home/presentation/view/semester_navigate.dart';
 import 'package:lol/features/on_boarding/presentation/view/onboarding.dart';
+import 'package:lol/features/otp_and_verification/presentation/view/otp_verification_screen.dart';
+import 'package:lol/features/profile/view/edit_profile_screen.dart';
 import 'package:lol/features/profile/view/other_profile.dart';
 import 'package:lol/features/auth/data/models/login_model.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
@@ -42,7 +43,6 @@ import 'features/home/presentation/view/home.dart';
 String? privateKeyId;
 String? privateKey;
 
-bool? changeSemester = false;
 bool? noMoreStorage = false;
 String? apiKey;
 String? fcmToken;
@@ -55,17 +55,23 @@ main() async {
   await DioHelp.initial();
   await SendGridHelper.initial();
   await Firebase.initializeApp();
-  fcmToken = await FirebaseMessaging.instance.getToken();
+  try{
+    fcmToken = await FirebaseMessaging.instance.getToken();
+  }catch(error){
+    log(error.toString());
+  }
 
   FirebaseFirestore.instance
       .collection("indicators")
       .doc("constants")
       .get()
       .then((onValue) {
-    changeSemester = onValue.data()?["changeSemester"] ?? false;
     noMoreStorage = onValue.data()?["noMoreStorage"] ?? false;
     apiKey = onValue.data()?["apiKey"];
+  }).catchError((error){
+    log('error occurred $error');
   });
+
 
   await FirebaseFirestore.instance
       .collection("4notifications")
@@ -77,14 +83,14 @@ main() async {
     privateKeyId = value.data()?["private_key_id"];
     privateKey = privateKey!.replaceAll(r'\n', '\n').trim();
   });
+
   Bloc.observer = MyBlocObserver();
 
   AppConstants.TOKEN = Cache.sharedpref.getString(KeysManager.token);
-  AppConstants.SelectedSemester =
-      await Cache.sharedpref.getString(KeysManager.semester);
-  bool isOnBoardFinished =
-      await Cache.readData(key: KeysManager.finishedOnBoard) ?? false;
+  AppConstants.SelectedSemester = await Cache.sharedpref.getString(KeysManager.semester);
+  bool isOnBoardFinished = await Cache.readData(key: KeysManager.finishedOnBoard) ?? false;
   final Widget startPage;
+
   if (!isOnBoardFinished) {
     startPage = const OnBoarding();
   } else {
@@ -97,6 +103,9 @@ main() async {
     }
   }
 
+  ErrorWidget.builder = (FlutterErrorDetails errorDetails){
+    return ErrorScreen(errorDetails: errorDetails);
+  };
   runApp(ChangeNotifierProvider(
     create: (context) => ThemeProvider(),
     child: App(startPage: startPage),
@@ -112,12 +121,14 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (BuildContext context) => MainCubit()),
-        BlocProvider(
-            create: (BuildContext context) => AdminCubit()..getFcmTokens()),
+        BlocProvider(create: (BuildContext context) => AdminCubit()..getFcmTokens()),
       ],
       child: MaterialApp(
         home: startPage,
-        theme: Provider.of<ThemeProvider>(context).themeData,
+        theme: darkTheme,
+        darkTheme: darkTheme,
+        themeMode: ThemeMode.dark,
+        // theme: Provider.of<ThemeProvider>(context).themeData,
         debugShowCheckedModeBanner: false,
       ),
     );

@@ -27,26 +27,28 @@ class _OnBoardingState extends State<OnBoarding> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        alignment: Alignment.bottomCenter,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          PageView.builder(
-            controller: pageViewController,
-            itemBuilder: (context, index) => OnBoardingItem(model: onBoardingItemsList[index]),
-            itemCount: onBoardingItemsList.length,
-            onPageChanged: (value) {
-              if (value == onBoardingItemsList.length - AppSizes.s1) {
-                isLastPage = true;
-                setState(() {
-                  print(isLastPage);
-                });
-              } else {
-                isLastPage = false;
-                setState(() {
-                  print(isLastPage);
-                });
-              }
-            },
+          Expanded(
+            child: PageView.builder(
+              controller: pageViewController,
+              itemBuilder: (context, index) => OnBoardingItem(model: onBoardingItemsList[index]),
+              itemCount: onBoardingItemsList.length,
+              onPageChanged: (value) {
+                if (value == onBoardingItemsList.length - AppSizes.s1) {
+                  isLastPage = true;
+                  setState(() {
+                    print(isLastPage);
+                  });
+                } else {
+                  isLastPage = false;
+                  setState(() {
+                    print(isLastPage);
+                  });
+                }
+              },
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: AppPaddings.p50),
@@ -55,7 +57,7 @@ class _OnBoardingState extends State<OnBoarding> {
               children: [
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: ColorsManager.lightPrimary,
+                    backgroundColor: isLastPage? ColorsManager.grey8:ColorsManager.lightPrimary,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSizesDouble.s15)),
                     foregroundColor: ColorsManager.white,
                     padding: EdgeInsets.symmetric(horizontal: AppPaddings.p50, vertical: AppPaddings.p15),
@@ -88,7 +90,7 @@ class _OnBoardingState extends State<OnBoarding> {
                           context,
                           ChoosingYear(
                             authCubit: getIt.get<AuthCubit>(),
-                          )); ////
+                          ));
                     } else {
                       pageViewController.nextPage(
                         duration: Duration(milliseconds: AppSizes.s500),
@@ -101,14 +103,16 @@ class _OnBoardingState extends State<OnBoarding> {
                   height: AppSizesDouble.s40,
                 ),
                 SmoothPageIndicator(
-                    effect: const WormEffect(
-                        activeDotColor: ColorsManager.lightPrimary,
-                        dotHeight: AppSizesDouble.s10,
-                        dotWidth: AppSizesDouble.s20,
-                        spacing: AppSizesDouble.s8,
-                        dotColor: ColorsManager.white),
-                    controller: pageViewController,
-                    count: onBoardingItemsList.length),
+                  effect: const WormEffect(
+                    activeDotColor: ColorsManager.lightPrimary,
+                    dotHeight: AppSizesDouble.s10,
+                    dotWidth: AppSizesDouble.s20,
+                    spacing: AppSizesDouble.s8,
+                    dotColor: ColorsManager.grey7,
+                  ),
+                  controller: pageViewController,
+                  count: onBoardingItemsList.length,
+                ),
               ],
             ),
           )

@@ -7,8 +7,11 @@ class AssetsManager{
   static const String person = '${_imagePath}l.png';
   static const String drive = '${_imagePath}mingcute_drive-fill.png';
   static const String noAnnouncements = '${_imagePath}th.png';
-  static const String onBoarding1 = '${_imagePath}OnBoarding1.png';
-  static const String onBoarding2 = '${_imagePath}OnBoarding2.png';
-  static const String onBoarding3 = '${_imagePath}OnBoarding3.png';
+  static const String onBoarding1 = '${_imagePath}newOnBoarding1.png';
+  static const String onBoarding2 = '${_imagePath}newOnBoarding2.png';
+  static const String onBoarding3 = '${_imagePath}newOnBoarding3.png';
   static const String emptyAnnouncements = '${_imagePath}th.png';
+  static const String errorSign = '${_imagePath}errorSign.png';
+  static const String verification_screen_logo = '${_imagePath}verification_screen_logo.png';
+  static const String danger_info_logo = '${_imagePath}danger_info_icon.png';
 }

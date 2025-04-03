@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
+import 'package:lol/core/utils/resources/values_manager.dart';
 import 'package:lol/features/on_boarding/data/model/on_boarding_model.dart';
 
 class OnBoardingItem extends StatelessWidget {
@@ -8,29 +9,34 @@ class OnBoardingItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Positioned.fill(
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(AppPaddings.p20),
             child: Image.asset(
-          model.image!,
-          fit: BoxFit.cover,
-        )),
+              model.image!,
+              fit: BoxFit.fitHeight,
+            ),
+          ),
+        ),
+        SizedBox(height: AppSizesDouble.s20,),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: AppPaddings.p20),
           child: Text(
             model.title!,
+            maxLines: 4,
             style: TextStyle(
-              fontSize: 50,
-              letterSpacing: 1.2,
+              fontSize: AppSizesDouble.s40,
+              letterSpacing: AppSizesDouble.s1_2,
               fontWeight: FontWeight.bold,
-              color: ColorsManager.white,
+              color: ColorsManager.black,
               shadows: [
                 Shadow(
-                  offset: Offset(3, 3), // X and Y offset
-                  blurRadius: 5.0, // Spread of the shadow
-                  color: ColorsManager.black
-                      .withValues(alpha: 0.4), // Shadow color
+                  offset: Offset(AppSizesDouble.s3, AppSizesDouble.s3), // X and Y offset
+                  blurRadius: AppSizesDouble.s10, // Spread of the shadow
+                  color: ColorsManager.black.withValues(alpha: AppSizesDouble.s0_4), // Shadow color
                 ),
               ],
             ),

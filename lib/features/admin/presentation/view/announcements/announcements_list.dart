@@ -128,7 +128,7 @@ class _AnnouncementsListState extends State<AnnouncementsList> {
   }
 
   Future<void> _onRefresh(context) async {
-    if(MainCubit.get(context).profileModel!.role == KeysManager.developer && AdminCubit.get(context).allAnnouncements.isNotEmpty){
+    if(MainCubit.get(context).profileModel!= null && MainCubit.get(context).profileModel!.role == KeysManager.developer && AdminCubit.get(context).allAnnouncements.isNotEmpty){
       AdminCubit.get(context).getAllSemestersAnnouncements();
     }else{
       AdminCubit.get(context).getAnnouncements(widget.semester);
@@ -161,9 +161,7 @@ class _AnnouncementsListState extends State<AnnouncementsList> {
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppSizesDouble.s20),
-          color: Provider.of<ThemeProvider>(context).isDark
-            ? ColorsManager.darkPrimary
-            : ColorsManager.lightPrimary
+          color: Theme.of(context).primaryColor
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,

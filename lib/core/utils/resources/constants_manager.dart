@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AppConstants {
-  static String appVersion = 'V2.1.1+2';
+  static String appVersion = 'V2.2.2+4';
   static String? TOKEN;
   static String? SelectedSemester;
   static String? navigatedSemester;

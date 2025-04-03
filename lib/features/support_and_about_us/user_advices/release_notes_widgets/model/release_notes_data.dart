@@ -9,6 +9,7 @@ const List<String> newFeatures = [
   'No longer reloads data each time you enter a screen for smoother experience✨',
   'No need to download any updates from Store!!\nUpdates will be delivered to you once done🤙',
   'You can now navigate others profiles👀',
+  'Previous Years Exams Added🔥'
 ];
 
 const List<String> patchNotes = [
@@ -25,5 +26,7 @@ const List<String> bugFixes = [
   'Fixed Push Update Service, so no updates will reach you faster',
   'Fixed Announcements Error when Guest',
   'Fixed Adding Material Error',
-  'Fixed Profile Navigation',
+  'Fixed Other Users Profile Navigation',
+  'Fixed Exams View Error',
+  'Fixed App Bar Error in Subject Page'
 ];

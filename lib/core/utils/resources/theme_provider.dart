@@ -4,11 +4,11 @@ import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/core/utils/resources/themes_manager.dart';
 
 class ThemeProvider extends ChangeNotifier {
-  bool isDark = Cache.sharedpref.getBool(KeysManager.isDarkMode) ?? false;
-  ThemeData _appTheme =
-      Cache.sharedpref.getBool(KeysManager.isDarkMode) ?? false
-          ? darkTheme
-          : lightTheme;
+  bool isDark =  true;//Cache.sharedpref.getBool(KeysManager.isDarkMode) ?? true;
+  ThemeData _appTheme = darkTheme;
+      // Cache.sharedpref.getBool(KeysManager.isDarkMode) ?? true
+      //     ? darkTheme
+      //     : lightTheme;
 
   ThemeData get themeData {
     if (Cache.sharedpref.getBool(KeysManager.isDarkMode) == true) {

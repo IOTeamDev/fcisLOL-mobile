@@ -92,21 +92,22 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     emit(AdminSaveAnnouncementLoadingState());
 
     DioHelp.postData(
-            path: ANNOUNCEMENTS,
-            data: {
-              'title': title,
-              'content': description ?? '',
-              'due_date': dueDate ?? '',
-              'type': type,
-              'semester': currentSemester,
-              'image': image
-            },
-            token: AppConstants.TOKEN)
-        .then((value) {
+      path: ANNOUNCEMENTS,
+      data: {
+        'title': title,
+        'content': description ?? '',
+        'due_date': dueDate ?? '',
+        'type': type,
+        'semester': currentSemester,
+        'image': image
+      },
+      token: AppConstants.TOKEN
+    ).then((value) {
       sendNotificationToUsers(
-          semester: currentSemester,
-          title: notificationsTitles[randomIndex],
-          body: title); // LOL
+        semester: currentSemester,
+        title: notificationsTitles[randomIndex],
+        body: title
+      ); // LOL
       emit(AdminSaveAnnouncementSuccessState());
       getAnnouncements(currentSemester);
     });
@@ -216,17 +217,16 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     dio.options.headers['Content-Type'] = 'application/json';
     dio.options.headers['Authorization'] = 'Bearer $serverKeyAuthorization';
 
-    dio
-        .post(
-          urlEndPoint,
-          data: fCMHelper.getBody(
-            fcmToken: token,
-            title: title,
-            body: body,
-          ),
-        )
-        .then((onValue) => emit(SendNotificationSuccess()))
-        .catchError((onError) {
+    dio.post(
+      urlEndPoint,
+      data: fCMHelper.getBody(
+        fcmToken: token,
+        title: title,
+        body: body,
+      ),
+    )
+    .then((onValue) => emit(SendNotificationSuccess()))
+    .catchError((onError) {
       print(onError.toString());
       emit(SendNotificationError());
     });
