@@ -17,16 +17,6 @@ final class LoginFailed extends AuthState {
   LoginFailed({required this.errMessage});
 }
 
-final class LogoutLoading extends AuthState {}
-
-final class LogoutSuccess extends AuthState {}
-
-final class LogoutFailed extends AuthState {
-  final String errMessage;
-
-  LogoutFailed({required this.errMessage});
-}
-
 final class RegisterLoading extends AuthState {}
 
 final class RegisterSuccess extends AuthState {

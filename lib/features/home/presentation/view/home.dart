@@ -15,6 +15,7 @@ import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/core/utils/resources/values_manager.dart';
 import 'package:lol/features/auth/presentation/view/registration_layout.dart';
+import 'package:lol/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
 import 'package:lol/features/home/presentation/view/semester_navigate.dart';
 import 'package:lol/core/models/admin/announcement_model.dart';
 import 'package:lol/features/home/data/models/semster_model.dart';
@@ -59,8 +60,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    log(AppConstants.TOKEN ?? 'token');
-    log(AppConstants.SelectedSemester ?? 'semester');
+
     context.read<MainCubit>().getProfileInfo();
     scaffoldKey = GlobalKey<ScaffoldState>();
   }
@@ -88,6 +88,7 @@ class _HomeState extends State<Home> {
           ),
           (route) => false,
         );
+
         showToastMessage(
           message: StringsManager.logOutSuccessfully,
           states: ToastStates.SUCCESS,
@@ -116,8 +117,11 @@ class _HomeState extends State<Home> {
       }
       if (profile != null) {
         semesterIndex = semsesterIndex(profile.semester);
-      } else if (AppConstants.TOKEN == null) {
-        semesterIndex = semsesterIndex(AppConstants.SelectedSemester!);
+      }
+      if (!(state is LogoutSuccess)) {
+        if (AppConstants.TOKEN == null) {
+          semesterIndex = semsesterIndex(AppConstants.SelectedSemester!);
+        }
       }
       return profile == null && AppConstants.TOKEN != null
           ? const Scaffold(
@@ -234,31 +238,32 @@ class _HomeState extends State<Home> {
                                           .textTheme
                                           .headlineLarge),
                                 ), // Subjects Text
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.all(AppPaddings.p10),
-                                  child: GridView.builder(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(), // Disable scrolling in the GridView
-                                    shrinkWrap:
-                                        true, // Shrink the GridView to fit its content
-                                    gridDelegate:
-                                        const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount:
-                                          AppSizes.s2, // Two items per row
-                                      crossAxisSpacing: AppSizesDouble.s10,
-                                      mainAxisSpacing: AppSizesDouble.s10,
-                                    ),
-                                    itemCount: semesters[semesterIndex!]
-                                        .subjects
-                                        .length,
-                                    itemBuilder: (context, index) =>
-                                        SubjectItemBuild(
-                                      subject: semesters[semesterIndex!]
-                                          .subjects[index],
+                                if (semesterIndex != null)
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.all(AppPaddings.p10),
+                                    child: GridView.builder(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(), // Disable scrolling in the GridView
+                                      shrinkWrap:
+                                          true, // Shrink the GridView to fit its content
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount:
+                                            AppSizes.s2, // Two items per row
+                                        crossAxisSpacing: AppSizesDouble.s10,
+                                        mainAxisSpacing: AppSizesDouble.s10,
+                                      ),
+                                      itemCount: semesters[semesterIndex!]
+                                          .subjects
+                                          .length,
+                                      itemBuilder: (context, index) =>
+                                          SubjectItemBuild(
+                                        subject: semesters[semesterIndex!]
+                                            .subjects[index],
+                                      ),
                                     ),
                                   ),
-                                ),
                               ],
                             ),
                           ),

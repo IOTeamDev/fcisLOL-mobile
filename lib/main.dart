@@ -97,9 +97,7 @@ main() async {
     startPage = const OnBoarding();
   } else {
     if (AppConstants.TOKEN == null && AppConstants.SelectedSemester == null) {
-      startPage = ChoosingYear(
-        authCubit: getIt.get<AuthCubit>(),
-      );
+      startPage = RegistrationLayout();
     } else {
       startPage = const Home();
     }
