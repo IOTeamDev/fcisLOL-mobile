@@ -17,4 +17,6 @@ const String REPORT = 'report';
 
 const String PREVIOUSEXAMS = 'previousExams';
 
+const String sendGridEndPoint = 'v3/mail/send';
+
 const String EDITPREVIOUSEXAMS = 'previousExams/edit';

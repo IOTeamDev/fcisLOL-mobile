@@ -42,18 +42,19 @@ Widget divider({
   double height = AppSizesDouble.s1,
   double thickness = AppSizesDouble.s1,
 }) =>
-  Divider(
-    color: color,
-    height: height,
-    thickness: thickness,
-  );
+    Divider(
+      color: color,
+      height: height,
+      thickness: thickness,
+    );
 
 class materialBuilder extends StatelessWidget {
   int index;
   BuildContext context;
   ProfileModel? profileModel;
   bool isMain;
-  materialBuilder(this.index, this.context, {super.key, required this.profileModel, this.isMain = true});
+  materialBuilder(this.index, this.context,
+      {super.key, required this.profileModel, this.isMain = true});
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +63,9 @@ class materialBuilder extends StatelessWidget {
       padding: EdgeInsets.all(AppSizesDouble.s15),
       decoration: BoxDecoration(
         //color: ColorsManager.darkPrimary,
-        color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.darkPrimary:ColorsManager.white,
+        color: Provider.of<ThemeProvider>(context).isDark
+            ? ColorsManager.darkPrimary
+            : ColorsManager.white,
         borderRadius: BorderRadius.circular(AppSizesDouble.s20),
       ),
       height: AppSizesDouble.s170,
@@ -78,66 +81,87 @@ class materialBuilder extends StatelessWidget {
                   profileModel!.name,
                   maxLines: AppSizes.s1,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(fontWeight: FontWeight.bold),
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineLarge!
+                      .copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
-              if(cubit.profileModel != null)
-                if(cubit.profileModel!.role == KeysManager.admin || cubit.profileModel!.role == KeysManager.developer)
-                IconButton(
-                  onPressed: () {
-                    AwesomeDialog(
-                      context: context,
-                      title: StringsManager.delete,
-                      dialogType: DialogType.warning,
-                      body: Text(
-                        textAlign: TextAlign.center,
-                        StringsManager.deleteMaterialMessage,
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                      animType: AnimType.scale,
-                      btnOk: ElevatedButton(
-                        onPressed: (){
-                          cubit.deleteMaterial(
-                            isMain?
-                            cubit.profileModel!.materials[index].id!:
-                            cubit.otherProfile!.materials[index].id!,
-                            isMain?
-                            cubit.profileModel!.semester:
-                            cubit.otherProfile!.semester,
-                            isMaterial: true,
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(backgroundColor: ColorsManager.imperialRed),
-                        child: Text(StringsManager.delete, style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: ColorsManager.white),),
-                      ),
-                      btnCancel: ElevatedButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          style: ElevatedButton.styleFrom(backgroundColor:  ColorsManager.grey4),
-                          child: Text(StringsManager.cancel, style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: ColorsManager.black),)
-                      ),
-                    ).show();
-                  },
-                  icon: Icon(IconsManager.closeIcon, color: ColorsManager.imperialRed),
-                ),
+              if (cubit.profileModel != null)
+                if (cubit.profileModel!.role == KeysManager.admin ||
+                    cubit.profileModel!.role == KeysManager.developer)
+                  IconButton(
+                    onPressed: () {
+                      AwesomeDialog(
+                        context: context,
+                        title: StringsManager.delete,
+                        dialogType: DialogType.warning,
+                        body: Text(
+                          textAlign: TextAlign.center,
+                          StringsManager.deleteMaterialMessage,
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                        animType: AnimType.scale,
+                        btnOk: ElevatedButton(
+                          onPressed: () {
+                            cubit.deleteMaterial(
+                              isMain
+                                  ? cubit.profileModel!.materials[index].id!
+                                  : cubit.otherProfile!.materials[index].id!,
+                              isMain
+                                  ? cubit.profileModel!.semester
+                                  : cubit.otherProfile!.semester,
+                              isMaterial: true,
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: ColorsManager.imperialRed),
+                          child: Text(
+                            StringsManager.delete,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(color: ColorsManager.white),
+                          ),
+                        ),
+                        btnCancel: ElevatedButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: ColorsManager.grey4),
+                            child: Text(
+                              StringsManager.cancel,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(color: ColorsManager.black),
+                            )),
+                      ).show();
+                    },
+                    icon: Icon(IconsManager.closeIcon,
+                        color: ColorsManager.imperialRed),
+                  ),
             ],
           ),
           Flexible(
             child: Text(
               textAlign: TextAlign.start,
-              profileModel!.materials[index].title.toString()
-              .replaceAll(StringsManager.underScore, StringsManager.space),
+              profileModel!.materials[index].title
+                  .toString()
+                  .replaceAll(StringsManager.underScore, StringsManager.space),
               maxLines: AppSizes.s1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontSize: AppQueries.screenWidth(context) / AppSizes.s22,
-                color: ColorsManager.grey6
-              ),
+                  fontSize: AppQueries.screenWidth(context) / AppSizes.s22,
+                  color: ColorsManager.grey6),
             ),
           ),
           // SizedBox(height: 5,),
           Text(
             profileModel!.materials[index].type!,
-            style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: ColorsManager.grey6),
+            style: Theme.of(context)
+                .textTheme
+                .bodyLarge!
+                .copyWith(color: ColorsManager.grey6),
             maxLines: AppSizes.s1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -150,7 +174,9 @@ class materialBuilder extends StatelessWidget {
                   Expanded(
                     child: InkWell(
                       onTap: () async {
-                        final linkElement = LinkableElement(profileModel!.materials[index].link, profileModel!.materials[index].link!);
+                        final linkElement = LinkableElement(
+                            profileModel!.materials[index].link,
+                            profileModel!.materials[index].link!);
                         await onOpen(context, linkElement);
                       },
                       child: Text(
@@ -172,16 +198,17 @@ class materialBuilder extends StatelessWidget {
           Align(
             alignment: Alignment.centerRight,
             child: Text(
-              (isMain?
-              cubit.profileModel!.materials[index].accepted!:
-              cubit.otherProfile!.materials[index].accepted! )?
-              StringsManager.accepted :
-              StringsManager.pending,
+              (isMain
+                      ? cubit.profileModel!.materials[index].accepted!
+                      : cubit.otherProfile!.materials[index].accepted!)
+                  ? StringsManager.accepted
+                  : StringsManager.pending,
               style: TextStyle(
-                  color: (isMain? cubit.profileModel!.materials[index].accepted!: cubit.otherProfile!.materials[index].accepted!) ?
-                  ColorsManager.persianGreen :
-                  ColorsManager.gold
-              ),
+                  color: (isMain
+                          ? cubit.profileModel!.materials[index].accepted!
+                          : cubit.otherProfile!.materials[index].accepted!)
+                      ? ColorsManager.persianGreen
+                      : ColorsManager.gold),
             ),
           ),
         ],
@@ -191,48 +218,50 @@ class materialBuilder extends StatelessWidget {
 }
 
 Widget defaultLoginButton(
-  context,
-  GlobalKey<FormState> formKey,
-  AuthCubit loginCubit,
-  TextEditingController emailController,
-  TextEditingController passwordController,
-  String text,
-  {bool isSignUp = false,
-  Function()? onPressed}) =>
-  ElevatedButton(
-    style: ElevatedButton.styleFrom(
-        foregroundColor: ColorsManager.white,
-        fixedSize: Size(AppQueries.screenWidth(context), AppSizesDouble.s50),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSizesDouble.s15)),
-        backgroundColor: ColorsManager.lightPrimary),
-    onPressed: isSignUp
-        ? onPressed
-        : () {
-            if (formKey.currentState!.validate()) {
-              loginCubit.login(
-                  email: emailController.text.toLowerCase(),
-                  password: passwordController.text);
-            }
-          },
-    child: Text(
-      text,
-      style: Theme.of(context)
-          .textTheme
-          .headlineLarge!
-          .copyWith(color: ColorsManager.white),
-    ),
-  );
+        context,
+        GlobalKey<FormState> formKey,
+        AuthCubit loginCubit,
+        TextEditingController emailController,
+        TextEditingController passwordController,
+        String text,
+        {bool isSignUp = false,
+        Function()? onPressed}) =>
+    ElevatedButton(
+      style: ElevatedButton.styleFrom(
+          foregroundColor: ColorsManager.white,
+          fixedSize: Size(AppQueries.screenWidth(context), AppSizesDouble.s50),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppSizesDouble.s15)),
+          backgroundColor: ColorsManager.lightPrimary),
+      onPressed: isSignUp
+          ? onPressed
+          : () {
+              if (formKey.currentState!.validate()) {
+                loginCubit.login(
+                    email: emailController.text.toLowerCase(),
+                    password: passwordController.text);
+              }
+            },
+      child: Text(
+        text,
+        style: Theme.of(context)
+            .textTheme
+            .headlineLarge!
+            .copyWith(color: ColorsManager.white),
+      ),
+    );
 
-Widget previousExamsBuilder(context, PreviousExamModel exam, role, semester){
+Widget previousExamsBuilder(context, PreviousExamModel exam, role, semester) {
   return InkWell(
-    onTap: (){
+    onTap: () {
       launchUrl(Uri.parse(exam.link));
     },
     child: Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.lightGrey:ColorsManager.grey3,
+        color: Provider.of<ThemeProvider>(context).isDark
+            ? ColorsManager.lightGrey
+            : ColorsManager.grey3,
       ),
       width: double.infinity,
       height: 60,
@@ -241,33 +270,45 @@ Widget previousExamsBuilder(context, PreviousExamModel exam, role, semester){
           Expanded(
             child: Text(
               exam.title,
-              style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                fontWeight: FontWeight.bold
-              ),
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineSmall!
+                  .copyWith(fontWeight: FontWeight.bold),
               maxLines: AppSizes.s1,
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          if(AppConstants.TOKEN != null && (role == KeysManager.admin || role == KeysManager.developer))
-          IconButton(
-            onPressed: () => showDialog(barrierColor: ColorsManager.black.withValues(alpha: 0.4), context: context, builder: (context) => EditExamPopup(exam: exam, semester: semester), barrierDismissible: true),
-            icon: Icon(IconsManager.editIcon, color: ColorsManager.black),
-            style: IconButton.styleFrom(
-              backgroundColor: ColorsManager.white,
-              shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(10))
+          if (AppConstants.TOKEN != null &&
+              (role == KeysManager.admin || role == KeysManager.developer))
+            IconButton(
+              onPressed: () => showDialog(
+                  barrierColor: ColorsManager.black.withValues(alpha: 0.4),
+                  context: context,
+                  builder: (context) =>
+                      EditExamPopup(exam: exam, semester: semester),
+                  barrierDismissible: true),
+              icon: Icon(IconsManager.editIcon, color: ColorsManager.black),
+              style: IconButton.styleFrom(
+                  backgroundColor: ColorsManager.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10))),
             ),
-          ),
-          if(AppConstants.TOKEN != null && (role == KeysManager.admin || role == KeysManager.developer))
-          IconButton(
-            onPressed: () {
-              MainCubit.get(context).deletePreviousExam(exam.id, exam.subject);
-            },
-            icon: Icon(IconsManager.deleteIcon, color: ColorsManager.white,),
-            style: IconButton.styleFrom(
-              backgroundColor: ColorsManager.imperialRed,
-              shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(10))
+          if (AppConstants.TOKEN != null &&
+              (role == KeysManager.admin || role == KeysManager.developer))
+            IconButton(
+              onPressed: () {
+                MainCubit.get(context)
+                    .deletePreviousExam(exam.id, exam.subject);
+              },
+              icon: Icon(
+                IconsManager.deleteIcon,
+                color: ColorsManager.white,
+              ),
+              style: IconButton.styleFrom(
+                  backgroundColor: ColorsManager.imperialRed,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10))),
             ),
-          ),
         ],
       ),
       alignment: Alignment.centerLeft,
@@ -294,32 +335,33 @@ Widget defaultLoginInputField(controller, label, keyboardType,
       decoration: InputDecoration(
         labelStyle: TextStyle(color: ColorsManager.lightGrey),
         labelText: label,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(AppSizesDouble.s15)),
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(AppSizesDouble.s15)),
         filled: true,
         fillColor: ColorsManager.grey3,
         focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: ColorsManager.lightPrimary),
             borderRadius: BorderRadius.circular(AppSizesDouble.s15)),
         suffixIcon: isPassword
-          ? IconButton(
-              icon: Icon(suffixIcon),
-              color: loginCubit.hiddenPassword
-                ? ColorsManager.lightGrey
-                : ColorsManager.lightPrimary,
-              onPressed: loginCubit.togglePassword,
-            )
-          : null,
+            ? IconButton(
+                icon: Icon(suffixIcon),
+                color: loginCubit.hiddenPassword
+                    ? ColorsManager.lightGrey
+                    : ColorsManager.lightPrimary,
+                onPressed: loginCubit.togglePassword,
+              )
+            : null,
       ),
       validator: validator ??
-      (value) {
-        if (value!.isEmpty) {
-          return isConfirmPassword
-              ? validationMessage
-              : StringsManager.emptyFieldWarning;
-        } else {
-          return null; // Form is valid.
-        }
-      },
+          (value) {
+            if (value!.isEmpty) {
+              return isConfirmPassword
+                  ? validationMessage
+                  : StringsManager.emptyFieldWarning;
+            } else {
+              return null; // Form is valid.
+            }
+          },
       onFieldSubmitted: isConfirmPassword ? onFieldSubmit : null,
     );
 
@@ -332,15 +374,15 @@ void showToastMessage({
   int lengthForIOSAndWeb = AppSizes.s5,
   toastLength = Toast.LENGTH_SHORT,
 }) =>
-  Fluttertoast.showToast(
-    msg: message,
-    toastLength: toastLength,
-    gravity: gravity,
-    timeInSecForIosWeb: lengthForIOSAndWeb,
-    backgroundColor: chooseToastColor(states),
-    textColor: textColor,
-    fontSize: fontSize,
-  );
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: toastLength,
+      gravity: gravity,
+      timeInSecForIosWeb: lengthForIOSAndWeb,
+      backgroundColor: chooseToastColor(states),
+      textColor: textColor,
+      fontSize: fontSize,
+    );
 
 // ignore: constant_identifier_names
 enum ToastStates { SUCCESS, ERROR, WARNING, INFO }
@@ -400,7 +442,8 @@ Future<String> getFirstVideoThumbnail(String playlistUrl, String apiKey) async {
   final playlistId = playlistUrl.split("list=")[1];
 
   // Build the API request URL
-  final url = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=1&playlistId=$playlistId&key=$apiKey';
+  final url =
+      'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=1&playlistId=$playlistId&key=$apiKey';
 
   // Send the HTTP request
   final response = await http.get(Uri.parse(url));

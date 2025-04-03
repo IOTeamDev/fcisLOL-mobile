@@ -1,10 +1,15 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:googleapis/cloudsearch/v1.dart';
+import 'package:lol/core/network/remote/fcm_helper.dart' show FCMHelper;
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/resources/icons_manager.dart';
 import 'package:lol/core/utils/resources/values_manager.dart';
+import 'package:lol/features/auth/data/models/registration_user_model.dart';
+import 'package:lol/features/auth/presentation/view/verify_email.dart';
+import 'package:lol/features/auth/presentation/view/widgets/custom_drop_down_button.dart';
 import 'package:lol/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
 import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit.dart';
 import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit_states.dart';
@@ -15,26 +20,10 @@ import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/core/utils/navigation.dart';
 import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:provider/provider.dart';
 
 import '../../../../core/utils/resources/colors_manager.dart';
 import '../../../../core/utils/resources/strings_manager.dart';
 import '../../../../core/utils/resources/theme_provider.dart';
-
-class UserInfo {
-  late String name;
-  late String email;
-  late String password;
-  late String phone;
-  String? photo;
-
-  UserInfo(
-    {required this.name,
-    required this.email,
-    required this.password,
-    this.photo,
-    required this.phone});
-}
 
 class Registerscreen extends StatefulWidget {
   const Registerscreen({super.key});
@@ -49,6 +38,7 @@ class _RegisterscreenState extends State<Registerscreen> {
   late TextEditingController _passwordController;
   late TextEditingController _confirmPassword;
   late TextEditingController _phoneController;
+  late String _selectedSemester;
 
   final RegExp emailRegExp = RegExp(
     r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
@@ -63,6 +53,7 @@ class _RegisterscreenState extends State<Registerscreen> {
     _passwordController = TextEditingController();
     _confirmPassword = TextEditingController();
     _phoneController = TextEditingController();
+    _selectedSemester = 'Semester 2';
   }
 
   @override
@@ -80,12 +71,14 @@ class _RegisterscreenState extends State<Registerscreen> {
     return BlocBuilder<AuthCubit, AuthState>(
       builder: (context, state) {
         return Form(
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           key: _formKey,
           child: Center(
             child: Padding(
               padding: const EdgeInsets.all(AppPaddings.p20),
               child: SingleChildScrollView(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(StringsManager.signup,
                         style: Theme.of(context)
@@ -103,10 +96,21 @@ class _RegisterscreenState extends State<Registerscreen> {
                     const SizedBox(
                       height: AppSizesDouble.s15,
                     ),
-                    defaultLoginInputField(_emailController,
-                        StringsManager.email, TextInputType.emailAddress,
-                        loginCubit: AuthCubit.get(context),
-                        textInputAction: TextInputAction.next),
+                    defaultLoginInputField(
+                      _emailController,
+                      StringsManager.email,
+                      TextInputType.emailAddress,
+                      loginCubit: AuthCubit.get(context),
+                      textInputAction: TextInputAction.next,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return StringsManager.emptyFieldWarning;
+                        } else if (!emailRegExp.hasMatch(value)) {
+                          return 'Enter a valid email address';
+                        }
+                        return null;
+                      },
+                    ),
                     const SizedBox(
                       height: AppSizesDouble.s15,
                     ),
@@ -126,50 +130,62 @@ class _RegisterscreenState extends State<Registerscreen> {
                       height: AppSizesDouble.s15,
                     ),
                     defaultLoginInputField(
-                        _confirmPassword,
-                        StringsManager.confirmPassword,
-                        TextInputType.visiblePassword,
-                        isPassword: true,
-                        loginCubit: AuthCubit.get(context),
-                        isConfirmPassword: true,
-                        validationMessage: StringsManager.passwordNotMatchingError,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return StringsManager.emptyFieldWarning;
-                          } else if (value != _passwordController.text) {
-                            return 'Passwords does not match';
-                          }
-                          return null;
-                        },
-                        onFieldSubmit: (_) => _onFieldSubmit(
-                            context,
-                            _nameController,
-                            _emailController,
-                            _passwordController,
-                            _phoneController)),
+                      _confirmPassword,
+                      StringsManager.confirmPassword,
+                      TextInputType.visiblePassword,
+                      isPassword: true,
+                      loginCubit: AuthCubit.get(context),
+                      isConfirmPassword: true,
+                      validationMessage:
+                          StringsManager.passwordNotMatchingError,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return StringsManager.emptyFieldWarning;
+                        } else if (value != _passwordController.text) {
+                          return 'Passwords does not match';
+                        }
+                        return null;
+                      },
+                    ),
                     const SizedBox(
                       height: AppSizesDouble.s15,
                     ),
-                    state is RegisterLoading ? Center(
-                      child: CircularProgressIndicator(
-                          color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.white: ColorsManager.black
-                      ),
-                    ) : defaultLoginButton(
-                      context,
-                      _formKey,
-                      AuthCubit.get(context),
-                      _emailController,
-                      _passwordController,
-                      StringsManager.signup,
-                      isSignUp: true,
-                      onPressed: () => _onFieldSubmit(
+                    CustomDropDownButton(
+                      labelText: 'Semester',
+                      items: AuthCubit.semesters,
+                      value: _selectedSemester,
+                      onChanged: (value) {
+                        _selectedSemester = value!;
+                      },
+                    ),
+                    const SizedBox(
+                      height: AppSizesDouble.s15,
+                    ),
+                    defaultLoginButton(
                         context,
-                        _nameController,
+                        _formKey,
+                        AuthCubit.get(context),
                         _emailController,
                         _passwordController,
-                        _phoneController
-                      )
-                    ),
+                        StringsManager.signup,
+                        isSignUp: true, onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        FCMHelper fCMHelper = FCMHelper();
+                        fCMHelper.initNotifications();
+
+                        String? fcmToken =
+                            await FirebaseMessaging.instance.getToken();
+                        await context.read<AuthCubit>().register(
+                            name: _nameController.text,
+                            email: _emailController.text,
+                            phone: _phoneController.text,
+                            password: _passwordController.text,
+                            semester: _selectedSemester,
+                            fcmToken: fcmToken,
+                            photo:
+                                'https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/images%2Fdefault-avatar-icon-of-social-media-user-vector.jpg?alt=media&token=5fc138d2-3919-4854-888e-2d8fec45d555');
+                      }
+                    }),
                   ],
                 ),
               ),
@@ -180,20 +196,20 @@ class _RegisterscreenState extends State<Registerscreen> {
     );
   }
 
-  _onFieldSubmit(context, nameController, emailController, passwordController,
-      phoneController) {
-    if (_formKey.currentState!.validate()) {
-      UserInfo userInfo = UserInfo(
-          name: nameController.text,
-          email: emailController.text.toLowerCase(),
-          password: passwordController.text,
-          phone: phoneController.text);
-      navigate(
-        context,
-        SelectImage(
-          userInfo: userInfo,
-        )
-      );
-    }
-  }
+  // _onFieldSubmit(context, nameController, emailController, passwordController,
+  //     phoneController) {
+  //   if (_formKey.currentState!.validate()) {
+  //     UserInfo userInfo = UserInfo(
+  //         name: nameController.text,
+  //         email: emailController.text.toLowerCase(),
+  //         password: passwordController.text,
+  //         phone: phoneController.text);
+  //     navigate(
+  //       context,
+  //       SelectImage(
+  //         userInfo: userInfo,
+  //       )
+  //     );
+  //   }
+  // }
 }

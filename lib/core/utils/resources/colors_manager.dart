@@ -17,7 +17,8 @@ abstract class ColorsManager {
   static const Color lightGrey = Color(0xff757575); //grey[600]
   static const Color lightGrey1 = Color(0xffbdbdbd); //grey[400]
   static const Color lightGrey2 = Color(0xfff5f5f5); //grey[100]
-  static const Color darkGrey = Color(0xff23252A); //background Color in dark theme
+  static const Color darkGrey =
+      Color(0xff23252A); //background Color in dark theme
   static const Color white = Color(0xffffffff); //white
   static const Color black = Color(0xff000000); //black
   static const Color cyan = Color(0xff00ffff); //blue

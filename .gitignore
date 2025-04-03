@@ -45,3 +45,4 @@ app.*.map.json
 **/android/app/upload-keystore.jks
 # FVM Version Cache
 .fvm/
+*.env

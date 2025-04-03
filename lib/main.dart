@@ -3,8 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
+import 'package:lol/core/network/remote/send_grid_helper.dart';
 import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/core/utils/resources/themes_manager.dart';
 import 'package:lol/features/admin/presentation/view/announcements/add_announcement.dart';
@@ -47,14 +49,15 @@ String? fcmToken;
 Map<String, dynamic> fcisServiceMap = {};
 main() async {
   setup();
-
+  await dotenv.load();
   WidgetsFlutterBinding.ensureInitialized();
   await Cache.initialize();
   await DioHelp.initial();
+  await SendGridHelper.initial();
   await Firebase.initializeApp();
-  try{
+  try {
     fcmToken = await FirebaseMessaging.instance.getToken();
-  }catch(error){
+  } catch (error) {
     log(error.toString());
   }
 
@@ -65,10 +68,9 @@ main() async {
       .then((onValue) {
     noMoreStorage = onValue.data()?["noMoreStorage"] ?? false;
     apiKey = onValue.data()?["apiKey"];
-  }).catchError((error){
+  }).catchError((error) {
     log('error occurred $error');
   });
-
 
   await FirebaseFirestore.instance
       .collection("4notifications")
@@ -84,23 +86,24 @@ main() async {
   Bloc.observer = MyBlocObserver();
 
   AppConstants.TOKEN = Cache.sharedpref.getString(KeysManager.token);
-  AppConstants.SelectedSemester = await Cache.sharedpref.getString(KeysManager.semester);
-  bool isOnBoardFinished = await Cache.readData(key: KeysManager.finishedOnBoard) ?? false;
+  AppConstants.SelectedSemester =
+      await Cache.sharedpref.getString(KeysManager.semester);
+  bool isOnBoardFinished =
+      await Cache.readData(key: KeysManager.finishedOnBoard) ?? false;
+
   final Widget startPage;
 
   if (!isOnBoardFinished) {
     startPage = const OnBoarding();
   } else {
     if (AppConstants.TOKEN == null && AppConstants.SelectedSemester == null) {
-      startPage = ChoosingYear(
-        authCubit: getIt.get<AuthCubit>(),
-      );
+      startPage = RegistrationLayout();
     } else {
       startPage = const Home();
     }
   }
 
-  ErrorWidget.builder = (FlutterErrorDetails errorDetails){
+  ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
     return ErrorScreen(errorDetails: errorDetails);
   };
   runApp(ChangeNotifierProvider(
@@ -118,7 +121,8 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (BuildContext context) => MainCubit()),
-        BlocProvider(create: (BuildContext context) => AdminCubit()..getFcmTokens()),
+        BlocProvider(
+            create: (BuildContext context) => AdminCubit()..getFcmTokens()),
       ],
       child: MaterialApp(
         home: ChoosingYear(authCubit: AuthCubit()),

@@ -1,5 +1,5 @@
-import 'dart:developer';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/core/network/endpoints.dart';
 import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:lol/core/network/remote/dio.dart';
+import 'package:lol/core/network/remote/send_grid_helper.dart';
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/dependencies_helper.dart';
 import 'package:lol/core/utils/navigation.dart';
@@ -17,6 +18,7 @@ import 'package:lol/features/auth/data/models/login_model.dart';
 import 'package:lol/features/auth/presentation/view/choosing_year.dart';
 import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
+import 'package:dio/dio.dart';
 
 part 'auth_state.dart';
 
@@ -45,8 +47,6 @@ class AuthCubit extends Cubit<AuthState> {
       AppConstants.TOKEN = loginModel.token;
       emit(LoginSuccess());
     } catch (e) {
-      log(e.toString());
-
       emit(LoginFailed(errMessage: e.toString()));
     }
   }
@@ -55,7 +55,7 @@ class AuthCubit extends Cubit<AuthState> {
     required String name,
     required String email,
     required String phone,
-    required String photo,
+    String? photo,
     required String password,
     required String semester,
     String? fcmToken,
@@ -73,9 +73,20 @@ class AuthCubit extends Cubit<AuthState> {
       });
       LoginModel loginModel = LoginModel.fromJson(response.data);
       await FirebaseMessaging.instance.requestPermission();
-      emit(RegisterSuccess(token: loginModel.token));
+      AppConstants.SelectedSemester = semester;
+      await Cache.writeData(
+          key: KeysManager.semester, value: AppConstants.SelectedSemester);
+
+      emit(RegisterSuccess(token: loginModel.token, userEmail: email));
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 500) {
+        emit(RegisterFailed(
+            errMessage:
+                e.response?.data['error'] ?? 'Opps! there was an error'));
+      } else {
+        emit(RegisterFailed(errMessage: e.toString()));
+      }
     } catch (e) {
-      log(e.toString());
       emit(RegisterFailed(errMessage: e.toString()));
     }
   }
@@ -99,11 +110,12 @@ class AuthCubit extends Cubit<AuthState> {
               Uri.file(image.path).pathSegments.last)
           .putFile(image);
     } else {
-      uploadTask = await FirebaseStorage.instance.ref()
-        .child(StringsManager.announcements.toLowerCase() +
-            StringsManager.forwardSlash +
-            Uri.file(image.path).pathSegments.last)
-        .putFile(image);
+      uploadTask = await FirebaseStorage.instance
+          .ref()
+          .child(StringsManager.announcements.toLowerCase() +
+              StringsManager.forwardSlash +
+              Uri.file(image.path).pathSegments.last)
+          .putFile(image);
     }
 
     try {
@@ -118,4 +130,15 @@ class AuthCubit extends Cubit<AuthState> {
       emit(UploadImageFailure());
     }
   }
+
+  static const List<String> semesters = [
+    'One',
+    'Two',
+    'Three',
+    'Four',
+    'Five',
+    'Six',
+    'Seven',
+    'Eight',
+  ];
 }
