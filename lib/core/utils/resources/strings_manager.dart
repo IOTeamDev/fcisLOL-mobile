@@ -23,7 +23,7 @@ class StringsManager {
   static const String bugFixes = 'Bug Fixes';
   static const String dueDate = 'due_date';
   static const String role = 'role';
-  static const String yearSelect = 'Year Select';
+  static const String yearSelect = 'Choose Year';
   static const String one = 'One';
   static const String oneNum = '1';
   static const String level = 'Level';
