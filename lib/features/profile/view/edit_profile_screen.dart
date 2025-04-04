@@ -6,7 +6,7 @@ import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/core/utils/resources/icons_manager.dart';
 import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/core/utils/resources/values_manager.dart';
-import 'package:lol/features/auth/presentation/view/select_image.dart';
+import 'package:lol/features/pick_image/presentation/view/select_image.dart';
 import 'package:lol/features/profile/view/widgets/basic_info_edit.dart';
 import 'package:lol/features/profile/view/widgets/delete_account_section.dart';
 import 'package:lol/features/profile/view/widgets/login_info_edit.dart';

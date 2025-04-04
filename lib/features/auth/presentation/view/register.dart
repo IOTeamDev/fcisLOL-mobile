@@ -14,7 +14,6 @@ import 'package:lol/features/auth/presentation/view_model/auth_cubit/auth_cubit.
 import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit.dart';
 import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit_states.dart';
 import 'package:lol/features/auth/presentation/view/login.dart';
-import 'package:lol/features/auth/presentation/view/select_image.dart';
 import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/core/utils/navigation.dart';

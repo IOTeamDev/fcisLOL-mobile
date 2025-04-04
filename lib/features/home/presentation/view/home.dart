@@ -254,7 +254,7 @@ class _HomeState extends State<Home> {
                                         crossAxisSpacing: AppSizesDouble.s10,
                                         mainAxisSpacing: AppSizesDouble.s10,
                                       ),
-                                      itemCount: semesters[semesterIndex!]
+                                      itemCount: semesters[semesterIndex]
                                           .subjects
                                           .length,
                                       itemBuilder: (context, index) =>
