@@ -8,7 +8,6 @@ import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/resources/icons_manager.dart';
 import 'package:lol/core/utils/resources/values_manager.dart';
 import 'package:lol/features/auth/data/models/registration_user_model.dart';
-import 'package:lol/features/auth/presentation/view/verify_email.dart';
 import 'package:lol/features/auth/presentation/view/widgets/custom_drop_down_button.dart';
 import 'package:lol/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
 import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit.dart';
@@ -175,14 +174,14 @@ class _RegisterscreenState extends State<Registerscreen> {
                         String? fcmToken =
                             await FirebaseMessaging.instance.getToken();
                         await context.read<AuthCubit>().register(
-                            name: _nameController.text,
-                            email: _emailController.text,
-                            phone: _phoneController.text,
-                            password: _passwordController.text,
-                            semester: _selectedSemester,
-                            fcmToken: fcmToken,
-                            photo:
-                                'https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/images%2Fdefault-avatar-icon-of-social-media-user-vector.jpg?alt=media&token=5fc138d2-3919-4854-888e-2d8fec45d555');
+                              name: _nameController.text,
+                              email: _emailController.text,
+                              phone: _phoneController.text,
+                              password: _passwordController.text,
+                              semester: _selectedSemester,
+                              fcmToken: fcmToken,
+                              photo: AppConstants.defaultProfileImage,
+                            );
                       }
                     }),
                   ],

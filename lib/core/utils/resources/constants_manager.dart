@@ -37,6 +37,8 @@ class AppConstants {
     'Four',
     'Five',
     'Six',
+    'Seven ',
+    'Eight',
   ];
 
   static String Level(String semester) {
