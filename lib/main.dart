@@ -1,4 +1,7 @@
 import 'dart:developer';
+import 'package:flutter/foundation.dart';
+
+import 'firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -54,7 +57,9 @@ main() async {
   await Cache.initialize();
   await DioHelp.initial();
   await SendGridHelper.initial();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: kIsWeb? DefaultFirebaseOptions.currentPlatform:null
+  );
   try {
     fcmToken = await FirebaseMessaging.instance.getToken();
   } catch (error) {

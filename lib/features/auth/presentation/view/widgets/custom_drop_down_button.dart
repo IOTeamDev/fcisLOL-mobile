@@ -23,7 +23,7 @@ class CustomDropDownButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: AppQueries.screenWidth(context) * 0.5,
+      width: getDeviceType(context) != DeviceType.MOBILE? 300: AppQueries.screenWidth(context) * 0.5,
       child: DropdownButtonFormField<String>(
         validator: validator ??
             (String? value) {

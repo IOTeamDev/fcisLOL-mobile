@@ -1,6 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+class Breakpoints {
+  static const double mobile = 600;
+  static const double desktop = 1024;
+}
+
+enum DeviceType {
+  MOBILE,
+  TABLET,
+  DESKTOP
+}
+
+DeviceType getDeviceType(context) {
+  final width = MediaQuery.of(context).size.width;
+
+  if(width < Breakpoints.mobile ) return DeviceType.MOBILE;
+  else if( width >= Breakpoints.mobile && width < Breakpoints.desktop) return DeviceType.TABLET;
+  return DeviceType.DESKTOP;
+}
+
+
 class AppConstants {
   static String appVersion = 'V2.2.2+4';
   static String? TOKEN;

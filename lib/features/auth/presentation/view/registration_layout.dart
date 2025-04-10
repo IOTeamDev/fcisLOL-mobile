@@ -92,28 +92,26 @@ class _RegistrationLayoutState extends State<RegistrationLayout>
             child: Stack(
               children: [
                 Scaffold(
-                  backgroundColor: ColorsManager.white,
-                  appBar: AppBar(
-                    backgroundColor: ColorsManager.white,
-                  ),
+                  appBar: getDeviceType(context) != DeviceType.DESKTOP? AppBar(): null,
                   body: Column(
                     children: [
                       TabBar(
-                          indicatorColor: ColorsManager.lightPrimary,
-                          dividerColor: ColorsManager.grey1,
-                          labelColor: ColorsManager.lightPrimary,
-                          indicatorSize: TabBarIndicatorSize.tab,
-                          indicatorAnimation: TabIndicatorAnimation.elastic,
-                          unselectedLabelColor: ColorsManager.grey1,
-                          controller: _tabController,
-                          tabs: [
-                            Tab(
-                              text: StringsManager.login,
-                            ),
-                            Tab(
-                              text: StringsManager.signup,
-                            )
-                          ]),
+                        indicatorColor: ColorsManager.lightPrimary,
+                        dividerColor: ColorsManager.grey1,
+                        labelColor: ColorsManager.lightPrimary,
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        indicatorAnimation: TabIndicatorAnimation.elastic,
+                        unselectedLabelColor: ColorsManager.grey1,
+                        controller: _tabController,
+                        tabs: [
+                          Tab(
+                            text: StringsManager.login,
+                          ),
+                          Tab(
+                            text: StringsManager.signup,
+                          )
+                        ]
+                      ),
                       Expanded(
                         child: TabBarView(
                           controller: _tabController,

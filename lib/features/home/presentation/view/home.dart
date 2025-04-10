@@ -70,16 +70,11 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return BlocConsumer<MainCubit, MainCubitStates>(listener: (context, state) {
       if (state is GetProfileSuccess) {
-        AdminCubit.get(context).getAnnouncements(
-            MainCubit.get(context).profileModel?.semester ??
-                AppConstants.SelectedSemester!);
-        MainCubit.get(context).updateUser(
-            userID: MainCubit.get(context).profileModel!.id,
-            fcmToken: fcmToken);
+        AdminCubit.get(context).getAnnouncements(MainCubit.get(context).profileModel?.semester ?? AppConstants.SelectedSemester!);
+        MainCubit.get(context).updateUser(userID: MainCubit.get(context).profileModel!.id, fcmToken: fcmToken);
       }
       if (state is GetProfileFailure && AppConstants.SelectedSemester != null) {
-        AdminCubit.get(context)
-            .getAnnouncements(AppConstants.SelectedSemester!);
+        AdminCubit.get(context).getAnnouncements(AppConstants.SelectedSemester!);
       }
       if (state is LogoutSuccess) {
         Navigator.of(context).pushAndRemoveUntil(
@@ -168,8 +163,7 @@ class _HomeState extends State<Home> {
               drawer: CustomDrawer(AppConstants.TOKEN == null
                   ? AppConstants.SelectedSemester ?? ''
                   : MainCubit.get(context).profileModel!.semester),
-              drawerEdgeDragWidth:
-                  AppQueries.screenWidth(context) * AppSizesDouble.s0_4,
+              drawerEdgeDragWidth: AppQueries.screenWidth(context) * AppSizesDouble.s0_2,
               body: profile == null && AppConstants.TOKEN != null
                   ? const Center(
                       child: CircularProgressIndicator(),
