@@ -60,13 +60,13 @@ class _RegistrationLayoutState extends State<RegistrationLayout>
 
             Cache.writeData(key: KeysManager.token, value: state.token);
 
-            showToastMessage(
-              message: 'You need to verify your email',
-              states: ToastStates.SUCCESS,
-            );
+            // showToastMessage(
+            //   message: 'You need to verify your email',
+            //   states: ToastStates.SUCCESS,
+            // );
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: (context) => Home(),
+                builder: (context) => SelectImage(),
               ),
               (route) => false,
             );

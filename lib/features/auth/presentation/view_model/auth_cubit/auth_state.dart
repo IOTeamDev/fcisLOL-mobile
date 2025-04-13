@@ -36,4 +36,4 @@ final class UploadImageLoading extends AuthState {}
 
 final class UploadImageSuccess extends AuthState {}
 
-final class UploadImageFailure extends AuthState {}
+final class UploadImageFailed extends AuthState {}

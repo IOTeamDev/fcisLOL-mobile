@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -58,7 +57,7 @@ main() async {
   try {
     fcmToken = await FirebaseMessaging.instance.getToken();
   } catch (error) {
-    log(error.toString());
+    debugPrint(error.toString());
   }
 
   FirebaseFirestore.instance
@@ -69,7 +68,7 @@ main() async {
     noMoreStorage = onValue.data()?["noMoreStorage"] ?? false;
     apiKey = onValue.data()?["apiKey"];
   }).catchError((error) {
-    log('error occurred $error');
+    debugPrint('error occurred $error');
   });
 
   await FirebaseFirestore.instance

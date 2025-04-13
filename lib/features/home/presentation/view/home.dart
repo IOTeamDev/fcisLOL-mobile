@@ -60,22 +60,24 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    _getprofileInfo();
 
-    context.read<MainCubit>().getProfileInfo();
     scaffoldKey = GlobalKey<ScaffoldState>();
   }
 
   late GlobalKey<ScaffoldState> scaffoldKey;
   @override
   Widget build(BuildContext context) {
+    log(AppConstants.TOKEN!);
+
     return BlocConsumer<MainCubit, MainCubitStates>(listener: (context, state) {
       if (state is GetProfileSuccess) {
         AdminCubit.get(context).getAnnouncements(
             MainCubit.get(context).profileModel?.semester ??
                 AppConstants.SelectedSemester!);
-        MainCubit.get(context).updateUser(
-            userID: MainCubit.get(context).profileModel!.id,
-            fcmToken: fcmToken);
+        // MainCubit.get(context).updateUser(
+        //     userID: MainCubit.get(context).profileModel!.id,
+        //     fcmToken: fcmToken);
       }
       if (state is GetProfileFailure && AppConstants.SelectedSemester != null) {
         AdminCubit.get(context)
@@ -272,5 +274,9 @@ class _HomeState extends State<Home> {
                     ),
             );
     });
+  }
+
+  Future<void> _getprofileInfo() async {
+    context.read<MainCubit>().getProfileInfo();
   }
 }

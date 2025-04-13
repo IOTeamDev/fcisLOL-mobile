@@ -87,7 +87,7 @@ class AddMaterialCubit extends Cubit<AddMaterialState> {
 
     try {
       await DioHelp.patchData(
-        path: EDIT,
+        path: EDITMATERIAL,
         data: {
           'id': id,
           'title': title,

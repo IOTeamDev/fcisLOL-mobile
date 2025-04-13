@@ -127,7 +127,7 @@ class AuthCubit extends Cubit<AuthState> {
       }
       emit(UploadImageSuccess());
     } on Exception {
-      emit(UploadImageFailure());
+      emit(UploadImageFailed());
     }
   }
 

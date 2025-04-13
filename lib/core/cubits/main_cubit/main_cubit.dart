@@ -52,33 +52,33 @@ class MainCubit extends Cubit<MainCubitStates> {
   File? userImageFile;
   String? userImagePath;
   var picker = ImagePicker();
-  getUserImage({required bool fromGallery}) async {
-    emit(GetUserImageLoading());
-    pickerIcon = IconsManager.imageIcon;
-    imageName = StringsManager.selectImage;
-    //const int maxStorageLimit = 1000000000; // 1 GB in bytes
+  // getUserImage({required bool fromGallery}) async {
+  //   emit(GetUserImageLoading());
+  //   pickerIcon = IconsManager.imageIcon;
+  //   imageName = StringsManager.selectImage;
+  //   //const int maxStorageLimit = 1000000000; // 1 GB in bytes
 
-    var tempPostImage = await picker.pickImage(
-        source: fromGallery ? ImageSource.gallery : ImageSource.camera);
-    if (tempPostImage != null) {
-      userImageFile = File(tempPostImage.path);
-      pickerIcon = IconsManager.closeIcon;
-      imageName = tempPostImage.path.split(StringsManager.forwardSlash).last;
-      // final int sizeInBytes = await userImageFile!.length();
-      // final int sizeInMB = sizeInBytes ~/ sqrt(AppSizes.s1024);
+  //   var tempPostImage = await picker.pickImage(
+  //       source: fromGallery ? ImageSource.gallery : ImageSource.camera);
+  //   if (tempPostImage != null) {
+  //     userImageFile = File(tempPostImage.path);
+  //     pickerIcon = IconsManager.closeIcon;
+  //     imageName = tempPostImage.path.split(StringsManager.forwardSlash).last;
+  //     // final int sizeInBytes = await userImageFile!.length();
+  //     // final int sizeInMB = sizeInBytes ~/ sqrt(AppSizes.s1024);
 
-      emit(GetUserImageSuccess());
-      // if (sizeInMB <= AppSizes.s1) {
-      // } else {
-      //   userImageFile = null;
-      //   emit(GetUserImageLimitExceed());
-      // }
-    } else {
-      imageName = StringsManager.selectImage;
-      pickerIcon = IconsManager.imageIcon;
-      emit(GetUserImageFailure());
-    }
-  }
+  //     emit(GetUserImageSuccess());
+  //     // if (sizeInMB <= AppSizes.s1) {
+  //     // } else {
+  //     //   userImageFile = null;
+  //     //   emit(GetUserImageLimitExceed());
+  //     // }
+  //   } else {
+  //     imageName = StringsManager.selectImage;
+  //     pickerIcon = IconsManager.imageIcon;
+  //     emit(GetUserImageFailure());
+  //   }
+  // }
 
   File? announcementImageFile;
   String? announcementImagePath;
@@ -103,42 +103,42 @@ class MainCubit extends Cubit<MainCubitStates> {
     }
   }
 
-  Future<void> uploadPImage({File? image, bool isUserProfile = true}) async {
-    announcementImagePath = null;
-    emit(UploadImageLoading());
-    if (image == null) return;
+  // Future<void> uploadPImage({File? image, bool isUserProfile = true}) async {
+  //   announcementImagePath = null;
+  //   emit(UploadImageLoading());
+  //   if (image == null) return;
 
-    showToastMessage(
-        message: StringsManager.uploadImage, states: ToastStates.WARNING);
-    final TaskSnapshot uploadTask;
-    if (isUserProfile) {
-      uploadTask = await FirebaseStorage.instance
-          .ref()
-          .child(StringsManager.image.toLowerCase() +
-              StringsManager.forwardSlash +
-              Uri.file(image.path).pathSegments.last)
-          .putFile(image);
-    } else {
-      uploadTask = await FirebaseStorage.instance
-          .ref()
-          .child(StringsManager.announcements.toLowerCase() +
-              StringsManager.forwardSlash +
-              Uri.file(image.path).pathSegments.last)
-          .putFile(image);
-    }
+  //   showToastMessage(
+  //       message: StringsManager.uploadImage, states: ToastStates.WARNING);
+  //   final TaskSnapshot uploadTask;
+  //   if (isUserProfile) {
+  //     uploadTask = await FirebaseStorage.instance
+  //         .ref()
+  //         .child(StringsManager.image.toLowerCase() +
+  //             StringsManager.forwardSlash +
+  //             Uri.file(image.path).pathSegments.last)
+  //         .putFile(image);
+  //   } else {
+  //     uploadTask = await FirebaseStorage.instance
+  //         .ref()
+  //         .child(StringsManager.announcements.toLowerCase() +
+  //             StringsManager.forwardSlash +
+  //             Uri.file(image.path).pathSegments.last)
+  //         .putFile(image);
+  //   }
 
-    try {
-      final imagePath = await uploadTask.ref.getDownloadURL();
-      if (isUserProfile) {
-        userImagePath = imagePath;
-      } else {
-        announcementImagePath = imagePath;
-      }
-      emit(UploadImageSuccess());
-    } on Exception {
-      emit(UploadImageFailure());
-    }
-  }
+  //   try {
+  //     final imagePath = await uploadTask.ref.getDownloadURL();
+  //     if (isUserProfile) {
+  //       userImagePath = imagePath;
+  //     } else {
+  //       announcementImagePath = imagePath;
+  //     }
+  //     emit(UploadImageSuccess());
+  //   } on Exception {
+  //     emit(UploadImageFailure());
+  //   }
+  // }
 
   ProfileModel? profileModel;
   Future<void> getProfileInfo() async {
@@ -146,6 +146,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     try {
       final response =
           await DioHelp.getData(path: CURRENTUSER, token: AppConstants.TOKEN);
+      dev.log(response.data.toString());
       profileModel = ProfileModel.fromJson(response.data);
       AppConstants.SelectedSemester = profileModel!.semester;
       await Cache.writeData(
