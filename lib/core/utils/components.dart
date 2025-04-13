@@ -238,8 +238,9 @@ Widget defaultLoginButton(
           : () {
               if (formKey.currentState!.validate()) {
                 loginCubit.login(
-                    email: emailController.text.toLowerCase(),
-                    password: passwordController.text);
+                  email: emailController.text,
+                  password: passwordController.text
+                );
               }
             },
       child: Text(
@@ -367,7 +368,7 @@ Widget defaultLoginInputField(controller, label, keyboardType,
 
 void showToastMessage({
   required String message,
-  Color textColor = ColorsManager.white,
+  Color textColor = ToastStates != ToastStates.INFO? ColorsManager.black: ColorsManager.white,
   required ToastStates states,
   double fontSize = AppSizesDouble.s16,
   gravity = ToastGravity.BOTTOM,

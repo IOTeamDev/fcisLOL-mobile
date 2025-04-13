@@ -67,12 +67,12 @@ class VerificationCubit extends Cubit<VerificationCubitStates> {
             },
           ],
           "from": {"email": "elnawawyseif@gmail.com"},
-          "subject": "Verifying ECommercy account",
+          "subject": "Verifying ECommerce account",
           "content": [
             {
               "type": "text/html",
               "value":
-                  "Hello ${recepientName ?? ''}, your ECommercy verification code is: <strong>$_verificationCode</strong>",
+                  "Hello ${recepientName ?? ''}, your ECommerce verification code is: <strong>$_verificationCode</strong>",
             },
           ],
         },

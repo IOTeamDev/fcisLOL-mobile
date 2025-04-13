@@ -32,7 +32,7 @@ class BuildAnnouncementsRow extends StatelessWidget {
             borderRadius: BorderRadius.circular(AppSizesDouble.s15),
           ),
           child: Image.asset(
-            height: AppSizesDouble.s600,
+            height: getDeviceType(context) != DeviceType.MOBILE? AppSizesDouble.s600: AppSizesDouble.s200,
             width: double.infinity,
             fit: BoxFit.cover,
             AssetsManager.noAnnouncements
