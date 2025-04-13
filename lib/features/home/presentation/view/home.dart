@@ -149,4 +149,8 @@ class _HomeState extends State<Home> {
               ));
     });
   }
+
+  Future<void> _getprofileInfo() async {
+    context.read<MainCubit>().getProfileInfo();
+  }
 }

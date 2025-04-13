@@ -78,11 +78,10 @@ class _RegisterscreenState extends State<RegisterTablet> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(StringsManager.signup,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineLarge!
-                            .copyWith(fontSize: AppSizesDouble.s40,)
-                    ),
+                        style:
+                            Theme.of(context).textTheme.headlineLarge!.copyWith(
+                                  fontSize: AppSizesDouble.s40,
+                                )),
                     const SizedBox(
                       height: AppSizesDouble.s25,
                     ),
@@ -133,7 +132,7 @@ class _RegisterscreenState extends State<RegisterTablet> {
                       loginCubit: AuthCubit.get(context),
                       isConfirmPassword: true,
                       validationMessage:
-                      StringsManager.passwordNotMatchingError,
+                          StringsManager.passwordNotMatchingError,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return StringsManager.emptyFieldWarning;
@@ -170,16 +169,16 @@ class _RegisterscreenState extends State<RegisterTablet> {
                         fCMHelper.initNotifications();
 
                         String? fcmToken =
-                        await FirebaseMessaging.instance.getToken();
+                            await FirebaseMessaging.instance.getToken();
                         await context.read<AuthCubit>().register(
-                          name: _nameController.text,
-                          email: _emailController.text,
-                          phone: _phoneController.text,
-                          password: _passwordController.text,
-                          semester: _selectedSemester,
-                          fcmToken: fcmToken,
-                          photo: AppConstants.defaultProfileImage,
-                        );
+                              name: _nameController.text,
+                              email: _emailController.text,
+                              phone: _phoneController.text,
+                              password: _passwordController.text,
+                              semester: _selectedSemester,
+                              fcmToken: fcmToken,
+                              photo: AppConstants.defaultProfileImage,
+                            );
                       }
                     }),
                   ],

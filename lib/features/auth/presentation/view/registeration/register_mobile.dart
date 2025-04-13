@@ -81,8 +81,9 @@ class _RegisterscreenState extends State<RegisterMobile> {
                         style: Theme.of(context)
                             .textTheme
                             .headlineLarge!
-                            .copyWith(fontSize: AppSizesDouble.s40,)
-                    ),
+                            .copyWith(
+                                fontSize: AppSizesDouble.s40,
+                                color: ColorsManager.black)),
                     const SizedBox(
                       height: AppSizesDouble.s25,
                     ),
@@ -133,7 +134,7 @@ class _RegisterscreenState extends State<RegisterMobile> {
                       loginCubit: AuthCubit.get(context),
                       isConfirmPassword: true,
                       validationMessage:
-                      StringsManager.passwordNotMatchingError,
+                          StringsManager.passwordNotMatchingError,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return StringsManager.emptyFieldWarning;
@@ -170,16 +171,16 @@ class _RegisterscreenState extends State<RegisterMobile> {
                         fCMHelper.initNotifications();
 
                         String? fcmToken =
-                        await FirebaseMessaging.instance.getToken();
+                            await FirebaseMessaging.instance.getToken();
                         await context.read<AuthCubit>().register(
-                          name: _nameController.text,
-                          email: _emailController.text,
-                          phone: _phoneController.text,
-                          password: _passwordController.text,
-                          semester: _selectedSemester,
-                          fcmToken: fcmToken,
-                          photo: AppConstants.defaultProfileImage,
-                        );
+                              name: _nameController.text,
+                              email: _emailController.text,
+                              phone: _phoneController.text,
+                              password: _passwordController.text,
+                              semester: _selectedSemester,
+                              fcmToken: fcmToken,
+                              photo: AppConstants.defaultProfileImage,
+                            );
                       }
                     }),
                   ],
@@ -191,4 +192,21 @@ class _RegisterscreenState extends State<RegisterMobile> {
       },
     );
   }
+
+  // _onFieldSubmit(context, nameController, emailController, passwordController,
+  //     phoneController) {
+  //   if (_formKey.currentState!.validate()) {
+  //     UserInfo userInfo = UserInfo(
+  //         name: nameController.text,
+  //         email: emailController.text.toLowerCase(),
+  //         password: passwordController.text,
+  //         phone: phoneController.text);
+  //     navigate(
+  //       context,
+  //       SelectImage(
+  //         userInfo: userInfo,
+  //       )
+  //     );
+  //   }
+  // }
 }

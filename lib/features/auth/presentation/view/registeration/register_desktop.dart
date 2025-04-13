@@ -71,18 +71,19 @@ class _RegisterscreenState extends State<RegisterDesktop> {
           autovalidateMode: AutovalidateMode.onUserInteraction,
           key: _formKey,
           child: Center(
-            child: SizedBox(
-              width: 450,
+            child: Padding(
+              padding: const EdgeInsets.all(AppPaddings.p20),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(StringsManager.signup,
-                      style: Theme.of(context)
-                        .textTheme
-                        .headlineLarge!
-                        .copyWith(fontSize: AppSizesDouble.s40,)
-                    ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineLarge!
+                            .copyWith(
+                                fontSize: AppSizesDouble.s40,
+                                color: ColorsManager.black)),
                     const SizedBox(
                       height: AppSizesDouble.s25,
                     ),
@@ -117,11 +118,11 @@ class _RegisterscreenState extends State<RegisterDesktop> {
                       height: AppSizesDouble.s15,
                     ),
                     defaultLoginInputField(_passwordController,
-                      StringsManager.password, TextInputType.visiblePassword,
-                      isPassword: true,
-                      loginCubit: AuthCubit.get(context),
-                      suffixIcon: IconsManager.eyeIcon,
-                      textInputAction: TextInputAction.next),
+                        StringsManager.password, TextInputType.visiblePassword,
+                        isPassword: true,
+                        loginCubit: AuthCubit.get(context),
+                        suffixIcon: IconsManager.eyeIcon,
+                        textInputAction: TextInputAction.next),
                     const SizedBox(
                       height: AppSizesDouble.s15,
                     ),
@@ -133,7 +134,7 @@ class _RegisterscreenState extends State<RegisterDesktop> {
                       loginCubit: AuthCubit.get(context),
                       isConfirmPassword: true,
                       validationMessage:
-                      StringsManager.passwordNotMatchingError,
+                          StringsManager.passwordNotMatchingError,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return StringsManager.emptyFieldWarning;
@@ -170,16 +171,16 @@ class _RegisterscreenState extends State<RegisterDesktop> {
                         fCMHelper.initNotifications();
 
                         String? fcmToken =
-                        await FirebaseMessaging.instance.getToken();
+                            await FirebaseMessaging.instance.getToken();
                         await context.read<AuthCubit>().register(
-                          name: _nameController.text,
-                          email: _emailController.text,
-                          phone: _phoneController.text,
-                          password: _passwordController.text,
-                          semester: _selectedSemester,
-                          fcmToken: fcmToken,
-                          photo: AppConstants.defaultProfileImage,
-                        );
+                              name: _nameController.text,
+                              email: _emailController.text,
+                              phone: _phoneController.text,
+                              password: _passwordController.text,
+                              semester: _selectedSemester,
+                              fcmToken: fcmToken,
+                              photo: AppConstants.defaultProfileImage,
+                            );
                       }
                     }),
                   ],
