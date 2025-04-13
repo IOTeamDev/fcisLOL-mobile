@@ -340,6 +340,7 @@ class MainCubit extends Cubit<MainCubitStates> {
       AppConstants.SelectedSemester = null;
       emit(DeleteAccountSuccessState());
     } catch (e) {
+      dev.log(e.toString());
       emit(DeleteAccountFailed(errMessage: e.toString()));
     }
   }

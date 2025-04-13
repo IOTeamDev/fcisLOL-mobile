@@ -118,16 +118,11 @@ class _HomeState extends State<Home> {
       int? semesterIndex;
       if (MainCubit.get(context).profileModel != null) {
         profile = MainCubit.get(context).profileModel!;
-      }
-      if (profile != null) {
         semesterIndex = semsesterIndex(profile.semester);
       }
-      if (!(state is LogoutSuccess)) {
-        if (AppConstants.TOKEN == null) {
-          semesterIndex = semsesterIndex(AppConstants.SelectedSemester!);
-        }
-      }
-      return profile == null && AppConstants.TOKEN != null
+
+      return profile == null && AppConstants.TOKEN != null ||
+              semesterIndex == null
           ? const Scaffold(
               body: Center(child: CircularProgressIndicator()),
             )
@@ -151,6 +146,6 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> _getprofileInfo() async {
-    context.read<MainCubit>().getProfileInfo();
+    await context.read<MainCubit>().getProfileInfo();
   }
 }

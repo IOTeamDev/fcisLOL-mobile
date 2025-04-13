@@ -78,12 +78,10 @@ class _RegisterscreenState extends State<RegisterMobile> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(StringsManager.signup,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineLarge!
-                            .copyWith(
-                                fontSize: AppSizesDouble.s40,
-                                color: ColorsManager.black)),
+                        style:
+                            Theme.of(context).textTheme.headlineLarge!.copyWith(
+                                  fontSize: AppSizesDouble.s40,
+                                )),
                     const SizedBox(
                       height: AppSizesDouble.s25,
                     ),
