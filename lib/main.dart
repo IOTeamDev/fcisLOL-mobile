@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/foundation.dart';
+import 'package:lol/features/pick_image/presentation/view/select_image.dart';
 
 import 'firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -133,7 +134,6 @@ class App extends StatelessWidget {
         theme: darkTheme,
         darkTheme: darkTheme,
         themeMode: ThemeMode.dark,
-        // theme: Provider.of<ThemeProvider>(context).themeData,
         debugShowCheckedModeBanner: false,
       ),
     );

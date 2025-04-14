@@ -8,9 +8,9 @@ final class PickImageInitial extends PickImageState {}
 final class UploadImageLoading extends PickImageState {}
 
 final class UploadImageSuccess extends PickImageState {
-  final String? imageUrl;
+  final String imageUrl;
 
-  UploadImageSuccess({this.imageUrl});
+  UploadImageSuccess({required this.imageUrl});
 }
 
 final class UploadImageFailed extends PickImageState {

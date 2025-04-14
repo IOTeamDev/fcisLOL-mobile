@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
@@ -50,7 +51,7 @@ class _SelectImageState extends State<SelectImage> {
           if (state is UploadImageSuccess) {
             context
                 .read<PickImageCubit>()
-                .editProfileImage(imageUrl: state.imageUrl ?? '');
+                .updateProfileImage(imageUrl: state.imageUrl ?? '');
           }
 
           if (state is UpdateUserImageSuccess) {
@@ -122,7 +123,14 @@ class _SelectImageState extends State<SelectImage> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(
                                         AppSizesDouble.s20))),
-                            onPressed: _pickimage,
+                            onPressed: () async {
+                              _image = await context
+                                  .read<PickImageCubit>()
+                                  .pickimage();
+                              if (_image != null) {
+                                setState(() {});
+                              }
+                            },
                           ),
                         ),
                         SizedBox(
@@ -165,7 +173,9 @@ class _SelectImageState extends State<SelectImage> {
                               } else {
                                 await context
                                     .read<PickImageCubit>()
-                                    .uploadUserImage(image: _image!);
+                                    .uploadUserImage(
+                                      image: _image!,
+                                    );
                               }
                             },
                           ),
@@ -188,14 +198,5 @@ class _SelectImageState extends State<SelectImage> {
         },
       ),
     );
-  }
-
-  Future<void> _pickimage() async {
-    final XFile? selectedImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (selectedImage != null) {
-      _image = File(selectedImage.path);
-      setState(() {});
-    }
   }
 }

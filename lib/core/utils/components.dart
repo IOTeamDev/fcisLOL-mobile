@@ -31,6 +31,12 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'webview_screen.dart';
 
+String getImageNameFromUrl({required String imageUrl}) {
+  final path = Uri.parse(imageUrl).path;
+  final encodedFileName = path.split('/').last;
+  return Uri.decodeComponent(encodedFileName).split('/').last;
+}
+
 onRefresh(Function<T>() refreshMethod) => refreshMethod;
 
 bool isArabicLanguage(BuildContext context) {
@@ -238,9 +244,8 @@ Widget defaultLoginButton(
           : () {
               if (formKey.currentState!.validate()) {
                 loginCubit.login(
-                  email: emailController.text,
-                  password: passwordController.text
-                );
+                    email: emailController.text,
+                    password: passwordController.text);
               }
             },
       child: Text(
@@ -368,7 +373,9 @@ Widget defaultLoginInputField(controller, label, keyboardType,
 
 void showToastMessage({
   required String message,
-  Color textColor = ToastStates != ToastStates.INFO? ColorsManager.black: ColorsManager.white,
+  Color textColor = ToastStates != ToastStates.INFO
+      ? ColorsManager.black
+      : ColorsManager.white,
   required ToastStates states,
   double fontSize = AppSizesDouble.s16,
   gravity = ToastGravity.BOTTOM,

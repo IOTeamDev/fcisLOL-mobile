@@ -10,12 +10,6 @@ final class CloseDrawerState extends MainCubitStates {}
 
 final class ChangeMode extends MainCubitStates {}
 
-final class GetUserImageSuccess extends MainCubitStates {}
-
-final class GetUserImageFailure extends MainCubitStates {}
-
-final class GetUserImageLoading extends MainCubitStates {}
-
 final class GetAnnouncementImageSuccess extends MainCubitStates {}
 
 final class GetAnnouncementLimitExceed extends MainCubitStates {}
@@ -23,16 +17,6 @@ final class GetAnnouncementLimitExceed extends MainCubitStates {}
 final class GetAnnouncementImageFailure extends MainCubitStates {}
 
 final class GetAnnouncementImageLoading extends MainCubitStates {}
-
-final class GetUserImageLimitExceed extends MainCubitStates {}
-
-final class GetUserImageNoMoreSpace extends MainCubitStates {}
-
-final class UploadImageSuccess extends MainCubitStates {}
-
-final class UploadImageFailure extends MainCubitStates {}
-
-class UploadImageLoading extends MainCubitStates {}
 
 final class GetProfileLoading extends MainCubitStates {}
 

@@ -53,24 +53,27 @@ class _CustomDrawerState extends State<CustomDrawer> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //header
-            AppConstants.TOKEN != null ? SizedBox(
-                    height: AppQueries.screenHeight(context) / AppSizesDouble.s3_2,
+            AppConstants.TOKEN != null
+                ? SizedBox(
+                    height:
+                        AppQueries.screenHeight(context) / AppSizesDouble.s3_2,
                     child: UserAccountsDrawerHeader(
                       // otherAccountsPictures: [
-                        // IconButton(
-                        //     onPressed: () {
-                        //       Provider.of<ThemeProvider>(context,
-                        //               listen: false)
-                        //           .toggleDarkMode();
-                        //     },
-                        //     icon: Icon(
-                        //       Provider.of<ThemeProvider>(context).isDark
-                        //           ? IconsManager.lightModeIcon
-                        //           : IconsManager.darkModeIcon,
-                        //       color: Theme.of(context).iconTheme.color,
-                        //     ))
+                      // IconButton(
+                      //     onPressed: () {
+                      //       Provider.of<ThemeProvider>(context,
+                      //               listen: false)
+                      //           .toggleDarkMode();
+                      //     },
+                      //     icon: Icon(
+                      //       Provider.of<ThemeProvider>(context).isDark
+                      //           ? IconsManager.lightModeIcon
+                      //           : IconsManager.darkModeIcon,
+                      //       color: Theme.of(context).iconTheme.color,
+                      //     ))
                       // ],
-                      decoration: BoxDecoration(color: Theme.of(context).drawerTheme.backgroundColor),
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).drawerTheme.backgroundColor),
                       accountName: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -104,8 +107,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                 SizedBox(width: AppSizesDouble.s10),
                                 Text(
                                   StringsManager.profileInfo,
-                                  style:
-                                      Theme.of(context).textTheme.bodyLarge,
+                                  style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                               ],
                             ),
@@ -114,7 +116,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       ),
                       currentAccountPicture: ClipOval(
                         child: Image.network(
-                          profileModel!.photo,
+                          profileModel!.photo!,
                           width: AppSizesDouble.s10,
                           height: AppSizesDouble.s10,
                           fit: BoxFit.cover,
@@ -183,8 +185,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius
-                            .zero), // Removes divider when expanded
+                        borderRadius:
+                            BorderRadius.zero), // Removes divider when expanded
                     onTap: () {
                       if (AppConstants.TOKEN == null) {
                         navigate(
@@ -211,8 +213,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius
-                            .zero), // Removes divider when expanded
+                        borderRadius:
+                            BorderRadius.zero), // Removes divider when expanded
                     onTap: () {
                       navigate(
                           context,
@@ -233,8 +235,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     childrenPadding:
                         EdgeInsets.symmetric(horizontal: AppPaddings.p10),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius
-                            .zero), // Removes divider when expanded
+                        borderRadius:
+                            BorderRadius.zero), // Removes divider when expanded
                     collapsedShape: RoundedRectangleBorder(
                         borderRadius: BorderRadius
                             .zero), // Removes divider when collapsed
@@ -354,13 +356,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               StringsManager.firstSemester,
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero), // Removes divider when expanded
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius
+                                    .zero), // Removes divider when expanded
                             onTap: () {
                               AppConstants.navigatedSemester = 'Five';
                               navigate(
-                                context,
-                                SemesterNavigate(semester: StringsManager.five)
-                              );
+                                  context,
+                                  SemesterNavigate(
+                                      semester: StringsManager.five));
                             },
                           ),
                           ListTile(
@@ -428,8 +432,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius
-                            .zero), // Removes divider when expanded
+                        borderRadius:
+                            BorderRadius.zero), // Removes divider when expanded
                     collapsedShape: RoundedRectangleBorder(
                         borderRadius: BorderRadius
                             .zero), // Removes divider when collapsed
@@ -530,8 +534,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius
-                            .zero), // Removes divider when expanded
+                        borderRadius:
+                            BorderRadius.zero), // Removes divider when expanded
                     collapsedShape: RoundedRectangleBorder(
                         borderRadius: BorderRadius
                             .zero), // Removes divider when collapsed
@@ -597,8 +601,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           backgroundColor: AppConstants.TOKEN != null
                               ? ColorsManager.imperialRed
                               : ColorsManager.green,
-                          padding: EdgeInsets.symmetric(
-                              vertical: AppPaddings.p15)),
+                          padding:
+                              EdgeInsets.symmetric(vertical: AppPaddings.p15)),
                       onPressed: () {
                         if (AppConstants.TOKEN != null) {
                           AwesomeDialog(
@@ -642,25 +646,23 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
-                            AppConstants.TOKEN != null
-                              ? IconsManager.logOutIcon
-                              : IconsManager.logInIcon,
-                            color: ColorsManager.white
-                          ),
+                              AppConstants.TOKEN != null
+                                  ? IconsManager.logOutIcon
+                                  : IconsManager.logInIcon,
+                              color: ColorsManager.white),
                           SizedBox(
                             width: AppSizesDouble.s10,
                           ),
                           Text(
                             AppConstants.TOKEN != null
-                              ? StringsManager.logOut
-                              : StringsManager.login,
+                                ? StringsManager.logOut
+                                : StringsManager.login,
                             style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(
-                                fontWeight: FontWeightManager.semiBold,
-                                color: ColorsManager.white
-                              ),
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(
+                                    fontWeight: FontWeightManager.semiBold,
+                                    color: ColorsManager.white),
                           ),
                         ],
                       )),

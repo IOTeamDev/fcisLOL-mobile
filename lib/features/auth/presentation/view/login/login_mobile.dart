@@ -65,11 +65,10 @@ class _LoginScreenState extends State<LoginScreenMobile> {
                   children: [
                     Text(
                       StringsManager.login,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineLarge!
-                          .copyWith(
-                          fontSize: AppSizesDouble.s40,),
+                      style:
+                          Theme.of(context).textTheme.headlineLarge!.copyWith(
+                                fontSize: AppSizesDouble.s40,
+                              ),
                     ),
                     SizedBox(
                       height: AppSizesDouble.s20,
@@ -102,37 +101,30 @@ class _LoginScreenState extends State<LoginScreenMobile> {
                         },
                       ),
                     ),
-                    state is LoginLoading ? Center(
-                      child: CircularProgressIndicator(
-                          color:
-                          Provider.of<ThemeProvider>(context).isDark
-                              ? ColorsManager.white
-                              : ColorsManager.black),
-                    )
-                      : defaultLoginButton(
-                      context,
-                      formKey,
-                      loginCubit,
-                      _emailController,
-                      _passwordController,
-                      StringsManager.login
-                    ),
+                    state is LoginLoading
+                        ? const SizedBox.shrink()
+                        : defaultLoginButton(
+                            context,
+                            formKey,
+                            loginCubit,
+                            _emailController,
+                            _passwordController,
+                            StringsManager.login),
                     const SizedBox(
                       height: AppSizesDouble.s20,
                     ),
                     TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                            builder: (context) => ChoosingYear(),
-                          ), (route) => false
-                        );
-                      },
-                      child: Text(
-                        'Continue as a guest',
-                        style: TextStyle(color: ColorsManager.dodgerBlue),
-                      )
-                    )
+                        onPressed: () {
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                builder: (context) => ChoosingYear(),
+                              ),
+                              (route) => false);
+                        },
+                        child: Text(
+                          'Continue as a guest',
+                          style: TextStyle(color: ColorsManager.dodgerBlue),
+                        ))
                   ],
                 ),
               ),
@@ -143,4 +135,3 @@ class _LoginScreenState extends State<LoginScreenMobile> {
     );
   }
 }
-

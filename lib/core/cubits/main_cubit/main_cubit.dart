@@ -144,7 +144,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     try {
       final response =
           await DioHelp.getData(path: CURRENTUSER, token: AppConstants.TOKEN);
-      dev.log(response.data.toString());
+      dev.log(response.data['photo'].toString());
       profileModel = ProfileModel.fromJson(response.data);
       AppConstants.SelectedSemester = profileModel!.semester;
       await Cache.writeData(

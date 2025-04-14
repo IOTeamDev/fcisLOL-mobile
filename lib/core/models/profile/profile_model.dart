@@ -7,7 +7,7 @@ class ProfileModel {
   late String role;
   late int score;
   late String phone;
-  late String photo;
+  String? photo;
   late int id;
   late List<ProfileMaterilaModel> materials = [];
 
@@ -16,10 +16,11 @@ class ProfileModel {
     email = model['email'];
     semester = model['semester'];
     role = model['role'];
-    phone = model['phone'] ?? "";
+    phone = model['phone'] ?? '';
     score = model['score'];
     id = model['id'];
-    photo = model['photo'];
+    photo = model['photo'] ??
+        'd6p6og4VRY6kKV4io3KAOB:APA91bHzfvSOIpS-EPhPOguP0vaML_PkFezg7je4F6qTJcq-ybScNyxItyOK8kGEZWUQi6tK0uXsMx-RTIq77C-lM9Yh5--DqRsbMNme4nOksb-TYc_ZNTo2uyUD7x6ACZPji5FZ8BN4';
 
     model['material'].forEach((element) {
       materials.add(ProfileMaterilaModel.fromJson(element));

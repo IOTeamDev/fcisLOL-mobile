@@ -38,12 +38,12 @@ class OtherProfile extends StatefulWidget {
 }
 
 class _OtherProfileState extends State<OtherProfile> {
- 
- @override
+  @override
   void initState() {
-      MainCubit.get(context).getOtherProfile(widget.id);
+    MainCubit.get(context).getOtherProfile(widget.id);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<MainCubit, MainCubitStates>(
@@ -53,143 +53,172 @@ class _OtherProfileState extends State<OtherProfile> {
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: mainCubit.otherProfile == null ? Text("") : FittedBox(
-              child: Text(
-                mainCubit.otherProfile!.name,
-                style: Theme.of(context).textTheme.displayLarge,
-                maxLines: AppSizes.s2,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-          body: mainCubit.otherProfile == null ?
-          const Center(child: CircularProgressIndicator(),) :
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: AppPaddings.p10),
-            child: Column(
-              children: [
-                //*profile Picture and Score Stack
-                Stack(
-                  clipBehavior: Clip.none,
-                  alignment: Alignment.bottomCenter,
-                  children: [
-                    CircleAvatar(
-                      radius: AppSizesDouble.s50,
-                      backgroundImage: mainCubit.userImageFile != null ?
-                      NetworkImage(AppConstants.defaultProfileImage) :
-                      NetworkImage(mainCubit.otherProfile!.photo),
-                    ),
-                    Positioned(
-                      bottom: AppSizesDouble.s10N, // Adjust position
-                      child: IntrinsicWidth(
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: AppPaddings.p10),
-                          constraints: BoxConstraints(
-                            maxWidth: AppSizesDouble.s100,
-                            minWidth: AppSizesDouble.s35,
-                          ),
-                          height: AppSizesDouble.s25,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: ColorsManager.lightPrimary,
-                            borderRadius: BorderRadius.circular(AppSizesDouble.s20),
-                          ),
-                          child: Text(
-                            mainCubit.otherProfile!.score.toString(),
-                            style: Theme.of(context).textTheme.titleLarge!.copyWith(color: ColorsManager.white),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: AppSizesDouble.s20,),
-                Text(
-                  mainCubit.otherProfile!.email,
-                  style: Theme.of(context).textTheme.headlineMedium,
-                  maxLines: AppSizes.s2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Text(
-                  '${StringsManager.level} ${((semsesterIndex(mainCubit.otherProfile!.semester)/AppSizes.s2) + AppSizes.s1).floor()}',
-                  style: Theme.of(context).textTheme.headlineMedium,
-                  maxLines: AppSizes.s1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                SizedBox(height: AppSizesDouble.s25,),
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(AppSizesDouble.s40)),
-                        //color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.grey5: ColorsManager.grey7
-                        color: ColorsManager.grey5
-                    ),
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: AppPaddings.p20, horizontal: AppPaddings.p25),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          StringsManager.uploads,
-                          style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s18)
-                        ),
-                        divider(
-                          height: AppSizesDouble.s20,
-                          //color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.white: ColorsManager.black
-                        ),
-                        ConditionalBuilder(
-                          condition: mainCubit.otherProfile!.materials.isNotEmpty && state is! GetRequestsLoadingState,
-                          // builder: (context) => ListView.separated(
-                          //   physics: BouncingScrollPhysics(),
-                          //   itemBuilder: (context, index) {
-                          //     return materialBuilder(
-                          //       index,
-                          //       context,
-                          //       isMain: false,
-                          //       profileModel: mainCubit.otherProfile,
-                          //     );
-                          //   },
-                          //   separatorBuilder: (context, index) => SizedBox(height: AppSizesDouble.s10,),
-                          //   itemCount: mainCubit.otherProfile!.materials.length
-                          // ),
-                            builder: (context) => materialBuilder(
-                              0,
-                              context,
-                              isMain: false,
-                              profileModel: mainCubit.otherProfile,
-                            ),
-                          fallback: (context) {
-                            if (state is GetRequestsLoadingState) {
-                              return SizedBox(
-                                height: AppQueries.screenHeight(context) / AppSizesDouble.s1_3,
-                                child: Center(child: CircularProgressIndicator(),)
-                              );
-                            }
-                            return SizedBox(
-                              height: AppQueries.screenHeight(context) / AppSizesDouble.s1_3,
-                              child: Center(
-                                child: Text(
-                                  StringsManager.noContributionsYet,
-                                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                    fontSize: AppQueries.screenWidth(context) / AppSizes.s12,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              )
-                            );
-                          }
-                        ),
-                      ],
+            title: mainCubit.otherProfile == null
+                ? Text("")
+                : FittedBox(
+                    child: Text(
+                      mainCubit.otherProfile!.name,
+                      style: Theme.of(context).textTheme.displayLarge,
+                      maxLines: AppSizes.s2,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
                     ),
                   ),
-                )
-              ],
-            ),
           ),
+          body: mainCubit.otherProfile == null
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Padding(
+                  padding: EdgeInsets.symmetric(vertical: AppPaddings.p10),
+                  child: Column(
+                    children: [
+                      //*profile Picture and Score Stack
+                      Stack(
+                        clipBehavior: Clip.none,
+                        alignment: Alignment.bottomCenter,
+                        children: [
+                          CircleAvatar(
+                            radius: AppSizesDouble.s50,
+                            backgroundImage: mainCubit.userImageFile != null
+                                ? NetworkImage(AppConstants.defaultProfileImage)
+                                : NetworkImage(mainCubit.otherProfile!.photo!),
+                          ),
+                          Positioned(
+                            bottom: AppSizesDouble.s10N, // Adjust position
+                            child: IntrinsicWidth(
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: AppPaddings.p10),
+                                constraints: BoxConstraints(
+                                  maxWidth: AppSizesDouble.s100,
+                                  minWidth: AppSizesDouble.s35,
+                                ),
+                                height: AppSizesDouble.s25,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: ColorsManager.lightPrimary,
+                                  borderRadius:
+                                      BorderRadius.circular(AppSizesDouble.s20),
+                                ),
+                                child: Text(
+                                  mainCubit.otherProfile!.score.toString(),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleLarge!
+                                      .copyWith(color: ColorsManager.white),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: AppSizesDouble.s20,
+                      ),
+                      Text(
+                        mainCubit.otherProfile!.email,
+                        style: Theme.of(context).textTheme.headlineMedium,
+                        maxLines: AppSizes.s2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        '${StringsManager.level} ${((semsesterIndex(mainCubit.otherProfile!.semester) / AppSizes.s2) + AppSizes.s1).floor()}',
+                        style: Theme.of(context).textTheme.headlineMedium,
+                        maxLines: AppSizes.s1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      SizedBox(
+                        height: AppSizesDouble.s25,
+                      ),
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(AppSizesDouble.s40)),
+                              //color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.grey5: ColorsManager.grey7
+                              color: ColorsManager.grey5),
+                          width: double.infinity,
+                          padding: EdgeInsets.symmetric(
+                              vertical: AppPaddings.p20,
+                              horizontal: AppPaddings.p25),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(StringsManager.uploads,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium!
+                                      .copyWith(
+                                          fontSize:
+                                              AppQueries.screenWidth(context) /
+                                                  AppSizes.s18)),
+                              divider(
+                                height: AppSizesDouble.s20,
+                                //color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.white: ColorsManager.black
+                              ),
+                              ConditionalBuilder(
+                                  condition: mainCubit
+                                          .otherProfile!.materials.isNotEmpty &&
+                                      state is! GetRequestsLoadingState,
+                                  // builder: (context) => ListView.separated(
+                                  //   physics: BouncingScrollPhysics(),
+                                  //   itemBuilder: (context, index) {
+                                  //     return materialBuilder(
+                                  //       index,
+                                  //       context,
+                                  //       isMain: false,
+                                  //       profileModel: mainCubit.otherProfile,
+                                  //     );
+                                  //   },
+                                  //   separatorBuilder: (context, index) => SizedBox(height: AppSizesDouble.s10,),
+                                  //   itemCount: mainCubit.otherProfile!.materials.length
+                                  // ),
+                                  builder: (context) => materialBuilder(
+                                        0,
+                                        context,
+                                        isMain: false,
+                                        profileModel: mainCubit.otherProfile,
+                                      ),
+                                  fallback: (context) {
+                                    if (state is GetRequestsLoadingState) {
+                                      return SizedBox(
+                                          height:
+                                              AppQueries.screenHeight(context) /
+                                                  AppSizesDouble.s1_3,
+                                          child: Center(
+                                            child: CircularProgressIndicator(),
+                                          ));
+                                    }
+                                    return SizedBox(
+                                        height:
+                                            AppQueries.screenHeight(context) /
+                                                AppSizesDouble.s1_3,
+                                        child: Center(
+                                          child: Text(
+                                            StringsManager.noContributionsYet,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyLarge!
+                                                .copyWith(
+                                                  fontSize:
+                                                      AppQueries.screenWidth(
+                                                              context) /
+                                                          AppSizes.s12,
+                                                ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ));
+                                  }),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
         );
       },
     );
   }
 }
-

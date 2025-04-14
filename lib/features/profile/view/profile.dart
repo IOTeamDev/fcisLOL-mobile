@@ -14,6 +14,7 @@ import 'package:lol/core/utils/resources/icons_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/core/utils/resources/values_manager.dart';
+import 'package:lol/features/pick_image/presentation/view_model/pick_image_cubit/pick_image_cubit.dart';
 import 'package:lol/features/profile/view/edit_profile_screen.dart';
 import 'package:lol/main.dart';
 import 'package:lol/core/utils/components.dart';
@@ -98,12 +99,24 @@ class Profile extends StatelessWidget {
               //   },
               // )
               ElevatedButton.icon(
-                label: Text('Edit', style: Theme.of(context).textTheme.titleSmall!.copyWith(color: ColorsManager.black),),
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditProfileScreen())),
-                icon: Icon(IconsManager.editIcon, color: ColorsManager.black,),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: ColorsManager.white
+                label: Text(
+                  'Edit',
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleSmall!
+                      .copyWith(color: ColorsManager.black),
                 ),
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => BlocProvider(
+                          create: (context) => PickImageCubit(),
+                          child: EditProfileScreen(),
+                        ))),
+                icon: Icon(
+                  IconsManager.editIcon,
+                  color: ColorsManager.black,
+                ),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: ColorsManager.white),
               )
             ],
             title: Text(
@@ -125,7 +138,7 @@ class Profile extends StatelessWidget {
                       radius: AppSizesDouble.s50,
                       backgroundImage: mainCubit.userImageFile != null
                           ? NetworkImage(AppConstants.defaultProfileImage)
-                          : NetworkImage(mainCubit.profileModel!.photo),
+                          : NetworkImage(mainCubit.profileModel!.photo!),
                     ),
                     Positioned(
                       bottom: AppSizesDouble.s10N, // Adjust position
@@ -220,7 +233,8 @@ class Profile extends StatelessWidget {
                                 : ColorsManager.black),
                         Expanded(
                           child: ConditionalBuilder(
-                              condition: mainCubit.profileModel!.materials.isNotEmpty &&
+                              condition: mainCubit
+                                      .profileModel!.materials.isNotEmpty &&
                                   state is! GetRequestsLoadingState,
                               builder: (context) => ListView.separated(
                                   physics: BouncingScrollPhysics(),
