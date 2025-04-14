@@ -5,7 +5,7 @@ import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/main.dart';
-import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit.dart';
+import 'package:lol/features/subject/presentation/view_model/get_material_cubit/get_material_cubit.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/build_floating_action_button.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/custom_tab_bar.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/custom_tab_bar_view.dart';
@@ -53,16 +53,16 @@ class _MaterialDetailsState extends State<SubjectDetails>
       key: scaffoldKey,
       appBar: AppBar(
           title: FittedBox(
-            child: Text(
-              widget.subjectName
+        child: Text(
+          widget.subjectName
               .replaceAll(StringsManager.underScore, StringsManager.space),
-                    style: Theme.of(context).textTheme.displayMedium!.copyWith(
+          style: Theme.of(context).textTheme.displayMedium!.copyWith(
                 fontSize: AppQueries.screenWidth(context) / AppSizes.s15,
               ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-          )),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+      )),
       body: Column(
         children: [
           Padding(
@@ -72,9 +72,7 @@ class _MaterialDetailsState extends State<SubjectDetails>
               onChanged: (query) {
                 cubit.runFilter(query: query);
               },
-              style: TextStyle(
-                color: ColorsManager.black,
-                fontSize: 20),
+              style: TextStyle(color: ColorsManager.black, fontSize: 20),
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.search,
               decoration: InputDecoration(
@@ -105,7 +103,9 @@ class _MaterialDetailsState extends State<SubjectDetails>
               tabController: _tabControllerOfShowingContent,
               title1: 'Videos',
               title2: 'Documents'),
-          Expanded(child: CustomTabBarView(controller: _tabControllerOfShowingContent)),
+          Expanded(
+              child:
+                  CustomTabBarView(controller: _tabControllerOfShowingContent)),
         ],
       ),
     );

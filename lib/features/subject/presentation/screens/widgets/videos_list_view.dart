@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/main.dart';
-import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit.dart';
+import 'package:lol/features/subject/presentation/view_model/get_material_cubit/get_material_cubit.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/grid_tile_widget.dart';
 import 'package:provider/provider.dart';
 

@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/foundation.dart';
+import 'package:lol/features/otp_and_verification/presentation/view_model/verification_cubit/verification_cubit.dart';
 import 'package:lol/features/pick_image/presentation/view/select_image.dart';
 
 import 'firebase_options.dart';
@@ -27,7 +28,7 @@ import 'package:lol/features/admin/presentation/view/admin_panal.dart';
 import 'package:lol/features/admin/presentation/view/announcements/announcements_list.dart';
 import 'package:lol/core/error/error_screen.dart';
 import 'package:lol/features/subject/data/repos/subject_repo_imp.dart';
-import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit.dart';
+import 'package:lol/features/subject/presentation/view_model/get_material_cubit/get_material_cubit.dart';
 import 'package:lol/features/subject/presentation/screens/subject_details.dart';
 import 'package:lol/features/support_and_about_us/about_us.dart';
 import 'package:lol/features/support_and_about_us/user_advices/presentation/view/feedback_screen.dart';
@@ -130,7 +131,13 @@ class App extends StatelessWidget {
             create: (BuildContext context) => AdminCubit()..getFcmTokens()),
       ],
       child: MaterialApp(
-        home: startPage,
+        home: BlocProvider(
+          create: (context) => VerificationCubit(),
+          child: OtpVerificationScreen(
+            selectedMethod: "email",
+            recepientEmail: 'elnawawyseif@gmail.com',
+          ),
+        ),
         theme: darkTheme,
         darkTheme: darkTheme,
         themeMode: ThemeMode.dark,

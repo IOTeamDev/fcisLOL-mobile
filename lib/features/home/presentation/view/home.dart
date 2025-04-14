@@ -35,7 +35,7 @@ import 'package:lol/features/home/presentation/view/widgets/subject_item_build.d
 import 'package:lol/features/leaderboard/presentation/view/leaderboard_view.dart';
 import 'package:lol/features/previous_exams/presentation/view/previous_exams.dart';
 import 'package:lol/features/subject/data/repos/subject_repo_imp.dart';
-import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit.dart';
+import 'package:lol/features/subject/presentation/view_model/get_material_cubit/get_material_cubit.dart';
 import 'package:lol/features/subject/presentation/screens/subject_details.dart';
 import 'package:lol/features/support_and_about_us/about_us.dart';
 import 'package:lol/features/support_and_about_us/user_advices/presentation/view/feedback_screen.dart';

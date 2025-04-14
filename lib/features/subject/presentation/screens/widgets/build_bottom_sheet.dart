@@ -12,8 +12,8 @@ import 'package:lol/features/subject/presentation/screens/widgets/bottom_sheet_b
 import 'package:lol/main.dart';
 import 'package:lol/features/subject/data/models/author_model.dart';
 import 'package:lol/features/subject/data/models/material_model.dart';
-import 'package:lol/features/subject/presentation/cubit/add_material_cubit/add_material_cubit.dart';
-import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit.dart';
+import 'package:lol/features/subject/presentation/view_model/add_material_cubit/add_material_cubit.dart';
+import 'package:lol/features/subject/presentation/view_model/get_material_cubit/get_material_cubit.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/build_text_form_field.dart';
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/resources/constants_manager.dart';
@@ -138,15 +138,16 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
                               ),
                               child: Text(
                                 cubit.selectedType.toLowerCase(),
-                                style:
-                                    TextStyle(color: Colors.white, fontSize: 16),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16),
                                 textAlign: TextAlign.center,
                               ),
                             ),
                             PopupMenuButton(
-                                color: Provider.of<ThemeProvider>(context).isDark
-                                    ? ColorsManager.darkPrimary
-                                    : Colors.white,
+                                color:
+                                    Provider.of<ThemeProvider>(context).isDark
+                                        ? ColorsManager.darkPrimary
+                                        : Colors.white,
                                 onSelected: (type) {
                                   cubit.changeType(type: type);
                                 },
@@ -194,8 +195,9 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
                                 AuthorModel author = AuthorModel(
                                     authorId:
                                         MainCubit.get(context).profileModel?.id,
-                                    authorName:
-                                        MainCubit.get(context).profileModel?.name,
+                                    authorName: MainCubit.get(context)
+                                        .profileModel
+                                        ?.name,
                                     authorPhoto: MainCubit.get(context)
                                         .profileModel
                                         ?.photo);
@@ -212,10 +214,12 @@ class _BuildBottomSheetState extends State<BuildBottomSheet> {
                                                     MainCubit.get(context)
                                                         .profileModel!
                                                         .semester &&
-                                                AppConstants.navigatedSemester !=
+                                                AppConstants
+                                                        .navigatedSemester !=
                                                     null
                                             ? AppConstants.navigatedSemester!
-                                            : MainCubit.get(context)
+                                            : MainCubit
+                                                    .get(context)
                                                 .profileModel!
                                                 .semester,
                                         role: MainCubit.get(context)

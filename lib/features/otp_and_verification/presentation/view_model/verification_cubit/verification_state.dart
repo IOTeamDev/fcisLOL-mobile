@@ -1,21 +1,22 @@
-abstract class VerificationCubitStates {}
+part of 'verification_cubit.dart';
 
-class VerificationInitState extends VerificationCubitStates {}
+@immutable
+sealed class VerificationState {}
 
-class VerificationTimerStartedState extends VerificationCubitStates {
+final class VerificationInitial extends VerificationState {}
+
+class VerificationTimerStartedState extends VerificationState {
   late final int initialTime;
   VerificationTimerStartedState({required this.initialTime});
 }
 
-class VerificationTimerCompleteState extends VerificationCubitStates {}
+class VerificationTimerCompleteState extends VerificationState {}
 
-final class SendVerificationCodeToEmailLoading
-    extends VerificationCubitStates {}
+final class SendVerificationCodeToEmailLoading extends VerificationState {}
 
-final class SendVerificationCodeToEmailSuccess
-    extends VerificationCubitStates {}
+final class SendVerificationCodeToEmailSuccess extends VerificationState {}
 
-final class SendVerificationCodeToEmailFailed extends VerificationCubitStates {
+final class SendVerificationCodeToEmailFailed extends VerificationState {
   final String errMessage;
   SendVerificationCodeToEmailFailed({required this.errMessage});
 }

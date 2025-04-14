@@ -7,7 +7,7 @@ import 'package:lol/core/network/remote/dio.dart';
 import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/features/subject/data/models/material_model.dart';
 import 'package:lol/features/subject/data/repos/subject_repo_imp.dart';
-import 'package:lol/features/subject/presentation/cubit/add_material_cubit/add_material_cubit.dart';
+import 'package:lol/features/subject/presentation/view_model/add_material_cubit/add_material_cubit.dart';
 import 'package:meta/meta.dart';
 import 'package:string_similarity/string_similarity.dart';
 

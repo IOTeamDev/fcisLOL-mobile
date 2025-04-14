@@ -8,7 +8,7 @@ import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/core/utils/resources/values_manager.dart';
 import 'package:lol/features/subject/data/repos/subject_repo_imp.dart';
-import 'package:lol/features/subject/presentation/cubit/get_material_cubit/get_material_cubit.dart';
+import 'package:lol/features/subject/presentation/view_model/get_material_cubit/get_material_cubit.dart';
 import 'package:lol/features/subject/presentation/screens/subject_details.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +25,8 @@ class SubjectItemBuild extends StatelessWidget {
         navigate(
             context,
             BlocProvider(
-              create: (context) => GetMaterialCubit(getIt.get<SubjectRepoImp>()),
+              create: (context) =>
+                  GetMaterialCubit(getIt.get<SubjectRepoImp>()),
               child: SubjectDetails(
                 subjectName: subject.subjectName,
               ),
@@ -39,14 +40,13 @@ class SubjectItemBuild extends StatelessWidget {
         clipBehavior: Clip.antiAliasWithSaveLayer,
         child: Container(
           padding: EdgeInsets.all(AppPaddings.p5),
-          decoration: BoxDecoration(
-              color:Theme.of(context).primaryColor
-          ),
+          decoration: BoxDecoration(color: Theme.of(context).primaryColor),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset(subject.subjectImage, height: AppSizesDouble.s70, color: Colors.white),
+              Image.asset(subject.subjectImage,
+                  height: AppSizesDouble.s70, color: Colors.white),
               SizedBox(
                 height: AppSizesDouble.s10,
               ),
