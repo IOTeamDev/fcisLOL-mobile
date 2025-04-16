@@ -57,9 +57,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
           showToastMessage(
               message: state.errMessage, states: ToastStates.ERROR);
         }
-        if (state is SendVerificationCodeToEmailSuccess) {
-          showToastMessage(message: state.otp, states: ToastStates.SUCCESS);
-        }
       },
       child: BlocListener<MainCubit, MainCubitStates>(
         listener: (context, state) {
