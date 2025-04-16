@@ -22,7 +22,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../../../core/utils/resources/colors_manager.dart';
 import '../../../../../core/utils/resources/theme_provider.dart';
 
-
 class LoginScreenTablet extends StatefulWidget {
   const LoginScreenTablet({super.key});
 
@@ -51,90 +50,81 @@ class _LoginScreenState extends State<LoginScreenTablet> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthCubit, AuthState>(
-      builder: (context, state) {
-        var loginCubit = AuthCubit.get(context);
-        return Form(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          key: formKey,
-          child: Center(
-            child: SizedBox(
-              width: 450,
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      StringsManager.login,
-                      style: Theme.of(context).textTheme.headlineLarge!.copyWith(fontSize: AppSizesDouble.s40,),
-                    ),
-                    SizedBox(
-                      height: AppSizesDouble.s20,
-                    ),
-                    defaultLoginInputField(
-                      _emailController,
-                      StringsManager.email,
-                      TextInputType.emailAddress,
-                      loginCubit: loginCubit,
-                    ),
-                    SizedBox(
-                      height: AppSizesDouble.s20,
-                    ),
-                    defaultLoginInputField(_passwordController,
-                        StringsManager.password, TextInputType.visiblePassword,
-                        isPassword: true,
-                        loginCubit: loginCubit,
-                        suffixIcon: IconsManager.eyeIcon),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: TextButton(
-                        style: TextButton.styleFrom(
-                          padding: const EdgeInsets.all(AppSizesDouble.s0),
-                          foregroundColor: ColorsManager.dodgerBlue),
-                        child: const Text(
-                          StringsManager.forgotPassword + StringsManager.qMark,
-                        ),
-                        onPressed: () {
-                          //TODO: Implement Forgot Password
-                        },
+    var loginCubit = AuthCubit.get(context);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppSizesDouble.s30),
+      child: Form(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        key: formKey,
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  StringsManager.login,
+                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                        fontSize: AppSizesDouble.s40,
                       ),
+                ),
+                SizedBox(
+                  height: AppSizesDouble.s20,
+                ),
+                defaultLoginInputField(
+                  _emailController,
+                  StringsManager.email,
+                  TextInputType.emailAddress,
+                  loginCubit: loginCubit,
+                ),
+                SizedBox(
+                  height: AppSizesDouble.s20,
+                ),
+                defaultLoginInputField(_passwordController,
+                    StringsManager.password, TextInputType.visiblePassword,
+                    isPassword: true,
+                    loginCubit: loginCubit,
+                    suffixIcon: IconsManager.eyeIcon),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                        padding: const EdgeInsets.all(AppSizesDouble.s0),
+                        foregroundColor: ColorsManager.dodgerBlue),
+                    child: const Text(
+                      StringsManager.forgotPassword + StringsManager.qMark,
                     ),
-                    state is LoginLoading ? Center(
-                      child: CircularProgressIndicator(
-                        color: ColorsManager.white
-                      ),
-                    ) :
-                    defaultLoginButton(
-                      context,
-                      formKey,
-                      loginCubit,
-                      _emailController,
-                      _passwordController,
-                      StringsManager.login
-                    ),
-                    const SizedBox(
-                      height: AppSizesDouble.s20,
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pushAndRemoveUntil(
+                    onPressed: () {
+                      //TODO: Implement Forgot Password
+                    },
+                  ),
+                ),
+                defaultLoginButton(
+                    context,
+                    formKey,
+                    loginCubit,
+                    _emailController,
+                    _passwordController,
+                    StringsManager.login),
+                const SizedBox(
+                  height: AppSizesDouble.s20,
+                ),
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
                             builder: (context) => ChoosingYear(),
-                          ), (route) => false
-                        );
-                      },
-                      child: Text(
-                        'Continue as a guest',
-                        style: TextStyle(color: ColorsManager.dodgerBlue),
-                      )
-                    )
-                  ],
-                ),
-              ),
+                          ),
+                          (route) => false);
+                    },
+                    child: Text(
+                      'Continue as a guest',
+                      style: TextStyle(color: ColorsManager.dodgerBlue),
+                    ))
+              ],
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

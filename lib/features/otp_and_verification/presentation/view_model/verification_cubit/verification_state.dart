@@ -14,20 +14,22 @@ class VerificationTimerCompleteState extends VerificationState {}
 
 final class SendVerificationCodeToEmailLoading extends VerificationState {}
 
-final class SendVerificationCodeToEmailSuccess extends VerificationState {}
+final class SendVerificationCodeToEmailSuccess extends VerificationState {
+  final String otp;
+
+  SendVerificationCodeToEmailSuccess({required this.otp});
+}
 
 final class SendVerificationCodeToEmailFailed extends VerificationState {
   final String errMessage;
   SendVerificationCodeToEmailFailed({required this.errMessage});
 }
 
-// final class EmailVerifiedLoading extends AuthState {}
+final class EmailVerifiedLoading extends VerificationState {}
 
-// final class BuyerVerifiedSuccess extends AuthState {}
+final class EmailVerifiedSuccess extends VerificationState {}
 
-// final class SellerVerifiedSuccess extends AuthState {}
-
-// final class EmailVerifiedFailed extends AuthState {
-//   final String errMessage;
-//   EmailVerifiedFailed({required this.errMessage});
-// }
+final class EmailVerifiedFailed extends VerificationState {
+  final String errMessage;
+  EmailVerifiedFailed({required this.errMessage});
+}

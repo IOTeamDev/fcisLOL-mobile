@@ -65,8 +65,15 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    _getprofileInfo();
-
+    if (AppConstants.TOKEN != null) {
+      AdminCubit.get(context).getAnnouncements(
+          MainCubit.get(context).profileModel?.semester ??
+              AppConstants.SelectedSemester!);
+      MainCubit.get(context).updateUser(
+          userID: MainCubit.get(context).profileModel!.id, fcmToken: fcmToken);
+    } else {
+      AdminCubit.get(context).getAnnouncements(AppConstants.SelectedSemester!);
+    }
     scaffoldKey = GlobalKey<ScaffoldState>();
   }
 
@@ -74,18 +81,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<MainCubit, MainCubitStates>(listener: (context, state) {
-      if (state is GetProfileSuccess) {
-        AdminCubit.get(context).getAnnouncements(
-            MainCubit.get(context).profileModel?.semester ??
-                AppConstants.SelectedSemester!);
-        MainCubit.get(context).updateUser(
-            userID: MainCubit.get(context).profileModel!.id,
-            fcmToken: fcmToken);
-      }
-      if (state is GetProfileFailure && AppConstants.SelectedSemester != null) {
-        AdminCubit.get(context)
-            .getAnnouncements(AppConstants.SelectedSemester!);
-      }
       if (state is LogoutSuccess) {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
@@ -119,34 +114,25 @@ class _HomeState extends State<Home> {
       int? semesterIndex;
       if (MainCubit.get(context).profileModel != null) {
         profile = MainCubit.get(context).profileModel!;
-        semesterIndex = semsesterIndex(profile.semester);
       }
+      semesterIndex = semsesterIndex(AppConstants.SelectedSemester!);
 
-      return profile == null && AppConstants.TOKEN != null ||
-              semesterIndex == null
-          ? const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            )
-          : BaseResponsive(
-              mobileLayout: HomeMobile(
-                scaffoldKey: scaffoldKey,
-                semesterIndex: semesterIndex!,
-                profile: profile,
-              ),
-              tabletLayout: HomeTablet(
-                scaffoldKey: scaffoldKey,
-                semesterIndex: semesterIndex,
-                profile: profile,
-              ),
-              desktopLayout: HomeDesktop(
-                scaffoldKey: scaffoldKey,
-                semesterIndex: semesterIndex,
-                profile: profile,
-              ));
+      return BaseResponsive(
+          mobileLayout: HomeMobile(
+            scaffoldKey: scaffoldKey,
+            semesterIndex: semesterIndex!,
+            profile: profile,
+          ),
+          tabletLayout: HomeTablet(
+            scaffoldKey: scaffoldKey,
+            semesterIndex: semesterIndex,
+            profile: profile,
+          ),
+          desktopLayout: HomeDesktop(
+            scaffoldKey: scaffoldKey,
+            semesterIndex: semesterIndex,
+            profile: profile,
+          ));
     });
-  }
-
-  Future<void> _getprofileInfo() async {
-    await context.read<MainCubit>().getProfileInfo();
   }
 }

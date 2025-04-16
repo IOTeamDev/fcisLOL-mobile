@@ -65,7 +65,6 @@ class _ChoosingYearState extends State<ChoosingYearDesktop> {
                       'Level: ${getLevelFromSemester()}',
                       style: TextStyle(fontSize: 20),
                     ),
-
                   ),
                 ),
                 Expanded(
@@ -79,19 +78,19 @@ class _ChoosingYearState extends State<ChoosingYearDesktop> {
                     dropdownColor: ColorsManager
                         .white, // Background color for the dropdown list
                     iconEnabledColor:
-                    ColorsManager.black, // Color of the dropdown icon
+                        ColorsManager.black, // Color of the dropdown icon
                     style: const TextStyle(
                         color: ColorsManager
                             .white), // Style for the selected item outside
                     items: AppConstants.semesters
                         .map((String item) => DropdownMenuItem(
-                      value: item,
-                      child: Text(
-                        item,
-                        style:
-                        const TextStyle(color: ColorsManager.black),
-                      ),
-                    ))
+                              value: item,
+                              child: Text(
+                                item,
+                                style:
+                                    const TextStyle(color: ColorsManager.black),
+                              ),
+                            ))
                         .toList(),
                     selectedItemBuilder: (BuildContext context) {
                       return AppConstants.semesters.map((String item) {
@@ -129,9 +128,9 @@ class _ChoosingYearState extends State<ChoosingYearDesktop> {
                   onPressed: onPressedSelectButton,
                   child: FittedBox(
                       child: Text(
-                        'Select',
-                        style: TextStyle(fontSize: 20),
-                      ))),
+                    'Select',
+                    style: TextStyle(fontSize: 20),
+                  ))),
             ),
           ),
           Row(
@@ -150,7 +149,7 @@ class _ChoosingYearState extends State<ChoosingYearDesktop> {
                       MaterialPageRoute(
                         builder: (context) => RegistrationLayout(),
                       ),
-                          (route) => false);
+                      (route) => false);
                 },
                 child: Text(
                   StringsManager.login,
@@ -185,7 +184,8 @@ class _ChoosingYearState extends State<ChoosingYearDesktop> {
       AppConstants.SelectedSemester = selectedSemester;
       await Cache.writeData(key: KeysManager.semester, value: selectedSemester);
       AppConstants.navigatedSemester = AppConstants.SelectedSemester;
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => Home()), (route) => false);
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (context) => Home()), (route) => false);
     } else {
       showToastMessage(
         message: 'Please select a semester',

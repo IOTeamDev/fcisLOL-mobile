@@ -50,88 +50,81 @@ class _LoginScreenState extends State<LoginScreenMobile> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthCubit, AuthState>(
-      builder: (context, state) {
-        var loginCubit = AuthCubit.get(context);
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSizesDouble.s30),
-          child: Form(
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            key: formKey,
-            child: Center(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      StringsManager.login,
-                      style:
-                          Theme.of(context).textTheme.headlineLarge!.copyWith(
-                                fontSize: AppSizesDouble.s40,
-                              ),
-                    ),
-                    SizedBox(
-                      height: AppSizesDouble.s20,
-                    ),
-                    defaultLoginInputField(
-                      _emailController,
-                      StringsManager.email,
-                      TextInputType.emailAddress,
-                      loginCubit: loginCubit,
-                    ),
-                    SizedBox(
-                      height: AppSizesDouble.s20,
-                    ),
-                    defaultLoginInputField(_passwordController,
-                        StringsManager.password, TextInputType.visiblePassword,
-                        isPassword: true,
-                        loginCubit: loginCubit,
-                        suffixIcon: IconsManager.eyeIcon),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: TextButton(
-                        style: TextButton.styleFrom(
-                            padding: const EdgeInsets.all(AppSizesDouble.s0),
-                            foregroundColor: ColorsManager.dodgerBlue),
-                        child: const Text(
-                          StringsManager.forgotPassword + StringsManager.qMark,
-                        ),
-                        onPressed: () {
-                          //TODO: Implement Forgot Password
-                        },
+    var loginCubit = AuthCubit.get(context);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppSizesDouble.s30),
+      child: Form(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        key: formKey,
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  StringsManager.login,
+                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                        fontSize: AppSizesDouble.s40,
                       ),
-                    ),
-                    state is LoginLoading
-                        ? const SizedBox.shrink()
-                        : defaultLoginButton(
-                            context,
-                            formKey,
-                            loginCubit,
-                            _emailController,
-                            _passwordController,
-                            StringsManager.login),
-                    const SizedBox(
-                      height: AppSizesDouble.s20,
-                    ),
-                    TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                builder: (context) => ChoosingYear(),
-                              ),
-                              (route) => false);
-                        },
-                        child: Text(
-                          'Continue as a guest',
-                          style: TextStyle(color: ColorsManager.dodgerBlue),
-                        ))
-                  ],
                 ),
-              ),
+                SizedBox(
+                  height: AppSizesDouble.s20,
+                ),
+                defaultLoginInputField(
+                  _emailController,
+                  StringsManager.email,
+                  TextInputType.emailAddress,
+                  loginCubit: loginCubit,
+                ),
+                SizedBox(
+                  height: AppSizesDouble.s20,
+                ),
+                defaultLoginInputField(_passwordController,
+                    StringsManager.password, TextInputType.visiblePassword,
+                    isPassword: true,
+                    loginCubit: loginCubit,
+                    suffixIcon: IconsManager.eyeIcon),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                        padding: const EdgeInsets.all(AppSizesDouble.s0),
+                        foregroundColor: ColorsManager.dodgerBlue),
+                    child: const Text(
+                      StringsManager.forgotPassword + StringsManager.qMark,
+                    ),
+                    onPressed: () {
+                      //TODO: Implement Forgot Password
+                    },
+                  ),
+                ),
+                defaultLoginButton(
+                    context,
+                    formKey,
+                    loginCubit,
+                    _emailController,
+                    _passwordController,
+                    StringsManager.login),
+                const SizedBox(
+                  height: AppSizesDouble.s20,
+                ),
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => ChoosingYear(),
+                          ),
+                          (route) => false);
+                    },
+                    child: Text(
+                      'Continue as a guest',
+                      style: TextStyle(color: ColorsManager.dodgerBlue),
+                    ))
+              ],
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

@@ -9,6 +9,7 @@ class ProfileModel {
   late String phone;
   String? photo;
   late int id;
+  late bool isVerified;
   late List<ProfileMaterilaModel> materials = [];
 
   ProfileModel.fromJson(Map model) {
@@ -19,6 +20,7 @@ class ProfileModel {
     phone = model['phone'] ?? '';
     score = model['score'];
     id = model['id'];
+    isVerified = model['isVerified'];
     photo = model['photo'] ??
         'd6p6og4VRY6kKV4io3KAOB:APA91bHzfvSOIpS-EPhPOguP0vaML_PkFezg7je4F6qTJcq-ybScNyxItyOK8kGEZWUQi6tK0uXsMx-RTIq77C-lM9Yh5--DqRsbMNme4nOksb-TYc_ZNTo2uyUD7x6ACZPji5FZ8BN4';
 

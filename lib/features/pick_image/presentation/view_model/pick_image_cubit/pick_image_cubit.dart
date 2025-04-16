@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -51,8 +50,6 @@ class PickImageCubit extends Cubit<PickImageState> {
     try {
       final String imageName = getImageNameFromUrl(imageUrl: image);
       final pathRef = _storageRef.child('images/${imageName}');
-
-      log('old photo deleted');
       await pathRef.delete();
     } on FirebaseException catch (e) {
       String errMessage;
@@ -96,7 +93,6 @@ class PickImageCubit extends Cubit<PickImageState> {
         await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (selectedImage != null) {
-      log('path => ${selectedImage.path}');
       return File(selectedImage.path);
     }
     return null;

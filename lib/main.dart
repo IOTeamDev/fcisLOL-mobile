@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/foundation.dart';
+import 'package:lol/features/home/presentation/view/loading_screen.dart';
 import 'package:lol/features/otp_and_verification/presentation/view_model/verification_cubit/verification_cubit.dart';
 import 'package:lol/features/pick_image/presentation/view/select_image.dart';
 
@@ -105,7 +106,7 @@ main() async {
     if (AppConstants.TOKEN == null && AppConstants.SelectedSemester == null) {
       startPage = RegistrationLayout();
     } else {
-      startPage = const Home();
+      startPage = const LoadingScreen();
     }
   }
 
@@ -131,13 +132,7 @@ class App extends StatelessWidget {
             create: (BuildContext context) => AdminCubit()..getFcmTokens()),
       ],
       child: MaterialApp(
-        home: BlocProvider(
-          create: (context) => VerificationCubit(),
-          child: OtpVerificationScreen(
-            selectedMethod: "email",
-            recepientEmail: 'elnawawyseif@gmail.com',
-          ),
-        ),
+        home: startPage,
         theme: darkTheme,
         darkTheme: darkTheme,
         themeMode: ThemeMode.dark,

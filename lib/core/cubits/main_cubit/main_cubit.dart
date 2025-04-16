@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'dart:math';
+import 'dart:developer' as dev;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as dev;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lol/core/models/current_user/current_user_model.dart';
@@ -144,12 +144,11 @@ class MainCubit extends Cubit<MainCubitStates> {
     try {
       final response =
           await DioHelp.getData(path: CURRENTUSER, token: AppConstants.TOKEN);
-      dev.log(response.data['photo'].toString());
       profileModel = ProfileModel.fromJson(response.data);
       AppConstants.SelectedSemester = profileModel!.semester;
       await Cache.writeData(
           key: KeysManager.semester, value: profileModel!.semester);
-
+      print(response.data);
       emit(GetProfileSuccess());
     } catch (e) {
       print(e.toString());
@@ -191,7 +190,7 @@ class MainCubit extends Cubit<MainCubitStates> {
 
       emit(LogoutSuccess());
     } catch (e) {
-      dev.log('logoutFailed => $e');
+      debugPrint('logoutFailed => $e');
       emit(LogoutFailed(errMessage: e.toString()));
     }
   }
@@ -340,7 +339,7 @@ class MainCubit extends Cubit<MainCubitStates> {
       AppConstants.SelectedSemester = null;
       emit(DeleteAccountSuccessState());
     } catch (e) {
-      dev.log(e.toString());
+      debugPrint(e.toString());
       emit(DeleteAccountFailed(errMessage: e.toString()));
     }
   }

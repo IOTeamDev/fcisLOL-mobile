@@ -9,6 +9,8 @@ import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/features/auth/presentation/view/login.dart';
 import 'package:lol/features/auth/presentation/view/register.dart';
+import 'package:lol/features/home/presentation/view/loading_screen.dart';
+import 'package:lol/features/otp_and_verification/presentation/view_model/verification_cubit/verification_cubit.dart';
 import 'package:lol/features/pick_image/presentation/view/select_image.dart';
 import 'package:lol/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
 import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit.dart';
@@ -34,18 +36,14 @@ class _RegistrationLayoutState extends State<RegistrationLayout>
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<AuthCubit>(
+    return BlocProvider(
       create: (context) => AuthCubit(),
       child: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is LoginSuccess) {
-            showToastMessage(
-              message: "Successfully signed in. Welcome back!",
-              states: ToastStates.SUCCESS,
-            );
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: (context) => Home(),
+                builder: (context) => LoadingScreen(),
               ),
               (route) => false,
             );
@@ -60,25 +58,22 @@ class _RegistrationLayoutState extends State<RegistrationLayout>
 
             Cache.writeData(key: KeysManager.token, value: state.token);
 
-            // showToastMessage(
-            //   message: 'You need to verify your email',
-            //   states: ToastStates.SUCCESS,
-            // );
+            showToastMessage(
+              message: 'You need to verify your email',
+              states: ToastStates.SUCCESS,
+            );
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: (context) => SelectImage(),
+                builder: (context) => BlocProvider(
+                  create: (context) => VerificationCubit(),
+                  child: OtpVerificationScreen(
+                    selectedMethod: 'email',
+                    recepientEmail: state.userEmail,
+                  ),
+                ),
               ),
               (route) => false,
             );
-            // Navigator.of(context).pushAndRemoveUntil(
-            //   MaterialPageRoute(
-            //     builder: (context) => OtpVerificationScreen(
-            //       selectedMethod: 'email',
-            //       recepientEmail: state.userEmail,
-            //     ),
-            //   ),
-            //   (route) => false,
-            // );
           }
           if (state is RegisterFailed) {
             showToastMessage(
@@ -92,26 +87,27 @@ class _RegistrationLayoutState extends State<RegistrationLayout>
             child: Stack(
               children: [
                 Scaffold(
-                  appBar: getDeviceType(context) != DeviceType.DESKTOP? AppBar(): null,
+                  appBar: getDeviceType(context) != DeviceType.DESKTOP
+                      ? AppBar()
+                      : null,
                   body: Column(
                     children: [
                       TabBar(
-                        indicatorColor: ColorsManager.lightPrimary,
-                        dividerColor: ColorsManager.grey1,
-                        labelColor: ColorsManager.lightPrimary,
-                        indicatorSize: TabBarIndicatorSize.tab,
-                        indicatorAnimation: TabIndicatorAnimation.elastic,
-                        unselectedLabelColor: ColorsManager.grey1,
-                        controller: _tabController,
-                        tabs: [
-                          Tab(
-                            text: StringsManager.login,
-                          ),
-                          Tab(
-                            text: StringsManager.signup,
-                          )
-                        ]
-                      ),
+                          indicatorColor: ColorsManager.lightPrimary,
+                          dividerColor: ColorsManager.grey1,
+                          labelColor: ColorsManager.lightPrimary,
+                          indicatorSize: TabBarIndicatorSize.tab,
+                          indicatorAnimation: TabIndicatorAnimation.elastic,
+                          unselectedLabelColor: ColorsManager.grey1,
+                          controller: _tabController,
+                          tabs: [
+                            Tab(
+                              text: StringsManager.login,
+                            ),
+                            Tab(
+                              text: StringsManager.signup,
+                            )
+                          ]),
                       Expanded(
                         child: TabBarView(
                           controller: _tabController,

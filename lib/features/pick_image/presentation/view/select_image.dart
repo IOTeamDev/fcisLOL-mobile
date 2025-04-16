@@ -37,7 +37,7 @@ class _SelectImageState extends State<SelectImage> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => PickImageCubit(),
-      child: BlocConsumer<PickImageCubit, PickImageState>(
+      child: BlocListener<PickImageCubit, PickImageState>(
         listener: (context, state) {
           if (state is UploadImageFailed) {
             showToastMessage(
@@ -51,7 +51,7 @@ class _SelectImageState extends State<SelectImage> {
           if (state is UploadImageSuccess) {
             context
                 .read<PickImageCubit>()
-                .updateProfileImage(imageUrl: state.imageUrl ?? '');
+                .updateProfileImage(imageUrl: state.imageUrl);
           }
 
           if (state is UpdateUserImageSuccess) {
@@ -59,143 +59,141 @@ class _SelectImageState extends State<SelectImage> {
                 message: 'Image Uploaded Successfully',
                 states: ToastStates.SUCCESS);
 
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => Home(),
-              ),
-              (route) => false,
-            );
+            navigatReplace(context, Home());
           }
         },
-        builder: (context, state) {
-          return Stack(
-            children: [
-              Scaffold(
+        child: Stack(
+          children: [
+            Scaffold(
+              backgroundColor: ColorsManager.white,
+              appBar: AppBar(
+                automaticallyImplyLeading: false,
                 backgroundColor: ColorsManager.white,
-                appBar: AppBar(
-                  automaticallyImplyLeading: false,
-                  backgroundColor: ColorsManager.white,
-                  title: Text(StringsManager.profileImage,
-                      style: Theme.of(context)
-                          .textTheme
-                          .displayMedium!
-                          .copyWith(color: ColorsManager.black)),
-                  centerTitle: true,
-                ),
-                body: Center(
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircleAvatar(
-                          radius: AppQueries.screenWidth(context) / AppSizes.s6,
-                          backgroundImage: _image == null
-                              ? AssetImage(
-                                  AppConstants.noneLoggedInDefaultImage)
-                              : FileImage(File(_image!.path)),
+                title: Text(StringsManager.profileImage,
+                    style: Theme.of(context)
+                        .textTheme
+                        .displayMedium!
+                        .copyWith(color: ColorsManager.black)),
+                centerTitle: true,
+              ),
+              body: Center(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircleAvatar(
+                        radius: AppQueries.screenWidth(context) / AppSizes.s6,
+                        backgroundImage: _image == null
+                            ? AssetImage(AppConstants.noneLoggedInDefaultImage)
+                            : FileImage(File(_image!.path)),
+                      ),
+                      SizedBox(
+                        height: AppSizesDouble.s50,
+                      ),
+                      SizedBox(
+                        width: AppQueries.screenWidth(context) /
+                            AppSizesDouble.s1_5,
+                        child: ElevatedButton.icon(
+                          iconAlignment: IconAlignment.end,
+                          icon: Icon(
+                            IconsManager.imageIcon,
+                            color: ColorsManager.black,
+                            size: AppSizesDouble.s25,
+                          ),
+                          label: Text(
+                            _image == null ? 'Choose Image' : _image!.path,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge!
+                                .copyWith(color: ColorsManager.black),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.symmetric(
+                                vertical: AppPaddings.p20,
+                              ),
+                              backgroundColor: ColorsManager.lightGrey1,
+                              foregroundColor: ColorsManager.black,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      AppSizesDouble.s20))),
+                          onPressed: () async {
+                            _image = await context
+                                .read<PickImageCubit>()
+                                .pickimage();
+                            if (_image != null) {
+                              setState(() {});
+                            }
+                          },
                         ),
-                        SizedBox(
-                          height: AppSizesDouble.s50,
-                        ),
-                        SizedBox(
-                          width: AppQueries.screenWidth(context) /
-                              AppSizesDouble.s1_5,
-                          child: ElevatedButton.icon(
-                            iconAlignment: IconAlignment.end,
-                            icon: Icon(
-                              IconsManager.imageIcon,
-                              color: ColorsManager.black,
-                              size: AppSizesDouble.s25,
-                            ),
-                            label: Text(
-                              _image == null ? 'Choose Image' : _image!.path,
+                      ),
+                      SizedBox(
+                        height: AppSizesDouble.s15,
+                      ),
+
+                      // Next Button
+                      SizedBox(
+                        width: AppQueries.screenWidth(context) /
+                            AppSizesDouble.s1_5,
+                        child: ElevatedButton.icon(
+                          iconAlignment: IconAlignment.end,
+                          label: Text(StringsManager.next,
                               style: Theme.of(context)
                                   .textTheme
                                   .titleLarge!
-                                  .copyWith(color: ColorsManager.black),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.symmetric(
-                                  vertical: AppPaddings.p20,
+                                  .copyWith(color: ColorsManager.white)),
+                          icon: Icon(
+                            IconsManager.leftArrowIcon,
+                            color: ColorsManager.white,
+                            size: AppSizesDouble.s30,
+                          ),
+                          style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.symmetric(
+                                vertical: AppPaddings.p20,
+                              ),
+                              backgroundColor: ColorsManager.lightPrimary,
+                              foregroundColor: ColorsManager.white,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      AppSizesDouble.s20))),
+                          onPressed: () async {
+                            if (_image == null) {
+                              Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                  builder: (context) => Home(),
                                 ),
-                                backgroundColor: ColorsManager.lightGrey1,
-                                foregroundColor: ColorsManager.black,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        AppSizesDouble.s20))),
-                            onPressed: () async {
-                              _image = await context
+                                (route) => false,
+                              );
+                            } else {
+                              await context
                                   .read<PickImageCubit>()
-                                  .pickimage();
-                              if (_image != null) {
-                                setState(() {});
-                              }
-                            },
-                          ),
+                                  .uploadUserImage(
+                                    image: _image!,
+                                  );
+                            }
+                          },
                         ),
-                        SizedBox(
-                          height: AppSizesDouble.s15,
-                        ),
-
-                        // Next Button
-                        SizedBox(
-                          width: AppQueries.screenWidth(context) /
-                              AppSizesDouble.s1_5,
-                          child: ElevatedButton.icon(
-                            iconAlignment: IconAlignment.end,
-                            label: Text(StringsManager.next,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge!
-                                    .copyWith(color: ColorsManager.white)),
-                            icon: Icon(
-                              IconsManager.leftArrowIcon,
-                              color: ColorsManager.white,
-                              size: AppSizesDouble.s30,
-                            ),
-                            style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.symmetric(
-                                  vertical: AppPaddings.p20,
-                                ),
-                                backgroundColor: ColorsManager.lightPrimary,
-                                foregroundColor: ColorsManager.white,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        AppSizesDouble.s20))),
-                            onPressed: () async {
-                              if (_image == null) {
-                                Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(
-                                    builder: (context) => Home(),
-                                  ),
-                                  (route) => false,
-                                );
-                              } else {
-                                await context
-                                    .read<PickImageCubit>()
-                                    .uploadUserImage(
-                                      image: _image!,
-                                    );
-                              }
-                            },
-                          ),
-                        ),
-                      ]),
-                ),
+                      ),
+                    ]),
               ),
-              if (state is UploadImageLoading ||
-                  state is UpdateUserImageLoading)
-                ColoredBox(
-                  color: Colors.black.withValues(
-                    alpha: 0.5,
-                  ), // Transparent black background
-                  child: Center(
-                    child: CircularProgressIndicator(), // Loading Indicator
-                  ),
-                )
-            ],
-          );
-        },
+            ),
+            BlocBuilder<PickImageCubit, PickImageState>(
+              builder: (context, state) {
+                if (state is UploadImageLoading ||
+                    state is UpdateUserImageLoading) {
+                  return ColoredBox(
+                    color: Colors.black.withValues(
+                      alpha: 0.5,
+                    ), // Transparent black background
+                    child: Center(
+                      child: CircularProgressIndicator(), // Loading Indicator
+                    ),
+                  );
+                }
+                return const SizedBox.shrink();
+              },
+            )
+          ],
+        ),
       ),
     );
   }

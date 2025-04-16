@@ -6,10 +6,10 @@ import 'package:lol/core/utils/resources/values_manager.dart';
 import 'package:lol/features/auth/presentation/view/registration_layout.dart';
 import 'package:lol/features/home/data/models/semster_model.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
+import 'package:lol/features/home/presentation/view/loading_screen.dart';
 import '../../../../../core/utils/resources/constants_manager.dart';
 import '../../../../../core/utils/resources/icons_manager.dart';
 import '../../../../../core/utils/resources/strings_manager.dart';
-
 
 class ChoosingYearMobile extends StatefulWidget {
   ChoosingYearMobile({
@@ -62,10 +62,9 @@ class _ChoosingYearState extends State<ChoosingYearMobile> {
                       borderRadius: BorderRadius.circular(AppSizesDouble.s40)),
                   child: FittedBox(
                     child: Text(
-                      'Level: ${getLevelFromSemester()}',
+                      'Level: ${_getLevelFromSemester()}',
                       style: TextStyle(fontSize: 20),
                     ),
-
                   ),
                 ),
                 Expanded(
@@ -79,19 +78,19 @@ class _ChoosingYearState extends State<ChoosingYearMobile> {
                     dropdownColor: ColorsManager
                         .white, // Background color for the dropdown list
                     iconEnabledColor:
-                    ColorsManager.black, // Color of the dropdown icon
+                        ColorsManager.black, // Color of the dropdown icon
                     style: const TextStyle(
                         color: ColorsManager
                             .white), // Style for the selected item outside
                     items: AppConstants.semesters
                         .map((String item) => DropdownMenuItem(
-                      value: item,
-                      child: Text(
-                        item,
-                        style:
-                        const TextStyle(color: ColorsManager.black),
-                      ),
-                    ))
+                              value: item,
+                              child: Text(
+                                item,
+                                style:
+                                    const TextStyle(color: ColorsManager.black),
+                              ),
+                            ))
                         .toList(),
                     selectedItemBuilder: (BuildContext context) {
                       return AppConstants.semesters.map((String item) {
@@ -126,12 +125,12 @@ class _ChoosingYearState extends State<ChoosingYearMobile> {
                       backgroundColor: ColorsManager.lightPrimary,
                       foregroundColor: ColorsManager.white,
                       padding: EdgeInsets.symmetric(vertical: 20)),
-                  onPressed: onPressedSelectButton,
+                  onPressed: _onPressedSelectButton,
                   child: FittedBox(
                       child: Text(
-                        'Select',
-                        style: TextStyle(fontSize: 20),
-                      ))),
+                    'Select',
+                    style: TextStyle(fontSize: 20),
+                  ))),
             ),
           ),
           Row(
@@ -150,7 +149,7 @@ class _ChoosingYearState extends State<ChoosingYearMobile> {
                       MaterialPageRoute(
                         builder: (context) => RegistrationLayout(),
                       ),
-                          (route) => false);
+                      (route) => false);
                 },
                 child: Text(
                   StringsManager.login,
@@ -167,7 +166,7 @@ class _ChoosingYearState extends State<ChoosingYearMobile> {
     );
   }
 
-  String getLevelFromSemester() {
+  String _getLevelFromSemester() {
     if (selectedSemester == 'One' || selectedSemester == 'Two') {
       return '1';
     } else if (selectedSemester == 'Three' || selectedSemester == 'Four') {
@@ -180,12 +179,15 @@ class _ChoosingYearState extends State<ChoosingYearMobile> {
     return '';
   }
 
-  Future<void> onPressedSelectButton() async {
+  Future<void> _onPressedSelectButton() async {
     if (selectedSemester != null) {
       AppConstants.SelectedSemester = selectedSemester;
       await Cache.writeData(key: KeysManager.semester, value: selectedSemester);
       AppConstants.navigatedSemester = AppConstants.SelectedSemester;
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => Home()), (route) => false);
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LoadingScreen()),
+          (route) => false);
     } else {
       showToastMessage(
         message: 'Please select a semester',

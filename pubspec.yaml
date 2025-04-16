@@ -17,6 +17,7 @@ dependencies:
   cloud_firestore: ^5.4.2
   conditional_builder_null_safety: ^0.0.6
   cupertino_icons: ^1.0.8
+  custom_cached_image: ^1.0.5
   dio: ^5.7.0
   file_picker: ^8.1.2
   firebase_auth: ^5.4.2

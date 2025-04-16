@@ -2,10 +2,11 @@ import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:lol/core/models/profile/profile_model.dart';
 import 'package:lol/core/network/endpoints.dart';
+import 'package:lol/core/network/remote/dio.dart';
 import 'package:lol/core/network/remote/send_grid_helper.dart';
-import 'package:meta/meta.dart';
-import 'dart:developer' as dev;
+import 'package:lol/core/utils/resources/constants_manager.dart';
 part 'verification_state.dart';
 
 class VerificationCubit extends Cubit<VerificationState> {
@@ -43,7 +44,7 @@ class VerificationCubit extends Cubit<VerificationState> {
 //   //   emit(VerificationTimerStartedState(initialTime: counter));
 //   // }
 
-  int _verificationCode = 000000;
+  int _otp = 000000;
 
   Future<void> sendVerificationCode({
     required String recepientEmail,
@@ -51,7 +52,7 @@ class VerificationCubit extends Cubit<VerificationState> {
   }) async {
     emit(SendVerificationCodeToEmailLoading());
     Random random = Random();
-    _verificationCode = 100000 + random.nextInt(900000);
+    _otp = 100000 + random.nextInt(900000);
 
     try {
       await SendGridHelper.post(
@@ -70,15 +71,15 @@ class VerificationCubit extends Cubit<VerificationState> {
             {
               "type": "text/html",
               "value":
-                  "Hello ${recepientName ?? ''}, your Uni Notes verification code is: <strong>$_verificationCode</strong>",
+                  "Hello ${recepientName ?? ''}, your Uni Notes verification code is: <strong>$_otp</strong>",
             },
           ],
         },
       );
 
-      emit(SendVerificationCodeToEmailSuccess());
+      emit(SendVerificationCodeToEmailSuccess(otp: _otp.toString()));
     } catch (e) {
-      dev.log(e.toString());
+      debugPrint(e.toString());
       emit(
         SendVerificationCodeToEmailFailed(
           errMessage: 'Unable to send code now, please try again later',
@@ -87,6 +88,28 @@ class VerificationCubit extends Cubit<VerificationState> {
     }
   }
 
+  Future<void> verityEmail(
+      {required ProfileModel profile, required String otp}) async {
+    emit(EmailVerifiedLoading());
+
+    try {
+      if (otp == _otp.toString()) {
+        await DioHelp.putData(
+            query: {'id': profile.id},
+            path: USERS,
+            data: {
+              'isVerified': true,
+            },
+            token: AppConstants.TOKEN);
+        emit(EmailVerifiedSuccess());
+      } else {
+        emit(EmailVerifiedFailed(errMessage: 'Incorrect OTP'));
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      emit(EmailVerifiedFailed(errMessage: 'Opps! Something went wrong'));
+    }
+  }
 //   // @override
 //   // Future<void> close() {
 //   //   _timer?.cancel();
