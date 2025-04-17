@@ -75,16 +75,15 @@ class _RegisterscreenState extends State<RegisterMobile> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(StringsManager.signup,
-                    style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                          fontSize: AppSizesDouble.s40,
-                        )),
+                Text(StringsManager.signup, style: Theme.of(context).textTheme.headlineLarge!.copyWith(fontSize: AppSizesDouble.s40,)),
                 const SizedBox(
                   height: AppSizesDouble.s25,
                 ),
-                defaultLoginInputField(_nameController, StringsManager.fullName,
-                    TextInputType.name,
-                    textInputAction: TextInputAction.next),
+                defaultLoginInputField(
+                  _nameController, StringsManager.fullName,
+                  TextInputType.name,
+                  textInputAction: TextInputAction.next
+                ),
                 const SizedBox(
                   height: AppSizesDouble.s15,
                 ),
@@ -115,11 +114,11 @@ class _RegisterscreenState extends State<RegisterMobile> {
                 BlocBuilder<AuthCubit, AuthState>(
                   builder: (context, state) {
                     return defaultLoginInputField(_passwordController,
-                        StringsManager.password, TextInputType.visiblePassword,
-                        isPassword: true,
-                        loginCubit: AuthCubit.get(context),
-                        suffixIcon: IconsManager.eyeIcon,
-                        textInputAction: TextInputAction.next);
+                      StringsManager.password, TextInputType.visiblePassword,
+                      isPassword: true,
+                      loginCubit: AuthCubit.get(context),
+                      suffixIcon: IconsManager.eyeIcon,
+                      textInputAction: TextInputAction.next);
                   },
                 ),
                 const SizedBox(
@@ -155,35 +154,36 @@ class _RegisterscreenState extends State<RegisterMobile> {
                   items: AuthCubit.semesters,
                   value: _selectedSemester,
                   onChanged: (value) {
-                    _selectedSemester = value!;
+                    if(value != null)
+                    setState(() {
+                      _selectedSemester = value;
+                    });
                   },
                 ),
                 const SizedBox(
                   height: AppSizesDouble.s15,
                 ),
                 defaultLoginButton(
-                    context,
-                    _formKey,
-                    AuthCubit.get(context),
-                    _emailController,
-                    _passwordController,
-                    StringsManager.signup,
-                    isSignUp: true, onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    FCMHelper fCMHelper = FCMHelper();
-                    fCMHelper.initNotifications();
-
-                    String? fcmToken =
-                        await FirebaseMessaging.instance.getToken();
-                    await context.read<AuthCubit>().register(
-                          name: _nameController.text,
-                          email: _emailController.text,
-                          phone: _phoneController.text,
-                          password: _passwordController.text,
-                          semester: _selectedSemester,
-                          fcmToken: fcmToken,
-                          photo: AppConstants.defaultProfileImage,
-                        );
+                  context,
+                  _formKey,
+                  AuthCubit.get(context),
+                  _emailController,
+                  _passwordController,
+                  StringsManager.signup,
+                  isSignUp: true, onPressed: () async {
+                if (_formKey.currentState!.validate()) {
+                  FCMHelper fCMHelper = FCMHelper();
+                  fCMHelper.initNotifications();
+                  String? fcmToken = await FirebaseMessaging.instance.getToken();
+                  await context.read<AuthCubit>().register(
+                      name: _nameController.text,
+                      email: _emailController.text,
+                      phone: _phoneController.text,
+                      password: _passwordController.text,
+                      semester: _selectedSemester,
+                      fcmToken: fcmToken,
+                      photo: AppConstants.defaultProfileImage,
+                    );
                   }
                 }),
               ],

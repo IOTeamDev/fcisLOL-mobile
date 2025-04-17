@@ -123,7 +123,7 @@ class _OtherProfileState extends State<OtherProfile> {
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
-                        '${StringsManager.level} ${((semsesterIndex(mainCubit.otherProfile!.semester) / AppSizes.s2) + AppSizes.s1).floor()}',
+                        '${StringsManager.level} ${((getSemesterIndex(mainCubit.otherProfile!.semester) / AppSizes.s2) + AppSizes.s1).floor()}',
                         style: Theme.of(context).textTheme.headlineMedium,
                         maxLines: AppSizes.s1,
                         overflow: TextOverflow.ellipsis,

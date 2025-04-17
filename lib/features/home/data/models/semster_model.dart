@@ -139,9 +139,11 @@ List<SemesterModel> semesters = [
   SemesterModel(semester: "Four", subjects: semesterFour),
   SemesterModel(semester: "Five", subjects: semesterFive),
   SemesterModel(semester: "Six", subjects: semesterSix),
+  SemesterModel(semester: "Seven", subjects: semesterSix),
+  SemesterModel(semester: "Eight", subjects: semesterSix),
 ];
 
-int semsesterIndex(String semester) {
+int getSemesterIndex(String semester) {
   switch (semester) {
     case "One":
       return 0;
@@ -160,6 +162,12 @@ int semsesterIndex(String semester) {
 
     case "Six":
       return 5;
+
+    case 'Seven':
+      return 6;
+
+    case 'Eight':
+      return 7;
   }
   return -1;
 }

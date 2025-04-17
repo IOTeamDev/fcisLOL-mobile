@@ -38,6 +38,8 @@ class StringsManager {
   static const String level4 = 'Level 4';
   static const String five = 'Five';
   static const String six = 'Six';
+  static const String seven = 'Seven';
+  static const String eight = 'Eight';
   static const String notFoundErrorCode = '404';
   static const String thisLinkIsCorrupted = 'This link is Corrupted';
   static const String anErrorOccurred =

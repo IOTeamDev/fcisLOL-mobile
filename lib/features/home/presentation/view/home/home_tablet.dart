@@ -22,10 +22,10 @@ class HomeTablet extends StatelessWidget {
       {super.key,
       required this.scaffoldKey,
       this.profile,
-      required this.semesterIndex});
+      this.semesterIndex});
   GlobalKey<ScaffoldState> scaffoldKey;
   ProfileModel? profile;
-  int semesterIndex;
+  int? semesterIndex;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +72,7 @@ class HomeTablet extends StatelessWidget {
             : MainCubit.get(context).profileModel!.semester),
       ),
       drawerEdgeDragWidth:
-          AppQueries.screenWidth(context) * AppSizesDouble.s0_2,
+          AppQueries.screenWidth(context) * AppSizesDouble.s0_25,
       body: profile == null && AppConstants.TOKEN != null
           ? const Center(
               child: CircularProgressIndicator(),
@@ -132,30 +132,29 @@ class HomeTablet extends StatelessWidget {
                               style: Theme.of(context).textTheme.headlineLarge),
                         ), // Subjects Text
                         if (semesterIndex != null)
-                          Padding(
-                            padding: const EdgeInsets.all(AppPaddings.p10),
-                            child: GridView.builder(
-                              physics:
-                                  const NeverScrollableScrollPhysics(), // Disable scrolling in the GridView
-                              shrinkWrap:
-                                  true, // Shrink the GridView to fit its content
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount:
-                                    AppSizes.s2, // Two items per row
-                                crossAxisSpacing: AppSizesDouble.s10,
-                                mainAxisSpacing: AppSizesDouble.s10,
-                              ),
-                              itemCount:
-                                  semesters[semesterIndex!].subjects.length,
-                              itemBuilder: (context, index) {
-                                return SubjectItemBuild(
-                                  subject:
-                                      semesters[semesterIndex!].subjects[index],
-                                );
-                              },
+                        Padding(
+                          padding: const EdgeInsets.all(AppPaddings.p10),
+                          child: GridView.builder(
+                            physics:
+                                const NeverScrollableScrollPhysics(), // Disable scrolling in the GridView
+                            shrinkWrap:
+                                true, // Shrink the GridView to fit its content
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount:
+                                  AppSizes.s2, // Two items per row
+                              crossAxisSpacing: AppSizesDouble.s10,
+                              mainAxisSpacing: AppSizesDouble.s10,
                             ),
+                            itemCount:
+                                semesters[semesterIndex!].subjects.length,
+                            itemBuilder: (context, index) {
+                              return SubjectItemBuild(
+                                subject: semesters[semesterIndex!].subjects[index],
+                              );
+                            },
                           ),
+                        ),
                       ],
                     ),
                   ),

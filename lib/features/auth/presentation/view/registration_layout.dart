@@ -68,7 +68,7 @@ class _RegistrationLayoutState extends State<RegistrationLayout>
                   create: (context) => VerificationCubit(),
                   child: OtpVerificationScreen(
                     selectedMethod: 'email',
-                    recepientEmail: state.userEmail,
+                    recipientEmail: state.userEmail,
                   ),
                 ),
               ),

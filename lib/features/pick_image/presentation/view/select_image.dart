@@ -65,15 +65,12 @@ class _SelectImageState extends State<SelectImage> {
         child: Stack(
           children: [
             Scaffold(
-              backgroundColor: ColorsManager.white,
               appBar: AppBar(
                 automaticallyImplyLeading: false,
-                backgroundColor: ColorsManager.white,
                 title: Text(StringsManager.profileImage,
                     style: Theme.of(context)
-                        .textTheme
-                        .displayMedium!
-                        .copyWith(color: ColorsManager.black)),
+                      .textTheme
+                      .displayMedium!),
                 centerTitle: true,
               ),
               body: Center(
@@ -111,7 +108,7 @@ class _SelectImageState extends State<SelectImage> {
                               padding: EdgeInsets.symmetric(
                                 vertical: AppPaddings.p20,
                               ),
-                              backgroundColor: ColorsManager.lightGrey1,
+                              backgroundColor: ColorsManager.white,
                               foregroundColor: ColorsManager.black,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
@@ -132,15 +129,13 @@ class _SelectImageState extends State<SelectImage> {
 
                       // Next Button
                       SizedBox(
-                        width: AppQueries.screenWidth(context) /
-                            AppSizesDouble.s1_5,
+                        width: AppQueries.screenWidth(context) / AppSizesDouble.s1_5,
                         child: ElevatedButton.icon(
                           iconAlignment: IconAlignment.end,
                           label: Text(StringsManager.next,
                               style: Theme.of(context)
                                   .textTheme
-                                  .titleLarge!
-                                  .copyWith(color: ColorsManager.white)),
+                                  .titleLarge!),
                           icon: Icon(
                             IconsManager.leftArrowIcon,
                             color: ColorsManager.white,

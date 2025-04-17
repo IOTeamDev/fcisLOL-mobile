@@ -26,7 +26,7 @@ class SemesterNavigate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int semesterIndex = semsesterIndex(semester);
+    int semesterIndex = getSemesterIndex(semester);
     return PopScope(
       canPop: true,
       onPopInvokedWithResult: (didPop, result){

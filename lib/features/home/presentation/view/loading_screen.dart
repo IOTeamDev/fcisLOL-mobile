@@ -34,7 +34,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
                   create: (context) => VerificationCubit(),
                   child: OtpVerificationScreen(
                     selectedMethod: 'email',
-                    recepientEmail:
+                    recipientEmail:
                         context.read<MainCubit>().profileModel!.email,
                   ),
                 ),

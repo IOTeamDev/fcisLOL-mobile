@@ -12,37 +12,37 @@ part 'verification_state.dart';
 class VerificationCubit extends Cubit<VerificationState> {
   VerificationCubit() : super(VerificationInitial());
 
-//   // late bool canResendCode;
-//   // int currentTime = 30;
-//   // late Stream<int> _timerStream;
-//   // late StreamController<int> _timerStreamController;
-//   // Timer? _timer;
+  // late bool canResendCode;
+  // int currentTime = 30;
+  // late Stream<int> _timerStream;
+  // late StreamController<int> _timerStreamController;
+  // Timer? _timer;
 
-//   // Stream<int> get timerStream => _timerStream;
+  // Stream<int> get timerStream => _timerStream;
 
-//   // void _initializeStream() {
-//   //   _timerStreamController = StreamController<int>.broadcast();
-//   //   _timerStream = _timerStreamController.stream;
-//   //   canResendCode = false;
-//   // }
+  // void _initializeStream() {
+  //   _timerStreamController = StreamController<int>.broadcast();
+  //   _timerStream = _timerStreamController.stream;
+  //   canResendCode = false;
+  // }
 
-//   // void counter({int counter = 30}) {
-//   //   _timer?.cancel();
-//   //   canResendCode = false;
-//   //   currentTime = counter;
+  // void counter({int counter = 30}) {
+  //   _timer?.cancel();
+  //   canResendCode = false;
+  //   currentTime = counter;
 
-//   //   _timerStreamController.add(currentTime);
-//   //   _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-//   //     currentTime--;
-//   //     _timerStreamController.add(currentTime);
-//   //     if (currentTime <= 0) {
-//   //       timer.cancel();
-//   //       canResendCode = true;
-//   //       emit(VerificationTimerCompleteState());
-//   //     }
-//   //   });
-//   //   emit(VerificationTimerStartedState(initialTime: counter));
-//   // }
+  //   _timerStreamController.add(currentTime);
+  //   _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+  //     currentTime--;
+  //     _timerStreamController.add(currentTime);
+  //     if (currentTime <= 0) {
+  //       timer.cancel();
+  //       canResendCode = true;
+  //       emit(VerificationTimerCompleteState());
+  //     }
+  //   });
+  //   emit(VerificationTimerStartedState(initialTime: counter));
+  // }
 
   int _otp = 000000;
 
@@ -88,19 +88,15 @@ class VerificationCubit extends Cubit<VerificationState> {
     }
   }
 
-  Future<void> verityEmail(
-      {required ProfileModel profile, required String otp}) async {
+  Future<void> verityEmail({required ProfileModel profile, required String otp}) async {
     emit(EmailVerifiedLoading());
-
     try {
       if (otp == _otp.toString()) {
         await DioHelp.putData(
-            query: {'id': profile.id},
-            path: USERS,
-            data: {
-              'isVerified': true,
-            },
-            token: AppConstants.TOKEN);
+          query: {'id': profile.id},
+          path: USERS,
+          data: {'isVerified': true,},
+          token: AppConstants.TOKEN);
         emit(EmailVerifiedSuccess());
       } else {
         emit(EmailVerifiedFailed(errMessage: 'Incorrect OTP'));
@@ -110,10 +106,10 @@ class VerificationCubit extends Cubit<VerificationState> {
       emit(EmailVerifiedFailed(errMessage: 'Opps! Something went wrong'));
     }
   }
-//   // @override
-//   // Future<void> close() {
-//   //   _timer?.cancel();
-//   //   _timerStreamController.close();
-//   //   return super.close();
-//   // }
+  // @override
+  // Future<void> close() {
+  //   _timer?.cancel();
+  //   _timerStreamController.close();
+  //   return super.close();
+  // }
 }

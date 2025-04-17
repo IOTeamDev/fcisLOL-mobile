@@ -99,12 +99,13 @@ class _LoginScreenState extends State<LoginScreenMobile> {
                   ),
                 ),
                 defaultLoginButton(
-                    context,
-                    formKey,
-                    loginCubit,
-                    _emailController,
-                    _passwordController,
-                    StringsManager.login),
+                  context,
+                  formKey,
+                  loginCubit,
+                  _emailController,
+                  _passwordController,
+                  StringsManager.login
+                ),
                 const SizedBox(
                   height: AppSizesDouble.s20,
                 ),

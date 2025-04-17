@@ -73,8 +73,7 @@ class _ChoosingYearState extends State<ChoosingYearMobile> {
                     icon: Icon(IconsManager.dropdownIcon),
                     value: selectedSemester,
                     underline: SizedBox(),
-                    hint: Text('Select Semester',
-                        style: TextStyle(color: ColorsManager.grey)),
+                    hint: Text('Select Semester', style: TextStyle(color: ColorsManager.grey)),
                     dropdownColor: ColorsManager
                         .white, // Background color for the dropdown list
                     iconEnabledColor:
@@ -119,12 +118,12 @@ class _ChoosingYearState extends State<ChoosingYearMobile> {
           Padding(
             padding: const EdgeInsets.only(top: 15, bottom: 5),
             child: SizedBox(
-              width: AppQueries.screenWidth(context) / 1.3,
+              width: AppQueries.screenWidth(context) / 1.5,
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       backgroundColor: ColorsManager.lightPrimary,
                       foregroundColor: ColorsManager.white,
-                      padding: EdgeInsets.symmetric(vertical: 20)),
+                      padding: EdgeInsets.symmetric(vertical: 10)),
                   onPressed: _onPressedSelectButton,
                   child: FittedBox(
                       child: Text(

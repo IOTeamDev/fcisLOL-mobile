@@ -66,11 +66,8 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     if (AppConstants.TOKEN != null) {
-      AdminCubit.get(context).getAnnouncements(
-          MainCubit.get(context).profileModel?.semester ??
-              AppConstants.SelectedSemester!);
-      MainCubit.get(context).updateUser(
-          userID: MainCubit.get(context).profileModel!.id, fcmToken: fcmToken);
+      AdminCubit.get(context).getAnnouncements(MainCubit.get(context).profileModel?.semester ?? AppConstants.SelectedSemester!);
+      MainCubit.get(context).updateUser(userID: MainCubit.get(context).profileModel!.id, fcmToken: fcmToken);
     } else {
       AdminCubit.get(context).getAnnouncements(AppConstants.SelectedSemester!);
     }
@@ -115,12 +112,12 @@ class _HomeState extends State<Home> {
       if (MainCubit.get(context).profileModel != null) {
         profile = MainCubit.get(context).profileModel!;
       }
-      semesterIndex = semsesterIndex(AppConstants.SelectedSemester!);
+      semesterIndex = getSemesterIndex(AppConstants.SelectedSemester!);
 
       return BaseResponsive(
           mobileLayout: HomeMobile(
             scaffoldKey: scaffoldKey,
-            semesterIndex: semesterIndex!,
+            semesterIndex: semesterIndex,
             profile: profile,
           ),
           tabletLayout: HomeTablet(

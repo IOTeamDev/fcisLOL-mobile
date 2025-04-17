@@ -223,6 +223,66 @@ class materialBuilder extends StatelessWidget {
   }
 }
 
+class CustomExpansionTile extends StatelessWidget {
+  CustomExpansionTile({super.key, required this.title, this.icon, required this.children, this.childrenPadding, this.isImage = false, this.imageIcon});
+  bool isImage;
+  String? imageIcon;
+  double? childrenPadding;
+  late List<Widget> children;
+  IconData? icon;
+  late String title;
+  @override
+  Widget build(BuildContext context) {
+    return  ExpansionTile(
+      leading: !isImage? Icon(
+        icon,
+        color: Theme.of(context).iconTheme.color,
+      ): Image.asset(
+        imageIcon!,
+        width: AppSizesDouble.s25,
+        height: AppSizesDouble.s25,
+        color: Theme.of(context).iconTheme.color,
+      ),
+      title: Text(
+        title,
+        style: Theme.of(context).textTheme.bodyLarge,
+      ),
+      childrenPadding: EdgeInsets.symmetric(horizontal: childrenPadding??AppPaddings.p0),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero), // Removes divider when expanded
+      collapsedShape: RoundedRectangleBorder(borderRadius: BorderRadius.zero), // Removes divider when collapsed
+      expansionAnimationStyle: AnimationStyle(duration: Duration(milliseconds: AppSizes.s600), reverseDuration: Duration(milliseconds: AppSizes.s400), curve: Curves.fastEaseInToSlowEaseOut, reverseCurve: Curves.fastOutSlowIn),
+      children: children,
+      iconColor: ColorsManager.white,
+    );
+  }
+}
+
+
+class CustomTile extends StatelessWidget {
+ CustomTile({super.key, required this.onTap, required this.title, this.icon });
+
+ IconData? icon;
+ late String title;
+ late VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Icon(
+       icon,
+        color: Theme.of(context).iconTheme.color,
+      ),
+      title: Text(
+        title,
+        style: Theme.of(context).textTheme.bodyLarge,
+      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero), // Removes divider when expanded
+      onTap: onTap,
+    );
+  }
+}
+
+
 Widget defaultLoginButton(
         context,
         GlobalKey<FormState> formKey,
@@ -373,24 +433,24 @@ Widget defaultLoginInputField(controller, label, keyboardType,
 
 void showToastMessage({
   required String message,
-  Color textColor = ToastStates != ToastStates.INFO
-      ? ColorsManager.black
-      : ColorsManager.white,
   required ToastStates states,
+  Color? textColor,
   double fontSize = AppSizesDouble.s16,
   gravity = ToastGravity.BOTTOM,
   int lengthForIOSAndWeb = AppSizes.s5,
   toastLength = Toast.LENGTH_SHORT,
-}) =>
-    Fluttertoast.showToast(
-      msg: message,
-      toastLength: toastLength,
-      gravity: gravity,
-      timeInSecForIosWeb: lengthForIOSAndWeb,
-      backgroundColor: chooseToastColor(states),
-      textColor: textColor,
-      fontSize: fontSize,
-    );
+}) {
+  textColor = states != ToastStates.INFO ? ColorsManager.black : ColorsManager.white;
+  Fluttertoast.showToast(
+    msg: message,
+    toastLength: toastLength,
+    gravity: gravity,
+    timeInSecForIosWeb: lengthForIOSAndWeb,
+    backgroundColor: chooseToastColor(states),
+    textColor: textColor,
+    fontSize: fontSize,
+  );
+}
 
 // ignore: constant_identifier_names
 enum ToastStates { SUCCESS, ERROR, WARNING, INFO }

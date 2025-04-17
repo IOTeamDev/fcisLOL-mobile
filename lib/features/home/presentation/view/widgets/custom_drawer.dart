@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
@@ -55,8 +56,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             //header
             AppConstants.TOKEN != null
                 ? SizedBox(
-                    height:
-                        AppQueries.screenHeight(context) / AppSizesDouble.s3_2,
+                    height:AppQueries.screenHeight(context) / AppSizesDouble.s3_2,
                     child: UserAccountsDrawerHeader(
                       // otherAccountsPictures: [
                       // IconButton(
@@ -140,452 +140,258 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           NetworkImage(AppConstants.defaultProfileImage),
                     ),
                     // otherAccountsPictures: [
-                    //   // IconButton(
-                    //   //     onPressed: () {
-                    //   //       Provider.of<ThemeProvider>(context, listen: false)
-                    //   //           .toggleDarkMode();
-                    //   //     },
-                    //   //     icon: Icon(
-                    //   //       Provider.of<ThemeProvider>(context).isDark
-                    //   //           ? IconsManager.lightModeIcon
-                    //   //           : IconsManager.darkModeIcon,
-                    //   //       color: Theme.of(context).iconTheme.color,
-                    //   //     ))
+                      // IconButton(
+                      //     onPressed: () {
+                      //       Provider.of<ThemeProvider>(context, listen: false)
+                      //           .toggleDarkMode();
+                      //     },
+                      //     icon: Icon(
+                      //       Provider.of<ThemeProvider>(context).isDark
+                      //           ? IconsManager.lightModeIcon
+                      //           : IconsManager.darkModeIcon,
+                      //       color: Theme.of(context).iconTheme.color,
+                      //     ))
                     // ],
                   ),
             //body
             Expanded(
               child: SingleChildScrollView(
-                  child: Column(
-                //mainAxisSize: MainAxisSize.max,
-                children: [
-                  if (profileModel?.role == KeysManager.admin ||
-                      profileModel?.role == KeysManager.developer)
-                    ListTile(
-                      leading: Icon(
-                        IconsManager.adminIcon,
-                        color: Theme.of(context).iconTheme.color,
-                      ),
-                      title: Text(
-                        StringsManager.admin,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius
-                              .zero), // Removes divider when expanded
+                child: Column(
+                  children: [
+                    if (profileModel?.role == KeysManager.admin || profileModel?.role == KeysManager.developer)
+                    CustomTile(
                       onTap: () => navigate(context, AdminPanel()),
-                    ), //admin panel
-                  ListTile(
-                    leading: Icon(
-                      IconsManager.announcementsIcon,
-                      color: Theme.of(context).iconTheme.color,
-                    ),
-                    title: Text(
-                      StringsManager.announcements,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.zero), // Removes divider when expanded
-                    onTap: () {
-                      if (AppConstants.TOKEN == null) {
-                        navigate(
+                      title: StringsManager.admin,
+                      icon:  IconsManager.adminIcon
+                    ), //*Admin Panel
+                    CustomTile(
+                      onTap: () {
+                        if (AppConstants.TOKEN == null) {
+                          navigate(
                             context,
-                            AnnouncementsList(
-                                semester: AppConstants.SelectedSemester!));
-                      } else {
-                        navigate(
+                            AnnouncementsList(semester: AppConstants.SelectedSemester!)
+                          );
+                        } else {
+                          navigate(
                             context,
-                            AnnouncementsList(
-                                semester: MainCubit.get(context)
-                                    .profileModel!
-                                    .semester));
-                      }
-                    },
-                  ), //announcements list
-                  ListTile(
-                    leading: Icon(
-                      IconsManager.leaderboardIcon,
-                      color: Theme.of(context).iconTheme.color,
-                    ),
-                    title: Text(
-                      StringsManager.leaderboard,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.zero), // Removes divider when expanded
-                    onTap: () {
-                      navigate(
+                            AnnouncementsList(semester: MainCubit.get(context).profileModel!.semester)
+                          );
+                        }
+                      },
+                      title: StringsManager.announcements,
+                      icon:  IconsManager.announcementsIcon
+                    ),//*Announcements List
+                    CustomTile(
+                      onTap: () {
+                        navigate(
                           context,
                           LeaderboardScreen(
                             semester: widget.semester,
-                          ));
-                    },
-                  ), //leaderboard
-                  ExpansionTile(
-                    leading: Icon(
-                      IconsManager.schoolIcon,
-                      color: Theme.of(context).iconTheme.color,
-                    ),
-                    title: Text(
-                      StringsManager.years,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                    childrenPadding:
-                        EdgeInsets.symmetric(horizontal: AppPaddings.p10),
-                    shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.zero), // Removes divider when expanded
-                    collapsedShape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius
-                            .zero), // Removes divider when collapsed
-                    children: [
-                      ExpansionTile(
-                        title: Text(
-                          StringsManager.firstYear,
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius
-                                .zero), // Removes divider when expanded
-                        collapsedShape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius
-                                .zero), // Removes divider when collapsed
-                        childrenPadding:
-                            EdgeInsets.symmetric(horizontal: AppPaddings.p20),
-                        children: [
-                          ListTile(
-                            title: Text(
-                              StringsManager.firstSemester,
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius
-                                    .zero), // Removes divider when expanded
-                            onTap: () {
-                              AppConstants.navigatedSemester = 'One';
-                              navigate(
-                                  context,
-                                  SemesterNavigate(
-                                      semester: StringsManager.one));
-                            },
-                          ),
-                          ListTile(
-                            title: Text(
-                              StringsManager.secondSemester,
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius
-                                    .zero), // Removes divider when expanded
-                            onTap: () {
-                              AppConstants.navigatedSemester = 'Two';
-                              navigate(
-                                  context,
-                                  SemesterNavigate(
-                                      semester: StringsManager.two));
-                            },
-                          ),
-                        ],
-                      ), //1st year materials
-                      ExpansionTile(
-                        title: Text(
-                          StringsManager.secondYear,
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                        childrenPadding:
-                            EdgeInsets.symmetric(horizontal: AppPaddings.p10),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius
-                                .zero), // Removes divider when expanded
-                        collapsedShape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius
-                                .zero), // Removes divider when collapsed
-                        children: [
-                          ListTile(
-                            title: Text(
-                              StringsManager.firstSemester,
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius
-                                    .zero), // Removes divider when expanded
-                            onTap: () {
-                              AppConstants.navigatedSemester = 'Three';
-                              navigate(
-                                  context,
-                                  SemesterNavigate(
-                                      semester: StringsManager.three));
-                            },
-                          ),
-                          ListTile(
-                            title: Text(
-                              StringsManager.secondSemester,
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius
-                                    .zero), // Removes divider when expanded
-                            onTap: () {
-                              AppConstants.navigatedSemester = 'Four';
-                              navigate(
-                                  context,
-                                  SemesterNavigate(
-                                      semester: StringsManager.four));
-                            },
-                          ),
-                        ],
-                      ), //2nd year materials
-                      ExpansionTile(
-                        title: Text(
-                          StringsManager.thirdYear,
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius
-                                .zero), // Removes divider when expanded
-                        collapsedShape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius
-                                .zero), // Removes divider when collapsed
-                        childrenPadding:
-                            EdgeInsets.symmetric(horizontal: AppPaddings.p10),
-                        children: [
-                          ListTile(
-                            title: Text(
-                              StringsManager.firstSemester,
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius
-                                    .zero), // Removes divider when expanded
-                            onTap: () {
-                              AppConstants.navigatedSemester = 'Five';
-                              navigate(
-                                  context,
-                                  SemesterNavigate(
-                                      semester: StringsManager.five));
-                            },
-                          ),
-                          ListTile(
-                            title: Text(
-                              StringsManager.secondSemester,
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius
-                                    .zero), // Removes divider when expanded
-                            onTap: () {
-                              AppConstants.navigatedSemester = 'Six';
-                              navigate(
-                                  context,
-                                  SemesterNavigate(
-                                      semester: StringsManager.six));
-                            },
-                          ),
-                        ],
-                      ), //3rd year materials
-                      InkWell(
-                        onTap: () => showToastMessage(
-                            message: StringsManager.currentlyUpdating,
-                            states: ToastStates.INFO),
-                        child: ExpansionTile(
-                          enabled: false,
-                          title: Text(
-                            StringsManager.seniors,
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                          //currently Not Used
-                          // children: [
-                          //   ListTile(
-                          //     title: const Text("First Semester"),
-                          //     onTap: () {
-                          //       // MainCubit.get(context).profileModel = null;
-                          //       // TOKEN = null;
-                          //       navigate(context,
-                          //           const SemesterNavigate(semester: "One"));
-                          //     },
-                          //   ),
-                          //   ListTile(
-                          //     title: const Text("Second Semester"),
-                          //     onTap: () {
-                          //       // MainCubit.get(context).profileModel = null;
-                          //       // TOKEN = null;
-                          //       navigate(context,
-                          //           const SemesterNavigate(semester: "Two"));
-                          //     },
-                          //   ),
-                          // ],
-                        ),
-                      ),
-                    ],
-                  ), //years materials
-                  ExpansionTile(
-                    leading: Image.asset(
-                      AssetsManager.drive,
-                      width: AppSizesDouble.s25,
-                      height: AppSizesDouble.s25,
-                      color: Theme.of(context).iconTheme.color,
-                    ),
-                    title: Text(
-                      StringsManager.drive,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.zero), // Removes divider when expanded
-                    collapsedShape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius
-                            .zero), // Removes divider when collapsed
-                    childrenPadding:
-                        EdgeInsets.symmetric(horizontal: AppPaddings.p20),
-                    children: [
-                      ListTile(
-                        title: Text(
-                          StringsManager.year28,
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                        onTap: () async {
-                          LinkableElement url = LinkableElement(
+                          )
+                        );
+                      },
+                      title:  StringsManager.leaderboard,
+                      icon:  IconsManager.leaderboardIcon
+                    ),//*Leaderboard
+                    CustomExpansionTile(
+                      title: StringsManager.years,
+                      icon: IconsManager.schoolIcon,
+                      children: [
+                       CustomExpansionTile(
+                         title: StringsManager.firstYear,
+                         childrenPadding: AppPaddings.p15,
+                         children: [
+                           CustomTile(
+                             onTap: () {
+                               AppConstants.navigatedSemester = StringsManager.one;
+                               navigate(
+                                 context,
+                                 SemesterNavigate(semester: StringsManager.one)
+                               );
+                             },
+                             title: StringsManager.firstSemester,
+                           ),
+                           CustomTile(
+                             onTap: () {
+                               AppConstants.navigatedSemester = StringsManager.two;
+                               navigate(
+                                 context,
+                                 SemesterNavigate(semester: StringsManager.two)
+                               );
+                             },
+                             title:  StringsManager.secondSemester,
+                           ),
+                         ]
+                       ),
+                       CustomExpansionTile(
+                         childrenPadding: AppPaddings.p15,
+                         title: StringsManager.secondYear,
+                         children: [
+                           CustomTile(
+                             onTap: () {
+                               AppConstants.navigatedSemester = StringsManager.three;
+                               navigate(
+                                 context,
+                                 SemesterNavigate(semester: StringsManager.three)
+                               );
+                             },
+                             title: StringsManager.firstSemester,
+                           ),
+                           CustomTile(
+                             onTap: () {
+                               AppConstants.navigatedSemester = StringsManager.four;
+                               navigate(
+                                 context,
+                                 SemesterNavigate(semester: StringsManager.four)
+                               );
+                             },
+                             title:  StringsManager.secondSemester,
+                           ),
+                         ]
+                       ),
+                       CustomExpansionTile(
+                         childrenPadding: AppPaddings.p15,
+                         title: StringsManager.thirdYear,
+                         children: [
+                           CustomTile(
+                             onTap: () {
+                               AppConstants.navigatedSemester = StringsManager.five;
+                               navigate(
+                                 context,
+                                 SemesterNavigate(semester: StringsManager.five)
+                               );
+                             },
+                             title: StringsManager.firstSemester,
+                           ),
+                           CustomTile(
+                             onTap: () {
+                               AppConstants.navigatedSemester = StringsManager.six;
+                               navigate(
+                                 context,
+                                 SemesterNavigate(semester: StringsManager.six)
+                               );
+                             },
+                             title:  StringsManager.secondSemester,
+                           ),
+                         ]
+                       ),
+                       CustomExpansionTile(
+                         childrenPadding: AppPaddings.p15,
+                         title: StringsManager.seniors,
+                         children: [
+                           CustomTile(
+                             onTap: () {
+                               AppConstants.navigatedSemester = StringsManager.seven;
+                               navigate(
+                                 context,
+                                 SemesterNavigate(semester: StringsManager.seven)
+                               );
+                             },
+                             title: StringsManager.firstSemester,
+                           ),
+                           CustomTile(
+                             onTap: () {
+                               AppConstants.navigatedSemester = StringsManager.eight;
+                               navigate(
+                                 context,
+                                 SemesterNavigate(semester: StringsManager.eight)
+                               );
+                             },
+                             title:  StringsManager.secondSemester,
+                           ),
+                         ]
+                       ),
+                     ]
+                    ),//*Years Navigation
+                    CustomExpansionTile(
+                      title: StringsManager.drive,
+                      isImage: true,
+                      imageIcon: AssetsManager.drive,
+                      children: [
+                        CustomTile(
+                          onTap: () async {
+                            LinkableElement url = LinkableElement(
                               StringsManager.drive.toLowerCase(),
                               AppConstants.year28Drive);
-                          await onOpen(context, url);
-                        },
-                      ),
-                      ListTile(
-                        title: Text(
-                          StringsManager.year27,
-                          style: Theme.of(context).textTheme.bodyLarge,
+                            await onOpen(context, url);
+                          },
+                          title: StringsManager.year28
                         ),
-                        onTap: () async {
-                          LinkableElement url = LinkableElement(
+                        CustomTile(
+                          onTap: () async {
+                            LinkableElement url = LinkableElement(
                               StringsManager.drive.toLowerCase(),
                               AppConstants.year27Drive);
-                          await onOpen(context, url);
-                        },
-                      ),
-                      ListTile(
-                        title: Text(
-                          StringsManager.year26,
-                          style: Theme.of(context).textTheme.bodyLarge,
+                            await onOpen(context, url);
+                          },
+                          title: StringsManager.year27
                         ),
-                        onTap: () async {
-                          LinkableElement url = LinkableElement(
+                        CustomTile(
+                          onTap: () async {
+                            LinkableElement url = LinkableElement(
                               StringsManager.drive.toLowerCase(),
                               AppConstants.year26Drive);
-                          await onOpen(context, url);
-                        },
-                      ),
-                      ListTile(
-                        title: Text(
-                          StringsManager.year25,
-                          style: Theme.of(context).textTheme.bodyLarge,
+                            await onOpen(context, url);
+                          },
+                          title: StringsManager.year26
                         ),
-                        onTap: () async {
-                          LinkableElement url = LinkableElement(
+                        CustomTile(
+                          onTap: () async {
+                            LinkableElement url = LinkableElement(
                               StringsManager.drive.toLowerCase(),
                               AppConstants.year25Drive);
-                          await onOpen(context, url);
-                        },
-                      ),
-                      ListTile(
-                        title: Text(
-                          StringsManager.year24,
-                          style: Theme.of(context).textTheme.bodyLarge,
+                            await onOpen(context, url);
+                          },
+                          title: StringsManager.year25
                         ),
-                        onTap: () async {
-                          LinkableElement url = LinkableElement(
+                        CustomTile(
+                          onTap: () async {
+                            LinkableElement url = LinkableElement(
                               StringsManager.drive.toLowerCase(),
                               AppConstants.year24Drive);
-                          await onOpen(context, url);
-                        },
-                      ),
-                    ],
-                  ), //Drive
-                  // ListTile(
-                  //   leading: Icon(
-                  //     IconsManager.linkIcon,
-                  //     color: Theme.of(context).iconTheme.color,
-                  //   ),
-                  //   title: Text(
-                  //     StringsManager.links,
-                  //     style: Theme.of(context).textTheme.bodyLarge,
-                  //   ),
-                  //   onTap: () => navigate(context, UsefulLinks()),
-                  // ), //important links
-                  ListTile(
-                    leading: Icon(
-                      IconsManager.paperIcon,
-                      color: Theme.of(context).iconTheme.color,
-                    ),
-                    title: Text(
-                      StringsManager.exams,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                    onTap: () => navigate(context, PreviousExams()),
-                  ), //Exams
-                  ExpansionTile(
-                    leading: Icon(
-                      IconsManager.supportAgentIcon,
-                      color: Theme.of(context).iconTheme.color,
-                    ),
-                    title: Text(
-                      StringsManager.support,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.zero), // Removes divider when expanded
-                    collapsedShape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius
-                            .zero), // Removes divider when collapsed
-                    childrenPadding:
-                        EdgeInsets.symmetric(horizontal: AppPaddings.p20),
-                    children: [
-                      ListTile(
-                        title: Text(
-                          StringsManager.reportBug,
-                          style: Theme.of(context).textTheme.bodyLarge,
+                            await onOpen(context, url);
+                          },
+                          title: StringsManager.year24
                         ),
-                        onTap: () {
-                          navigate(context, ReportBug());
-                        },
-                      ),
-                      ListTile(
-                        title: Text(
-                          StringsManager.feedback,
-                          style: Theme.of(context).textTheme.bodyLarge,
+                      ]
+                    ),//*Drive
+                    CustomTile(
+                      onTap: () => showToastMessage(message: 'Currently Updating', states: ToastStates.INFO),
+                      //onTap: () => navigate(context, UsefulLinks()),
+                      icon: IconsManager.linkIcon,
+                      title: StringsManager.links
+                    ),//*Useful Links
+                    CustomTile(
+                      onTap: () => navigate(context, PreviousExams()),
+                      icon: IconsManager.paperIcon,
+                      title: StringsManager.exams
+                    ),//*Previous Exams
+                    CustomExpansionTile(
+                      title: StringsManager.support,
+                      icon: IconsManager.supportAgentIcon,
+                      children: [
+                        CustomTile(
+                          onTap: () => navigate(context, ReportBug()),
+                          title: StringsManager.reportBug
                         ),
-                        onTap: () {
-                          navigate(context, FeedbackScreen());
-                        },
-                      ),
-                      ListTile(
-                        title: Text(
-                          StringsManager.releaseNotes,
-                          style: Theme.of(context).textTheme.bodyLarge,
+                        CustomTile(
+                          onTap: () => navigate(context, FeedbackScreen()),
+                          title: StringsManager.feedback
                         ),
-                        onTap: () {
-                          navigate(context, ReleaseNotesScreen());
-                        },
-                      ),
-                    ],
-                  ), //support
-                  ListTile(
-                    leading: Icon(
-                      IconsManager.groupIcon,
-                      color: Theme.of(context).iconTheme.color,
-                    ),
-                    title: Text(
-                      StringsManager.aboutUs,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                    onTap: () {
-                      navigate(context, AboutUs());
-                    },
-                  ), //about us
-                ],
-              )),
+                        CustomTile(
+                          onTap: () =>  navigate(context, ReleaseNotesScreen()),
+                          title:  StringsManager.releaseNotes
+                        ),
+                      ]
+                    ),//*Support
+                    CustomTile(
+                      onTap: () => navigate(context, AboutUs()),
+                      title: StringsManager.aboutUs,
+                      icon: IconsManager.groupIcon,
+                    )//*About Us
+                  ],
+                )
+              ),
             ),
             // login/logout button
             Padding(

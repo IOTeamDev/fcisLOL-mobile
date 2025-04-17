@@ -66,13 +66,13 @@ class HomeMobile extends StatelessWidget {
         ],
       ),
       drawer: Drawer(
-        width: AppQueries.screenWidth(context) / AppSizesDouble.s2_5,
+        width: AppQueries.screenWidth(context)/AppSizesDouble.s1_5,
         child: CustomDrawer(AppConstants.TOKEN == null
             ? AppConstants.SelectedSemester ?? ''
             : MainCubit.get(context).profileModel!.semester),
       ),
       drawerEdgeDragWidth:
-          AppQueries.screenWidth(context) * AppSizesDouble.s0_2,
+          AppQueries.screenWidth(context) * AppSizesDouble.s0_25,
       body: profile == null && AppConstants.TOKEN != null
           ? const Center(
               child: CircularProgressIndicator(),

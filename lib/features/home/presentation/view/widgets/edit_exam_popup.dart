@@ -167,13 +167,13 @@ class _EditExamPopupState extends State<EditExamPopup> {
                       dropdownColor: ColorsManager.white, // Background color for the dropdown list
                       iconEnabledColor: ColorsManager.white, // Color of the dropdown icon
                       style: const TextStyle(color: ColorsManager.white), // Style for the selected item outside
-                      items: semesters[semsesterIndex(selectedSemester!)].subjects.map((SubjectModel item) => DropdownMenuItem(
+                      items: semesters[getSemesterIndex(selectedSemester!)].subjects.map((SubjectModel item) => DropdownMenuItem(
                         value: item.subjectName,
                         child: Text(item.subjectName.replaceAll(StringsManager.underScore, StringsManager.space),  style: const TextStyle(color: ColorsManager.black),),
                       )
                       ).toList(),
                       selectedItemBuilder: (BuildContext context) {
-                        return semesters[semsesterIndex(selectedSemester!)].subjects.map((SubjectModel item) {
+                        return semesters[getSemesterIndex(selectedSemester!)].subjects.map((SubjectModel item) {
                           return DropdownMenuItem<String>(
                             value: item.subjectName,
                             child: Text(
