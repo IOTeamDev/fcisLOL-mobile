@@ -59,7 +59,7 @@ main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Cache.initialize();
   await DioHelp.initial();
-  await SendGridHelper.initial();
+  await MainSenderHelper.initial();
   await Firebase.initializeApp(
       options: kIsWeb ? DefaultFirebaseOptions.currentPlatform : null);
   try {

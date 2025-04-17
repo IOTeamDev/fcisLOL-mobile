@@ -6,20 +6,17 @@ class Breakpoints {
   static const double desktop = 1024;
 }
 
-enum DeviceType {
-  MOBILE,
-  TABLET,
-  DESKTOP
-}
+enum DeviceType { MOBILE, TABLET, DESKTOP }
 
 DeviceType getDeviceType(context) {
   final width = MediaQuery.of(context).size.width;
 
-  if(width < Breakpoints.mobile ) return DeviceType.MOBILE;
-  else if( width >= Breakpoints.mobile && width < Breakpoints.desktop) return DeviceType.TABLET;
+  if (width < Breakpoints.mobile)
+    return DeviceType.MOBILE;
+  else if (width >= Breakpoints.mobile && width < Breakpoints.desktop)
+    return DeviceType.TABLET;
   return DeviceType.DESKTOP;
 }
-
 
 class AppConstants {
   static String appVersion = 'V2.2.2+4';
@@ -29,7 +26,7 @@ class AppConstants {
   static String? previousExamsSelectedSemester;
   static String? previousExamsSelectedSubject;
   static const String appBaseUrl = 'https://fcislol.netlify.app/api/';
-  static const String sendGridBaseUrl = 'https://api.sendgrid.com/';
+  static const String brevoUrl = 'https://api.brevo.com/';
 
   static String sendGridApiKey = dotenv.env['API_KEY']!;
 

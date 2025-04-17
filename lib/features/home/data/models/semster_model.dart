@@ -13,11 +13,15 @@ class SubjectModel {
 }
 
 List<SubjectModel> semesterOne = [
-  SubjectModel(subjectName: "Introduction_to_Computer_Sciences", subjectImage: "images/c-.png"),
+  SubjectModel(
+      subjectName: "Introduction_to_Computer_Sciences",
+      subjectImage: "images/c-.png"),
   SubjectModel(subjectName: "Physics", subjectImage: "images/physics.png"),
   SubjectModel(subjectName: "Calculus", subjectImage: "images/integral.png"),
   SubjectModel(subjectName: "Psychology", subjectImage: "images/autism.png"),
-  SubjectModel(subjectName: "Probability_and_Statistics", subjectImage: "images/dice.png"),
+  SubjectModel(
+      subjectName: "Probability_and_Statistics",
+      subjectImage: "images/dice.png"),
   SubjectModel(subjectName: "English", subjectImage: "images/english.png"),
 ];
 
@@ -37,10 +41,9 @@ List<SubjectModel> semesterTwo = [
 List<SubjectModel> semesterThree = [
   SubjectModel(
       subjectName: "OOP",
-      subjectImage:"images/sm_5afbf1d28feb1-removebg-preview.png"),
+      subjectImage: "images/sm_5afbf1d28feb1-removebg-preview.png"),
   SubjectModel(
-      subjectName: "Statistical_Analysis",
-      subjectImage: "images/analysis.png"),
+      subjectName: "Statistical_Analysis", subjectImage: "images/analysis.png"),
   SubjectModel(subjectName: "Logic_Design", subjectImage: "images/Logic.png"),
   SubjectModel(
       subjectName: "Discrete_Mathematics",
@@ -66,15 +69,12 @@ List<SubjectModel> semesterFour = [
 ];
 
 List<SubjectModel> semesterFive = [
-  SubjectModel(subjectName: "Operating_Systems", subjectImage: "images/linux-logo.png"),
   SubjectModel(
-      subjectName: "DSP",
-      subjectImage:
-          "images/webpage.png"), //
+      subjectName: "Operating_Systems", subjectImage: "images/linux-logo.png"),
+  SubjectModel(subjectName: "DSP", subjectImage: "images/webpage.png"), //
   SubjectModel(
       subjectName: "Computer_Networks",
-      subjectImage:
-          "images/radio-antenna.png"),
+      subjectImage: "images/radio-antenna.png"),
   SubjectModel(
       subjectName: "System_Analysis_and_Design",
       subjectImage: "images/data-analysis.png"),
@@ -84,12 +84,10 @@ List<SubjectModel> semesterFive = [
       subjectName: "Compiler_Theory", subjectImage: "images/compiler.png"),
   SubjectModel(
       subjectName: "Numerical_Computing",
-      subjectImage:
-          "images/binary-code.png"), //
+      subjectImage: "images/binary-code.png"), //
   SubjectModel(
       subjectName: "Statistical_Inference",
-      subjectImage:
-          "images/analysis (1).png"), //
+      subjectImage: "images/analysis (1).png"), //
   SubjectModel(
       subjectName: "Microprocessors_and_interfacing",
       subjectImage: "images/microprocessor.png"), //
@@ -98,14 +96,11 @@ List<SubjectModel> semesterFive = [
 List<SubjectModel> semesterSix = [
   SubjectModel(
       subjectName: "Software_Engineering",
-      subjectImage:
-          "images/prototype.png"), //
+      subjectImage: "images/prototype.png"), //
   SubjectModel(
       subjectName: "Concepts_of_Programming_Languages",
       subjectImage: "images/coding-language.png"), //
-  SubjectModel(
-      subjectName: "HPC",
-      subjectImage: "images/performance.png"), //
+  SubjectModel(subjectName: "HPC", subjectImage: "images/performance.png"), //
   SubjectModel(
       subjectName: "Analysis_and_Design_of_Algorithms",
       subjectImage: "images/algorithm.png"), //

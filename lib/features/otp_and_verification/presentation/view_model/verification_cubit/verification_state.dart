@@ -14,11 +14,7 @@ class VerificationTimerCompleteState extends VerificationState {}
 
 final class SendVerificationCodeToEmailLoading extends VerificationState {}
 
-final class SendVerificationCodeToEmailSuccess extends VerificationState {
-  final String otp;
-
-  SendVerificationCodeToEmailSuccess({required this.otp});
-}
+final class SendVerificationCodeToEmailSuccess extends VerificationState {}
 
 final class SendVerificationCodeToEmailFailed extends VerificationState {
   final String errMessage;

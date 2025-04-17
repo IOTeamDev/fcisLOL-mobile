@@ -55,29 +55,16 @@ class VerificationCubit extends Cubit<VerificationState> {
     _otp = 100000 + random.nextInt(900000);
 
     try {
-      await SendGridHelper.post(
-        endPoint: sendGridEndPoint,
-        data: {
-          "personalizations": [
-            {
-              "to": [
-                {"email": recepientEmail, "name": recepientName ?? ""},
-              ],
-            },
-          ],
-          "from": {"email": "elnawawyseif@gmail.com"},
-          "subject": "Verifying Uni Notes account",
-          "content": [
-            {
-              "type": "text/html",
-              "value":
-                  "Hello ${recepientName ?? ''}, your Uni Notes verification code is: <strong>$_otp</strong>",
-            },
-          ],
-        },
-      );
-
-      emit(SendVerificationCodeToEmailSuccess(otp: _otp.toString()));
+      await MainSenderHelper.post(endPoint: brevoEndPoint, data: {
+        "sender": {"name": "UniNotes", "email": "notesu362@gmail.com"},
+        "to": [
+          {"email": "$recepientEmail", "name": "$recepientName "}
+        ],
+        "subject": "Verifying UniNotes account",
+        "htmlContent":
+            "<html><head><style>body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; } .container { background-color: #fff; padding: 20px; border-radius: 8px; max-width: 500px; margin: auto; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); } h2 { color: #333; } p { font-size: 16px; color: #555; } .otp { font-size: 18px; font-weight: bold; color: #007BFF; }</style></head><body><div class='container'><h2>Hello Seif,</h2><p>Welcome to UniNotes! Your one-time password (OTP) is:</p><p class='otp'>$_otp</p><p>Please use this code to complete your verification.</p><p>Best regards,<br>UniNotes Team</p></div></body></html>"
+      });
+      emit(SendVerificationCodeToEmailSuccess());
     } catch (e) {
       debugPrint(e.toString());
       emit(
@@ -88,15 +75,18 @@ class VerificationCubit extends Cubit<VerificationState> {
     }
   }
 
-  Future<void> verityEmail({required ProfileModel profile, required String otp}) async {
+  Future<void> verityEmail(
+      {required ProfileModel profile, required String otp}) async {
     emit(EmailVerifiedLoading());
     try {
       if (otp == _otp.toString()) {
         await DioHelp.putData(
-          query: {'id': profile.id},
-          path: USERS,
-          data: {'isVerified': true,},
-          token: AppConstants.TOKEN);
+            query: {'id': profile.id},
+            path: USERS,
+            data: {
+              'isVerified': true,
+            },
+            token: AppConstants.TOKEN);
         emit(EmailVerifiedSuccess());
       } else {
         emit(EmailVerifiedFailed(errMessage: 'Incorrect OTP'));

@@ -44,16 +44,20 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
       listener: (context, state) {
         if (state is EmailVerifiedSuccess) {
           showToastMessage(
-            message: 'Your Email is verified now.',
-            states: ToastStates.SUCCESS
-          );
-          if (context.read<MainCubit>().profileModel!.photo == AppConstants.defaultProfileImage) {
+              message: 'Your Email is verified now.',
+              states: ToastStates.SUCCESS);
+          if (context.read<MainCubit>().profileModel!.photo ==
+              AppConstants.defaultProfileImage) {
             navigatReplace(context, SelectImage());
           } else {
             navigatReplace(context, Home());
           }
         }
         if (state is EmailVerifiedFailed) {
+          showToastMessage(
+              message: state.errMessage, states: ToastStates.ERROR);
+        }
+        if (state is SendVerificationCodeToEmailFailed) {
           showToastMessage(
               message: state.errMessage, states: ToastStates.ERROR);
         }
@@ -68,10 +72,10 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
           appBar: AppBar(
             actions: [
               IconButton(
-                onPressed: () async {
-                  await context.read<MainCubit>().logout(context);
-                },
-                icon: Icon(Icons.logout))
+                  onPressed: () async {
+                    await context.read<MainCubit>().logout(context);
+                  },
+                  icon: Icon(Icons.logout))
             ],
           ),
           body: Stack(
@@ -82,34 +86,40 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                   Container(
                     height: AppSizesDouble.s150,
                     decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: ColorsManager.darkPrimary,
-                      image: DecorationImage(image: AssetImage(AssetsManager.verification_screen_logo))),
+                        shape: BoxShape.circle,
+                        color: ColorsManager.darkPrimary,
+                        image: DecorationImage(
+                            image: AssetImage(
+                                AssetsManager.verification_screen_logo))),
                   ),
                   SizedBox(
                     height: AppSizesDouble.s15,
                   ),
                   FittedBox(
-                    child: Text(
-                      'OTP Verification',
-                      style: Theme.of(context).textTheme.displayMedium,
-                    )
-                  ),
+                      child: Text(
+                    'OTP Verification',
+                    style: Theme.of(context).textTheme.displayMedium,
+                  )),
                   SizedBox(
                     height: AppSizesDouble.s5,
                   ),
-                  FittedBox(child: Text('Enter The Otp Sent to "${widget.recipientEmail}"')),
+                  FittedBox(
+                      child: Text(
+                          'Enter The Otp Sent to "${widget.recipientEmail}"')),
                 ],
               ),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: AppSizesDouble.s30, vertical: AppSizesDouble.s50),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: AppSizesDouble.s30,
+                      vertical: AppSizesDouble.s50),
                   width: double.infinity,
                   height: AppQueries.screenHeight(context) / AppSizes.s2,
                   decoration: BoxDecoration(
                       color: ColorsManager.darkPrimary,
-                      borderRadius: BorderRadius.only(topLeft: Radius.circular(AppSizesDouble.s95))),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(AppSizesDouble.s95))),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

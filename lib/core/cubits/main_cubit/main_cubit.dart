@@ -148,7 +148,7 @@ class MainCubit extends Cubit<MainCubitStates> {
       AppConstants.SelectedSemester = profileModel!.semester;
       await Cache.writeData(
           key: KeysManager.semester, value: profileModel!.semester);
-      print(response.data);
+      print(AppConstants.TOKEN);
       emit(GetProfileSuccess());
     } catch (e) {
       print(e.toString());
