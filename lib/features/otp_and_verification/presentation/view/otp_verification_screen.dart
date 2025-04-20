@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,6 +42,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log(AppConstants.TOKEN.toString());
+    log(context.read<MainCubit>().profileModel!.id.toString());
     return BlocListener<VerificationCubit, VerificationState>(
       listener: (context, state) {
         if (state is EmailVerifiedSuccess) {
@@ -160,9 +164,9 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                                     BorderRadius.circular(AppSizesDouble.s15)),
                             backgroundColor: ColorsManager.lightPrimary),
                         onPressed: () async {
-                          await context.read<VerificationCubit>().verityEmail(
-                              profile: context.read<MainCubit>().profileModel!,
-                              otp: _otpController.text);
+                          await context
+                              .read<VerificationCubit>()
+                              .verityEmail(otp: _otpController.text);
                         },
                         child: Text(
                           'Verify',

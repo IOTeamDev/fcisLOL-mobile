@@ -1,6 +1,8 @@
+import 'dart:developer' as dev;
 import 'dart:math';
 
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:lol/core/models/profile/profile_model.dart';
 import 'package:lol/core/network/endpoints.dart';
@@ -55,7 +57,8 @@ class VerificationCubit extends Cubit<VerificationState> {
     _otp = 100000 + random.nextInt(900000);
 
     try {
-      await MainSenderHelper.post(endPoint: brevoEndPoint, data: {
+      final Response response =
+          await MainSenderHelper.post(endPoint: brevoEndPoint, data: {
         "sender": {"name": "UniNotes", "email": "notesu362@gmail.com"},
         "to": [
           {"email": "$recepientEmail", "name": "$recepientName "}
@@ -64,7 +67,14 @@ class VerificationCubit extends Cubit<VerificationState> {
         "htmlContent":
             "<html><head><style>body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; } .container { background-color: #fff; padding: 20px; border-radius: 8px; max-width: 500px; margin: auto; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); } h2 { color: #333; } p { font-size: 16px; color: #555; } .otp { font-size: 18px; font-weight: bold; color: #007BFF; }</style></head><body><div class='container'><h2>Hello Seif,</h2><p>Welcome to UniNotes! Your one-time password (OTP) is:</p><p class='otp'>$_otp</p><p>Please use this code to complete your verification.</p><p>Best regards,<br>UniNotes Team</p></div></body></html>"
       });
-      emit(SendVerificationCodeToEmailSuccess());
+      if (response.data['message'] == null) {
+        emit(SendVerificationCodeToEmailSuccess());
+      } else {
+        debugPrint(response.data['message']);
+        emit(SendVerificationCodeToEmailFailed(
+          errMessage: response.data['message'],
+        ));
+      }
     } catch (e) {
       debugPrint(e.toString());
       emit(
@@ -75,14 +85,12 @@ class VerificationCubit extends Cubit<VerificationState> {
     }
   }
 
-  Future<void> verityEmail(
-      {required ProfileModel profile, required String otp}) async {
+  Future<void> verityEmail({required String otp}) async {
     emit(EmailVerifiedLoading());
     try {
       if (otp == _otp.toString()) {
-        await DioHelp.putData(
-            query: {'id': profile.id},
-            path: USERS,
+        await DioHelp.patchData(
+            path: EDITCURRENTUSER,
             data: {
               'isVerified': true,
             },
