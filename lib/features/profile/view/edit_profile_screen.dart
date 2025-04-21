@@ -11,6 +11,7 @@ import 'package:lol/core/utils/navigation.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/core/utils/resources/icons_manager.dart';
+import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/core/utils/resources/values_manager.dart';
 import 'package:lol/features/pick_image/presentation/view/select_image.dart';
@@ -35,8 +36,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
   @override
   void initState() {
     super.initState();
-    _tabController =
-        TabController(length: 3, vsync: this, animationDuration: Duration.zero);
+    _tabController = TabController(length: 3, vsync: this, animationDuration: Duration.zero);
   }
 
   @override
@@ -44,9 +44,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
     return BlocListener<PickImageCubit, PickImageState>(
       listener: (context, state) {
         if (state is UploadImageSuccess) {
-          context
-              .read<PickImageCubit>()
-              .updateProfileImage(imageUrl: state.imageUrl);
+          context.read<PickImageCubit>().updateProfileImage(imageUrl: state.imageUrl);
         }
         if (state is UpdateUserImageSuccess) {
           _refreshProfileModel();
@@ -65,7 +63,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Edit Profile',
+            StringsManager.editProfile,
             style: Theme.of(context).textTheme.displayMedium,
           ),
           centerTitle: true,
@@ -76,20 +74,15 @@ class _EditProfileScreenState extends State<EditProfileScreen>
             BlocBuilder<MainCubit, MainCubitStates>(
               builder: (context, state) {
                 return SizedBox(
-                  height: AppQueries.screenWidth(context) / 3,
-                  width: AppQueries.screenWidth(context) / 3,
+                  height: AppQueries.screenWidth(context) / AppSizes.s3,
+                  width: AppQueries.screenWidth(context) / AppSizes.s3,
                   child: InkWell(
                     splashColor: ColorsManager.transparent,
                     onTap: () async {
                       final cubit = context.read<PickImageCubit>();
-                      final image = await cubit.pickimage();
+                      final image = await cubit.pickImage();
                       if (image != null) {
-                        await cubit.deleteUserImage(
-                            image: getImageNameFromUrl(
-                                imageUrl: context
-                                    .read<MainCubit>()
-                                    .profileModel!
-                                    .photo!));
+                        await cubit.deleteUserImage(image: getImageNameFromUrl(imageUrl: context.read<MainCubit>().profileModel!.photo!));
                         await cubit.uploadUserImage(image: image);
                       }
                     },
@@ -98,20 +91,20 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                       alignment: Alignment.center,
                       children: [
                         CircleAvatar(
-                          radius: AppQueries.screenWidth(context) / 5,
+                          radius: AppQueries.screenWidth(context) / AppSizes.s5,
                           backgroundImage: NetworkImage(
                               MainCubit.get(context).profileModel?.photo ??
                                   AppConstants.defaultProfileImage),
                         ),
                         Container(
                           decoration: BoxDecoration(
-                              color: ColorsManager.black.withValues(alpha: 0.4),
-                              borderRadius: BorderRadius.circular(100)),
-                          width: AppQueries.screenWidth(context) / 2.5,
-                          height: AppQueries.screenWidth(context) / 2.5,
+                              color: ColorsManager.black.withValues(alpha: AppSizesDouble.s0_4),
+                              borderRadius: BorderRadius.circular(AppSizesDouble.s100)),
+                          width: AppQueries.screenWidth(context) / AppSizesDouble.s2_5,
+                          height: AppQueries.screenWidth(context) / AppSizesDouble.s2_5,
                           child: Icon(
                             IconsManager.editIcon,
-                            size: AppQueries.screenWidth(context) / 4,
+                            size: AppQueries.screenWidth(context) / AppSizes.s4,
                           ),
                         ),
                       ],
@@ -121,24 +114,24 @@ class _EditProfileScreenState extends State<EditProfileScreen>
               },
             ),
             SizedBox(
-              height: 30,
+              height: AppSizesDouble.s30,
             ),
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                padding: EdgeInsets.all(5),
+                padding: EdgeInsets.all(AppPaddings.p5),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.vertical(
                         top: Radius.circular(AppSizesDouble.s40)),
                     color: Provider.of<ThemeProvider>(context).isDark
                         ? ColorsManager.grey5
                         : ColorsManager.grey7),
-                height: AppQueries.screenHeight(context) / 1.5,
+                height: AppQueries.screenHeight(context) / AppSizesDouble.s1_5,
                 child: Column(
                   children: [
                     TabBar(
                         indicatorColor: ColorsManager.lightPrimary,
-                        indicatorWeight: 1.0,
+                        indicatorWeight: AppSizesDouble.s1,
                         indicatorAnimation: TabIndicatorAnimation.elastic,
                         labelColor: ColorsManager.lightPrimary,
                         dividerColor: ColorsManager.darkPrimary,
@@ -148,33 +141,32 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                         labelStyle: TextStyle(),
                         tabs: [
                           Tab(
-                            text: 'Personal Info',
-                            height: 40,
+                            text: StringsManager.personalInfo,
+                            height: AppSizesDouble.s40,
                           ),
                           Tab(
-                            height: 40,
-                            text: 'Change Password',
+                            height: AppSizesDouble.s40,
+                            text: StringsManager.changePassword,
                           ),
                           Tab(
-                            height: 40,
+                            height: AppSizesDouble.s40,
                             child: FittedBox(
                               child: AnimatedBuilder(
                                 animation: _tabController,
                                 builder: (context, _) {
-                                  final isLastTabSelected =
-                                      _tabController.index == 2;
+                                  final isLastTabSelected = _tabController.index == AppSizes.s2;
                                   return AnimatedDefaultTextStyle(
                                     child: Text(
-                                      'Delete Account',
+                                      StringsManager.deleteAccount,
                                     ),
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 16,
+                                      fontSize: AppSizesDouble.s16,
                                       color: isLastTabSelected
                                           ? ColorsManager.imperialRed
                                           : ColorsManager.darkRed,
                                     ),
-                                    duration: Duration(milliseconds: 70),
+                                    duration: Duration(milliseconds: AppSizes.s70),
                                   );
                                 },
                               ),
@@ -182,16 +174,20 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                           ),
                         ]),
                     Expanded(
-                        child: TabBarView(children: [
-                      BasicInfoEdit(
-                          semester:
-                              MainCubit.get(context).profileModel!.semester,
-                          phone: MainCubit.get(context).profileModel!.phone,
-                          userName: MainCubit.get(context).profileModel!.name,
-                          email: MainCubit.get(context).profileModel!.email),
-                      LoginInfoEdit(),
-                      DeleteAccountSection(),
-                    ], controller: _tabController))
+                      child: TabBarView(
+                        children: [
+                          BasicInfoEdit(
+                            semester: MainCubit.get(context).profileModel!.semester,
+                            phone: MainCubit.get(context).profileModel!.phone,
+                            userName: MainCubit.get(context).profileModel!.name,
+                            email: MainCubit.get(context).profileModel!.email
+                          ),
+                          LoginInfoEdit(),
+                          DeleteAccountSection(),
+                        ],
+                        controller: _tabController
+                      )
+                    )
                   ],
                 ),
               ),

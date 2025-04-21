@@ -3,8 +3,6 @@ const String _imagePath = 'images/';
 class AssetsManager{
   static const String drawerButtonLight = '${_imagePath}mage_dashboard-fill-1.png';
   static const String drawerButtonDark = '${_imagePath}mage_dashboard-fill.png';
-  static const String appIcon = '${_imagePath}l.png';
-  static const String person = '${_imagePath}l.png';
   static const String drive = '${_imagePath}mingcute_drive-fill.png';
   static const String noAnnouncements = '${_imagePath}no_announcement_image.png';
   static const String onBoarding1 = '${_imagePath}newOnBoarding1.png';

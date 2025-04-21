@@ -113,12 +113,15 @@ class _RegisterscreenState extends State<RegisterMobile> {
                 ),
                 BlocBuilder<AuthCubit, AuthState>(
                   builder: (context, state) {
-                    return defaultLoginInputField(_passwordController,
-                      StringsManager.password, TextInputType.visiblePassword,
+                    return defaultLoginInputField(
+                      _passwordController,
+                      StringsManager.password,
+                      TextInputType.visiblePassword,
                       isPassword: true,
                       loginCubit: AuthCubit.get(context),
                       suffixIcon: IconsManager.eyeIcon,
-                      textInputAction: TextInputAction.next);
+                      textInputAction: TextInputAction.next
+                    );
                   },
                 ),
                 const SizedBox(
@@ -133,10 +136,9 @@ class _RegisterscreenState extends State<RegisterMobile> {
                       isPassword: true,
                       loginCubit: AuthCubit.get(context),
                       isConfirmPassword: true,
-                      validationMessage:
-                          StringsManager.passwordNotMatchingError,
+                      validationMessage: StringsManager.passwordNotMatchingError,
                       validator: (value) {
-                        if (value!.isEmpty) {
+                        if (value != null && value.isEmpty) {
                           return StringsManager.emptyFieldWarning;
                         } else if (value != _passwordController.text) {
                           return 'Passwords does not match';

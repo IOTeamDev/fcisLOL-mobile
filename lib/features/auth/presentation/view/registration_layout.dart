@@ -55,9 +55,7 @@ class _RegistrationLayoutState extends State<RegistrationLayout>
           }
           if (state is RegisterSuccess) {
             AppConstants.TOKEN = state.token;
-
             Cache.writeData(key: KeysManager.token, value: state.token);
-
             showToastMessage(
               message: 'You need to verify your email',
               states: ToastStates.SUCCESS,
@@ -67,7 +65,6 @@ class _RegistrationLayoutState extends State<RegistrationLayout>
                 builder: (context) => BlocProvider(
                   create: (context) => VerificationCubit(),
                   child: OtpVerificationScreen(
-                    selectedMethod: 'email',
                     recipientEmail: state.userEmail,
                   ),
                 ),

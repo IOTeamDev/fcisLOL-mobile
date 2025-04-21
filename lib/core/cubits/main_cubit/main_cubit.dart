@@ -50,33 +50,6 @@ class MainCubit extends Cubit<MainCubitStates> {
   File? userImageFile;
   String? userImagePath;
   var picker = ImagePicker();
-  // getUserImage({required bool fromGallery}) async {
-  //   emit(GetUserImageLoading());
-  //   pickerIcon = IconsManager.imageIcon;
-  //   imageName = StringsManager.selectImage;
-  //   //const int maxStorageLimit = 1000000000; // 1 GB in bytes
-
-  //   var tempPostImage = await picker.pickImage(
-  //       source: fromGallery ? ImageSource.gallery : ImageSource.camera);
-  //   if (tempPostImage != null) {
-  //     userImageFile = File(tempPostImage.path);
-  //     pickerIcon = IconsManager.closeIcon;
-  //     imageName = tempPostImage.path.split(StringsManager.forwardSlash).last;
-  //     // final int sizeInBytes = await userImageFile!.length();
-  //     // final int sizeInMB = sizeInBytes ~/ sqrt(AppSizes.s1024);
-
-  //     emit(GetUserImageSuccess());
-  //     // if (sizeInMB <= AppSizes.s1) {
-  //     // } else {
-  //     //   userImageFile = null;
-  //     //   emit(GetUserImageLimitExceed());
-  //     // }
-  //   } else {
-  //     imageName = StringsManager.selectImage;
-  //     pickerIcon = IconsManager.imageIcon;
-  //     emit(GetUserImageFailure());
-  //   }
-  // }
 
   File? announcementImageFile;
   String? announcementImagePath;
@@ -100,43 +73,6 @@ class MainCubit extends Cubit<MainCubitStates> {
       emit(GetAnnouncementImageFailure());
     }
   }
-
-  // Future<void> uploadPImage({File? image, bool isUserProfile = true}) async {
-  //   announcementImagePath = null;
-  //   emit(UploadImageLoading());
-  //   if (image == null) return;
-
-  //   showToastMessage(
-  //       message: StringsManager.uploadImage, states: ToastStates.WARNING);
-  //   final TaskSnapshot uploadTask;
-  //   if (isUserProfile) {
-  //     uploadTask = await FirebaseStorage.instance
-  //         .ref()
-  //         .child(StringsManager.image.toLowerCase() +
-  //             StringsManager.forwardSlash +
-  //             Uri.file(image.path).pathSegments.last)
-  //         .putFile(image);
-  //   } else {
-  //     uploadTask = await FirebaseStorage.instance
-  //         .ref()
-  //         .child(StringsManager.announcements.toLowerCase() +
-  //             StringsManager.forwardSlash +
-  //             Uri.file(image.path).pathSegments.last)
-  //         .putFile(image);
-  //   }
-
-  //   try {
-  //     final imagePath = await uploadTask.ref.getDownloadURL();
-  //     if (isUserProfile) {
-  //       userImagePath = imagePath;
-  //     } else {
-  //       announcementImagePath = imagePath;
-  //     }
-  //     emit(UploadImageSuccess());
-  //   } on Exception {
-  //     emit(UploadImageFailure());
-  //   }
-  // }
 
   ProfileModel? profileModel;
   Future<void> getProfileInfo() async {
@@ -260,9 +196,9 @@ class MainCubit extends Cubit<MainCubitStates> {
     emit(AcceptRequestLoadingState());
     try {
       await DioHelp.getData(
-          path: ACCEPT,
-          query: {KeysManager.id: id, KeysManager.accepted: true},
-          token: AppConstants.TOKEN);
+        path: ACCEPT,
+        query: {KeysManager.id: id, KeysManager.accepted: true},
+        token: AppConstants.TOKEN);
       emit(AcceptRequestSuccessState());
       if (role == KeysManager.developer) {
         getAllSemestersRequests();
@@ -274,12 +210,10 @@ class MainCubit extends Cubit<MainCubitStates> {
     }
   }
 
-  List<LeaderboardModel>? leaderboardModel;
   List<LeaderboardModel>? notAdminLeaderboardModel;
 
   Future? getLeaderboard(currentSemester) {
     notAdminLeaderboardModel = [];
-    leaderboardModel = [];
     emit(GetLeaderboardLoadingState());
     DioHelp.getData(
         path: LEADERBOARD,
@@ -289,9 +223,6 @@ class MainCubit extends Cubit<MainCubitStates> {
         if (element[StringsManager.role] != KeysManager.admin &&
             element[StringsManager.role] != KeysManager.developer) {
           notAdminLeaderboardModel?.add(LeaderboardModel.fromJson(element));
-        } else {
-          leaderboardModel?.add(LeaderboardModel.fromJson(
-              element)); //just to get the score of Admin
         }
       });
 
@@ -346,14 +277,13 @@ class MainCubit extends Cubit<MainCubitStates> {
 
   void sendReportBugOrFeedBack(message, {bool isFeedback = false}) {
     DioHelp.postData(
-            path: REPORT,
-            data: {'name': profileModel?.name ?? 'Guest', 'message': message})
-        .then((value) {
+      path: REPORT,
+      data: {'name': profileModel?.name ?? 'Guest', 'message': message}).then((value) {
       emit(SendingReportOrFeedBackSuccessState());
       showToastMessage(
-          message:
-              '${isFeedback ? 'Feedback' : 'Bug Report'} Sent Successfully!',
-          states: ToastStates.SUCCESS);
+        message: '${isFeedback ? 'Feedback' : 'Bug Report'} Sent Successfully!',
+        states: ToastStates.SUCCESS
+      );
     });
   }
 

@@ -41,6 +41,14 @@ class StringsManager {
   static const String seven = 'Seven';
   static const String eight = 'Eight';
   static const String notFoundErrorCode = '404';
+  static const String noCodeReceived = "didn't Receive a code?";
+  static const String sendAgain = 'Send Again';
+  static const String verify = 'Verify';
+  static const String changePassword = 'Change Password';
+  static const String newPassword = 'New Password';
+  static const String otpVerification = 'OTP Verification';
+  static const String mailIsNowVerified = 'Your Email is verified now.';
+  static const String verificationComplete = 'Verification Success';
   static const String thisLinkIsCorrupted = 'This link is Corrupted';
   static const String anErrorOccurred =
       'An Error Occurred, no worries just send us a report bug request and it will be fixed AS SOON AS possible';
@@ -143,15 +151,26 @@ class StringsManager {
   static const String signInErrorMessage =
       'Wrong credentials, Please Try again!!';
   static const String email = 'Email';
+  static const String emailAddress = 'Email Address';
   static const String password = 'Password';
   static const String confirmPassword = "Confirm Password";
   static const String fullName = 'Full Name';
   static const String phoneNumber = 'Phone Number';
   static const String forgotPassword = 'Forgot Password';
   static const String passwordNotMatchingError = 'Passwords does not match';
+  static const String passwordUpdatedMessage = 'Password Changed Successfully';
   static const String contact = 'Contact';
   static const String profileImage = 'Profile Image';
+  static const String editProfile = 'Edit Profile';
+  static const String wrongEmail = 'Wrong Email?';
+  static const String changeEmail = 'Change Email';
+  static const String personalInfo = 'Personal Info';
+  static const String deleteAccount = 'Delete Account';
+  static const String userName = 'User Name';
+  static const String username = 'Username';
   static const String semester = 'Semester';
+  static const String selectSemester = 'Select Semester';
+  static const String saveData = 'Save Data';
 }
 
 class KeysManager {

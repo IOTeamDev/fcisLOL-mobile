@@ -33,9 +33,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
                 builder: (context) => BlocProvider(
                   create: (context) => VerificationCubit(),
                   child: OtpVerificationScreen(
-                    selectedMethod: 'email',
-                    recipientEmail:
-                        context.read<MainCubit>().profileModel!.email,
+                    recipientEmail: context.read<MainCubit>().profileModel!.email,
                   ),
                 ),
               ),

@@ -29,3 +29,17 @@ final class EmailVerifiedFailed extends VerificationState {
   final String errMessage;
   EmailVerifiedFailed({required this.errMessage});
 }
+
+final class VerificationChangeEyeState extends VerificationState{}
+
+final class VerificationUpdatePasswordLoadingState extends VerificationState{}
+
+final class VerificationUpdatePasswordSuccessState extends VerificationState{}
+
+final class VerificationUpdatePasswordErrorState extends VerificationState{}
+
+final class VerificationGetIDLoadingState extends VerificationState{}
+
+final class VerificationGetIDSuccessState extends VerificationState{}
+
+final class VerificationGetIDErrorState extends VerificationState{}

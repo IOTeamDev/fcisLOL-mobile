@@ -25,7 +25,7 @@ class LeaderboardScreen extends StatelessWidget {
     return BlocConsumer<MainCubit, MainCubitStates>(
       listener: (context, state) {},
       builder: (context, state) {
-        if(MainCubit.get(context).leaderboardModel == null){
+        if(MainCubit.get(context).notAdminLeaderboardModel == null){
           MainCubit.get(context).getLeaderboard(semester);
         }
         return Scaffold(

@@ -116,7 +116,7 @@ class _SelectImageState extends State<SelectImage> {
                           onPressed: () async {
                             _image = await context
                                 .read<PickImageCubit>()
-                                .pickimage();
+                                .pickImage();
                             if (_image != null) {
                               setState(() {});
                             }

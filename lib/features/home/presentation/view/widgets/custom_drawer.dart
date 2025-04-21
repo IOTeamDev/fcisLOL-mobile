@@ -54,105 +54,104 @@ class _CustomDrawerState extends State<CustomDrawer> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //header
-            AppConstants.TOKEN != null
-                ? SizedBox(
-                    height:AppQueries.screenHeight(context) / AppSizesDouble.s3_2,
-                    child: UserAccountsDrawerHeader(
-                      // otherAccountsPictures: [
-                      // IconButton(
-                      //     onPressed: () {
-                      //       Provider.of<ThemeProvider>(context,
-                      //               listen: false)
-                      //           .toggleDarkMode();
-                      //     },
-                      //     icon: Icon(
-                      //       Provider.of<ThemeProvider>(context).isDark
-                      //           ? IconsManager.lightModeIcon
-                      //           : IconsManager.darkModeIcon,
-                      //       color: Theme.of(context).iconTheme.color,
-                      //     ))
-                      // ],
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).drawerTheme.backgroundColor),
-                      accountName: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+            AppConstants.TOKEN != null ?
+            SizedBox(
+              height:AppQueries.screenHeight(context) / AppSizesDouble.s3_2,
+              child: UserAccountsDrawerHeader(
+                // otherAccountsPictures: [
+                // IconButton(
+                //     onPressed: () {
+                //       Provider.of<ThemeProvider>(context,
+                //               listen: false)
+                //           .toggleDarkMode();
+                //     },
+                //     icon: Icon(
+                //       Provider.of<ThemeProvider>(context).isDark
+                //           ? IconsManager.lightModeIcon
+                //           : IconsManager.darkModeIcon,
+                //       color: Theme.of(context).iconTheme.color,
+                //     ))
+                // ],
+                decoration: BoxDecoration(
+                    color: Theme.of(context).drawerTheme.backgroundColor),
+                accountName: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ConstrainedBox(
+                      constraints: BoxConstraints(
+                          maxWidth: AppQueries.screenWidth(context) /
+                              AppSizesDouble.s1_5),
+                      child: Text(
+                        profileModel!.name,
+                        style: Theme.of(context).textTheme.titleLarge,
+                        maxLines: AppSizes.s1,
+                      ),
+                    ),
+                    const Spacer(),
+                    Text(AppConstants.Level(profileModel!.semester),
+                        style: Theme.of(context).textTheme.bodyLarge),
+                  ],
+                ),
+                // accountEmail: Text("2nd year "),
+                accountEmail: Container(
+                  margin: EdgeInsets.zero, // Remove any margin
+                  padding: EdgeInsets.zero, // Remove any padding
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: AppPaddings.p5),
+                    child: GestureDetector(
+                      onTap: () => navigate(context, const Profile()),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          ConstrainedBox(
-                            constraints: BoxConstraints(
-                                maxWidth: AppQueries.screenWidth(context) /
-                                    AppSizesDouble.s1_5),
-                            child: Text(
-                              profileModel!.name,
-                              style: Theme.of(context).textTheme.titleLarge,
-                              maxLines: AppSizes.s1,
-                            ),
+                          Icon(IconsManager.personIcon),
+                          SizedBox(width: AppSizesDouble.s10),
+                          Text(
+                            StringsManager.profileInfo,
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
-                          const Spacer(),
-                          Text(AppConstants.Level(profileModel!.semester),
-                              style: Theme.of(context).textTheme.bodyLarge),
                         ],
                       ),
-                      // accountEmail: Text("2nd year "),
-                      accountEmail: Container(
-                        margin: EdgeInsets.zero, // Remove any margin
-                        padding: EdgeInsets.zero, // Remove any padding
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: AppPaddings.p5),
-                          child: GestureDetector(
-                            onTap: () => navigate(context, const Profile()),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Icon(IconsManager.personIcon),
-                                SizedBox(width: AppSizesDouble.s10),
-                                Text(
-                                  StringsManager.profileInfo,
-                                  style: Theme.of(context).textTheme.bodyLarge,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      currentAccountPicture: ClipOval(
-                        child: Image.network(
-                          profileModel!.photo!,
-                          width: AppSizesDouble.s10,
-                          height: AppSizesDouble.s10,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
                     ),
-                  )
-                : UserAccountsDrawerHeader(
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).scaffoldBackgroundColor),
-                    accountName: Text(
-                      StringsManager.guest,
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    accountEmail: Text(
-                      AppConstants.Level(AppConstants.SelectedSemester ?? ''),
-                      style: Theme.of(context).textTheme.displayLarge,
-                    ),
-                    currentAccountPicture: const CircleAvatar(
-                      backgroundImage:
-                          NetworkImage(AppConstants.defaultProfileImage),
-                    ),
-                    // otherAccountsPictures: [
-                      // IconButton(
-                      //     onPressed: () {
-                      //       Provider.of<ThemeProvider>(context, listen: false)
-                      //           .toggleDarkMode();
-                      //     },
-                      //     icon: Icon(
-                      //       Provider.of<ThemeProvider>(context).isDark
-                      //           ? IconsManager.lightModeIcon
-                      //           : IconsManager.darkModeIcon,
-                      //       color: Theme.of(context).iconTheme.color,
-                      //     ))
-                    // ],
                   ),
+                ),
+                currentAccountPicture: ClipOval(
+                  child: Image.network(
+                    profileModel!.photo!,
+                    width: AppSizesDouble.s10,
+                    height: AppSizesDouble.s10,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ) :
+            UserAccountsDrawerHeader(
+              decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor),
+              accountName: Text(
+                StringsManager.guest,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              accountEmail: Text(
+                AppConstants.Level(AppConstants.SelectedSemester ?? ''),
+                style: Theme.of(context).textTheme.displayLarge,
+              ),
+              currentAccountPicture: const CircleAvatar(
+                backgroundImage:
+                    NetworkImage(AppConstants.defaultProfileImage),
+              ),
+              // otherAccountsPictures: [
+                // IconButton(
+                //     onPressed: () {
+                //       Provider.of<ThemeProvider>(context, listen: false)
+                //           .toggleDarkMode();
+                //     },
+                //     icon: Icon(
+                //       Provider.of<ThemeProvider>(context).isDark
+                //           ? IconsManager.lightModeIcon
+                //           : IconsManager.darkModeIcon,
+                //       color: Theme.of(context).iconTheme.color,
+                //     ))
+              // ],
+            ),
             //body
             Expanded(
               child: SingleChildScrollView(
@@ -404,11 +403,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       minWidth: AppSizesDouble.s150),
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: AppConstants.TOKEN != null
-                              ? ColorsManager.imperialRed
-                              : ColorsManager.green,
-                          padding:
-                              EdgeInsets.symmetric(vertical: AppPaddings.p15)),
+                        backgroundColor: AppConstants.TOKEN != null ?
+                        ColorsManager.imperialRed :
+                        ColorsManager.green,
+                        padding: EdgeInsets.symmetric(vertical: AppPaddings.p15)),
                       onPressed: () {
                         if (AppConstants.TOKEN != null) {
                           AwesomeDialog(

@@ -18,8 +18,7 @@ class PickImageCubit extends Cubit<PickImageState> {
   Future<void> uploadUserImage({required File image}) async {
     emit(UploadImageLoading());
     try {
-      final pathRef = _storageRef
-          .child('$profileImagesFolder/${image.path.split('/').last}');
+      final pathRef = _storageRef.child('$profileImagesFolder/${image.path.split('/').last}');
 
       UploadTask uploadTask = pathRef.putFile(File(image.path));
 
@@ -88,7 +87,7 @@ class PickImageCubit extends Cubit<PickImageState> {
     }
   }
 
-  Future<File?> pickimage() async {
+  Future<File?> pickImage() async {
     final XFile? selectedImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
 

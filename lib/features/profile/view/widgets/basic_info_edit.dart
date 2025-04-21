@@ -36,15 +36,15 @@ class _BasicInfoEditState extends State<BasicInfoEdit> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppPaddings.p20),
       child: Form(
         key: _formKey,
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('User Name', style: Theme.of(context).textTheme.titleLarge,),
-              SizedBox(height: 5,),
+              Text(StringsManager.userName, style: Theme.of(context).textTheme.titleLarge,),
+              SizedBox(height: AppSizesDouble.s5,),
               TextFormField(
                 controller: _userNameController,
                 keyboardType: TextInputType.name,
@@ -57,7 +57,7 @@ class _BasicInfoEditState extends State<BasicInfoEdit> {
                 cursorColor: ColorsManager.lightPrimary,
                 style: TextStyle(color: ColorsManager.black, fontWeight: FontWeight.w500),
                 decoration: InputDecoration(
-                  hintText: 'Username',
+                  hintText: StringsManager.username,
                   hintStyle: TextStyle(color: ColorsManager.grey),
                   filled: true,
                   fillColor: ColorsManager.grey7,
@@ -67,7 +67,7 @@ class _BasicInfoEditState extends State<BasicInfoEdit> {
                 ),
               ),
               SizedBox(height: 10,),
-              Text('Email Address', style: Theme.of(context).textTheme.titleMedium,),
+              Text(StringsManager.emailAddress, style: Theme.of(context).textTheme.titleMedium,),
               SizedBox(height: 5,),
               TextFormField(
                 controller: _emailController,
@@ -81,7 +81,7 @@ class _BasicInfoEditState extends State<BasicInfoEdit> {
                 cursorColor: ColorsManager.lightPrimary,
                 style: TextStyle(color: ColorsManager.black, fontWeight: FontWeight.w500),
                 decoration: InputDecoration(
-                  hintText: 'Email Address',
+                  hintText: StringsManager.emailAddress,
                   hintStyle: TextStyle(color: ColorsManager.grey),
                   filled: true,
                   fillColor: ColorsManager.grey7,
@@ -91,7 +91,7 @@ class _BasicInfoEditState extends State<BasicInfoEdit> {
                 ),
               ),
               SizedBox(height: 10,),
-              Text('Phone Number', style: Theme.of(context).textTheme.titleLarge,),
+              Text(StringsManager.phoneNumber, style: Theme.of(context).textTheme.titleLarge,),
               SizedBox(height: 5,),
               TextFormField(
                 controller: _phoneController,
@@ -105,7 +105,7 @@ class _BasicInfoEditState extends State<BasicInfoEdit> {
                 cursorColor: ColorsManager.lightPrimary,
                 style: TextStyle(color: ColorsManager.black, fontWeight: FontWeight.w500),
                 decoration: InputDecoration(
-                  hintText: 'Phone Number',
+                  hintText: StringsManager.phoneNumber,
                   hintStyle: TextStyle(color: ColorsManager.grey),
                   focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide(color: ColorsManager.lightPrimary)),
                   filled: true,
@@ -114,29 +114,29 @@ class _BasicInfoEditState extends State<BasicInfoEdit> {
                   errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide(color: ColorsManager.imperialRed)),
                 ),
               ),
-              SizedBox(height: 10,),
-              Text('Semester', style: Theme.of(context).textTheme.titleLarge,),
-              SizedBox(height: 5,),
+              SizedBox(height: AppSizesDouble.s10,),
+              Text(StringsManager.semester, style: Theme.of(context).textTheme.titleLarge,),
+              SizedBox(height: AppSizesDouble.s5,),
               Container(
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                     color: ColorsManager.white,
                     borderRadius: BorderRadius.circular(AppPaddings.p50)
                 ),
-                padding: EdgeInsets.only(left: 15, right: 2),
+                padding: EdgeInsets.only(left: AppPaddings.p15, right: AppPaddings.p2),
                 child: DropdownButton<String>(
                   isExpanded: true,
                   icon: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    padding: EdgeInsets.symmetric(horizontal: AppPaddings.p20, vertical: AppPaddings.p10),
                     decoration: BoxDecoration(
                       color: ColorsManager.lightPrimary,
-                      borderRadius: BorderRadius.circular(25)
+                      borderRadius: BorderRadius.circular(AppSizesDouble.s25)
                     ),
                     child: Icon(IconsManager.dropdownIcon, color: ColorsManager.white,)
                   ),
                   value: _selectedSemester,
                   underline: SizedBox(),
-                  hint: Text('Select Semester', style: TextStyle(color: ColorsManager.black)),
+                  hint: Text(StringsManager.selectSemester, style: TextStyle(color: ColorsManager.black)),
                   dropdownColor: ColorsManager.white, // Background color for the dropdown list
                   iconEnabledColor: ColorsManager.black, // Color of the dropdown icon
                   style: const TextStyle(color: ColorsManager.white), // Style for the selected item outside
@@ -149,7 +149,7 @@ class _BasicInfoEditState extends State<BasicInfoEdit> {
                           item,
                           style: const TextStyle(
                             color: ColorsManager.black,
-                            fontSize: 20,
+                            fontSize: AppSizesDouble.s20,
                             fontWeight: FontWeight.w500
                           ),
                         ),
@@ -163,17 +163,19 @@ class _BasicInfoEditState extends State<BasicInfoEdit> {
                   },
                 ),
               ),
-              SizedBox(height: 25,),
+              SizedBox(height: AppSizesDouble.s25,),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: ColorsManager.lightPrimary,
                     foregroundColor: ColorsManager.white,
-                    padding: EdgeInsets.symmetric(vertical: 12)
+                    padding: EdgeInsets.symmetric(vertical: AppPaddings.p12)
                   ),
-                  onPressed: (){},
-                  child: Text('Save Data')
+                  onPressed: (){
+                    //TODO: Implement Edit Basic Info
+                  },
+                  child: Text(StringsManager.saveData)
                 ),
               )
             ],
