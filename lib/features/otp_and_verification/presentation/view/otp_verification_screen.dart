@@ -97,7 +97,10 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                     )
                   ),
                   SizedBox(height: AppSizesDouble.s5,),
-                  FittedBox(child: Text('Enter The Otp Sent to "${_recipientEmail}"')),
+                  Padding(
+                    padding: EdgeInsets.all(AppPaddings.p5),
+                    child: FittedBox(child: Text('Enter The Otp Sent to "${_recipientEmail}"')),
+                  ),
                   Wrap(
                     crossAxisAlignment: WrapCrossAlignment.center,
                     alignment: WrapAlignment.center,
@@ -175,9 +178,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSizesDouble.s15)),
                             backgroundColor: ColorsManager.lightPrimary
                           ),
-                          onPressed: () async {
-                            await context.read<VerificationCubit>().verifyEmail(
-                              id: context.read<MainCubit>().profileModel!.id,
+                          onPressed: () {
+                            context.read<VerificationCubit>().verifyEmail(
                               otp: _otpController.text,
                               recipientEmail: _recipientEmail
                             );
@@ -220,7 +222,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     );
   }
 
-  Future<void> _sendVerificationCode() async {
-    await context.read<VerificationCubit>().sendVerificationCode(recipientEmail: widget.recipientEmail!);
+  void _sendVerificationCode() {
+    context.read<VerificationCubit>().sendVerificationCode(recipientEmail: widget.recipientEmail!);
   }
 }

@@ -13,6 +13,8 @@ import 'package:lol/features/auth/presentation/view_model/auth_cubit/auth_cubit.
 import 'package:lol/features/auth/presentation/view/register.dart';
 import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
+import 'package:lol/features/otp_and_verification/presentation/view/forgot_password_verification.dart';
+import 'package:lol/features/otp_and_verification/presentation/view_model/verification_cubit/verification_cubit.dart';
 import 'package:lol/features/profile/view/profile.dart';
 import 'package:lol/core/utils/navigation.dart';
 import 'package:lol/core/network/local/shared_preference.dart';
@@ -63,9 +65,7 @@ class _LoginScreenState extends State<LoginScreenMobile> {
               children: [
                 Text(
                   StringsManager.login,
-                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                        fontSize: AppSizesDouble.s40,
-                      ),
+                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(fontSize: AppSizesDouble.s40,),
                 ),
                 SizedBox(
                   height: AppSizesDouble.s20,
@@ -77,7 +77,7 @@ class _LoginScreenState extends State<LoginScreenMobile> {
                   loginCubit: loginCubit,
                 ),
                 SizedBox(
-                  height: AppSizesDouble.s20,
+                  height: AppSizesDouble.s10,
                 ),
                 defaultLoginInputField(_passwordController,
                     StringsManager.password, TextInputType.visiblePassword,
@@ -94,10 +94,22 @@ class _LoginScreenState extends State<LoginScreenMobile> {
                       StringsManager.forgotPassword + StringsManager.qMark,
                     ),
                     onPressed: () {
-                      //TODO: Implement Forgot Password
+                      if(_emailController.text.isNotEmpty){
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => BlocProvider(
+                              create: (context) => VerificationCubit()..initializeStream(),
+                              child: ForgotPasswordVerification(recipientEmail: _emailController.text,)
+                            )
+                          )
+                        );
+                      } else {
+                        showToastMessage(message: 'Please Provide Email First To Continue', states: ToastStates.INFO);
+                      }
                     },
                   ),
                 ),
+                SizedBox(height: 5,),
                 defaultLoginButton(
                   context,
                   formKey,
@@ -109,18 +121,25 @@ class _LoginScreenState extends State<LoginScreenMobile> {
                 const SizedBox(
                   height: AppSizesDouble.s20,
                 ),
-                TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                            builder: (context) => ChoosingYear(),
-                          ),
-                          (route) => false);
-                    },
-                    child: Text(
-                      'Continue as a guest',
-                      style: TextStyle(color: ColorsManager.dodgerBlue),
-                    ))
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Do you want to try first?'),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                          builder: (context) => ChoosingYear(),
+                        ),
+                        (route) => false);
+                      },
+                      child: Text(
+                        'Continue as a guest',
+                        style: TextStyle(color: ColorsManager.dodgerBlue),
+                      )
+                    )
+                  ],
+                ),
               ],
             ),
           ),

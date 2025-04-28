@@ -18,6 +18,7 @@ class VerificationCubit extends Cubit<VerificationState> {
   static VerificationCubit get(context) => BlocProvider.of(context);
   late bool canResendCode;
   bool isPasswordCodeVerified = false;
+  int id = -1;
   int currentTime = 30;
   late Stream<int> _timerStream;
   late StreamController<int> _timerStreamController;
@@ -50,93 +51,62 @@ class VerificationCubit extends Cubit<VerificationState> {
     emit(VerificationTimerStartedState(initialTime: counter));
   }
 
-  int _otp = 000000;
-
-  Future<void> sendVerificationCode({
+  void sendVerificationCode({
     required String recipientEmail,
     String? recipientName,
-  }) async {
+  }) {
     isPasswordCodeVerified = false;
     emit(SendVerificationCodeToEmailLoading());
-    Random random = Random();
-    _otp = 100000 + random.nextInt(900000);
-    dev.log(_otp.toString());
     _counter(counter: 60);
-    try {
-      await MainSenderHelper.post(endPoint: brevoEndPoint, data: {
-        "sender": {"name": "UniNotes", "email": "notesu362@gmail.com"},
-        "to": [
-          {"email": "$recipientEmail", "name": "$recipientName "}
-        ],
-        "subject": "Verifying UniNotes account",
-        "htmlContent": "<html><head><style>body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; } .container { background-color: #fff; padding: 20px; border-radius: 8px; max-width: 500px; margin: auto; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); } h2 { color: #333; } p { font-size: 16px; color: #555; } .otp { font-size: 18px; font-weight: bold; color: #007BFF; }</style></head><body><div class='container'><h2>Hello Seif,</h2><p>Welcome to UniNotes! Your one-time password (OTP) is:</p><p class='otp'>$_otp</p><p>Please use this code to complete your verification.</p><p>Best regards,<br>UniNotes Team</p></div></body></html>"
-      });
+
+    DioHelp.postData(path: SENDVERIFICATIONCODE, data: {
+      'recipientEmail':recipientEmail,
+      'recipientName':recipientName
+    }).then((value){
       emit(SendVerificationCodeToEmailSuccess());
-    } catch (e) {
-      debugPrint(e.toString());
+    }).catchError((e){
+
       emit(
         SendVerificationCodeToEmailFailed(
-          errMessage: 'Unable to send code now, please try again later',
+          errMessage: 'Unable to send code now, please try again',
         ),
       );
-    }
+
+    });
+
   }
 
-  Future<void> verifyEmail({required int id, required String otp, required String recipientEmail}) async {
+  void verifyEmail({required String otp, required String recipientEmail}) {
     emit(EmailVerifiedLoading());
-    try {
-      if (otp == _otp.toString()) {
-        await DioHelp.putData(
-          query: {'id': id},
-          path: EDITCURRENTUSER,
-          data: {
-            'email': recipientEmail,
-            'isVerified': true,
-          },
-          token: AppConstants.TOKEN
-        );
+    DioHelp.postData(path: CHECKVERIFICATIONCODE, data: {
+      'email':recipientEmail,
+      'otp':otp
+    }).then((value){
+      if(value.statusCode == 400){
+        emit(EmailVerifiedFailed(errMessage: value.data['message']));
+      } else if(value.statusCode == 200){
         isPasswordCodeVerified = true;
         emit(EmailVerifiedSuccess());
-      } else {
-        emit(EmailVerifiedFailed(errMessage: 'Incorrect OTP'));
       }
-    } catch (e) {
-      debugPrint(e.toString());
+    }).catchError((e){
       emit(EmailVerifiedFailed(errMessage: 'Oops! Something went wrong'));
-    }
+    });
   }
 
-  void updateForgottenPassword(int id, String sentEmail, String newPassword, String confirmNewPassword){
+  void updateForgottenPassword(String sentEmail, String otp, String newPassword){
     emit(VerificationUpdatePasswordLoadingState());
-    DioHelp.putData(
-      query: {'id':id},
-      path: EDITCURRENTUSER,
+    DioHelp.postData(
+      path: RESETPASSWORD,
       data: {
         'email': sentEmail,
+        'otp': otp,
         'newPassword': newPassword,
-        'newPasswordConfirm': confirmNewPassword,
       },
-      token: AppConstants.TOKEN
     ).then((value){
       emit(VerificationUpdatePasswordLoadingState());
     });
   }
 
-  int getIdByMail(recipientEmail){
-    emit(VerificationGetIDLoadingState());
-    DioHelp.getData(
-      path: USERID,
-      query: {
-        'email': recipientEmail
-      }
-    ).then((value){
-      emit(VerificationGetIDSuccessState());
-      return value;
-    }).catchError((e){
-      showToastMessage(message: "Email Doesn't Exist!!", states: ToastStates.ERROR);
-    });
-    return -1;
-  }
   void changeEyeState(){
     obscured = !obscured;
     emit(VerificationChangeEyeState());

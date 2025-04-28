@@ -33,7 +33,6 @@ class ForgotPasswordVerification extends StatefulWidget {
 class _OtpVerificationScreenState extends State<ForgotPasswordVerification> {
   late TextEditingController _otpController;
   late String _recipientEmail;
-  late int id;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _confirmPassword = TextEditingController();
@@ -41,11 +40,6 @@ class _OtpVerificationScreenState extends State<ForgotPasswordVerification> {
   @override
   void initState() {
     super.initState();
-    if(context.read<MainCubit>().profileModel != null){
-      id = context.read<MainCubit>().profileModel!.id;
-    } else {
-      id = -1;
-    }
     _recipientEmail = widget.recipientEmail!;
     _otpController = TextEditingController();
     context.read<VerificationCubit>().initializeStream();
@@ -59,10 +53,6 @@ class _OtpVerificationScreenState extends State<ForgotPasswordVerification> {
         if(state is VerificationUpdatePasswordSuccessState){
           showToastMessage(message: StringsManager.passwordUpdatedMessage, states: ToastStates.SUCCESS);
         }
-        if (state is EmailVerifiedSuccess) {
-          id = VerificationCubit.get(context).getIdByMail(_recipientEmail);
-          showToastMessage(message: StringsManager.verificationComplete, states: ToastStates.SUCCESS);
-        }
         if (state is EmailVerifiedFailed) {
           showToastMessage(message: state.errMessage, states: ToastStates.ERROR);
         }
@@ -70,7 +60,8 @@ class _OtpVerificationScreenState extends State<ForgotPasswordVerification> {
           showToastMessage(message: state.errMessage, states: ToastStates.ERROR);
         }
       },
-      builder: (context, state) => BlocListener<MainCubit, MainCubitStates>(
+      builder: (context, state) {
+        return BlocListener<MainCubit, MainCubitStates>(
         listener: (context, state) {
           if(state is VerificationUpdatePasswordSuccessState){
             Navigator.pop(context);
@@ -120,7 +111,6 @@ class _OtpVerificationScreenState extends State<ForgotPasswordVerification> {
                             _recipientEmail = email;
                             _passwordController.clear();
                             _confirmPassword.clear();
-                            id = await VerificationCubit.get(context).getIdByMail(_recipientEmail);
                             context.read<VerificationCubit>().sendVerificationCode(recipientEmail: _recipientEmail);
                           }
                         },
@@ -145,7 +135,7 @@ class _OtpVerificationScreenState extends State<ForgotPasswordVerification> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        if(VerificationCubit.get(context).isPasswordCodeVerified)
+                        if(!VerificationCubit.get(context).isPasswordCodeVerified)
                         PinCodeTextField(
                           autoFocus: true,
                           controller: _otpController,
@@ -170,22 +160,17 @@ class _OtpVerificationScreenState extends State<ForgotPasswordVerification> {
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly
                           ],
-                          onCompleted: (value) async{
-                            if(value.isNotEmpty && id != -1){
-                              if(id == -1){
-                                showToastMessage(message: "The Current Email Doesn't exist, please change it first", states: ToastStates.ERROR);
-                              } else {
-                                await VerificationCubit.get(context).verifyEmail(
-                                  id: id,
-                                  recipientEmail: _recipientEmail,
-                                  otp: _otpController.text
-                                );
-                              }
+                          onCompleted: (value){
+                            if(value.isNotEmpty){
+                              VerificationCubit.get(context).verifyEmail(
+                                recipientEmail: _recipientEmail,
+                                otp: _otpController.text
+                              );
                             }
                           },
                         ),
                         const SizedBox(height: AppSizesDouble.s15,),
-                        if(!VerificationCubit.get(context).isPasswordCodeVerified)
+                        if(VerificationCubit.get(context).isPasswordCodeVerified)
                         Form(
                           key: _formKey,
                           child: Column(
@@ -253,15 +238,12 @@ class _OtpVerificationScreenState extends State<ForgotPasswordVerification> {
                                   backgroundColor: ColorsManager.lightPrimary
                                 ),
                                 onPressed: () async {
-                                  if(_formKey.currentState!.validate() && id != -1){
+                                  if(_formKey.currentState!.validate()){
                                     VerificationCubit.get(context).updateForgottenPassword(
-                                      id,
                                       _recipientEmail,
+                                      _otpController.text,
                                       _passwordController.text,
-                                      _confirmPassword.text
                                     );
-                                  } else if( id == -1){
-                                    showToastMessage(message: "The Current Email Doesn't exist, please change it first", states: ToastStates.ERROR);
                                   }
                                 },
                                 child: Text(
@@ -272,7 +254,7 @@ class _OtpVerificationScreenState extends State<ForgotPasswordVerification> {
                             ],
                           ),
                         ),
-                        if(VerificationCubit.get(context).isPasswordCodeVerified)
+                        if(!VerificationCubit.get(context).isPasswordCodeVerified)
                         Column(
                           children: [
                             const SizedBox(
@@ -306,11 +288,12 @@ class _OtpVerificationScreenState extends State<ForgotPasswordVerification> {
             ],
           ),
         ),
-      ),
+      );
+      },
     );
   }
 
-  Future<void> _sendVerificationCode() async {
-    await context.read<VerificationCubit>().sendVerificationCode(recipientEmail: widget.recipientEmail!);
+  void _sendVerificationCode()  {
+     context.read<VerificationCubit>().sendVerificationCode(recipientEmail: _recipientEmail);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
@@ -173,7 +174,12 @@ class _BasicInfoEditState extends State<BasicInfoEdit> {
                     padding: EdgeInsets.symmetric(vertical: AppPaddings.p12)
                   ),
                   onPressed: (){
-                    //TODO: Implement Edit Basic Info
+                    MainCubit.get(context).updateCurrentUser(
+                      name: _userNameController.text,
+                      phone: _phoneController.text,
+                      email: _emailController.text,
+                      semester: _selectedSemester
+                    );
                   },
                   child: Text(StringsManager.saveData)
                 ),

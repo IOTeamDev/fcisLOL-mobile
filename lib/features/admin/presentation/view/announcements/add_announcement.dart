@@ -48,6 +48,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
     'Faculty',
     'Summer_Training',
     'Workshop',
+    'Mid',
     'Final',
     'Practical',
     'Assignment',

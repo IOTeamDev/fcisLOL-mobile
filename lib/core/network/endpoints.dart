@@ -24,3 +24,10 @@ const String PREVIOUSEXAMS = 'previousExams';
 const String brevoEndPoint = 'v3/smtp/email';
 
 const String EDITPREVIOUSEXAMS = 'previousExams/edit';
+
+
+const String SENDVERIFICATIONCODE = 'verificationCode/send';
+
+const String CHECKVERIFICATIONCODE = 'verificationCode/check';
+
+const String RESETPASSWORD = 'resetPassword';

@@ -21,6 +21,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../core/utils/resources/colors_manager.dart';
 import '../../../../../core/utils/resources/theme_provider.dart';
+import '../../../../otp_and_verification/presentation/view/forgot_password_verification.dart';
+import '../../../../otp_and_verification/presentation/view_model/verification_cubit/verification_cubit.dart';
 
 class LoginScreenTablet extends StatefulWidget {
   const LoginScreenTablet({super.key});
@@ -84,20 +86,32 @@ class _LoginScreenState extends State<LoginScreenTablet> {
                     isPassword: true,
                     loginCubit: loginCubit,
                     suffixIcon: IconsManager.eyeIcon),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                        padding: const EdgeInsets.all(AppSizesDouble.s0),
-                        foregroundColor: ColorsManager.dodgerBlue),
-                    child: const Text(
-                      StringsManager.forgotPassword + StringsManager.qMark,
-                    ),
-                    onPressed: () {
-                      //TODO: Implement Forgot Password
-                    },
-                  ),
-                ),
+                // Align(
+                //   alignment: Alignment.centerLeft,
+                //   child: TextButton(
+                //     style: TextButton.styleFrom(
+                //         padding: const EdgeInsets.all(AppSizesDouble.s0),
+                //         foregroundColor: ColorsManager.dodgerBlue),
+                //     child: const Text(
+                //       StringsManager.forgotPassword + StringsManager.qMark,
+                //     ),
+                //     onPressed: () {
+                //       if(_emailController.text.isNotEmpty){
+                //         Navigator.of(context).push(
+                //             MaterialPageRoute(
+                //                 builder: (context) => BlocProvider(
+                //                     create: (context) => VerificationCubit()..initializeStream(),
+                //                     child: ForgotPasswordVerification(recipientEmail: _emailController.text,)
+                //                 )
+                //             )
+                //         );
+                //       } else {
+                //         showToastMessage(message: 'Please Provide Email First To Continue', states: ToastStates.INFO);
+                //       }
+                //     },
+                //   ),
+                // ),
+                SizedBox(height: 10,),
                 defaultLoginButton(
                     context,
                     formKey,

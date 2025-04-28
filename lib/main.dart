@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:lol/features/home/presentation/view/loading_screen.dart';
 import 'package:lol/features/otp_and_verification/presentation/view_model/verification_cubit/verification_cubit.dart';
 import 'package:lol/features/pick_image/presentation/view/select_image.dart';
-
 import 'features/otp_and_verification/presentation/view/forgot_password_verification.dart';
 import 'firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -129,13 +128,10 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (BuildContext context) => MainCubit()),
-        BlocProvider(
-            create: (BuildContext context) => AdminCubit()..getFcmTokens()),
+        BlocProvider(create: (BuildContext context) => AdminCubit()..getFcmTokens()),
       ],
       child: MaterialApp(
-        home: BlocProvider(
-          create: (context) => VerificationCubit(),
-          child: OtpVerificationScreen(recipientEmail: 'taemaomar65@gmail.com')),
+        home: startPage,
         theme: darkTheme,
         darkTheme: darkTheme,
         themeMode: ThemeMode.dark,

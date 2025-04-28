@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -58,29 +57,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
             SizedBox(
               height:AppQueries.screenHeight(context) / AppSizesDouble.s3_2,
               child: UserAccountsDrawerHeader(
-                // otherAccountsPictures: [
-                // IconButton(
-                //     onPressed: () {
-                //       Provider.of<ThemeProvider>(context,
-                //               listen: false)
-                //           .toggleDarkMode();
-                //     },
-                //     icon: Icon(
-                //       Provider.of<ThemeProvider>(context).isDark
-                //           ? IconsManager.lightModeIcon
-                //           : IconsManager.darkModeIcon,
-                //       color: Theme.of(context).iconTheme.color,
-                //     ))
-                // ],
-                decoration: BoxDecoration(
-                    color: Theme.of(context).drawerTheme.backgroundColor),
+                decoration: BoxDecoration(color: Theme.of(context).drawerTheme.backgroundColor),
                 accountName: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ConstrainedBox(
-                      constraints: BoxConstraints(
-                          maxWidth: AppQueries.screenWidth(context) /
-                              AppSizesDouble.s1_5),
+                      constraints: BoxConstraints(maxWidth: AppQueries.screenWidth(context) / AppSizesDouble.s1_5),
                       child: Text(
                         profileModel!.name,
                         style: Theme.of(context).textTheme.titleLarge,
@@ -92,35 +74,29 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         style: Theme.of(context).textTheme.bodyLarge),
                   ],
                 ),
-                // accountEmail: Text("2nd year "),
                 accountEmail: Container(
                   margin: EdgeInsets.zero, // Remove any margin
                   padding: EdgeInsets.zero, // Remove any padding
                   child: Padding(
                     padding: const EdgeInsets.only(top: AppPaddings.p5),
-                    child: GestureDetector(
-                      onTap: () => navigate(context, const Profile()),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Icon(IconsManager.personIcon),
-                          SizedBox(width: AppSizesDouble.s10),
-                          Text(
-                            StringsManager.profileInfo,
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ],
+                    child: ElevatedButton.icon(
+                      onPressed: () => navigate(context, const Profile()),
+                      label:Text(
+                        StringsManager.profileInfo,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      icon: Icon(IconsManager.personIcon),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent
                       ),
                     ),
                   ),
                 ),
-                currentAccountPicture: ClipOval(
-                  child: Image.network(
+                currentAccountPicture: CircleAvatar(
+                  backgroundImage: NetworkImage(
                     profileModel!.photo!,
-                    width: AppSizesDouble.s10,
-                    height: AppSizesDouble.s10,
-                    fit: BoxFit.cover,
                   ),
+                  radius: 30,
                 ),
               ),
             ) :
@@ -134,23 +110,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 AppConstants.Level(AppConstants.SelectedSemester ?? ''),
                 style: Theme.of(context).textTheme.displayLarge,
               ),
-              currentAccountPicture: const CircleAvatar(
-                backgroundImage:
-                    NetworkImage(AppConstants.defaultProfileImage),
-              ),
-              // otherAccountsPictures: [
-                // IconButton(
-                //     onPressed: () {
-                //       Provider.of<ThemeProvider>(context, listen: false)
-                //           .toggleDarkMode();
-                //     },
-                //     icon: Icon(
-                //       Provider.of<ThemeProvider>(context).isDark
-                //           ? IconsManager.lightModeIcon
-                //           : IconsManager.darkModeIcon,
-                //       color: Theme.of(context).iconTheme.color,
-                //     ))
-              // ],
+              currentAccountPicture: const CircleAvatar(backgroundImage: NetworkImage(AppConstants.defaultProfileImage),),
             ),
             //body
             Expanded(
@@ -355,8 +315,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       ]
                     ),//*Drive
                     CustomTile(
-                      onTap: () => showToastMessage(message: 'Currently Updating', states: ToastStates.INFO),
-                      //onTap: () => navigate(context, UsefulLinks()),
+                      onTap: () => navigate(context, UsefulLinks()),
                       icon: IconsManager.linkIcon,
                       title: StringsManager.links
                     ),//*Useful Links
@@ -450,23 +409,20 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
-                              AppConstants.TOKEN != null
-                                  ? IconsManager.logOutIcon
-                                  : IconsManager.logInIcon,
-                              color: ColorsManager.white),
-                          SizedBox(
-                            width: AppSizesDouble.s10,
+                            AppConstants.TOKEN != null ?
+                            IconsManager.logOutIcon :
+                            IconsManager.logInIcon,
+                            color: ColorsManager.white
                           ),
+                          SizedBox(width: AppSizesDouble.s10,),
                           Text(
-                            AppConstants.TOKEN != null
-                                ? StringsManager.logOut
-                                : StringsManager.login,
+                            AppConstants.TOKEN != null ?
+                            StringsManager.logOut :
+                            StringsManager.login,
                             style: Theme.of(context)
-                                .textTheme
-                                .bodyLarge!
-                                .copyWith(
-                                    fontWeight: FontWeightManager.semiBold,
-                                    color: ColorsManager.white),
+                              .textTheme
+                              .bodyLarge!
+                              .copyWith(fontWeight: FontWeightManager.semiBold, color: ColorsManager.white),
                           ),
                         ],
                       )),
