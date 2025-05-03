@@ -83,7 +83,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
       description,
       dueDate,
       required type,
-      image,
+      String? image,
       required currentSemester}) async {
     Random random = Random();
     // Get a random index
@@ -99,8 +99,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
             'due_date': dueDate ?? '',
             'type': type,
             'semester': currentSemester,
-            'image':
-                'https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/announcements_images%2FIMG-20250424-WA0024.jpg?alt=media&token=27b9ea6e-0b8c-40f8-9b17-05dbccbdab4a'
+            'image': image ?? AppConstants.defaultImage
           },
           token: AppConstants.TOKEN);
 

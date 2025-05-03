@@ -71,6 +71,9 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
     return BlocConsumer<AdminCubit, AdminCubitStates>(
       listener: (context, state) {
         if (state is AdminSaveAnnouncementSuccessState) {
+          context
+              .read<AdminCubit>()
+              .getAnnouncements(AppConstants.SelectedSemester!);
           showToastMessage(
               message: StringsManager.announcementAdded,
               states: ToastStates.SUCCESS);
@@ -607,7 +610,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                           await cubit.uploadImage(
                                                               image: cubit
                                                                   .announcementImageFile!);
-                                                          cubit.addAnnouncement(
+                                                          await cubit.addAnnouncement(
                                                               title:
                                                                   _titleController
                                                                       .text,
@@ -619,9 +622,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                                   _descriptionController
                                                                       .text,
                                                               image: cubit
-                                                                      .announcementImageFile ??
-                                                                  AppConstants
-                                                                      .defaultImage,
+                                                                  .announcementImagePath,
                                                               currentSemester: MainCubit.get(
                                                                               context)
                                                                           .profileModel!
