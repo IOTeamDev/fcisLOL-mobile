@@ -53,7 +53,7 @@ dependencies:
   pin_code_fields: ^8.0.1
   provider: ^6.1.2
   rename: ^3.0.2
-  shared_preferences: ^2.3.2
+  shared_preferences: ^2.5.3
   shorebird_code_push: ^2.0.2
   smooth_page_indicator: ^1.2.0+3
   string_similarity: ^2.1.1
