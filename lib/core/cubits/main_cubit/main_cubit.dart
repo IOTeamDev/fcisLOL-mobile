@@ -258,11 +258,37 @@ class MainCubit extends Cubit<MainCubitStates> {
     });
   }
 
+  updateCurrentUser({
+    String? semester,
+    String? email,
+    String? photo,
+    String? password,
+    String? phone,
+    String? name,
+  }) {
+    DioHelp.patchData(
+      token: AppConstants.TOKEN,
+      path: USERS,
+      data: {
+        if (semester != null) KeysManager.semester: semester,
+        if (email != null) KeysManager.email: email,
+        if (photo != null) KeysManager.photo: photo,
+        if (photo != null) KeysManager.name: name,
+        if (photo != null) KeysManager.password: password,
+        if (photo != null) KeysManager.phone: phone,
+      })
+    .then((val) {
+      emit(UpdateUserSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(UpdateUserErrorState());
+    });
+  }
+
   Future<void> deleteAccount({required int id}) async {
     emit(DeleteAccountLoading());
     try {
-      await DioHelp.deleteData(
-          path: USERS, token: AppConstants.TOKEN, query: {KeysManager.id: id});
+      await DioHelp.deleteData(path: USERS, token: AppConstants.TOKEN, query: {KeysManager.id: id});
       await Cache.removeValue(key: KeysManager.token);
       await Cache.removeValue(key: KeysManager.semester);
 

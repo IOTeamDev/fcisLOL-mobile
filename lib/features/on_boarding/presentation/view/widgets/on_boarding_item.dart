@@ -17,7 +17,7 @@ class OnBoardingItem extends StatelessWidget {
             padding: EdgeInsets.all(AppPaddings.p20),
             child: Image.asset(
               model.image!,
-              fit: BoxFit.fitHeight,
+              fit: BoxFit.contain,
             ),
           ),
         ),

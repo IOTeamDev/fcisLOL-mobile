@@ -99,4 +99,8 @@ class UploadImageLoadingState extends AdminCubitStates {}
 
 class UploadImageSuccessState extends AdminCubitStates {}
 
-class UploadImageErrorState extends AdminCubitStates {}
+class UploadImageErrorState extends AdminCubitStates {
+  final String errMessage;
+
+  UploadImageErrorState({required this.errMessage});
+}

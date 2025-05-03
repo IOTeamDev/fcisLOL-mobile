@@ -26,7 +26,13 @@ class _LoadingScreenState extends State<LoadingScreen> {
     return BlocListener<MainCubit, MainCubitStates>(
       listener: (context, state) {
         if (state is GetProfileSuccess) {
-          if (context.read<MainCubit>().profileModel!.isVerified == false &&
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => Home(),
+            ),
+            (route) => false,
+          );
+          /* if (context.read<MainCubit>().profileModel!.isVerified == false &&
               context.read<MainCubit>().profileModel!.role == 'STUDENT') {
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
@@ -46,7 +52,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
               ),
               (route) => false,
             );
-          }
+         }*/
         }
         if (state is GetProfileFailure) {
           Navigator.of(context).pushAndRemoveUntil(

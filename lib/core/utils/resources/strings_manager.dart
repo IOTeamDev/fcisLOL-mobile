@@ -193,6 +193,9 @@ class KeysManager {
   static const String lang = 'lang';
   static const String imagePath = 'imagePath';
   static const String name = 'name';
+  static const String password = 'password';
+  static const String email = 'email';
+  static const String phone = 'phone';
   static const String role = 'role';
   static const String contactUrl = 'contactUrl';
   static const String subject = 'subject';

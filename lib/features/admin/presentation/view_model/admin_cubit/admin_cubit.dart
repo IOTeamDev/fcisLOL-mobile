@@ -78,39 +78,41 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     "A Little Surprise Just for You! 🎁",
     "Get the Scoop! Fresh News Inside 📢",
   ];
-  void addAnnouncement(
+  Future<void> addAnnouncement(
       {required title,
       description,
       dueDate,
       required type,
       image,
-      required currentSemester}) {
+      required currentSemester}) async {
     Random random = Random();
     // Get a random index
     int randomIndex = random.nextInt(notificationsTitles.length);
 
     emit(AdminSaveAnnouncementLoadingState());
+    try {
+      await DioHelp.postData(
+          path: ANNOUNCEMENTS,
+          data: {
+            'title': title,
+            'content': description ?? '',
+            'due_date': dueDate ?? '',
+            'type': type,
+            'semester': currentSemester,
+            'image':
+                'https://firebasestorage.googleapis.com/v0/b/fcis-da7f4.appspot.com/o/announcements_images%2FIMG-20250424-WA0024.jpg?alt=media&token=27b9ea6e-0b8c-40f8-9b17-05dbccbdab4a'
+          },
+          token: AppConstants.TOKEN);
 
-    DioHelp.postData(
-      path: ANNOUNCEMENTS,
-      data: {
-        'title': title,
-        'content': description ?? '',
-        'due_date': dueDate ?? '',
-        'type': type,
-        'semester': currentSemester,
-        'image': image
-      },
-      token: AppConstants.TOKEN
-    ).then((value) {
-      sendNotificationToUsers(
-        semester: currentSemester,
-        title: notificationsTitles[randomIndex],
-        body: title
-      ); // LOL
+      // sendNotificationToUsers(
+      //     semester: currentSemester,
+      //     title: notificationsTitles[randomIndex],
+      //     body: title);
       emit(AdminSaveAnnouncementSuccessState());
-      getAnnouncements(currentSemester);
-    });
+    } catch (e) {
+      debugPrint(e.toString());
+      emit(AdminSaveAnnouncementsErrorState(e.toString()));
+    }
   }
 
   List<AnnouncementModel> announcements = [];
@@ -130,7 +132,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     }
   }
 
-  Map<String, List<AnnouncementModel>>allSemestersAnnouncements = {};
+  Map<String, List<AnnouncementModel>> allSemestersAnnouncements = {};
   List<AnnouncementModel> allAnnouncements = [];
 
   Future<void> getAllSemestersAnnouncements() async {
@@ -138,14 +140,17 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     try {
       allSemestersAnnouncements.clear();
 
-      for(var semester in AppConstants.semesters){
-        final response = await DioHelp.getData(path: ANNOUNCEMENTS, query: {KeysManager.semester: semester});
+      for (var semester in AppConstants.semesters) {
+        final response = await DioHelp.getData(
+            path: ANNOUNCEMENTS, query: {KeysManager.semester: semester});
         allSemestersAnnouncements[semester] = [];
         for (var element in response.data) {
-          allSemestersAnnouncements[semester]!.add(AnnouncementModel.fromJson(element));
+          allSemestersAnnouncements[semester]!
+              .add(AnnouncementModel.fromJson(element));
         }
       }
-      allAnnouncements = allSemestersAnnouncements.values.expand((e) => e).toList();
+      allAnnouncements =
+          allSemestersAnnouncements.values.expand((e) => e).toList();
       emit(AdminGetAnnouncementSuccessState());
     } catch (e) {
       emit(AdminGetAnnouncementsErrorState(e.toString()));
@@ -211,22 +216,24 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     var serverKeyAuthorization = await fCMHelper.getAccessToken();
 
     // change your project id
-    const String urlEndPoint = "https://fcm.googleapis.com/v1/projects/fcis-da7f4/messages:send";
+    const String urlEndPoint =
+        "https://fcm.googleapis.com/v1/projects/fcis-da7f4/messages:send";
 
     Dio dio = Dio();
     dio.options.headers['Content-Type'] = 'application/json';
     dio.options.headers['Authorization'] = 'Bearer $serverKeyAuthorization';
 
-    dio.post(
-      urlEndPoint,
-      data: fCMHelper.getBody(
-        fcmToken: token,
-        title: title,
-        body: body,
-      ),
-    )
-    .then((onValue) => emit(SendNotificationSuccess()))
-    .catchError((onError) {
+    dio
+        .post(
+          urlEndPoint,
+          data: fCMHelper.getBody(
+            fcmToken: token,
+            title: title,
+            body: body,
+          ),
+        )
+        .then((onValue) => emit(SendNotificationSuccess()))
+        .catchError((onError) {
       print(onError.toString());
       emit(SendNotificationError());
     });
@@ -251,7 +258,8 @@ class AdminCubit extends Cubit<AdminCubitStates> {
       }
 
       // Filter users based on semester
-      List<FcmToken> filteredUsers = fcmTokens.where((user) => user.semester == semester).toList();
+      List<FcmToken> filteredUsers =
+          fcmTokens.where((user) => user.semester == semester).toList();
 
       if (filteredUsers.isEmpty) {
         print('No users found for semester: $semester');
@@ -262,40 +270,47 @@ class AdminCubit extends Cubit<AdminCubitStates> {
       for (var user in filteredUsers) {
         if (user.fcmToken != null) {
           print('${user.semester} - Sending notification to: ${user.fcmToken}');
-          await sendFCMNotification(title: title, body: body, token: user.fcmToken!);
+          await sendFCMNotification(
+              title: title, body: body, token: user.fcmToken!);
         }
       }
     } else {
-      List<FcmToken> filteredUsers = adminFcmTokens.where((user) => user.semester == semester).toList();
+      List<FcmToken> filteredUsers =
+          adminFcmTokens.where((user) => user.semester == semester).toList();
       if (filteredUsers.isEmpty) {
         print('No users found for semester: $semester');
         return; // Exit early if no users are found for the semester
       }
       for (var user in filteredUsers) {
         if (user.fcmToken != null) {
-          print('${user.semester} - Sending notification to: ${user.name}================================================================');
-          await sendFCMNotification(title: title, body: body, token: user.fcmToken!);
+          print(
+              '${user.semester} - Sending notification to: ${user.name}================================================================');
+          await sendFCMNotification(
+              title: title, body: body, token: user.fcmToken!);
         }
       }
     }
-
   }
 
   File? announcementImageFile;
   String? announcementImagePath;
   IconData pickerIcon = Icons.image;
   String imageName = 'Select Image';
+  static const announcementsImagesFolder = 'announcements_images';
   var picker = ImagePicker();
+  final _storageRef = FirebaseStorage.instance.ref();
+
   getAnnouncementImage() async {
     emit(ImagePickingLoadingState());
 
     var tempPostImage = await picker.pickImage(source: ImageSource.gallery);
     if (tempPostImage != null) {
-        announcementImageFile = File(tempPostImage.path);
-        imageName = tempPostImage.path.split('/').last;
-        pickerIcon = Icons.clear;
-        showToastMessage(message: 'Imaged Picked Successfully', states: ToastStates.SUCCESS);
-        emit(ImagePickingSuccessState());
+      announcementImageFile = File(tempPostImage.path);
+      imageName = tempPostImage.path.split('/').last;
+      pickerIcon = Icons.clear;
+      showToastMessage(
+          message: 'Imaged Picked Successfully', states: ToastStates.SUCCESS);
+      emit(ImagePickingSuccessState());
     } else {
       pickerIcon = Icons.image;
       imageName = 'Select Image';
@@ -303,12 +318,45 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     }
   }
 
-  Future<void> uploadPImage({File? image}) async {
+  Future<void> uploadImage({required File image}) async {
+    emit(UploadImageLoadingState());
+
+    try {
+      final pathRef = _storageRef
+          .child('$announcementsImagesFolder/${image.path.split('/').last}');
+
+      UploadTask uploadTask = pathRef.putFile(File(image.path));
+
+      final snapshot = await uploadTask.whenComplete(() => null);
+      final imageUrl = await snapshot.ref.getDownloadURL();
+      announcementImagePath = imageUrl;
+      emit(UploadImageSuccessState());
+    } on FirebaseException catch (e) {
+      String errMessage;
+      if (e.code == 'canceled') {
+        errMessage = 'Operation canceled';
+      } else if (e.code == 'object-not-found') {
+        errMessage = 'Object not found';
+      } else if (e.code == 'retry-limit-exceeded') {
+        errMessage =
+            'The maximum time limit on an operation has been excceded. Try uploading again.';
+      } else {
+        errMessage = 'Opps. Unknown error occured!';
+      }
+      emit(UploadImageErrorState(errMessage: errMessage));
+    } catch (e) {
+      emit(UploadImageErrorState(errMessage: e.toString()));
+      return null;
+    }
+  }
+
+  /* Future<void> uploadPImage({File? image}) async {
     announcementImagePath = null;
     emit(UploadImageLoadingState());
     if (image == null) return;
 
-    showToastMessage(message: 'Uploading your photo', states: ToastStates.WARNING);
+    showToastMessage(
+        message: 'Uploading your photo', states: ToastStates.WARNING);
     final uploadTask = await FirebaseStorage.instance
         .ref()
         .child("announcements/${Uri.file(image.path).pathSegments.last}")
@@ -318,7 +366,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
       announcementImagePath = imagePath;
       emit(UploadImageSuccessState());
     } on Exception {
-      emit(UploadImageErrorState());
+      // emit(UploadImageErrorState());
     }
-  }
+  }*/ // to be deleted
 }

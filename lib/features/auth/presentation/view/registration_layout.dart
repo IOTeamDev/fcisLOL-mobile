@@ -60,17 +60,17 @@ class _RegistrationLayoutState extends State<RegistrationLayout>
               message: 'You need to verify your email',
               states: ToastStates.SUCCESS,
             );
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => BlocProvider(
-                  create: (context) => VerificationCubit(),
-                  child: OtpVerificationScreen(
-                    recipientEmail: state.userEmail,
-                  ),
-                ),
-              ),
-              (route) => false,
-            );
+            // Navigator.of(context).pushAndRemoveUntil(
+            //   MaterialPageRoute(
+            //     builder: (context) => BlocProvider(
+            //       create: (context) => VerificationCubit(),
+            //       child: OtpVerificationScreen(
+            //         recipientEmail: state.userEmail,
+            //       ),
+            //     ),
+            //   ),
+            //   (route) => false,
+            // );
           }
           if (state is RegisterFailed) {
             showToastMessage(

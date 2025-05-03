@@ -21,6 +21,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../core/utils/resources/colors_manager.dart';
 import '../../../../../core/utils/resources/theme_provider.dart';
+import '../../../../otp_and_verification/presentation/view/forgot_password_verification.dart';
+import '../../../../otp_and_verification/presentation/view_model/verification_cubit/verification_cubit.dart';
 
 class LoginScreenDesktop extends StatefulWidget {
   const LoginScreenDesktop({super.key});
@@ -63,63 +65,73 @@ class _LoginScreenState extends State<LoginScreenDesktop> {
               children: [
                 Text(
                   StringsManager.login,
-                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                        fontSize: AppSizesDouble.s40,
-                      ),
+                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(fontSize: AppSizesDouble.s40,),
                 ),
-                SizedBox(
-                  height: AppSizesDouble.s20,
-                ),
+                SizedBox(height: AppSizesDouble.s20,),
                 defaultLoginInputField(
                   _emailController,
                   StringsManager.email,
                   TextInputType.emailAddress,
                   loginCubit: loginCubit,
                 ),
-                SizedBox(
-                  height: AppSizesDouble.s20,
+                SizedBox(height: AppSizesDouble.s20,),
+                defaultLoginInputField(
+                  _passwordController,
+                  StringsManager.password, TextInputType.visiblePassword,
+                  isPassword: true,
+                  loginCubit: loginCubit,
+                  suffixIcon: IconsManager.eyeIcon
                 ),
-                defaultLoginInputField(_passwordController,
-                    StringsManager.password, TextInputType.visiblePassword,
-                    isPassword: true,
-                    loginCubit: loginCubit,
-                    suffixIcon: IconsManager.eyeIcon),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                        padding: const EdgeInsets.all(AppSizesDouble.s0),
-                        foregroundColor: ColorsManager.dodgerBlue),
-                    child: const Text(
-                      StringsManager.forgotPassword + StringsManager.qMark,
-                    ),
-                    onPressed: () {
-                      //TODO: Implement Forgot Password
-                    },
-                  ),
-                ),
+                // Align(
+                //   alignment: Alignment.centerLeft,
+                //   child: TextButton(
+                //     style: TextButton.styleFrom(
+                //       padding: const EdgeInsets.all(AppSizesDouble.s0),
+                //       foregroundColor: ColorsManager.dodgerBlue
+                //     ),
+                //     child: const Text(
+                //       StringsManager.forgotPassword + StringsManager.qMark,
+                //     ),
+                //     onPressed: () {
+                //       if(_emailController.text.isNotEmpty){
+                //         Navigator.of(context).push(
+                //           MaterialPageRoute(
+                //             builder: (context) => BlocProvider(
+                //               create: (context) => VerificationCubit()..initializeStream(),
+                //               child: ForgotPasswordVerification(recipientEmail: _emailController.text,)
+                //             )
+                //           )
+                //         );
+                //       } else {
+                //         showToastMessage(message: 'Please Provide Email First To Continue', states: ToastStates.INFO);
+                //       }
+                //     },
+                //   ),
+                // ),
+                SizedBox(height: 10,),
                 defaultLoginButton(
-                    context,
-                    formKey,
-                    loginCubit,
-                    _emailController,
-                    _passwordController,
-                    StringsManager.login),
-                const SizedBox(
-                  height: AppSizesDouble.s20,
+                  context,
+                  formKey,
+                  loginCubit,
+                  _emailController,
+                  _passwordController,
+                  StringsManager.login
                 ),
+                const SizedBox(height: AppSizesDouble.s20,),
                 TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                            builder: (context) => ChoosingYear(),
-                          ),
-                          (route) => false);
-                    },
-                    child: Text(
-                      'Continue as a guest',
-                      style: TextStyle(color: ColorsManager.dodgerBlue),
-                    ))
+                  onPressed: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) => ChoosingYear(),
+                      ),
+                      (route) => false
+                    );
+                  },
+                  child: Text(
+                    'Continue as a guest',
+                    style: TextStyle(color: ColorsManager.dodgerBlue),
+                  )
+                )
               ],
             ),
           ),
