@@ -18,7 +18,8 @@ class PickImageCubit extends Cubit<PickImageState> {
   Future<void> uploadUserImage({required File image}) async {
     emit(UploadImageLoading());
     try {
-      final pathRef = _storageRef.child('$profileImagesFolder/${image.path.split('/').last}');
+      final pathRef = _storageRef
+          .child('$profileImagesFolder/${image.path.split('/').last}');
 
       UploadTask uploadTask = pathRef.putFile(File(image.path));
 
@@ -48,7 +49,7 @@ class PickImageCubit extends Cubit<PickImageState> {
   Future<void> deleteUserImage({required String image}) async {
     try {
       final String imageName = getImageNameFromUrl(imageUrl: image);
-      final pathRef = _storageRef.child('images/${imageName}');
+      final pathRef = _storageRef.child('${profileImagesFolder}/${imageName}');
       await pathRef.delete();
     } on FirebaseException catch (e) {
       String errMessage;

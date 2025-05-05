@@ -839,7 +839,8 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
     return _textDirections[controller] ?? TextDirection.ltr;
   }
 
-  Widget announcementBuilder(semester, context, index, announcementModel) {
+  Widget announcementBuilder(semester, BuildContext context, index,
+      AnnouncementModel announcementModel) {
     var cubit = AdminCubit.get(context);
     return InkWell(
       splashColor: ColorsManager.transparent,
@@ -926,6 +927,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
             MaterialButton(
               onPressed: () {
                 cubit.deleteAnnouncement(announcementModel.id, semester);
+                cubit.deleteImage(image: announcementModel.image);
               },
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(AppSizesDouble.s10)),

@@ -349,23 +349,27 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     }
   }
 
-  /* Future<void> uploadPImage({File? image}) async {
-    announcementImagePath = null;
-    emit(UploadImageLoadingState());
-    if (image == null) return;
-
-    showToastMessage(
-        message: 'Uploading your photo', states: ToastStates.WARNING);
-    final uploadTask = await FirebaseStorage.instance
-        .ref()
-        .child("announcements/${Uri.file(image.path).pathSegments.last}")
-        .putFile(image);
+  Future<void> deleteImage({required String image}) async {
     try {
-      final imagePath = await uploadTask.ref.getDownloadURL();
-      announcementImagePath = imagePath;
-      emit(UploadImageSuccessState());
-    } on Exception {
-      // emit(UploadImageErrorState());
+      final String imageName = getImageNameFromUrl(imageUrl: image);
+      final pathRef =
+          _storageRef.child('${announcementsImagesFolder}/${imageName}');
+      await pathRef.delete();
+    } on FirebaseException catch (e) {
+      String errMessage;
+      if (e.code == 'canceled') {
+        errMessage = 'Operation canceled';
+      } else if (e.code == 'object-not-found') {
+        errMessage = 'Object not found';
+      } else if (e.code == 'retry-limit-exceeded') {
+        errMessage =
+            'The maximum time limit on an operation has been excceded. Try uploading again.';
+      } else {
+        errMessage = 'Opps. Unknown error occured!';
+      }
+      debugPrint(errMessage);
+    } catch (e) {
+      return debugPrint(e.toString());
     }
-  }*/ // to be deleted
+  }
 }
