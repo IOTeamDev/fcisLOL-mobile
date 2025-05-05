@@ -317,9 +317,9 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     }
   }
 
-  Future<void> uploadImage({required File image}) async {
+  Future<void> uploadImage({File? image}) async {
     emit(UploadImageLoadingState());
-
+    if (image == null) return;
     try {
       final pathRef = _storageRef
           .child('$announcementsImagesFolder/${image.path.split('/').last}');

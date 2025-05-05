@@ -609,7 +609,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
 
                                                           await cubit.uploadImage(
                                                               image: cubit
-                                                                  .announcementImageFile!);
+                                                                  .announcementImageFile);
                                                           await cubit.addAnnouncement(
                                                               title:
                                                                   _titleController
@@ -927,7 +927,9 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
             MaterialButton(
               onPressed: () {
                 cubit.deleteAnnouncement(announcementModel.id, semester);
-                cubit.deleteImage(image: announcementModel.image);
+                if (announcementModel.image != AppConstants.defaultImage) {
+                  cubit.deleteImage(image: announcementModel.image);
+                }
               },
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(AppSizesDouble.s10)),
