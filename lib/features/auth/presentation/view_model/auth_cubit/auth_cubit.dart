@@ -10,7 +10,7 @@ import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:lol/core/network/remote/dio.dart';
 import 'package:lol/core/network/remote/send_grid_helper.dart';
 import 'package:lol/core/utils/components.dart';
-import 'package:lol/core/utils/dependencies_helper.dart';
+import 'package:lol/core/utils/service_locator.dart';
 import 'package:lol/core/utils/navigation.dart';
 import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';

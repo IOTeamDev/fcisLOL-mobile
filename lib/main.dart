@@ -1,50 +1,26 @@
-import 'dart:developer';
 import 'package:flutter/foundation.dart';
-import 'package:lol/features/home/presentation/view/loading_screen.dart';
-import 'package:lol/features/otp_and_verification/presentation/view_model/verification_cubit/verification_cubit.dart';
-import 'package:lol/features/pick_image/presentation/view/select_image.dart';
-import 'features/otp_and_verification/presentation/view/forgot_password_verification.dart';
-import 'firebase_options.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lol/core/network/remote/dio.dart';
+import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
-import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
-import 'package:lol/core/network/remote/send_grid_helper.dart';
-import 'package:lol/core/utils/resources/theme_provider.dart';
-import 'package:lol/core/utils/resources/themes_manager.dart';
-import 'package:lol/features/admin/presentation/view/announcements/add_announcement.dart';
-import 'package:lol/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
-import 'package:lol/features/home/presentation/view/semester_navigate.dart';
-import 'package:lol/features/on_boarding/presentation/view/onboarding.dart';
-import 'package:lol/features/otp_and_verification/presentation/view/otp_verification_screen.dart';
-import 'package:lol/features/profile/view/edit_profile_screen.dart';
-import 'package:lol/features/profile/view/other_profile.dart';
-import 'package:lol/features/auth/data/models/login_model.dart';
-import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
-import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit_states.dart';
-import 'package:lol/features/admin/presentation/view/admin_panal.dart';
-import 'package:lol/features/admin/presentation/view/announcements/announcements_list.dart';
-import 'package:lol/core/error/error_screen.dart';
-import 'package:lol/features/subject/data/repos/subject_repo_imp.dart';
-import 'package:lol/features/subject/presentation/view_model/get_material_cubit/get_material_cubit.dart';
-import 'package:lol/features/subject/presentation/screens/subject_details.dart';
-import 'package:lol/features/support_and_about_us/about_us.dart';
-import 'package:lol/features/support_and_about_us/user_advices/presentation/view/feedback_screen.dart';
-import 'package:lol/core/utils/dependencies_helper.dart';
-import 'package:lol/core/network/local/shared_preference.dart';
-import 'package:provider/provider.dart';
-import 'core/utils/resources/strings_manager.dart';
-import 'features/auth/presentation/view/registration_layout.dart';
-import 'features/auth/presentation/view_model/login_cubit/login_cubit.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'firebase_options.dart';
+import 'core/utils/service_locator.dart';
+import 'core/my_bloc_observer.dart';
+import 'core/network/local/shared_preference.dart';
 import 'core/utils/resources/constants_manager.dart';
-import 'features/auth/presentation/view/choosing_year.dart';
-import 'core/network/remote/dio.dart';
-import 'core/observer.dart';
-import 'package:flutter/material.dart';
-import 'features/home/presentation/view/home.dart';
+import 'core/utils/resources/strings_manager.dart';
+import 'core/utils/resources/theme_provider.dart';
+import 'core/utils/resources/themes_manager.dart';
+import 'core/error/error_screen.dart';
+import 'features/on_boarding/presentation/view/onboarding.dart';
+import 'features/auth/presentation/view/registration_layout.dart';
+import 'features/home/presentation/view/loading_screen.dart';
+import 'core/cubits/main_cubit/main_cubit.dart';
+import 'features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
 
 String? privateKeyId;
 String? privateKey;
@@ -55,11 +31,9 @@ String? fcmToken;
 Map<String, dynamic> fcisServiceMap = {};
 main() async {
   setup();
-  await dotenv.load();
   WidgetsFlutterBinding.ensureInitialized();
   await Cache.initialize();
   await DioHelp.initial();
-  await MainSenderHelper.initial();
   await Firebase.initializeApp(
       options: kIsWeb ? DefaultFirebaseOptions.currentPlatform : null);
   try {
@@ -128,7 +102,8 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (BuildContext context) => MainCubit()),
-        BlocProvider(create: (BuildContext context) => AdminCubit()..getFcmTokens()),
+        BlocProvider(
+            create: (BuildContext context) => AdminCubit()..getFcmTokens()),
       ],
       child: MaterialApp(
         home: startPage,

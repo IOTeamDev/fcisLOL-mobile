@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lol/core/utils/dependencies_helper.dart';
+import 'package:lol/core/utils/service_locator.dart';
 import 'package:lol/core/utils/navigation.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/core/utils/resources/fonts_manager.dart';

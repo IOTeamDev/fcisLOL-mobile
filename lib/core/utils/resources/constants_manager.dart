@@ -3,19 +3,17 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class Breakpoints {
   static const double mobile = 600;
-  static const double desktop = 1024;
 }
 
-enum DeviceType { MOBILE, TABLET, DESKTOP }
+enum DeviceType { MOBILE, TABLET }
 
 DeviceType getDeviceType(context) {
   final width = MediaQuery.of(context).size.width;
 
-  if (width < Breakpoints.mobile)
-    return DeviceType.MOBILE;
-  else if (width >= Breakpoints.mobile && width < Breakpoints.desktop)
+  if (width >= Breakpoints.mobile) {
     return DeviceType.TABLET;
-  return DeviceType.DESKTOP;
+  }
+  return DeviceType.MOBILE;
 }
 
 class AppConstants {

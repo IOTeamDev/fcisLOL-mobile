@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lol/core/utils/dependencies_helper.dart';
+import 'package:lol/core/utils/service_locator.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/core/utils/resources/icons_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
@@ -33,7 +33,8 @@ class _OnBoardingState extends State<OnBoarding> {
           Expanded(
             child: PageView.builder(
               controller: pageViewController,
-              itemBuilder: (context, index) => OnBoardingItem(model: onBoardingItemsList[index]),
+              itemBuilder: (context, index) =>
+                  OnBoardingItem(model: onBoardingItemsList[index]),
               itemCount: onBoardingItemsList.length,
               onPageChanged: (value) {
                 if (value == onBoardingItemsList.length - AppSizes.s1) {
@@ -57,19 +58,26 @@ class _OnBoardingState extends State<OnBoarding> {
               children: [
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: isLastPage? ColorsManager.grey8:ColorsManager.lightPrimary,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSizesDouble.s15)),
+                    backgroundColor: isLastPage
+                        ? ColorsManager.grey8
+                        : ColorsManager.lightPrimary,
+                    shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(AppSizesDouble.s15)),
                     foregroundColor: ColorsManager.white,
-                    padding: EdgeInsets.symmetric(horizontal: AppPaddings.p50, vertical: AppPaddings.p15),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: AppPaddings.p50, vertical: AppPaddings.p15),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
                         isLastPage
-                          ? StringsManager.getStarted
-                          : StringsManager.next,
-                        style: const TextStyle(fontSize: AppSizesDouble.s16, fontWeight: FontWeight.w600),
+                            ? StringsManager.getStarted
+                            : StringsManager.next,
+                        style: const TextStyle(
+                            fontSize: AppSizesDouble.s16,
+                            fontWeight: FontWeight.w600),
                       ),
                       if (!isLastPage)
                         SizedBox(
@@ -86,10 +94,7 @@ class _OnBoardingState extends State<OnBoarding> {
                     if (isLastPage) {
                       Cache.writeData(
                           key: KeysManager.finishedOnBoard, value: true);
-                      navigatReplace(
-                          context,
-                          ChoosingYear()
-                      );
+                      navigatReplace(context, ChoosingYear());
                     } else {
                       pageViewController.nextPage(
                         duration: Duration(milliseconds: AppSizes.s500),

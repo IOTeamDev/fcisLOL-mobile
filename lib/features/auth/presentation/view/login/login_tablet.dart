@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/utils/components.dart';
-import 'package:lol/core/utils/dependencies_helper.dart';
+import 'package:lol/core/utils/service_locator.dart';
 import 'package:lol/core/utils/resources/icons_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/core/utils/resources/values_manager.dart';
@@ -111,7 +111,9 @@ class _LoginScreenState extends State<LoginScreenTablet> {
                 //     },
                 //   ),
                 // ),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 defaultLoginButton(
                     context,
                     formKey,

@@ -18,7 +18,6 @@ import 'package:lol/core/utils/resources/theme_provider.dart';
 import 'package:lol/core/utils/resources/values_manager.dart';
 import 'package:lol/features/auth/presentation/view/registration_layout.dart';
 import 'package:lol/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
-import 'package:lol/features/home/presentation/view/home/home_desktop.dart';
 import 'package:lol/features/home/presentation/view/home/home_mobile.dart';
 import 'package:lol/features/home/presentation/view/home/home_tablet.dart';
 import 'package:lol/features/home/presentation/view/semester_navigate.dart';
@@ -48,7 +47,7 @@ import 'package:lol/features/profile/view/profile.dart';
 import 'package:lol/features/useful_links/useful_links.dart';
 import 'package:lol/main.dart';
 import 'package:lol/core/utils/navigation.dart';
-import 'package:lol/core/utils/dependencies_helper.dart';
+import 'package:lol/core/utils/service_locator.dart';
 import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../admin/presentation/view/announcements/announcements_list.dart';
@@ -118,21 +117,17 @@ class _HomeState extends State<Home> {
       if (AppConstants.SelectedSemester != null) {
         semesterIndex = getSemesterIndex(AppConstants.SelectedSemester!);
         return BaseResponsive(
-            mobileLayout: HomeMobile(
-              scaffoldKey: scaffoldKey,
-              semesterIndex: semesterIndex,
-              profile: profile,
-            ),
-            tabletLayout: HomeTablet(
-              scaffoldKey: scaffoldKey,
-              semesterIndex: semesterIndex,
-              profile: profile,
-            ),
-            desktopLayout: HomeDesktop(
-              scaffoldKey: scaffoldKey,
-              semesterIndex: semesterIndex,
-              profile: profile,
-            ));
+          mobileLayout: HomeMobile(
+            scaffoldKey: scaffoldKey,
+            semesterIndex: semesterIndex,
+            profile: profile,
+          ),
+          tabletLayout: HomeTablet(
+            scaffoldKey: scaffoldKey,
+            semesterIndex: semesterIndex,
+            profile: profile,
+          ),
+        );
       }
       return const SizedBox.shrink();
     });

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:linkify/linkify.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
@@ -49,10 +50,10 @@ class GridTileWidget extends StatelessWidget {
                             return Text(
                                 'Error loading thumbnail'); // Display an error if one occurs
                           } else if (snapshot.data != null) {
-                            return Image.network(
-                              snapshot.data!,
+                            return CachedNetworkImage(
+                              imageUrl: snapshot.data!,
                               fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
+                              errorWidget: (context, error, stackTrace) {
                                 return Image.network(
                                   'https://www.buffalotech.com/images/made/images/remote/https_i.ytimg.com/vi/06wIw-NdHIw/sddefault_300_225_s.jpg',
                                   fit: BoxFit.cover,
@@ -60,8 +61,9 @@ class GridTileWidget extends StatelessWidget {
                               },
                             ); // Display the thumbnail
                           } else {
-                            return Image.network(
-                              'https://www.buffalotech.com/images/made/images/remote/https_i.ytimg.com/vi/06wIw-NdHIw/sddefault_300_225_s.jpg',
+                            return CachedNetworkImage(
+                              imageUrl:
+                                  'https://www.buffalotech.com/images/made/images/remote/https_i.ytimg.com/vi/06wIw-NdHIw/sddefault_300_225_s.jpg',
                               fit: BoxFit.cover,
                             ); // Handle null cases
                           }

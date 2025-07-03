@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/utils/components.dart';
-import 'package:lol/core/utils/dependencies_helper.dart';
+import 'package:lol/core/utils/service_locator.dart';
 import 'package:lol/core/utils/resources/icons_manager.dart';
 import 'package:lol/core/utils/resources/strings_manager.dart';
 import 'package:lol/core/utils/resources/values_manager.dart';
@@ -65,7 +65,9 @@ class _LoginScreenState extends State<LoginScreenMobile> {
               children: [
                 Text(
                   StringsManager.login,
-                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(fontSize: AppSizesDouble.s40,),
+                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                        fontSize: AppSizesDouble.s40,
+                      ),
                 ),
                 SizedBox(
                   height: AppSizesDouble.s20,
@@ -94,30 +96,32 @@ class _LoginScreenState extends State<LoginScreenMobile> {
                       StringsManager.forgotPassword + StringsManager.qMark,
                     ),
                     onPressed: () {
-                      if(_emailController.text.isNotEmpty){
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
+                      if (_emailController.text.isNotEmpty) {
+                        Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => BlocProvider(
-                              create: (context) => VerificationCubit()..initializeStream(),
-                              child: ForgotPasswordVerification(recipientEmail: _emailController.text,)
-                            )
-                          )
-                        );
+                                create: (context) =>
+                                    VerificationCubit()..initializeStream(),
+                                child: ForgotPasswordVerification(
+                                  recipientEmail: _emailController.text,
+                                ))));
                       } else {
-                        showToastMessage(message: 'Please Provide Email First To Continue', states: ToastStates.INFO);
+                        showToastMessage(
+                            message: 'Please Provide Email First To Continue',
+                            states: ToastStates.INFO);
                       }
                     },
                   ),
                 ),
-                SizedBox(height: 5,),
-                defaultLoginButton(
-                  context,
-                  formKey,
-                  loginCubit,
-                  _emailController,
-                  _passwordController,
-                  StringsManager.login
+                SizedBox(
+                  height: 5,
                 ),
+                defaultLoginButton(
+                    context,
+                    formKey,
+                    loginCubit,
+                    _emailController,
+                    _passwordController,
+                    StringsManager.login),
                 const SizedBox(
                   height: AppSizesDouble.s20,
                 ),
@@ -126,18 +130,17 @@ class _LoginScreenState extends State<LoginScreenMobile> {
                   children: [
                     Text('Do you want to try first?'),
                     TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                          builder: (context) => ChoosingYear(),
-                        ),
-                        (route) => false);
-                      },
-                      child: Text(
-                        'Continue as a guest',
-                        style: TextStyle(color: ColorsManager.dodgerBlue),
-                      )
-                    )
+                        onPressed: () {
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                builder: (context) => ChoosingYear(),
+                              ),
+                              (route) => false);
+                        },
+                        child: Text(
+                          'Continue as a guest',
+                          style: TextStyle(color: ColorsManager.dodgerBlue),
+                        ))
                   ],
                 ),
               ],

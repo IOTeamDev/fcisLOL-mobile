@@ -224,7 +224,14 @@ class materialBuilder extends StatelessWidget {
 }
 
 class CustomExpansionTile extends StatelessWidget {
-  CustomExpansionTile({super.key, required this.title, this.icon, required this.children, this.childrenPadding, this.isImage = false, this.imageIcon});
+  CustomExpansionTile(
+      {super.key,
+      required this.title,
+      this.icon,
+      required this.children,
+      this.childrenPadding,
+      this.isImage = false,
+      this.imageIcon});
   bool isImage;
   String? imageIcon;
   double? childrenPadding;
@@ -233,55 +240,63 @@ class CustomExpansionTile extends StatelessWidget {
   late String title;
   @override
   Widget build(BuildContext context) {
-    return  ExpansionTile(
-      leading: !isImage? Icon(
-        icon,
-        color: Theme.of(context).iconTheme.color,
-      ): Image.asset(
-        imageIcon!,
-        width: AppSizesDouble.s25,
-        height: AppSizesDouble.s25,
-        color: Theme.of(context).iconTheme.color,
-      ),
+    return ExpansionTile(
+      leading: !isImage
+          ? Icon(
+              icon,
+              color: Theme.of(context).iconTheme.color,
+            )
+          : Image.asset(
+              imageIcon!,
+              width: AppSizesDouble.s25,
+              height: AppSizesDouble.s25,
+              color: Theme.of(context).iconTheme.color,
+            ),
       title: Text(
         title,
         style: Theme.of(context).textTheme.bodyLarge,
       ),
-      childrenPadding: EdgeInsets.symmetric(horizontal: childrenPadding??AppPaddings.p0),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero), // Removes divider when expanded
-      collapsedShape: RoundedRectangleBorder(borderRadius: BorderRadius.zero), // Removes divider when collapsed
-      expansionAnimationStyle: AnimationStyle(duration: Duration(milliseconds: AppSizes.s600), reverseDuration: Duration(milliseconds: AppSizes.s400), curve: Curves.fastEaseInToSlowEaseOut, reverseCurve: Curves.fastOutSlowIn),
+      childrenPadding:
+          EdgeInsets.symmetric(horizontal: childrenPadding ?? AppPaddings.p0),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.zero), // Removes divider when expanded
+      collapsedShape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.zero), // Removes divider when collapsed
+      expansionAnimationStyle: AnimationStyle(
+          duration: Duration(milliseconds: AppSizes.s600),
+          reverseDuration: Duration(milliseconds: AppSizes.s400),
+          curve: Curves.fastEaseInToSlowEaseOut,
+          reverseCurve: Curves.fastOutSlowIn),
       children: children,
       iconColor: ColorsManager.white,
     );
   }
 }
 
-
 class CustomTile extends StatelessWidget {
- CustomTile({super.key, required this.onTap, required this.title, this.icon });
+  CustomTile({super.key, required this.onTap, required this.title, this.icon});
 
- IconData? icon;
- late String title;
- late VoidCallback onTap;
+  IconData? icon;
+  late String title;
+  late VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       leading: Icon(
-       icon,
+        icon,
         color: Theme.of(context).iconTheme.color,
       ),
       title: Text(
         title,
         style: Theme.of(context).textTheme.bodyLarge,
       ),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero), // Removes divider when expanded
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.zero), // Removes divider when expanded
       onTap: onTap,
     );
   }
 }
-
 
 Widget defaultLoginButton(
         context,
@@ -384,14 +399,14 @@ Widget previousExamsBuilder(context, PreviousExamModel exam, role, semester) {
 }
 
 Widget defaultLoginInputField(controller, label, keyboardType,
-  {bool isPassword = false,
-  loginCubit,
-  suffixIcon,
-  bool isConfirmPassword = false,
-  validationMessage,
-  onFieldSubmit,
-  TextInputAction textInputAction = TextInputAction.done,
-  String? Function(String?)? validator = null}) =>
+        {bool isPassword = false,
+        loginCubit,
+        suffixIcon,
+        bool isConfirmPassword = false,
+        validationMessage,
+        onFieldSubmit,
+        TextInputAction textInputAction = TextInputAction.done,
+        String? Function(String?)? validator = null}) =>
     TextFormField(
       obscureText: isPassword ? loginCubit.hiddenPassword : false,
       controller: controller,
@@ -401,29 +416,33 @@ Widget defaultLoginInputField(controller, label, keyboardType,
       decoration: InputDecoration(
         labelStyle: TextStyle(color: ColorsManager.lightGrey),
         labelText: label,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(AppSizesDouble.s15)),
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(AppSizesDouble.s15)),
         filled: true,
         fillColor: ColorsManager.grey3,
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: ColorsManager.lightPrimary),
-          borderRadius: BorderRadius.circular(AppSizesDouble.s15)
-        ),
-        suffixIcon: isPassword ? IconButton(
-          icon: Icon(suffixIcon),
-          color: loginCubit.hiddenPassword ?
-          ColorsManager.lightGrey :
-          ColorsManager.lightPrimary,
-          onPressed: loginCubit.togglePassword,
-        ) : null,
+            borderSide: BorderSide(color: ColorsManager.lightPrimary),
+            borderRadius: BorderRadius.circular(AppSizesDouble.s15)),
+        suffixIcon: isPassword
+            ? IconButton(
+                icon: Icon(suffixIcon),
+                color: loginCubit.hiddenPassword
+                    ? ColorsManager.lightGrey
+                    : ColorsManager.lightPrimary,
+                onPressed: loginCubit.togglePassword,
+              )
+            : null,
       ),
       validator: validator ??
-        (value) {
-          if (value!.isEmpty) {
-            return isConfirmPassword ? validationMessage : StringsManager.emptyFieldWarning;
-          } else {
-            return null; // Form is valid.
-          }
-        },
+          (value) {
+            if (value!.isEmpty) {
+              return isConfirmPassword
+                  ? validationMessage
+                  : StringsManager.emptyFieldWarning;
+            } else {
+              return null; // Form is valid.
+            }
+          },
       onFieldSubmitted: isConfirmPassword ? onFieldSubmit : null,
     );
 
@@ -436,7 +455,8 @@ void showToastMessage({
   int lengthForIOSAndWeb = AppSizes.s5,
   toastLength = Toast.LENGTH_SHORT,
 }) {
-  textColor = states != ToastStates.INFO ? ColorsManager.black : ColorsManager.white;
+  textColor =
+      states != ToastStates.INFO ? ColorsManager.black : ColorsManager.white;
   Fluttertoast.showToast(
     msg: message,
     toastLength: toastLength,

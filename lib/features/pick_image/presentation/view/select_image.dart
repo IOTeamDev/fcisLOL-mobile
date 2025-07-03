@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lol/core/models/profile/profile_model.dart';
-import 'package:lol/core/utils/dependencies_helper.dart';
+import 'package:lol/core/utils/service_locator.dart';
 import 'package:lol/core/utils/resources/colors_manager.dart';
 import 'package:lol/core/utils/resources/constants_manager.dart';
 import 'package:lol/core/utils/resources/icons_manager.dart';
@@ -68,9 +68,7 @@ class _SelectImageState extends State<SelectImage> {
               appBar: AppBar(
                 automaticallyImplyLeading: false,
                 title: Text(StringsManager.profileImage,
-                    style: Theme.of(context)
-                      .textTheme
-                      .displayMedium!),
+                    style: Theme.of(context).textTheme.displayMedium!),
                 centerTitle: true,
               ),
               body: Center(
@@ -129,13 +127,12 @@ class _SelectImageState extends State<SelectImage> {
 
                       // Next Button
                       SizedBox(
-                        width: AppQueries.screenWidth(context) / AppSizesDouble.s1_5,
+                        width: AppQueries.screenWidth(context) /
+                            AppSizesDouble.s1_5,
                         child: ElevatedButton.icon(
                           iconAlignment: IconAlignment.end,
                           label: Text(StringsManager.next,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleLarge!),
+                              style: Theme.of(context).textTheme.titleLarge!),
                           icon: Icon(
                             IconsManager.leftArrowIcon,
                             color: ColorsManager.white,

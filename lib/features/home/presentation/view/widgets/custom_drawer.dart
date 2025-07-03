@@ -1,4 +1,5 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -53,303 +54,301 @@ class _CustomDrawerState extends State<CustomDrawer> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //header
-            AppConstants.TOKEN != null ?
-            SizedBox(
-              height:AppQueries.screenHeight(context) / AppSizesDouble.s3_2,
-              child: UserAccountsDrawerHeader(
-                decoration: BoxDecoration(color: Theme.of(context).drawerTheme.backgroundColor),
-                accountName: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ConstrainedBox(
-                      constraints: BoxConstraints(maxWidth: AppQueries.screenWidth(context) / AppSizesDouble.s1_5),
-                      child: Text(
-                        profileModel!.name,
-                        style: Theme.of(context).textTheme.titleLarge,
-                        maxLines: AppSizes.s1,
+            AppConstants.TOKEN != null
+                ? SizedBox(
+                    height:
+                        AppQueries.screenHeight(context) / AppSizesDouble.s3_2,
+                    child: UserAccountsDrawerHeader(
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).drawerTheme.backgroundColor),
+                      accountName: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ConstrainedBox(
+                            constraints: BoxConstraints(
+                                maxWidth: AppQueries.screenWidth(context) /
+                                    AppSizesDouble.s1_5),
+                            child: Text(
+                              profileModel!.name,
+                              style: Theme.of(context).textTheme.titleLarge,
+                              maxLines: AppSizes.s1,
+                            ),
+                          ),
+                          const Spacer(),
+                          Text(AppConstants.Level(profileModel!.semester),
+                              style: Theme.of(context).textTheme.bodyLarge),
+                        ],
+                      ),
+                      accountEmail: Container(
+                        margin: EdgeInsets.zero, // Remove any margin
+                        padding: EdgeInsets.zero, // Remove any padding
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: AppPaddings.p5),
+                          child: ElevatedButton.icon(
+                            onPressed: () => navigate(context, const Profile()),
+                            label: Text(
+                              StringsManager.profileInfo,
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                            icon: Icon(IconsManager.personIcon),
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.transparent),
+                          ),
+                        ),
+                      ),
+                      currentAccountPicture: CircleAvatar(
+                        backgroundImage: CachedNetworkImageProvider(
+                          profileModel!.photo!,
+                        ),
+                        radius: 30,
                       ),
                     ),
-                    const Spacer(),
-                    Text(AppConstants.Level(profileModel!.semester),
-                        style: Theme.of(context).textTheme.bodyLarge),
-                  ],
-                ),
-                accountEmail: Container(
-                  margin: EdgeInsets.zero, // Remove any margin
-                  padding: EdgeInsets.zero, // Remove any padding
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: AppPaddings.p5),
-                    child: ElevatedButton.icon(
-                      onPressed: () => navigate(context, const Profile()),
-                      label:Text(
-                        StringsManager.profileInfo,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                      icon: Icon(IconsManager.personIcon),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.transparent
-                      ),
+                  )
+                : UserAccountsDrawerHeader(
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).scaffoldBackgroundColor),
+                    accountName: Text(
+                      StringsManager.guest,
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    accountEmail: Text(
+                      AppConstants.Level(AppConstants.SelectedSemester ?? ''),
+                      style: Theme.of(context).textTheme.displayLarge,
+                    ),
+                    currentAccountPicture: const CircleAvatar(
+                      backgroundImage:
+                          NetworkImage(AppConstants.defaultProfileImage),
                     ),
                   ),
-                ),
-                currentAccountPicture: CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    profileModel!.photo!,
-                  ),
-                  radius: 30,
-                ),
-              ),
-            ) :
-            UserAccountsDrawerHeader(
-              decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor),
-              accountName: Text(
-                StringsManager.guest,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              accountEmail: Text(
-                AppConstants.Level(AppConstants.SelectedSemester ?? ''),
-                style: Theme.of(context).textTheme.displayLarge,
-              ),
-              currentAccountPicture: const CircleAvatar(backgroundImage: NetworkImage(AppConstants.defaultProfileImage),),
-            ),
             //body
             Expanded(
               child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    if (profileModel?.role == KeysManager.admin || profileModel?.role == KeysManager.developer)
+                  child: Column(
+                children: [
+                  if (profileModel?.role == KeysManager.admin ||
+                      profileModel?.role == KeysManager.developer)
                     CustomTile(
-                      onTap: () => navigate(context, AdminPanel()),
-                      title: StringsManager.admin,
-                      icon:  IconsManager.adminIcon
-                    ), //*Admin Panel
-                    CustomTile(
+                        onTap: () => navigate(context, AdminPanel()),
+                        title: StringsManager.admin,
+                        icon: IconsManager.adminIcon), //*Admin Panel
+                  CustomTile(
                       onTap: () {
                         if (AppConstants.TOKEN == null) {
                           navigate(
-                            context,
-                            AnnouncementsList(semester: AppConstants.SelectedSemester!)
-                          );
+                              context,
+                              AnnouncementsList(
+                                  semester: AppConstants.SelectedSemester!));
                         } else {
                           navigate(
-                            context,
-                            AnnouncementsList(semester: MainCubit.get(context).profileModel!.semester)
-                          );
+                              context,
+                              AnnouncementsList(
+                                  semester: MainCubit.get(context)
+                                      .profileModel!
+                                      .semester));
                         }
                       },
                       title: StringsManager.announcements,
-                      icon:  IconsManager.announcementsIcon
-                    ),//*Announcements List
-                    CustomTile(
+                      icon:
+                          IconsManager.announcementsIcon), //*Announcements List
+                  CustomTile(
                       onTap: () {
                         navigate(
-                          context,
-                          LeaderboardScreen(
-                            semester: widget.semester,
-                          )
-                        );
+                            context,
+                            LeaderboardScreen(
+                              semester: widget.semester,
+                            ));
                       },
-                      title:  StringsManager.leaderboard,
-                      icon:  IconsManager.leaderboardIcon
-                    ),//*Leaderboard
-                    CustomExpansionTile(
+                      title: StringsManager.leaderboard,
+                      icon: IconsManager.leaderboardIcon), //*Leaderboard
+                  CustomExpansionTile(
                       title: StringsManager.years,
                       icon: IconsManager.schoolIcon,
                       children: [
-                       CustomExpansionTile(
-                         title: StringsManager.firstYear,
-                         childrenPadding: AppPaddings.p15,
-                         children: [
-                           CustomTile(
-                             onTap: () {
-                               AppConstants.navigatedSemester = StringsManager.one;
-                               navigate(
-                                 context,
-                                 SemesterNavigate(semester: StringsManager.one)
-                               );
-                             },
-                             title: StringsManager.firstSemester,
-                           ),
-                           CustomTile(
-                             onTap: () {
-                               AppConstants.navigatedSemester = StringsManager.two;
-                               navigate(
-                                 context,
-                                 SemesterNavigate(semester: StringsManager.two)
-                               );
-                             },
-                             title:  StringsManager.secondSemester,
-                           ),
-                         ]
-                       ),
-                       CustomExpansionTile(
-                         childrenPadding: AppPaddings.p15,
-                         title: StringsManager.secondYear,
-                         children: [
-                           CustomTile(
-                             onTap: () {
-                               AppConstants.navigatedSemester = StringsManager.three;
-                               navigate(
-                                 context,
-                                 SemesterNavigate(semester: StringsManager.three)
-                               );
-                             },
-                             title: StringsManager.firstSemester,
-                           ),
-                           CustomTile(
-                             onTap: () {
-                               AppConstants.navigatedSemester = StringsManager.four;
-                               navigate(
-                                 context,
-                                 SemesterNavigate(semester: StringsManager.four)
-                               );
-                             },
-                             title:  StringsManager.secondSemester,
-                           ),
-                         ]
-                       ),
-                       CustomExpansionTile(
-                         childrenPadding: AppPaddings.p15,
-                         title: StringsManager.thirdYear,
-                         children: [
-                           CustomTile(
-                             onTap: () {
-                               AppConstants.navigatedSemester = StringsManager.five;
-                               navigate(
-                                 context,
-                                 SemesterNavigate(semester: StringsManager.five)
-                               );
-                             },
-                             title: StringsManager.firstSemester,
-                           ),
-                           CustomTile(
-                             onTap: () {
-                               AppConstants.navigatedSemester = StringsManager.six;
-                               navigate(
-                                 context,
-                                 SemesterNavigate(semester: StringsManager.six)
-                               );
-                             },
-                             title:  StringsManager.secondSemester,
-                           ),
-                         ]
-                       ),
-                       CustomExpansionTile(
-                         childrenPadding: AppPaddings.p15,
-                         title: StringsManager.seniors,
-                         children: [
-                           CustomTile(
-                             onTap: () {
-                               AppConstants.navigatedSemester = StringsManager.seven;
-                               navigate(
-                                 context,
-                                 SemesterNavigate(semester: StringsManager.seven)
-                               );
-                             },
-                             title: StringsManager.firstSemester,
-                           ),
-                           CustomTile(
-                             onTap: () {
-                               AppConstants.navigatedSemester = StringsManager.eight;
-                               navigate(
-                                 context,
-                                 SemesterNavigate(semester: StringsManager.eight)
-                               );
-                             },
-                             title:  StringsManager.secondSemester,
-                           ),
-                         ]
-                       ),
-                     ]
-                    ),//*Years Navigation
-                    CustomExpansionTile(
+                        CustomExpansionTile(
+                            title: StringsManager.firstYear,
+                            childrenPadding: AppPaddings.p15,
+                            children: [
+                              CustomTile(
+                                onTap: () {
+                                  AppConstants.navigatedSemester =
+                                      StringsManager.one;
+                                  navigate(
+                                      context,
+                                      SemesterNavigate(
+                                          semester: StringsManager.one));
+                                },
+                                title: StringsManager.firstSemester,
+                              ),
+                              CustomTile(
+                                onTap: () {
+                                  AppConstants.navigatedSemester =
+                                      StringsManager.two;
+                                  navigate(
+                                      context,
+                                      SemesterNavigate(
+                                          semester: StringsManager.two));
+                                },
+                                title: StringsManager.secondSemester,
+                              ),
+                            ]),
+                        CustomExpansionTile(
+                            childrenPadding: AppPaddings.p15,
+                            title: StringsManager.secondYear,
+                            children: [
+                              CustomTile(
+                                onTap: () {
+                                  AppConstants.navigatedSemester =
+                                      StringsManager.three;
+                                  navigate(
+                                      context,
+                                      SemesterNavigate(
+                                          semester: StringsManager.three));
+                                },
+                                title: StringsManager.firstSemester,
+                              ),
+                              CustomTile(
+                                onTap: () {
+                                  AppConstants.navigatedSemester =
+                                      StringsManager.four;
+                                  navigate(
+                                      context,
+                                      SemesterNavigate(
+                                          semester: StringsManager.four));
+                                },
+                                title: StringsManager.secondSemester,
+                              ),
+                            ]),
+                        CustomExpansionTile(
+                            childrenPadding: AppPaddings.p15,
+                            title: StringsManager.thirdYear,
+                            children: [
+                              CustomTile(
+                                onTap: () {
+                                  AppConstants.navigatedSemester =
+                                      StringsManager.five;
+                                  navigate(
+                                      context,
+                                      SemesterNavigate(
+                                          semester: StringsManager.five));
+                                },
+                                title: StringsManager.firstSemester,
+                              ),
+                              CustomTile(
+                                onTap: () {
+                                  AppConstants.navigatedSemester =
+                                      StringsManager.six;
+                                  navigate(
+                                      context,
+                                      SemesterNavigate(
+                                          semester: StringsManager.six));
+                                },
+                                title: StringsManager.secondSemester,
+                              ),
+                            ]),
+                        CustomExpansionTile(
+                            childrenPadding: AppPaddings.p15,
+                            title: StringsManager.seniors,
+                            children: [
+                              CustomTile(
+                                onTap: () {
+                                  AppConstants.navigatedSemester =
+                                      StringsManager.seven;
+                                  navigate(
+                                      context,
+                                      SemesterNavigate(
+                                          semester: StringsManager.seven));
+                                },
+                                title: StringsManager.firstSemester,
+                              ),
+                              CustomTile(
+                                onTap: () {
+                                  AppConstants.navigatedSemester =
+                                      StringsManager.eight;
+                                  navigate(
+                                      context,
+                                      SemesterNavigate(
+                                          semester: StringsManager.eight));
+                                },
+                                title: StringsManager.secondSemester,
+                              ),
+                            ]),
+                      ]), //*Years Navigation
+                  CustomExpansionTile(
                       title: StringsManager.drive,
                       isImage: true,
                       imageIcon: AssetsManager.drive,
                       children: [
                         CustomTile(
-                          onTap: () async {
-                            LinkableElement url = LinkableElement(
-                              StringsManager.drive.toLowerCase(),
-                              AppConstants.year28Drive);
-                            await onOpen(context, url);
-                          },
-                          title: StringsManager.year28
-                        ),
+                            onTap: () async {
+                              LinkableElement url = LinkableElement(
+                                  StringsManager.drive.toLowerCase(),
+                                  AppConstants.year28Drive);
+                              await onOpen(context, url);
+                            },
+                            title: StringsManager.year28),
                         CustomTile(
-                          onTap: () async {
-                            LinkableElement url = LinkableElement(
-                              StringsManager.drive.toLowerCase(),
-                              AppConstants.year27Drive);
-                            await onOpen(context, url);
-                          },
-                          title: StringsManager.year27
-                        ),
+                            onTap: () async {
+                              LinkableElement url = LinkableElement(
+                                  StringsManager.drive.toLowerCase(),
+                                  AppConstants.year27Drive);
+                              await onOpen(context, url);
+                            },
+                            title: StringsManager.year27),
                         CustomTile(
-                          onTap: () async {
-                            LinkableElement url = LinkableElement(
-                              StringsManager.drive.toLowerCase(),
-                              AppConstants.year26Drive);
-                            await onOpen(context, url);
-                          },
-                          title: StringsManager.year26
-                        ),
+                            onTap: () async {
+                              LinkableElement url = LinkableElement(
+                                  StringsManager.drive.toLowerCase(),
+                                  AppConstants.year26Drive);
+                              await onOpen(context, url);
+                            },
+                            title: StringsManager.year26),
                         CustomTile(
-                          onTap: () async {
-                            LinkableElement url = LinkableElement(
-                              StringsManager.drive.toLowerCase(),
-                              AppConstants.year25Drive);
-                            await onOpen(context, url);
-                          },
-                          title: StringsManager.year25
-                        ),
+                            onTap: () async {
+                              LinkableElement url = LinkableElement(
+                                  StringsManager.drive.toLowerCase(),
+                                  AppConstants.year25Drive);
+                              await onOpen(context, url);
+                            },
+                            title: StringsManager.year25),
                         CustomTile(
-                          onTap: () async {
-                            LinkableElement url = LinkableElement(
-                              StringsManager.drive.toLowerCase(),
-                              AppConstants.year24Drive);
-                            await onOpen(context, url);
-                          },
-                          title: StringsManager.year24
-                        ),
-                      ]
-                    ),//*Drive
-                    CustomTile(
+                            onTap: () async {
+                              LinkableElement url = LinkableElement(
+                                  StringsManager.drive.toLowerCase(),
+                                  AppConstants.year24Drive);
+                              await onOpen(context, url);
+                            },
+                            title: StringsManager.year24),
+                      ]), //*Drive
+                  CustomTile(
                       onTap: () => navigate(context, UsefulLinks()),
                       icon: IconsManager.linkIcon,
-                      title: StringsManager.links
-                    ),//*Useful Links
-                    CustomTile(
+                      title: StringsManager.links), //*Useful Links
+                  CustomTile(
                       onTap: () => navigate(context, PreviousExams()),
                       icon: IconsManager.paperIcon,
-                      title: StringsManager.exams
-                    ),//*Previous Exams
-                    CustomExpansionTile(
+                      title: StringsManager.exams), //*Previous Exams
+                  CustomExpansionTile(
                       title: StringsManager.support,
                       icon: IconsManager.supportAgentIcon,
                       children: [
                         CustomTile(
-                          onTap: () => navigate(context, ReportBug()),
-                          title: StringsManager.reportBug
-                        ),
+                            onTap: () => navigate(context, ReportBug()),
+                            title: StringsManager.reportBug),
                         CustomTile(
-                          onTap: () => navigate(context, FeedbackScreen()),
-                          title: StringsManager.feedback
-                        ),
+                            onTap: () => navigate(context, FeedbackScreen()),
+                            title: StringsManager.feedback),
                         CustomTile(
-                          onTap: () =>  navigate(context, ReleaseNotesScreen()),
-                          title:  StringsManager.releaseNotes
-                        ),
-                      ]
-                    ),//*Support
-                    CustomTile(
-                      onTap: () => navigate(context, AboutUs()),
-                      title: StringsManager.aboutUs,
-                      icon: IconsManager.groupIcon,
-                    )//*About Us
-                  ],
-                )
-              ),
+                            onTap: () =>
+                                navigate(context, ReleaseNotesScreen()),
+                            title: StringsManager.releaseNotes),
+                      ]), //*Support
+                  CustomTile(
+                    onTap: () => navigate(context, AboutUs()),
+                    title: StringsManager.aboutUs,
+                    icon: IconsManager.groupIcon,
+                  ) //*About Us
+                ],
+              )),
             ),
             // login/logout button
             Padding(
@@ -362,10 +361,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       minWidth: AppSizesDouble.s150),
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppConstants.TOKEN != null ?
-                        ColorsManager.imperialRed :
-                        ColorsManager.green,
-                        padding: EdgeInsets.symmetric(vertical: AppPaddings.p15)),
+                          backgroundColor: AppConstants.TOKEN != null
+                              ? ColorsManager.imperialRed
+                              : ColorsManager.green,
+                          padding:
+                              EdgeInsets.symmetric(vertical: AppPaddings.p15)),
                       onPressed: () {
                         if (AppConstants.TOKEN != null) {
                           AwesomeDialog(
@@ -409,20 +409,23 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
-                            AppConstants.TOKEN != null ?
-                            IconsManager.logOutIcon :
-                            IconsManager.logInIcon,
-                            color: ColorsManager.white
+                              AppConstants.TOKEN != null
+                                  ? IconsManager.logOutIcon
+                                  : IconsManager.logInIcon,
+                              color: ColorsManager.white),
+                          SizedBox(
+                            width: AppSizesDouble.s10,
                           ),
-                          SizedBox(width: AppSizesDouble.s10,),
                           Text(
-                            AppConstants.TOKEN != null ?
-                            StringsManager.logOut :
-                            StringsManager.login,
+                            AppConstants.TOKEN != null
+                                ? StringsManager.logOut
+                                : StringsManager.login,
                             style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(fontWeight: FontWeightManager.semiBold, color: ColorsManager.white),
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(
+                                    fontWeight: FontWeightManager.semiBold,
+                                    color: ColorsManager.white),
                           ),
                         ],
                       )),

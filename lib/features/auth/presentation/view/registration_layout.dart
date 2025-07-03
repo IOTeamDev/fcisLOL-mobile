@@ -84,9 +84,7 @@ class _RegistrationLayoutState extends State<RegistrationLayout>
             child: Stack(
               children: [
                 Scaffold(
-                  appBar: getDeviceType(context) != DeviceType.DESKTOP
-                      ? AppBar()
-                      : null,
+                  appBar: AppBar(),
                   body: Column(
                     children: [
                       TabBar(
