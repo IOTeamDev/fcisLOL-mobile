@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lol/core/utils/resources/strings_manager.dart';
+import 'package:lol/core/resources/theme/values/app_strings.dart';
 
 class UsefulLinks extends StatelessWidget {
   const UsefulLinks({super.key});
@@ -8,12 +8,13 @@ class UsefulLinks extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(StringsManager.links, style: Theme.of(context).textTheme.displayMedium,),
+        title: Text(
+          AppStrings.links,
+          style: Theme.of(context).textTheme.displayMedium,
+        ),
         centerTitle: true,
       ),
-      body: Column(
-
-      ),
+      body: Column(),
     );
   }
 }

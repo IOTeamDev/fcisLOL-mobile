@@ -12,9 +12,6 @@ navigate(context, targetPage) {
   ));
 }
 
-navigatePushNamed(context, routes){
-  Navigator.pushReplacementNamed(
-    context,
-    routes
-  );
+navigatePushNamed(context, routes) {
+  Navigator.pushReplacementNamed(context, routes);
 }

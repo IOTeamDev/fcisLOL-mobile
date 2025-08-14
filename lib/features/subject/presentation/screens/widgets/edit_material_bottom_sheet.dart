@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lol/core/presentation/screen_size.dart';
 import 'package:lol/core/utils/components.dart';
-import 'package:lol/core/utils/resources/colors_manager.dart';
-import 'package:lol/core/utils/resources/constants_manager.dart';
-import 'package:lol/core/utils/resources/theme_provider.dart';
+import 'package:lol/core/resources/theme/colors_manager.dart';
+import 'package:lol/core/resources/constants/constants_manager.dart';
+import 'package:lol/core/resources/theme/theme_provider.dart';
 import 'package:lol/features/subject/presentation/view_model/add_material_cubit/add_material_cubit.dart';
 import 'package:lol/features/subject/presentation/view_model/get_material_cubit/get_material_cubit.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/bottom_sheet_button.dart';
@@ -88,7 +89,7 @@ class _EditMaterialBottomSheetState extends State<EditMaterialBottomSheet> {
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           ),
           padding: const EdgeInsets.all(16),
-          width: AppQueries.screenWidth(context),
+          width: ScreenSize.width(context),
           child: SingleChildScrollView(
             child: Form(
                 key: _formKey,

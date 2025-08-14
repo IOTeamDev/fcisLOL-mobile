@@ -7,12 +7,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:googleapis/playintegrity/v1.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:linkify/linkify.dart';
-import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
-import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
-import 'package:lol/core/utils/resources/colors_manager.dart';
-import 'package:lol/core/utils/resources/icons_manager.dart';
-import 'package:lol/core/utils/resources/strings_manager.dart';
-import 'package:lol/core/utils/resources/theme_provider.dart';
+import 'package:lol/core/presentation/cubits/main_cubit/main_cubit.dart';
+import 'package:lol/core/presentation/cubits/main_cubit/main_cubit_states.dart';
+import 'package:lol/core/presentation/screen_size.dart';
+import 'package:lol/core/resources/theme/colors_manager.dart';
+import 'package:lol/core/presentation/app_icons.dart';
+import 'package:lol/core/resources/theme/values/app_strings.dart';
+import 'package:lol/core/resources/theme/theme_provider.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit_states.dart';
@@ -21,8 +22,8 @@ import 'package:lol/features/admin/presentation/view/requests/requests_details.d
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/navigation.dart';
 import 'package:provider/provider.dart';
-import '../../../../../core/utils/resources/constants_manager.dart';
-import '../../../../../core/utils/resources/values_manager.dart';
+import '../../../../../core/resources/constants/constants_manager.dart';
+import '../../../../../core/resources/theme/values/values_manager.dart';
 import '../../../../subject/data/models/material_model.dart';
 
 class Requests extends StatefulWidget {
@@ -51,7 +52,7 @@ class _RequestsState extends State<Requests> {
           key: scaffoldKey,
           appBar: AppBar(
             title: Text(
-              StringsManager.requests,
+              AppStrings.requests,
               style: Theme.of(context).textTheme.displayMedium,
             ),
             centerTitle: true,
@@ -65,7 +66,7 @@ class _RequestsState extends State<Requests> {
                       cubit.getRequests(semester: cubit.profileModel!.semester);
                     }
                   },
-                  icon: Icon(IconsManager.refreshIcon))
+                  icon: Icon(AppIcons.refreshIcon))
             ],
           ),
           body: Padding(
@@ -89,7 +90,7 @@ class _RequestsState extends State<Requests> {
                     return Expanded(
                       child: Center(
                           child: Text(
-                        StringsManager.noRequests,
+                        AppStrings.noRequests,
                         style: Theme.of(context).textTheme.headlineMedium,
                       )),
                     );
@@ -140,7 +141,7 @@ class _RequestsState extends State<Requests> {
                   pfp: request.author!.authorPhoto!,
                   semester: semester,
                 )));
-        if (refresh == StringsManager.refresh) onRefresh(context);
+        if (refresh == AppStrings.refresh) onRefresh(context);
       },
       child: Container(
         decoration: BoxDecoration(
@@ -171,8 +172,8 @@ class _RequestsState extends State<Requests> {
                   const SizedBox(width: AppSizesDouble.s10),
                   ConstrainedBox(
                     constraints: BoxConstraints(
-                        maxWidth: AppQueries.screenWidth(context) /
-                            AppSizesDouble.s3),
+                        maxWidth:
+                            ScreenSize.width(context) / AppSizesDouble.s3),
                     child: Text(
                       request.author!.authorName!,
                       style: Theme.of(context)
@@ -188,8 +189,9 @@ class _RequestsState extends State<Requests> {
                     constraints:
                         const BoxConstraints(maxWidth: AppSizesDouble.s130),
                     child: Text(
-                      request.subject.toString().replaceAll(
-                          StringsManager.underScore, StringsManager.space),
+                      request.subject
+                          .toString()
+                          .replaceAll(AppStrings.underScore, AppStrings.space),
                       style: Theme.of(context)
                           .textTheme
                           .titleSmall!
@@ -234,7 +236,7 @@ class _RequestsState extends State<Requests> {
               builder: (context, constraints) {
                 return Row(
                   children: [
-                    Icon(IconsManager.linkIcon,
+                    Icon(AppIcons.linkIcon,
                         color: Provider.of<ThemeProvider>(context).isDark
                             ? ColorsManager.dodgerBlue
                             : ColorsManager.lightGrey1),
@@ -279,17 +281,17 @@ class _RequestsState extends State<Requests> {
                               BorderRadius.circular(AppSizesDouble.s10)),
                       minWidth: AppSizesDouble.s0,
                       padding: const EdgeInsets.all(AppPaddings.p8),
-                      child: const Icon(IconsManager.checkIcon,
+                      child: const Icon(AppIcons.checkIcon,
                           color: ColorsManager.white),
                     ),
                     MaterialButton(
                       onPressed: () {
                         AwesomeDialog(
                           context: context,
-                          title: StringsManager.delete,
+                          title: AppStrings.delete,
                           dialogType: DialogType.warning,
                           body: Text(
-                            StringsManager.deleteRequestMessage,
+                            AppStrings.deleteRequestMessage,
                             style: Theme.of(context).textTheme.titleLarge!,
                             textAlign: TextAlign.center,
                           ),
@@ -312,7 +314,7 @@ class _RequestsState extends State<Requests> {
                                     ColorsManager.imperialRed, // Red background
                               ),
                               child: Text(
-                                StringsManager.delete,
+                                AppStrings.delete,
                                 style: TextStyle(color: ColorsManager.white),
                               )),
                           btnCancel: ElevatedButton(
@@ -324,8 +326,7 @@ class _RequestsState extends State<Requests> {
                               Navigator.of(context).pop();
                             },
                             child: Text(
-                              StringsManager
-                                  .cancel, // Use cancel text if defined
+                              AppStrings.cancel, // Use cancel text if defined
                               style: const TextStyle(
                                   color: Colors.black), // Black text
                             ),
@@ -338,7 +339,7 @@ class _RequestsState extends State<Requests> {
                               BorderRadius.circular(AppSizesDouble.s10)),
                       minWidth: AppSizesDouble.s0,
                       padding: EdgeInsets.all(AppPaddings.p8),
-                      child: const Icon(IconsManager.closeIcon,
+                      child: const Icon(AppIcons.closeIcon,
                           color: ColorsManager.white),
                     ),
                   ],

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:lol/core/utils/resources/assets_manager.dart';
-import 'package:lol/core/utils/resources/strings_manager.dart';
-import 'package:lol/core/utils/resources/values_manager.dart';
+import 'package:lol/core/presentation/screen_size.dart';
+import 'package:lol/core/resources/assets/assets_manager.dart';
+import 'package:lol/core/resources/theme/values/app_strings.dart';
+import 'package:lol/core/resources/theme/values/values_manager.dart';
 import '../utils/components.dart';
-import '../utils/resources/colors_manager.dart';
-import '../utils/resources/constants_manager.dart';
+import '../resources/theme/colors_manager.dart';
+import '../resources/constants/constants_manager.dart';
 
 class ErrorScreen extends StatelessWidget {
   FlutterErrorDetails errorDetails;
@@ -14,7 +15,10 @@ class ErrorScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(StringsManager.error, style: Theme.of(context).textTheme.displayMedium,),
+        title: Text(
+          AppStrings.error,
+          style: Theme.of(context).textTheme.displayMedium,
+        ),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -26,11 +30,11 @@ class ErrorScreen extends StatelessWidget {
               child: Image(image: AssetImage(AssetsManager.errorSign)),
             ),
             Text(
-              '${StringsManager.anErrorOccurred}',
+              '${AppStrings.anErrorOccurred}',
               style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                fontSize: AppQueries.screenWidth(context) / AppSizes.s17,
-                color: ColorsManager.imperialRed,
-              ),
+                    fontSize: ScreenSize.width(context) / AppSizes.s17,
+                    color: ColorsManager.imperialRed,
+                  ),
               textAlign: TextAlign.center,
             ),
           ],

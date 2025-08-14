@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:lol/features/subject/data/models/author_model.dart';
 import 'package:lol/features/subject/data/models/material_model.dart';
 import 'package:lol/features/subject/data/repos/subject_repo.dart';
-import 'package:lol/core/utils/resources/constants_manager.dart';
+import 'package:lol/core/resources/constants/constants_manager.dart';
 import 'package:lol/core/network/endpoints.dart';
 import 'package:lol/core/network/remote/dio.dart';
 

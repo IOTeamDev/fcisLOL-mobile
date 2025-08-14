@@ -19,7 +19,7 @@ class Cache {
     return false;
   }
 
-  static dynamic readData({required String key}) async {
+  static dynamic readData({required String key}) {
     return sharedpref.get(key);
   }
 

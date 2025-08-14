@@ -2,16 +2,17 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
-import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
-import 'package:lol/core/utils/resources/colors_manager.dart';
-import 'package:lol/core/utils/resources/strings_manager.dart';
-import 'package:lol/core/utils/resources/theme_provider.dart';
-import 'package:lol/core/utils/resources/values_manager.dart';
+import 'package:lol/core/presentation/cubits/main_cubit/main_cubit.dart';
+import 'package:lol/core/presentation/cubits/main_cubit/main_cubit_states.dart';
+import 'package:lol/core/presentation/screen_size.dart' show ScreenSize;
+import 'package:lol/core/resources/theme/colors_manager.dart';
+import 'package:lol/core/resources/theme/values/app_strings.dart';
+import 'package:lol/core/resources/theme/theme_provider.dart';
+import 'package:lol/core/resources/theme/values/values_manager.dart';
 import 'package:lol/features/profile/view/other_profile.dart';
 import 'package:lol/main.dart';
 import 'package:lol/core/utils/components.dart';
-import 'package:lol/core/utils/resources/constants_manager.dart';
+import 'package:lol/core/resources/constants/constants_manager.dart';
 import 'package:lol/core/utils/navigation.dart';
 import 'package:provider/provider.dart';
 
@@ -25,14 +26,14 @@ class LeaderboardScreen extends StatelessWidget {
     return BlocConsumer<MainCubit, MainCubitStates>(
       listener: (context, state) {},
       builder: (context, state) {
-        if(MainCubit.get(context).notAdminLeaderboardModel == null){
+        if (MainCubit.get(context).notAdminLeaderboardModel == null) {
           MainCubit.get(context).getLeaderboard(semester);
         }
         return Scaffold(
           key: scaffoldKey,
           appBar: AppBar(
             title: Text(
-              StringsManager.leaderboard,
+              AppStrings.leaderboard,
               style: Theme.of(context).textTheme.displayMedium,
             ),
             centerTitle: true,
@@ -43,8 +44,8 @@ class LeaderboardScreen extends StatelessWidget {
                 children: [
                   ConstrainedBox(
                     constraints: BoxConstraints(
-                        maxHeight: AppQueries.screenHeight(context) /
-                            AppSizesDouble.s1_1),
+                        maxHeight:
+                            ScreenSize.height(context) / AppSizesDouble.s1_1),
                     child: SingleChildScrollView(
                       padding: EdgeInsets.only(bottom: AppPaddings.p10),
                       child: ConditionalBuilder(
@@ -61,8 +62,7 @@ class LeaderboardScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SizedBox(
-                              height: AppQueries.screenHeight(context) /
-                                  AppSizes.s80,
+                              height: ScreenSize.height(context) / AppSizes.s80,
                             ),
                             //Top 3 Contributors Stages
                             Padding(
@@ -75,7 +75,7 @@ class LeaderboardScreen extends StatelessWidget {
                                   _topThreeBuilder(
                                       context,
                                       AppSizes.s1,
-                                      StringsManager.twoNum,
+                                      AppStrings.twoNum,
                                       AppSizes.s4,
                                       AppSizesDouble.s35,
                                       ColorsManager.darkLightPrimary,
@@ -83,7 +83,7 @@ class LeaderboardScreen extends StatelessWidget {
                                   _topThreeBuilder(
                                       context,
                                       AppSizes.s0,
-                                      StringsManager.oneNum,
+                                      AppStrings.oneNum,
                                       AppSizesDouble.s3_2,
                                       AppSizesDouble.s40,
                                       ColorsManager.lightPrimary,
@@ -91,7 +91,7 @@ class LeaderboardScreen extends StatelessWidget {
                                   _topThreeBuilder(
                                       context,
                                       AppSizes.s2,
-                                      StringsManager.threeNum,
+                                      AppStrings.threeNum,
                                       AppSizes.s5,
                                       AppSizesDouble.s30,
                                       ColorsManager.darkLightPrimary,
@@ -102,7 +102,8 @@ class LeaderboardScreen extends StatelessWidget {
                             divider(),
                             //Other Contributors
                             Padding(
-                              padding: EdgeInsets.symmetric(vertical: AppPaddings.p10),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: AppPaddings.p10),
                               child: ConditionalBuilder(
                                 condition: MainCubit.get(context)
                                         .notAdminLeaderboardModel!
@@ -158,18 +159,17 @@ class LeaderboardScreen extends StatelessWidget {
                                   ),
                                 ),
                                 fallback: (context) => SizedBox(
-                                    height: AppQueries.screenHeight(context) /
+                                    height: ScreenSize.height(context) /
                                         AppSizes.s3,
                                     child: Center(
                                       child: Text(
-                                        StringsManager.noMoreUsers,
+                                        AppStrings.noMoreUsers,
                                         style: Theme.of(context)
                                             .textTheme
                                             .displayMedium!
                                             .copyWith(
                                                 fontSize:
-                                                    AppQueries.screenWidth(
-                                                            context) /
+                                                    ScreenSize.width(context) /
                                                         AppSizes.s12),
                                       ),
                                     )),
@@ -180,21 +180,24 @@ class LeaderboardScreen extends StatelessWidget {
                         fallback: (context) {
                           if (state is GetLeaderboardLoadingState) {
                             return SizedBox(
-                              height: AppQueries.screenHeight(context) / AppSizesDouble.s1_3,
-                              child: Center(
-                                child: CircularProgressIndicator(),
-                              )
-                            );
+                                height: ScreenSize.height(context) /
+                                    AppSizesDouble.s1_3,
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ));
                           }
                           return SizedBox(
-                              height: AppQueries.screenHeight(context) / AppSizesDouble.s1_3,
+                              height: ScreenSize.height(context) /
+                                  AppSizesDouble.s1_3,
                               child: Center(
                                 child: Text(
-                                  StringsManager.noLeaderBoard,
+                                  AppStrings.noLeaderBoard,
                                   style: Theme.of(context)
-                                    .textTheme
-                                    .displayMedium!
-                                    .copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s12),
+                                      .textTheme
+                                      .displayMedium!
+                                      .copyWith(
+                                          fontSize: ScreenSize.width(context) /
+                                              AppSizes.s12),
                                 ),
                               ));
                         },
@@ -225,19 +228,19 @@ class LeaderboardScreen extends StatelessWidget {
               backgroundImage: NetworkImage(MainCubit.get(context)
                   .notAdminLeaderboardModel![index]
                   .photo!),
-              radius: AppQueries.screenWidth(context) / AppSizes.s11,
+              radius: ScreenSize.width(context) / AppSizes.s11,
             ),
             SizedBox(
               height: AppSizesDouble.s3,
             ),
             ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: AppQueries.screenWidth(context) / AppSizesDouble.s3_5),
+                constraints: BoxConstraints(
+                    maxWidth: ScreenSize.width(context) / AppSizesDouble.s3_5),
                 child: Text(
                   MainCubit.get(context).notAdminLeaderboardModel![index].name!,
                   style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                    fontSize: AppQueries.screenWidth(context) / AppSizes.s19,
-                    fontWeight: FontWeight.w500
-                  ),
+                      fontSize: ScreenSize.width(context) / AppSizes.s19,
+                      fontWeight: FontWeight.w500),
                   overflow: TextOverflow.ellipsis,
                   maxLines: AppSizes.s2,
                   textAlign: TextAlign.center,
@@ -246,16 +249,16 @@ class LeaderboardScreen extends StatelessWidget {
               height: AppSizesDouble.s10,
             ),
             Container(
-              padding: EdgeInsetsDirectional.symmetric(vertical: AppPaddings.p20),
+              padding:
+                  EdgeInsetsDirectional.symmetric(vertical: AppPaddings.p20),
               decoration: BoxDecoration(
                 color: color,
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(AppSizesDouble.s15),
-                  topRight: Radius.circular(AppSizesDouble.s15)
-                ),
+                    topLeft: Radius.circular(AppSizesDouble.s15),
+                    topRight: Radius.circular(AppSizesDouble.s15)),
               ),
-              height: AppQueries.screenHeight(context) / height,
-              width: AppQueries.screenWidth(context) / AppSizesDouble.s3_2,
+              height: ScreenSize.height(context) / height,
+              width: ScreenSize.width(context) / AppSizesDouble.s3_2,
               child: Column(
                 children: [
                   Container(
@@ -270,8 +273,7 @@ class LeaderboardScreen extends StatelessWidget {
                       place,
                       style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                           color: ColorsManager.black,
-                          fontSize:
-                              AppQueries.screenWidth(context) / AppSizes.s18),
+                          fontSize: ScreenSize.width(context) / AppSizes.s18),
                     )),
                   ),
                   SizedBox(
@@ -282,12 +284,15 @@ class LeaderboardScreen extends StatelessWidget {
                               .notAdminLeaderboardModel![index]
                               .score
                               .toString() +
-                          StringsManager.space +
-                          StringsManager.pts,
+                          AppStrings.space +
+                          AppStrings.pts,
                       style: Theme.of(context)
                           .textTheme
                           .headlineMedium!
-                          .copyWith(fontSize: AppQueries.screenWidth(context) / AppSizes.s15, color: ColorsManager.white))
+                          .copyWith(
+                              fontSize:
+                                  ScreenSize.width(context) / AppSizes.s15,
+                              color: ColorsManager.white))
                 ],
               ),
             ),
@@ -297,7 +302,8 @@ class LeaderboardScreen extends StatelessWidget {
 
   Widget buildList(context, index, name, score, id) {
     return Padding(
-      padding: const EdgeInsetsDirectional.symmetric(horizontal: AppPaddings.p15),
+      padding:
+          const EdgeInsetsDirectional.symmetric(horizontal: AppPaddings.p15),
       child: SizedBox(
         height: AppSizesDouble.s50,
         width: double.infinity,
@@ -308,18 +314,21 @@ class LeaderboardScreen extends StatelessWidget {
               style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                   color: Provider.of<ThemeProvider>(context).isDark
                       ? ColorsManager.lightGrey1
-                      : ColorsManager.grey
-              ),
+                      : ColorsManager.grey),
             ),
-            SizedBox(width: AppSizesDouble.s15,),
+            SizedBox(
+              width: AppSizesDouble.s15,
+            ),
             Expanded(
               child: ConstrainedBox(
                 constraints: BoxConstraints(
-                    maxWidth: AppQueries.screenWidth(context) / AppSizesDouble.s1_2),
+                    maxWidth: ScreenSize.width(context) / AppSizesDouble.s1_2),
                 child: GestureDetector(
                   onTap: () => navigate(
                     context,
-                    OtherProfile(id: id,),
+                    OtherProfile(
+                      id: id,
+                    ),
                   ),
                   child: Text(
                     name,

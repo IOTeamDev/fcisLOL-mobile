@@ -9,8 +9,8 @@ import 'package:lol/core/network/endpoints.dart';
 import 'package:lol/core/network/remote/dio.dart';
 import 'package:lol/core/network/remote/send_grid_helper.dart';
 import 'package:lol/core/utils/components.dart';
-import 'package:lol/core/utils/resources/constants_manager.dart';
-import 'package:lol/core/utils/resources/values_manager.dart';
+import 'package:lol/core/resources/constants/constants_manager.dart';
+import 'package:lol/core/resources/theme/values/values_manager.dart';
 part 'verification_state.dart';
 
 class VerificationCubit extends Cubit<VerificationState> {
@@ -60,40 +60,37 @@ class VerificationCubit extends Cubit<VerificationState> {
     _counter(counter: 60);
 
     DioHelp.postData(path: SENDVERIFICATIONCODE, data: {
-      'recipientEmail':recipientEmail,
-      'recipientName':recipientName
-    }).then((value){
+      'recipientEmail': recipientEmail,
+      'recipientName': recipientName
+    }).then((value) {
       emit(SendVerificationCodeToEmailSuccess());
-    }).catchError((e){
-
+    }).catchError((e) {
       emit(
         SendVerificationCodeToEmailFailed(
           errMessage: 'Unable to send code now, please try again',
         ),
       );
-
     });
-
   }
 
   void verifyEmail({required String otp, required String recipientEmail}) {
     emit(EmailVerifiedLoading());
-    DioHelp.postData(path: CHECKVERIFICATIONCODE, data: {
-      'email':recipientEmail,
-      'otp':otp
-    }).then((value){
-      if(value.statusCode == 400){
+    DioHelp.postData(
+        path: CHECKVERIFICATIONCODE,
+        data: {'email': recipientEmail, 'otp': otp}).then((value) {
+      if (value.statusCode == 400) {
         emit(EmailVerifiedFailed(errMessage: value.data['message']));
-      } else if(value.statusCode == 200){
+      } else if (value.statusCode == 200) {
         isPasswordCodeVerified = true;
         emit(EmailVerifiedSuccess());
       }
-    }).catchError((e){
+    }).catchError((e) {
       emit(EmailVerifiedFailed(errMessage: 'Oops! Something went wrong'));
     });
   }
 
-  void updateForgottenPassword(String sentEmail, String otp, String newPassword){
+  void updateForgottenPassword(
+      String sentEmail, String otp, String newPassword) {
     emit(VerificationUpdatePasswordLoadingState());
     DioHelp.postData(
       path: RESETPASSWORD,
@@ -102,12 +99,12 @@ class VerificationCubit extends Cubit<VerificationState> {
         'otp': otp,
         'newPassword': newPassword,
       },
-    ).then((value){
+    ).then((value) {
       emit(VerificationUpdatePasswordLoadingState());
     });
   }
 
-  void changeEyeState(){
+  void changeEyeState() {
     obscured = !obscured;
     emit(VerificationChangeEyeState());
   }
@@ -118,5 +115,4 @@ class VerificationCubit extends Cubit<VerificationState> {
     _timerStreamController.close();
     return super.close();
   }
-
 }

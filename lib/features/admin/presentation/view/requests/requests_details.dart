@@ -6,16 +6,17 @@ import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:linkify/linkify.dart';
-import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
-import 'package:lol/core/utils/resources/colors_manager.dart';
-import 'package:lol/core/utils/resources/strings_manager.dart';
-import 'package:lol/core/utils/resources/theme_provider.dart';
+import 'package:lol/core/presentation/cubits/main_cubit/main_cubit_states.dart';
+import 'package:lol/core/presentation/screen_size.dart';
+import 'package:lol/core/resources/theme/colors_manager.dart';
+import 'package:lol/core/resources/theme/values/app_strings.dart';
+import 'package:lol/core/resources/theme/theme_provider.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit_states.dart';
 import 'package:lol/core/utils/components.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../core/cubits/main_cubit/main_cubit.dart';
-import '../../../../../core/utils/resources/constants_manager.dart';
+import '../../../../../core/presentation/cubits/main_cubit/main_cubit.dart';
+import '../../../../../core/resources/constants/constants_manager.dart';
 import '../../../../../main.dart';
 
 class RequestsDetails extends StatefulWidget {
@@ -48,9 +49,8 @@ class RequestsDetails extends StatefulWidget {
 class _RequestsDetailsState extends State<RequestsDetails> {
   @override
   Widget build(BuildContext context) {
-    final content = widget.description.isEmpty
-        ? StringsManager.noContent
-        : widget.description;
+    final content =
+        widget.description.isEmpty ? AppStrings.noContent : widget.description;
     final isContentRtl = intl.Bidi.detectRtlDirectionality(content);
     final textDirection = widget.description.isEmpty
         ? (isArabicLanguage(context) ? TextDirection.rtl : TextDirection.ltr)
@@ -60,16 +60,14 @@ class _RequestsDetailsState extends State<RequestsDetails> {
       listener: (context, state) {
         if (state is DeleteMaterialSuccessState) {
           showToastMessage(
-              message: StringsManager.requestRejected,
-              states: ToastStates.WARNING);
-          Navigator.pop(context, StringsManager.refresh);
+              message: AppStrings.requestRejected, states: ToastStates.WARNING);
+          Navigator.pop(context, AppStrings.refresh);
         }
 
         if (state is AcceptRequestSuccessState) {
           showToastMessage(
-              message: StringsManager.requestAccepted,
-              states: ToastStates.SUCCESS);
-          Navigator.pop(context, StringsManager.refresh);
+              message: AppStrings.requestAccepted, states: ToastStates.SUCCESS);
+          Navigator.pop(context, AppStrings.refresh);
         }
       },
       builder: (context, state) {
@@ -78,7 +76,7 @@ class _RequestsDetailsState extends State<RequestsDetails> {
           appBar: AppBar(
             centerTitle: true,
             title: Text(
-              StringsManager.requestDetails,
+              AppStrings.requestDetails,
               style: Theme.of(context).textTheme.displayMedium,
             ),
           ),
@@ -86,13 +84,13 @@ class _RequestsDetailsState extends State<RequestsDetails> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                constraints: BoxConstraints(
-                    maxHeight: AppQueries.screenHeight(context) / 1.4),
+                constraints:
+                    BoxConstraints(maxHeight: ScreenSize.height(context) / 1.4),
                 margin: const EdgeInsetsDirectional.symmetric(
                     horizontal: 15, vertical: 20),
                 padding: const EdgeInsets.all(15),
                 width: double.infinity,
-                height: AppQueries.screenHeight(context) / 1.4,
+                height: ScreenSize.height(context) / 1.4,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: Provider.of<ThemeProvider>(context).isDark
@@ -174,7 +172,7 @@ class _RequestsDetailsState extends State<RequestsDetails> {
                                                 text: selectedText));
                                           }
                                         },
-                                        child: const Text(StringsManager.copy),
+                                        child: const Text(AppStrings.copy),
                                       ),
                                       TextButton(
                                         onPressed: () {
@@ -182,8 +180,7 @@ class _RequestsDetailsState extends State<RequestsDetails> {
                                           state.selectAll(
                                               SelectionChangedCause.tap);
                                         },
-                                        child: const Text(
-                                            StringsManager.selectAll),
+                                        child: const Text(AppStrings.selectAll),
                                       ),
                                     ],
                                   );
@@ -201,11 +198,10 @@ class _RequestsDetailsState extends State<RequestsDetails> {
                       children: [
                         ConstrainedBox(
                           constraints: BoxConstraints(
-                              maxWidth: AppQueries.screenWidth(context) / 1.7),
+                              maxWidth: ScreenSize.width(context) / 1.7),
                           child: Text(
                             widget.subjectName.replaceAll(
-                                StringsManager.underScore,
-                                StringsManager.space),
+                                AppStrings.underScore, AppStrings.space),
                             style: TextStyle(
                                 fontSize: 13, color: Colors.grey[300]),
                             maxLines: 1,
@@ -269,9 +265,8 @@ class _RequestsDetailsState extends State<RequestsDetails> {
                           ElevatedButton(
                             onPressed: () {
                               cubit.deleteMaterial(
-                                cubit.requests![widget.id].id!,
-                                widget.semester
-                              );
+                                  cubit.requests![widget.id].id!,
+                                  widget.semester);
                             },
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
@@ -280,11 +275,10 @@ class _RequestsDetailsState extends State<RequestsDetails> {
                                   horizontal: 40),
                               backgroundColor: Colors.white,
                               textStyle: TextStyle(
-                                  fontSize:
-                                      AppQueries.screenWidth(context) / 17),
+                                  fontSize: ScreenSize.width(context) / 17),
                             ),
                             child: const Text(
-                              StringsManager.reject,
+                              AppStrings.reject,
                               style: TextStyle(color: Colors.black),
                             ),
                           ),
@@ -304,10 +298,9 @@ class _RequestsDetailsState extends State<RequestsDetails> {
                                 backgroundColor: ColorsManager.lightPrimary,
                                 foregroundColor: Colors.white,
                                 textStyle: TextStyle(
-                                    fontSize:
-                                        AppQueries.screenWidth(context) / 17),
+                                    fontSize: ScreenSize.width(context) / 17),
                               ),
-                              child: const Text(StringsManager.accept)),
+                              child: const Text(AppStrings.accept)),
                         ],
                       ),
                     ),

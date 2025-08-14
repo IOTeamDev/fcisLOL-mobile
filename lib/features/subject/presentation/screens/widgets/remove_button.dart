@@ -3,12 +3,12 @@ import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lol/core/utils/resources/colors_manager.dart';
+import 'package:lol/core/resources/theme/colors_manager.dart';
 import 'package:lol/features/subject/data/models/material_model.dart';
 import 'package:lol/features/subject/presentation/view_model/get_material_cubit/get_material_cubit.dart';
 import 'package:lol/core/utils/components.dart';
 
-import '../../../../../core/utils/resources/values_manager.dart';
+import '../../../../../core/resources/theme/values/values_manager.dart';
 
 class RemoveButton extends StatelessWidget {
   const RemoveButton({super.key, required this.material});

@@ -9,22 +9,23 @@ import 'package:googleapis/games/v1.dart';
 import 'package:googleapis/mybusinessaccountmanagement/v1.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:linkify/linkify.dart';
-import 'package:lol/core/utils/resources/strings_manager.dart';
-import 'package:lol/core/utils/resources/theme_provider.dart';
-import 'package:lol/core/utils/resources/values_manager.dart';
+import 'package:lol/core/presentation/screen_size.dart';
+import 'package:lol/core/resources/theme/values/app_strings.dart';
+import 'package:lol/core/resources/theme/theme_provider.dart';
+import 'package:lol/core/resources/theme/values/values_manager.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
 import 'package:lol/features/home/data/models/semster_model.dart';
 import 'package:lol/main.dart';
 import 'package:lol/core/models/profile/profile_materila_model.dart';
 import 'package:lol/core/utils/components.dart';
-import 'package:lol/core/utils/resources/constants_manager.dart';
-import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
-import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
+import 'package:lol/core/resources/constants/constants_manager.dart';
+import 'package:lol/core/presentation/cubits/main_cubit/main_cubit.dart';
+import 'package:lol/core/presentation/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/core/utils/navigation.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/utils/resources/colors_manager.dart';
+import '../../../core/resources/theme/colors_manager.dart';
 
 bool refreshing = false;
 
@@ -123,7 +124,7 @@ class _OtherProfileState extends State<OtherProfile> {
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
-                        '${StringsManager.level} ${((getSemesterIndex(mainCubit.otherProfile!.semester) / AppSizes.s2) + AppSizes.s1).floor()}',
+                        '${AppStrings.level} ${((getSemesterIndex(mainCubit.otherProfile!.semester) / AppSizes.s2) + AppSizes.s1).floor()}',
                         style: Theme.of(context).textTheme.headlineMedium,
                         maxLines: AppSizes.s1,
                         overflow: TextOverflow.ellipsis,
@@ -145,14 +146,13 @@ class _OtherProfileState extends State<OtherProfile> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(StringsManager.uploads,
+                              Text(AppStrings.uploads,
                                   style: Theme.of(context)
                                       .textTheme
                                       .titleMedium!
                                       .copyWith(
-                                          fontSize:
-                                              AppQueries.screenWidth(context) /
-                                                  AppSizes.s18)),
+                                          fontSize: ScreenSize.width(context) /
+                                              AppSizes.s18)),
                               divider(
                                 height: AppSizesDouble.s20,
                                 //color: Provider.of<ThemeProvider>(context).isDark? ColorsManager.white: ColorsManager.black
@@ -183,28 +183,25 @@ class _OtherProfileState extends State<OtherProfile> {
                                   fallback: (context) {
                                     if (state is GetRequestsLoadingState) {
                                       return SizedBox(
-                                          height:
-                                              AppQueries.screenHeight(context) /
-                                                  AppSizesDouble.s1_3,
+                                          height: ScreenSize.height(context) /
+                                              AppSizesDouble.s1_3,
                                           child: Center(
                                             child: CircularProgressIndicator(),
                                           ));
                                     }
                                     return SizedBox(
-                                        height:
-                                            AppQueries.screenHeight(context) /
-                                                AppSizesDouble.s1_3,
+                                        height: ScreenSize.height(context) /
+                                            AppSizesDouble.s1_3,
                                         child: Center(
                                           child: Text(
-                                            StringsManager.noContributionsYet,
+                                            AppStrings.noContributionsYet,
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .bodyLarge!
                                                 .copyWith(
-                                                  fontSize:
-                                                      AppQueries.screenWidth(
-                                                              context) /
-                                                          AppSizes.s12,
+                                                  fontSize: ScreenSize.width(
+                                                          context) /
+                                                      AppSizes.s12,
                                                 ),
                                             textAlign: TextAlign.center,
                                           ),

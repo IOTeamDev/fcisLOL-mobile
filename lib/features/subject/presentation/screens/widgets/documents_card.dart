@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:linkify/linkify.dart';
-import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
-import 'package:lol/core/utils/resources/colors_manager.dart';
-import 'package:lol/core/utils/resources/theme_provider.dart';
+import 'package:lol/core/presentation/cubits/main_cubit/main_cubit.dart';
+import 'package:lol/core/presentation/screen_size.dart';
+import 'package:lol/core/resources/theme/colors_manager.dart';
+import 'package:lol/core/resources/theme/theme_provider.dart';
 import 'package:lol/features/profile/view/other_profile.dart';
 import 'package:lol/features/subject/presentation/view_model/get_material_cubit/get_material_cubit.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/edit_button.dart';
@@ -12,7 +13,7 @@ import 'package:lol/features/subject/presentation/screens/widgets/remove_button.
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/navigation.dart';
 import 'package:provider/provider.dart';
-import '../../../../../core/utils/resources/constants_manager.dart';
+import '../../../../../core/resources/constants/constants_manager.dart';
 
 class DocumentsCard extends StatelessWidget {
   const DocumentsCard({super.key, required this.document});
@@ -38,19 +39,19 @@ class DocumentsCard extends StatelessWidget {
                       padding: const EdgeInsetsDirectional.only(end: 10.0),
                       child: Icon(
                         Icons.folder_copy_sharp,
-                        size: AppQueries.screenWidth(context) / 17,
+                        size: ScreenSize.width(context) / 17,
                         color: ColorsManager.white,
                       ),
                     ),
                     Expanded(
                       child: ConstrainedBox(
                         constraints: BoxConstraints(
-                            maxWidth: AppQueries.screenWidth(context) - 180),
+                            maxWidth: ScreenSize.width(context) - 180),
                         child: Text(
                           document.title!,
                           style: TextStyle(
                             color: ColorsManager.white,
-                            fontSize: AppQueries.screenWidth(context) / 20,
+                            fontSize: ScreenSize.width(context) / 20,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -88,7 +89,7 @@ class DocumentsCard extends StatelessWidget {
                         child: Text(
                           'Shared by: ${document.author!.authorName}',
                           style: TextStyle(
-                            fontSize: AppQueries.screenWidth(context) / 30,
+                            fontSize: ScreenSize.width(context) / 30,
                             color: ColorsManager.white,
                           ),
                           maxLines: 1,
@@ -108,21 +109,21 @@ class DocumentsCard extends StatelessWidget {
                             Text(
                               'Shared by:  ',
                               style: TextStyle(
-                                fontSize: AppQueries.screenWidth(context) / 30,
+                                fontSize: ScreenSize.width(context) / 30,
                                 color: ColorsManager.white,
                               ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
                             CircleAvatar(
-                              radius: AppQueries.screenWidth(context) / 35,
+                              radius: ScreenSize.width(context) / 35,
                               backgroundImage: NetworkImage(
                                   '${document.author!.authorPhoto}'),
                             ),
                             Text(
                               '  ${document.author!.authorName}',
                               style: TextStyle(
-                                fontSize: AppQueries.screenWidth(context) / 30,
+                                fontSize: ScreenSize.width(context) / 30,
                                 color: ColorsManager.white,
                               ),
                               maxLines: 1,

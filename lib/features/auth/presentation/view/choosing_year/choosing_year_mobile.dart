@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:lol/config/navigation/routes.dart';
+import 'package:lol/core/data/local_data_provider.dart';
 import 'package:lol/core/network/local/shared_preference.dart';
+import 'package:lol/core/presentation/screen_size.dart';
 import 'package:lol/core/utils/components.dart';
-import 'package:lol/core/utils/resources/colors_manager.dart';
-import 'package:lol/core/utils/resources/values_manager.dart';
+import 'package:lol/core/resources/theme/colors_manager.dart';
+import 'package:lol/core/resources/theme/values/values_manager.dart';
 import 'package:lol/features/auth/presentation/view/registration_layout.dart';
 import 'package:lol/features/home/data/models/semster_model.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/features/home/presentation/view/loading_screen.dart';
-import '../../../../../core/utils/resources/constants_manager.dart';
-import '../../../../../core/utils/resources/icons_manager.dart';
-import '../../../../../core/utils/resources/strings_manager.dart';
+import '../../../../../core/resources/constants/constants_manager.dart';
+import '../../../../../core/presentation/app_icons.dart';
+import '../../../../../core/resources/theme/values/app_strings.dart';
 
 class ChoosingYearMobile extends StatefulWidget {
   ChoosingYearMobile({
@@ -30,7 +34,7 @@ class _ChoosingYearState extends State<ChoosingYearMobile> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            StringsManager.yearSelect,
+            AppStrings.yearSelect,
             style: Theme.of(context)
                 .textTheme
                 .displayLarge!
@@ -41,7 +45,7 @@ class _ChoosingYearState extends State<ChoosingYearMobile> {
           ),
           Container(
             height: 50,
-            width: AppQueries.screenWidth(context) / 1.3,
+            width: ScreenSize.width(context) / 1.3,
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 color: ColorsManager.white,
@@ -52,7 +56,7 @@ class _ChoosingYearState extends State<ChoosingYearMobile> {
             child: Row(
               children: [
                 Container(
-                  width: AppQueries.screenWidth(context) / 2.7,
+                  width: ScreenSize.width(context) / 2.7,
                   height: double.infinity,
                   alignment: Alignment.center,
                   margin: EdgeInsets.only(right: 7),
@@ -70,10 +74,11 @@ class _ChoosingYearState extends State<ChoosingYearMobile> {
                 Expanded(
                   child: DropdownButton<String>(
                     isExpanded: true,
-                    icon: Icon(IconsManager.dropdownIcon),
+                    icon: Icon(AppIcons.dropdownIcon),
                     value: selectedSemester,
                     underline: SizedBox(),
-                    hint: Text('Select Semester', style: TextStyle(color: ColorsManager.grey)),
+                    hint: Text('Select Semester',
+                        style: TextStyle(color: ColorsManager.grey)),
                     dropdownColor: ColorsManager
                         .white, // Background color for the dropdown list
                     iconEnabledColor:
@@ -81,7 +86,7 @@ class _ChoosingYearState extends State<ChoosingYearMobile> {
                     style: const TextStyle(
                         color: ColorsManager
                             .white), // Style for the selected item outside
-                    items: AppConstants.semesters
+                    items: LocalDataProvider.semesters
                         .map((String item) => DropdownMenuItem(
                               value: item,
                               child: Text(
@@ -92,7 +97,7 @@ class _ChoosingYearState extends State<ChoosingYearMobile> {
                             ))
                         .toList(),
                     selectedItemBuilder: (BuildContext context) {
-                      return AppConstants.semesters.map((String item) {
+                      return LocalDataProvider.semesters.map((String item) {
                         return DropdownMenuItem<String>(
                           value: item,
                           child: FittedBox(
@@ -118,7 +123,7 @@ class _ChoosingYearState extends State<ChoosingYearMobile> {
           Padding(
             padding: const EdgeInsets.only(top: 15, bottom: 5),
             child: SizedBox(
-              width: AppQueries.screenWidth(context) / 1.5,
+              width: ScreenSize.width(context) / 1.5,
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       backgroundColor: ColorsManager.lightPrimary,
@@ -136,22 +141,17 @@ class _ChoosingYearState extends State<ChoosingYearMobile> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                StringsManager.alreadyHaveAccount,
+                AppStrings.alreadyHaveAccount,
                 style: TextStyle(
                   fontSize: 14,
                 ),
               ),
               TextButton(
                 onPressed: () {
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => RegistrationLayout(),
-                      ),
-                      (route) => false);
+                  context.goNamed(ScreensName.registrationLayout);
                 },
                 child: Text(
-                  StringsManager.login,
+                  AppStrings.login,
                   style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w700,

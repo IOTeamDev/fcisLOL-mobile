@@ -5,8 +5,9 @@ import 'package:dio/dio.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:lol/core/utils/resources/strings_manager.dart';
-import 'package:lol/core/utils/resources/values_manager.dart';
+import 'package:lol/core/data/local_data_provider.dart';
+import 'package:lol/core/resources/theme/values/app_strings.dart';
+import 'package:lol/core/resources/theme/values/values_manager.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit_states.dart';
 import 'package:lol/core/utils/components.dart';
 import 'dart:developer' as dev;
@@ -20,11 +21,10 @@ import 'package:lol/features/auth/data/models/login_model.dart';
 import 'package:lol/core/network/endpoints.dart';
 import 'package:lol/core/network/remote/dio.dart';
 import 'package:lol/core/network/remote/fcm_helper.dart';
-import '../../../../../core/utils/resources/constants_manager.dart';
+import '../../../../../core/resources/constants/constants_manager.dart';
 import '../../../../../core/utils/navigation.dart';
 import '../../../../../core/network/local/shared_preference.dart';
-import '../../../../auth/presentation/view_model/login_cubit/login_cubit.dart';
-import '../../../../auth/presentation/view/choosing_year.dart';
+import '../../../../auth/presentation/view/choosing_year/choosing_year.dart';
 import '../../../../home/data/models/semster_model.dart';
 
 //uid null?
@@ -139,7 +139,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     try {
       allSemestersAnnouncements.clear();
 
-      for (var semester in AppConstants.semesters) {
+      for (var semester in LocalDataProvider.semesters) {
         final response = await DioHelp.getData(
             path: ANNOUNCEMENTS, query: {KeysManager.semester: semester});
         allSemestersAnnouncements[semester] = [];
@@ -169,9 +169,9 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     DioHelp.putData(
         path: ANNOUNCEMENTS,
         data: {
-          StringsManager.title: title ?? "",
-          StringsManager.content: content ?? "",
-          StringsManager.dueDate: dueDate,
+          AppStrings.title: title ?? "",
+          AppStrings.content: content ?? "",
+          AppStrings.dueDate: dueDate,
           //'type': type,
           //'semester': currentSemester,
           //'image': image,

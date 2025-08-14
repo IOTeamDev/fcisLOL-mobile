@@ -2,23 +2,25 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' as intl;
-import 'package:lol/core/utils/resources/fonts_manager.dart';
-import 'package:lol/core/utils/resources/icons_manager.dart';
-import 'package:lol/core/utils/resources/theme_provider.dart';
+import 'package:lol/core/data/local_data_provider.dart';
+import 'package:lol/core/presentation/screen_size.dart';
+import 'package:lol/core/resources/assets/fonts_manager.dart';
+import 'package:lol/core/presentation/app_icons.dart';
+import 'package:lol/core/resources/theme/theme_provider.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit_states.dart';
 import 'package:lol/features/admin/presentation/view/announcements/announcement_detail.dart';
 import 'package:lol/features/admin/presentation/view/announcements/edit_announcement.dart';
-import 'package:lol/core/utils/resources/constants_manager.dart';
+import 'package:lol/core/resources/constants/constants_manager.dart';
 import 'package:lol/core/utils/webview_screen.dart';
 import 'package:lol/core/utils/navigation.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:provider/provider.dart';
-import '../../../../../core/cubits/main_cubit/main_cubit.dart';
+import '../../../../../core/presentation/cubits/main_cubit/main_cubit.dart';
 import '../../../../../core/models/admin/announcement_model.dart';
-import '../../../../../core/utils/resources/colors_manager.dart';
-import '../../../../../core/utils/resources/strings_manager.dart';
-import '../../../../../core/utils/resources/values_manager.dart';
+import '../../../../../core/resources/theme/colors_manager.dart';
+import '../../../../../core/resources/theme/values/app_strings.dart';
+import '../../../../../core/resources/theme/values/values_manager.dart';
 import '../../../../../main.dart';
 import '../../../../../core/utils/components.dart';
 
@@ -39,12 +41,11 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   String? dueDateFormatted;
-  String dueDateWord = StringsManager.dueDate
-      .split(StringsManager.underScore)
-      .join(StringsManager.space);
+  String dueDateWord =
+      AppStrings.dueDate.split(AppStrings.underScore).join(AppStrings.space);
   String? _selectedItem;
   String? _selectedSemester;
-  IconData datePickerIcon = IconsManager.datePickerIcon;
+  IconData datePickerIcon = AppIcons.datePickerIcon;
   final Map<TextEditingController, TextDirection> _textDirections = {};
   final List<String> _items = [
     'Faculty',
@@ -75,26 +76,24 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
               .read<AdminCubit>()
               .getAnnouncements(AppConstants.SelectedSemester!);
           showToastMessage(
-              message: StringsManager.announcementAdded,
+              message: AppStrings.announcementAdded,
               states: ToastStates.SUCCESS);
         } else if (state is AdminSaveAnnouncementsErrorState) {
           showToastMessage(
-              message: StringsManager.errorOccurred +
-                  StringsManager.colon +
-                  state.error,
+              message:
+                  AppStrings.errorOccurred + AppStrings.colon + state.error,
               states: ToastStates.ERROR);
         }
 
         if (state is AdminDeleteAnnouncementSuccessState) {
           showToastMessage(
-              message: StringsManager.announcementDeleted,
+              message: AppStrings.announcementDeleted,
               states: ToastStates.WARNING);
         }
         if (state is AdminDeleteAnnouncementErrorState) {
           showToastMessage(
-              message: StringsManager.errorOccurred +
-                  StringsManager.colon +
-                  state.error,
+              message:
+                  AppStrings.errorOccurred + AppStrings.colon + state.error,
               states: ToastStates.ERROR);
         }
       },
@@ -103,7 +102,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
         return Scaffold(
           appBar: AppBar(
             title: Text(
-              StringsManager.announcements,
+              AppStrings.announcements,
               style: Theme.of(context).textTheme.displayMedium,
             ),
             centerTitle: true,
@@ -167,10 +166,10 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                 _titleController),
                                             validator: _titleValidator,
                                             decoration: InputDecoration(
-                                              hintText: StringsManager
+                                              hintText: AppStrings
                                                       .title[AppSizes.s0]
                                                       .toUpperCase() +
-                                                  StringsManager.title
+                                                  AppStrings.title
                                                       .substring(AppSizes.s1),
                                               hintStyle: Theme.of(context)
                                                   .textTheme
@@ -209,8 +208,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                             minLines: AppSizes.s5,
                                             maxLines: AppSizes.s5,
                                             decoration: InputDecoration(
-                                              hintText:
-                                                  StringsManager.description,
+                                              hintText: AppStrings.description,
                                               hintStyle: TextStyle(
                                                   fontSize: AppSizesDouble.s20,
                                                   color:
@@ -249,7 +247,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                         dueDateWord) {
                                                       setState(() {
                                                         datePickerIcon =
-                                                            IconsManager
+                                                            AppIcons
                                                                 .datePickerIcon;
                                                         _dateController.text =
                                                             dueDateWord;
@@ -343,10 +341,9 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                         cubit.announcementImageFile =
                                                             null;
                                                         cubit.pickerIcon =
-                                                            IconsManager
-                                                                .imageIcon;
+                                                            AppIcons.imageIcon;
                                                         cubit.imageName =
-                                                            StringsManager
+                                                            AppStrings
                                                                 .selectImage;
                                                       });
                                                     } else {
@@ -354,10 +351,9 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                         cubit.announcementImageFile =
                                                             null;
                                                         cubit.pickerIcon =
-                                                            IconsManager
-                                                                .imageIcon;
+                                                            AppIcons.imageIcon;
                                                         cubit.imageName =
-                                                            StringsManager
+                                                            AppStrings
                                                                 .selectImage;
                                                         _getAnnouncementImage(
                                                             cubit);
@@ -384,8 +380,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                             children: [
                                               DropdownButton<String>(
                                                 hint: const Text(
-                                                  StringsManager
-                                                      .announcementType,
+                                                  AppStrings.announcementType,
                                                   style: TextStyle(
                                                       color:
                                                           ColorsManager.white),
@@ -440,7 +435,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                   KeysManager.developer)
                                                 DropdownButton<String>(
                                                   hint: const Text(
-                                                    StringsManager.semester,
+                                                    AppStrings.semester,
                                                     style: TextStyle(
                                                         color: ColorsManager
                                                             .white),
@@ -453,7 +448,8 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                   style: const TextStyle(
                                                       color: ColorsManager
                                                           .white), // Style for the selected item outside the list
-                                                  items: AppConstants.semesters
+                                                  items: LocalDataProvider
+                                                      .semesters
                                                       .map((String item) {
                                                     return DropdownMenuItem<
                                                         String>(
@@ -475,7 +471,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                   },
                                                   selectedItemBuilder:
                                                       (BuildContext context) {
-                                                    return AppConstants
+                                                    return LocalDataProvider
                                                         .semesters
                                                         .map((String item) {
                                                       return DropdownMenuItem<
@@ -524,11 +520,10 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                       cubit.announcementImageFile =
                                                           null;
                                                       cubit.imageName =
-                                                          StringsManager
+                                                          AppStrings
                                                               .selectImage;
                                                       cubit.pickerIcon =
-                                                          IconsManager
-                                                              .imageIcon;
+                                                          AppIcons.imageIcon;
                                                     });
                                                   },
                                                   style:
@@ -540,10 +535,11 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                                     .s13)),
                                                     padding: EdgeInsetsDirectional
                                                         .symmetric(
-                                                            horizontal: AppQueries
-                                                                    .screenWidth(
+                                                            horizontal:
+                                                                ScreenSize.width(
                                                                         context) /
-                                                                AppSizes.s10),
+                                                                    AppSizes
+                                                                        .s10),
                                                     backgroundColor:
                                                         ColorsManager.white,
                                                     foregroundColor:
@@ -552,13 +548,13 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                         .textTheme
                                                         .headlineMedium!
                                                         .copyWith(
-                                                            fontSize: AppQueries
-                                                                    .screenWidth(
+                                                            fontSize: ScreenSize
+                                                                    .width(
                                                                         context) /
                                                                 AppSizes.s17),
                                                   ),
                                                   child: const Text(
-                                                    StringsManager.cancel,
+                                                    AppStrings.cancel,
                                                   ),
                                                 ),
                                                 const Spacer(),
@@ -573,9 +569,8 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                               textColor:
                                                                   ColorsManager
                                                                       .black,
-                                                              message:
-                                                                  StringsManager
-                                                                      .selectAnnouncementTypeWarning,
+                                                              message: AppStrings
+                                                                  .selectAnnouncementTypeWarning,
                                                               states:
                                                                   ToastStates
                                                                       .WARNING);
@@ -591,9 +586,8 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                               textColor:
                                                                   ColorsManager
                                                                       .black,
-                                                              message:
-                                                                  StringsManager
-                                                                      .selectAnnouncementSemesterWarning,
+                                                              message: AppStrings
+                                                                  .selectAnnouncementSemesterWarning,
                                                               states:
                                                                   ToastStates
                                                                       .WARNING);
@@ -649,13 +643,13 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                             cubit.announcementImageFile =
                                                                 null;
                                                             cubit.imageName =
-                                                                StringsManager
+                                                                AppStrings
                                                                     .selectImage;
                                                             cubit.pickerIcon =
-                                                                IconsManager
+                                                                AppIcons
                                                                     .imageIcon;
                                                             datePickerIcon =
-                                                                IconsManager
+                                                                AppIcons
                                                                     .datePickerIcon;
                                                           });
                                                         }
@@ -668,11 +662,13 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                               BorderRadius.circular(
                                                                   AppSizesDouble
                                                                       .s13)),
-                                                      padding: EdgeInsetsDirectional.symmetric(
-                                                          horizontal: AppQueries
-                                                                  .screenWidth(
-                                                                      context) /
-                                                              AppSizes.s10),
+                                                      padding: EdgeInsetsDirectional
+                                                          .symmetric(
+                                                              horizontal:
+                                                                  ScreenSize.width(
+                                                                          context) /
+                                                                      AppSizes
+                                                                          .s10),
                                                       backgroundColor:
                                                           ColorsManager
                                                               .lightPrimary,
@@ -683,13 +679,13 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                                           .textTheme
                                                           .headlineMedium!
                                                           .copyWith(
-                                                              fontSize: AppQueries
-                                                                      .screenWidth(
+                                                              fontSize: ScreenSize
+                                                                      .width(
                                                                           context) /
                                                                   AppSizes.s17),
                                                     ),
                                                     child: const Text(
-                                                        StringsManager.submit)),
+                                                        AppStrings.submit)),
                                               ],
                                             ),
                                           ),
@@ -705,14 +701,14 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                                   child: Row(
                                     children: [
                                       Text(
-                                        StringsManager.addNew,
+                                        AppStrings.addNew,
                                         style: TextStyle(
                                             fontSize: FontSize.size30,
                                             color: ColorsManager.white),
                                       ),
                                       Spacer(),
                                       Icon(
-                                        IconsManager.addIcon,
+                                        AppIcons.addIcon,
                                         color: ColorsManager.white,
                                         size: AppSizesDouble.s40,
                                       ),
@@ -749,18 +745,18 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                     fallback: (context) {
                       if (state is AdminGetAnnouncementLoadingState) {
                         return SizedBox(
-                          height: AppQueries.screenHeight(context) /
-                              AppSizesDouble.s1_5,
+                          height:
+                              ScreenSize.height(context) / AppSizesDouble.s1_5,
                           child:
                               const Center(child: CircularProgressIndicator()),
                         );
                       } else {
                         return SizedBox(
-                          height: AppQueries.screenHeight(context) /
-                              AppSizesDouble.s1_5,
+                          height:
+                              ScreenSize.height(context) / AppSizesDouble.s1_5,
                           child: Center(
                             child: Text(
-                              StringsManager.noAnnouncementsYet,
+                              AppStrings.noAnnouncementsYet,
                               style: TextStyle(
                                 fontSize: AppSizesDouble.s30,
                                 fontWeight: FontWeight.bold,
@@ -783,7 +779,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
 
   String? _titleValidator(value) {
     if (value == null || value.isEmpty) {
-      return StringsManager.emptyFieldWarning;
+      return AppStrings.emptyFieldWarning;
     }
     return null;
   }
@@ -792,7 +788,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
         context: context,
         initialDate: DateTime.now().add(Duration(days: AppSizes.s1)),
         firstDate: DateTime.now().add(Duration(days: AppSizes.s1)),
-        lastDate: DateTime.parse(StringsManager.endDate),
+        lastDate: DateTime.parse(AppStrings.endDate),
       ).then((value) {
         if (value != null) {
           setState(() {
@@ -802,15 +798,15 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                     selectedDate.year, selectedDate.month, selectedDate.day)
                 .toIso8601String();
             _dateController.text =
-                intl.DateFormat(StringsManager.dateFormat).format(value);
-            datePickerIcon = IconsManager.closeIcon;
+                intl.DateFormat(AppStrings.dateFormat).format(value);
+            datePickerIcon = AppIcons.closeIcon;
           });
         }
       });
 
   _getAnnouncementImage(cubit) {
     showToastMessage(
-      message: StringsManager.imagePickingWarning,
+      message: AppStrings.imagePickingWarning,
       states: ToastStates.WARNING,
     );
     cubit.getAnnouncementImage();
@@ -868,7 +864,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
           children: [
             ConstrainedBox(
               constraints: BoxConstraints(
-                  maxWidth: AppQueries.screenWidth(context) - AppSizes.s150),
+                  maxWidth: ScreenSize.width(context) - AppSizes.s150),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -887,8 +883,8 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                       AdminCubit.get(context)
                           .allSemestersAnnouncements
                           .isNotEmpty)
-                    Text('${StringsManager.semester + StringsManager.colon} ' +
-                        semester)
+                    Text(
+                        '${AppStrings.semester + AppStrings.colon} ' + semester)
                 ],
               ),
             ),
@@ -909,7 +905,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                           )),
                 );
 
-                if (refresh == StringsManager.refresh) {
+                if (refresh == AppStrings.refresh) {
                   cubit.getAnnouncements(semester);
                 }
               },
@@ -919,7 +915,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
               minWidth: AppSizesDouble.s10,
               padding: const EdgeInsets.all(AppPaddings.p6),
               child: const Icon(
-                IconsManager.editIcon,
+                AppIcons.editIcon,
                 color: ColorsManager.black,
               ), // Padding for icon
             ),
@@ -937,7 +933,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
               color: Colors.white,
               padding: const EdgeInsets.all(AppPaddings.p6),
               child: const Icon(
-                IconsManager.deleteIcon,
+                AppIcons.deleteIcon,
                 color: ColorsManager.imperialRed,
               ), // Padding for icon
             ),

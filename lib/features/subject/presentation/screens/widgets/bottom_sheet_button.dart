@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lol/core/utils/resources/constants_manager.dart';
+import 'package:lol/core/presentation/screen_size.dart';
+import 'package:lol/core/resources/constants/constants_manager.dart';
 
 class BottomSheetButton extends StatelessWidget {
   const BottomSheetButton(
@@ -16,7 +17,7 @@ class BottomSheetButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialButton(
       padding: const EdgeInsets.symmetric(vertical: 10),
-      minWidth: AppQueries.screenWidth(context) / 3,
+      minWidth: ScreenSize.width(context) / 3,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       color: color,
       onPressed: onPressed,

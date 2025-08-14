@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lol/config/navigation/app_router.dart';
 import 'package:lol/core/network/remote/dio.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,15 +12,15 @@ import 'firebase_options.dart';
 import 'core/utils/service_locator.dart';
 import 'core/my_bloc_observer.dart';
 import 'core/network/local/shared_preference.dart';
-import 'core/utils/resources/constants_manager.dart';
-import 'core/utils/resources/strings_manager.dart';
-import 'core/utils/resources/theme_provider.dart';
-import 'core/utils/resources/themes_manager.dart';
+import 'core/resources/constants/constants_manager.dart';
+import 'core/resources/theme/values/app_strings.dart';
+import 'core/resources/theme/theme_provider.dart';
+import 'core/resources/theme/themes_manager.dart';
 import 'core/error/error_screen.dart';
 import 'features/on_boarding/presentation/view/onboarding.dart';
 import 'features/auth/presentation/view/registration_layout.dart';
 import 'features/home/presentation/view/loading_screen.dart';
-import 'core/cubits/main_cubit/main_cubit.dart';
+import 'core/presentation/cubits/main_cubit/main_cubit.dart';
 import 'features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
 
 String? privateKeyId;
@@ -69,34 +70,15 @@ main() async {
   AppConstants.TOKEN = Cache.sharedpref.getString(KeysManager.token);
   AppConstants.SelectedSemester =
       await Cache.sharedpref.getString(KeysManager.semester);
-  bool isOnBoardFinished =
-      await Cache.readData(key: KeysManager.finishedOnBoard) ?? false;
-
-  final Widget startPage;
-
-  if (!isOnBoardFinished) {
-    startPage = const OnBoarding();
-  } else {
-    if (AppConstants.TOKEN == null && AppConstants.SelectedSemester == null) {
-      startPage = RegistrationLayout();
-    } else {
-      startPage = const LoadingScreen();
-    }
-  }
 
   ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
     return ErrorScreen(errorDetails: errorDetails);
   };
-  runApp(ChangeNotifierProvider(
-    create: (context) => ThemeProvider(),
-    child: App(startPage: startPage),
-  ));
+  runApp(const Uninotes());
 }
 
-class App extends StatelessWidget {
-  final Widget startPage;
-
-  const App({super.key, required this.startPage});
+class Uninotes extends StatelessWidget {
+  const Uninotes({super.key});
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -105,8 +87,8 @@ class App extends StatelessWidget {
         BlocProvider(
             create: (BuildContext context) => AdminCubit()..getFcmTokens()),
       ],
-      child: MaterialApp(
-        home: startPage,
+      child: MaterialApp.router(
+        routerConfig: AppRouter.router,
         theme: darkTheme,
         darkTheme: darkTheme,
         themeMode: ThemeMode.dark,

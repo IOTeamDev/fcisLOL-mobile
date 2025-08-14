@@ -1,19 +1,21 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
+import 'package:go_router/go_router.dart';
+import 'package:lol/config/navigation/routes.dart';
+import 'package:lol/core/presentation/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/network/local/shared_preference.dart';
-import 'package:lol/core/utils/resources/colors_manager.dart';
-import 'package:lol/core/utils/resources/strings_manager.dart';
-import 'package:lol/core/utils/resources/theme_provider.dart';
+import 'package:lol/core/resources/theme/colors_manager.dart';
+import 'package:lol/core/resources/theme/values/app_strings.dart';
+import 'package:lol/core/resources/theme/theme_provider.dart';
 import 'package:lol/features/auth/presentation/view/registration_layout.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
-import 'package:lol/features/auth/presentation/view/login.dart';
+import 'package:lol/features/auth/presentation/view/login/login.dart';
 import 'package:lol/features/subject/presentation/view_model/add_material_cubit/add_material_cubit.dart';
 import 'package:lol/features/subject/presentation/view_model/get_material_cubit/get_material_cubit.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/build_bottom_sheet.dart';
-import 'package:lol/core/utils/resources/constants_manager.dart';
+import 'package:lol/core/resources/constants/constants_manager.dart';
 import 'package:provider/provider.dart';
 
 class BuildFloatingActionButton extends StatefulWidget {
@@ -69,12 +71,7 @@ class _BuildFloatingActionButtonState extends State<BuildFloatingActionButton> {
               btnCancelOnPress: () {},
               btnOkOnPress: () {
                 Cache.writeData(key: KeysManager.isDark, value: false);
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => RegistrationLayout(),
-                    ),
-                    (route) => false);
+                context.goNamed(ScreensName.registrationLayout);
               },
             ).show();
           } else {

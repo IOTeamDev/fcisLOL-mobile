@@ -4,21 +4,24 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lol/config/navigation/routes.dart';
 import 'package:lol/core/models/profile/profile_model.dart';
+import 'package:lol/core/presentation/screen_size.dart';
 import 'package:lol/core/utils/service_locator.dart';
-import 'package:lol/core/utils/resources/colors_manager.dart';
-import 'package:lol/core/utils/resources/constants_manager.dart';
-import 'package:lol/core/utils/resources/icons_manager.dart';
-import 'package:lol/core/utils/resources/strings_manager.dart';
-import 'package:lol/core/utils/resources/values_manager.dart';
+import 'package:lol/core/resources/theme/colors_manager.dart';
+import 'package:lol/core/resources/constants/constants_manager.dart';
+import 'package:lol/core/presentation/app_icons.dart';
+import 'package:lol/core/resources/theme/values/app_strings.dart';
+import 'package:lol/core/resources/theme/values/values_manager.dart';
 import 'package:lol/features/auth/data/models/registration_user_model.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/features/pick_image/presentation/view_model/pick_image_cubit/pick_image_cubit.dart';
 import 'package:lol/main.dart';
-import 'package:lol/features/auth/presentation/view/register.dart';
+import 'package:lol/features/auth/presentation/view/register/register.dart';
 import 'package:lol/core/utils/components.dart';
-import 'package:lol/features/auth/presentation/view/choosing_year.dart';
+import 'package:lol/features/auth/presentation/view/choosing_year/choosing_year.dart';
 import 'package:lol/core/utils/navigation.dart';
 
 class SelectImage extends StatefulWidget {
@@ -59,7 +62,7 @@ class _SelectImageState extends State<SelectImage> {
                 message: 'Image Uploaded Successfully',
                 states: ToastStates.SUCCESS);
 
-            navigatReplace(context, Home());
+            context.replaceNamed(ScreensName.home);
           }
         },
         child: Stack(
@@ -67,7 +70,7 @@ class _SelectImageState extends State<SelectImage> {
             Scaffold(
               appBar: AppBar(
                 automaticallyImplyLeading: false,
-                title: Text(StringsManager.profileImage,
+                title: Text(AppStrings.profileImage,
                     style: Theme.of(context).textTheme.displayMedium!),
                 centerTitle: true,
               ),
@@ -76,7 +79,7 @@ class _SelectImageState extends State<SelectImage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CircleAvatar(
-                        radius: AppQueries.screenWidth(context) / AppSizes.s6,
+                        radius: ScreenSize.width(context) / AppSizes.s6,
                         backgroundImage: _image == null
                             ? AssetImage(AppConstants.noneLoggedInDefaultImage)
                             : FileImage(File(_image!.path)),
@@ -85,12 +88,11 @@ class _SelectImageState extends State<SelectImage> {
                         height: AppSizesDouble.s50,
                       ),
                       SizedBox(
-                        width: AppQueries.screenWidth(context) /
-                            AppSizesDouble.s1_5,
+                        width: ScreenSize.width(context) / AppSizesDouble.s1_5,
                         child: ElevatedButton.icon(
                           iconAlignment: IconAlignment.end,
                           icon: Icon(
-                            IconsManager.imageIcon,
+                            AppIcons.imageIcon,
                             color: ColorsManager.black,
                             size: AppSizesDouble.s25,
                           ),
@@ -127,14 +129,13 @@ class _SelectImageState extends State<SelectImage> {
 
                       // Next Button
                       SizedBox(
-                        width: AppQueries.screenWidth(context) /
-                            AppSizesDouble.s1_5,
+                        width: ScreenSize.width(context) / AppSizesDouble.s1_5,
                         child: ElevatedButton.icon(
                           iconAlignment: IconAlignment.end,
-                          label: Text(StringsManager.next,
+                          label: Text(AppStrings.next,
                               style: Theme.of(context).textTheme.titleLarge!),
                           icon: Icon(
-                            IconsManager.leftArrowIcon,
+                            AppIcons.leftArrowIcon,
                             color: ColorsManager.white,
                             size: AppSizesDouble.s30,
                           ),
@@ -149,12 +150,7 @@ class _SelectImageState extends State<SelectImage> {
                                       AppSizesDouble.s20))),
                           onPressed: () async {
                             if (_image == null) {
-                              Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                  builder: (context) => Home(),
-                                ),
-                                (route) => false,
-                              );
+                              context.goNamed(ScreensName.home);
                             } else {
                               await context
                                   .read<PickImageCubit>()

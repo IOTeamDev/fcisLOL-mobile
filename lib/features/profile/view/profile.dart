@@ -10,20 +10,21 @@ import 'package:googleapis/games/v1.dart';
 import 'package:googleapis/mybusinessaccountmanagement/v1.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:linkify/linkify.dart';
-import 'package:lol/core/utils/resources/icons_manager.dart';
-import 'package:lol/core/utils/resources/strings_manager.dart';
-import 'package:lol/core/utils/resources/theme_provider.dart';
-import 'package:lol/core/utils/resources/values_manager.dart';
+import 'package:lol/core/presentation/screen_size.dart';
+import 'package:lol/core/presentation/app_icons.dart';
+import 'package:lol/core/resources/theme/values/app_strings.dart';
+import 'package:lol/core/resources/theme/theme_provider.dart';
+import 'package:lol/core/resources/theme/values/values_manager.dart';
 import 'package:lol/features/pick_image/presentation/view_model/pick_image_cubit/pick_image_cubit.dart';
 import 'package:lol/features/profile/view/edit_profile_screen.dart';
 import 'package:lol/main.dart';
 import 'package:lol/core/utils/components.dart';
-import 'package:lol/core/utils/resources/constants_manager.dart';
-import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
-import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
+import 'package:lol/core/resources/constants/constants_manager.dart';
+import 'package:lol/core/presentation/cubits/main_cubit/main_cubit.dart';
+import 'package:lol/core/presentation/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/core/utils/navigation.dart';
-import 'package:lol/core/utils/resources/colors_manager.dart';
+import 'package:lol/core/resources/theme/colors_manager.dart';
 import 'package:provider/provider.dart';
 
 class Profile extends StatelessWidget {
@@ -112,7 +113,7 @@ class Profile extends StatelessWidget {
                           child: EditProfileScreen(),
                         ))),
                 icon: Icon(
-                  IconsManager.editIcon,
+                  AppIcons.editIcon,
                   color: ColorsManager.black,
                 ),
                 style: ElevatedButton.styleFrom(
@@ -120,7 +121,7 @@ class Profile extends StatelessWidget {
               )
             ],
             title: Text(
-              StringsManager.profile,
+              AppStrings.profile,
               style: Theme.of(context).textTheme.displayMedium,
             ),
             centerTitle: true,
@@ -170,13 +171,12 @@ class Profile extends StatelessWidget {
                 ),
                 ConstrainedBox(
                   constraints: BoxConstraints(
-                      maxWidth: AppQueries.screenWidth(context) /
-                          AppSizesDouble.s1_2),
+                      maxWidth:
+                          ScreenSize.width(context) / AppSizesDouble.s1_2),
                   child: Text(
                     mainCubit.profileModel!.name,
                     style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                        fontSize:
-                            AppQueries.screenWidth(context) / AppSizes.s13),
+                        fontSize: ScreenSize.width(context) / AppSizes.s13),
                     maxLines: AppSizes.s2,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
@@ -188,7 +188,7 @@ class Profile extends StatelessWidget {
                 Text(
                   mainCubit.profileModel!.email,
                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                      fontSize: AppQueries.screenWidth(context) / AppSizes.s22),
+                      fontSize: ScreenSize.width(context) / AppSizes.s22),
                   maxLines: AppSizes.s2,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -198,7 +198,7 @@ class Profile extends StatelessWidget {
                 Text(
                   "Phone: ${mainCubit.profileModel!.phone.isNotEmpty ? mainCubit.profileModel!.phone : 'No Phone Provided'}",
                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                      fontSize: AppQueries.screenWidth(context) / AppSizes.s22),
+                      fontSize: ScreenSize.width(context) / AppSizes.s22),
                   maxLines: AppSizes.s2,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -218,13 +218,13 @@ class Profile extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(StringsManager.myUploads,
+                        Text(AppStrings.myUploads,
                             style: Theme.of(context)
                                 .textTheme
                                 .titleMedium!
                                 .copyWith(
-                                  fontSize: AppQueries.screenWidth(context) /
-                                      AppSizes.s18,
+                                  fontSize:
+                                      ScreenSize.width(context) / AppSizes.s18,
                                 )),
                         divider(
                             height: AppSizesDouble.s20,
@@ -254,25 +254,25 @@ class Profile extends StatelessWidget {
                               fallback: (context) {
                                 if (state is GetRequestsLoadingState) {
                                   return SizedBox(
-                                      height: AppQueries.screenHeight(context) /
+                                      height: ScreenSize.height(context) /
                                           AppSizesDouble.s1_3,
                                       child: Center(
                                         child: CircularProgressIndicator(),
                                       ));
                                 }
                                 return SizedBox(
-                                    height: AppQueries.screenHeight(context) /
+                                    height: ScreenSize.height(context) /
                                         AppSizesDouble.s1_3,
                                     child: Center(
                                       child: Text(
-                                        StringsManager.noContributionsYet,
+                                        AppStrings.noContributionsYet,
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodyLarge!
                                             .copyWith(
-                                              fontSize: AppQueries.screenWidth(
-                                                      context) /
-                                                  AppSizes.s12,
+                                              fontSize:
+                                                  ScreenSize.width(context) /
+                                                      AppSizes.s12,
                                             ),
                                         textAlign: TextAlign.center,
                                       ),

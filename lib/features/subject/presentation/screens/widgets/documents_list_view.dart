@@ -1,15 +1,15 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lol/core/utils/resources/colors_manager.dart';
-import 'package:lol/core/utils/resources/theme_provider.dart';
+import 'package:lol/core/resources/theme/colors_manager.dart';
+import 'package:lol/core/resources/theme/theme_provider.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/subject/presentation/view_model/get_material_cubit/get_material_cubit.dart';
 
 import 'package:lol/features/subject/presentation/screens/widgets/documents_card.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../core/cubits/main_cubit/main_cubit.dart';
+import '../../../../../core/presentation/cubits/main_cubit/main_cubit.dart';
 
 class DocumentsListView extends StatelessWidget {
   const DocumentsListView({

@@ -1,12 +1,12 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lol/core/utils/resources/assets_manager.dart';
-import 'package:lol/core/utils/resources/colors_manager.dart';
+import 'package:lol/core/resources/assets/assets_manager.dart';
+import 'package:lol/core/resources/theme/colors_manager.dart';
 
-import '../../../../core/cubits/main_cubit/main_cubit.dart';
-import '../../../../core/utils/resources/icons_manager.dart';
-import '../../../../core/utils/resources/strings_manager.dart';
+import '../../../../core/presentation/cubits/main_cubit/main_cubit.dart';
+import '../../../../core/presentation/app_icons.dart';
+import '../../../../core/resources/theme/values/app_strings.dart';
 
 class DeleteAccountSection extends StatelessWidget {
   const DeleteAccountSection({super.key});
@@ -18,21 +18,34 @@ class DeleteAccountSection extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            Image(image: AssetImage(AssetsManager.danger_info_logo), height: 100,),
-            RichText(
-              text: TextSpan(
-                style: TextStyle(fontSize: 20,),
-                children: [
-                  TextSpan(text: 'By '),
-                  TextSpan(text: 'Deleting ', style: TextStyle(color: ColorsManager.imperialRed)),
-                  TextSpan(text: 'Your Account, You will '),
-                  TextSpan(text: 'Lose all of your data', style: TextStyle(color: ColorsManager.imperialRed)),
-                  TextSpan(text: ', including Your score progress, all of Your personal information, and everything related to you except the uploaded material, will be added to the system account, and '),
-                  TextSpan(text: "You won't be able to recover them again.", style: TextStyle(color: ColorsManager.imperialRed)),
-                ]
-              )
+            Image(
+              image: AssetImage(AssetsManager.danger_info_logo),
+              height: 100,
             ),
-            SizedBox(height: 15,),
+            RichText(
+                text: TextSpan(
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                    children: [
+                  TextSpan(text: 'By '),
+                  TextSpan(
+                      text: 'Deleting ',
+                      style: TextStyle(color: ColorsManager.imperialRed)),
+                  TextSpan(text: 'Your Account, You will '),
+                  TextSpan(
+                      text: 'Lose all of your data',
+                      style: TextStyle(color: ColorsManager.imperialRed)),
+                  TextSpan(
+                      text:
+                          ', including Your score progress, all of Your personal information, and everything related to you except the uploaded material, will be added to the system account, and '),
+                  TextSpan(
+                      text: "You won't be able to recover them again.",
+                      style: TextStyle(color: ColorsManager.imperialRed)),
+                ])),
+            SizedBox(
+              height: 15,
+            ),
             ElevatedButton.icon(
               label: Text(
                 'Delete Account',
@@ -41,7 +54,9 @@ class DeleteAccountSection extends StatelessWidget {
                     .titleSmall!
                     .copyWith(color: ColorsManager.white),
               ),
-              icon: Icon(IconsManager.deleteIcon,),
+              icon: Icon(
+                AppIcons.deleteIcon,
+              ),
               style: ButtonStyle(
                 backgroundColor: WidgetStateProperty.resolveWith(
                   (states) {
@@ -57,7 +72,7 @@ class DeleteAccountSection extends StatelessWidget {
               onPressed: () {
                 AwesomeDialog(
                   context: context,
-                  title: StringsManager.delete,
+                  title: AppStrings.delete,
                   dialogType: DialogType.warning,
                   body: Text(
                     textAlign: TextAlign.center,
@@ -73,11 +88,11 @@ class DeleteAccountSection extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                         backgroundColor: ColorsManager.imperialRed),
                     child: Text(
-                      StringsManager.delete,
+                      AppStrings.delete,
                       style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(color: ColorsManager.white),
+                          .textTheme
+                          .bodyMedium!
+                          .copyWith(color: ColorsManager.white),
                     ),
                   ),
                   btnCancel: ElevatedButton(
@@ -85,7 +100,7 @@ class DeleteAccountSection extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                           backgroundColor: ColorsManager.grey4),
                       child: Text(
-                        StringsManager.cancel,
+                        AppStrings.cancel,
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium!

@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/core/network/endpoints.dart';
 import 'package:lol/core/network/remote/dio.dart';
-import 'package:lol/core/utils/resources/constants_manager.dart';
+import 'package:lol/core/resources/constants/constants_manager.dart';
 import 'package:lol/features/subject/data/models/material_model.dart';
 import 'package:lol/features/subject/data/repos/subject_repo_imp.dart';
 import 'package:lol/features/subject/presentation/view_model/add_material_cubit/add_material_cubit.dart';

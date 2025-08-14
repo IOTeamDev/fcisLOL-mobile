@@ -1,24 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
-import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
+import 'package:go_router/go_router.dart';
+import 'package:lol/config/navigation/routes.dart';
+import 'package:lol/core/presentation/cubits/main_cubit/main_cubit.dart';
+import 'package:lol/core/presentation/cubits/main_cubit/main_cubit_states.dart';
+import 'package:lol/core/presentation/screen_size.dart';
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/navigation.dart';
-import 'package:lol/core/utils/resources/assets_manager.dart';
-import 'package:lol/core/utils/resources/colors_manager.dart';
-import 'package:lol/core/utils/resources/constants_manager.dart';
+import 'package:lol/core/resources/assets/assets_manager.dart';
+import 'package:lol/core/resources/theme/colors_manager.dart';
+import 'package:lol/core/resources/constants/constants_manager.dart';
 import 'package:lol/features/auth/presentation/view/registration_layout.dart';
-import 'package:lol/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
+import 'package:lol/features/auth/presentation/cubits/auth_cubit/auth_cubit.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/features/otp_and_verification/presentation/view/widgets/change_email_pop_up.dart';
 import 'package:lol/features/otp_and_verification/presentation/view_model/verification_cubit/verification_cubit.dart';
 import 'package:lol/features/pick_image/presentation/view/select_image.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
-import '../../../../core/utils/resources/icons_manager.dart';
-import '../../../../core/utils/resources/strings_manager.dart';
-import '../../../../core/utils/resources/values_manager.dart';
+import '../../../../core/presentation/app_icons.dart';
+import '../../../../core/resources/theme/values/app_strings.dart';
+import '../../../../core/resources/theme/values/values_manager.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
   final String? recipientEmail;
@@ -45,35 +48,39 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     return BlocConsumer<VerificationCubit, VerificationState>(
       listener: (context, state) {
         if (state is EmailVerifiedSuccess) {
-          showToastMessage(message: StringsManager.mailIsNowVerified, states: ToastStates.SUCCESS);
-          if (context.read<MainCubit>().profileModel!.photo == AppConstants.defaultProfileImage) {
+          showToastMessage(
+              message: AppStrings.mailIsNowVerified,
+              states: ToastStates.SUCCESS);
+          if (context.read<MainCubit>().profileModel!.photo ==
+              AppConstants.defaultProfileImage) {
             navigatReplace(context, SelectImage());
           } else {
-            navigatReplace(context, Home());
+            context.replaceNamed(ScreensName.home);
           }
         }
         if (state is EmailVerifiedFailed) {
-          showToastMessage(message: state.errMessage, states: ToastStates.ERROR);
+          showToastMessage(
+              message: state.errMessage, states: ToastStates.ERROR);
         }
         if (state is SendVerificationCodeToEmailFailed) {
-          showToastMessage(message: state.errMessage, states: ToastStates.ERROR);
+          showToastMessage(
+              message: state.errMessage, states: ToastStates.ERROR);
         }
       },
       builder: (context, state) => BlocListener<MainCubit, MainCubitStates>(
         listener: (context, state) {
           if (state is LogoutSuccess) {
-            navigatReplace(context, RegistrationLayout());
+            context.goNamed(ScreensName.registrationLayout);
           }
         },
         child: Scaffold(
           appBar: AppBar(
             actions: [
               IconButton(
-                onPressed: () async {
-                  await context.read<MainCubit>().logout(context);
-                },
-                icon: Icon(Icons.logout)
-              )
+                  onPressed: () async {
+                    await context.read<MainCubit>().logout(context);
+                  },
+                  icon: Icon(Icons.logout))
             ],
           ),
           body: Stack(
@@ -84,42 +91,54 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                   Container(
                     height: AppSizesDouble.s150,
                     decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: ColorsManager.darkPrimary,
-                      image: DecorationImage(image: AssetImage(AssetsManager.verification_screen_logo))
-                    ),
+                        shape: BoxShape.circle,
+                        color: ColorsManager.darkPrimary,
+                        image: DecorationImage(
+                            image: AssetImage(
+                                AssetsManager.verification_screen_logo))),
                   ),
-                  SizedBox(height: AppSizesDouble.s15,),
+                  SizedBox(
+                    height: AppSizesDouble.s15,
+                  ),
                   FittedBox(
-                    child: Text(
-                      StringsManager.otpVerification,
-                      style: Theme.of(context).textTheme.displayMedium,
-                    )
+                      child: Text(
+                    AppStrings.otpVerification,
+                    style: Theme.of(context).textTheme.displayMedium,
+                  )),
+                  SizedBox(
+                    height: AppSizesDouble.s5,
                   ),
-                  SizedBox(height: AppSizesDouble.s5,),
                   Padding(
                     padding: EdgeInsets.all(AppPaddings.p5),
-                    child: FittedBox(child: Text('Enter The Otp Sent to "${_recipientEmail}"')),
+                    child: FittedBox(
+                        child:
+                            Text('Enter The Otp Sent to "${_recipientEmail}"')),
                   ),
                   Wrap(
                     crossAxisAlignment: WrapCrossAlignment.center,
                     alignment: WrapAlignment.center,
                     children: [
-                      Text(StringsManager.wrongEmail, style: TextStyle(color: ColorsManager.lightGrey1),),
+                      Text(
+                        AppStrings.wrongEmail,
+                        style: TextStyle(color: ColorsManager.lightGrey1),
+                      ),
                       TextButton(
                         child: Text(
-                          StringsManager.changeEmail,
+                          AppStrings.changeEmail,
                           style: TextStyle(color: ColorsManager.dodgerBlue),
                         ),
-                        onPressed: () async{
+                        onPressed: () async {
                           String? email = await showDialog(
-                            context: context,
-                            builder: (context) => ChangeEmailPopUp(currentEmail: _recipientEmail)
-                          );
+                              context: context,
+                              builder: (context) => ChangeEmailPopUp(
+                                  currentEmail: _recipientEmail));
 
-                          if(email != null){
+                          if (email != null) {
                             _recipientEmail = email;
-                            context.read<VerificationCubit>().sendVerificationCode(recipientEmail: _recipientEmail);
+                            context
+                                .read<VerificationCubit>()
+                                .sendVerificationCode(
+                                    recipientEmail: _recipientEmail);
                           }
                         },
                       ),
@@ -131,15 +150,14 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 alignment: Alignment.bottomCenter,
                 child: Container(
                   padding: EdgeInsets.symmetric(
-                    horizontal: AppSizesDouble.s30,
-                    vertical: AppSizesDouble.s30
-                  ),
+                      horizontal: AppSizesDouble.s30,
+                      vertical: AppSizesDouble.s30),
                   width: double.infinity,
-                  height: AppQueries.screenHeight(context) / AppSizes.s2,
+                  height: ScreenSize.height(context) / AppSizes.s2,
                   decoration: BoxDecoration(
-                    color: ColorsManager.darkPrimary,
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(AppSizesDouble.s95))
-                  ),
+                      color: ColorsManager.darkPrimary,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(AppSizesDouble.s95))),
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
@@ -155,15 +173,15 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                           enableActiveFill: false,
                           textStyle: TextStyle(color: ColorsManager.white),
                           pinTheme: PinTheme(
-                            borderRadius: BorderRadius.circular(AppSizesDouble.s10),
-                            activeColor: ColorsManager.lightPrimary,
-                            activeFillColor: ColorsManager.lightGrey1,
-                            fieldHeight: AppSizesDouble.s50,
-                            borderWidth: AppSizesDouble.s10,
-                            inactiveFillColor: ColorsManager.white,
-                            selectedColor: ColorsManager.lightPrimary,
-                            shape: PinCodeFieldShape.underline
-                          ),
+                              borderRadius:
+                                  BorderRadius.circular(AppSizesDouble.s10),
+                              activeColor: ColorsManager.lightPrimary,
+                              activeFillColor: ColorsManager.lightGrey1,
+                              fieldHeight: AppSizesDouble.s50,
+                              borderWidth: AppSizesDouble.s10,
+                              inactiveFillColor: ColorsManager.white,
+                              selectedColor: ColorsManager.lightPrimary,
+                              shape: PinCodeFieldShape.underline),
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly
                           ],
@@ -173,42 +191,54 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                         ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            foregroundColor: ColorsManager.white,
-                            fixedSize: Size(AppQueries.screenWidth(context), AppSizesDouble.s50),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSizesDouble.s15)),
-                            backgroundColor: ColorsManager.lightPrimary
-                          ),
+                              foregroundColor: ColorsManager.white,
+                              fixedSize: Size(ScreenSize.width(context),
+                                  AppSizesDouble.s50),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      AppSizesDouble.s15)),
+                              backgroundColor: ColorsManager.lightPrimary),
                           onPressed: () {
                             context.read<VerificationCubit>().verifyEmail(
-                              otp: _otpController.text,
-                              recipientEmail: _recipientEmail
-                            );
+                                otp: _otpController.text,
+                                recipientEmail: _recipientEmail);
                           },
                           child: Text(
-                            StringsManager.verify,
-                            style: Theme.of(context).textTheme.headlineLarge!.copyWith(color: ColorsManager.white),
+                            AppStrings.verify,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineLarge!
+                                .copyWith(color: ColorsManager.white),
                           ),
                         ),
                         const SizedBox(
                           height: AppSizesDouble.s50,
                         ),
                         Text(
-                          StringsManager.noCodeReceived,
+                          AppStrings.noCodeReceived,
                           style: TextStyle(color: ColorsManager.lightGrey1),
                         ),
                         const SizedBox(
                           height: AppSizesDouble.s10,
                         ),
                         StreamBuilder<int>(
-                          stream: context.read<VerificationCubit>().timerStream,
-                          builder: (context, snapshot) {
-                            return Text(context.read<VerificationCubit>().currentTime.toString());
-                          }
-                        ),
+                            stream:
+                                context.read<VerificationCubit>().timerStream,
+                            builder: (context, snapshot) {
+                              return Text(context
+                                  .read<VerificationCubit>()
+                                  .currentTime
+                                  .toString());
+                            }),
                         TextButton(
-                          onPressed: context.read<VerificationCubit>().canResendCode?() => _sendVerificationCode():null,
-                          style: TextButton.styleFrom(foregroundColor: ColorsManager.lightPrimary, disabledForegroundColor: ColorsManager.lightGrey),
-                          child: Text(StringsManager.sendAgain),
+                          onPressed:
+                              context.read<VerificationCubit>().canResendCode
+                                  ? () => _sendVerificationCode()
+                                  : null,
+                          style: TextButton.styleFrom(
+                              foregroundColor: ColorsManager.lightPrimary,
+                              disabledForegroundColor: ColorsManager.lightGrey),
+                          child: Text(AppStrings.sendAgain),
                         ),
                       ],
                     ),
@@ -223,6 +253,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   }
 
   void _sendVerificationCode() {
-    context.read<VerificationCubit>().sendVerificationCode(recipientEmail: widget.recipientEmail!);
+    context
+        .read<VerificationCubit>()
+        .sendVerificationCode(recipientEmail: widget.recipientEmail!);
   }
 }

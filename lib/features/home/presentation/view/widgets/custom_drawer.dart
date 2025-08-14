@@ -3,24 +3,28 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 import 'package:linkify/linkify.dart';
-import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
-import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
+import 'package:lol/config/navigation/routes.dart';
+import 'package:lol/core/data/local_data_provider.dart';
+import 'package:lol/core/presentation/cubits/main_cubit/main_cubit.dart';
+import 'package:lol/core/presentation/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/core/models/profile/profile_model.dart';
 import 'package:lol/core/network/local/shared_preference.dart';
+import 'package:lol/core/presentation/screen_size.dart';
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/navigation.dart';
-import 'package:lol/core/utils/resources/assets_manager.dart';
-import 'package:lol/core/utils/resources/colors_manager.dart';
-import 'package:lol/core/utils/resources/constants_manager.dart';
-import 'package:lol/core/utils/resources/fonts_manager.dart';
-import 'package:lol/core/utils/resources/icons_manager.dart';
-import 'package:lol/core/utils/resources/strings_manager.dart';
-import 'package:lol/core/utils/resources/theme_provider.dart';
-import 'package:lol/core/utils/resources/values_manager.dart';
+import 'package:lol/core/resources/assets/assets_manager.dart';
+import 'package:lol/core/resources/theme/colors_manager.dart';
+import 'package:lol/core/resources/constants/constants_manager.dart';
+import 'package:lol/core/resources/assets/fonts_manager.dart';
+import 'package:lol/core/presentation/app_icons.dart';
+import 'package:lol/core/resources/theme/values/app_strings.dart';
+import 'package:lol/core/resources/theme/theme_provider.dart';
+import 'package:lol/core/resources/theme/values/values_manager.dart';
 import 'package:lol/features/admin/presentation/view/admin_panal.dart';
 import 'package:lol/features/admin/presentation/view/announcements/announcements_list.dart';
-import 'package:lol/features/auth/presentation/view/login.dart';
+import 'package:lol/features/auth/presentation/view/login/login.dart';
 import 'package:lol/features/auth/presentation/view/registration_layout.dart';
 import 'package:lol/features/home/presentation/view/semester_navigate.dart';
 import 'package:lol/features/leaderboard/presentation/view/leaderboard_view.dart';
@@ -56,8 +60,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             //header
             AppConstants.TOKEN != null
                 ? SizedBox(
-                    height:
-                        AppQueries.screenHeight(context) / AppSizesDouble.s3_2,
+                    height: ScreenSize.height(context) / AppSizesDouble.s3_2,
                     child: UserAccountsDrawerHeader(
                       decoration: BoxDecoration(
                           color: Theme.of(context).drawerTheme.backgroundColor),
@@ -66,7 +69,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         children: [
                           ConstrainedBox(
                             constraints: BoxConstraints(
-                                maxWidth: AppQueries.screenWidth(context) /
+                                maxWidth: ScreenSize.width(context) /
                                     AppSizesDouble.s1_5),
                             child: Text(
                               profileModel!.name,
@@ -75,7 +78,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             ),
                           ),
                           const Spacer(),
-                          Text(AppConstants.Level(profileModel!.semester),
+                          Text(LocalDataProvider.Level(profileModel!.semester),
                               style: Theme.of(context).textTheme.bodyLarge),
                         ],
                       ),
@@ -87,10 +90,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           child: ElevatedButton.icon(
                             onPressed: () => navigate(context, const Profile()),
                             label: Text(
-                              StringsManager.profileInfo,
+                              AppStrings.profileInfo,
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
-                            icon: Icon(IconsManager.personIcon),
+                            icon: Icon(AppIcons.personIcon),
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.transparent),
                           ),
@@ -108,11 +111,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     decoration: BoxDecoration(
                         color: Theme.of(context).scaffoldBackgroundColor),
                     accountName: Text(
-                      StringsManager.guest,
+                      AppStrings.guest,
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     accountEmail: Text(
-                      AppConstants.Level(AppConstants.SelectedSemester ?? ''),
+                      LocalDataProvider.Level(
+                          AppConstants.SelectedSemester ?? ''),
                       style: Theme.of(context).textTheme.displayLarge,
                     ),
                     currentAccountPicture: const CircleAvatar(
@@ -129,8 +133,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       profileModel?.role == KeysManager.developer)
                     CustomTile(
                         onTap: () => navigate(context, AdminPanel()),
-                        title: StringsManager.admin,
-                        icon: IconsManager.adminIcon), //*Admin Panel
+                        title: AppStrings.admin,
+                        icon: AppIcons.adminIcon), //*Admin Panel
                   CustomTile(
                       onTap: () {
                         if (AppConstants.TOKEN == null) {
@@ -147,9 +151,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                       .semester));
                         }
                       },
-                      title: StringsManager.announcements,
-                      icon:
-                          IconsManager.announcementsIcon), //*Announcements List
+                      title: AppStrings.announcements,
+                      icon: AppIcons.announcementsIcon), //*Announcements List
                   CustomTile(
                       onTap: () {
                         navigate(
@@ -158,194 +161,194 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               semester: widget.semester,
                             ));
                       },
-                      title: StringsManager.leaderboard,
-                      icon: IconsManager.leaderboardIcon), //*Leaderboard
+                      title: AppStrings.leaderboard,
+                      icon: AppIcons.leaderboardIcon), //*Leaderboard
                   CustomExpansionTile(
-                      title: StringsManager.years,
-                      icon: IconsManager.schoolIcon,
+                      title: AppStrings.years,
+                      icon: AppIcons.schoolIcon,
                       children: [
                         CustomExpansionTile(
-                            title: StringsManager.firstYear,
+                            title: AppStrings.firstYear,
                             childrenPadding: AppPaddings.p15,
                             children: [
                               CustomTile(
                                 onTap: () {
                                   AppConstants.navigatedSemester =
-                                      StringsManager.one;
+                                      AppStrings.one;
                                   navigate(
                                       context,
                                       SemesterNavigate(
-                                          semester: StringsManager.one));
+                                          semester: AppStrings.one));
                                 },
-                                title: StringsManager.firstSemester,
+                                title: AppStrings.firstSemester,
                               ),
                               CustomTile(
                                 onTap: () {
                                   AppConstants.navigatedSemester =
-                                      StringsManager.two;
+                                      AppStrings.two;
                                   navigate(
                                       context,
                                       SemesterNavigate(
-                                          semester: StringsManager.two));
+                                          semester: AppStrings.two));
                                 },
-                                title: StringsManager.secondSemester,
+                                title: AppStrings.secondSemester,
                               ),
                             ]),
                         CustomExpansionTile(
                             childrenPadding: AppPaddings.p15,
-                            title: StringsManager.secondYear,
+                            title: AppStrings.secondYear,
                             children: [
                               CustomTile(
                                 onTap: () {
                                   AppConstants.navigatedSemester =
-                                      StringsManager.three;
+                                      AppStrings.three;
                                   navigate(
                                       context,
                                       SemesterNavigate(
-                                          semester: StringsManager.three));
+                                          semester: AppStrings.three));
                                 },
-                                title: StringsManager.firstSemester,
+                                title: AppStrings.firstSemester,
                               ),
                               CustomTile(
                                 onTap: () {
                                   AppConstants.navigatedSemester =
-                                      StringsManager.four;
+                                      AppStrings.four;
                                   navigate(
                                       context,
                                       SemesterNavigate(
-                                          semester: StringsManager.four));
+                                          semester: AppStrings.four));
                                 },
-                                title: StringsManager.secondSemester,
+                                title: AppStrings.secondSemester,
                               ),
                             ]),
                         CustomExpansionTile(
                             childrenPadding: AppPaddings.p15,
-                            title: StringsManager.thirdYear,
+                            title: AppStrings.thirdYear,
                             children: [
                               CustomTile(
                                 onTap: () {
                                   AppConstants.navigatedSemester =
-                                      StringsManager.five;
+                                      AppStrings.five;
                                   navigate(
                                       context,
                                       SemesterNavigate(
-                                          semester: StringsManager.five));
+                                          semester: AppStrings.five));
                                 },
-                                title: StringsManager.firstSemester,
+                                title: AppStrings.firstSemester,
                               ),
                               CustomTile(
                                 onTap: () {
                                   AppConstants.navigatedSemester =
-                                      StringsManager.six;
+                                      AppStrings.six;
                                   navigate(
                                       context,
                                       SemesterNavigate(
-                                          semester: StringsManager.six));
+                                          semester: AppStrings.six));
                                 },
-                                title: StringsManager.secondSemester,
+                                title: AppStrings.secondSemester,
                               ),
                             ]),
                         CustomExpansionTile(
                             childrenPadding: AppPaddings.p15,
-                            title: StringsManager.seniors,
+                            title: AppStrings.seniors,
                             children: [
                               CustomTile(
                                 onTap: () {
                                   AppConstants.navigatedSemester =
-                                      StringsManager.seven;
+                                      AppStrings.seven;
                                   navigate(
                                       context,
                                       SemesterNavigate(
-                                          semester: StringsManager.seven));
+                                          semester: AppStrings.seven));
                                 },
-                                title: StringsManager.firstSemester,
+                                title: AppStrings.firstSemester,
                               ),
                               CustomTile(
                                 onTap: () {
                                   AppConstants.navigatedSemester =
-                                      StringsManager.eight;
+                                      AppStrings.eight;
                                   navigate(
                                       context,
                                       SemesterNavigate(
-                                          semester: StringsManager.eight));
+                                          semester: AppStrings.eight));
                                 },
-                                title: StringsManager.secondSemester,
+                                title: AppStrings.secondSemester,
                               ),
                             ]),
                       ]), //*Years Navigation
                   CustomExpansionTile(
-                      title: StringsManager.drive,
+                      title: AppStrings.drive,
                       isImage: true,
                       imageIcon: AssetsManager.drive,
                       children: [
                         CustomTile(
                             onTap: () async {
                               LinkableElement url = LinkableElement(
-                                  StringsManager.drive.toLowerCase(),
+                                  AppStrings.drive.toLowerCase(),
                                   AppConstants.year28Drive);
                               await onOpen(context, url);
                             },
-                            title: StringsManager.year28),
+                            title: AppStrings.year28),
                         CustomTile(
                             onTap: () async {
                               LinkableElement url = LinkableElement(
-                                  StringsManager.drive.toLowerCase(),
+                                  AppStrings.drive.toLowerCase(),
                                   AppConstants.year27Drive);
                               await onOpen(context, url);
                             },
-                            title: StringsManager.year27),
+                            title: AppStrings.year27),
                         CustomTile(
                             onTap: () async {
                               LinkableElement url = LinkableElement(
-                                  StringsManager.drive.toLowerCase(),
+                                  AppStrings.drive.toLowerCase(),
                                   AppConstants.year26Drive);
                               await onOpen(context, url);
                             },
-                            title: StringsManager.year26),
+                            title: AppStrings.year26),
                         CustomTile(
                             onTap: () async {
                               LinkableElement url = LinkableElement(
-                                  StringsManager.drive.toLowerCase(),
+                                  AppStrings.drive.toLowerCase(),
                                   AppConstants.year25Drive);
                               await onOpen(context, url);
                             },
-                            title: StringsManager.year25),
+                            title: AppStrings.year25),
                         CustomTile(
                             onTap: () async {
                               LinkableElement url = LinkableElement(
-                                  StringsManager.drive.toLowerCase(),
+                                  AppStrings.drive.toLowerCase(),
                                   AppConstants.year24Drive);
                               await onOpen(context, url);
                             },
-                            title: StringsManager.year24),
+                            title: AppStrings.year24),
                       ]), //*Drive
                   CustomTile(
                       onTap: () => navigate(context, UsefulLinks()),
-                      icon: IconsManager.linkIcon,
-                      title: StringsManager.links), //*Useful Links
+                      icon: AppIcons.linkIcon,
+                      title: AppStrings.links), //*Useful Links
                   CustomTile(
                       onTap: () => navigate(context, PreviousExams()),
-                      icon: IconsManager.paperIcon,
-                      title: StringsManager.exams), //*Previous Exams
+                      icon: AppIcons.paperIcon,
+                      title: AppStrings.exams), //*Previous Exams
                   CustomExpansionTile(
-                      title: StringsManager.support,
-                      icon: IconsManager.supportAgentIcon,
+                      title: AppStrings.support,
+                      icon: AppIcons.supportAgentIcon,
                       children: [
                         CustomTile(
                             onTap: () => navigate(context, ReportBug()),
-                            title: StringsManager.reportBug),
+                            title: AppStrings.reportBug),
                         CustomTile(
                             onTap: () => navigate(context, FeedbackScreen()),
-                            title: StringsManager.feedback),
+                            title: AppStrings.feedback),
                         CustomTile(
                             onTap: () =>
                                 navigate(context, ReleaseNotesScreen()),
-                            title: StringsManager.releaseNotes),
+                            title: AppStrings.releaseNotes),
                       ]), //*Support
                   CustomTile(
                     onTap: () => navigate(context, AboutUs()),
-                    title: StringsManager.aboutUs,
-                    icon: IconsManager.groupIcon,
+                    title: AppStrings.aboutUs,
+                    icon: AppIcons.groupIcon,
                   ) //*About Us
                 ],
               )),
@@ -357,7 +360,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 alignment: Alignment.bottomCenter,
                 child: ConstrainedBox(
                   constraints: BoxConstraints(
-                      maxWidth: AppQueries.screenWidth(context) / AppSizes.s2,
+                      maxWidth: ScreenSize.width(context) / AppSizes.s2,
                       minWidth: AppSizesDouble.s150),
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -370,20 +373,20 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         if (AppConstants.TOKEN != null) {
                           AwesomeDialog(
                             context: context,
-                            title: StringsManager.logOut,
+                            title: AppStrings.logOut,
                             dialogType: DialogType.warning,
                             dismissOnTouchOutside: true,
                             barrierColor: ColorsManager.black
                                 .withValues(alpha: AppSizesDouble.s0_7),
                             body: Text(
-                              StringsManager.logOutWarningMessage,
+                              AppStrings.logOutWarningMessage,
                               style: Theme.of(context).textTheme.displayLarge,
                               textAlign: TextAlign.center,
                             ),
                             animType: AnimType.scale,
                             btnOkColor: ColorsManager.imperialRed,
                             btnCancelOnPress: () {},
-                            btnOkText: StringsManager.logOut,
+                            btnOkText: AppStrings.logOut,
                             btnCancelColor: ColorsManager.grey,
                             btnOkOnPress: () {
                               MainCubit.get(context).logout(context);
@@ -397,12 +400,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           AppConstants.navigatedSemester = null;
                           AppConstants.previousExamsSelectedSubject = null;
                           AppConstants.previousExamsSelectedSemester = null;
-                          Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                              builder: (context) => RegistrationLayout(),
-                            ),
-                            (route) => false,
-                          );
+                          context.goNamed(ScreensName.registrationLayout);
                         }
                       },
                       child: Row(
@@ -410,16 +408,16 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         children: [
                           Icon(
                               AppConstants.TOKEN != null
-                                  ? IconsManager.logOutIcon
-                                  : IconsManager.logInIcon,
+                                  ? AppIcons.logOutIcon
+                                  : AppIcons.logInIcon,
                               color: ColorsManager.white),
                           SizedBox(
                             width: AppSizesDouble.s10,
                           ),
                           Text(
                             AppConstants.TOKEN != null
-                                ? StringsManager.logOut
-                                : StringsManager.login,
+                                ? AppStrings.logOut
+                                : AppStrings.login,
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyLarge!

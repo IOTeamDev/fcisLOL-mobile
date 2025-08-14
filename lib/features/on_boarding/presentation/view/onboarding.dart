@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:lol/config/navigation/routes.dart';
 import 'package:lol/core/utils/service_locator.dart';
-import 'package:lol/core/utils/resources/colors_manager.dart';
-import 'package:lol/core/utils/resources/icons_manager.dart';
-import 'package:lol/core/utils/resources/strings_manager.dart';
-import 'package:lol/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
-import 'package:lol/features/auth/presentation/view_model/login_cubit/login_cubit.dart';
-import 'package:lol/features/auth/presentation/view/choosing_year.dart';
+import 'package:lol/core/resources/theme/colors_manager.dart';
+import 'package:lol/core/presentation/app_icons.dart';
+import 'package:lol/core/resources/theme/values/app_strings.dart';
+import 'package:lol/features/auth/presentation/cubits/auth_cubit/auth_cubit.dart';
+import 'package:lol/features/auth/presentation/view/choosing_year/choosing_year.dart';
 import 'package:lol/core/utils/navigation.dart';
 import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:lol/features/on_boarding/data/model/on_boarding_model.dart';
 import 'package:lol/features/on_boarding/presentation/view/widgets/on_boarding_item.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../../../../core/utils/resources/values_manager.dart';
+import '../../../../core/resources/theme/values/values_manager.dart';
 
 class OnBoarding extends StatefulWidget {
   const OnBoarding({super.key});
@@ -72,9 +73,7 @@ class _OnBoardingState extends State<OnBoarding> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        isLastPage
-                            ? StringsManager.getStarted
-                            : StringsManager.next,
+                        isLastPage ? AppStrings.getStarted : AppStrings.next,
                         style: const TextStyle(
                             fontSize: AppSizesDouble.s16,
                             fontWeight: FontWeight.w600),
@@ -85,7 +84,7 @@ class _OnBoardingState extends State<OnBoarding> {
                         ),
                       if (!isLastPage)
                         Icon(
-                          IconsManager.leftArrowIcon,
+                          AppIcons.leftArrowIcon,
                           color: ColorsManager.white,
                         )
                     ],
@@ -94,7 +93,7 @@ class _OnBoardingState extends State<OnBoarding> {
                     if (isLastPage) {
                       Cache.writeData(
                           key: KeysManager.finishedOnBoard, value: true);
-                      navigatReplace(context, ChoosingYear());
+                      context.replaceNamed(ScreensName.choosingYear);
                     } else {
                       pageViewController.nextPage(
                         duration: Duration(milliseconds: AppSizes.s500),

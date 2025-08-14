@@ -7,17 +7,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:lol/core/utils/resources/assets_manager.dart';
-import 'package:lol/core/utils/resources/colors_manager.dart';
-import 'package:lol/core/utils/resources/fonts_manager.dart';
-import 'package:lol/core/utils/resources/icons_manager.dart';
-import 'package:lol/core/utils/resources/responsive/base_responsive.dart';
-import 'package:lol/core/utils/resources/routes_manager.dart';
-import 'package:lol/core/utils/resources/strings_manager.dart';
-import 'package:lol/core/utils/resources/theme_provider.dart';
-import 'package:lol/core/utils/resources/values_manager.dart';
+import 'package:go_router/go_router.dart';
+import 'package:lol/config/navigation/routes.dart';
+import 'package:lol/core/resources/assets/assets_manager.dart';
+import 'package:lol/core/resources/theme/colors_manager.dart';
+import 'package:lol/core/resources/assets/fonts_manager.dart';
+import 'package:lol/core/presentation/app_icons.dart';
+import 'package:lol/core/utils/responsive/base_responsive.dart';
+import 'package:lol/config/navigation/routes_manager.dart';
+import 'package:lol/core/resources/theme/values/app_strings.dart';
+import 'package:lol/core/resources/theme/theme_provider.dart';
+import 'package:lol/core/resources/theme/values/values_manager.dart';
 import 'package:lol/features/auth/presentation/view/registration_layout.dart';
-import 'package:lol/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
+import 'package:lol/features/auth/presentation/cubits/auth_cubit/auth_cubit.dart';
 import 'package:lol/features/home/presentation/view/home/home_mobile.dart';
 import 'package:lol/features/home/presentation/view/home/home_tablet.dart';
 import 'package:lol/features/home/presentation/view/semester_navigate.dart';
@@ -27,7 +29,7 @@ import 'package:lol/core/models/profile/profile_model.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit_states.dart';
 import 'package:lol/features/admin/presentation/view/announcements/announcement_detail.dart';
-import 'package:lol/features/auth/presentation/view/login.dart';
+import 'package:lol/features/auth/presentation/view/login/login.dart';
 import 'package:lol/features/home/presentation/view/widgets/build_announcements_row.dart';
 import 'package:lol/features/home/presentation/view/widgets/custom_drawer.dart';
 import 'package:lol/features/home/presentation/view/widgets/subject_item_build.dart';
@@ -40,9 +42,9 @@ import 'package:lol/features/support_and_about_us/about_us.dart';
 import 'package:lol/features/support_and_about_us/user_advices/presentation/view/feedback_screen.dart';
 import 'package:lol/features/support_and_about_us/user_advices/presentation/view/report_bug.dart';
 import 'package:lol/core/utils/components.dart';
-import 'package:lol/core/utils/resources/constants_manager.dart';
-import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
-import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
+import 'package:lol/core/resources/constants/constants_manager.dart';
+import 'package:lol/core/presentation/cubits/main_cubit/main_cubit.dart';
+import 'package:lol/core/presentation/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/features/profile/view/profile.dart';
 import 'package:lol/features/useful_links/useful_links.dart';
 import 'package:lol/main.dart';
@@ -53,14 +55,14 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../admin/presentation/view/announcements/announcements_list.dart';
 import '../../../admin/presentation/view/admin_panal.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
@@ -81,15 +83,10 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return BlocConsumer<MainCubit, MainCubitStates>(listener: (context, state) {
       if (state is LogoutSuccess) {
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) => RegistrationLayout(),
-          ),
-          (route) => false,
-        );
+        context.goNamed(ScreensName.registrationLayout);
 
         showToastMessage(
-          message: StringsManager.logOutSuccessfully,
+          message: AppStrings.logOutSuccessfully,
           states: ToastStates.SUCCESS,
         );
       }
@@ -101,12 +98,7 @@ class _HomeState extends State<Home> {
       if (state is DeleteAccountSuccessState) {
         showToastMessage(
             message: 'Your Account was deleted', states: ToastStates.SUCCESS);
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) => RegistrationLayout(),
-          ),
-          (route) => false,
-        );
+        context.goNamed(ScreensName.registrationLayout);
       }
     }, builder: (context, state) {
       ProfileModel? profile;
@@ -116,7 +108,7 @@ class _HomeState extends State<Home> {
       }
       if (AppConstants.SelectedSemester != null) {
         semesterIndex = getSemesterIndex(AppConstants.SelectedSemester!);
-        return BaseResponsive(
+        return ResponsiveLayout(
           mobileLayout: HomeMobile(
             scaffoldKey: scaffoldKey,
             semesterIndex: semesterIndex,

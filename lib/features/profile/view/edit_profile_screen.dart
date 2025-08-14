@@ -4,16 +4,17 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
-import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
+import 'package:lol/core/presentation/cubits/main_cubit/main_cubit.dart';
+import 'package:lol/core/presentation/cubits/main_cubit/main_cubit_states.dart';
+import 'package:lol/core/presentation/screen_size.dart';
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/navigation.dart';
-import 'package:lol/core/utils/resources/colors_manager.dart';
-import 'package:lol/core/utils/resources/constants_manager.dart';
-import 'package:lol/core/utils/resources/icons_manager.dart';
-import 'package:lol/core/utils/resources/strings_manager.dart';
-import 'package:lol/core/utils/resources/theme_provider.dart';
-import 'package:lol/core/utils/resources/values_manager.dart';
+import 'package:lol/core/resources/theme/colors_manager.dart';
+import 'package:lol/core/resources/constants/constants_manager.dart';
+import 'package:lol/core/presentation/app_icons.dart';
+import 'package:lol/core/resources/theme/values/app_strings.dart';
+import 'package:lol/core/resources/theme/theme_provider.dart';
+import 'package:lol/core/resources/theme/values/values_manager.dart';
 import 'package:lol/features/pick_image/presentation/view/select_image.dart';
 import 'package:lol/features/pick_image/presentation/view_model/pick_image_cubit/pick_image_cubit.dart';
 import 'package:lol/features/profile/view/widgets/basic_info_edit.dart';
@@ -36,7 +37,8 @@ class _EditProfileScreenState extends State<EditProfileScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this, animationDuration: Duration.zero);
+    _tabController =
+        TabController(length: 3, vsync: this, animationDuration: Duration.zero);
   }
 
   @override
@@ -44,7 +46,9 @@ class _EditProfileScreenState extends State<EditProfileScreen>
     return BlocListener<PickImageCubit, PickImageState>(
       listener: (context, state) {
         if (state is UploadImageSuccess) {
-          context.read<PickImageCubit>().updateProfileImage(imageUrl: state.imageUrl);
+          context
+              .read<PickImageCubit>()
+              .updateProfileImage(imageUrl: state.imageUrl);
         }
         if (state is UpdateUserImageSuccess) {
           _refreshProfileModel();
@@ -63,7 +67,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            StringsManager.editProfile,
+            AppStrings.editProfile,
             style: Theme.of(context).textTheme.displayMedium,
           ),
           centerTitle: true,
@@ -74,15 +78,20 @@ class _EditProfileScreenState extends State<EditProfileScreen>
             BlocBuilder<MainCubit, MainCubitStates>(
               builder: (context, state) {
                 return SizedBox(
-                  height: AppQueries.screenWidth(context) / AppSizes.s3,
-                  width: AppQueries.screenWidth(context) / AppSizes.s3,
+                  height: ScreenSize.width(context) / AppSizes.s3,
+                  width: ScreenSize.width(context) / AppSizes.s3,
                   child: InkWell(
                     splashColor: ColorsManager.transparent,
                     onTap: () async {
                       final cubit = context.read<PickImageCubit>();
                       final image = await cubit.pickImage();
                       if (image != null) {
-                        await cubit.deleteUserImage(image: getImageNameFromUrl(imageUrl: context.read<MainCubit>().profileModel!.photo!));
+                        await cubit.deleteUserImage(
+                            image: getImageNameFromUrl(
+                                imageUrl: context
+                                    .read<MainCubit>()
+                                    .profileModel!
+                                    .photo!));
                         await cubit.uploadUserImage(image: image);
                       }
                     },
@@ -91,20 +100,24 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                       alignment: Alignment.center,
                       children: [
                         CircleAvatar(
-                          radius: AppQueries.screenWidth(context) / AppSizes.s5,
+                          radius: ScreenSize.width(context) / AppSizes.s5,
                           backgroundImage: NetworkImage(
                               MainCubit.get(context).profileModel?.photo ??
                                   AppConstants.defaultProfileImage),
                         ),
                         Container(
                           decoration: BoxDecoration(
-                              color: ColorsManager.black.withValues(alpha: AppSizesDouble.s0_4),
-                              borderRadius: BorderRadius.circular(AppSizesDouble.s100)),
-                          width: AppQueries.screenWidth(context) / AppSizesDouble.s2_5,
-                          height: AppQueries.screenWidth(context) / AppSizesDouble.s2_5,
+                              color: ColorsManager.black
+                                  .withValues(alpha: AppSizesDouble.s0_4),
+                              borderRadius:
+                                  BorderRadius.circular(AppSizesDouble.s100)),
+                          width:
+                              ScreenSize.width(context) / AppSizesDouble.s2_5,
+                          height:
+                              ScreenSize.width(context) / AppSizesDouble.s2_5,
                           child: Icon(
-                            IconsManager.editIcon,
-                            size: AppQueries.screenWidth(context) / AppSizes.s4,
+                            AppIcons.editIcon,
+                            size: ScreenSize.width(context) / AppSizes.s4,
                           ),
                         ),
                       ],
@@ -126,7 +139,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                     color: Provider.of<ThemeProvider>(context).isDark
                         ? ColorsManager.grey5
                         : ColorsManager.grey7),
-                height: AppQueries.screenHeight(context) / AppSizesDouble.s1_5,
+                height: ScreenSize.height(context) / AppSizesDouble.s1_5,
                 child: Column(
                   children: [
                     TabBar(
@@ -141,12 +154,12 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                         labelStyle: TextStyle(),
                         tabs: [
                           Tab(
-                            text: StringsManager.personalInfo,
+                            text: AppStrings.personalInfo,
                             height: AppSizesDouble.s40,
                           ),
                           Tab(
                             height: AppSizesDouble.s40,
-                            text: StringsManager.changePassword,
+                            text: AppStrings.changePassword,
                           ),
                           Tab(
                             height: AppSizesDouble.s40,
@@ -154,10 +167,11 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                               child: AnimatedBuilder(
                                 animation: _tabController,
                                 builder: (context, _) {
-                                  final isLastTabSelected = _tabController.index == AppSizes.s2;
+                                  final isLastTabSelected =
+                                      _tabController.index == AppSizes.s2;
                                   return AnimatedDefaultTextStyle(
                                     child: Text(
-                                      StringsManager.deleteAccount,
+                                      AppStrings.deleteAccount,
                                     ),
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -166,7 +180,8 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                                           ? ColorsManager.imperialRed
                                           : ColorsManager.darkRed,
                                     ),
-                                    duration: Duration(milliseconds: AppSizes.s70),
+                                    duration:
+                                        Duration(milliseconds: AppSizes.s70),
                                   );
                                 },
                               ),
@@ -174,20 +189,16 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                           ),
                         ]),
                     Expanded(
-                      child: TabBarView(
-                        children: [
-                          BasicInfoEdit(
-                            semester: MainCubit.get(context).profileModel!.semester,
-                            phone: MainCubit.get(context).profileModel!.phone,
-                            userName: MainCubit.get(context).profileModel!.name,
-                            email: MainCubit.get(context).profileModel!.email
-                          ),
-                          LoginInfoEdit(),
-                          DeleteAccountSection(),
-                        ],
-                        controller: _tabController
-                      )
-                    )
+                        child: TabBarView(children: [
+                      BasicInfoEdit(
+                          semester:
+                              MainCubit.get(context).profileModel!.semester,
+                          phone: MainCubit.get(context).profileModel!.phone,
+                          userName: MainCubit.get(context).profileModel!.name,
+                          email: MainCubit.get(context).profileModel!.email),
+                      LoginInfoEdit(),
+                      DeleteAccountSection(),
+                    ], controller: _tabController))
                   ],
                 ),
               ),

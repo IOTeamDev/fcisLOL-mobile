@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:lol/core/utils/resources/constants_manager.dart';
-import 'package:lol/core/utils/resources/strings_manager.dart';
+import 'package:lol/core/resources/constants/constants_manager.dart';
+import 'package:lol/core/resources/theme/values/app_strings.dart';
 
 class DioHelp {
   static Dio? dio;

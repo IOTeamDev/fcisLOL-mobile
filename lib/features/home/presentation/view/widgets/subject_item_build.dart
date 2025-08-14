@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/core/utils/service_locator.dart';
 import 'package:lol/core/utils/navigation.dart';
-import 'package:lol/core/utils/resources/colors_manager.dart';
-import 'package:lol/core/utils/resources/fonts_manager.dart';
-import 'package:lol/core/utils/resources/strings_manager.dart';
-import 'package:lol/core/utils/resources/theme_provider.dart';
-import 'package:lol/core/utils/resources/values_manager.dart';
+import 'package:lol/core/resources/theme/colors_manager.dart';
+import 'package:lol/core/resources/assets/fonts_manager.dart';
+import 'package:lol/core/resources/theme/values/app_strings.dart';
+import 'package:lol/core/resources/theme/theme_provider.dart';
+import 'package:lol/core/resources/theme/values/values_manager.dart';
 import 'package:lol/features/subject/data/repos/subject_repo_imp.dart';
 import 'package:lol/features/subject/presentation/view_model/get_material_cubit/get_material_cubit.dart';
 import 'package:lol/features/subject/presentation/screens/subject_details.dart';
@@ -53,9 +53,8 @@ class SubjectItemBuild extends StatelessWidget {
               Text(
                 textAlign: TextAlign.center,
                 subject.subjectName
-                    .replaceAll(StringsManager.underScore, StringsManager.space)
-                    .replaceAll(
-                        StringsManager.andWord, StringsManager.andSymbol),
+                    .replaceAll(AppStrings.underScore, AppStrings.space)
+                    .replaceAll(AppStrings.andWord, AppStrings.andSymbol),
                 maxLines: AppSizes.s2,
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
                     fontWeight: FontWeightManager.semiBold,

@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
-import 'package:lol/core/utils/resources/colors_manager.dart';
-import 'package:lol/core/utils/resources/theme_provider.dart';
+import 'package:lol/core/presentation/cubits/main_cubit/main_cubit.dart';
+import 'package:lol/core/presentation/screen_size.dart';
+import 'package:lol/core/resources/theme/colors_manager.dart';
+import 'package:lol/core/resources/theme/theme_provider.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/subject/presentation/view_model/get_material_cubit/get_material_cubit.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/build_floating_action_button.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/custom_tab_bar.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/custom_tab_bar_view.dart';
 import 'package:provider/provider.dart';
-import '../../../../../core/utils/resources/strings_manager.dart';
-import '../../../../../core/utils/resources/values_manager.dart';
-import '../../../../core/utils/resources/constants_manager.dart';
+import '../../../../core/resources/theme/values/app_strings.dart';
+import '../../../../core/resources/theme/values/values_manager.dart';
+import '../../../../core/resources/constants/constants_manager.dart';
 
 class SubjectDetails extends StatefulWidget {
   final String subjectName;
@@ -55,9 +56,9 @@ class _MaterialDetailsState extends State<SubjectDetails>
           title: FittedBox(
         child: Text(
           widget.subjectName
-              .replaceAll(StringsManager.underScore, StringsManager.space),
+              .replaceAll(AppStrings.underScore, AppStrings.space),
           style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                fontSize: AppQueries.screenWidth(context) / AppSizes.s15,
+                fontSize: ScreenSize.width(context) / AppSizes.s15,
               ),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,

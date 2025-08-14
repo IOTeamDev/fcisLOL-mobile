@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:linkify/linkify.dart';
-import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
-import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
-import 'package:lol/core/utils/resources/fonts_manager.dart';
-import 'package:lol/core/utils/resources/icons_manager.dart';
-import 'package:lol/core/utils/resources/strings_manager.dart';
-import 'package:lol/core/utils/resources/theme_provider.dart';
+import 'package:lol/core/presentation/cubits/main_cubit/main_cubit.dart';
+import 'package:lol/core/presentation/cubits/main_cubit/main_cubit_states.dart';
+import 'package:lol/core/presentation/screen_size.dart';
+import 'package:lol/core/resources/assets/fonts_manager.dart';
+import 'package:lol/core/presentation/app_icons.dart';
+import 'package:lol/core/resources/theme/values/app_strings.dart';
+import 'package:lol/core/resources/theme/theme_provider.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit_states.dart';
@@ -19,11 +20,11 @@ import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/utils/navigation.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../core/utils/resources/colors_manager.dart';
-import '../../../../core/utils/resources/constants_manager.dart';
-import '../../../../core/utils/resources/values_manager.dart';
+import '../../../../core/resources/theme/colors_manager.dart';
+import '../../../../core/resources/constants/constants_manager.dart';
+import '../../../../core/resources/theme/values/values_manager.dart';
 import 'announcements/announcements_list.dart';
-import '../../../auth/presentation/view/login.dart';
+import '../../../auth/presentation/view/login/login.dart';
 import '../../../home/presentation/view/home.dart';
 import '../../../profile/view/profile.dart';
 
@@ -39,7 +40,7 @@ class AdminPanel extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: Text(
-              StringsManager.admin,
+              AppStrings.admin,
               style: Theme.of(context)
                   .textTheme
                   .displayMedium!
@@ -68,24 +69,23 @@ class AdminPanel extends StatelessWidget {
                           ColorsManager.lightGrey1,
                           ColorsManager.darkPrimary,
                           ColorsManager.lightGrey,
-                          IconsManager.campaignIcon,
-                          StringsManager.announcements,
+                          AppIcons.campaignIcon,
+                          AppStrings.announcements,
                           AddAnnouncement(
                               semester: mainCubit.profileModel!.semester)),
                       SizedBox(
                         height: AppSizesDouble.s30,
                       ),
                       buttonBuilder(
-                        context,
-                        mainCubit,
-                        ColorsManager.white,
-                        ColorsManager.lightGrey1,
-                        ColorsManager.lightPrimary,
-                        ColorsManager.lightPrimary,
-                        IconsManager.emailIcon,
-                        StringsManager.requests,
-                        Requests()
-                      ),
+                          context,
+                          mainCubit,
+                          ColorsManager.white,
+                          ColorsManager.lightGrey1,
+                          ColorsManager.lightPrimary,
+                          ColorsManager.lightPrimary,
+                          AppIcons.emailIcon,
+                          AppStrings.requests,
+                          Requests()),
                     ],
                   ),
                 ),
@@ -107,20 +107,17 @@ class AdminPanel extends StatelessWidget {
       icon,
       title,
       navigationWidget) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
+    return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
       Container(
         height: AppSizesDouble.s13,
-        width: AppQueries.screenWidth(context) - AppSizes.s70,
+        width: ScreenSize.width(context) - AppSizes.s70,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(AppSizesDouble.s40),
-            topRight: Radius.circular(AppSizesDouble.s40)
-          ),
+              topLeft: Radius.circular(AppSizesDouble.s40),
+              topRight: Radius.circular(AppSizesDouble.s40)),
           color: Provider.of<ThemeProvider>(context).isDark
-            ? containerDarkThemeColor
-            : containerLightThemeColor,
+              ? containerDarkThemeColor
+              : containerLightThemeColor,
         ),
       ),
       ElevatedButton(
@@ -137,17 +134,17 @@ class AdminPanel extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppSizesDouble.s20),
           ),
-          minimumSize: Size(AppQueries.screenWidth(context) - AppSizes.s40,
-              AppQueries.screenHeight(context) / AppSizesDouble.s4_5),
+          minimumSize: Size(ScreenSize.width(context) - AppSizes.s40,
+              ScreenSize.height(context) / AppSizesDouble.s4_5),
         ),
         child: Column(
           children: [
             Icon(icon,
                 color: ColorsManager.white,
-                size: AppQueries.screenWidth(context) / AppSizes.s4),
+                size: ScreenSize.width(context) / AppSizes.s4),
             Text(title,
                 style: TextStyle(
-                    fontSize: AppQueries.screenWidth(context) / AppSizes.s15,
+                    fontSize: ScreenSize.width(context) / AppSizes.s15,
                     color: ColorsManager.white)),
           ],
         ),

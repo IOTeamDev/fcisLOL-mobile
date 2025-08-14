@@ -3,16 +3,18 @@ import 'dart:ui';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
+import 'package:lol/core/data/local_data_provider.dart';
+import 'package:lol/core/presentation/cubits/main_cubit/main_cubit_states.dart';
+import 'package:lol/core/presentation/screen_size.dart';
 import 'package:lol/core/utils/components.dart';
-import 'package:lol/core/utils/resources/colors_manager.dart';
-import 'package:lol/core/utils/resources/constants_manager.dart';
-import 'package:lol/core/utils/resources/icons_manager.dart';
-import 'package:lol/core/utils/resources/values_manager.dart';
+import 'package:lol/core/resources/theme/colors_manager.dart';
+import 'package:lol/core/resources/constants/constants_manager.dart';
+import 'package:lol/core/presentation/app_icons.dart';
+import 'package:lol/core/resources/theme/values/values_manager.dart';
 import 'package:lol/features/home/data/models/semster_model.dart';
 import 'package:lol/features/previous_exams/presentation/view/widgets/previous_exams_generator.dart';
-import '../../../../core/cubits/main_cubit/main_cubit.dart';
-import '../../../../core/utils/resources/strings_manager.dart';
+import '../../../../core/presentation/cubits/main_cubit/main_cubit.dart';
+import '../../../../core/resources/theme/values/app_strings.dart';
 
 class PreviousExams extends StatefulWidget {
   PreviousExams({super.key});
@@ -33,32 +35,32 @@ class _PreviousExamsState extends State<PreviousExams> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  List<String> examsType = [
-    'Final',
-    'Mid',
-    'Other'
-  ];
+  List<String> examsType = ['Final', 'Mid', 'Other'];
 
   @override
   void initState() {
-    if(AppConstants.previousExamsSelectedSemester != null){
+    if (AppConstants.previousExamsSelectedSemester != null) {
       selectedSemester = AppConstants.previousExamsSelectedSemester;
     }
-    if(AppConstants.previousExamsSelectedSubject != null){
+    if (AppConstants.previousExamsSelectedSubject != null) {
       selectedSubject = AppConstants.previousExamsSelectedSubject;
     }
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<MainCubit, MainCubitStates>(
       listener: (context, state) {},
-      builder:(context, state) {
+      builder: (context, state) {
         MainCubit cubit = MainCubit.get(context);
         return Scaffold(
           key: _scaffoldKey,
           appBar: AppBar(
-            title: Text(StringsManager.exams, style: Theme.of(context).textTheme.displayMedium,),
+            title: Text(
+              AppStrings.exams,
+              style: Theme.of(context).textTheme.displayMedium,
+            ),
             centerTitle: true,
           ),
           body: Padding(
@@ -73,39 +75,54 @@ class _PreviousExamsState extends State<PreviousExams> {
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                             color: ColorsManager.white,
-                            borderRadius: BorderRadius.circular(AppPaddings.p40)
+                            borderRadius:
+                                BorderRadius.circular(AppPaddings.p40)),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 15,
                         ),
-                        padding: EdgeInsets.symmetric(horizontal: 15,),
                         child: DropdownButton<String>(
                           isExpanded: true,
-                          icon: Icon(IconsManager.dropdownIcon),
+                          icon: Icon(AppIcons.dropdownIcon),
                           value: selectedSemester,
                           underline: SizedBox(),
-                          hint: Text('Select Semester', style: TextStyle(color: ColorsManager.black)),
-                          dropdownColor: ColorsManager.white, // Background color for the dropdown list
-                          iconEnabledColor: ColorsManager.black, // Color of the dropdown icon
-                          style: const TextStyle(color: ColorsManager.white), // Style for the selected item outside
-                          items: AppConstants.semesters.map(
-                            (String item) => DropdownMenuItem(value: item, child: Text(item,  style: const TextStyle(color: ColorsManager.black),),)
-                          ).toList(),
+                          hint: Text('Select Semester',
+                              style: TextStyle(color: ColorsManager.black)),
+                          dropdownColor: ColorsManager
+                              .white, // Background color for the dropdown list
+                          iconEnabledColor:
+                              ColorsManager.black, // Color of the dropdown icon
+                          style: const TextStyle(
+                              color: ColorsManager
+                                  .white), // Style for the selected item outside
+                          items: LocalDataProvider.semesters
+                              .map((String item) => DropdownMenuItem(
+                                    value: item,
+                                    child: Text(
+                                      item,
+                                      style: const TextStyle(
+                                          color: ColorsManager.black),
+                                    ),
+                                  ))
+                              .toList(),
                           selectedItemBuilder: (BuildContext context) {
-                            return AppConstants.semesters.map((String item) {
+                            return LocalDataProvider.semesters
+                                .map((String item) {
                               return DropdownMenuItem<String>(
                                 value: item,
                                 child: Text(
                                   item,
                                   style: const TextStyle(
-                                    color:
-                                    ColorsManager.black,
+                                    color: ColorsManager.black,
                                   ),
                                 ),
                               );
                             }).toList();
                           },
-                          onChanged: (value){
+                          onChanged: (value) {
                             setState(() {
                               selectedSemester = value!;
-                              AppConstants.previousExamsSelectedSemester = selectedSemester;
+                              AppConstants.previousExamsSelectedSemester =
+                                  selectedSemester;
                               selectedSubject = null;
                               AppConstants.previousExamsSelectedSubject = null;
                             });
@@ -113,49 +130,73 @@ class _PreviousExamsState extends State<PreviousExams> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 7,),
-                    if(selectedSemester != null)
-                    Expanded(
+                    SizedBox(
+                      width: 7,
+                    ),
+                    if (selectedSemester != null)
+                      Expanded(
                         flex: 2,
                         child: Container(
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                               color: ColorsManager.white,
-                              borderRadius: BorderRadius.circular(AppPaddings.p40)
+                              borderRadius:
+                                  BorderRadius.circular(AppPaddings.p40)),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 15,
                           ),
-                          padding: EdgeInsets.symmetric(horizontal: 15,),
                           child: DropdownButton<String>(
                             isExpanded: true,
                             value: selectedSubject,
-                            icon: Icon(IconsManager.dropdownIcon),
+                            icon: Icon(AppIcons.dropdownIcon),
                             underline: SizedBox(),
-                            hint: Text('Select Subject', style: TextStyle(color: ColorsManager.black)),
-                            dropdownColor: ColorsManager.white, // Background color for the dropdown list
-                            iconEnabledColor: ColorsManager.black, // Color of the dropdown icon
-                            style: const TextStyle(color: ColorsManager.white), // Style for the selected item outside
-                            items: semesters[getSemesterIndex(selectedSemester!)].subjects.map((SubjectModel item) => DropdownMenuItem(
-                              value: item.subjectName,
-                              child: Text(item.subjectName.replaceAll(StringsManager.underScore, StringsManager.space),  style: const TextStyle(color: ColorsManager.black),),
-                            )
-                            ).toList(),
+                            hint: Text('Select Subject',
+                                style: TextStyle(color: ColorsManager.black)),
+                            dropdownColor: ColorsManager
+                                .white, // Background color for the dropdown list
+                            iconEnabledColor: ColorsManager
+                                .black, // Color of the dropdown icon
+                            style: const TextStyle(
+                                color: ColorsManager
+                                    .white), // Style for the selected item outside
+                            items:
+                                semesters[getSemesterIndex(selectedSemester!)]
+                                    .subjects
+                                    .map(
+                                        (SubjectModel item) => DropdownMenuItem(
+                                              value: item.subjectName,
+                                              child: Text(
+                                                item.subjectName.replaceAll(
+                                                    AppStrings.underScore,
+                                                    AppStrings.space),
+                                                style: const TextStyle(
+                                                    color: ColorsManager.black),
+                                              ),
+                                            ))
+                                    .toList(),
                             selectedItemBuilder: (BuildContext context) {
-                              return semesters[getSemesterIndex(selectedSemester!)].subjects.map((SubjectModel item) {
+                              return semesters[
+                                      getSemesterIndex(selectedSemester!)]
+                                  .subjects
+                                  .map((SubjectModel item) {
                                 return DropdownMenuItem<String>(
                                   value: item.subjectName,
                                   child: Text(
-                                    item.subjectName.replaceAll(StringsManager.underScore, StringsManager.space),
+                                    item.subjectName.replaceAll(
+                                        AppStrings.underScore,
+                                        AppStrings.space),
                                     style: const TextStyle(
-                                      color:
-                                      ColorsManager.black,
+                                      color: ColorsManager.black,
                                     ),
                                   ),
                                 );
                               }).toList();
                             },
-                            onChanged: (value){
+                            onChanged: (value) {
                               setState(() {
                                 selectedSubject = value;
-                                AppConstants.previousExamsSelectedSubject = selectedSubject;
+                                AppConstants.previousExamsSelectedSubject =
+                                    selectedSubject;
                                 cubit.getPreviousExams(selectedSubject);
                               });
                             },
@@ -164,7 +205,9 @@ class _PreviousExamsState extends State<PreviousExams> {
                       ),
                   ],
                 ),
-                SizedBox(height: 30,),
+                SizedBox(
+                  height: 30,
+                ),
                 Expanded(
                   child: Container(
                     width: double.infinity,
@@ -174,61 +217,96 @@ class _PreviousExamsState extends State<PreviousExams> {
                     ),
                     padding: EdgeInsets.symmetric(vertical: 12, horizontal: 15),
                     child: ConditionalBuilder(
-                      condition: state is !GetPreviousExamsLoadingState,
+                      condition: state is! GetPreviousExamsLoadingState,
                       fallback: (context) {
-                        return Center(child: CircularProgressIndicator(color: ColorsManager.white,));
+                        return Center(
+                            child: CircularProgressIndicator(
+                          color: ColorsManager.white,
+                        ));
                       },
                       builder: (context) => CustomScrollView(
                         physics: BouncingScrollPhysics(),
                         slivers: [
-                          if(cubit.previousExamsFinal.isNotEmpty)
+                          if (cubit.previousExamsFinal.isNotEmpty)
                             SliverPadding(
-                              padding: EdgeInsets.symmetric(vertical: AppPaddings.p10),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: AppPaddings.p10),
                               sliver: SliverToBoxAdapter(
                                 child: Text(
                                   'Final Exams',
-                                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                                      color: ColorsManager.white,
-                                      fontWeight: FontWeight.bold
-                                  ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineLarge!
+                                      .copyWith(
+                                          color: ColorsManager.white,
+                                          fontWeight: FontWeight.bold),
                                 ),
                               ),
                             ),
-                          if(cubit.previousExamsFinal.isNotEmpty)
-                            PreviousExamsGenerator(semester: selectedSemester!, previousExamList: MainCubit.get(context).previousExamsFinal,),
-                          if(cubit.previousExamsMid.isNotEmpty)
+                          if (cubit.previousExamsFinal.isNotEmpty)
+                            PreviousExamsGenerator(
+                              semester: selectedSemester!,
+                              previousExamList:
+                                  MainCubit.get(context).previousExamsFinal,
+                            ),
+                          if (cubit.previousExamsMid.isNotEmpty)
                             SliverPadding(
-                              padding: EdgeInsets.symmetric(vertical: AppPaddings.p15),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: AppPaddings.p15),
                               sliver: SliverToBoxAdapter(
                                 child: Text(
                                   'Mid Exams',
-                                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                                      color: ColorsManager.white,
-                                      fontWeight: FontWeight.bold
-                                  ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineLarge!
+                                      .copyWith(
+                                          color: ColorsManager.white,
+                                          fontWeight: FontWeight.bold),
                                 ),
                               ),
                             ),
-                          if(cubit.previousExamsMid.isNotEmpty)
-                            PreviousExamsGenerator(semester: selectedSemester!, previousExamList: MainCubit.get(context).previousExamsMid,),
-                          if(cubit.previousExamsOther.isNotEmpty)
+                          if (cubit.previousExamsMid.isNotEmpty)
+                            PreviousExamsGenerator(
+                              semester: selectedSemester!,
+                              previousExamList:
+                                  MainCubit.get(context).previousExamsMid,
+                            ),
+                          if (cubit.previousExamsOther.isNotEmpty)
                             SliverPadding(
-                              padding: EdgeInsets.symmetric(vertical: AppPaddings.p15),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: AppPaddings.p15),
                               sliver: SliverToBoxAdapter(
                                 child: Text(
                                   'Other Exams',
-                                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                                      color: ColorsManager.white,
-                                      fontWeight: FontWeight.bold
-                                  ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineLarge!
+                                      .copyWith(
+                                          color: ColorsManager.white,
+                                          fontWeight: FontWeight.bold),
                                 ),
                               ),
                             ),
-                          if(cubit.previousExamsOther.isNotEmpty)
-                            PreviousExamsGenerator(semester: selectedSemester!,previousExamList: MainCubit.get(context).previousExamsOther,),
-                          if(cubit.previousExamsMid.isEmpty && cubit.previousExamsOther.isEmpty && cubit.previousExamsFinal.isEmpty)
+                          if (cubit.previousExamsOther.isNotEmpty)
+                            PreviousExamsGenerator(
+                              semester: selectedSemester!,
+                              previousExamList:
+                                  MainCubit.get(context).previousExamsOther,
+                            ),
+                          if (cubit.previousExamsMid.isEmpty &&
+                              cubit.previousExamsOther.isEmpty &&
+                              cubit.previousExamsFinal.isEmpty)
                             SliverToBoxAdapter(
-                              child: Text('There are no Exams Yet', textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleLarge!.copyWith(color: ColorsManager.white,),),
+                              child: Text(
+                                'There are no Exams Yet',
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleLarge!
+                                    .copyWith(
+                                      color: ColorsManager.white,
+                                    ),
+                              ),
                             )
                         ],
                       ),
@@ -239,273 +317,486 @@ class _PreviousExamsState extends State<PreviousExams> {
             ),
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: (){
-              if(!cubit.isBottomSheetShown){
+            onPressed: () {
+              if (!cubit.isBottomSheetShown) {
                 cubit.changeBottomSheetState(true);
-                _scaffoldKey.currentState!.showBottomSheet(
-                  sheetAnimationStyle: AnimationStyle(curve: Curves.fastEaseInToSlowEaseOut,duration: Duration(milliseconds: 650), reverseCurve: Curves.fastOutSlowIn, reverseDuration: Duration(milliseconds: 600)),
-                  (context) => StatefulBuilder(
-                      builder:(context, setState) => BackdropFilter(
-                        filter: ImageFilter.blur(sigmaY: 3, sigmaX: 3),
-                        child: IntrinsicHeight(
-                          child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              color: ColorsManager.darkPrimary,
-                            ),
-                            constraints: BoxConstraints(
-                              maxHeight: (AppQueries.screenHeight(context)/1.7) + 100,
-                              minHeight: AppQueries.screenHeight(context)/1.7,
-                            ),
-                            child: SingleChildScrollView(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Add Exam', style: Theme.of(context).textTheme.headlineLarge,),
-                                  SizedBox(height: 15,),
-                                  Form(
-                                    key: _formKey,
-                                    child: Column(
-                                      children: [
-                                        TextFormField(
-                                          controller: _titleController,
-                                          maxLines: 1,
-                                          decoration: InputDecoration(
-                                              hintText: 'Exam Title',
-                                              focusedBorder: UnderlineInputBorder(
-                                                  borderSide: BorderSide(color: ColorsManager.lightPrimary)
-                                              )
-                                          ),
-                                          keyboardType: TextInputType.text,
-                                          cursorColor: ColorsManager.lightPrimary,
-                                          validator: (value){
-                                            if(value!.isEmpty){
-                                              return StringsManager.emptyFieldWarning;
-                                            }
-                                            return null;
-                                          },
-                                        ),
-                                        SizedBox(height: 15,),
-                                        TextFormField(
-                                          controller: _LinkController,
-                                          maxLines: 1,
-                                          decoration: InputDecoration(
-                                              hintText: 'Exam Link',
-                                              focusedBorder: UnderlineInputBorder(
-                                                  borderSide: BorderSide(color: ColorsManager.lightPrimary)
-                                              )
-                                          ),
-                                          keyboardType: TextInputType.text,
-                                          cursorColor: ColorsManager.lightPrimary,
-                                          validator: (value){
-                                            if(value!.isEmpty){
-                                              return StringsManager.emptyFieldWarning;
-                                            }
-                                            return null;
-                                          },
-                                        ),
-                                      ],
+                _scaffoldKey.currentState!
+                    .showBottomSheet(
+                        sheetAnimationStyle: AnimationStyle(
+                            curve: Curves.fastEaseInToSlowEaseOut,
+                            duration: Duration(milliseconds: 650),
+                            reverseCurve: Curves.fastOutSlowIn,
+                            reverseDuration: Duration(milliseconds: 600)),
+                        (context) => StatefulBuilder(
+                              builder: (context, setState) => BackdropFilter(
+                                filter: ImageFilter.blur(sigmaY: 3, sigmaX: 3),
+                                child: IntrinsicHeight(
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 30, horizontal: 20),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      color: ColorsManager.darkPrimary,
                                     ),
-                                  ),
-                                  SizedBox(height: 20,),
-                                  Text('Subject:', style: Theme.of(context).textTheme.titleLarge!.copyWith(color: ColorsManager.white),),
-                                  SizedBox(height: 10,),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Container(
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                              color: ColorsManager.lightPrimary,
-                                              borderRadius: BorderRadius.circular(AppPaddings.p40)
+                                    constraints: BoxConstraints(
+                                      maxHeight:
+                                          (ScreenSize.height(context) / 1.7) +
+                                              100,
+                                      minHeight:
+                                          ScreenSize.height(context) / 1.7,
+                                    ),
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Add Exam',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headlineLarge,
                                           ),
-                                          padding: EdgeInsets.symmetric(horizontal: 15,),
-                                          child: DropdownButton<String>(
-                                            isExpanded: true,
-                                            icon: Icon(IconsManager.dropdownIcon),
-                                            value: bottomSheetSelectedSemester,
-                                            underline: SizedBox(),
-                                            hint: Text('Select Semester', style: TextStyle(color: ColorsManager.white)),
-                                            dropdownColor: ColorsManager.white, // Background color for the dropdown list
-                                            iconEnabledColor: ColorsManager.white, // Color of the dropdown icon
-                                            style: const TextStyle(color: ColorsManager.white), // Style for the selected item outside
-                                            items: AppConstants.semesters.map((String item) => DropdownMenuItem(value: item, child: Text(item,  style: const TextStyle(color: ColorsManager.black),),)
-                                            ).toList(),
-                                            selectedItemBuilder: (BuildContext context) {
-                                              return AppConstants.semesters.map((String item) {
-                                                return DropdownMenuItem<String>(
-                                                  value: item,
-                                                  child: Text(
-                                                    item,
-                                                    style: const TextStyle(
-                                                      color:
-                                                      ColorsManager.white,
-                                                    ),
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          Form(
+                                            key: _formKey,
+                                            child: Column(
+                                              children: [
+                                                TextFormField(
+                                                  controller: _titleController,
+                                                  maxLines: 1,
+                                                  decoration: InputDecoration(
+                                                      hintText: 'Exam Title',
+                                                      focusedBorder: UnderlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              color: ColorsManager
+                                                                  .lightPrimary))),
+                                                  keyboardType:
+                                                      TextInputType.text,
+                                                  cursorColor: ColorsManager
+                                                      .lightPrimary,
+                                                  validator: (value) {
+                                                    if (value!.isEmpty) {
+                                                      return AppStrings
+                                                          .emptyFieldWarning;
+                                                    }
+                                                    return null;
+                                                  },
+                                                ),
+                                                SizedBox(
+                                                  height: 15,
+                                                ),
+                                                TextFormField(
+                                                  controller: _LinkController,
+                                                  maxLines: 1,
+                                                  decoration: InputDecoration(
+                                                      hintText: 'Exam Link',
+                                                      focusedBorder: UnderlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              color: ColorsManager
+                                                                  .lightPrimary))),
+                                                  keyboardType:
+                                                      TextInputType.text,
+                                                  cursorColor: ColorsManager
+                                                      .lightPrimary,
+                                                  validator: (value) {
+                                                    if (value!.isEmpty) {
+                                                      return AppStrings
+                                                          .emptyFieldWarning;
+                                                    }
+                                                    return null;
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          Text(
+                                            'Subject:',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleLarge!
+                                                .copyWith(
+                                                    color: ColorsManager.white),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: Container(
+                                                  alignment: Alignment.center,
+                                                  decoration: BoxDecoration(
+                                                      color: ColorsManager
+                                                          .lightPrimary,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              AppPaddings.p40)),
+                                                  padding: EdgeInsets.symmetric(
+                                                    horizontal: 15,
                                                   ),
-                                                );
-                                              }).toList();
-                                            },
-                                            onChanged: (value) {
-                                              setState((){
-                                                bottomSheetSelectedSemester = value;
-                                                bottomSheetSelectedSubject = null;
-                                              });
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(width: 15,),
-                                      if(bottomSheetSelectedSemester != null)
-                                        Expanded(
-                                          flex: 2,
-                                          child: Container(
-                                            alignment: Alignment.center,
-                                            decoration: BoxDecoration(
-                                                color: ColorsManager.lightPrimary,
-                                                borderRadius: BorderRadius.circular(AppPaddings.p40)
-                                            ),
-                                            padding: EdgeInsets.symmetric(horizontal: 15,),
-                                            child: DropdownButton<String>(
-                                              isExpanded: true,
-                                              value: bottomSheetSelectedSubject,
-                                              icon: Icon(IconsManager.dropdownIcon),
-                                              underline: SizedBox(),
-                                              hint: Text('Select Subject', style: TextStyle(color: ColorsManager.white)),
-                                              dropdownColor: ColorsManager.white, // Background color for the dropdown list
-                                              iconEnabledColor: ColorsManager.white, // Color of the dropdown icon
-                                              style: const TextStyle(color: ColorsManager.white), // Style for the selected item outside
-                                              items: semesters[getSemesterIndex(bottomSheetSelectedSemester!)].subjects.map((SubjectModel item) => DropdownMenuItem(
-                                                value: item.subjectName,
-                                                child: Text(item.subjectName.replaceAll(StringsManager.underScore, StringsManager.space),  style: const TextStyle(color: ColorsManager.black),),
-                                              )
-                                              ).toList(),
-                                              selectedItemBuilder: (BuildContext context) {
-                                                return semesters[getSemesterIndex(bottomSheetSelectedSemester!)].subjects.map((SubjectModel item) {
-                                                  return DropdownMenuItem<String>(
-                                                    value: item.subjectName,
-                                                    child: Text(
-                                                      item.subjectName.replaceAll(StringsManager.underScore, StringsManager.space),
-                                                      style: const TextStyle(
-                                                        color:
-                                                        ColorsManager.white,
-                                                      ),
-                                                    ),
-                                                  );
-                                                }).toList();
-                                              },
-                                              onChanged: (value) {
-                                                setState((){
-                                                  bottomSheetSelectedSubject = value;
-                                                });
-                                              },
-                                            ),
-                                          ),
-                                        ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 10,),
-                                  SizedBox(
-                                    width: AppQueries.screenWidth(context)/2,
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                          color: ColorsManager.white,
-                                          borderRadius: BorderRadius.circular(AppPaddings.p40)
-                                      ),
-                                      padding: EdgeInsets.symmetric(horizontal: 15,),
-                                      child: DropdownButton<String>(
-                                        isExpanded: true,
-                                        icon: Icon(IconsManager.dropdownIcon, color: ColorsManager.black,),
-                                        value: selectedExamType,
-                                        underline: SizedBox(),
-                                        hint: Text('Select Exam Type', style: TextStyle(color: ColorsManager.black)),
-                                        dropdownColor: ColorsManager.white, // Background color for the dropdown list
-                                        iconEnabledColor: ColorsManager.white, // Color of the dropdown icon
-                                        style: const TextStyle(color: ColorsManager.black), // Style for the selected item outside
-                                        items: examsType.map((String item) => DropdownMenuItem(value: item, child: Text(item,  style: const TextStyle(color: ColorsManager.black),),)
-                                        ).toList(),
-                                        selectedItemBuilder: (BuildContext context) {
-                                          return examsType.map((String item) {
-                                            return DropdownMenuItem<String>(
-                                              value: item,
-                                              child: Text(
-                                                item,
-                                                style: const TextStyle(
-                                                  color:
-                                                  ColorsManager.black,
+                                                  child: DropdownButton<String>(
+                                                    isExpanded: true,
+                                                    icon: Icon(
+                                                        AppIcons.dropdownIcon),
+                                                    value:
+                                                        bottomSheetSelectedSemester,
+                                                    underline: SizedBox(),
+                                                    hint: Text(
+                                                        'Select Semester',
+                                                        style: TextStyle(
+                                                            color: ColorsManager
+                                                                .white)),
+                                                    dropdownColor: ColorsManager
+                                                        .white, // Background color for the dropdown list
+                                                    iconEnabledColor: ColorsManager
+                                                        .white, // Color of the dropdown icon
+                                                    style: const TextStyle(
+                                                        color: ColorsManager
+                                                            .white), // Style for the selected item outside
+                                                    items: LocalDataProvider
+                                                        .semesters
+                                                        .map((String item) =>
+                                                            DropdownMenuItem(
+                                                              value: item,
+                                                              child: Text(
+                                                                item,
+                                                                style: const TextStyle(
+                                                                    color: ColorsManager
+                                                                        .black),
+                                                              ),
+                                                            ))
+                                                        .toList(),
+                                                    selectedItemBuilder:
+                                                        (BuildContext context) {
+                                                      return LocalDataProvider
+                                                          .semesters
+                                                          .map((String item) {
+                                                        return DropdownMenuItem<
+                                                            String>(
+                                                          value: item,
+                                                          child: Text(
+                                                            item,
+                                                            style:
+                                                                const TextStyle(
+                                                              color:
+                                                                  ColorsManager
+                                                                      .white,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      }).toList();
+                                                    },
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        bottomSheetSelectedSemester =
+                                                            value;
+                                                        bottomSheetSelectedSubject =
+                                                            null;
+                                                      });
+                                                    },
+                                                  ),
                                                 ),
                                               ),
-                                            );
-                                          }).toList();
-                                        },
-                                        onChanged: (value) {
-                                          setState((){
-                                            selectedExamType = value;
-                                          });
-                                        },
+                                              SizedBox(
+                                                width: 15,
+                                              ),
+                                              if (bottomSheetSelectedSemester !=
+                                                  null)
+                                                Expanded(
+                                                  flex: 2,
+                                                  child: Container(
+                                                    alignment: Alignment.center,
+                                                    decoration: BoxDecoration(
+                                                        color: ColorsManager
+                                                            .lightPrimary,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                                    AppPaddings
+                                                                        .p40)),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                      horizontal: 15,
+                                                    ),
+                                                    child:
+                                                        DropdownButton<String>(
+                                                      isExpanded: true,
+                                                      value:
+                                                          bottomSheetSelectedSubject,
+                                                      icon: Icon(AppIcons
+                                                          .dropdownIcon),
+                                                      underline: SizedBox(),
+                                                      hint: Text(
+                                                          'Select Subject',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  ColorsManager
+                                                                      .white)),
+                                                      dropdownColor: ColorsManager
+                                                          .white, // Background color for the dropdown list
+                                                      iconEnabledColor:
+                                                          ColorsManager
+                                                              .white, // Color of the dropdown icon
+                                                      style: const TextStyle(
+                                                          color: ColorsManager
+                                                              .white), // Style for the selected item outside
+                                                      items: semesters[
+                                                              getSemesterIndex(
+                                                                  bottomSheetSelectedSemester!)]
+                                                          .subjects
+                                                          .map((SubjectModel
+                                                                  item) =>
+                                                              DropdownMenuItem(
+                                                                value: item
+                                                                    .subjectName,
+                                                                child: Text(
+                                                                  item.subjectName.replaceAll(
+                                                                      AppStrings
+                                                                          .underScore,
+                                                                      AppStrings
+                                                                          .space),
+                                                                  style: const TextStyle(
+                                                                      color: ColorsManager
+                                                                          .black),
+                                                                ),
+                                                              ))
+                                                          .toList(),
+                                                      selectedItemBuilder:
+                                                          (BuildContext
+                                                              context) {
+                                                        return semesters[
+                                                                getSemesterIndex(
+                                                                    bottomSheetSelectedSemester!)]
+                                                            .subjects
+                                                            .map((SubjectModel
+                                                                item) {
+                                                          return DropdownMenuItem<
+                                                              String>(
+                                                            value: item
+                                                                .subjectName,
+                                                            child: Text(
+                                                              item.subjectName
+                                                                  .replaceAll(
+                                                                      AppStrings
+                                                                          .underScore,
+                                                                      AppStrings
+                                                                          .space),
+                                                              style:
+                                                                  const TextStyle(
+                                                                color:
+                                                                    ColorsManager
+                                                                        .white,
+                                                              ),
+                                                            ),
+                                                          );
+                                                        }).toList();
+                                                      },
+                                                      onChanged: (value) {
+                                                        setState(() {
+                                                          bottomSheetSelectedSubject =
+                                                              value;
+                                                        });
+                                                      },
+                                                    ),
+                                                  ),
+                                                ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          SizedBox(
+                                            width:
+                                                ScreenSize.width(context) / 2,
+                                            child: Container(
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                  color: ColorsManager.white,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          AppPaddings.p40)),
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: 15,
+                                              ),
+                                              child: DropdownButton<String>(
+                                                isExpanded: true,
+                                                icon: Icon(
+                                                  AppIcons.dropdownIcon,
+                                                  color: ColorsManager.black,
+                                                ),
+                                                value: selectedExamType,
+                                                underline: SizedBox(),
+                                                hint: Text('Select Exam Type',
+                                                    style: TextStyle(
+                                                        color: ColorsManager
+                                                            .black)),
+                                                dropdownColor: ColorsManager
+                                                    .white, // Background color for the dropdown list
+                                                iconEnabledColor: ColorsManager
+                                                    .white, // Color of the dropdown icon
+                                                style: const TextStyle(
+                                                    color: ColorsManager
+                                                        .black), // Style for the selected item outside
+                                                items: examsType
+                                                    .map((String item) =>
+                                                        DropdownMenuItem(
+                                                          value: item,
+                                                          child: Text(
+                                                            item,
+                                                            style: const TextStyle(
+                                                                color:
+                                                                    ColorsManager
+                                                                        .black),
+                                                          ),
+                                                        ))
+                                                    .toList(),
+                                                selectedItemBuilder:
+                                                    (BuildContext context) {
+                                                  return examsType
+                                                      .map((String item) {
+                                                    return DropdownMenuItem<
+                                                        String>(
+                                                      value: item,
+                                                      child: Text(
+                                                        item,
+                                                        style: const TextStyle(
+                                                          color: ColorsManager
+                                                              .black,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }).toList();
+                                                },
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    selectedExamType = value;
+                                                  });
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  child: ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                              backgroundColor:
+                                                                  ColorsManager
+                                                                      .white),
+                                                      onPressed: () {
+                                                        cubit
+                                                            .changeBottomSheetState(
+                                                                false);
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child: Text(
+                                                        AppStrings.cancel,
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .titleLarge!
+                                                            .copyWith(
+                                                                color:
+                                                                    ColorsManager
+                                                                        .black),
+                                                      ))),
+                                              SizedBox(
+                                                width: 20,
+                                              ),
+                                              Expanded(
+                                                  child: ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                              backgroundColor:
+                                                                  ColorsManager
+                                                                      .lightPrimary),
+                                                      onPressed: () {
+                                                        if (bottomSheetSelectedSubject !=
+                                                                null &&
+                                                            selectedExamType !=
+                                                                null) {
+                                                          if (_formKey
+                                                              .currentState!
+                                                              .validate()) {
+                                                            cubit.addPreviousExam(
+                                                                _titleController
+                                                                    .text,
+                                                                _LinkController
+                                                                    .text,
+                                                                bottomSheetSelectedSemester!,
+                                                                bottomSheetSelectedSubject!,
+                                                                selectedSemester!,
+                                                                selectedExamType!);
+                                                            cubit
+                                                                .changeBottomSheetState(
+                                                                    false);
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          }
+                                                        } else {
+                                                          if (bottomSheetSelectedSubject ==
+                                                                  null &&
+                                                              selectedExamType ==
+                                                                  null) {
+                                                            showToastMessage(
+                                                                message:
+                                                                    'Please Select Subject and Exam Type',
+                                                                states:
+                                                                    ToastStates
+                                                                        .WARNING,
+                                                                textColor:
+                                                                    ColorsManager
+                                                                        .black,
+                                                                toastLength: 3);
+                                                          } else if (bottomSheetSelectedSubject ==
+                                                              null) {
+                                                            showToastMessage(
+                                                                message:
+                                                                    'Please Select Subject',
+                                                                states:
+                                                                    ToastStates
+                                                                        .WARNING);
+                                                          } else {
+                                                            showToastMessage(
+                                                                message:
+                                                                    'Please Select Exam Type',
+                                                                states:
+                                                                    ToastStates
+                                                                        .WARNING);
+                                                          }
+                                                        }
+                                                      },
+                                                      child: Text(
+                                                        AppStrings.submit,
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .titleLarge!
+                                                            .copyWith(
+                                                                color:
+                                                                    ColorsManager
+                                                                        .white),
+                                                      ))),
+                                            ],
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ),
-                                  SizedBox(height: 20,),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                          child: ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                  backgroundColor: ColorsManager.white
-                                              ),
-                                              onPressed: (){
-                                                cubit.changeBottomSheetState(false);
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: Text(StringsManager.cancel, style: Theme.of(context).textTheme.titleLarge!.copyWith(color: ColorsManager.black),)
-                                          )
-                                      ),
-                                      SizedBox(width: 20,),
-                                      Expanded(
-                                        child: ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                              backgroundColor: ColorsManager.lightPrimary
-                                          ),
-                                          onPressed: (){
-                                            if(bottomSheetSelectedSubject != null && selectedExamType != null){
-                                              if(_formKey.currentState!.validate()){
-                                                cubit.addPreviousExam(
-                                                    _titleController.text,
-                                                    _LinkController.text,
-                                                    bottomSheetSelectedSemester!,
-                                                    bottomSheetSelectedSubject!,
-                                                    selectedSemester!,
-                                                    selectedExamType!
-                                                );
-                                                cubit.changeBottomSheetState(false);
-                                                Navigator.of(context).pop();
-                                              }
-                                            } else {
-                                              if(bottomSheetSelectedSubject == null && selectedExamType == null){
-                                                showToastMessage(message: 'Please Select Subject and Exam Type', states: ToastStates.WARNING, textColor: ColorsManager.black, toastLength: 3);
-                                              }
-                                              else if(bottomSheetSelectedSubject == null){
-                                                showToastMessage(message: 'Please Select Subject', states: ToastStates.WARNING);
-                                              }else{
-                                                showToastMessage(message: 'Please Select Exam Type', states: ToastStates.WARNING);
-                                              }
-                                            }
-                                          },
-                                          child: Text(StringsManager.submit, style: Theme.of(context).textTheme.titleLarge!.copyWith(color: ColorsManager.white),)
-                                        )
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                ).closed.then((value){
+                            ))
+                    .closed
+                    .then((value) {
                   _LinkController.clear();
                   _titleController.clear();
                   bottomSheetSelectedSubject = null;
@@ -517,7 +808,10 @@ class _PreviousExamsState extends State<PreviousExams> {
             },
             shape: OvalBorder(),
             backgroundColor: ColorsManager.lightPrimary,
-            child: Icon(IconsManager.addIcon, color: ColorsManager.white,),
+            child: Icon(
+              AppIcons.addIcon,
+              color: ColorsManager.white,
+            ),
           ),
         );
       },

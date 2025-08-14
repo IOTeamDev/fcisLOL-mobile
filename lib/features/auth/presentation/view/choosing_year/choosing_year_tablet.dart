@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:lol/config/navigation/routes.dart';
+import 'package:lol/core/data/local_data_provider.dart';
 import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:lol/core/utils/components.dart';
-import 'package:lol/core/utils/resources/colors_manager.dart';
-import 'package:lol/core/utils/resources/values_manager.dart';
+import 'package:lol/core/resources/theme/colors_manager.dart';
+import 'package:lol/core/resources/theme/values/values_manager.dart';
 import 'package:lol/features/auth/presentation/view/registration_layout.dart';
 import 'package:lol/features/home/data/models/semster_model.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
 
-import '../../../../../core/utils/resources/constants_manager.dart';
-import '../../../../../core/utils/resources/icons_manager.dart';
-import '../../../../../core/utils/resources/strings_manager.dart';
+import '../../../../../core/resources/constants/constants_manager.dart';
+import '../../../../../core/presentation/app_icons.dart';
+import '../../../../../core/resources/theme/values/app_strings.dart';
 
 class ChoosingYearTablet extends StatefulWidget {
   ChoosingYearTablet({
@@ -30,8 +33,11 @@ class _ChoosingYearState extends State<ChoosingYearTablet> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            StringsManager.yearSelect,
-            style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: 40),
+            AppStrings.yearSelect,
+            style: Theme.of(context)
+                .textTheme
+                .displayLarge!
+                .copyWith(fontSize: 40),
           ),
           SizedBox(
             height: 40,
@@ -65,7 +71,7 @@ class _ChoosingYearState extends State<ChoosingYearTablet> {
                 Expanded(
                   child: DropdownButton<String>(
                     isExpanded: true,
-                    icon: Icon(IconsManager.dropdownIcon),
+                    icon: Icon(AppIcons.dropdownIcon),
                     value: selectedSemester,
                     underline: SizedBox(),
                     hint: Text('Select Semester',
@@ -73,22 +79,22 @@ class _ChoosingYearState extends State<ChoosingYearTablet> {
                     dropdownColor: ColorsManager
                         .white, // Background color for the dropdown list
                     iconEnabledColor:
-                    ColorsManager.black, // Color of the dropdown icon
+                        ColorsManager.black, // Color of the dropdown icon
                     style: const TextStyle(
                         color: ColorsManager
                             .white), // Style for the selected item outside
-                    items: AppConstants.semesters
+                    items: LocalDataProvider.semesters
                         .map((String item) => DropdownMenuItem(
-                      value: item,
-                      child: Text(
-                        item,
-                        style:
-                        const TextStyle(color: ColorsManager.black),
-                      ),
-                    ))
+                              value: item,
+                              child: Text(
+                                item,
+                                style:
+                                    const TextStyle(color: ColorsManager.black),
+                              ),
+                            ))
                         .toList(),
                     selectedItemBuilder: (BuildContext context) {
-                      return AppConstants.semesters.map((String item) {
+                      return LocalDataProvider.semesters.map((String item) {
                         return DropdownMenuItem<String>(
                           value: item,
                           child: FittedBox(
@@ -123,31 +129,26 @@ class _ChoosingYearState extends State<ChoosingYearTablet> {
                   onPressed: onPressedSelectButton,
                   child: FittedBox(
                       child: Text(
-                        'Select',
-                        style: TextStyle(fontSize: 20),
-                      ))),
+                    'Select',
+                    style: TextStyle(fontSize: 20),
+                  ))),
             ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                StringsManager.alreadyHaveAccount,
+                AppStrings.alreadyHaveAccount,
                 style: TextStyle(
                   fontSize: 14,
                 ),
               ),
               TextButton(
                 onPressed: () {
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => RegistrationLayout(),
-                      ),
-                          (route) => false);
+                  context.goNamed(ScreensName.registrationLayout);
                 },
                 child: Text(
-                  StringsManager.login,
+                  AppStrings.login,
                   style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
@@ -179,7 +180,7 @@ class _ChoosingYearState extends State<ChoosingYearTablet> {
       AppConstants.SelectedSemester = selectedSemester;
       await Cache.writeData(key: KeysManager.semester, value: selectedSemester);
       AppConstants.navigatedSemester = AppConstants.SelectedSemester;
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => Home()), (route) => false);
+      context.goNamed(ScreensName.home);
     } else {
       showToastMessage(
         message: 'Please select a semester',

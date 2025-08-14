@@ -1,5 +1,5 @@
-import 'package:lol/core/utils/resources/assets_manager.dart';
-import 'package:lol/core/utils/resources/strings_manager.dart';
+import 'package:lol/core/resources/assets/assets_manager.dart';
+import 'package:lol/core/resources/theme/values/app_strings.dart';
 
 class OnBoardingModel {
   String? title;
@@ -9,15 +9,9 @@ class OnBoardingModel {
 
 List<OnBoardingModel> onBoardingItemsList = [
   OnBoardingModel(
-    title: StringsManager.onBoardingTitle1,
-    image: AssetsManager.onBoarding1
-  ),
+      title: AppStrings.onBoardingTitle1, image: AssetsManager.onBoarding1),
   OnBoardingModel(
-    title: StringsManager.onBoardingTitle2,
-    image: AssetsManager.onBoarding2
-  ),
+      title: AppStrings.onBoardingTitle2, image: AssetsManager.onBoarding2),
   OnBoardingModel(
-    title: StringsManager.onBoardingTitle3,
-    image: AssetsManager.onBoarding3
-  ),
+      title: AppStrings.onBoardingTitle3, image: AssetsManager.onBoarding3),
 ];

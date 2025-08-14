@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:lol/core/models/profile/profile_model.dart';
 import 'package:lol/core/network/endpoints.dart';
 import 'package:lol/core/network/remote/dio.dart';
-import 'package:lol/core/utils/resources/constants_manager.dart';
+import 'package:lol/core/resources/constants/constants_manager.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 part 'pick_image_state.dart';
 

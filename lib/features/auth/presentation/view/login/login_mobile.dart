@@ -1,153 +1,148 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
-import 'package:lol/core/utils/components.dart';
-import 'package:lol/core/utils/service_locator.dart';
-import 'package:lol/core/utils/resources/icons_manager.dart';
-import 'package:lol/core/utils/resources/strings_manager.dart';
-import 'package:lol/core/utils/resources/values_manager.dart';
-import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
-import 'package:lol/features/auth/presentation/view/choosing_year.dart';
-import 'package:lol/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
-import 'package:lol/features/auth/presentation/view/register.dart';
-import 'package:lol/core/utils/resources/constants_manager.dart';
-import 'package:lol/features/home/presentation/view/home.dart';
-import 'package:lol/features/otp_and_verification/presentation/view/forgot_password_verification.dart';
-import 'package:lol/features/otp_and_verification/presentation/view_model/verification_cubit/verification_cubit.dart';
-import 'package:lol/features/profile/view/profile.dart';
-import 'package:lol/core/utils/navigation.dart';
-import 'package:lol/core/network/local/shared_preference.dart';
-import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:lol/core/presentation/cubits/main_cubit/main_cubit.dart';
+// import 'package:lol/core/utils/components.dart';
+// import 'package:lol/core/utils/service_locator.dart';
+// import 'package:lol/core/presentation/app_icons.dart';
+// import 'package:lol/core/resources/theme/values/app_strings.dart';
+// import 'package:lol/core/resources/theme/values/values_manager.dart';
+// import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
+// import 'package:lol/features/auth/presentation/view/choosing_year/choosing_year.dart';
+// import 'package:lol/features/auth/presentation/cubits/auth_cubit/auth_cubit.dart';
+// import 'package:lol/features/auth/presentation/view/register/register.dart';
+// import 'package:lol/core/resources/constants/constants_manager.dart';
+// import 'package:lol/features/home/presentation/view/home.dart';
+// import 'package:lol/features/otp_and_verification/presentation/view/forgot_password_verification.dart';
+// import 'package:lol/features/otp_and_verification/presentation/view_model/verification_cubit/verification_cubit.dart';
+// import 'package:lol/features/profile/view/profile.dart';
+// import 'package:lol/core/utils/navigation.dart';
+// import 'package:lol/core/network/local/shared_preference.dart';
+// import 'package:provider/provider.dart';
+// import 'package:url_launcher/url_launcher.dart';
 
-import '../../../../../core/utils/resources/colors_manager.dart';
-import '../../../../../core/utils/resources/theme_provider.dart';
+// import '../../../../../core/resources/theme/colors_manager.dart';
+// import '../../../../../core/resources/theme/theme_provider.dart';
 
-class LoginScreenMobile extends StatefulWidget {
-  const LoginScreenMobile({super.key});
+// class LoginScreenMobile extends StatefulWidget {
+//   const LoginScreenMobile({super.key});
 
-  @override
-  State<LoginScreenMobile> createState() => _LoginScreenState();
-}
+//   @override
+//   State<LoginScreenMobile> createState() => _LoginScreenState();
+// }
 
-class _LoginScreenState extends State<LoginScreenMobile> {
-  late TextEditingController _emailController;
-  late TextEditingController _passwordController;
-  late GlobalKey<FormState> formKey = GlobalKey<FormState>();
+// class _LoginScreenState extends State<LoginScreenMobile> {
+//   late TextEditingController _emailController;
+//   late TextEditingController _passwordController;
+//   late GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  @override
-  void initState() {
-    super.initState();
-    _emailController = TextEditingController();
-    _passwordController = TextEditingController();
-  }
+//   @override
+//   void initState() {
+//     super.initState();
+//     _emailController = TextEditingController();
+//     _passwordController = TextEditingController();
+//   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
-  }
+//   @override
+//   void dispose() {
+//     super.dispose();
+//     _emailController.dispose();
+//     _passwordController.dispose();
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    var loginCubit = AuthCubit.get(context);
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSizesDouble.s30),
-      child: Form(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        key: formKey,
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  StringsManager.login,
-                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                        fontSize: AppSizesDouble.s40,
-                      ),
-                ),
-                SizedBox(
-                  height: AppSizesDouble.s20,
-                ),
-                defaultLoginInputField(
-                  _emailController,
-                  StringsManager.email,
-                  TextInputType.emailAddress,
-                  loginCubit: loginCubit,
-                ),
-                SizedBox(
-                  height: AppSizesDouble.s10,
-                ),
-                defaultLoginInputField(_passwordController,
-                    StringsManager.password, TextInputType.visiblePassword,
-                    isPassword: true,
-                    loginCubit: loginCubit,
-                    suffixIcon: IconsManager.eyeIcon),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                        padding: const EdgeInsets.all(AppSizesDouble.s0),
-                        foregroundColor: ColorsManager.dodgerBlue),
-                    child: const Text(
-                      StringsManager.forgotPassword + StringsManager.qMark,
-                    ),
-                    onPressed: () {
-                      if (_emailController.text.isNotEmpty) {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => BlocProvider(
-                                create: (context) =>
-                                    VerificationCubit()..initializeStream(),
-                                child: ForgotPasswordVerification(
-                                  recipientEmail: _emailController.text,
-                                ))));
-                      } else {
-                        showToastMessage(
-                            message: 'Please Provide Email First To Continue',
-                            states: ToastStates.INFO);
-                      }
-                    },
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                defaultLoginButton(
-                    context,
-                    formKey,
-                    loginCubit,
-                    _emailController,
-                    _passwordController,
-                    StringsManager.login),
-                const SizedBox(
-                  height: AppSizesDouble.s20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Do you want to try first?'),
-                    TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                builder: (context) => ChoosingYear(),
-                              ),
-                              (route) => false);
-                        },
-                        child: Text(
-                          'Continue as a guest',
-                          style: TextStyle(color: ColorsManager.dodgerBlue),
-                        ))
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     var loginCubit = AuthCubit.get(context);
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(horizontal: AppSizesDouble.s30),
+//       child: Form(
+//         autovalidateMode: AutovalidateMode.onUserInteraction,
+//         key: formKey,
+//         child: Center(
+//           child: SingleChildScrollView(
+//             child: Column(
+//               crossAxisAlignment: CrossAxisAlignment.center,
+//               children: [
+//                 Text(
+//                   AppStrings.login,
+//                   style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+//                         fontSize: AppSizesDouble.s40,
+//                       ),
+//                 ),
+//                 SizedBox(
+//                   height: AppSizesDouble.s20,
+//                 ),
+//                 defaultLoginInputField(
+//                   _emailController,
+//                   AppStrings.email,
+//                   TextInputType.emailAddress,
+//                   loginCubit: loginCubit,
+//                 ),
+//                 SizedBox(
+//                   height: AppSizesDouble.s10,
+//                 ),
+//                 defaultLoginInputField(_passwordController, AppStrings.password,
+//                     TextInputType.visiblePassword,
+//                     isPassword: true,
+//                     loginCubit: loginCubit,
+//                     suffixIcon: AppIcons.eyeIcon),
+//                 Align(
+//                   alignment: Alignment.centerLeft,
+//                   child: TextButton(
+//                     style: TextButton.styleFrom(
+//                         padding: const EdgeInsets.all(AppSizesDouble.s0),
+//                         foregroundColor: ColorsManager.dodgerBlue),
+//                     child: const Text(
+//                       AppStrings.forgotPassword + AppStrings.qMark,
+//                     ),
+//                     onPressed: () {
+//                       if (_emailController.text.isNotEmpty) {
+//                         Navigator.of(context).push(MaterialPageRoute(
+//                             builder: (context) => BlocProvider(
+//                                 create: (context) =>
+//                                     VerificationCubit()..initializeStream(),
+//                                 child: ForgotPasswordVerification(
+//                                   recipientEmail: _emailController.text,
+//                                 ))));
+//                       } else {
+//                         showToastMessage(
+//                             message: 'Please Provide Email First To Continue',
+//                             states: ToastStates.INFO);
+//                       }
+//                     },
+//                   ),
+//                 ),
+//                 SizedBox(
+//                   height: 5,
+//                 ),
+//                 defaultLoginButton(context, formKey, loginCubit,
+//                     _emailController, _passwordController, AppStrings.login),
+//                 const SizedBox(
+//                   height: AppSizesDouble.s20,
+//                 ),
+//                 Row(
+//                   mainAxisAlignment: MainAxisAlignment.center,
+//                   children: [
+//                     Text('Do you want to try first?'),
+//                     TextButton(
+//                         onPressed: () {
+//                           Navigator.of(context).pushAndRemoveUntil(
+//                               MaterialPageRoute(
+//                                 builder: (context) => ChoosingYear(),
+//                               ),
+//                               (route) => false);
+//                         },
+//                         child: Text(
+//                           'Continue as a guest',
+//                           style: TextStyle(color: ColorsManager.dodgerBlue),
+//                         ))
+//                   ],
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

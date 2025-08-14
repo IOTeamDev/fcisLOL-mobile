@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/core/models/profile/profile_model.dart';
+import 'package:lol/core/presentation/screen_size.dart';
 
-import '../../../../../core/cubits/main_cubit/main_cubit.dart';
+import '../../../../../core/presentation/cubits/main_cubit/main_cubit.dart';
 import '../../../../../core/utils/components.dart';
-import '../../../../../core/utils/resources/assets_manager.dart';
-import '../../../../../core/utils/resources/constants_manager.dart';
-import '../../../../../core/utils/resources/fonts_manager.dart';
-import '../../../../../core/utils/resources/icons_manager.dart';
-import '../../../../../core/utils/resources/strings_manager.dart';
-import '../../../../../core/utils/resources/values_manager.dart';
+import '../../../../../core/resources/assets/assets_manager.dart';
+import '../../../../../core/resources/constants/constants_manager.dart';
+import '../../../../../core/resources/assets/fonts_manager.dart';
+import '../../../../../core/presentation/app_icons.dart';
+import '../../../../../core/resources/theme/values/app_strings.dart';
+import '../../../../../core/resources/theme/values/values_manager.dart';
 import '../../../../admin/presentation/view_model/admin_cubit/admin_cubit.dart';
 import '../../../../admin/presentation/view_model/admin_cubit/admin_cubit_states.dart';
 import '../../../data/models/semster_model.dart';
@@ -41,11 +42,11 @@ class HomeMobile extends StatelessWidget {
               }
             },
             icon: Icon(
-              IconsManager.filledGridIcon,
+              AppIcons.filledGridIcon,
             )), //drawer icon
         centerTitle: true,
         title: Text(
-          StringsManager.home,
+          AppStrings.home,
           style: Theme.of(context)
               .textTheme
               .displayMedium!
@@ -60,19 +61,18 @@ class HomeMobile extends StatelessWidget {
                   AdminCubit.get(context).getAllSemestersAnnouncements();
                 },
                 icon: Icon(
-                  IconsManager.devIcon,
+                  AppIcons.devIcon,
                   color: Theme.of(context).iconTheme.color,
                 )),
         ],
       ),
       drawer: Drawer(
-        width: AppQueries.screenWidth(context)/AppSizesDouble.s1_5,
+        width: ScreenSize.width(context) / AppSizesDouble.s1_5,
         child: CustomDrawer(AppConstants.TOKEN == null
             ? AppConstants.SelectedSemester ?? ''
             : MainCubit.get(context).profileModel!.semester),
       ),
-      drawerEdgeDragWidth:
-          AppQueries.screenWidth(context) * AppSizesDouble.s0_25,
+      drawerEdgeDragWidth: ScreenSize.width(context) * AppSizesDouble.s0_25,
       body: profile == null && AppConstants.TOKEN != null
           ? const Center(
               child: CircularProgressIndicator(),
@@ -95,7 +95,7 @@ class HomeMobile extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               horizontal: AppPaddings.p20,
                               vertical: AppPaddings.p10),
-                          child: Text(StringsManager.announcements,
+                          child: Text(AppStrings.announcements,
                               style: Theme.of(context).textTheme.headlineLarge),
                         ), //Announcements Text
                         BlocBuilder<AdminCubit, AdminCubitStates>(
@@ -128,7 +128,7 @@ class HomeMobile extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: AppPaddings.p20),
-                          child: Text(StringsManager.subject,
+                          child: Text(AppStrings.subject,
                               style: Theme.of(context).textTheme.headlineLarge),
                         ), // Subjects Text
                         if (semesterIndex != null)

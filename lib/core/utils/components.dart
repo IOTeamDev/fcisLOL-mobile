@@ -4,31 +4,32 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:googleapis_auth/auth_io.dart';
 import 'package:http/http.dart' as http;
 import 'package:lol/core/models/profile/profile_model.dart';
-import 'package:lol/core/utils/resources/colors_manager.dart';
+import 'package:lol/core/presentation/screen_size.dart';
+import 'package:lol/core/resources/theme/colors_manager.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:linkify/linkify.dart';
-import 'package:lol/core/utils/resources/icons_manager.dart';
-import 'package:lol/core/utils/resources/strings_manager.dart';
-import 'package:lol/core/utils/resources/theme_provider.dart';
-import 'package:lol/core/utils/resources/values_manager.dart';
+import 'package:lol/core/presentation/app_icons.dart';
+import 'package:lol/core/resources/theme/values/app_strings.dart';
+import 'package:lol/core/resources/theme/theme_provider.dart';
+import 'package:lol/core/resources/theme/values/values_manager.dart';
 import 'package:lol/features/admin/presentation/view/admin_panal.dart';
-import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
-import 'package:lol/core/cubits/main_cubit/main_cubit_states.dart';
-import 'package:lol/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
+import 'package:lol/core/presentation/cubits/main_cubit/main_cubit.dart';
+import 'package:lol/core/presentation/cubits/main_cubit/main_cubit_states.dart';
+import 'package:lol/features/auth/presentation/cubits/auth_cubit/auth_cubit.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/features/home/presentation/view/widgets/edit_exam_popup.dart';
 import 'package:lol/features/previous_exams/data/previous_exams_model.dart';
 import 'package:lol/features/profile/view/profile.dart';
 import 'package:lol/features/admin/presentation/view/announcements/announcements_list.dart';
-import 'package:lol/features/auth/presentation/view/login.dart';
+import 'package:lol/features/auth/presentation/view/login/login.dart';
 import 'package:lol/core/error/error_screen.dart';
 import 'package:lol/core/utils/navigation.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:lol/core/utils/resources/constants_manager.dart';
+import 'package:lol/core/resources/constants/constants_manager.dart';
 import 'webview_screen.dart';
 
 String getImageNameFromUrl({required String imageUrl}) {
@@ -100,11 +101,11 @@ class materialBuilder extends StatelessWidget {
                     onPressed: () {
                       AwesomeDialog(
                         context: context,
-                        title: StringsManager.delete,
+                        title: AppStrings.delete,
                         dialogType: DialogType.warning,
                         body: Text(
                           textAlign: TextAlign.center,
-                          StringsManager.deleteMaterialMessage,
+                          AppStrings.deleteMaterialMessage,
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
                         animType: AnimType.scale,
@@ -123,7 +124,7 @@ class materialBuilder extends StatelessWidget {
                           style: ElevatedButton.styleFrom(
                               backgroundColor: ColorsManager.imperialRed),
                           child: Text(
-                            StringsManager.delete,
+                            AppStrings.delete,
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyMedium!
@@ -135,7 +136,7 @@ class materialBuilder extends StatelessWidget {
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: ColorsManager.grey4),
                             child: Text(
-                              StringsManager.cancel,
+                              AppStrings.cancel,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
@@ -143,7 +144,7 @@ class materialBuilder extends StatelessWidget {
                             )),
                       ).show();
                     },
-                    icon: Icon(IconsManager.closeIcon,
+                    icon: Icon(AppIcons.closeIcon,
                         color: ColorsManager.imperialRed),
                   ),
             ],
@@ -153,11 +154,11 @@ class materialBuilder extends StatelessWidget {
               textAlign: TextAlign.start,
               profileModel!.materials[index].title
                   .toString()
-                  .replaceAll(StringsManager.underScore, StringsManager.space),
+                  .replaceAll(AppStrings.underScore, AppStrings.space),
               maxLines: AppSizes.s1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                  fontSize: AppQueries.screenWidth(context) / AppSizes.s22,
+                  fontSize: ScreenSize.width(context) / AppSizes.s22,
                   color: ColorsManager.grey6),
             ),
           ),
@@ -175,7 +176,7 @@ class materialBuilder extends StatelessWidget {
             builder: (context, constraints) {
               return Row(
                 children: [
-                  Icon(IconsManager.linkIcon, color: ColorsManager.grey6),
+                  Icon(AppIcons.linkIcon, color: ColorsManager.grey6),
                   SizedBox(width: AppSizesDouble.s5),
                   Expanded(
                     child: InkWell(
@@ -207,8 +208,8 @@ class materialBuilder extends StatelessWidget {
               (isMain
                       ? cubit.profileModel!.materials[index].accepted!
                       : cubit.otherProfile!.materials[index].accepted!)
-                  ? StringsManager.accepted
-                  : StringsManager.pending,
+                  ? AppStrings.accepted
+                  : AppStrings.pending,
               style: TextStyle(
                   color: (isMain
                           ? cubit.profileModel!.materials[index].accepted!
@@ -298,40 +299,6 @@ class CustomTile extends StatelessWidget {
   }
 }
 
-Widget defaultLoginButton(
-        context,
-        GlobalKey<FormState> formKey,
-        AuthCubit loginCubit,
-        TextEditingController emailController,
-        TextEditingController passwordController,
-        String text,
-        {bool isSignUp = false,
-        Function()? onPressed}) =>
-    ElevatedButton(
-      style: ElevatedButton.styleFrom(
-          foregroundColor: ColorsManager.white,
-          fixedSize: Size(AppQueries.screenWidth(context), AppSizesDouble.s50),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(AppSizesDouble.s15)),
-          backgroundColor: ColorsManager.lightPrimary),
-      onPressed: isSignUp
-          ? onPressed
-          : () {
-              if (formKey.currentState!.validate()) {
-                loginCubit.login(
-                    email: emailController.text,
-                    password: passwordController.text);
-              }
-            },
-      child: Text(
-        text,
-        style: Theme.of(context)
-            .textTheme
-            .headlineLarge!
-            .copyWith(color: ColorsManager.white),
-      ),
-    );
-
 Widget previousExamsBuilder(context, PreviousExamModel exam, role, semester) {
   return InkWell(
     onTap: () {
@@ -368,7 +335,7 @@ Widget previousExamsBuilder(context, PreviousExamModel exam, role, semester) {
                   builder: (context) =>
                       EditExamPopup(exam: exam, semester: semester),
                   barrierDismissible: true),
-              icon: Icon(IconsManager.editIcon, color: ColorsManager.black),
+              icon: Icon(AppIcons.editIcon, color: ColorsManager.black),
               style: IconButton.styleFrom(
                   backgroundColor: ColorsManager.white,
                   shape: RoundedRectangleBorder(
@@ -382,7 +349,7 @@ Widget previousExamsBuilder(context, PreviousExamModel exam, role, semester) {
                     .deletePreviousExam(exam.id, exam.subject);
               },
               icon: Icon(
-                IconsManager.deleteIcon,
+                AppIcons.deleteIcon,
                 color: ColorsManager.white,
               ),
               style: IconButton.styleFrom(
@@ -397,54 +364,6 @@ Widget previousExamsBuilder(context, PreviousExamModel exam, role, semester) {
     ),
   );
 }
-
-Widget defaultLoginInputField(controller, label, keyboardType,
-        {bool isPassword = false,
-        loginCubit,
-        suffixIcon,
-        bool isConfirmPassword = false,
-        validationMessage,
-        onFieldSubmit,
-        TextInputAction textInputAction = TextInputAction.done,
-        String? Function(String?)? validator = null}) =>
-    TextFormField(
-      obscureText: isPassword ? loginCubit.hiddenPassword : false,
-      controller: controller,
-      textInputAction: textInputAction,
-      keyboardType: keyboardType,
-      style: TextStyle(color: ColorsManager.black),
-      decoration: InputDecoration(
-        labelStyle: TextStyle(color: ColorsManager.lightGrey),
-        labelText: label,
-        border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(AppSizesDouble.s15)),
-        filled: true,
-        fillColor: ColorsManager.grey3,
-        focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: ColorsManager.lightPrimary),
-            borderRadius: BorderRadius.circular(AppSizesDouble.s15)),
-        suffixIcon: isPassword
-            ? IconButton(
-                icon: Icon(suffixIcon),
-                color: loginCubit.hiddenPassword
-                    ? ColorsManager.lightGrey
-                    : ColorsManager.lightPrimary,
-                onPressed: loginCubit.togglePassword,
-              )
-            : null,
-      ),
-      validator: validator ??
-          (value) {
-            if (value!.isEmpty) {
-              return isConfirmPassword
-                  ? validationMessage
-                  : StringsManager.emptyFieldWarning;
-            } else {
-              return null; // Form is valid.
-            }
-          },
-      onFieldSubmitted: isConfirmPassword ? onFieldSubmit : null,
-    );
 
 void showToastMessage({
   required String message,

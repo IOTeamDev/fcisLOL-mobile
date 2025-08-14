@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:lol/core/cubits/main_cubit/main_cubit.dart';
+import 'package:lol/core/data/local_data_provider.dart';
+import 'package:lol/core/presentation/cubits/main_cubit/main_cubit.dart';
+import 'package:lol/core/presentation/screen_size.dart';
 import 'package:lol/features/previous_exams/data/previous_exams_model.dart';
 
 import '../../../../../core/utils/components.dart';
-import '../../../../../core/utils/resources/colors_manager.dart';
-import '../../../../../core/utils/resources/constants_manager.dart';
-import '../../../../../core/utils/resources/icons_manager.dart';
-import '../../../../../core/utils/resources/strings_manager.dart';
-import '../../../../../core/utils/resources/values_manager.dart';
+import '../../../../../core/resources/theme/colors_manager.dart';
+import '../../../../../core/resources/constants/constants_manager.dart';
+import '../../../../../core/presentation/app_icons.dart';
+import '../../../../../core/resources/theme/values/app_strings.dart';
+import '../../../../../core/resources/theme/values/values_manager.dart';
 import '../../../data/models/semster_model.dart';
 
 class EditExamPopup extends StatefulWidget {
@@ -28,11 +30,7 @@ class _EditExamPopupState extends State<EditExamPopup> {
   late final TextEditingController _LinkController;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  List<String> examsType = [
-    'Final',
-    'Mid',
-    'Other'
-  ];
+  List<String> examsType = ['Final', 'Mid', 'Other'];
 
   @override
   void initState() {
@@ -54,8 +52,13 @@ class _EditExamPopupState extends State<EditExamPopup> {
       content: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Edit Exam', style: Theme.of(context).textTheme.headlineLarge,),
-          SizedBox(height: 15,),
+          Text(
+            'Edit Exam',
+            style: Theme.of(context).textTheme.headlineLarge,
+          ),
+          SizedBox(
+            height: 15,
+          ),
           Form(
             key: _formKey,
             child: Column(
@@ -64,35 +67,35 @@ class _EditExamPopupState extends State<EditExamPopup> {
                   controller: _titleController,
                   maxLines: 1,
                   decoration: InputDecoration(
-                    hintText: 'Exam Title',
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: ColorsManager.lightPrimary)
-                    )
-                  ),
+                      hintText: 'Exam Title',
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide:
+                              BorderSide(color: ColorsManager.lightPrimary))),
                   keyboardType: TextInputType.text,
                   cursorColor: ColorsManager.lightPrimary,
-                  validator: (value){
-                    if(value!.isEmpty){
-                      return StringsManager.emptyFieldWarning;
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return AppStrings.emptyFieldWarning;
                     }
                     return null;
                   },
                 ),
-                SizedBox(height: 15,),
+                SizedBox(
+                  height: 15,
+                ),
                 TextFormField(
                   controller: _LinkController,
                   maxLines: 1,
                   decoration: InputDecoration(
-                    hintText: 'Exam Link',
-                    focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: ColorsManager.lightPrimary)
-                    )
-                  ),
+                      hintText: 'Exam Link',
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide:
+                              BorderSide(color: ColorsManager.lightPrimary))),
                   keyboardType: TextInputType.text,
                   cursorColor: ColorsManager.lightPrimary,
-                  validator: (value){
-                    if(value!.isEmpty){
-                      return StringsManager.emptyFieldWarning;
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return AppStrings.emptyFieldWarning;
                     }
                     return null;
                   },
@@ -100,9 +103,19 @@ class _EditExamPopupState extends State<EditExamPopup> {
               ],
             ),
           ),
-          SizedBox(height: 20,),
-          Text('Subject:', style: Theme.of(context).textTheme.titleLarge!.copyWith(color: ColorsManager.white),),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 20,
+          ),
+          Text(
+            'Subject:',
+            style: Theme.of(context)
+                .textTheme
+                .titleLarge!
+                .copyWith(color: ColorsManager.white),
+          ),
+          SizedBox(
+            height: 10,
+          ),
           Row(
             children: [
               Expanded(
@@ -110,36 +123,49 @@ class _EditExamPopupState extends State<EditExamPopup> {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                       color: ColorsManager.lightPrimary,
-                      borderRadius: BorderRadius.circular(AppPaddings.p40)
+                      borderRadius: BorderRadius.circular(AppPaddings.p40)),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 15,
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: 15,),
                   child: DropdownButton<String>(
                     isExpanded: true,
-                    icon: Icon(IconsManager.dropdownIcon),
+                    icon: Icon(AppIcons.dropdownIcon),
                     value: selectedSemester,
                     underline: SizedBox(),
-                    hint: Text('Select Semester', style: TextStyle(color: ColorsManager.white)),
-                    dropdownColor: ColorsManager.white, // Background color for the dropdown list
-                    iconEnabledColor: ColorsManager.white, // Color of the dropdown icon
-                    style: const TextStyle(color: ColorsManager.white), // Style for the selected item outside
-                    items: AppConstants.semesters.map((String item) => DropdownMenuItem(value: item, child: Text(item,  style: const TextStyle(color: ColorsManager.black),),)
-                    ).toList(),
+                    hint: Text('Select Semester',
+                        style: TextStyle(color: ColorsManager.white)),
+                    dropdownColor: ColorsManager
+                        .white, // Background color for the dropdown list
+                    iconEnabledColor:
+                        ColorsManager.white, // Color of the dropdown icon
+                    style: const TextStyle(
+                        color: ColorsManager
+                            .white), // Style for the selected item outside
+                    items: LocalDataProvider.semesters
+                        .map((String item) => DropdownMenuItem(
+                              value: item,
+                              child: Text(
+                                item,
+                                style:
+                                    const TextStyle(color: ColorsManager.black),
+                              ),
+                            ))
+                        .toList(),
                     selectedItemBuilder: (BuildContext context) {
-                      return AppConstants.semesters.map((String item) {
+                      return LocalDataProvider.semesters.map((String item) {
                         return DropdownMenuItem<String>(
                           value: item,
                           child: Text(
                             item,
                             style: const TextStyle(
-                              color:
-                              ColorsManager.white,
+                              color: ColorsManager.white,
                             ),
                           ),
                         );
                       }).toList();
                     },
                     onChanged: (value) {
-                      setState((){
+                      setState(() {
                         selectedSemester = value;
                         selectedSubject = null;
                       });
@@ -147,47 +173,64 @@ class _EditExamPopupState extends State<EditExamPopup> {
                   ),
                 ),
               ),
-              SizedBox(width: 15,),
-              if(selectedSubject != null)
+              SizedBox(
+                width: 15,
+              ),
+              if (selectedSubject != null)
                 Expanded(
                   flex: 2,
                   child: Container(
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                         color: ColorsManager.lightPrimary,
-                        borderRadius: BorderRadius.circular(AppPaddings.p40)
+                        borderRadius: BorderRadius.circular(AppPaddings.p40)),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 15,
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 15,),
                     child: DropdownButton<String>(
                       isExpanded: true,
                       value: selectedSubject,
-                      icon: Icon(IconsManager.dropdownIcon),
+                      icon: Icon(AppIcons.dropdownIcon),
                       underline: SizedBox(),
-                      hint: Text('Select Subject', style: TextStyle(color: ColorsManager.white)),
-                      dropdownColor: ColorsManager.white, // Background color for the dropdown list
-                      iconEnabledColor: ColorsManager.white, // Color of the dropdown icon
-                      style: const TextStyle(color: ColorsManager.white), // Style for the selected item outside
-                      items: semesters[getSemesterIndex(selectedSemester!)].subjects.map((SubjectModel item) => DropdownMenuItem(
-                        value: item.subjectName,
-                        child: Text(item.subjectName.replaceAll(StringsManager.underScore, StringsManager.space),  style: const TextStyle(color: ColorsManager.black),),
-                      )
-                      ).toList(),
+                      hint: Text('Select Subject',
+                          style: TextStyle(color: ColorsManager.white)),
+                      dropdownColor: ColorsManager
+                          .white, // Background color for the dropdown list
+                      iconEnabledColor:
+                          ColorsManager.white, // Color of the dropdown icon
+                      style: const TextStyle(
+                          color: ColorsManager
+                              .white), // Style for the selected item outside
+                      items: semesters[getSemesterIndex(selectedSemester!)]
+                          .subjects
+                          .map((SubjectModel item) => DropdownMenuItem(
+                                value: item.subjectName,
+                                child: Text(
+                                  item.subjectName.replaceAll(
+                                      AppStrings.underScore, AppStrings.space),
+                                  style: const TextStyle(
+                                      color: ColorsManager.black),
+                                ),
+                              ))
+                          .toList(),
                       selectedItemBuilder: (BuildContext context) {
-                        return semesters[getSemesterIndex(selectedSemester!)].subjects.map((SubjectModel item) {
+                        return semesters[getSemesterIndex(selectedSemester!)]
+                            .subjects
+                            .map((SubjectModel item) {
                           return DropdownMenuItem<String>(
                             value: item.subjectName,
                             child: Text(
-                              item.subjectName.replaceAll(StringsManager.underScore, StringsManager.space),
+                              item.subjectName.replaceAll(
+                                  AppStrings.underScore, AppStrings.space),
                               style: const TextStyle(
-                                color:
-                                ColorsManager.white,
+                                color: ColorsManager.white,
                               ),
                             ),
                           );
                         }).toList();
                       },
                       onChanged: (value) {
-                        setState((){
+                        setState(() {
                           selectedSubject = value;
                         });
                       },
@@ -196,27 +239,45 @@ class _EditExamPopupState extends State<EditExamPopup> {
                 ),
             ],
           ),
-          SizedBox(height: 10,),
           SizedBox(
-            width: AppQueries.screenWidth(context)/2,
+            height: 10,
+          ),
+          SizedBox(
+            width: ScreenSize.width(context) / 2,
             child: Container(
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: ColorsManager.white,
-                borderRadius: BorderRadius.circular(AppPaddings.p40)
+                  color: ColorsManager.white,
+                  borderRadius: BorderRadius.circular(AppPaddings.p40)),
+              padding: EdgeInsets.symmetric(
+                horizontal: 15,
               ),
-              padding: EdgeInsets.symmetric(horizontal: 15,),
               child: DropdownButton<String>(
                 isExpanded: true,
-                icon: Icon(IconsManager.dropdownIcon, color: ColorsManager.black,),
+                icon: Icon(
+                  AppIcons.dropdownIcon,
+                  color: ColorsManager.black,
+                ),
                 value: selectedExamType,
                 underline: SizedBox(),
-                hint: Text('Select Exam Type', style: TextStyle(color: ColorsManager.black)),
-                dropdownColor: ColorsManager.white, // Background color for the dropdown list
-                iconEnabledColor: ColorsManager.white, // Color of the dropdown icon
-                style: const TextStyle(color: ColorsManager.black), // Style for the selected item outside
-                items: examsType.map((String item) => DropdownMenuItem(value: item, child: Text(item,  style: const TextStyle(color: ColorsManager.black),),)
-                ).toList(),
+                hint: Text('Select Exam Type',
+                    style: TextStyle(color: ColorsManager.black)),
+                dropdownColor: ColorsManager
+                    .white, // Background color for the dropdown list
+                iconEnabledColor:
+                    ColorsManager.white, // Color of the dropdown icon
+                style: const TextStyle(
+                    color: ColorsManager
+                        .black), // Style for the selected item outside
+                items: examsType
+                    .map((String item) => DropdownMenuItem(
+                          value: item,
+                          child: Text(
+                            item,
+                            style: const TextStyle(color: ColorsManager.black),
+                          ),
+                        ))
+                    .toList(),
                 selectedItemBuilder: (BuildContext context) {
                   return examsType.map((String item) {
                     return DropdownMenuItem<String>(
@@ -224,69 +285,94 @@ class _EditExamPopupState extends State<EditExamPopup> {
                       child: Text(
                         item,
                         style: const TextStyle(
-                          color:
-                          ColorsManager.black,
+                          color: ColorsManager.black,
                         ),
                       ),
                     );
                   }).toList();
                 },
                 onChanged: (value) {
-                  setState((){
+                  setState(() {
                     selectedExamType = value;
                   });
                 },
               ),
             ),
           ),
-          SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
           Row(
             children: [
               Expanded(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: ColorsManager.white
-                  ),
-                  onPressed: (){
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(StringsManager.cancel, style: Theme.of(context).textTheme.titleLarge!.copyWith(color: ColorsManager.black),)
-                )
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: ColorsManager.white),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(
+                        AppStrings.cancel,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge!
+                            .copyWith(color: ColorsManager.black),
+                      ))),
+              SizedBox(
+                width: 20,
               ),
-              SizedBox(width: 20,),
               Expanded(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: ColorsManager.lightPrimary
-                  ),
-                  onPressed: (){
-                    if(selectedSubject != null && selectedExamType != null){
-                      if(_formKey.currentState!.validate()){
-                          showToastMessage(message: 'Editing Exam.....', states: ToastStates.INFO, textColor: ColorsManager.black, toastLength: Toast.LENGTH_SHORT);
-                          cubit.editPreviousExam(
-                            widget.exam.id,
-                            _titleController.text,
-                            _LinkController.text,
-                            selectedSemester!,
-                            selectedSubject!,
-                            selectedExamType!
-                          );
-                          Navigator.of(context).pop();
-                      }
-                    } else {
-                      if(selectedSubject == null && selectedExamType == null){
-                        showToastMessage(message: 'Please Select Subject and Exam Type', states: ToastStates.WARNING, textColor: ColorsManager.black, toastLength: Toast.LENGTH_LONG);
-                      }
-                      else if(selectedSubject == null){
-                        showToastMessage(message: 'Please Select Subject', states: ToastStates.WARNING, textColor: ColorsManager.black, toastLength: Toast.LENGTH_LONG);
-                      }else{
-                        showToastMessage(message: 'Please Select Exam Type', states: ToastStates.WARNING, textColor: ColorsManager.black, toastLength: Toast.LENGTH_LONG );
-                      }
-                    }
-                  },
-                  child: Text(StringsManager.submit, style: Theme.of(context).textTheme.titleLarge!.copyWith(color: ColorsManager.white),)
-                )
-              ),
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: ColorsManager.lightPrimary),
+                      onPressed: () {
+                        if (selectedSubject != null &&
+                            selectedExamType != null) {
+                          if (_formKey.currentState!.validate()) {
+                            showToastMessage(
+                                message: 'Editing Exam.....',
+                                states: ToastStates.INFO,
+                                textColor: ColorsManager.black,
+                                toastLength: Toast.LENGTH_SHORT);
+                            cubit.editPreviousExam(
+                                widget.exam.id,
+                                _titleController.text,
+                                _LinkController.text,
+                                selectedSemester!,
+                                selectedSubject!,
+                                selectedExamType!);
+                            Navigator.of(context).pop();
+                          }
+                        } else {
+                          if (selectedSubject == null &&
+                              selectedExamType == null) {
+                            showToastMessage(
+                                message: 'Please Select Subject and Exam Type',
+                                states: ToastStates.WARNING,
+                                textColor: ColorsManager.black,
+                                toastLength: Toast.LENGTH_LONG);
+                          } else if (selectedSubject == null) {
+                            showToastMessage(
+                                message: 'Please Select Subject',
+                                states: ToastStates.WARNING,
+                                textColor: ColorsManager.black,
+                                toastLength: Toast.LENGTH_LONG);
+                          } else {
+                            showToastMessage(
+                                message: 'Please Select Exam Type',
+                                states: ToastStates.WARNING,
+                                textColor: ColorsManager.black,
+                                toastLength: Toast.LENGTH_LONG);
+                          }
+                        }
+                      },
+                      child: Text(
+                        AppStrings.submit,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge!
+                            .copyWith(color: ColorsManager.white),
+                      ))),
             ],
           ),
         ],

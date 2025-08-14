@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lol/core/utils/resources/colors_manager.dart';
-import 'package:lol/core/utils/resources/values_manager.dart';
+import 'package:lol/core/resources/theme/colors_manager.dart';
+import 'package:lol/core/resources/theme/values/values_manager.dart';
 import 'package:lol/features/on_boarding/data/model/on_boarding_model.dart';
 
 class OnBoardingItem extends StatelessWidget {
@@ -21,7 +21,9 @@ class OnBoardingItem extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: AppSizesDouble.s20,),
+        SizedBox(
+          height: AppSizesDouble.s20,
+        ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: AppPaddings.p20),
           child: Text(
@@ -34,9 +36,11 @@ class OnBoardingItem extends StatelessWidget {
               color: ColorsManager.white,
               shadows: [
                 Shadow(
-                  offset: Offset(AppSizesDouble.s3, AppSizesDouble.s3), // X and Y offset
+                  offset: Offset(
+                      AppSizesDouble.s3, AppSizesDouble.s3), // X and Y offset
                   blurRadius: AppSizesDouble.s10, // Spread of the shadow
-                  color: ColorsManager.black.withValues(alpha: AppSizesDouble.s0_4), // Shadow color
+                  color: ColorsManager.black
+                      .withValues(alpha: AppSizesDouble.s0_4), // Shadow color
                 ),
               ],
             ),
