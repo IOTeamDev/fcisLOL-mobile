@@ -42,4 +42,34 @@ class AuthRepoImpl extends AuthRepo {
       return Left(Failure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, LoginModel>> register(
+      {required String name,
+      required String email,
+      required String phone,
+      String? photo,
+      required String password,
+      required String semester,
+      String? fcmToken}) async {
+    final result = await _authApiDataSource.register(
+      name: name,
+      email: email,
+      phone: phone,
+      password: password,
+      semester: semester,
+    );
+    return await result.fold(
+      (failure) {
+        return Left(failure);
+      },
+      (loginModel) async {
+        await _firebaseMessaging.requestPermission();
+        AppConstants.SelectedSemester = semester;
+        await Cache.writeData(
+            key: KeysManager.semester, value: AppConstants.SelectedSemester);
+        return Right(loginModel);
+      },
+    );
+  }
 }

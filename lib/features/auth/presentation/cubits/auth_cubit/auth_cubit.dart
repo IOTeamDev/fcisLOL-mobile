@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:dartz/dartz.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -39,20 +40,6 @@ class AuthCubit extends Cubit<AuthState> {
     } catch (e) {
       emit(LoginFailed(errMessage: e.toString()));
     }
-
-    /* try {
-      final response = await DioHelp.postData(path: "login", data: {
-        "email": email,
-        "password": password,
-      });
-      LoginModel loginModel = LoginModel.fromJson(response.data);
-      await getIt.get<FirebaseMessaging>().requestPermission();
-      await Cache.writeData(key: KeysManager.token, value: loginModel.token);
-      AppConstants.TOKEN = loginModel.token;
-      emit(LoginSuccess());
-    } catch (e) {
-      emit(LoginFailed(errMessage: e.toString()));
-    */
   }
 
   Future<void> register({
@@ -66,30 +53,20 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     emit(RegisterLoading());
     try {
-      final response = await DioHelp.postData(path: USERS, data: {
-        "name": name,
-        "email": email,
-        "password": password,
-        "phone": phone,
-        "photo": photo,
-        "semester": semester,
-        "fcmToken": fcmToken,
+      final result = await _authRepo.register(
+        name: name,
+        email: email,
+        phone: phone,
+        photo: photo,
+        password: password,
+        semester: semester,
+        fcmToken: fcmToken ?? await getIt<FirebaseMessaging>().getToken(),
+      );
+      result.fold((failure) {
+        emit(RegisterFailed(errMessage: failure.message));
+      }, (loginModel) {
+        emit(RegisterSuccess(token: loginModel.token, userEmail: email));
       });
-      LoginModel loginModel = LoginModel.fromJson(response.data);
-      await FirebaseMessaging.instance.requestPermission();
-      AppConstants.SelectedSemester = semester;
-      await Cache.writeData(
-          key: KeysManager.semester, value: AppConstants.SelectedSemester);
-
-      emit(RegisterSuccess(token: loginModel.token, userEmail: email));
-    } on DioException catch (e) {
-      if (e.response?.statusCode == 500) {
-        emit(RegisterFailed(
-            errMessage:
-                e.response?.data['error'] ?? 'Opps! there was an error'));
-      } else {
-        emit(RegisterFailed(errMessage: e.toString()));
-      }
     } catch (e) {
       emit(RegisterFailed(errMessage: e.toString()));
     }
