@@ -9,7 +9,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'firebase_options.dart';
-import 'core/utils/service_locator.dart';
+import 'core/dependency_injection/service_locator.dart';
 import 'core/my_bloc_observer.dart';
 import 'core/network/local/shared_preference.dart';
 import 'core/resources/constants/constants_manager.dart';

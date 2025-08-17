@@ -2,9 +2,11 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lol/config/navigation/routes.dart';
+import 'package:lol/core/dependency_injection/service_locator.dart';
 import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:lol/core/resources/constants/constants_manager.dart';
 import 'package:lol/core/resources/theme/values/app_strings.dart';
+import 'package:lol/features/auth/data/repos/auth_repo.dart';
 import 'package:lol/features/auth/presentation/view/choosing_year/choosing_year.dart';
 import 'package:lol/features/auth/presentation/view/login/login.dart';
 import 'package:lol/features/auth/presentation/view/register/register.dart';
@@ -45,7 +47,7 @@ abstract class AppRouter {
         name: ScreensName.registrationLayout,
         path: Routes.registrationLayout,
         builder: (context, state) => BlocProvider(
-          create: (context) => AuthCubit(),
+          create: (context) => AuthCubit(getIt<AuthRepo>()),
           child: RegistrationLayout(),
         ),
       ),

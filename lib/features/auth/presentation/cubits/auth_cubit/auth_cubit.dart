@@ -10,11 +10,12 @@ import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:lol/core/network/remote/dio.dart';
 import 'package:lol/core/network/remote/send_grid_helper.dart';
 import 'package:lol/core/utils/components.dart';
-import 'package:lol/core/utils/service_locator.dart';
+import 'package:lol/core/dependency_injection/service_locator.dart';
 import 'package:lol/core/utils/navigation.dart';
 import 'package:lol/core/resources/constants/constants_manager.dart';
 import 'package:lol/core/resources/theme/values/app_strings.dart';
 import 'package:lol/features/auth/data/models/login_model.dart';
+import 'package:lol/features/auth/data/repos/auth_repo.dart';
 import 'package:lol/features/auth/presentation/view/choosing_year/choosing_year.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:dio/dio.dart';
@@ -22,25 +23,36 @@ import 'package:dio/dio.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit() : super(AuthInitial());
+  final AuthRepo _authRepo;
 
-  static AuthCubit get(BuildContext context) => BlocProvider.of(context);
+  AuthCubit(this._authRepo) : super(AuthInitial());
 
   Future<void> login({required String email, required String password}) async {
     emit(LoginLoading());
     try {
+      final result = await _authRepo.login(email: email, password: password);
+      result.fold((failure) {
+        emit(LoginFailed(errMessage: failure.message));
+      }, (r) {
+        emit(LoginSuccess());
+      });
+    } catch (e) {
+      emit(LoginFailed(errMessage: e.toString()));
+    }
+
+    /* try {
       final response = await DioHelp.postData(path: "login", data: {
         "email": email,
         "password": password,
       });
       LoginModel loginModel = LoginModel.fromJson(response.data);
-      await FirebaseMessaging.instance.requestPermission();
+      await getIt.get<FirebaseMessaging>().requestPermission();
       await Cache.writeData(key: KeysManager.token, value: loginModel.token);
       AppConstants.TOKEN = loginModel.token;
       emit(LoginSuccess());
     } catch (e) {
       emit(LoginFailed(errMessage: e.toString()));
-    }
+    */
   }
 
   Future<void> register({

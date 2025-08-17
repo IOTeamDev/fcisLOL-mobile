@@ -49,7 +49,7 @@ import 'package:lol/features/profile/view/profile.dart';
 import 'package:lol/features/useful_links/useful_links.dart';
 import 'package:lol/main.dart';
 import 'package:lol/core/utils/navigation.dart';
-import 'package:lol/core/utils/service_locator.dart';
+import 'package:lol/core/dependency_injection/service_locator.dart';
 import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../admin/presentation/view/announcements/announcements_list.dart';

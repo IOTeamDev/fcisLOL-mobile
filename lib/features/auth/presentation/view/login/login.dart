@@ -4,10 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lol/config/navigation/routes.dart';
 import 'package:lol/core/presentation/cubits/main_cubit/main_cubit.dart';
+import 'package:lol/features/auth/presentation/auth_constants/auth_strings.dart';
 import 'package:lol/features/auth/presentation/view/widgets/auth_elevated_button.dart';
 import 'package:lol/features/auth/presentation/view/widgets/auth_text_form_field.dart';
 import 'package:lol/core/utils/components.dart';
-import 'package:lol/core/utils/service_locator.dart';
+import 'package:lol/core/dependency_injection/service_locator.dart';
 import 'package:lol/core/presentation/app_icons.dart';
 import 'package:lol/core/resources/theme/values/app_strings.dart';
 import 'package:lol/core/resources/theme/values/values_manager.dart';
@@ -80,6 +81,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   label: AppStrings.email,
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return AppStrings.emptyFieldWarning;
+                    } else if (!emailRegExp.hasMatch(value)) {
+                      return 'Enter a valid email address';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: AppSizesDouble.s10,

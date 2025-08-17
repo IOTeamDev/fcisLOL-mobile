@@ -9,7 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:lol/config/navigation/routes.dart';
 import 'package:lol/core/models/profile/profile_model.dart';
 import 'package:lol/core/presentation/screen_size.dart';
-import 'package:lol/core/utils/service_locator.dart';
+import 'package:lol/core/dependency_injection/service_locator.dart';
 import 'package:lol/core/resources/theme/colors_manager.dart';
 import 'package:lol/core/resources/constants/constants_manager.dart';
 import 'package:lol/core/presentation/app_icons.dart';

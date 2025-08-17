@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lol/config/navigation/routes.dart';
-import 'package:lol/core/utils/service_locator.dart';
+import 'package:lol/core/dependency_injection/service_locator.dart';
 import 'package:lol/core/resources/theme/colors_manager.dart';
 import 'package:lol/core/presentation/app_icons.dart';
 import 'package:lol/core/resources/theme/values/app_strings.dart';
