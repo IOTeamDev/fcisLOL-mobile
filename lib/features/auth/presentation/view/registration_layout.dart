@@ -46,14 +46,15 @@ class _RegistrationLayoutState extends State<RegistrationLayout>
         }
         if (state is LoginFailed) {
           showToastMessage(
-              states: ToastStates.ERROR,
-              message: "Invalid email or password. Please try again");
+            states: ToastStates.ERROR,
+            message: "Invalid email or password. Please try again",
+          );
         }
         if (state is RegisterSuccess) {
           AppConstants.TOKEN = state.token;
           Cache.writeData(key: KeysManager.token, value: state.token);
           showToastMessage(
-            message: 'You need to verify your email',
+            message: state.message,
             states: ToastStates.SUCCESS,
           );
         }

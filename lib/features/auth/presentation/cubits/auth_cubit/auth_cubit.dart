@@ -16,7 +16,9 @@ import 'package:lol/core/utils/navigation.dart';
 import 'package:lol/core/resources/constants/constants_manager.dart';
 import 'package:lol/core/resources/theme/values/app_strings.dart';
 import 'package:lol/features/auth/data/models/login_model.dart';
+import 'package:lol/features/auth/data/models/registration_user_model.dart';
 import 'package:lol/features/auth/data/repos/auth_repo.dart';
+import 'package:lol/features/auth/presentation/auth_constants/auth_strings.dart';
 import 'package:lol/features/auth/presentation/view/choosing_year/choosing_year.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:dio/dio.dart';
@@ -43,29 +45,24 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> register({
-    required String name,
-    required String email,
-    required String phone,
-    String? photo,
-    required String password,
-    required String semester,
-    String? fcmToken,
+    required RegistrationUserModel registrationUserModel,
   }) async {
     emit(RegisterLoading());
     try {
       final result = await _authRepo.register(
-        name: name,
-        email: email,
-        phone: phone,
-        photo: photo,
-        password: password,
-        semester: semester,
-        fcmToken: fcmToken ?? await getIt<FirebaseMessaging>().getToken(),
+        registrationUserModel: registrationUserModel,
       );
+
       result.fold((failure) {
         emit(RegisterFailed(errMessage: failure.message));
       }, (loginModel) {
-        emit(RegisterSuccess(token: loginModel.token, userEmail: email));
+        emit(
+          RegisterSuccess(
+            token: loginModel.token,
+            userEmail: registrationUserModel.email,
+            message: AuthStrings.registerSuccessMessage,
+          ),
+        );
       });
     } catch (e) {
       emit(RegisterFailed(errMessage: e.toString()));

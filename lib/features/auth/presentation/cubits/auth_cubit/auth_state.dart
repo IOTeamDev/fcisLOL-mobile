@@ -20,8 +20,10 @@ final class RegisterLoading extends AuthState {}
 final class RegisterSuccess extends AuthState {
   final String token;
   final String userEmail;
+  final String message;
 
-  RegisterSuccess({required this.token, required this.userEmail});
+  RegisterSuccess(
+      {required this.token, required this.userEmail, required this.message});
 }
 
 final class RegisterFailed extends AuthState {

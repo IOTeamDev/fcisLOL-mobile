@@ -5,13 +5,15 @@ class RegistrationUserModel {
   final String phone;
   final String semester;
   final String? photo;
+  final String? fcmToken;
 
   RegistrationUserModel({
-    required this.semester,
     required this.name,
     required this.email,
     required this.password,
-    this.photo,
+    required this.semester,
     required this.phone,
+    this.photo,
+    this.fcmToken,
   });
 }

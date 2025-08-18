@@ -175,13 +175,15 @@ class _RegisterscreenState extends State<RegisterScreen> {
                       String? fcmToken =
                           await FirebaseMessaging.instance.getToken();
                       await context.read<AuthCubit>().register(
-                            name: _nameController.text,
-                            email: _emailController.text,
-                            phone: _phoneController.text,
-                            password: _passwordController.text,
-                            semester: _selectedSemester!,
-                            fcmToken: fcmToken,
-                            photo: AppConstants.defaultProfileImage,
+                            registrationUserModel: RegistrationUserModel(
+                              name: _nameController.text,
+                              email: _emailController.text,
+                              phone: _phoneController.text,
+                              password: _passwordController.text,
+                              semester: _selectedSemester!,
+                              fcmToken: fcmToken,
+                              photo: AppConstants.defaultProfileImage,
+                            ),
                           );
                     }
                   },

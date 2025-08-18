@@ -23,7 +23,6 @@ import 'package:lol/features/otp_and_verification/presentation/view_model/verifi
 import 'package:lol/features/profile/view/profile.dart';
 import 'package:lol/core/utils/navigation.dart';
 import 'package:lol/core/network/local/shared_preference.dart';
-import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../core/resources/theme/colors_manager.dart';
