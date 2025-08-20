@@ -57,6 +57,7 @@ class _RegistrationLayoutState extends State<RegistrationLayout>
             message: state.message,
             states: ToastStates.SUCCESS,
           );
+          context.goNamed(ScreensName.loading);
         }
         if (state is RegisterFailed) {
           showToastMessage(
