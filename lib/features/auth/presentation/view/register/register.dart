@@ -11,7 +11,7 @@ import 'package:lol/features/auth/presentation/view/widgets/auth_text_form_field
 import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/presentation/app_icons.dart';
 import 'package:lol/core/resources/theme/values/values_manager.dart';
-import 'package:lol/features/auth/data/models/registration_user_model.dart';
+import 'package:lol/features/auth/data/models/register_request_model.dart';
 import 'package:lol/features/auth/presentation/auth_constants/auth_strings.dart';
 import 'package:lol/features/auth/presentation/view/widgets/custom_drop_down_button.dart';
 import 'package:lol/features/auth/presentation/cubits/auth_cubit/auth_cubit.dart';
@@ -175,7 +175,7 @@ class _RegisterscreenState extends State<RegisterScreen> {
                       String? fcmToken =
                           await FirebaseMessaging.instance.getToken();
                       await context.read<AuthCubit>().register(
-                            registrationUserModel: RegistrationUserModel(
+                            registrationUserModel: RegisterRequestModel(
                               name: _nameController.text,
                               email: _emailController.text,
                               phone: _phoneController.text,

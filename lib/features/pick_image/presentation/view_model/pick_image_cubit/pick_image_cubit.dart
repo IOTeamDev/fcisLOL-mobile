@@ -73,7 +73,7 @@ class PickImageCubit extends Cubit<PickImageState> {
     emit(UpdateUserImageLoading());
     try {
       final response = await DioHelp.patchData(
-          path: EDITCURRENTUSER,
+          path: Endpoints.EDITCURRENTUSER,
           data: {
             'photo': imageUrl,
           },

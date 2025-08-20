@@ -13,7 +13,7 @@ class SubjectRepoImp implements SubjectRepo {
       List<MaterialModel> materials = [];
 
       final response = await DioHelp.getData(
-        path: MATERIAL,
+        path: Endpoints.MATERIAL,
         query: {'subject': subject, 'accepted': true},
       );
       for (var material in response.data) {

@@ -1,13 +1,13 @@
 class UserModel {
-  int id;
-  String name;
-  String email;
-  String? photo;
-  String semester;
-  String role;
-  int? score;
-  String? fcmToken;
-  String? lastActive;
+  final int? id;
+  final String name;
+  final String email;
+  final String? photo;
+  final String semester;
+  final String role;
+  final int? score;
+  final String? fcmToken;
+  final String? lastActive;
 
   UserModel(
       {required this.id,

@@ -59,7 +59,7 @@ class VerificationCubit extends Cubit<VerificationState> {
     emit(SendVerificationCodeToEmailLoading());
     _counter(counter: 60);
 
-    DioHelp.postData(path: SENDVERIFICATIONCODE, data: {
+    DioHelp.postData(path: Endpoints.SENDVERIFICATIONCODE, data: {
       'recipientEmail': recipientEmail,
       'recipientName': recipientName
     }).then((value) {
@@ -76,7 +76,7 @@ class VerificationCubit extends Cubit<VerificationState> {
   void verifyEmail({required String otp, required String recipientEmail}) {
     emit(EmailVerifiedLoading());
     DioHelp.postData(
-        path: CHECKVERIFICATIONCODE,
+        path: Endpoints.CHECKVERIFICATIONCODE,
         data: {'email': recipientEmail, 'otp': otp}).then((value) {
       if (value.statusCode == 400) {
         emit(EmailVerifiedFailed(errMessage: value.data['message']));
@@ -93,7 +93,7 @@ class VerificationCubit extends Cubit<VerificationState> {
       String sentEmail, String otp, String newPassword) {
     emit(VerificationUpdatePasswordLoadingState());
     DioHelp.postData(
-      path: RESETPASSWORD,
+      path: Endpoints.RESETPASSWORD,
       data: {
         'email': sentEmail,
         'otp': otp,

@@ -92,7 +92,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     emit(AdminSaveAnnouncementLoadingState());
     try {
       await DioHelp.postData(
-          path: ANNOUNCEMENTS,
+          path: Endpoints.ANNOUNCEMENTS,
           data: {
             'title': title,
             'content': description ?? '',
@@ -120,7 +120,8 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     try {
       announcements.clear();
       final response = await DioHelp.getData(
-          path: ANNOUNCEMENTS, query: {KeysManager.semester: semester});
+          path: Endpoints.ANNOUNCEMENTS,
+          query: {KeysManager.semester: semester});
       response.data.forEach((element) {
         announcements.add(AnnouncementModel.fromJson(element));
       });
@@ -141,7 +142,8 @@ class AdminCubit extends Cubit<AdminCubitStates> {
 
       for (var semester in LocalDataProvider.semesters) {
         final response = await DioHelp.getData(
-            path: ANNOUNCEMENTS, query: {KeysManager.semester: semester});
+            path: Endpoints.ANNOUNCEMENTS,
+            query: {KeysManager.semester: semester});
         allSemestersAnnouncements[semester] = [];
         for (var element in response.data) {
           allSemestersAnnouncements[semester]!
@@ -167,7 +169,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
   }) {
     emit(AdminUpdateAnnouncementLoadingState());
     DioHelp.putData(
-        path: ANNOUNCEMENTS,
+        path: Endpoints.ANNOUNCEMENTS,
         data: {
           AppStrings.title: title ?? "",
           AppStrings.content: content ?? "",
@@ -194,7 +196,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
   void deleteAnnouncement(int id, semester) {
     emit(AdminDeleteAnnouncementLoadingState());
     DioHelp.deleteData(
-        path: ANNOUNCEMENTS,
+        path: Endpoints.ANNOUNCEMENTS,
         token: AppConstants.TOKEN,
         query: {'id': id}).then((value) {
       emit(AdminDeleteAnnouncementSuccessState());

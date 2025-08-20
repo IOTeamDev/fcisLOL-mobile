@@ -32,7 +32,7 @@ class AddMaterialCubit extends Cubit<AddMaterialState> {
     emit(AddMaterialLoading());
     try {
       final response = await DioHelp.postData(
-        path: MATERIAL,
+        path: Endpoints.MATERIAL,
         data: {
           'subject': subjectName,
           'title': title,
@@ -87,7 +87,7 @@ class AddMaterialCubit extends Cubit<AddMaterialState> {
 
     try {
       await DioHelp.patchData(
-        path: EDITMATERIAL,
+        path: Endpoints.EDITMATERIAL,
         data: {
           'id': id,
           'title': title,

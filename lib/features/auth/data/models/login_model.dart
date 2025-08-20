@@ -1,9 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:lol/features/auth/data/models/user_model.dart';
 
-class LoginModel {
-  String message;
-  String token;
-  UserModel user;
+class LoginModel extends Equatable {
+  final String message;
+  final String token;
+  final UserModel user;
   LoginModel({
     required this.message,
     required this.token,
@@ -17,4 +18,7 @@ class LoginModel {
       user: UserModel.fromJson(model["user"]),
     );
   }
+
+  @override
+  List<Object?> get props => [message, token, user];
 }

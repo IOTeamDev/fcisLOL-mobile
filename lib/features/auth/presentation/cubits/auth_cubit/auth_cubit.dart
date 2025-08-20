@@ -16,7 +16,8 @@ import 'package:lol/core/utils/navigation.dart';
 import 'package:lol/core/resources/constants/constants_manager.dart';
 import 'package:lol/core/resources/theme/values/app_strings.dart';
 import 'package:lol/features/auth/data/models/login_model.dart';
-import 'package:lol/features/auth/data/models/registration_user_model.dart';
+import 'package:lol/features/auth/data/models/login_request_model.dart';
+import 'package:lol/features/auth/data/models/register_request_model.dart';
 import 'package:lol/features/auth/data/repos/auth_repo.dart';
 import 'package:lol/features/auth/presentation/auth_constants/auth_strings.dart';
 import 'package:lol/features/auth/presentation/view/choosing_year/choosing_year.dart';
@@ -30,22 +31,25 @@ class AuthCubit extends Cubit<AuthState> {
 
   AuthCubit(this._authRepo) : super(AuthInitial());
 
-  Future<void> login({required String email, required String password}) async {
+  Future<void> login({
+    required LoginRequestModel loginRequestModel,
+  }) async {
     emit(LoginLoading());
     try {
-      final result = await _authRepo.login(email: email, password: password);
+      final result =
+          await _authRepo.login(loginRequestModel: loginRequestModel);
       result.fold((failure) {
         emit(LoginFailed(errMessage: failure.message));
-      }, (r) {
+      }, (_) {
         emit(LoginSuccess());
       });
     } catch (e) {
-      emit(LoginFailed(errMessage: e.toString()));
+      emit(LoginFailed(errMessage: AppStrings.unknownErrorMessage));
     }
   }
 
   Future<void> register({
-    required RegistrationUserModel registrationUserModel,
+    required RegisterRequestModel registrationUserModel,
   }) async {
     emit(RegisterLoading());
     try {
@@ -65,7 +69,7 @@ class AuthCubit extends Cubit<AuthState> {
         );
       });
     } catch (e) {
-      emit(RegisterFailed(errMessage: e.toString()));
+      emit(RegisterFailed(errMessage: AppStrings.unknownErrorMessage));
     }
   }
 

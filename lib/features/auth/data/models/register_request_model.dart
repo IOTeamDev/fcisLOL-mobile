@@ -1,4 +1,4 @@
-class RegistrationUserModel {
+class RegisterRequestModel {
   final String name;
   final String email;
   final String password;
@@ -7,7 +7,7 @@ class RegistrationUserModel {
   final String? photo;
   final String? fcmToken;
 
-  RegistrationUserModel({
+  RegisterRequestModel({
     required this.name,
     required this.email,
     required this.password,
@@ -16,4 +16,16 @@ class RegistrationUserModel {
     this.photo,
     this.fcmToken,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      "name": name,
+      "email": email,
+      "password": password,
+      "phone": phone,
+      "photo": photo,
+      "semester": semester,
+      "fcmToken": fcmToken,
+    };
+  }
 }

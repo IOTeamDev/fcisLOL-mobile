@@ -47,7 +47,7 @@ class _RegistrationLayoutState extends State<RegistrationLayout>
         if (state is LoginFailed) {
           showToastMessage(
             states: ToastStates.ERROR,
-            message: "Invalid email or password. Please try again",
+            message: state.errMessage,
           );
         }
         if (state is RegisterSuccess) {

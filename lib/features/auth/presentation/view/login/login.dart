@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lol/config/navigation/routes.dart';
 import 'package:lol/core/presentation/cubits/main_cubit/main_cubit.dart';
+import 'package:lol/features/auth/data/models/login_request_model.dart';
 import 'package:lol/features/auth/presentation/auth_constants/auth_strings.dart';
 import 'package:lol/features/auth/presentation/view/widgets/auth_elevated_button.dart';
 import 'package:lol/features/auth/presentation/view/widgets/auth_text_form_field.dart';
@@ -131,8 +132,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () async {
                     if (formKey.currentState!.validate()) {
                       await context.read<AuthCubit>().login(
-                          email: _emailController.text,
-                          password: _passwordController.text);
+                              loginRequestModel: LoginRequestModel(
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                          ));
                     }
                   },
                 ),

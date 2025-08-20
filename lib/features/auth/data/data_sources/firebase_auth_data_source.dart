@@ -1,17 +1,22 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:lol/core/errors/failure.dart';
+import 'package:lol/core/resources/theme/values/app_strings.dart';
+import 'package:lol/features/auth/data/models/login_request_model.dart';
+import 'package:lol/features/auth/data/models/register_request_model.dart';
+import 'package:lol/features/auth/presentation/auth_constants/auth_strings.dart';
 
 abstract class FirebaseAuthDataSource {
-  Future<Either<Failure, UserCredential>> firebaseRegister({
+  Future<Either<Failure, void>> firebaseRegister({
     required String email,
     required String password,
   });
 
-  // Future<Either<Failure, void>> firebaseLogin({
-  //   required String email,
-  //   required String password,
-  // });
+  Future<Either<Failure, UserCredential>> firebaseLogin({
+    required LoginRequestModel loginRequestModel,
+  });
 
   // Future<Either<Failure, void>> sendEmailVerification();
 
@@ -24,14 +29,16 @@ class FirebaseAuthDataSourceImpl extends FirebaseAuthDataSource {
   FirebaseAuthDataSourceImpl(this._firebaseAuth);
 
   @override
-  Future<Either<Failure, UserCredential>> firebaseRegister(
-      {required String email, required String password}) async {
+  Future<Either<Failure, void>> firebaseRegister({
+    required String email,
+    required String password,
+  }) async {
     try {
-      final userCredentil = await _firebaseAuth.createUserWithEmailAndPassword(
+      await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      return right(userCredentil);
+      return right(null);
     } on FirebaseAuthException catch (e) {
       final errMessage = _mapFirebaseAuthError(e.code);
       return left(Failure(message: errMessage, code: e.code));
@@ -40,22 +47,28 @@ class FirebaseAuthDataSourceImpl extends FirebaseAuthDataSource {
     }
   }
 
-  // @override
-  // Future<Either<Failure, void>> firebaseLogin(
-  //     {required String email, required String password}) async {
-  //   try {
-  //     await _firebaseAuth.signInWithEmailAndPassword(
-  //       email: email,
-  //       password: password,
-  //     );
-  //     return right(null);
-  //   } on FirebaseAuthException catch (e) {
-  //     final errMessage = _mapFirebaseAuthError(e.code);
-  //     return left(Failure(message: errMessage, code: e.code));
-  //   } catch (e) {
-  //     return left(Failure(message: e.toString()));
-  //   }
-  // }
+  @override
+  Future<Either<Failure, UserCredential>> firebaseLogin({
+    required LoginRequestModel loginRequestModel,
+  }) async {
+    try {
+      final userCredential = await _firebaseAuth.signInWithEmailAndPassword(
+        email: loginRequestModel.email,
+        password: loginRequestModel.password,
+      );
+      if (userCredential.user == null) {
+        log('Firebase login failed: UserCredential is null');
+      } else {
+        log('Firebase login successful: ${userCredential.user?.email}');
+      }
+      return right(userCredential);
+    } on FirebaseAuthException catch (e) {
+      final errMessage = _mapFirebaseAuthError(e.code);
+      return left(Failure(message: errMessage, code: e.code));
+    } catch (e) {
+      return left(Failure(message: e.toString()));
+    }
+  }
 
   String _mapFirebaseAuthError(String code) {
     switch (code) {
@@ -78,7 +91,7 @@ class FirebaseAuthDataSourceImpl extends FirebaseAuthDataSource {
       case 'network-request-failed':
         return 'Network error. Please check your internet connection.';
       case 'invalid-credential':
-        return 'invalid email or password';
+        return AuthStrings.invalidCredentialsMessage;
       default:
         return 'An unknown error occurred. Please try again.';
     }

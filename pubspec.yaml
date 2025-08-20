@@ -21,6 +21,7 @@ dependencies:
   custom_cached_image: ^1.0.5
   dartz: ^0.10.1
   dio: ^5.9.0
+  equatable: ^2.0.7
   file_picker: ^8.1.2
   firebase_auth: ^6.0.1
   firebase_core: ^4.0.0

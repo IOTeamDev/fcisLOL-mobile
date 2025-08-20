@@ -15,7 +15,7 @@ import 'package:lol/core/resources/constants/constants_manager.dart';
 import 'package:lol/core/presentation/app_icons.dart';
 import 'package:lol/core/resources/theme/values/app_strings.dart';
 import 'package:lol/core/resources/theme/values/values_manager.dart';
-import 'package:lol/features/auth/data/models/registration_user_model.dart';
+import 'package:lol/features/auth/data/models/register_request_model.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/features/pick_image/presentation/view_model/pick_image_cubit/pick_image_cubit.dart';
 import 'package:lol/main.dart';

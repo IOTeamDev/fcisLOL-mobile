@@ -1,33 +1,35 @@
 //
-const String ANNOUNCEMENTS = 'announcements';
 
-const String MATERIAL = 'material';
+abstract class Endpoints {
+  static const String ANNOUNCEMENTS = 'announcements';
 
-const String ACCEPT = 'material/accept';
+  static const String MATERIAL = 'material';
 
-const String CURRENTUSER = 'me';
+  static const String ACCEPT = 'material/accept';
 
-const String EDITCURRENTUSER = 'me/edit';
+  static const String CURRENTUSER = 'me';
 
-const String LEADERBOARD = 'leaderboard';
+  static const String EDITCURRENTUSER = 'me/edit';
 
-const String USERS = 'users';
+  static const String LEADERBOARD = 'leaderboard';
 
-const String USERID = 'users/id';
+  static const String USERS = 'users';
 
-const String EDITMATERIAL = 'material/edit';
+  static const String USERID = 'users/id';
 
-const String REPORT = 'report';
+  static const String EDITMATERIAL = 'material/edit';
 
-const String PREVIOUSEXAMS = 'previousExams';
+  static const String REPORT = 'report';
 
-const String brevoEndPoint = 'v3/smtp/email';
+  static const String PREVIOUSEXAMS = 'previousExams';
 
-const String EDITPREVIOUSEXAMS = 'previousExams/edit';
+  static const String EDITPREVIOUSEXAMS = 'previousExams/edit';
 
+  static const String SENDVERIFICATIONCODE = 'verificationCode/send';
 
-const String SENDVERIFICATIONCODE = 'verificationCode/send';
+  static const String CHECKVERIFICATIONCODE = 'verificationCode/check';
 
-const String CHECKVERIFICATIONCODE = 'verificationCode/check';
+  static const String RESETPASSWORD = 'resetPassword';
 
-const String RESETPASSWORD = 'resetPassword';
+  static const String LOGIN = 'login';
+}

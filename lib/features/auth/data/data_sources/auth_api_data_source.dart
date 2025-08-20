@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:lol/core/errors/dio_exception_handler.dart';
 import 'package:lol/core/errors/failure.dart';
 import 'package:lol/core/network/endpoints.dart';
 import 'package:lol/core/network/local/shared_preference.dart';
@@ -7,14 +10,17 @@ import 'package:lol/core/network/remote/dio.dart';
 import 'package:lol/core/resources/constants/constants_manager.dart';
 import 'package:lol/core/resources/theme/values/app_strings.dart';
 import 'package:lol/features/auth/data/models/login_model.dart';
-import 'package:lol/features/auth/data/models/registration_user_model.dart';
+import 'package:lol/features/auth/data/models/login_request_model.dart';
+import 'package:lol/features/auth/data/models/register_request_model.dart';
+import 'package:lol/features/auth/presentation/auth_constants/auth_strings.dart';
 
 abstract class AuthApiDataSource {
-  Future<Either<Failure, LoginModel>> serverLogin(
-      {required String email, required String password});
+  Future<Either<Failure, LoginModel>> serverLogin({
+    required LoginRequestModel loginRequestModel,
+  });
 
   Future<Either<Failure, LoginModel>> serverRegister({
-    required RegistrationUserModel registrationUserModel,
+    required RegisterRequestModel registrationUserModel,
   });
 
   // returns the failture if there was an error. else, returns the deleted user email
@@ -23,22 +29,30 @@ abstract class AuthApiDataSource {
 
 class AuthApiDataSourceImpl implements AuthApiDataSource {
   @override
-  Future<Either<Failure, LoginModel>> serverLogin(
-      {required String email, required String password}) async {
+  Future<Either<Failure, LoginModel>> serverLogin({
+    required LoginRequestModel loginRequestModel,
+  }) async {
+    log('request Model: ${loginRequestModel.toString()}');
+
     try {
-      final response = await DioHelp.postData(path: "login", data: {
-        "email": email,
-        "password": password,
-      });
+      final response = await DioHelp.postData(
+        path: Endpoints.LOGIN,
+        data: loginRequestModel.toJson(),
+      );
+
       final loginModel = LoginModel.fromJson(response.data);
+      log('login Model: ${loginModel.toString()}');
       return Right(loginModel);
     } on DioException catch (e) {
-      if (e.response?.statusCode == 500) {
-        return Left(Failure(
-            message: e.response?.data['error'] ?? 'Opps! there was an error'));
-      } else {
-        return Left(Failure(message: e.toString()));
-      }
+      return left(Failure(
+          message: DioExceptionHandler.getMessage(
+            e: e,
+            badResponseMessage:
+                e.response?.data['error'] == 'Invalid credentials'
+                    ? AuthStrings.invalidCredentialsMessage
+                    : e.response?.data['error'],
+          ),
+          code: e.response?.statusCode.toString()));
     } catch (e) {
       return Left(Failure(message: e.toString()));
     }
@@ -46,27 +60,22 @@ class AuthApiDataSourceImpl implements AuthApiDataSource {
 
   @override
   Future<Either<Failure, LoginModel>> serverRegister({
-    required RegistrationUserModel registrationUserModel,
+    required RegisterRequestModel registrationUserModel,
   }) async {
     try {
-      final response = await DioHelp.postData(path: USERS, data: {
-        "name": registrationUserModel.name,
-        "email": registrationUserModel.email,
-        "password": registrationUserModel.password,
-        "phone": registrationUserModel.phone,
-        "photo": registrationUserModel.photo,
-        "semester": registrationUserModel.semester,
-        "fcmToken": registrationUserModel.fcmToken,
-      });
+      final response = await DioHelp.postData(
+        path: Endpoints.USERS,
+        data: registrationUserModel.toJson(),
+      );
       LoginModel loginModel = LoginModel.fromJson(response.data);
       return Right(loginModel);
     } on DioException catch (e) {
-      if (e.response?.statusCode == 500) {
-        return Left(Failure(
-            message: e.response?.data['error'] ?? 'Opps! there was an error'));
-      } else {
-        return Left(Failure(message: e.toString()));
-      }
+      return left(Failure(
+          message: DioExceptionHandler.getMessage(
+            e: e,
+            badResponseMessage: e.response?.data['error'],
+          ),
+          code: e.response?.statusCode.toString()));
     } catch (e) {
       return Left(Failure(message: e.toString()));
     }
@@ -75,7 +84,7 @@ class AuthApiDataSourceImpl implements AuthApiDataSource {
   Future<Either<Failure, String>> serverDeleteAccount({required int id}) async {
     try {
       final response = await DioHelp.deleteData(
-        path: USERS,
+        path: Endpoints.USERS,
         token: AppConstants.TOKEN,
         query: {KeysManager.id: id},
       );
@@ -87,12 +96,12 @@ class AuthApiDataSourceImpl implements AuthApiDataSource {
       AppConstants.SelectedSemester = null;
       return Right(deletedUserEmail);
     } on DioException catch (e) {
-      if (e.response?.statusCode == 500) {
-        return Left(Failure(
-            message: e.response?.data['error'] ?? 'Opps! there was an error'));
-      } else {
-        return Left(Failure(message: e.toString()));
-      }
+      return left(Failure(
+          message: DioExceptionHandler.getMessage(
+            e: e,
+            badResponseMessage: e.response?.data['error'],
+          ),
+          code: e.response?.statusCode.toString()));
     } catch (e) {
       return Left(Failure(message: e.toString()));
     }

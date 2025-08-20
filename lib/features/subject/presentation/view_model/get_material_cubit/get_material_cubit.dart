@@ -86,7 +86,7 @@ class GetMaterialCubit extends Cubit<GetMaterialState> {
   void deleteMaterial({required String subjectName, required int id}) {
     emit(DeleteMaterialLoading());
     DioHelp.deleteData(
-        path: MATERIAL,
+        path: Endpoints.MATERIAL,
         token: AppConstants.TOKEN,
         data: {'id': id}).then((response) {
       emit(DeleteMaterialSuccess());

@@ -171,6 +171,8 @@ class AppStrings {
   static const String semester = 'Semester';
   static const String selectSemester = 'Select Semester';
   static const String saveData = 'Save Data';
+  static const String unknownErrorMessage =
+      'Opps! there was an error, please try again later.';
 }
 
 class KeysManager {

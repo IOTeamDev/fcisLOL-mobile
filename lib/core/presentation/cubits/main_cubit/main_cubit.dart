@@ -78,8 +78,8 @@ class MainCubit extends Cubit<MainCubitStates> {
   Future<void> getProfileInfo() async {
     emit(GetProfileLoading());
     try {
-      final response =
-          await DioHelp.getData(path: CURRENTUSER, token: AppConstants.TOKEN);
+      final response = await DioHelp.getData(
+          path: Endpoints.CURRENTUSER, token: AppConstants.TOKEN);
       profileModel = ProfileModel.fromJson(response.data);
       AppConstants.SelectedSemester = profileModel!.semester;
       await Cache.writeData(
@@ -98,7 +98,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     emit(GetProfileLoading());
     otherProfile = null;
     await DioHelp.getData(
-        path: USERS,
+        path: Endpoints.USERS,
         query: {KeysManager.id: id ?? 1, KeysManager.haveMaterial: true}).then(
       (value) {
         print(value.data);
@@ -137,7 +137,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     emit(GetRequestsLoadingState());
     try {
       final response = await DioHelp.getData(
-        path: MATERIAL,
+        path: Endpoints.MATERIAL,
         query: {KeysManager.semester: semester, KeysManager.accepted: false},
       );
       requests = [];
@@ -159,7 +159,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     try {
       for (var semester in LocalDataProvider.semesters) {
         dynamic response = await DioHelp.getData(
-          path: MATERIAL,
+          path: Endpoints.MATERIAL,
           query: {KeysManager.semester: semester, KeysManager.accepted: false},
         );
         allSemestersRequests[semester] = [];
@@ -179,7 +179,7 @@ class MainCubit extends Cubit<MainCubitStates> {
   void deleteMaterial(int id, semester, {role, isMaterial = false}) {
     emit(DeleteMaterialLoadingState());
     DioHelp.deleteData(
-            path: MATERIAL,
+            path: Endpoints.MATERIAL,
             data: {KeysManager.id: id},
             token: AppConstants.TOKEN)
         .then((value) {
@@ -196,7 +196,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     emit(AcceptRequestLoadingState());
     try {
       await DioHelp.getData(
-          path: ACCEPT,
+          path: Endpoints.ACCEPT,
           query: {KeysManager.id: id, KeysManager.accepted: true},
           token: AppConstants.TOKEN);
       emit(AcceptRequestSuccessState());
@@ -216,7 +216,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     notAdminLeaderboardModel = [];
     emit(GetLeaderboardLoadingState());
     DioHelp.getData(
-        path: LEADERBOARD,
+        path: Endpoints.LEADERBOARD,
         query: {KeysManager.semester: currentSemester}).then((value) {
       value.data.forEach((element) {
         // exclude the admin
@@ -245,7 +245,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     DioHelp.putData(
         token: AppConstants.TOKEN,
         query: {KeysManager.id: userID},
-        path: USERS,
+        path: Endpoints.USERS,
         data: {
           if (semester != null) KeysManager.semester: semester,
           if (fcmToken != null) KeysManager.fcmToken: fcmToken,
@@ -266,7 +266,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     String? phone,
     String? name,
   }) {
-    DioHelp.patchData(token: AppConstants.TOKEN, path: USERS, data: {
+    DioHelp.patchData(token: AppConstants.TOKEN, path: Endpoints.USERS, data: {
       if (semester != null) KeysManager.semester: semester,
       if (email != null) KeysManager.email: email,
       if (photo != null) KeysManager.photo: photo,
@@ -285,7 +285,9 @@ class MainCubit extends Cubit<MainCubitStates> {
     emit(DeleteAccountLoading());
     try {
       await DioHelp.deleteData(
-          path: USERS, token: AppConstants.TOKEN, query: {KeysManager.id: id});
+          path: Endpoints.USERS,
+          token: AppConstants.TOKEN,
+          query: {KeysManager.id: id});
       await Cache.removeValue(key: KeysManager.token);
       await Cache.removeValue(key: KeysManager.semester);
 
@@ -300,7 +302,7 @@ class MainCubit extends Cubit<MainCubitStates> {
 
   void sendReportBugOrFeedBack(message, {bool isFeedback = false}) {
     DioHelp.postData(
-            path: REPORT,
+            path: Endpoints.REPORT,
             data: {'name': profileModel?.name ?? 'Guest', 'message': message})
         .then((value) {
       emit(SendingReportOrFeedBackSuccessState());
@@ -321,7 +323,7 @@ class MainCubit extends Cubit<MainCubitStates> {
   List<PreviousExamModel> previousExamsOther = [];
   void getPreviousExams(subject, {bool accepted = true}) {
     emit(GetPreviousExamsLoadingState());
-    DioHelp.getData(path: PREVIOUSEXAMS, query: {
+    DioHelp.getData(path: Endpoints.PREVIOUSEXAMS, query: {
       KeysManager.accepted: accepted,
       KeysManager.subject: subject
     }).then((value) {
@@ -350,7 +352,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     print(subject);
     print(type);
     DioHelp.patchData(
-        path: EDITPREVIOUSEXAMS,
+        path: Endpoints.EDITPREVIOUSEXAMS,
         token: AppConstants.TOKEN,
         data: {
           'id': id,
@@ -371,7 +373,7 @@ class MainCubit extends Cubit<MainCubitStates> {
     emit(DeletePreviousExamsLoadingState());
     DioHelp.deleteData(
         token: AppConstants.TOKEN,
-        path: PREVIOUSEXAMS,
+        path: Endpoints.PREVIOUSEXAMS,
         data: {KeysManager.id: id}).then((value) {
       emit(DeletePreviousExamsSuccessState());
       getPreviousExams(subject);
@@ -387,13 +389,16 @@ class MainCubit extends Cubit<MainCubitStates> {
     String type,
   ) {
     emit(AddPreviousExamsLoadingState());
-    DioHelp.postData(token: AppConstants.TOKEN, path: PREVIOUSEXAMS, data: {
-      'title': title,
-      'link': link,
-      'semester': semester,
-      'subject': subject,
-      'type': type
-    }).then((value) {
+    DioHelp.postData(
+        token: AppConstants.TOKEN,
+        path: Endpoints.PREVIOUSEXAMS,
+        data: {
+          'title': title,
+          'link': link,
+          'semester': semester,
+          'subject': subject,
+          'type': type
+        }).then((value) {
       if (currentSubject == subject &&
           (profileModel!.role == KeysManager.developer ||
               profileModel!.role == KeysManager.admin)) {
