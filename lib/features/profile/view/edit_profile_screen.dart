@@ -21,7 +21,6 @@ import 'package:lol/features/profile/view/widgets/basic_info_edit.dart';
 import 'package:lol/features/profile/view/widgets/delete_account_section.dart';
 import 'package:lol/features/profile/view/widgets/login_info_edit.dart';
 import 'package:lol/features/subject/presentation/screens/widgets/custom_tab_bar_view.dart';
-import 'package:provider/provider.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -38,7 +37,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
   void initState() {
     super.initState();
     _tabController =
-        TabController(length: 3, vsync: this, animationDuration: Duration.zero);
+        TabController(length: 2, vsync: this, animationDuration: Duration.zero);
   }
 
   @override
@@ -136,9 +135,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.vertical(
                         top: Radius.circular(AppSizesDouble.s40)),
-                    color: Provider.of<ThemeProvider>(context).isDark
-                        ? ColorsManager.grey5
-                        : ColorsManager.grey7),
+                    color: ColorsManager.grey5),
                 height: ScreenSize.height(context) / AppSizesDouble.s1_5,
                 child: Column(
                   children: [
@@ -161,43 +158,43 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                             height: AppSizesDouble.s40,
                             text: AppStrings.changePassword,
                           ),
-                          Tab(
-                            height: AppSizesDouble.s40,
-                            child: FittedBox(
-                              child: AnimatedBuilder(
-                                animation: _tabController,
-                                builder: (context, _) {
-                                  final isLastTabSelected =
-                                      _tabController.index == AppSizes.s2;
-                                  return AnimatedDefaultTextStyle(
-                                    child: Text(
-                                      AppStrings.deleteAccount,
-                                    ),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: AppSizesDouble.s16,
-                                      color: isLastTabSelected
-                                          ? ColorsManager.imperialRed
-                                          : ColorsManager.darkRed,
-                                    ),
-                                    duration:
-                                        Duration(milliseconds: AppSizes.s70),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
+                          // Tab(
+                          //   height: AppSizesDouble.s40,
+                          //   child: FittedBox(
+                          //     child: AnimatedBuilder(
+                          //       animation: _tabController,
+                          //       builder: (context, _) {
+                          //         final isLastTabSelected =
+                          //             _tabController.index == AppSizes.s2;
+                          //         return AnimatedDefaultTextStyle(
+                          //           child: Text(
+                          //             AppStrings.deleteAccount,
+                          //           ),
+                          //           style: TextStyle(
+                          //             fontWeight: FontWeight.bold,
+                          //             fontSize: AppSizesDouble.s16,
+                          //             color: isLastTabSelected
+                          //                 ? ColorsManager.imperialRed
+                          //                 : ColorsManager.darkRed,
+                          //           ),
+                          //           duration:
+                          //               Duration(milliseconds: AppSizes.s70),
+                          //         );
+                          //       },
+                          //     ),
+                          //   ),
+                          // ),
                         ]),
                     Expanded(
                         child: TabBarView(children: [
                       BasicInfoEdit(
-                          semester:
-                              MainCubit.get(context).profileModel!.semester,
-                          phone: MainCubit.get(context).profileModel!.phone,
-                          userName: MainCubit.get(context).profileModel!.name,
-                          email: MainCubit.get(context).profileModel!.email),
+                        semester: MainCubit.get(context).profileModel!.semester,
+                        phone: MainCubit.get(context).profileModel!.phone,
+                        userName: MainCubit.get(context).profileModel!.name,
+                        email: MainCubit.get(context).profileModel!.email,
+                      ),
                       LoginInfoEdit(),
-                      DeleteAccountSection(),
+                      // DeleteAccountSection(),
                     ], controller: _tabController))
                   ],
                 ),

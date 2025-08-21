@@ -70,8 +70,8 @@ class _HomeScreenState extends State<HomeScreen> {
       AdminCubit.get(context).getAnnouncements(
           MainCubit.get(context).profileModel?.semester ??
               AppConstants.SelectedSemester!);
-      MainCubit.get(context).updateUser(
-          userID: MainCubit.get(context).profileModel!.id, fcmToken: fcmToken);
+      // MainCubit.get(context).updateUser(
+      //     userID: MainCubit.get(context).profileModel!.id, fcmToken: fcmToken);
     } else {
       AdminCubit.get(context).getAnnouncements(AppConstants.SelectedSemester!);
     }

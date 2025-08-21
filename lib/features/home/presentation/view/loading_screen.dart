@@ -6,8 +6,8 @@ import 'package:lol/core/presentation/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/presentation/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/core/resources/constants/constants_manager.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
-import 'package:lol/features/otp_and_verification/presentation/view/otp_verification_screen.dart';
-import 'package:lol/features/otp_and_verification/presentation/view_model/verification_cubit/verification_cubit.dart';
+import 'package:lol/features/otp_and_verification/presentation/view/email_verification_screen.dart';
+import 'package:lol/features/otp_and_verification/presentation/cubits/verification_cubit/verification_cubit.dart';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({super.key});
@@ -29,27 +29,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
       listener: (context, state) {
         if (state is GetProfileSuccess) {
           context.goNamed(ScreensName.home);
-          /* if (context.read<MainCubit>().profileModel!.isVerified == false &&
-              context.read<MainCubit>().profileModel!.role == 'STUDENT') {
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => BlocProvider(
-                  create: (context) => VerificationCubit(),
-                  child: OtpVerificationScreen(
-                    recipientEmail: context.read<MainCubit>().profileModel!.email,
-                  ),
-                ),
-              ),
-              (route) => false,
-            );
-          } else {
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => Home(),
-              ),
-              (route) => false,
-            );
-         }*/
+          // if (context.read<MainCubit>().profileModel!.isVerified == false &&
+          //     context.read<MainCubit>().profileModel!.role == 'STUDENT') {
+          //   context.goNamed(ScreensName.emailVerification);
+          // } else {
+          //   context.goNamed(ScreensName.home);
+          // }
         }
         if (state is GetProfileFailure) {
           context.goNamed(ScreensName.home);

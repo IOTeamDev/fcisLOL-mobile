@@ -24,6 +24,7 @@ abstract class DioExceptionHandler {
           return "You are not authorized. Please log in again.";
         if (status == 403) return "Access denied. You don’t have permission.";
         if (status == 404) return "We couldn’t find what you’re looking for.";
+        if (status == 500) return e.response?.data['error'];
         return AppStrings.unknownErrorMessage;
       case DioExceptionType.cancel:
         return "The request was cancelled.";

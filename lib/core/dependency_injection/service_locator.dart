@@ -2,6 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get_it/get_it.dart';
 import 'package:googleapis_auth/auth_io.dart';
 import 'package:lol/core/dependency_injection/init_auth.dart';
+import 'package:lol/core/dependency_injection/init_verification.dart';
 import 'package:lol/features/admin/presentation/view_model/admin_cubit/admin_cubit.dart';
 import 'package:lol/features/auth/presentation/cubits/auth_cubit/auth_cubit.dart';
 import 'package:lol/features/subject/data/repos/subject_repo.dart';
@@ -21,4 +22,5 @@ void setup() {
   // Call per feature initialization
 
   initAuth();
+  initVerification();
 }

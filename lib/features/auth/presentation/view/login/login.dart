@@ -20,7 +20,7 @@ import 'package:lol/features/auth/presentation/view/register/register.dart';
 import 'package:lol/core/resources/constants/constants_manager.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/features/otp_and_verification/presentation/view/forgot_password_verification.dart';
-import 'package:lol/features/otp_and_verification/presentation/view_model/verification_cubit/verification_cubit.dart';
+import 'package:lol/features/otp_and_verification/presentation/cubits/verification_cubit/verification_cubit.dart';
 import 'package:lol/features/profile/view/profile.dart';
 import 'package:lol/core/utils/navigation.dart';
 import 'package:lol/core/network/local/shared_preference.dart';

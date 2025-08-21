@@ -13,11 +13,11 @@ import 'package:lol/core/resources/theme/values/app_strings.dart';
 import 'package:lol/features/auth/presentation/view/login/login.dart';
 import 'package:lol/features/auth/presentation/view/register/register.dart';
 import 'package:lol/features/home/presentation/view/loading_screen.dart';
-import 'package:lol/features/otp_and_verification/presentation/view_model/verification_cubit/verification_cubit.dart';
+import 'package:lol/features/otp_and_verification/presentation/cubits/verification_cubit/verification_cubit.dart';
 import 'package:lol/features/pick_image/presentation/view/select_image.dart';
 import 'package:lol/features/auth/presentation/cubits/auth_cubit/auth_cubit.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
-import 'package:lol/features/otp_and_verification/presentation/view/otp_verification_screen.dart';
+import 'package:lol/features/otp_and_verification/presentation/view/email_verification_screen.dart';
 
 class RegistrationLayout extends StatefulWidget {
   RegistrationLayout({super.key});
@@ -53,11 +53,17 @@ class _RegistrationLayoutState extends State<RegistrationLayout>
         if (state is RegisterSuccess) {
           AppConstants.TOKEN = state.token;
           Cache.writeData(key: KeysManager.token, value: state.token);
+          // showToastMessage(
+          //   message: state.message,
+          //   states: ToastStates.SUCCESS,
+          // );
           showToastMessage(
-            message: state.message,
+            message: "Your account has been created successfully.",
             states: ToastStates.SUCCESS,
           );
-          context.goNamed(ScreensName.loading);
+          context.replaceNamed(ScreensName.selectImage);
+
+          // context.goNamed(ScreensName.loading);
         }
         if (state is RegisterFailed) {
           showToastMessage(

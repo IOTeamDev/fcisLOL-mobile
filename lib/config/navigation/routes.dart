@@ -8,9 +8,13 @@ abstract class Routes {
   static const String register = '/register';
   static const String registrationLayout = '/registrationLayout';
   static const String choosingYear = '/choosingYear';
+  static const String selectImage = '/selectImage';
 
   //Home Routes
   static const String home = '/home';
+
+  // Verification Routes
+  static const String emailVerification = '/emailVerification';
 
   static const String main = '/main';
   static const String error = '/error';
@@ -29,9 +33,13 @@ abstract class ScreensName {
   static const String register = 'register';
   static const String registrationLayout = 'registrationLayout';
   static const String choosingYear = 'choosingYear';
+  static const String selectImage = 'selectImage';
 
   //Home
   static const String home = 'home';
+
+  // Verification
+  static const String emailVerification = 'emailVerification';
 
   static const String main = 'main';
   static const String error = 'error';

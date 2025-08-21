@@ -44,7 +44,7 @@ class AuthApiDataSourceImpl implements AuthApiDataSource {
       log('login Model: ${loginModel.toString()}');
       return Right(loginModel);
     } on DioException catch (e) {
-      return left(Failure(
+      return Left(Failure(
           message: DioExceptionHandler.getMessage(
             e: e,
             badResponseMessage:
@@ -70,7 +70,7 @@ class AuthApiDataSourceImpl implements AuthApiDataSource {
       LoginModel loginModel = LoginModel.fromJson(response.data);
       return Right(loginModel);
     } on DioException catch (e) {
-      return left(Failure(
+      return Left(Failure(
           message: DioExceptionHandler.getMessage(
             e: e,
             badResponseMessage: e.response?.data['error'],
@@ -96,7 +96,7 @@ class AuthApiDataSourceImpl implements AuthApiDataSource {
       AppConstants.SelectedSemester = null;
       return Right(deletedUserEmail);
     } on DioException catch (e) {
-      return left(Failure(
+      return Left(Failure(
           message: DioExceptionHandler.getMessage(
             e: e,
             badResponseMessage: e.response?.data['error'],

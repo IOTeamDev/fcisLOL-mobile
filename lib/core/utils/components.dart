@@ -70,9 +70,7 @@ class materialBuilder extends StatelessWidget {
       padding: EdgeInsets.all(AppSizesDouble.s15),
       decoration: BoxDecoration(
         //color: ColorsManager.darkPrimary,
-        color: Provider.of<ThemeProvider>(context).isDark
-            ? ColorsManager.darkPrimary
-            : ColorsManager.white,
+        color: ColorsManager.darkPrimary,
         borderRadius: BorderRadius.circular(AppSizesDouble.s20),
       ),
       height: AppSizesDouble.s170,

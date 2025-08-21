@@ -210,9 +210,7 @@ class Profile extends StatelessWidget {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.vertical(
                             top: Radius.circular(AppSizesDouble.s40)),
-                        color: Provider.of<ThemeProvider>(context).isDark
-                            ? ColorsManager.grey5
-                            : ColorsManager.grey7),
+                        color: ColorsManager.grey5),
                     padding: EdgeInsets.symmetric(
                         vertical: AppPaddings.p20, horizontal: AppPaddings.p25),
                     child: Column(
@@ -228,9 +226,7 @@ class Profile extends StatelessWidget {
                                 )),
                         divider(
                             height: AppSizesDouble.s20,
-                            color: Provider.of<ThemeProvider>(context).isDark
-                                ? ColorsManager.white
-                                : ColorsManager.black),
+                            color: ColorsManager.white),
                         Expanded(
                           child: ConditionalBuilder(
                               condition: mainCubit

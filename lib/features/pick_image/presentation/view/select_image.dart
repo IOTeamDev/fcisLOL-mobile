@@ -38,151 +38,144 @@ class _SelectImageState extends State<SelectImage> {
   File? _image;
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => PickImageCubit(),
-      child: BlocListener<PickImageCubit, PickImageState>(
-        listener: (context, state) {
-          if (state is UploadImageFailed) {
-            showToastMessage(
-                message: state.errMessage, states: ToastStates.ERROR);
-          }
-          if (state is UpdateUserImageFailed) {
-            showToastMessage(
-                message: state.errMessage, states: ToastStates.ERROR);
-          }
+    return BlocListener<PickImageCubit, PickImageState>(
+      listener: (context, state) {
+        if (state is UploadImageFailed) {
+          showToastMessage(
+              message: state.errMessage, states: ToastStates.ERROR);
+        }
+        if (state is UpdateUserImageFailed) {
+          showToastMessage(
+              message: state.errMessage, states: ToastStates.ERROR);
+        }
 
-          if (state is UploadImageSuccess) {
-            context
-                .read<PickImageCubit>()
-                .updateProfileImage(imageUrl: state.imageUrl);
-          }
+        if (state is UploadImageSuccess) {
+          _updateProfileImage(imageUrl: state.imageUrl);
+        }
 
-          if (state is UpdateUserImageSuccess) {
-            showToastMessage(
-                message: 'Image Uploaded Successfully',
-                states: ToastStates.SUCCESS);
-
-            context.replaceNamed(ScreensName.home);
-          }
-        },
-        child: Stack(
-          children: [
-            Scaffold(
-              appBar: AppBar(
-                automaticallyImplyLeading: false,
-                title: Text(AppStrings.profileImage,
-                    style: Theme.of(context).textTheme.displayMedium!),
-                centerTitle: true,
-              ),
-              body: Center(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CircleAvatar(
-                        radius: ScreenSize.width(context) / AppSizes.s6,
-                        backgroundImage: _image == null
-                            ? AssetImage(AppConstants.noneLoggedInDefaultImage)
-                            : FileImage(File(_image!.path)),
-                      ),
-                      SizedBox(
-                        height: AppSizesDouble.s50,
-                      ),
-                      SizedBox(
-                        width: ScreenSize.width(context) / AppSizesDouble.s1_5,
-                        child: ElevatedButton.icon(
-                          iconAlignment: IconAlignment.end,
-                          icon: Icon(
-                            AppIcons.imageIcon,
-                            color: ColorsManager.black,
-                            size: AppSizesDouble.s25,
-                          ),
-                          label: Text(
-                            _image == null ? 'Choose Image' : _image!.path,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleLarge!
-                                .copyWith(color: ColorsManager.black),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.symmetric(
-                                vertical: AppPaddings.p20,
-                              ),
-                              backgroundColor: ColorsManager.white,
-                              foregroundColor: ColorsManager.black,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      AppSizesDouble.s20))),
-                          onPressed: () async {
-                            _image = await context
-                                .read<PickImageCubit>()
-                                .pickImage();
-                            if (_image != null) {
-                              setState(() {});
-                            }
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        height: AppSizesDouble.s15,
-                      ),
-
-                      // Next Button
-                      SizedBox(
-                        width: ScreenSize.width(context) / AppSizesDouble.s1_5,
-                        child: ElevatedButton.icon(
-                          iconAlignment: IconAlignment.end,
-                          label: Text(AppStrings.next,
-                              style: Theme.of(context).textTheme.titleLarge!),
-                          icon: Icon(
-                            AppIcons.leftArrowIcon,
-                            color: ColorsManager.white,
-                            size: AppSizesDouble.s30,
-                          ),
-                          style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.symmetric(
-                                vertical: AppPaddings.p20,
-                              ),
-                              backgroundColor: ColorsManager.lightPrimary,
-                              foregroundColor: ColorsManager.white,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      AppSizesDouble.s20))),
-                          onPressed: () async {
-                            if (_image == null) {
-                              context.goNamed(ScreensName.home);
-                            } else {
-                              await context
-                                  .read<PickImageCubit>()
-                                  .uploadUserImage(
-                                    image: _image!,
-                                  );
-                            }
-                          },
-                        ),
-                      ),
-                    ]),
-              ),
+        if (state is UpdateUserImageSuccess) {
+          showToastMessage(
+              message: 'Image Uploaded Successfully',
+              states: ToastStates.SUCCESS);
+          context.goNamed(ScreensName.loading);
+        }
+      },
+      child: Stack(
+        children: [
+          Scaffold(
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              title: Text(AppStrings.profileImage,
+                  style: Theme.of(context).textTheme.displayMedium!),
+              centerTitle: true,
             ),
-            BlocBuilder<PickImageCubit, PickImageState>(
-              builder: (context, state) {
-                if (state is UploadImageLoading ||
-                    state is UpdateUserImageLoading) {
-                  return ColoredBox(
-                    color: Colors.black.withValues(
-                      alpha: 0.5,
-                    ), // Transparent black background
-                    child: Center(
-                      child: CircularProgressIndicator(), // Loading Indicator
+            body: Center(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      radius: ScreenSize.width(context) / AppSizes.s6,
+                      backgroundImage: _image == null
+                          ? AssetImage(AppConstants.noneLoggedInDefaultImage)
+                          : FileImage(File(_image!.path)),
                     ),
-                  );
-                }
-                return const SizedBox.shrink();
-              },
-            )
-          ],
-        ),
+                    SizedBox(
+                      height: AppSizesDouble.s50,
+                    ),
+                    SizedBox(
+                      width: ScreenSize.width(context) / AppSizesDouble.s1_5,
+                      child: ElevatedButton.icon(
+                        iconAlignment: IconAlignment.end,
+                        icon: Icon(
+                          AppIcons.imageIcon,
+                          color: ColorsManager.black,
+                          size: AppSizesDouble.s25,
+                        ),
+                        label: Text(
+                          _image == null ? 'Choose Image' : _image!.path,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleLarge!
+                              .copyWith(color: ColorsManager.black),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(
+                              vertical: AppPaddings.p20,
+                            ),
+                            backgroundColor: ColorsManager.white,
+                            foregroundColor: ColorsManager.black,
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.circular(AppSizesDouble.s20))),
+                        onPressed: () async {
+                          _image =
+                              await context.read<PickImageCubit>().pickImage();
+                          if (_image != null) {
+                            setState(() {});
+                          }
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: AppSizesDouble.s15,
+                    ),
+
+                    // Next Button
+                    SizedBox(
+                      width: ScreenSize.width(context) / AppSizesDouble.s1_5,
+                      child: ElevatedButton.icon(
+                        iconAlignment: IconAlignment.end,
+                        label: Text(AppStrings.next,
+                            style: Theme.of(context).textTheme.titleLarge!),
+                        icon: Icon(
+                          AppIcons.leftArrowIcon,
+                          color: ColorsManager.white,
+                          size: AppSizesDouble.s30,
+                        ),
+                        style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(
+                              vertical: AppPaddings.p20,
+                            ),
+                            backgroundColor: ColorsManager.lightPrimary,
+                            foregroundColor: ColorsManager.white,
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.circular(AppSizesDouble.s20))),
+                        onPressed: () async {
+                          if (_image != null) {
+                            await context
+                                .read<PickImageCubit>()
+                                .uploadUserImage(image: _image!);
+                          }
+                        },
+                      ),
+                    ),
+                  ]),
+            ),
+          ),
+          BlocBuilder<PickImageCubit, PickImageState>(
+            builder: (context, state) {
+              if (state is UploadImageLoading ||
+                  state is UpdateUserImageLoading) {
+                return ColoredBox(
+                  color: Colors.black.withValues(
+                    alpha: 0.5,
+                  ), // Transparent black background
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
+              return const SizedBox.shrink();
+            },
+          )
+        ],
       ),
     );
+  }
+
+  Future<void> _updateProfileImage({required String imageUrl}) async {
+    await context.read<PickImageCubit>().updateProfileImage(imageUrl: imageUrl);
   }
 }

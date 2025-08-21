@@ -41,12 +41,12 @@ class AppStrings {
   static const String seven = 'Seven';
   static const String eight = 'Eight';
   static const String notFoundErrorCode = '404';
-  static const String noCodeReceived = "didn't Receive a code?";
+  static const String noEmailReceived = "didn't Receive an email?";
   static const String sendAgain = 'Send Again';
   static const String verify = 'Verify';
   static const String changePassword = 'Change Password';
   static const String newPassword = 'New Password';
-  static const String otpVerification = 'OTP Verification';
+  static const String emailVerification = 'Email Verification';
   static const String mailIsNowVerified = 'Your Email is verified now.';
   static const String verificationComplete = 'Verification Success';
   static const String thisLinkIsCorrupted = 'This link is Corrupted';
@@ -173,6 +173,9 @@ class AppStrings {
   static const String saveData = 'Save Data';
   static const String unknownErrorMessage =
       'Opps! there was an error, please try again later.';
+
+  static const String sendEmailFailedMessage =
+      'Unable to send email verification now. Please try again later.';
 }
 
 class KeysManager {

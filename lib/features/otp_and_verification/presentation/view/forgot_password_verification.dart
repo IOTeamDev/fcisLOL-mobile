@@ -15,7 +15,7 @@ import 'package:lol/features/auth/presentation/view/registration_layout.dart';
 import 'package:lol/features/auth/presentation/cubits/auth_cubit/auth_cubit.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/features/otp_and_verification/presentation/view/widgets/change_email_pop_up.dart';
-import 'package:lol/features/otp_and_verification/presentation/view_model/verification_cubit/verification_cubit.dart';
+import 'package:lol/features/otp_and_verification/presentation/cubits/verification_cubit/verification_cubit.dart';
 import 'package:lol/features/pick_image/presentation/view/select_image.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
@@ -94,7 +94,7 @@ class _OtpVerificationScreenState extends State<ForgotPasswordVerification> {
                     ),
                     FittedBox(
                         child: Text(
-                      AppStrings.otpVerification,
+                      AppStrings.emailVerification,
                       style: Theme.of(context).textTheme.displayMedium,
                     )),
                     SizedBox(
@@ -314,7 +314,7 @@ class _OtpVerificationScreenState extends State<ForgotPasswordVerification> {
                                   height: AppSizesDouble.s50,
                                 ),
                                 Text(
-                                  AppStrings.noCodeReceived,
+                                  AppStrings.noEmailReceived,
                                   style: TextStyle(
                                       color: ColorsManager.lightGrey1),
                                 ),

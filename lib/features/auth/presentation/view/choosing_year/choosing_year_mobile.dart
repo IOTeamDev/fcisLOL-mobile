@@ -183,10 +183,7 @@ class _ChoosingYearState extends State<ChoosingYearMobile> {
       AppConstants.SelectedSemester = selectedSemester;
       await Cache.writeData(key: KeysManager.semester, value: selectedSemester);
       AppConstants.navigatedSemester = AppConstants.SelectedSemester;
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => LoadingScreen()),
-          (route) => false);
+      context.goNamed(ScreensName.loading);
     } else {
       showToastMessage(
         message: 'Please select a semester',

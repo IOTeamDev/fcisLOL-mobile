@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lol/core/resources/theme/values/app_strings.dart';
-import 'package:lol/features/otp_and_verification/presentation/view_model/verification_cubit/verification_cubit.dart';
+import 'package:lol/features/otp_and_verification/presentation/cubits/verification_cubit/verification_cubit.dart';
 
 import '../../../../../core/resources/theme/colors_manager.dart';
 import '../../../../../core/resources/theme/values/values_manager.dart';
@@ -9,7 +9,7 @@ import '../../../../../core/resources/theme/values/values_manager.dart';
 class ChangeEmailPopUp extends StatefulWidget {
   ChangeEmailPopUp({super.key, required this.currentEmail});
 
-  late String currentEmail;
+  final String currentEmail;
 
   @override
   State<ChangeEmailPopUp> createState() => _ChangeEmailPopUpState();

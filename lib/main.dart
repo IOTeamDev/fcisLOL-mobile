@@ -54,16 +54,16 @@ main() async {
     debugPrint('error occurred $error');
   });
 
-  await FirebaseFirestore.instance
-      .collection("4notifications")
-      .doc("private_keys")
-      .get()
-      .then((value) {
-    fcisServiceMap = value.data()?["fcisServiceMap"];
-    privateKey = value.data()?["private_key"];
-    privateKeyId = value.data()?["private_key_id"];
-    privateKey = privateKey!.replaceAll(r'\n', '\n').trim();
-  });
+  // await FirebaseFirestore.instance
+  //     .collection("4notifications")
+  //     .doc("private_keys")
+  //     .get()
+  //     .then((value) {
+  //   fcisServiceMap = value.data()?["fcisServiceMap"];
+  //   privateKey = value.data()?["private_key"];
+  //   privateKeyId = value.data()?["private_key_id"];
+  //   privateKey = privateKey!.replaceAll(r'\n', '\n').trim();
+  // });
 
   Bloc.observer = MyBlocObserver();
 
@@ -74,7 +74,10 @@ main() async {
   ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
     return ErrorScreen(errorDetails: errorDetails);
   };
-  runApp(const Uninotes());
+  runApp(ChangeNotifierProvider(
+    create: (context) => ThemeProvider(),
+    child: const Uninotes(),
+  ));
 }
 
 class Uninotes extends StatelessWidget {
