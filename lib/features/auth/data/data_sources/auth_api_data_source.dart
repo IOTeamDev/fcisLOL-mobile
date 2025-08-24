@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:lol/core/errors/dio_exception_handler.dart';
@@ -34,8 +32,6 @@ class AuthApiDataSourceImpl implements AuthApiDataSource {
   Future<Either<Failure, LoginModel>> serverLogin({
     required LoginRequestModel loginRequestModel,
   }) async {
-    log('request Model: ${loginRequestModel.toString()}');
-
     try {
       final response = await DioHelp.postData(
         path: Endpoints.LOGIN,
@@ -43,7 +39,6 @@ class AuthApiDataSourceImpl implements AuthApiDataSource {
       );
 
       final loginModel = LoginModel.fromJson(response.data);
-      log('login Model: ${loginModel.toString()}');
       return Right(loginModel);
     } on DioException catch (e) {
       return Left(Failure(

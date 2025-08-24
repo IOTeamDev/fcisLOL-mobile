@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lol/config/navigation/routes.dart';
+import 'package:lol/core/dependency_injection/service_locator.dart';
 import 'package:lol/core/network/local/shared_preference.dart';
 import 'package:lol/core/presentation/widgets/default_loading_indicator.dart';
 import 'package:lol/core/utils/components.dart';
