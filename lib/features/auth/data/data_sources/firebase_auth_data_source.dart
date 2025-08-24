@@ -18,9 +18,9 @@ abstract class FirebaseAuthDataSource {
 
   Future<Either<Failure, void>> firebaseLogout();
 
-  Future<Either<Failure, void>> sendEmailVerification();
+  Future<Either<Failure, void>> firebaseDeleteAccount();
 
-//  Future<Either<Failure, void>> logout();
+  Future<Either<Failure, void>> sendEmailVerification();
 }
 
 class FirebaseAuthDataSourceImpl extends FirebaseAuthDataSource {
@@ -68,6 +68,18 @@ class FirebaseAuthDataSourceImpl extends FirebaseAuthDataSource {
   Future<Either<Failure, void>> firebaseLogout() async {
     try {
       await _firebaseAuth.signOut();
+      return Right(null);
+    } on FirebaseAuthException catch (e) {
+      return Left(Failure(message: _mapFirebaseAuthError(e.code)));
+    } catch (e) {
+      return Left(Failure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> firebaseDeleteAccount() async {
+    try {
+      await _firebaseAuth.currentUser!.delete();
       return Right(null);
     } on FirebaseAuthException catch (e) {
       return Left(Failure(message: _mapFirebaseAuthError(e.code)));
