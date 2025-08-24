@@ -5,6 +5,7 @@ import 'package:lol/features/auth/data/data_sources/auth_api_data_source.dart';
 import 'package:lol/features/auth/data/data_sources/firebase_auth_data_source.dart';
 import 'package:lol/features/auth/domain/repos/auth_repo.dart';
 import 'package:lol/features/auth/data/repos/auth_repo_impl.dart';
+import 'package:lol/features/auth/domain/use_cases/delete_account_use_case.dart';
 import 'package:lol/features/auth/domain/use_cases/logout_use_case.dart';
 
 void initAuth() {
@@ -29,5 +30,9 @@ void initAuth() {
   // Use Cases
   getIt.registerLazySingleton<LogoutUseCase>(
     () => LogoutUseCase(getIt<AuthRepo>()),
+  );
+
+  getIt.registerLazySingleton<DeleteAccountUseCase>(
+    () => DeleteAccountUseCase(getIt<AuthRepo>()),
   );
 }

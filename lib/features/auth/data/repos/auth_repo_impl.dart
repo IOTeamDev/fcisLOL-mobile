@@ -154,9 +154,9 @@ class AuthRepoImpl extends AuthRepo {
   @override
   Future<Either<Failure, void>> deleteAccount({required int userId}) async {
     try {
-      final result =
+      final serverResult =
           await _authApiDataSource.serverDeleteAccount(userId: userId);
-      return await result.fold(
+      return await serverResult.fold(
         (serverFailure) {
           return Left(serverFailure);
         },

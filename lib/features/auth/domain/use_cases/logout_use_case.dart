@@ -6,7 +6,7 @@ class LogoutUseCase {
   final AuthRepo _authRepo;
   LogoutUseCase(this._authRepo);
 
-  Future<Either<Failure, void>> call() async {
-    return await _authRepo.logout();
+  Future<Either<Failure, void>> call() {
+    return _authRepo.logout();
   }
 }

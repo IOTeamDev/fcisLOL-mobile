@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:math';
-import 'dart:developer' as dev;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +16,7 @@ import 'package:lol/core/resources/constants/constants_manager.dart';
 import 'package:lol/core/presentation/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/core/models/profile/profile_model.dart';
 import 'package:lol/features/auth/domain/repos/auth_repo.dart';
+import 'package:lol/features/auth/domain/use_cases/delete_account_use_case.dart';
 import 'package:lol/features/auth/domain/use_cases/logout_use_case.dart';
 import 'package:lol/features/auth/presentation/view/choosing_year/choosing_year.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
@@ -285,19 +285,18 @@ class MainCubit extends Cubit<MainCubitStates> {
   Future<void> deleteAccount({required int id}) async {
     emit(DeleteAccountLoading());
     try {
-      await DioHelp.deleteData(
-          path: Endpoints.USERS,
-          token: AppConstants.TOKEN,
-          query: {KeysManager.id: id});
-      await Cache.removeValue(key: KeysManager.token);
-      await Cache.removeValue(key: KeysManager.semester);
-
-      AppConstants.TOKEN = null;
-      AppConstants.SelectedSemester = null;
-      emit(DeleteAccountSuccessState());
+      final result = await getIt<DeleteAccountUseCase>().call(userId: id);
+      result.fold(
+        (failure) {
+          emit(DeleteAccountFailed(errMessage: failure.message));
+        },
+        (_) {
+          emit(DeleteAccountSuccessState());
+        },
+      );
     } catch (e) {
       debugPrint(e.toString());
-      emit(DeleteAccountFailed(errMessage: e.toString()));
+      emit(DeleteAccountFailed(errMessage: AppStrings.unknownErrorMessage));
     }
   }
 

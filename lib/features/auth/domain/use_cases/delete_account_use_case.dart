@@ -7,7 +7,7 @@ class DeleteAccountUseCase {
 
   DeleteAccountUseCase(this._authRepo);
 
-  Future<Either<Failure, void>> call({required int userId}) async {
-    return await _authRepo.deleteAccount(userId: userId);
+  Future<Either<Failure, void>> call({required int userId}) {
+    return _authRepo.deleteAccount(userId: userId);
   }
 }
