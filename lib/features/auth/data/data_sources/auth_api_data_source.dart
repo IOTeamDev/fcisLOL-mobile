@@ -24,7 +24,7 @@ abstract class AuthApiDataSource {
   Future<Either<Failure, void>> serverLogout();
 
   // returns the failture if there was an error. else, returns the deleted user email
-  Future<Either<Failure, String>> serverDeleteAccount({required int id});
+  Future<Either<Failure, String>> serverDeleteAccount({required int userId});
 }
 
 class AuthApiDataSourceImpl implements AuthApiDataSource {
@@ -95,7 +95,8 @@ class AuthApiDataSourceImpl implements AuthApiDataSource {
     }
   }
 
-  Future<Either<Failure, String>> serverDeleteAccount({required int id}) async {
+  Future<Either<Failure, String>> serverDeleteAccount(
+      {required int userId}) async {
     try {
       final response = await DioHelp.deleteData(
         path: Endpoints.USERS,

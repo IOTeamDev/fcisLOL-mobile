@@ -111,7 +111,7 @@ class AuthRepoImpl extends AuthRepo {
           return await firebaseResult.fold(
             (firebaseFailure) async {
               await _authApiDataSource.serverDeleteAccount(
-                id: loginModel.user.id!,
+                userId: loginModel.user.id!,
               );
               return Left(firebaseFailure);
             },
@@ -143,6 +143,25 @@ class AuthRepoImpl extends AuthRepo {
         },
         (_) async {
           await _firebaseAuthDataSource.firebaseLogout();
+          return Right(null);
+        },
+      );
+    } catch (e) {
+      return Left(Failure(message: AppStrings.unknownErrorMessage));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteAccount({required int userId}) async {
+    try {
+      final result =
+          await _authApiDataSource.serverDeleteAccount(userId: userId);
+      return await result.fold(
+        (serverFailure) {
+          return Left(serverFailure);
+        },
+        (_) async {
+          await _firebaseAuthDataSource.firebaseDeleteAccount();
           return Right(null);
         },
       );

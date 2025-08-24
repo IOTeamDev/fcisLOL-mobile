@@ -49,4 +49,6 @@ abstract class AuthRepo {
   });
 
   Future<Either<Failure, void>> logout();
+
+  Future<Either<Failure, void>> deleteAccount({required int userId});
 }
