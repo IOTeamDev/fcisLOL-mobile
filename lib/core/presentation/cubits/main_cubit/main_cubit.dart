@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lol/core/data/local_data_provider.dart';
+import 'package:lol/core/dependency_injection/service_locator.dart';
 import 'package:lol/core/models/current_user/current_user_model.dart';
 import 'package:lol/core/models/leaderboard/leaderboard_model.dart';
 import 'package:lol/core/resources/theme/values/app_strings.dart';
@@ -15,6 +16,7 @@ import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/resources/constants/constants_manager.dart';
 import 'package:lol/core/presentation/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/core/models/profile/profile_model.dart';
+import 'package:lol/features/auth/data/repos/auth_repo.dart';
 import 'package:lol/features/auth/presentation/view/choosing_year/choosing_year.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/core/network/endpoints.dart';
@@ -108,26 +110,24 @@ class MainCubit extends Cubit<MainCubitStates> {
     );
   }
 
-  Future<void> logout(context) async {
+  Future<void> logout() async {
     try {
-      await Cache.removeValue(key: KeysManager.token);
-      await Cache.removeValue(key: KeysManager.semester);
+      final result = await getIt<AuthRepo>().logout();
+      result.fold(
+        (failure) {
+          emit(LogoutFailed(errMessage: failure.message));
+        },
+        (_) {
+          profileModel = null;
+          previousExamsMid.clear();
+          previousExamsFinal.clear();
+          previousExamsOther.clear();
 
-      AppConstants.TOKEN = null;
-      AppConstants.SelectedSemester = null;
-      AppConstants.previousExamsSelectedSubject = null;
-      AppConstants.previousExamsSelectedSemester = null;
-      AppConstants.navigatedSemester = null;
-
-      profileModel = null;
-      previousExamsMid.clear();
-      previousExamsFinal.clear();
-      previousExamsOther.clear();
-
-      emit(LogoutSuccess());
+          emit(LogoutSuccess());
+        },
+      );
     } catch (e) {
-      debugPrint('logoutFailed => $e');
-      emit(LogoutFailed(errMessage: e.toString()));
+      emit(LogoutFailed(errMessage: AppStrings.unknownErrorMessage));
     }
   }
 

@@ -389,7 +389,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             btnOkText: AppStrings.logOut,
                             btnCancelColor: ColorsManager.grey,
                             btnOkOnPress: () {
-                              MainCubit.get(context).logout(context);
+                              MainCubit.get(context).logout();
                             },
                           ).show();
                         } else {

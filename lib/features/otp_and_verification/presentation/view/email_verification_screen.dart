@@ -71,7 +71,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
           actions: [
             IconButton(
                 onPressed: () async {
-                  await context.read<MainCubit>().logout(context);
+                  await context.read<MainCubit>().logout();
                 },
                 icon: Icon(Icons.logout))
           ],
