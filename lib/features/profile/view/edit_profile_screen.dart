@@ -37,7 +37,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
   void initState() {
     super.initState();
     _tabController =
-        TabController(length: 2, vsync: this, animationDuration: Duration.zero);
+        TabController(length: 3, vsync: this, animationDuration: Duration.zero);
   }
 
   @override
@@ -158,32 +158,32 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                             height: AppSizesDouble.s40,
                             text: AppStrings.changePassword,
                           ),
-                          // Tab(
-                          //   height: AppSizesDouble.s40,
-                          //   child: FittedBox(
-                          //     child: AnimatedBuilder(
-                          //       animation: _tabController,
-                          //       builder: (context, _) {
-                          //         final isLastTabSelected =
-                          //             _tabController.index == AppSizes.s2;
-                          //         return AnimatedDefaultTextStyle(
-                          //           child: Text(
-                          //             AppStrings.deleteAccount,
-                          //           ),
-                          //           style: TextStyle(
-                          //             fontWeight: FontWeight.bold,
-                          //             fontSize: AppSizesDouble.s16,
-                          //             color: isLastTabSelected
-                          //                 ? ColorsManager.imperialRed
-                          //                 : ColorsManager.darkRed,
-                          //           ),
-                          //           duration:
-                          //               Duration(milliseconds: AppSizes.s70),
-                          //         );
-                          //       },
-                          //     ),
-                          //   ),
-                          // ),
+                          Tab(
+                            height: AppSizesDouble.s40,
+                            child: FittedBox(
+                              child: AnimatedBuilder(
+                                animation: _tabController,
+                                builder: (context, _) {
+                                  final isLastTabSelected =
+                                      _tabController.index == AppSizes.s2;
+                                  return AnimatedDefaultTextStyle(
+                                    child: Text(
+                                      AppStrings.deleteAccount,
+                                    ),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: AppSizesDouble.s16,
+                                      color: isLastTabSelected
+                                          ? ColorsManager.imperialRed
+                                          : ColorsManager.darkRed,
+                                    ),
+                                    duration:
+                                        Duration(milliseconds: AppSizes.s70),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
                         ]),
                     Expanded(
                         child: TabBarView(children: [
@@ -194,7 +194,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                         email: MainCubit.get(context).profileModel!.email,
                       ),
                       LoginInfoEdit(),
-                      // DeleteAccountSection(),
+                      DeleteAccountSection(),
                     ], controller: _tabController))
                   ],
                 ),

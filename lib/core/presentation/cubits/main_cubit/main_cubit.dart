@@ -291,7 +291,7 @@ class MainCubit extends Cubit<MainCubitStates> {
           emit(DeleteAccountFailed(errMessage: failure.message));
         },
         (_) {
-          emit(DeleteAccountSuccessState());
+          emit(DeleteAccountSuccess());
         },
       );
     } catch (e) {

@@ -93,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
             message: 'Unable to delete your account now',
             states: ToastStates.ERROR);
       }
-      if (state is DeleteAccountSuccessState) {
+      if (state is DeleteAccountSuccess) {
         showToastMessage(
             message: 'Your Account was deleted', states: ToastStates.SUCCESS);
         context.goNamed(ScreensName.registrationLayout);

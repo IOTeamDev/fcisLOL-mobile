@@ -89,7 +89,7 @@ final class DeleteAccountFailed extends MainCubitStates {
   DeleteAccountFailed({required this.errMessage});
 }
 
-final class DeleteAccountSuccessState extends MainCubitStates {}
+final class DeleteAccountSuccess extends MainCubitStates {}
 
 final class SendingReportOrFeedBackSuccessState extends MainCubitStates {}
 
