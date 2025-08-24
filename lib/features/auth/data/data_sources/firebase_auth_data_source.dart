@@ -18,6 +18,8 @@ abstract class FirebaseAuthDataSource {
     required LoginRequestModel loginRequestModel,
   });
 
+  Future<Either<Failure, void>> firebaseLogout();
+
   Future<Either<Failure, void>> sendEmailVerification();
 
 //  Future<Either<Failure, void>> logout();
@@ -40,8 +42,7 @@ class FirebaseAuthDataSourceImpl extends FirebaseAuthDataSource {
       );
       return Right(null);
     } on FirebaseAuthException catch (e) {
-      final errMessage = _mapFirebaseAuthError(e.code);
-      return Left(Failure(message: errMessage, code: e.code));
+      return Left(Failure(message: _mapFirebaseAuthError(e.code)));
     } catch (e) {
       return Left(Failure(message: 'Unexpected error: ${e.toString()}'));
     }
@@ -56,15 +57,22 @@ class FirebaseAuthDataSourceImpl extends FirebaseAuthDataSource {
         email: loginRequestModel.email,
         password: loginRequestModel.password,
       );
-      if (userCredential.user == null) {
-        log('Firebase login failed: UserCredential is null');
-      } else {
-        log('Firebase login successful: ${userCredential.user?.email}');
-      }
+
       return Right(userCredential);
     } on FirebaseAuthException catch (e) {
-      final errMessage = _mapFirebaseAuthError(e.code);
-      return Left(Failure(message: errMessage, code: e.code));
+      return Left(Failure(message: _mapFirebaseAuthError(e.code)));
+    } catch (e) {
+      return Left(Failure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> firebaseLogout() async {
+    try {
+      await _firebaseAuth.signOut();
+      return Right(null);
+    } on FirebaseAuthException catch (e) {
+      return Left(Failure(message: _mapFirebaseAuthError(e.code)));
     } catch (e) {
       return Left(Failure(message: e.toString()));
     }
