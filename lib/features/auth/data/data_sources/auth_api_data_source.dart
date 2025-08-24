@@ -23,6 +23,8 @@ abstract class AuthApiDataSource {
     required RegisterRequestModel registrationUserModel,
   });
 
+  Future<Either<Failure, void>> serverLogout();
+
   // returns the failture if there was an error. else, returns the deleted user email
   Future<Either<Failure, String>> serverDeleteAccount({required int id});
 }
@@ -76,6 +78,23 @@ class AuthApiDataSourceImpl implements AuthApiDataSource {
             badResponseMessage: e.response?.data['error'],
           ),
           code: e.response?.statusCode.toString()));
+    } catch (e) {
+      return Left(Failure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> serverLogout() async {
+    try {
+      await Cache.removeValue(key: KeysManager.token);
+      await Cache.removeValue(key: KeysManager.semester);
+
+      AppConstants.TOKEN = null;
+      AppConstants.SelectedSemester = null;
+      AppConstants.previousExamsSelectedSubject = null;
+      AppConstants.previousExamsSelectedSemester = null;
+      AppConstants.navigatedSemester = null;
+      return Right(null);
     } catch (e) {
       return Left(Failure(message: e.toString()));
     }
