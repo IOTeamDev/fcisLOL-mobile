@@ -12,7 +12,7 @@ import 'package:lol/features/auth/data/data_sources/firebase_auth_data_source.da
 import 'package:lol/features/auth/data/models/login_model.dart';
 import 'package:lol/features/auth/data/models/login_request_model.dart';
 import 'package:lol/features/auth/data/models/register_request_model.dart';
-import 'package:lol/features/auth/data/repos/auth_repo.dart';
+import 'package:lol/features/auth/domain/repos/auth_repo.dart';
 import 'package:lol/features/auth/presentation/auth_constants/auth_strings.dart';
 
 class AuthRepoImpl extends AuthRepo {

@@ -18,7 +18,7 @@ import 'package:lol/core/resources/theme/values/app_strings.dart';
 import 'package:lol/features/auth/data/models/login_model.dart';
 import 'package:lol/features/auth/data/models/login_request_model.dart';
 import 'package:lol/features/auth/data/models/register_request_model.dart';
-import 'package:lol/features/auth/data/repos/auth_repo.dart';
+import 'package:lol/features/auth/domain/repos/auth_repo.dart';
 import 'package:lol/features/auth/presentation/auth_constants/auth_strings.dart';
 import 'package:lol/features/auth/presentation/view/choosing_year/choosing_year.dart';
 import 'package:lol/features/home/presentation/view/home.dart';

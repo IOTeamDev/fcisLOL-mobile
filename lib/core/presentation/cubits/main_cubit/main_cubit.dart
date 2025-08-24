@@ -16,7 +16,8 @@ import 'package:lol/core/utils/components.dart';
 import 'package:lol/core/resources/constants/constants_manager.dart';
 import 'package:lol/core/presentation/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/core/models/profile/profile_model.dart';
-import 'package:lol/features/auth/data/repos/auth_repo.dart';
+import 'package:lol/features/auth/domain/repos/auth_repo.dart';
+import 'package:lol/features/auth/domain/use_cases/logout_use_case.dart';
 import 'package:lol/features/auth/presentation/view/choosing_year/choosing_year.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
 import 'package:lol/core/network/endpoints.dart';
@@ -112,7 +113,7 @@ class MainCubit extends Cubit<MainCubitStates> {
 
   Future<void> logout() async {
     try {
-      final result = await getIt<AuthRepo>().logout();
+      final result = await getIt<LogoutUseCase>().call();
       result.fold(
         (failure) {
           emit(LogoutFailed(errMessage: failure.message));
