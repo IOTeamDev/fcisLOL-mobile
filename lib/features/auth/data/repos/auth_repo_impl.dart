@@ -131,4 +131,23 @@ class AuthRepoImpl extends AuthRepo {
       return Left(Failure(message: AppStrings.unknownErrorMessage));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> logout() async {
+    try {
+      final serverResult = await _authApiDataSource.serverLogout();
+
+      return await serverResult.fold(
+        (serverFailure) {
+          return Left(serverFailure);
+        },
+        (_) async {
+          await _firebaseAuthDataSource.firebaseLogout();
+          return Right(null);
+        },
+      );
+    } catch (e) {
+      return Left(Failure(message: AppStrings.unknownErrorMessage));
+    }
+  }
 }

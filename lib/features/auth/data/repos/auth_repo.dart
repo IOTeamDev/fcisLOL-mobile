@@ -47,4 +47,6 @@ abstract class AuthRepo {
   Future<Either<Failure, LoginModel>> register({
     required RegisterRequestModel registrationUserModel,
   });
+
+  Future<Either<Failure, void>> logout();
 }
