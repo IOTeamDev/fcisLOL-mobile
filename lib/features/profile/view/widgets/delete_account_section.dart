@@ -17,7 +17,7 @@ class DeleteAccountSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<MainCubit, MainCubitStates>(
+    return BlocListener<MainCubit, MainState>(
       listener: (context, state) {
         if (state is DeleteAccountFailed) {
           showToastMessage(

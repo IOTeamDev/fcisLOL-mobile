@@ -88,7 +88,7 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<MainCubit, MainCubitStates>(
+    return BlocConsumer<MainCubit, MainState>(
       listener: (context, state) {
         if (state is AdminUpdateAnnouncementSuccessState) {
           showToastMessage(

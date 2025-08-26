@@ -33,7 +33,7 @@ class AdminPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<MainCubit, MainCubitStates>(
+    return BlocConsumer<MainCubit, MainState>(
       listener: (context, state) {},
       builder: (context, state) {
         var mainCubit = MainCubit.get(context);

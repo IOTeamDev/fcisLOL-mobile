@@ -32,7 +32,7 @@ import '../../app_icons.dart';
 import '../../../resources/theme/values/values_manager.dart';
 
 //uid null?
-class MainCubit extends Cubit<MainCubitStates> {
+class MainCubit extends Cubit<MainState> {
   MainCubit() : super(InitialMainState());
   static MainCubit get(context) => BlocProvider.of(context);
   IconData? pickerIcon = AppIcons.imageIcon;

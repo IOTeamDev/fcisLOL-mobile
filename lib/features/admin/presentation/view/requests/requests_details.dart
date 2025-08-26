@@ -56,7 +56,7 @@ class _RequestsDetailsState extends State<RequestsDetails> {
         ? (isArabicLanguage(context) ? TextDirection.rtl : TextDirection.ltr)
         : (isContentRtl ? TextDirection.rtl : TextDirection.ltr);
 
-    return BlocConsumer<MainCubit, MainCubitStates>(
+    return BlocConsumer<MainCubit, MainState>(
       listener: (context, state) {
         if (state is DeleteMaterialSuccessState) {
           showToastMessage(

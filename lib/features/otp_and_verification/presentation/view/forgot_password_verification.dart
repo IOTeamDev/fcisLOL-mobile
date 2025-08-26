@@ -67,7 +67,7 @@ class _OtpVerificationScreenState extends State<ForgotPasswordVerification> {
         }
       },
       builder: (context, state) {
-        return BlocListener<MainCubit, MainCubitStates>(
+        return BlocListener<MainCubit, MainState>(
           listener: (context, state) {
             if (state is VerificationUpdatePasswordSuccessState) {
               Navigator.pop(context);

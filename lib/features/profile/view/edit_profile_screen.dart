@@ -16,7 +16,7 @@ import 'package:lol/core/resources/theme/values/app_strings.dart';
 import 'package:lol/core/resources/theme/theme_provider.dart';
 import 'package:lol/core/resources/theme/values/values_manager.dart';
 import 'package:lol/features/pick_image/presentation/view/select_image.dart';
-import 'package:lol/features/pick_image/presentation/view_model/pick_image_cubit/pick_image_cubit.dart';
+import 'package:lol/features/pick_image/presentation/cubits/pick_image_cubit/pick_image_cubit.dart';
 import 'package:lol/features/profile/view/widgets/basic_info_edit.dart';
 import 'package:lol/features/profile/view/widgets/delete_account_section.dart';
 import 'package:lol/features/profile/view/widgets/login_info_edit.dart';
@@ -74,7 +74,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
         body: Stack(
           alignment: Alignment.topCenter,
           children: [
-            BlocBuilder<MainCubit, MainCubitStates>(
+            BlocBuilder<MainCubit, MainState>(
               builder: (context, state) {
                 return SizedBox(
                   height: ScreenSize.width(context) / AppSizes.s3,

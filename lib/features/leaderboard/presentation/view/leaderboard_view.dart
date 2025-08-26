@@ -23,7 +23,7 @@ class LeaderboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var scaffoldKey = GlobalKey<ScaffoldState>();
-    return BlocConsumer<MainCubit, MainCubitStates>(
+    return BlocConsumer<MainCubit, MainState>(
       listener: (context, state) {},
       builder: (context, state) {
         if (MainCubit.get(context).notAdminLeaderboardModel == null) {

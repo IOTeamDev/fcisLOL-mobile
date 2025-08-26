@@ -47,7 +47,7 @@ class _OtherProfileState extends State<OtherProfile> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<MainCubit, MainCubitStates>(
+    return BlocConsumer<MainCubit, MainState>(
       listener: (context, state) {},
       builder: (context, state) {
         var mainCubit = MainCubit.get(context);

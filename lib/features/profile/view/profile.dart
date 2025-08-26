@@ -15,7 +15,7 @@ import 'package:lol/core/presentation/app_icons.dart';
 import 'package:lol/core/resources/theme/values/app_strings.dart';
 import 'package:lol/core/resources/theme/theme_provider.dart';
 import 'package:lol/core/resources/theme/values/values_manager.dart';
-import 'package:lol/features/pick_image/presentation/view_model/pick_image_cubit/pick_image_cubit.dart';
+import 'package:lol/features/pick_image/presentation/cubits/pick_image_cubit/pick_image_cubit.dart';
 import 'package:lol/features/profile/view/edit_profile_screen.dart';
 import 'package:lol/main.dart';
 import 'package:lol/core/utils/components.dart';
@@ -32,7 +32,7 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<MainCubit, MainCubitStates>(
+    return BlocConsumer<MainCubit, MainState>(
       builder: (context, state) {
         var mainCubit = MainCubit.get(context);
         return Scaffold(

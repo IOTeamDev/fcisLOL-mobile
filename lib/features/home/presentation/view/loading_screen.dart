@@ -1,7 +1,11 @@
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lol/config/navigation/routes.dart';
+import 'package:lol/core/dependency_injection/service_locator.dart';
 import 'package:lol/core/presentation/cubits/main_cubit/main_cubit.dart';
 import 'package:lol/core/presentation/cubits/main_cubit/main_cubit_states.dart';
 import 'package:lol/core/resources/constants/constants_manager.dart';
@@ -25,16 +29,17 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<MainCubit, MainCubitStates>(
+    log(getIt<FirebaseAuth>().currentUser!.emailVerified.toString());
+    return BlocListener<MainCubit, MainState>(
       listener: (context, state) {
         if (state is GetProfileSuccess) {
           context.goNamed(ScreensName.home);
-          // if (context.read<MainCubit>().profileModel!.isVerified == false &&
-          //     context.read<MainCubit>().profileModel!.role == 'STUDENT') {
-          //   context.goNamed(ScreensName.emailVerification);
-          // } else {
-          //   context.goNamed(ScreensName.home);
-          // }
+          if (getIt<FirebaseAuth>().currentUser!.emailVerified == false &&
+              context.read<MainCubit>().profileModel!.role == 'STUDENT') {
+            context.goNamed(ScreensName.emailVerification);
+          } else {
+            context.goNamed(ScreensName.home);
+          }
         }
         if (state is GetProfileFailure) {
           context.goNamed(ScreensName.home);

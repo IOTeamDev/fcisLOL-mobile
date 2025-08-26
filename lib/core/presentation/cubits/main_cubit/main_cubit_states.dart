@@ -1,122 +1,122 @@
 import 'package:lol/core/models/current_user/current_user_model.dart';
 
-abstract class MainCubitStates {}
+abstract class MainState {}
 
-final class InitialMainState extends MainCubitStates {}
+final class InitialMainState extends MainState {}
 
-final class OpenDrawerState extends MainCubitStates {}
+final class OpenDrawerState extends MainState {}
 
-final class CloseDrawerState extends MainCubitStates {}
+final class CloseDrawerState extends MainState {}
 
-final class ChangeMode extends MainCubitStates {}
+final class ChangeMode extends MainState {}
 
-final class GetAnnouncementImageSuccess extends MainCubitStates {}
+final class GetAnnouncementImageSuccess extends MainState {}
 
-final class GetAnnouncementLimitExceed extends MainCubitStates {}
+final class GetAnnouncementLimitExceed extends MainState {}
 
-final class GetAnnouncementImageFailure extends MainCubitStates {}
+final class GetAnnouncementImageFailure extends MainState {}
 
-final class GetAnnouncementImageLoading extends MainCubitStates {}
+final class GetAnnouncementImageLoading extends MainState {}
 
-final class GetProfileLoading extends MainCubitStates {}
+final class GetProfileLoading extends MainState {}
 
-final class GetProfileSuccess extends MainCubitStates {}
+final class GetProfileSuccess extends MainState {}
 
-final class GetProfileFailure extends MainCubitStates {}
+final class GetProfileFailure extends MainState {}
 
-final class RetrieveCurrentUserDataLoadingState extends MainCubitStates {}
+final class RetrieveCurrentUserDataLoadingState extends MainState {}
 
-final class RetrieveCurrentUserDataSuccessState extends MainCubitStates {}
+final class RetrieveCurrentUserDataSuccessState extends MainState {}
 
-final class RetrieveCurrentUserDataErrorState extends MainCubitStates {
+final class RetrieveCurrentUserDataErrorState extends MainState {
   final String error;
   RetrieveCurrentUserDataErrorState({required this.error});
 }
 
-final class GetRequestsLoadingState extends MainCubitStates {}
+final class GetRequestsLoadingState extends MainState {}
 
-final class GetRequestsSuccessState extends MainCubitStates {}
+final class GetRequestsSuccessState extends MainState {}
 
-final class GetRequestsErrorState extends MainCubitStates {}
+final class GetRequestsErrorState extends MainState {}
 
-final class GetMaterialLoadingState extends MainCubitStates {}
+final class GetMaterialLoadingState extends MainState {}
 
-final class GetMaterialSuccessState extends MainCubitStates {}
+final class GetMaterialSuccessState extends MainState {}
 
-final class GetMaterialErrorState extends MainCubitStates {}
+final class GetMaterialErrorState extends MainState {}
 
-final class DeleteMaterialLoadingState extends MainCubitStates {}
+final class DeleteMaterialLoadingState extends MainState {}
 
-final class DeleteMaterialSuccessState extends MainCubitStates {}
+final class DeleteMaterialSuccessState extends MainState {}
 
-final class DeleteMaterialErrorState extends MainCubitStates {}
+final class DeleteMaterialErrorState extends MainState {}
 
-final class AcceptRequestLoadingState extends MainCubitStates {}
+final class AcceptRequestLoadingState extends MainState {}
 
-final class AcceptRequestSuccessState extends MainCubitStates {}
+final class AcceptRequestSuccessState extends MainState {}
 
-final class AcceptRequestErrorState extends MainCubitStates {}
+final class AcceptRequestErrorState extends MainState {}
 
-final class GetLeaderboardLoadingState extends MainCubitStates {}
+final class GetLeaderboardLoadingState extends MainState {}
 
-final class GetLeaderboardSuccessState extends MainCubitStates {}
+final class GetLeaderboardSuccessState extends MainState {}
 
-final class GetLeaderboardErrorState extends MainCubitStates {}
+final class GetLeaderboardErrorState extends MainState {}
 
-final class UpdateUserSuccessState extends MainCubitStates {}
+final class UpdateUserSuccessState extends MainState {}
 
-final class UpdateUserErrorState extends MainCubitStates {}
+final class UpdateUserErrorState extends MainState {}
 
-final class DeleteimageSuccessState extends MainCubitStates {}
+final class DeleteimageSuccessState extends MainState {}
 
-class DeleteimageErrorState extends MainCubitStates {}
+class DeleteimageErrorState extends MainState {}
 
-final class ChangeAppModeState extends MainCubitStates {}
+final class ChangeAppModeState extends MainState {}
 
-final class LogoutSuccess extends MainCubitStates {}
+final class LogoutSuccess extends MainState {}
 
-final class LogoutFailed extends MainCubitStates {
+final class LogoutFailed extends MainState {
   final String errMessage;
 
   LogoutFailed({required this.errMessage});
 }
 
-final class DeleteAccountLoading extends MainCubitStates {}
+final class DeleteAccountLoading extends MainState {}
 
-final class DeleteAccountFailed extends MainCubitStates {
+final class DeleteAccountFailed extends MainState {
   final String errMessage;
 
   DeleteAccountFailed({required this.errMessage});
 }
 
-final class DeleteAccountSuccess extends MainCubitStates {}
+final class DeleteAccountSuccess extends MainState {}
 
-final class SendingReportOrFeedBackSuccessState extends MainCubitStates {}
+final class SendingReportOrFeedBackSuccessState extends MainState {}
 
-final class SendingReportOrFeedBackErrorState extends MainCubitStates {}
+final class SendingReportOrFeedBackErrorState extends MainState {}
 
-final class GetPreviousExamsLoadingState extends MainCubitStates {}
+final class GetPreviousExamsLoadingState extends MainState {}
 
-final class GetPreviousExamsSuccessState extends MainCubitStates {}
+final class GetPreviousExamsSuccessState extends MainState {}
 
-final class GetPreviousExamsErrorState extends MainCubitStates {}
+final class GetPreviousExamsErrorState extends MainState {}
 
-final class DeletePreviousExamsLoadingState extends MainCubitStates {}
+final class DeletePreviousExamsLoadingState extends MainState {}
 
-final class DeletePreviousExamsSuccessState extends MainCubitStates {}
+final class DeletePreviousExamsSuccessState extends MainState {}
 
-final class DeletePreviousExamsErrorState extends MainCubitStates {}
+final class DeletePreviousExamsErrorState extends MainState {}
 
-final class AddPreviousExamsLoadingState extends MainCubitStates {}
+final class AddPreviousExamsLoadingState extends MainState {}
 
-final class AddPreviousExamsSuccessState extends MainCubitStates {}
+final class AddPreviousExamsSuccessState extends MainState {}
 
-final class AddPreviousExamsErrorState extends MainCubitStates {}
+final class AddPreviousExamsErrorState extends MainState {}
 
-final class EditPreviousExamsLoadingState extends MainCubitStates {}
+final class EditPreviousExamsLoadingState extends MainState {}
 
-final class EditPreviousExamsSuccessState extends MainCubitStates {}
+final class EditPreviousExamsSuccessState extends MainState {}
 
-final class EditPreviousExamsErrorState extends MainCubitStates {}
+final class EditPreviousExamsErrorState extends MainState {}
 
-final class ChangeBottomSheetState extends MainCubitStates {}
+final class ChangeBottomSheetState extends MainState {}

@@ -35,6 +35,7 @@ main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Cache.initialize();
   await DioHelp.initial();
+  Bloc.observer = MyBlocObserver();
   await Firebase.initializeApp(
       options: kIsWeb ? DefaultFirebaseOptions.currentPlatform : null);
   try {
@@ -64,8 +65,6 @@ main() async {
   //   privateKeyId = value.data()?["private_key_id"];
   //   privateKey = privateKey!.replaceAll(r'\n', '\n').trim();
   // });
-
-  Bloc.observer = MyBlocObserver();
 
   AppConstants.TOKEN = Cache.sharedpref.getString(KeysManager.token);
   AppConstants.SelectedSemester =

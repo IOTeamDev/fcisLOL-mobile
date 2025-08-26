@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late GlobalKey<ScaffoldState> scaffoldKey;
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<MainCubit, MainCubitStates>(listener: (context, state) {
+    return BlocConsumer<MainCubit, MainState>(listener: (context, state) {
       if (state is LogoutSuccess) {
         context.goNamed(ScreensName.registrationLayout);
 

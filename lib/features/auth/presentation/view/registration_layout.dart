@@ -55,17 +55,12 @@ class _RegistrationLayoutState extends State<RegistrationLayout>
         if (state is RegisterSuccess) {
           AppConstants.TOKEN = state.token;
           Cache.writeData(key: KeysManager.token, value: state.token);
-          // showToastMessage(
-          //   message: state.message,
-          //   states: ToastStates.SUCCESS,
-          // );
           showToastMessage(
-            message: "Your account has been created successfully.",
+            message: state.message,
             states: ToastStates.SUCCESS,
           );
-          context.replaceNamed(ScreensName.selectImage);
 
-          // context.goNamed(ScreensName.loading);
+          context.goNamed(ScreensName.loading);
         }
         if (state is RegisterFailed) {
           showToastMessage(

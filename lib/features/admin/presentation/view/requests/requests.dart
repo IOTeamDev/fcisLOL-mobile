@@ -45,7 +45,7 @@ class _RequestsState extends State<Requests> {
       cubit.getRequests(semester: cubit.profileModel!.semester);
     }
 
-    return BlocConsumer<MainCubit, MainCubitStates>(
+    return BlocConsumer<MainCubit, MainState>(
       listener: (context, state) {},
       builder: (context, state) {
         return Scaffold(

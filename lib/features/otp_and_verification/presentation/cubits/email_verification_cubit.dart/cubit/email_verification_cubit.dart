@@ -16,12 +16,8 @@ class EmailVerificationCubit extends Cubit<EmailVerificationState> {
   final VerificationRepo _verificationRepo;
   EmailVerificationCubit(this._verificationRepo)
       : super(EmailVerificationInitial()) {
-    _timer = Timer.periodic(
-      const Duration(seconds: 30),
-      (timer) async {
-        await checkEmailVerified();
-      },
-    );
+    sendEmailVerification();
+    _setTimerForAutoRedirect();
   }
 
   Timer? _timer;
@@ -40,14 +36,21 @@ class EmailVerificationCubit extends Cubit<EmailVerificationState> {
     }
   }
 
-  Future<void> checkEmailVerified() async {
+  Future<void> _setTimerForAutoRedirect() async {
     try {
-      final User user = getIt.get<FirebaseAuth>().currentUser!;
-      await user.reload();
-      if (user.emailVerified) {
-        _timer?.cancel(); // Stop the timer once verified
-        emit(EmailVerified());
-      }
+      Timer.periodic(
+        const Duration(seconds: 5),
+        (timer) async {
+          final user = getIt<FirebaseAuth>().currentUser;
+          await user?.reload();
+          if (user?.emailVerified ?? false) {
+            _timer?.cancel();
+            if (!isClosed) {
+              emit(EmailVerified());
+            } // Stop the timer once verified
+          }
+        },
+      );
     } on FirebaseAuthException catch (e) {
       debugPrint('FirebaseAuthException during email check: ${e.message}');
     } catch (e) {

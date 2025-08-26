@@ -50,7 +50,7 @@ class _PreviousExamsState extends State<PreviousExams> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<MainCubit, MainCubitStates>(
+    return BlocConsumer<MainCubit, MainState>(
       listener: (context, state) {},
       builder: (context, state) {
         MainCubit cubit = MainCubit.get(context);

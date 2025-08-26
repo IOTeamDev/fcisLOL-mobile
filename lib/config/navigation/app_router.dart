@@ -23,7 +23,7 @@ import 'package:lol/features/otp_and_verification/presentation/cubits/ticker_cub
 import 'package:lol/features/otp_and_verification/presentation/cubits/verification_cubit/verification_cubit.dart';
 import 'package:lol/features/otp_and_verification/presentation/view/email_verification_screen.dart';
 import 'package:lol/features/pick_image/presentation/view/select_image.dart';
-import 'package:lol/features/pick_image/presentation/view_model/pick_image_cubit/pick_image_cubit.dart';
+import 'package:lol/features/pick_image/presentation/cubits/pick_image_cubit/pick_image_cubit.dart';
 
 abstract class AppRouter {
   static final router = GoRouter(

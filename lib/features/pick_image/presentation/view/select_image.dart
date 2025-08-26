@@ -17,7 +17,7 @@ import 'package:lol/core/resources/theme/values/app_strings.dart';
 import 'package:lol/core/resources/theme/values/values_manager.dart';
 import 'package:lol/features/auth/data/models/register_request_model.dart';
 import 'package:lol/features/home/presentation/view/home.dart';
-import 'package:lol/features/pick_image/presentation/view_model/pick_image_cubit/pick_image_cubit.dart';
+import 'package:lol/features/pick_image/presentation/cubits/pick_image_cubit/pick_image_cubit.dart';
 import 'package:lol/main.dart';
 import 'package:lol/features/auth/presentation/view/register/register.dart';
 import 'package:lol/core/utils/components.dart';
@@ -57,7 +57,7 @@ class _SelectImageState extends State<SelectImage> {
           showToastMessage(
               message: 'Image Uploaded Successfully',
               states: ToastStates.SUCCESS);
-          context.goNamed(ScreensName.loading);
+          context.goNamed(ScreensName.home);
         }
       },
       child: Stack(

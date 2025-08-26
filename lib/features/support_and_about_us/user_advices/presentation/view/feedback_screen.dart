@@ -44,7 +44,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
         ),
         centerTitle: true,
       ),
-      body: BlocConsumer<MainCubit, MainCubitStates>(
+      body: BlocConsumer<MainCubit, MainState>(
         listener: (context, state) {},
         builder: (context, state) => SingleChildScrollView(
           child: _buildFeedBackForm(context),
