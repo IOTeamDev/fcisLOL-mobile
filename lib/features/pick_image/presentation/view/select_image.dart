@@ -147,6 +147,8 @@ class _SelectImageState extends State<SelectImage> {
                             await context
                                 .read<PickImageCubit>()
                                 .uploadUserImage(image: _image!);
+                          } else {
+                            context.goNamed(ScreensName.loading);
                           }
                         },
                       ),
