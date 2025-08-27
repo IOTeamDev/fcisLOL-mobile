@@ -10,17 +10,18 @@ class TickerCubit extends Cubit<TickerState> {
   final TickerRepo _tickerRepo;
   static const int _duration = 60;
 
-  TickerCubit(this._tickerRepo) : super(TickerInitial(duration: _duration));
+  TickerCubit(this._tickerRepo) : super(TickerInitial(duration: _duration)) {}
 
   StreamSubscription<int>? _countDownSubscription;
-
+  int _tickerRepeatedTimes = 1;
   void startTicker() {
-    emit(TickerInProgress(duration: _duration));
-    _countDownSubscription?.cancel();
-    _countDownSubscription = _tickerRepo.tick(ticks: _duration).listen(
+    emit(TickerInProgress(duration: _duration * _tickerRepeatedTimes));
+    _countDownSubscription =
+        _tickerRepo.tick(ticks: _duration * _tickerRepeatedTimes).listen(
       (duration) {
         if (duration <= 0) {
           emit(const TickerFinished());
+          resetTicker();
         } else {
           emit(TickerInProgress(duration: duration));
         }
@@ -29,8 +30,9 @@ class TickerCubit extends Cubit<TickerState> {
   }
 
   void resetTicker() {
+    _tickerRepeatedTimes++;
     _countDownSubscription?.cancel();
-    emit(const TickerInitial(duration: _duration));
+    emit(TickerInitial(duration: _duration * _tickerRepeatedTimes));
   }
 
   @override

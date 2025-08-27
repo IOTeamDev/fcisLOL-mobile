@@ -82,7 +82,7 @@ class FirebaseAuthDataSourceImpl extends FirebaseAuthDataSource {
       await _firebaseAuth.currentUser!.delete();
       return Right(null);
     } on FirebaseAuthException catch (e) {
-      return Left(Failure(message: _mapFirebaseAuthError(e.code)));
+      return Left(Failure(message: e.message ?? e.code));
     } catch (e) {
       return Left(Failure(message: e.toString()));
     }

@@ -44,9 +44,9 @@ class EmailVerificationScreen extends StatelessWidget {
           );
           context.goNamed(ScreensName.selectImage);
         }
-        // if (state is SendingEmailSuccess) {
-        //   context.read<TickerCubit>().startTicker();
-        // }
+        if (state is SendingEmailSuccess) {
+          context.read<TickerCubit>().startTicker();
+        }
       },
       child: BlocListener<MainCubit, MainState>(
         listener: (context, state) {
@@ -98,6 +98,14 @@ class EmailVerificationScreen extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.all(AppPaddings.p5),
+                    child: Text(
+                      'Check your spam folder if you don\'t see it.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: ColorsManager.imperialRed),
+                    ),
+                  )
                 ],
               ),
               Align(
@@ -129,9 +137,10 @@ class EmailVerificationScreen extends StatelessWidget {
                           builder: (context, state) {
                             return Column(
                               children: [
-                                Text(state is TickerInProgress
-                                    ? state.duration.toString()
-                                    : '0'),
+                                if (state is TickerInProgress)
+                                  Text(state.duration.toString()),
+                                if (state is TickerInitial)
+                                  Text(state.duration.toString()),
                                 TextButton(
                                   onPressed: !(state is TickerInProgress)
                                       ? () async {

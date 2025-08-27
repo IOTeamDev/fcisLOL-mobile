@@ -57,7 +57,7 @@ class _SelectImageState extends State<SelectImage> {
           showToastMessage(
               message: 'Image Uploaded Successfully',
               states: ToastStates.SUCCESS);
-          context.goNamed(ScreensName.home);
+          context.goNamed(ScreensName.loading);
         }
       },
       child: Stack(

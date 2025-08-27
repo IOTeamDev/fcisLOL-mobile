@@ -1,6 +1,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lol/config/navigation/routes.dart';
 import 'package:lol/core/presentation/cubits/main_cubit/main_cubit_states.dart';
@@ -21,9 +22,9 @@ class DeleteAccountSection extends StatelessWidget {
       listener: (context, state) {
         if (state is DeleteAccountFailed) {
           showToastMessage(
-            message: state.errMessage,
-            states: ToastStates.ERROR,
-          );
+              message: state.errMessage,
+              states: ToastStates.ERROR,
+              toastLength: Toast.LENGTH_LONG);
         }
         if (state is DeleteAccountSuccess) {
           showToastMessage(

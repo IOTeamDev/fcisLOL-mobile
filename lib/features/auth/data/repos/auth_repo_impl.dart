@@ -158,8 +158,8 @@ class AuthRepoImpl extends AuthRepo {
           await _firebaseAuthDataSource.firebaseDeleteAccount();
 
       return await firebaseResult.fold(
-        (failure) {
-          return Left(failure);
+        (firebaseFailure) {
+          return Left(firebaseFailure);
         },
         (_) async {
           final serverResult =
